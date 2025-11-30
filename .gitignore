@@ -8,6 +8,11 @@
 .claude/settings.local.json
 .claude/plans/
 
+# Package lock files
+# Added: Library packages and their examples should not check in lock files
+# See: https://dart.dev/guides/libraries/private-files#pubspeclock
+pubspec.lock
+
 # FVM (Flutter Version Management)
 # Added: FVM stores Flutter SDK symlinks and cache here
 .fvm/flutter_sdk

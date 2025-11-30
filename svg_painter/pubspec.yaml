@@ -1,0 +1,24 @@
+name: svg_painter
+description: Code generator that converts SVG files to Flutter CustomPainter classes. Use with svg_painter_annotation.
+version: 0.0.1-alpha.1
+repository: https://github.com/tekneurt/svg_painter/tree/master/svg_painter
+
+environment:
+  sdk: ">=3.10.0-0 <4.0.0"
+
+dependencies:
+  analyzer: ^9.0.0
+  build: ^4.0.3
+  code_builder: ^4.11.0
+  source_gen: ^4.1.1
+  svg_painter_annotation: ^0.0.1-alpha.1
+  xml: ^6.6.1
+
+dependency_overrides:
+  svg_painter_annotation:
+    path: ../svg_painter_annotation
+
+dev_dependencies:
+  build_runner: ^2.10.4
+  lints: ^6.0.0
+  test: ^1.28.0

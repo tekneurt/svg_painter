@@ -12,9 +12,32 @@ Daphnia is an open-source SVG to CustomPainter code generator for Dart/Flutter.
 ## Architecture
 
 This is a code generation package using `source_gen` and `build_runner`. Structure:
-- `packages/daphnia_annotation` - Contains the `@SvgPainter` annotation
-- `packages/daphnia` - The code generator that produces CustomPainter classes
+- `svg_painter_annotation/` - Contains the `@SvgPainter` annotation (lightweight, no dependencies)
+- `svg_painter/` - The code generator that produces CustomPainter classes
 - `example/` - Example Flutter app demonstrating usage
+
+This follows the Google/Dart team monorepo pattern (json_serializable, built_value).
+
+### Layered Architecture
+The generator processes SVG through four layers:
+1. **XML Layer** - Parse SVG file to XML Document
+2. **SVG Layer** - Convert XML to SVG model (elements, attributes, values)
+3. **PTR Layer** - Convert SVG to Painter model (geometry, painting)
+4. **Code Gen Layer** - Generate CustomPainter Dart code using `code_builder`
+
+### Error Handling
+Use Dart 3 sealed classes for Result type (no external dependencies):
+```dart
+sealed class Result<F, S> { const Result(); }
+final class Failure<F, S> extends Result<F, S> { ... }
+final class Success<F, S> extends Result<F, S> { ... }
+```
+
+All error messages must be developer-friendly:
+- Clearly state WHAT went wrong
+- State WHERE it happened (file, line, element)
+- Suggest HOW to fix it
+- Include the actual value that caused the error
 
 ## Development Principles
 
@@ -92,8 +115,26 @@ fvm dart run build_runner build --delete-conflicting-outputs
 ```
 
 ## Git
+
+### Repository
+https://github.com/tekneurt/svg_painter
+
+### Branching Strategy
+- `master` - stable, publishable code
+- `feature/*` - feature branches, merge back to master
+- No develop branch (KISS)
+
+### Commits
 - Maintain full commit history (no squashing/rebasing)
-- Tags: `v{major}.{minor}.{patch}` for releases
+
+### Releases
+- Tags: `v{major}.{minor}.{patch}` for stable releases
+- Pre-release versions: `0.1.0-dev.1`, `0.1.0-beta.1` in pubspec.yaml
+
+### Changelog Workflow
+1. User commits changes with descriptive messages
+2. Claude reads commit messages and updates CHANGELOG.md
+3. User reviews, fixes if needed, and commits the CHANGELOG update
 
 ## Critical Reminders
 

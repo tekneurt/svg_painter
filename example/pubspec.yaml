@@ -1,0 +1,23 @@
+name: svg_painter_example
+description: Example app demonstrating the svg_painter SVG to CustomPainter generator.
+publish_to: 'none'
+
+environment:
+  sdk: ">=3.10.0-0 <4.0.0"
+  flutter: ">=3.38.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  svg_painter_annotation:
+    path: ../svg_painter_annotation
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  svg_painter:
+    path: ../svg_painter
+  build_runner: ^2.4.0
+
+flutter:
+  uses-material-design: true
