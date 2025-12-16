@@ -1,0 +1,14 @@
+targets:
+  $default:
+    builders:
+      svg_painter:
+        enabled: true
+
+builders:
+  svg_painter:
+    import: "package:svg_painter/builder.dart"
+    builder_factories: ["svgPainterBuilder"]
+    build_extensions: {".dart": [".svg_painter.g.part"]}
+    auto_apply: dependents
+    build_to: cache
+    applies_builders: ["source_gen|combining_builder"]
