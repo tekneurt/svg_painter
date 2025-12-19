@@ -8,6 +8,7 @@ environment:
   sdk: ^3.10.4
 
 dependencies:
+  meta: ^1.17.0
   analyzer: ^9.0.0
   build: ^4.0.3
   code_builder: ^4.10.0

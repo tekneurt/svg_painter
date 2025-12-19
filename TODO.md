@@ -34,17 +34,20 @@ Project Daphnia aims to create a Dart library that annotates code to generate `C
 Establish a robust, layered architecture to decouple parsing, semantic understanding, and code generation.
 
 *   **Layer 1: SVG Model (`svg_model`)**
-    - [ ] Define domain objects for SVG elements (`SvgElement`, `SvgRoot`, `SvgCircle`) and attributes.
-    - [ ] Implement `svg_from_xml`: Mapper to convert `xml` nodes to `SvgElement` domain objects.
-    - [ ] Handle default values (e.g., default fill color black) in this layer.
+    - [x] Define domain objects for SVG elements (`SvgElement`, `SvgRoot`, `SvgCircle`) and attributes.
+    - [x] Implement `svg_from_xml`: Mapper to convert `xml` nodes to `SvgElement` domain objects.
+    - [x] Handle default values (e.g., default fill color black) in this layer.
 
 *   **Layer 2: Painting Model (`painting_model`)**
-    - [ ] Define domain objects for painting commands (`PaintCommand`, `DrawCircle`, `SetPaint`).
-    - [ ] Implement `painting_from_svg`: Mapper to convert `SvgElement` hierarchy to a flat or structured list of `PaintCommand`s.
+    - [x] Define domain objects for painting commands (`PaintCommand`, `DrawCircle`, `SetPaint`).
+    - [x] Implement `painting_from_svg`: Mapper to convert `SvgElement` hierarchy to a flat or structured list of `PaintCommand`s.
 
 *   **Layer 3: Code Generation**
-    - [ ] Refactor `SvgPainterGenerator` to consume the Painting Model and emit Dart code.
-    - [ ] Verify existing `<circle>` tests pass with the new pipeline.
+    - [x] Refactor `SvgPainterGenerator` to consume the Painting Model and emit Dart code.
+    - [x] Verify existing `<circle>` tests pass with the new pipeline.
+
+*   **Refactoring & Cleanup**
+    - [ ] Refactor `XmlParser` wrapper to use Dart extension methods on `XmlElement` for cleaner syntax.
 
 ### Phase 4: Milestone 2 - The Daphnia (Advanced Shapes)
 Implement support for additional SVG shapes and attributes using the new layered architecture.

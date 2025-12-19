@@ -4,58 +4,87 @@ import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
 import 'package:source_gen/source_gen.dart';
 import 'package:svg_painter_annotation/svg_painter_annotation.dart';
-import 'package:xml/xml.dart';
+import 'package:xml/xml.dart'; // Keep for XmlDocument type
+
+import 'painting_from_svg/painting_mapper.dart'; // Import Painting Mapper
+import 'painting_model/paint_command.dart'; // Import Painting Model
+import 'svg_from_xml/svg_mapper.dart'; // Import SVG Mapper
+import 'svg_model/svg_element.dart'; // Import SVG Model
+import 'util/result.dart'; // Import Result type
+import 'xml_layer/xml_parser.dart'; // Import XML Parser
 
 /// Generator that produces CustomPainter code from SVG files.
 class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
+  static const TypeChecker _fileChecker = TypeChecker.fromUrl(
+    'package:svg_painter_annotation/src/svg_painter.dart#SvgFilePainter',
+  );
+  static const TypeChecker _codeChecker = TypeChecker.fromUrl(
+    'package:svg_painter_annotation/src/svg_painter.dart#SvgCodePainter',
+  );
+
   @override
   FutureOr<String> generateForAnnotatedElement(
     Element element,
     ConstantReader annotation,
     BuildStep buildStep,
   ) async {
-    const fileChecker = TypeChecker.fromUrl(
-      'package:svg_painter_annotation/src/svg_painter.dart#SvgFilePainter',
-    );
-    const codeChecker = TypeChecker.fromUrl(
-      'package:svg_painter_annotation/src/svg_painter.dart#SvgCodePainter',
+    final Result<String> contentResult = await _loadSvgContent(
+      annotation,
+      buildStep,
     );
 
-    final bool isFile = fileChecker.isExactlyType(annotation.objectValue.type!);
-    final bool isCode = codeChecker.isExactlyType(annotation.objectValue.type!);
+    final String svgContent = contentResult.fold(
+      (Failure<String> failure) => throw InvalidGenerationSourceError(
+        'Failed to load SVG content for ${element.name}: ${failure.message}',
+        element: element,
+      ),
+      (String content) => content,
+    );
 
-    String? svgContent;
+    // Use our XmlParser to parse, returning a Result
+    final Result<XmlDocument> parseResult = XmlParser.parse(svgContent);
 
-    if (isFile) {
-      final String path = annotation.read('path').stringValue;
-      AssetId assetId;
+    final XmlDocument document = parseResult.fold(
+      (Failure<XmlDocument> failure) => throw InvalidGenerationSourceError(
+        'Invalid SVG content for ${element.name}: ${failure.message}',
+        element: element,
+      ),
+      (XmlDocument doc) => doc,
+    );
 
-      if (path.startsWith('package:')) {
-        final Uri uri = Uri.parse(path);
-        // package:pkg/path/to/file.svg -> pkg, lib/path/to/file.svg
-        assetId = AssetId(
-          uri.pathSegments.first,
-          'lib/${uri.pathSegments.skip(1).join('/')}',
-        );
-      } else {
-        // Relative path handling
-        // For now, only package: URIs are supported for fixtures
-        throw UnsupportedError('Only package: URIs are supported for now');
-      }
-      svgContent = await buildStep.readAsString(assetId);
-    } else if (isCode) {
-      svgContent = annotation.read('code').stringValue;
-    } else {
+    final XmlElement svgXmlElement = document.findAllElements('svg').first;
+
+    // Use SvgMapper to convert XML to SVG Model
+    final Result<SvgElement> mapResult = SvgMapper.fromXml(svgXmlElement);
+
+    final SvgElement svgRoot = mapResult.fold(
+      (Failure<SvgElement> failure) => throw InvalidGenerationSourceError(
+        'Failed to map SVG content for ${element.name}: ${failure.message}',
+        element: element,
+      ),
+      (SvgElement value) => value,
+    );
+
+    if (svgRoot is! SvgRoot) {
       throw InvalidGenerationSourceError(
-        'Unknown SvgPainter type. Must be SvgFilePainter or SvgCodePainter.',
+        'Root element must be <svg>, but found ${svgRoot.runtimeType}',
         element: element,
       );
     }
 
-    final document = XmlDocument.parse(svgContent);
-    final XmlElement svgElement = document.findAllElements('svg').first;
+    // Use PaintingMapper to convert SVG Model to Painting Model
+    final Result<List<PaintCommand>> paintingResult = PaintingMapper.fromSvg(
+      svgRoot,
+    );
+    final List<PaintCommand> commands = paintingResult.fold(
+      (Failure<List<PaintCommand>> failure) => throw InvalidGenerationSourceError(
+        'Failed to convert SVG to painting commands for ${element.name}: ${failure.message}',
+        element: element,
+      ),
+      (List<PaintCommand> value) => value,
+    );
 
-    final buffer = StringBuffer();
+    final StringBuffer buffer = StringBuffer();
     // Default class name generation
     final String className =
         annotation.read('painterClassName').isNull
@@ -66,19 +95,14 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
     buffer.writeln('  @override');
     buffer.writeln('  void paint(Canvas canvas, Size size) {');
 
-    // Simple traversal for Milestone 1: Circle
-    for (final XmlNode child in svgElement.children) {
-      if (child is XmlElement) {
-        if (child.name.local == 'circle') {
-          final double cx = double.parse(child.getAttribute('cx') ?? '0');
-          final double cy = double.parse(child.getAttribute('cy') ?? '0');
-          final double r = double.parse(child.getAttribute('r') ?? '0');
-
-          // Default fill is black
-          buffer.writeln(
-            '    canvas.drawCircle(const Offset($cx, $cy), $r, Paint()..color = const Color(0xFF000000));',
-          );
-        }
+    for (final PaintCommand command in commands) {
+      if (command is DrawCircle) {
+        // Hex color to 0xAARRGGBB format string
+        final String colorString =
+            '0x${command.colorHex.toRadixString(16).toUpperCase().padLeft(8, '0')}';
+        buffer.writeln(
+          '    canvas.drawCircle(Offset(${command.cx}, ${command.cy}), ${command.radius}, Paint()..color = const Color($colorString));',
+        );
       }
     }
 
@@ -90,5 +114,44 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
     buffer.writeln('}');
 
     return buffer.toString();
+  }
+
+  Future<Result<String>> _loadSvgContent(
+    ConstantReader annotation,
+    BuildStep buildStep,
+  ) async {
+    if (_fileChecker.isExactlyType(annotation.objectValue.type!)) {
+      return _loadFromFile(annotation, buildStep);
+    } else if (_codeChecker.isExactlyType(annotation.objectValue.type!)) {
+      return Success<String>(annotation.read('code').stringValue);
+    }
+    return const Failure<String>(
+      'Unknown SvgPainter type. Must be SvgFilePainter or SvgCodePainter.',
+    );
+  }
+
+  Future<Result<String>> _loadFromFile(
+    ConstantReader annotation,
+    BuildStep buildStep,
+  ) async {
+    final String path = annotation.read('path').stringValue;
+    if (!path.startsWith('package:')) {
+      return const Failure<String>(
+        'Only package: URIs are supported for file assets.',
+      );
+    }
+
+    final Uri uri = Uri.parse(path);
+    final AssetId assetId = AssetId(
+      uri.pathSegments.first,
+      'lib/${uri.pathSegments.skip(1).join('/')}',
+    );
+
+    try {
+      final String content = await buildStep.readAsString(assetId);
+      return Success<String>(content);
+    } catch (e) {
+      return Failure<String>('Failed to read asset $path: $e');
+    }
   }
 }
