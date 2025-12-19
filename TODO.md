@@ -19,29 +19,56 @@ Project Daphnia aims to create a Dart library that annotates code to generate `C
 - [x] Configure strict linter rules (analysis_options.yaml) for all packages.
 - [x] Setup `melos` (optional) or workspace configuration (Using manual config for now).
 - [x] Configure FVM with Flutter 3.38.5.
+- [x] Ensure `.gitignore` is correct and annotated.
+- [x] Ensure `analysis_options.yaml` is correct and annotated.
+- [x] Update `CONTRIBUTING.md` with development principles and coding standards.
 
 ### Phase 2: Milestone 1 - The Circle (Proof of Concept)
-- [x] **svg_painter_annotation**: Create `SvgSource` annotation.
-- [x] **svg_painter_fixtures**: Add MDN Circle SVG.
-- [x] **svg_painter**:
-    - [x] Implement `Builder` structure.
-    - [x] Implement XML/SVG parsing logic.
-    - [x] Implement `<circle>` element support.
-    - [x] Generate `CustomPainter` class.
-- [x] **svg_painter_tests**:
-    - [x] Setup Golden Test infrastructure.
-    - [x] Create test for generated Circle painter.
-    - [x] Verify against reference image.
-- [x] **example**: Create a simple Flutter app displaying the generated Circle.
+- [x] **svg_painter_annotation**: Refactor to use `SvgPainter` sealed class.
+- [x] **svg_painter_fixtures**: Refactor to separate semantic SVG strings from IO test files.
+- [x] **svg_painter**: Implement basic `<circle>` support and generator.
+- [x] **svg_painter_tests**: Setup golden tests for string and file inputs.
+- [x] **example**: Web-only example app using the generator.
 
-### Phase 3: Milestone 2 - The Daphnia (Advanced Shapes)
-- [ ] Support `<path>` element.
-- [ ] Support `<rect>`, `<line>`, `<polyline>`, `<polygon>`, `<ellipse>`.
-- [ ] Support basic attributes (fill, stroke, width, color).
-- [ ] Support transforms.
+### Phase 3: Architecture Refactoring (Layered Approach)
+Establish a robust, layered architecture to decouple parsing, semantic understanding, and code generation.
+
+*   **Layer 1: SVG Model (`svg_model`)**
+    - [ ] Define domain objects for SVG elements (`SvgElement`, `SvgRoot`, `SvgCircle`) and attributes.
+    - [ ] Implement `svg_from_xml`: Mapper to convert `xml` nodes to `SvgElement` domain objects.
+    - [ ] Handle default values (e.g., default fill color black) in this layer.
+
+*   **Layer 2: Painting Model (`painting_model`)**
+    - [ ] Define domain objects for painting commands (`PaintCommand`, `DrawCircle`, `SetPaint`).
+    - [ ] Implement `painting_from_svg`: Mapper to convert `SvgElement` hierarchy to a flat or structured list of `PaintCommand`s.
+
+*   **Layer 3: Code Generation**
+    - [ ] Refactor `SvgPainterGenerator` to consume the Painting Model and emit Dart code.
+    - [ ] Verify existing `<circle>` tests pass with the new pipeline.
+
+### Phase 4: Milestone 2 - The Daphnia (Advanced Shapes)
+Implement support for additional SVG shapes and attributes using the new layered architecture.
+
+- [ ] **Ellipse** (`<ellipse>`)
+    - [ ] Add `SvgEllipse` to SVG Model.
+    - [ ] Update `svg_from_xml` mapper.
+    - [ ] Add `DrawOval` (or similar) to Painting Model.
+    - [ ] Update `painting_from_svg` mapper.
+    - [ ] Update Code Generator.
+    - [ ] Add Fixtures and Tests.
+- [ ] **Rect** (`<rect>`)
+- [ ] **Line** (`<line>`)
+- [ ] **Polyline** (`<polyline>`)
+- [ ] **Polygon** (`<polygon>`)
+- [ ] **Path** (`<path>`)
+- [ ] **Attributes**
+    - [ ] Fill (color, none)
+    - [ ] Stroke (color, width, cap, join)
+    - [ ] Opacity
+- [ ] **Transforms** (translate, rotate, scale, skew)
 - [ ] **Test**: Verify against the Daphnia SVG.
 
-### Phase 4: Polish & Release
+### Phase 5: Polish & Release
 - [ ] comprehensive documentation.
 - [ ] API polishing.
 - [ ] Publish to pub.dev (dry run).
