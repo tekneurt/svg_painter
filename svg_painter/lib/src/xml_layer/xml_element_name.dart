@@ -1,0 +1,23 @@
+/// Enumeration of standard XML element tag names used in SVG.
+enum XmlElementName {
+  /// The root <svg> element.
+  svg('svg'),
+
+  /// The <circle> element.
+  circle('circle');
+
+  const XmlElementName(this.tagName);
+
+  /// The standard string representation of the element tag name.
+  final String tagName;
+
+  /// parses a string into an [XmlElementName], or returns null if unknown.
+  static XmlElementName? from(String tagName) {
+    for (final XmlElementName element in XmlElementName.values) {
+      if (element.tagName == tagName) {
+        return element;
+      }
+    }
+    return null;
+  }
+}

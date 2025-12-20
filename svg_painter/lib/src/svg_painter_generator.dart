@@ -6,11 +6,12 @@ import 'package:source_gen/source_gen.dart';
 import 'package:svg_painter_annotation/svg_painter_annotation.dart';
 import 'package:xml/xml.dart'; // Keep for XmlDocument type
 
-import 'painting_from_svg/painting_mapper.dart'; // Import Painting Mapper
+import 'painting_from_svg/converters/svg_to_painting.dart'; // Import Painting Converter Extension
 import 'painting_model/paint_command.dart'; // Import Painting Model
-import 'svg_from_xml/svg_mapper.dart'; // Import SVG Mapper
+import 'svg_from_xml/converters/element_to_svg.dart'; // Import SVG Converter Extension
 import 'svg_model/svg_element.dart'; // Import SVG Model
 import 'util/result.dart'; // Import Result type
+import 'xml_layer/xml_element_name.dart'; // Import XML Element Name Enum
 import 'xml_layer/xml_parser.dart'; // Import XML Parser
 
 /// Generator that produces CustomPainter code from SVG files.
@@ -52,10 +53,11 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
       (XmlDocument doc) => doc,
     );
 
-    final XmlElement svgXmlElement = document.findAllElements('svg').first;
+    final XmlElement svgXmlElement =
+        document.findAllElements(XmlElementName.svg.tagName).first;
 
-    // Use SvgMapper to convert XML to SVG Model
-    final Result<SvgElement> mapResult = SvgMapper.fromXml(svgXmlElement);
+    // Use ElementToSvg extension to convert XML to SVG Model
+    final Result<SvgElement> mapResult = svgXmlElement.toSvgElement();
 
     final SvgElement svgRoot = mapResult.fold(
       (Failure<SvgElement> failure) => throw InvalidGenerationSourceError(
@@ -65,17 +67,15 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
       (SvgElement value) => value,
     );
 
-    if (svgRoot is! SvgRoot) {
+    if (svgRoot is! SvgSvg) {
       throw InvalidGenerationSourceError(
         'Root element must be <svg>, but found ${svgRoot.runtimeType}',
         element: element,
       );
     }
 
-    // Use PaintingMapper to convert SVG Model to Painting Model
-    final Result<List<PaintCommand>> paintingResult = PaintingMapper.fromSvg(
-      svgRoot,
-    );
+    // Use SvgToPainting extension to convert SVG Model to Painting Model
+    final Result<List<PaintCommand>> paintingResult = svgRoot.toPaintCommands();
     final List<PaintCommand> commands = paintingResult.fold(
       (Failure<List<PaintCommand>> failure) => throw InvalidGenerationSourceError(
         'Failed to convert SVG to painting commands for ${element.name}: ${failure.message}',

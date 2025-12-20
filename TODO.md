@@ -35,28 +35,40 @@ Establish a robust, layered architecture to decouple parsing, semantic understan
 
 *   **Layer 1: SVG Model (`svg_model`)**
     - [x] Define domain objects for SVG elements (`SvgElement`, `SvgRoot`, `SvgCircle`) and attributes.
-    - [x] Implement `svg_from_xml`: Mapper to convert `xml` nodes to `SvgElement` domain objects.
-    - [x] Handle default values (e.g., default fill color black) in this layer.
+    - [x] Consolidate `SvgRoot` into `svg_svg.dart` and refine hierarchy.
+    - [x] Implement `SvgLengthPercentage` value types (Split into `SvgLength` and `SvgPercentage`).
+    - [x] Remove XML parsing details (enums) from `svg_model`.
 
 *   **Layer 2: Painting Model (`painting_model`)**
-    - [x] Define domain objects for painting commands (`PaintCommand`, `DrawCircle`, `SetPaint`).
-    - [x] Implement `painting_from_svg`: Mapper to convert `SvgElement` hierarchy to a flat or structured list of `PaintCommand`s.
+    - [x] Define domain objects for painting commands (`PaintCommand`, `DrawCircle`).
 
 *   **Layer 3: Code Generation**
-    - [x] Refactor `SvgPainterGenerator` to consume the Painting Model and emit Dart code.
+    - [x] Refactor `SvgPainterGenerator` to use the full pipeline: XML -> SVG -> Painting -> Code.
     - [x] Verify existing `<circle>` tests pass with the new pipeline.
 
 *   **Refactoring & Cleanup**
-    - [ ] Refactor `XmlParser` wrapper to use Dart extension methods on `XmlElement` for cleaner syntax.
+    - [x] Refactor `XmlParser` wrapper usage.
+    - [x] Replace `SvgMapper` and `PaintingMapper` classes with extension methods for cleaner syntax and better testability (`ElementToSvg`, `SvgToPainting`).
+    - [x] Optimize imports and remove redundant comments.
 
-### Phase 4: Milestone 2 - The Daphnia (Advanced Shapes)
-Implement support for additional SVG shapes and attributes using the new layered architecture.
+### Phase 4: Advanced Values & Attributes
+Before adding new shapes, we must solidify support for advanced SVG values and attributes.
+
+- [ ] **Absolute Lengths**: Support CSS units (`px`, `cm`, `mm`, `in`, `pt`, `pc`, `em`, `ex`).
+- [ ] **Percentages**: Implement resolution logic in `PaintingMapper` (requires context/viewBox).
+- [ ] **Colors**: Support standard CSS colors:
+    - [ ] Named colors (e.g., `red`, `blue`).
+    - [ ] Hex codes (3, 4, 6, 8 digits).
+    - [ ] Functional notation (`rgb()`, `rgba()`, `hsl()`, `hsla()`).
+
+### Phase 5: Milestone 2 - The Daphnia (Advanced Shapes)
+Implement support for additional SVG shapes using the new layered architecture.
 
 - [ ] **Ellipse** (`<ellipse>`)
     - [ ] Add `SvgEllipse` to SVG Model.
-    - [ ] Update `svg_from_xml` mapper.
-    - [ ] Add `DrawOval` (or similar) to Painting Model.
-    - [ ] Update `painting_from_svg` mapper.
+    - [ ] Add `toSvgEllipse` extension.
+    - [ ] Add `DrawOval` to Painting Model.
+    - [ ] Add `toDrawOval` extension.
     - [ ] Update Code Generator.
     - [ ] Add Fixtures and Tests.
 - [ ] **Rect** (`<rect>`)
@@ -71,7 +83,7 @@ Implement support for additional SVG shapes and attributes using the new layered
 - [ ] **Transforms** (translate, rotate, scale, skew)
 - [ ] **Test**: Verify against the Daphnia SVG.
 
-### Phase 5: Polish & Release
+### Phase 6: Polish & Release
 - [ ] comprehensive documentation.
 - [ ] API polishing.
 - [ ] Publish to pub.dev (dry run).

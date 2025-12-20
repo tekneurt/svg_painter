@@ -10,26 +10,11 @@ final class SvgCircle extends SvgElement {
   });
 
   /// The x-coordinate of the center of the circle.
-  final double cx;
+  final SvgLengthPercentage cx;
 
   /// The y-coordinate of the center of the circle.
-  final double cy;
+  final SvgLengthPercentage cy;
 
   /// The radius of the circle.
-  final double r;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      (other is SvgCircle &&
-          runtimeType == other.runtimeType &&
-          cx == other.cx &&
-          cy == other.cy &&
-          r == other.r);
-
-  @override
-  int get hashCode => Object.hash(cx, cy, r);
-
-  @override
-  String toString() => 'SvgCircle(cx: $cx, cy: $cy, r: $r)';
+  final SvgLengthPercentage r;
 }

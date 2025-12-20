@@ -10,7 +10,7 @@ class _$CirclePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     canvas.drawCircle(
-      const Offset(50.0, 50.0),
+      Offset(50.0, 50.0),
       50.0,
       Paint()..color = const Color(0xFF000000),
     );
