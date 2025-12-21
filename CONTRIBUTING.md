@@ -54,6 +54,21 @@ We adhere strictly to the following software engineering principles to maintain 
     *   Otherwise, use named parameters.
 *   **3 or More Parameters**: Must **always** use named parameters.
 
+### Code Style (Specifics)
+
+*   **Dot Shorthand**: Prefer using dot shorthands for enum values and static members where the type is inferred (e.g., `.horizontal` instead of `SvgOrientation.horizontal`). This makes the code more compact and readable.
+
+### Architecture & File Structure
+
+*   **Layered Architecture**: We strictly separate concerns into distinct layers (e.g., XML Conversion, SVG Model, Painting Model, Code Generation).
+*   **Barrel Files**: Every directory should contain a barrel file named `_directory_name.dart` (e.g., `lib/src/svg_model/_svg_model.dart`) that exports the public members of its subdirectories and files. This keeps imports clean and makes architectural dependencies explicit.
+*   **Folder Naming**: Folders should be named using `snake_case`.
+
+### Comments & TODOs
+
+*   **TODO Format**: All TODO comments must follow the format `// TODO(Gemini): <description>`. This helps us track tasks specifically assigned to the AI agent or requiring attention in our specific workflow.
+    *   Example: `// TODO(Gemini): Implement gradient support.`
+
 ## Version Control
 
 *   **FVM**: This project uses Flutter Version Management. Please use `fvm flutter` for all flutter commands.

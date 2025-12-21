@@ -6,21 +6,59 @@ import '../_xml_conversion.dart';
 
 /// Extension to convert [XmlElement] to [SvgValue].
 extension XmlElementToSvgValue on XmlElement {
+  /// Converts an XML attribute to an [SvgBaseValue], falling back to the default value.
   T toSvgValue<T extends SvgBaseValue>(XmlElementName elementName, XmlAttributeName attributeName) {
+    final T? value = toSvgValueOrNull<T>(elementName, attributeName);
+    if (value != null) {
+      return value;
+    }
+
+    final SvgBaseValue defaultValue = attributeName.getDefaultValue(elementName);
+    if (defaultValue is T) {
+      return defaultValue;
+    }
+
+    throw UnsupportedError(
+      'Default value for ($elementName, $attributeName) is ${defaultValue.runtimeType}, expected $T',
+    );
+  }
+
+  /// Converts an XML attribute to an [SvgBaseValue], or returns null if not present.
+  T? toSvgValueOrNull<T extends SvgBaseValue>(
+    XmlElementName elementName,
+    XmlAttributeName attributeName,
+  ) {
     final String? attributeValue = getXmlAttributeValue(attributeName);
-    final SvgBaseValue result =
-        switch (elementName) {
-          XmlElementName.circle => attributeValue?.toSvgLengthPercentage(),
+    if (attributeValue == null) {
+      return null;
+    }
 
-          XmlElementName.svg => throw UnimplementedError(),
-        } ?? // Or the default value when null...
-        attributeName.getDefaultValue(elementName);
+    final SvgBaseValue? parsedValue = switch (attributeName) {
+      XmlAttributeName.x ||
+      XmlAttributeName.y ||
+      XmlAttributeName.cx ||
+      XmlAttributeName.cy ||
+      XmlAttributeName.r ||
+      XmlAttributeName.strokeWidth =>
+        attributeValue.toSvgLengthPercentage(),
+      XmlAttributeName.rx ||
+      XmlAttributeName.ry ||
+      XmlAttributeName.width ||
+      XmlAttributeName.height =>
+        attributeValue.toSvgLengthPercentageAuto(),
+      XmlAttributeName.fill || XmlAttributeName.stroke => attributeValue.toSvgColor(),
+      _ => null,
+    };
 
-    if (result is T) {
-      return result;
+    if (parsedValue == null) {
+      return null;
+    }
+
+    if (parsedValue is T) {
+      return parsedValue;
     } else {
       throw UnsupportedError(
-        'Encountered invalid type ${T.runtimeType} with element ($elementName, $attributeName)',
+        'Encountered invalid type ${parsedValue.runtimeType} (expected $T) with element ($elementName, $attributeName)',
       );
     }
   }

@@ -9,11 +9,12 @@ part of 'io_painter.dart';
 class _$IoPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
-    canvas.drawCircle(
-      const Offset(50.0, 50.0),
-      50.0,
-      Paint()..color = const Color(0xFF000000),
-    );
+    {
+      final Paint paint = Paint();
+      paint.color = const Color(0xFF000000);
+      paint.style = PaintingStyle.fill;
+      canvas.drawCircle(const Offset(50.0, 50.0), 50.0, paint);
+    }
   }
 
   @override

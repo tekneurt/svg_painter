@@ -87,11 +87,51 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
 
     for (final PaintCommand command in commands) {
       if (command is DrawCircle) {
-        final String colorString =
-            '0x${command.colorHex.toRadixString(16).toUpperCase().padLeft(8, '0')}';
-        buffer.writeln(
-          '    canvas.drawCircle(const Offset(${command.cx}, ${command.cy}), ${command.radius}, Paint()..color = const Color($colorString));',
-        );
+        buffer.writeln('    {');
+        buffer.writeln('      final Paint paint = Paint();');
+        if (command.fillColorArgb != null && command.fillColorArgb != 0x00000000) {
+          final String colorString =
+              '0x${command.fillColorArgb!.toRadixString(16).toUpperCase().padLeft(8, '0')}';
+          buffer.writeln('      paint.color = const Color($colorString);');
+          buffer.writeln('      paint.style = PaintingStyle.fill;');
+          buffer.writeln(
+            '      canvas.drawCircle(const Offset(${command.cx}, ${command.cy}), ${command.radius}, paint);',
+          );
+        }
+        if (command.strokeColorArgb != null && command.strokeColorArgb != 0x00000000) {
+          final String colorString =
+              '0x${command.strokeColorArgb!.toRadixString(16).toUpperCase().padLeft(8, '0')}';
+          buffer.writeln('      paint.color = const Color($colorString);');
+          buffer.writeln('      paint.style = PaintingStyle.stroke;');
+          buffer.writeln('      paint.strokeWidth = ${command.strokeWidth};');
+          buffer.writeln(
+            '      canvas.drawCircle(const Offset(${command.cx}, ${command.cy}), ${command.radius}, paint);',
+          );
+        }
+        buffer.writeln('    }');
+      } else if (command is DrawOval) {
+        buffer.writeln('    {');
+        buffer.writeln('      final Paint paint = Paint();');
+        if (command.fillColorArgb != null && command.fillColorArgb != 0x00000000) {
+          final String colorString =
+              '0x${command.fillColorArgb!.toRadixString(16).toUpperCase().padLeft(8, '0')}';
+          buffer.writeln('      paint.color = const Color($colorString);');
+          buffer.writeln('      paint.style = PaintingStyle.fill;');
+          buffer.writeln(
+            '      canvas.drawOval(Rect.fromCenter(center: const Offset(${command.cx}, ${command.cy}), width: ${command.rx * 2}, height: ${command.ry * 2}), paint);',
+          );
+        }
+        if (command.strokeColorArgb != null && command.strokeColorArgb != 0x00000000) {
+          final String colorString =
+              '0x${command.strokeColorArgb!.toRadixString(16).toUpperCase().padLeft(8, '0')}';
+          buffer.writeln('      paint.color = const Color($colorString);');
+          buffer.writeln('      paint.style = PaintingStyle.stroke;');
+          buffer.writeln('      paint.strokeWidth = ${command.strokeWidth};');
+          buffer.writeln(
+            '      canvas.drawOval(Rect.fromCenter(center: const Offset(${command.cx}, ${command.cy}), width: ${command.rx * 2}, height: ${command.ry * 2}), paint);',
+          );
+        }
+        buffer.writeln('    }');
       }
     }
 

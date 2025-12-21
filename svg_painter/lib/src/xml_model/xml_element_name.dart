@@ -4,7 +4,13 @@ enum XmlElementName {
   svg('svg'),
 
   /// The <circle> element.
-  circle('circle');
+  circle('circle'),
+
+  /// The <ellipse> element.
+  ellipse('ellipse'),
+
+  /// The <rect> element.
+  rect('rect');
 
   const XmlElementName(this.tagName);
 

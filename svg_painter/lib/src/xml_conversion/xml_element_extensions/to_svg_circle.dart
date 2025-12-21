@@ -20,6 +20,22 @@ extension ElementToSvg on XmlElement {
     );
     final SvgLengthPercentage r = toSvgValue<SvgLengthPercentage>(elementName, XmlAttributeName.r);
 
-    return Success<SvgCircle>(SvgCircle(cx: cx, cy: cy, r: r));
+    final SvgColor? fill = toSvgValueOrNull<SvgColor>(elementName, XmlAttributeName.fill);
+    final SvgColor? stroke = toSvgValueOrNull<SvgColor>(elementName, XmlAttributeName.stroke);
+    final SvgLengthPercentage? strokeWidth = toSvgValueOrNull<SvgLengthPercentage>(
+      elementName,
+      XmlAttributeName.strokeWidth,
+    );
+
+    return Success<SvgCircle>(
+      SvgCircle(
+        cx: cx,
+        cy: cy,
+        r: r,
+        fill: fill,
+        stroke: stroke,
+        strokeWidth: strokeWidth,
+      ),
+    );
   }
 }

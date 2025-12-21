@@ -66,43 +66,47 @@ Refactor attribute handling to be context-aware and robust.
     - [x] Update `SvgLength` to use `SvgLengthUnit`.
     - [x] Update `StringToLength` extension to parse units.
     - [x] Update `SvgToPainting` extension to convert units to pixels.
-- [ ] **Percentages**: Implement resolution logic in `PaintingMapper` (requires context/viewBox).
+- [x] **Percentages**: Implement resolution logic in `PaintingMapper` (requires context/viewBox).
     - [x] Parse `viewBox` in `SvgRoot` model (width, height, viewBox properties).
-    - [ ] Pass Context (resolved `viewBox` dimensions) to `SvgToPainting.toPaintCommands()`.
-- [ ] **Colors**: Support standard CSS colors:
-    - [ ] Named colors (e.g., `red`, `blue`).
-    - [ ] Hex codes (3, 4, 6, 8 digits).
-    - [ ] Functional notation (`rgb()`, `rgba()`, `hsl()`, `hsla()`).
+    - [x] Pass Context (resolved `viewBox` dimensions) to `SvgToPainting.toPaintCommands()`.
+- [x] **Colors**: Support standard CSS colors:
+    - [x] Named colors (e.g., `red`, `blue`).
+    - [x] Hex codes (3, 6, 8 digits).
+    - [x] Functional notation (`rgb()`, `rgba()`, `hsl()`, `hsla()`).
 
 ### Phase 5: Milestone 2 - The Daphnia (Advanced Shapes)
 Implement support for additional SVG shapes using the new layered architecture.
 
 - [ ] **RadialGradient** (`<radialGradient>`)
-    - [x] Add `radialGradient` to `XmlElementName`.
-    - [x] Define `SvgRadialGradient` element with `cx`, `cy`, `r`.
-    - [x] Update `svg_element.dart` to part `svg_radial_gradient.dart`.
-    - [x] Update `ElementToSvg` to convert `radialGradient` element.
+    - [ ] Add `radialGradient` to `XmlElementName`.
+    - [ ] Define `SvgRadialGradient` element with `cx`, `cy`, `r`.
+    - [ ] Update `svg_element.dart` to part `svg_radial_gradient.dart`.
+    - [ ] Update `ElementToSvg` to convert `radialGradient` element.
     - [ ] Fully implement `SvgRadialGradient` with all its attributes.
-- [ ] **Ellipse** (`<ellipse>`)
-    - [ ] Add `SvgEllipse` to SVG Model.
-    - [ ] Add `toSvgEllipse` extension.
-    - [ ] Add `DrawOval` to Painting Model.
-    - [ ] Add `toDrawOval` extension.
-    - [ ] Update Code Generator.
-    - [ ] Add Fixtures and Tests.
+- [x] **Ellipse** (`<ellipse>`)
+    - [x] Add `SvgEllipse` to SVG Model.
+    - [x] Add `toSvgEllipse` extension.
+    - [x] Add `DrawOval` to Painting Model.
+    - [x] Add `toDrawOval` extension.
+    - [x] Update Code Generator.
+    - [x] Add Fixtures and Tests.
 - [ ] **Rect** (`<rect>`)
 - [ ] **Line** (`<line>`)
 - [ ] **Polyline** (`<polyline>`)
 - [ ] **Polygon** (`<polygon>`)
 - [ ] **Path** (`<path>`)
+- [ ] **TODO(Gemini)**: Add `pathLength` support to SVG models.
+- [ ] **TODO(Gemini)**: Implement runtime scaling in the widget tree (support relative width/height/viewBox).
 - [ ] **Attributes**
-    - [ ] Fill (color, none)
-    - [ ] Stroke (color, width, cap, join)
+    - [x] Fill (color, none)
+    - [x] Stroke (color, width)
+    - [ ] Stroke (cap, join)
     - [ ] Opacity
 - [ ] **Transforms** (translate, rotate, scale, skew)
 - [ ] **Test**: Verify against the Daphnia SVG.
 
 ### Phase 6: Polish & Release
+- [ ] **Refactor**: Convert existing code to use dot shorthand for enum values and static members (e.g. `.horizontal` instead of `SvgOrientation.horizontal`) per new contributing guidelines.
 - [ ] comprehensive documentation.
 - [ ] API polishing.
 - [ ] Publish to pub.dev (dry run).

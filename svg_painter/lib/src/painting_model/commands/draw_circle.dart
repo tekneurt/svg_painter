@@ -7,7 +7,9 @@ final class DrawCircle extends PaintCommand {
     required this.cx,
     required this.cy,
     required this.radius,
-    required this.colorHex,
+    this.fillColorArgb,
+    this.strokeColorArgb,
+    this.strokeWidth = 0.0,
   });
 
   /// The x-coordinate of the center.
@@ -19,23 +21,16 @@ final class DrawCircle extends PaintCommand {
   /// The radius of the circle.
   final double radius;
 
-  /// The fill color in hex format (e.g. 0xFF000000).
-  final int colorHex;
+  /// The fill color in ARGB format.
+  final int? fillColorArgb;
 
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      (other is DrawCircle &&
-          runtimeType == other.runtimeType &&
-          cx == other.cx &&
-          cy == other.cy &&
-          radius == other.radius &&
-          colorHex == other.colorHex);
+  /// The stroke color in ARGB format.
+  final int? strokeColorArgb;
 
-  @override
-  int get hashCode => Object.hash(cx, cy, radius, colorHex);
+  /// The width of the stroke.
+  final double strokeWidth;
 
   @override
   String toString() =>
-      'DrawCircle(cx: $cx, cy: $cy, radius: $radius, color: $colorHex)';
+      'DrawCircle(cx: $cx, cy: $cy, radius: $radius, fill: $fillColorArgb, stroke: $strokeColorArgb, strokeWidth: $strokeWidth)';
 }

@@ -19,6 +19,10 @@ extension XmlElementToSvgElement on XmlElement {
         return toSvgRoot();
       case XmlElementName.circle:
         return toSvgCircle();
+      case XmlElementName.ellipse:
+        return toSvgEllipse();
+      case XmlElementName.rect:
+        return toSvgRect();
     }
   }
 }

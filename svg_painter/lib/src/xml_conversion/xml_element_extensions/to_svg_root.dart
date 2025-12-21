@@ -2,11 +2,13 @@ import 'package:xml/xml.dart';
 
 import '../../base/_base.dart';
 import '../../svg_model/_svg_model.dart';
+import '../../xml_model/_xml_model.dart';
 import '../_xml_conversion.dart';
 
 extension ElementToSvgRoot on XmlElement {
   /// Converts this [XmlElement] to an [SvgRoot].
   Result<SvgRoot> toSvgRoot() {
+    const XmlElementName elementName = XmlElementName.svg;
     final List<SvgElement> childElements = <SvgElement>[];
 
     for (final XmlNode child in children) {
@@ -23,6 +25,33 @@ extension ElementToSvgRoot on XmlElement {
       }
     }
 
-    return Success<SvgRoot>(SvgRoot(children: childElements));
+    final SvgLengthPercentageAuto width = toSvgValue<SvgLengthPercentageAuto>(
+      elementName,
+      XmlAttributeName.width,
+    );
+    final SvgLengthPercentageAuto height = toSvgValue<SvgLengthPercentageAuto>(
+      elementName,
+      XmlAttributeName.height,
+    );
+    final SvgViewBox? viewBox = getXmlAttributeValue(XmlAttributeName.viewBox)?.toSvgViewBox();
+
+    final SvgColor? fill = toSvgValueOrNull<SvgColor>(elementName, XmlAttributeName.fill);
+    final SvgColor? stroke = toSvgValueOrNull<SvgColor>(elementName, XmlAttributeName.stroke);
+    final SvgLengthPercentage? strokeWidth = toSvgValueOrNull<SvgLengthPercentage>(
+      elementName,
+      XmlAttributeName.strokeWidth,
+    );
+
+    return Success<SvgRoot>(
+      SvgRoot(
+        children: childElements,
+        width: width,
+        height: height,
+        viewBox: viewBox,
+        fill: fill,
+        stroke: stroke,
+        strokeWidth: strokeWidth,
+      ),
+    );
   }
 }
