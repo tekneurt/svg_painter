@@ -3,9 +3,9 @@ import 'package:test/test.dart';
 
 void main() {
   group('MdnElementCircle', () {
-    test('basic fixture contains circle element', () {
-      expect(MdnElementCircle.basic, contains('<circle'));
-      expect(MdnElementCircle.basic, contains('cx="50"'));
+    test('example fixture contains circle element', () {
+      expect(MdnElementCircle.example, contains('<circle'));
+      expect(MdnElementCircle.example, contains('cx="50"'));
     });
   });
 

@@ -1,21 +1,16 @@
 import 'package:xml/xml.dart';
-import '../util/result.dart';
 
-/// A utility class for parsing XML strings into an [XmlDocument].
-///
-/// This class provides a safe parsing method that returns a [Result]
-/// encapsulating either a successful [XmlDocument] or a [Failure]
-/// with an error message.
-class XmlParser {
-  const XmlParser._();
+import '../base/result.dart';
 
-  /// Parses the given [xmlString] into an [XmlDocument].
+/// Extension on [String] to parse it into an [XmlDocument].
+extension StringToXml on String {
+  /// Parses this string into an [XmlDocument].
   ///
   /// Returns a [Success] containing the [XmlDocument] if parsing is successful.
   /// Returns a [Failure] containing an error message if parsing fails (e.g., due to malformed XML).
-  static Result<XmlDocument> parse(String xmlString) {
+  Result<XmlDocument> toXmlDocument() {
     try {
-      final XmlDocument document = XmlDocument.parse(xmlString);
+      final XmlDocument document = XmlDocument.parse(this);
       return Success<XmlDocument>(document);
     } on XmlException catch (e) {
       return Failure<XmlDocument>('XML parsing failed: ${e.message}');

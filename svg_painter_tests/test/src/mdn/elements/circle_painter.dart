@@ -4,5 +4,5 @@ import 'package:svg_painter_fixtures/svg_painter_fixtures.dart';
 
 part 'circle_painter.g.dart';
 
-@SvgPainter.code(MdnElementCircle.basic)
+@SvgPainter.code(MdnElementCircle.example)
 class CirclePainter extends _$CirclePainter {}

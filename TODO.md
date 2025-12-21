@@ -38,6 +38,7 @@ Establish a robust, layered architecture to decouple parsing, semantic understan
     - [x] Consolidate `SvgRoot` into `svg_svg.dart` and refine hierarchy.
     - [x] Implement `SvgLengthPercentage` value types (Split into `SvgLength` and `SvgPercentage`).
     - [x] Remove XML parsing details (enums) from `svg_model`.
+    - [x] Consolidate `SvgValue` and `SvgLengthUnit` into `lib/src/svg_model/` and update imports.
 
 *   **Layer 2: Painting Model (`painting_model`)**
     - [x] Define domain objects for painting commands (`PaintCommand`, `DrawCircle`).
@@ -47,15 +48,27 @@ Establish a robust, layered architecture to decouple parsing, semantic understan
     - [x] Verify existing `<circle>` tests pass with the new pipeline.
 
 *   **Refactoring & Cleanup**
-    - [x] Refactor `XmlParser` wrapper usage.
+    - [x] Refactor `XmlParser` wrapper usage to `String.toXmlDocument()` extension.
     - [x] Replace `SvgMapper` and `PaintingMapper` classes with extension methods for cleaner syntax and better testability (`ElementToSvg`, `SvgToPainting`).
     - [x] Optimize imports and remove redundant comments.
 
 ### Phase 4: Advanced Values & Attributes
-Before adding new shapes, we must solidify support for advanced SVG values and attributes.
+Refactor attribute handling to be context-aware and robust.
 
-- [ ] **Absolute Lengths**: Support CSS units (`px`, `cm`, `mm`, `in`, `pt`, `pc`, `em`, `ex`).
+- [x] **Attribute Modeling**:
+    - [x] Create `SvgAttribute` sealed class hierarchy (`Cx`, `Cy`, `R`, etc.) in `svg_model`.
+    - [x] Implement default value logic per element (e.g. `cx` defaults to 0 for circle, 50% for radialGradient).
+    - [x] Map XML attributes to these `SvgAttribute` models before setting fields on `SvgElement`.
+    - [x] Ensure `SvgAttribute` is XML-agnostic and its `defaultValue` handles supported elements correctly (throws for unsupported, explicit fallback for supported).
+    - [x] Refactor `SvgAttribute` into a robust barrel structure with `base_svg_attribute.dart` and concrete implementations as separate libraries.
+- [x] **Absolute Lengths**: Support CSS units (`px`, `cm`, `mm`, `in`, `pt`, `pc`, `em`, `ex`).
+    - [x] Implement `SvgLengthUnit` enum.
+    - [x] Update `SvgLength` to use `SvgLengthUnit`.
+    - [x] Update `StringToLength` extension to parse units.
+    - [x] Update `SvgToPainting` extension to convert units to pixels.
 - [ ] **Percentages**: Implement resolution logic in `PaintingMapper` (requires context/viewBox).
+    - [x] Parse `viewBox` in `SvgRoot` model (width, height, viewBox properties).
+    - [ ] Pass Context (resolved `viewBox` dimensions) to `SvgToPainting.toPaintCommands()`.
 - [ ] **Colors**: Support standard CSS colors:
     - [ ] Named colors (e.g., `red`, `blue`).
     - [ ] Hex codes (3, 4, 6, 8 digits).
@@ -64,6 +77,12 @@ Before adding new shapes, we must solidify support for advanced SVG values and a
 ### Phase 5: Milestone 2 - The Daphnia (Advanced Shapes)
 Implement support for additional SVG shapes using the new layered architecture.
 
+- [ ] **RadialGradient** (`<radialGradient>`)
+    - [x] Add `radialGradient` to `XmlElementName`.
+    - [x] Define `SvgRadialGradient` element with `cx`, `cy`, `r`.
+    - [x] Update `svg_element.dart` to part `svg_radial_gradient.dart`.
+    - [x] Update `ElementToSvg` to convert `radialGradient` element.
+    - [ ] Fully implement `SvgRadialGradient` with all its attributes.
 - [ ] **Ellipse** (`<ellipse>`)
     - [ ] Add `SvgEllipse` to SVG Model.
     - [ ] Add `toSvgEllipse` extension.

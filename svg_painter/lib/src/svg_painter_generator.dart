@@ -4,15 +4,14 @@ import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
 import 'package:source_gen/source_gen.dart';
 import 'package:svg_painter_annotation/svg_painter_annotation.dart';
-import 'package:xml/xml.dart'; // Keep for XmlDocument type
+import 'package:xml/xml.dart';
 
-import 'painting_from_svg/converters/svg_to_painting.dart'; // Import Painting Converter Extension
-import 'painting_model/paint_command.dart'; // Import Painting Model
-import 'svg_from_xml/converters/element_to_svg.dart'; // Import SVG Converter Extension
-import 'svg_model/svg_element.dart'; // Import SVG Model
-import 'util/result.dart'; // Import Result type
-import 'xml_layer/xml_element_name.dart'; // Import XML Element Name Enum
-import 'xml_layer/xml_parser.dart'; // Import XML Parser
+import 'base/_base.dart';
+import 'painting_model/_painting_model.dart';
+import 'svg_conversion/_svg_conversion.dart';
+import 'svg_model/_svg_model.dart';
+import 'xml_conversion/_xml_conversion.dart';
+import 'xml_model/_xml_model.dart';
 
 /// Generator that produces CustomPainter code from SVG files.
 class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
@@ -29,10 +28,7 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
     ConstantReader annotation,
     BuildStep buildStep,
   ) async {
-    final Result<String> contentResult = await _loadSvgContent(
-      annotation,
-      buildStep,
-    );
+    final Result<String> contentResult = await _loadSvgContent(annotation, buildStep);
 
     final String svgContent = contentResult.fold(
       (Failure<String> failure) => throw InvalidGenerationSourceError(
@@ -42,8 +38,7 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
       (String content) => content,
     );
 
-    // Use our XmlParser to parse, returning a Result
-    final Result<XmlDocument> parseResult = XmlParser.parse(svgContent);
+    final Result<XmlDocument> parseResult = svgContent.toXmlDocument();
 
     final XmlDocument document = parseResult.fold(
       (Failure<XmlDocument> failure) => throw InvalidGenerationSourceError(
@@ -53,10 +48,8 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
       (XmlDocument doc) => doc,
     );
 
-    final XmlElement svgXmlElement =
-        document.findAllElements(XmlElementName.svg.tagName).first;
+    final XmlElement svgXmlElement = document.findAllElements(XmlElementName.svg.tagName).first;
 
-    // Use ElementToSvg extension to convert XML to SVG Model
     final Result<SvgElement> mapResult = svgXmlElement.toSvgElement();
 
     final SvgElement svgRoot = mapResult.fold(
@@ -74,7 +67,6 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
       );
     }
 
-    // Use SvgToPainting extension to convert SVG Model to Painting Model
     final Result<List<PaintCommand>> paintingResult = svgRoot.toPaintCommands();
     final List<PaintCommand> commands = paintingResult.fold(
       (Failure<List<PaintCommand>> failure) => throw InvalidGenerationSourceError(
@@ -85,11 +77,9 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
     );
 
     final StringBuffer buffer = StringBuffer();
-    // Default class name generation
-    final String className =
-        annotation.read('painterClassName').isNull
-            ? '_\$${element.name}'
-            : annotation.read('painterClassName').stringValue;
+    final String className = annotation.read('painterClassName').isNull
+        ? '_\$${element.name}'
+        : annotation.read('painterClassName').stringValue;
 
     buffer.writeln('class $className extends CustomPainter {');
     buffer.writeln('  @override');
@@ -97,29 +87,23 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
 
     for (final PaintCommand command in commands) {
       if (command is DrawCircle) {
-        // Hex color to 0xAARRGGBB format string
         final String colorString =
             '0x${command.colorHex.toRadixString(16).toUpperCase().padLeft(8, '0')}';
         buffer.writeln(
-          '    canvas.drawCircle(Offset(${command.cx}, ${command.cy}), ${command.radius}, Paint()..color = const Color($colorString));',
+          '    canvas.drawCircle(const Offset(${command.cx}, ${command.cy}), ${command.radius}, Paint()..color = const Color($colorString));',
         );
       }
     }
 
     buffer.writeln('  }');
     buffer.writeln('  @override');
-    buffer.writeln(
-      '  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;',
-    );
+    buffer.writeln('  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;');
     buffer.writeln('}');
 
     return buffer.toString();
   }
 
-  Future<Result<String>> _loadSvgContent(
-    ConstantReader annotation,
-    BuildStep buildStep,
-  ) async {
+  Future<Result<String>> _loadSvgContent(ConstantReader annotation, BuildStep buildStep) async {
     if (_fileChecker.isExactlyType(annotation.objectValue.type!)) {
       return _loadFromFile(annotation, buildStep);
     } else if (_codeChecker.isExactlyType(annotation.objectValue.type!)) {
@@ -130,15 +114,10 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
     );
   }
 
-  Future<Result<String>> _loadFromFile(
-    ConstantReader annotation,
-    BuildStep buildStep,
-  ) async {
+  Future<Result<String>> _loadFromFile(ConstantReader annotation, BuildStep buildStep) async {
     final String path = annotation.read('path').stringValue;
     if (!path.startsWith('package:')) {
-      return const Failure<String>(
-        'Only package: URIs are supported for file assets.',
-      );
+      return const Failure<String>('Only package: URIs are supported for file assets.');
     }
 
     final Uri uri = Uri.parse(path);
