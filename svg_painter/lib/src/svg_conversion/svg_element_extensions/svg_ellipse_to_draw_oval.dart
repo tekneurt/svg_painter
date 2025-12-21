@@ -31,16 +31,36 @@ extension SvgEllipseToPainting on SvgEllipse {
       finalRy = resolvedRy;
     }
 
+    int? fillColorArgb;
+    String? fillShaderId;
+    int? strokeColorArgb;
+    String? strokeShaderId;
+
+    final SvgColor? fillPaint = fill;
+    if (fillPaint is SvgPaintReference) {
+      fillShaderId = fillPaint.id;
+    } else {
+      fillColorArgb = fillPaint.toFillArgb();
+    }
+
+    final SvgColor? strokePaint = stroke;
+    if (strokePaint is SvgPaintReference) {
+      strokeShaderId = strokePaint.id;
+    } else {
+      strokeColorArgb = strokePaint.toStrokeArgb();
+    }
+
     return Success<DrawOval>(
       DrawOval(
         cx: cx.toDouble(context, SvgOrientation.horizontal),
         cy: cy.toDouble(context, SvgOrientation.vertical),
         rx: finalRx,
         ry: finalRy,
-        fillColorArgb: fill.toFillArgb(),
-        strokeColorArgb: stroke.toStrokeArgb(),
-        strokeWidth:
-            strokeWidth?.toDouble(context, SvgOrientation.normalized) ?? 1.0,
+        fillColorArgb: fillColorArgb,
+        strokeColorArgb: strokeColorArgb,
+        strokeWidth: strokeWidth?.toDouble(context, SvgOrientation.normalized) ?? 1.0,
+        fillShaderId: fillShaderId,
+        strokeShaderId: strokeShaderId,
       ),
     );
   }

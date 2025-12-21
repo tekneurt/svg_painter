@@ -1,41 +1,50 @@
 import '../../svg_model/_svg_model.dart';
+import 'to_svg_url.dart';
 
 /// Extension on [String] to convert it to [SvgColor].
 extension StringToColor on String {
   /// Parses the string as an [SvgColor].
   SvgColor? toSvgColor() {
-    final String trimmed = trim().toLowerCase();
+    final String trimmed = trim();
     if (trimmed.isEmpty) {
       return null;
     }
 
-    // Hex codes
-    if (trimmed.startsWith('#')) {
-      return _parseHex(trimmed.substring(1));
+    // url(#id) - Case sensitive ID
+    final String? urlId = trimmed.extractUrlId();
+    if (urlId != null) {
+      return SvgPaintReference(urlId);
     }
 
+    final String normalized = trimmed.toLowerCase();
+
     // Special keywords
-    if (trimmed == 'none') {
+    if (normalized == 'none') {
       return const SvgNoneColor();
     }
-    if (trimmed == 'currentcolor') {
+    if (normalized == 'currentcolor') {
       return const SvgCurrentColor();
     }
 
     // Named colors
-    final SvgColorName? name = SvgColorName.fromName(trimmed);
+    final SvgColorName? name = SvgColorName.fromName(normalized);
     if (name != null) {
       return SvgNamedColor(name);
     }
 
     // rgb(r, g, b) or rgba(r, g, b, a)
-    if (trimmed.startsWith('rgb')) {
-      return _parseRgb(trimmed);
+    if (normalized.startsWith('rgb')) {
+      return _parseRgb(normalized);
     }
 
     // hsl(h, s, l) or hsla(h, s, l, a)
-    if (trimmed.startsWith('hsl')) {
-      return _parseHsl(trimmed);
+    if (normalized.startsWith('hsl')) {
+      return _parseHsl(normalized);
+    }
+
+    // Hex codes
+    if (normalized.startsWith('#')) {
+      return _parseHex(normalized.substring(1));
     }
 
     return null;

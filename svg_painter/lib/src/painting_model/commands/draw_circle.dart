@@ -10,6 +10,8 @@ final class DrawCircle extends PaintCommand {
     this.fillColorArgb,
     this.strokeColorArgb,
     this.strokeWidth = 0.0,
+    this.fillShaderId,
+    this.strokeShaderId,
   });
 
   /// The x-coordinate of the center.
@@ -30,7 +32,13 @@ final class DrawCircle extends PaintCommand {
   /// The width of the stroke.
   final double strokeWidth;
 
+  /// The ID of the fill shader (e.g. gradient).
+  final String? fillShaderId;
+
+  /// The ID of the stroke shader.
+  final String? strokeShaderId;
+
   @override
   String toString() =>
-      'DrawCircle(cx: $cx, cy: $cy, radius: $radius, fill: $fillColorArgb, stroke: $strokeColorArgb, strokeWidth: $strokeWidth)';
+      'DrawCircle(cx: $cx, cy: $cy, radius: $radius, fill: $fillColorArgb, stroke: $strokeColorArgb, width: $strokeWidth, fillShader: $fillShaderId, strokeShader: $strokeShaderId)';
 }

@@ -10,7 +10,19 @@ enum XmlElementName {
   ellipse('ellipse'),
 
   /// The <rect> element.
-  rect('rect');
+  rect('rect'),
+
+  /// The <defs> element.
+  defs('defs'),
+
+  /// The <radialGradient> element.
+  radialGradient('radialGradient'),
+
+  /// The <linearGradient> element.
+  linearGradient('linearGradient'),
+
+  /// The <stop> element.
+  stop('stop');
 
   const XmlElementName(this.tagName);
 

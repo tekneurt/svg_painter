@@ -10,6 +10,7 @@ part 'values/colors/svg_rgb_color.dart';
 part 'values/colors/svg_hsl_color.dart';
 part 'values/colors/svg_none_color.dart';
 part 'values/colors/svg_current_color.dart';
+part 'values/colors/svg_paint_reference.dart';
 part 'values/colors/svg_color_name.dart';
 
 /// Base class for all SVG attribute values.

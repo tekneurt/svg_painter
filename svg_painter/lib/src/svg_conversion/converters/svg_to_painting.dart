@@ -4,7 +4,10 @@ import '../../painting_model/paint_command.dart';
 import '../../svg_model/_svg_model.dart';
 import '../svg_element_extensions/svg_circle_to_draw_circle.dart';
 import '../svg_element_extensions/svg_ellipse_to_draw_oval.dart';
+import '../svg_element_extensions/svg_gradient_to_painting.dart';
+import '../svg_element_extensions/svg_rect_to_draw_rect.dart';
 import '../svg_value_extensions/svg_length_to_double.dart';
+import 'svg_definition_collector.dart';
 import 'svg_painting_context.dart';
 
 /// Extension to convert [SvgElement] to [PaintCommand]s.
@@ -27,9 +30,13 @@ extension SvgToPainting on SvgElement {
             _ => 100.0,
           });
 
+      final Map<String, SvgElement> definitions = <String, SvgElement>{};
+      self.collectDefinitions(definitions);
+
       final SvgPaintingContext rootContext = SvgPaintingContext(
         viewBoxWidth: width,
         viewBoxHeight: height,
+        definitions: definitions,
       );
       return self._toPaintCommands(rootContext);
     }
@@ -47,8 +54,40 @@ extension SvgToPainting on SvgElement {
       final SvgEllipse ellipse => ellipse
           .toDrawOval(context)
           .map((DrawOval cmd) => <PaintCommand>[cmd]),
+      final SvgRect rect => rect
+          .toDrawRect(context)
+          .map((DrawRect cmd) => <PaintCommand>[cmd]),
+      final SvgDefs defs => defs._toPaintCommands(context),
+      final SvgRadialGradient radialGradient => radialGradient
+          .toPaintCommand(context)
+          .map((DefineRadialGradient cmd) => <PaintCommand>[cmd]),
+      final SvgLinearGradient linearGradient => linearGradient
+          .toPaintCommand(context)
+          .map((DefineLinearGradient cmd) => <PaintCommand>[cmd]),
       (_) => Success<List<PaintCommand>>(<PaintCommand>[]),
     };
+  }
+}
+
+extension _SvgDefsToPainting on SvgDefs {
+  Result<List<PaintCommand>> _toPaintCommands(SvgPaintingContext context) {
+    final List<PaintCommand> commands = <PaintCommand>[];
+
+    for (final SvgElement child in children) {
+      final Result<List<PaintCommand>> result = child.toPaintCommands(context);
+
+      result.fold(
+        (Failure<List<PaintCommand>> failure) {
+          // TODO(Gemini): Handle failure.
+          return <PaintCommand>[];
+        },
+        (List<PaintCommand> value) {
+          commands.addAll(value);
+        },
+      );
+    }
+
+    return Success<List<PaintCommand>>(commands);
   }
 }
 

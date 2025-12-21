@@ -36,9 +36,17 @@ extension XmlElementToSvgValue on XmlElement {
     final SvgBaseValue? parsedValue = switch (attributeName) {
       XmlAttributeName.x ||
       XmlAttributeName.y ||
+      XmlAttributeName.x1 ||
+      XmlAttributeName.y1 ||
+      XmlAttributeName.x2 ||
+      XmlAttributeName.y2 ||
       XmlAttributeName.cx ||
       XmlAttributeName.cy ||
       XmlAttributeName.r ||
+      XmlAttributeName.fx ||
+      XmlAttributeName.fy ||
+      XmlAttributeName.offset ||
+      XmlAttributeName.stopOpacity ||
       XmlAttributeName.strokeWidth =>
         attributeValue.toSvgLengthPercentage(),
       XmlAttributeName.rx ||
@@ -46,7 +54,10 @@ extension XmlElementToSvgValue on XmlElement {
       XmlAttributeName.width ||
       XmlAttributeName.height =>
         attributeValue.toSvgLengthPercentageAuto(),
-      XmlAttributeName.fill || XmlAttributeName.stroke => attributeValue.toSvgColor(),
+      XmlAttributeName.fill ||
+      XmlAttributeName.stroke ||
+      XmlAttributeName.stopColor =>
+        attributeValue.toSvgColor(),
       _ => null,
     };
 

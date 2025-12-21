@@ -9,6 +9,7 @@ final class SvgCircle extends SvgGraphicsElement {
     required this.cx,
     required this.cy,
     required this.r,
+    super.id,
     super.fill,
     super.stroke,
     super.strokeWidth,

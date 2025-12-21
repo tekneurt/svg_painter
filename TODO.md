@@ -77,12 +77,17 @@ Refactor attribute handling to be context-aware and robust.
 ### Phase 5: Milestone 2 - The Daphnia (Advanced Shapes)
 Implement support for additional SVG shapes using the new layered architecture.
 
-- [ ] **RadialGradient** (`<radialGradient>`)
-    - [ ] Add `radialGradient` to `XmlElementName`.
-    - [ ] Define `SvgRadialGradient` element with `cx`, `cy`, `r`.
-    - [ ] Update `svg_element.dart` to part `svg_radial_gradient.dart`.
-    - [ ] Update `ElementToSvg` to convert `radialGradient` element.
-    - [ ] Fully implement `SvgRadialGradient` with all its attributes.
+- [x] **RadialGradient** (`<radialGradient>`)
+    - [x] Add `radialGradient` to `XmlElementName`.
+    - [x] Define `SvgRadialGradient` element with `cx`, `cy`, `r`.
+    - [x] Update `svg_element.dart` to part `svg_radial_gradient.dart`.
+    - [x] Update `ElementToSvg` to convert `radialGradient` element.
+    - [x] Fully implement `SvgRadialGradient` with all its attributes.
+- [x] **LinearGradient** (`<linearGradient>`)
+    - [x] Add `linearGradient` to `XmlElementName`.
+    - [x] Define `SvgLinearGradient` element with `x1`, `y1`, `x2`, `y2`.
+    - [x] Update `svg_element.dart` to part `svg_linear_gradient.dart`.
+    - [x] Update `ElementToSvg` to convert `linearGradient` element.
 - [x] **Ellipse** (`<ellipse>`)
     - [x] Add `SvgEllipse` to SVG Model.
     - [x] Add `toSvgEllipse` extension.
@@ -91,12 +96,24 @@ Implement support for additional SVG shapes using the new layered architecture.
     - [x] Update Code Generator.
     - [x] Add Fixtures and Tests.
 - [ ] **Rect** (`<rect>`)
+    - [x] Add `SvgRect` to SVG Model.
+    - [x] Add `toSvgRect` extension.
+    - [x] Add `DrawRect` to Painting Model.
+    - [x] Add `toDrawRect` extension.
+    - [x] Update Code Generator.
+    - [x] Add Fixtures and Tests.
 - [ ] **Line** (`<line>`)
 - [ ] **Polyline** (`<polyline>`)
 - [ ] **Polygon** (`<polygon>`)
 - [ ] **Path** (`<path>`)
+- [x] **TODO(Gemini)**: Implement zero-radius handling (0-radius elements are not rendered).
 - [ ] **TODO(Gemini)**: Add `pathLength` support to SVG models.
 - [ ] **TODO(Gemini)**: Implement runtime scaling in the widget tree (support relative width/height/viewBox).
+- [ ] **TODO(Gemini)**: Improve coordinate mapping for gradients (currently uses rough alignment approximation).
+- [ ] **TODO(Gemini)**: Support `currentColor` context in color resolution.
+- [ ] **TODO(Gemini)**: Implement full `gradientTransform` support (currently only `rotate(90)`).
+- [ ] **TODO(Gemini)**: Determine default behavior for unknown named colors (render vs throw).
+- [ ] **TODO(Gemini)**: Handle failure cases in `SvgToPainting` converter.
 - [ ] **Attributes**
     - [x] Fill (color, none)
     - [x] Stroke (color, width)
@@ -106,6 +123,7 @@ Implement support for additional SVG shapes using the new layered architecture.
 - [ ] **Test**: Verify against the Daphnia SVG.
 
 ### Phase 6: Polish & Release
+- [ ] **Refactor**: `SvgPainterGenerator` — remove large `else if` blocks and modularize code generation logic.
 - [ ] **Refactor**: Convert existing code to use dot shorthand for enum values and static members (e.g. `.horizontal` instead of `SvgOrientation.horizontal`) per new contributing guidelines.
 - [ ] comprehensive documentation.
 - [ ] API polishing.

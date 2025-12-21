@@ -10,6 +10,22 @@ enum XmlAttributeName {
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/y
   y('y'),
 
+  /// The x-axis start coordinate for linear gradients.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/x1
+  x1('x1'),
+
+  /// The y-axis start coordinate for linear gradients.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/y1
+  y1('y1'),
+
+  /// The x-axis end coordinate for linear gradients.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/x2
+  x2('x2'),
+
+  /// The y-axis end coordinate for linear gradients.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/y2
+  y2('y2'),
+
   /// The x-axis coordinate of the center of the element.
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/cx
   cx('cx'),
@@ -52,7 +68,35 @@ enum XmlAttributeName {
 
   /// The width of the stroke.
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-width
-  strokeWidth('stroke-width');
+  strokeWidth('stroke-width'),
+
+  /// The unique identifier of the element.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/id
+  id('id'),
+
+  /// The x-axis coordinate of the focal point for radial gradients.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/fx
+  fx('fx'),
+
+  /// The y-axis coordinate of the focal point for radial gradients.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/fy
+  fy('fy'),
+
+  /// The offset of a gradient stop.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/offset
+  offset('offset'),
+
+  /// The color of a gradient stop.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stop-color
+  stopColor('stop-color'),
+
+  /// The opacity of a gradient stop.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stop-opacity
+  stopOpacity('stop-opacity'),
+
+  /// The transform applied to a gradient.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/gradientTransform
+  gradientTransform('gradientTransform');
 
   const XmlAttributeName(this.name);
 

@@ -85,11 +85,43 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
     buffer.writeln('  @override');
     buffer.writeln('  void paint(Canvas canvas, Size size) {');
 
+    // Gradient definitions (as variables)
+    for (final PaintCommand command in commands) {
+      if (command is DefineRadialGradient) {
+        final String colors =
+            '[' + command.stops.map((s) => 'Color(0x${s.colorArgb.toRadixString(16).toUpperCase()})').join(', ') + ']';
+        final String stops = '[' + command.stops.map((s) => s.offset.toString()).join(', ') + ']';
+        final String transform = command.transform == 'rotate(90)' ? 'transform: GradientRotation(3.141592653589793 / 2),' : '';
+        buffer.writeln(
+          '    final Gradient _grad_${command.id} = RadialGradient(center: Alignment(${command.cx * 2 - 1}, ${command.cy * 2 - 1}), radius: ${command.radius}, colors: $colors, stops: $stops, $transform);',
+        );
+      } else if (command is DefineLinearGradient) {
+        final String colors =
+            '[' + command.stops.map((s) => 'Color(0x${s.colorArgb.toRadixString(16).toUpperCase()})').join(', ') + ']';
+        final String stops = '[' + command.stops.map((s) => s.offset.toString()).join(', ') + ']';
+        final String transform = command.transform == 'rotate(90)' ? 'transform: GradientRotation(3.141592653589793 / 2),' : '';
+        buffer.writeln(
+          '    final Gradient _grad_${command.id} = LinearGradient(begin: Alignment(${command.x1 * 2 - 1}, ${command.y1 * 2 - 1}), end: Alignment(${command.x2 * 2 - 1}, ${command.y2 * 2 - 1}), colors: $colors, stops: $stops, $transform);',
+        );
+      }
+    }
+
     for (final PaintCommand command in commands) {
       if (command is DrawCircle) {
+        if (command.radius <= 0) {
+          continue;
+        }
         buffer.writeln('    {');
         buffer.writeln('      final Paint paint = Paint();');
-        if (command.fillColorArgb != null && command.fillColorArgb != 0x00000000) {
+        if (command.fillShaderId != null) {
+          buffer.writeln(
+            '      paint.shader = _grad_${command.fillShaderId}.createShader(Rect.fromCircle(center: const Offset(${command.cx}, ${command.cy}), radius: ${command.radius}));',
+          );
+          buffer.writeln('      paint.style = PaintingStyle.fill;');
+          buffer.writeln(
+            '      canvas.drawCircle(const Offset(${command.cx}, ${command.cy}), ${command.radius}, paint);',
+          );
+        } else if (command.fillColorArgb != null && command.fillColorArgb != 0x00000000) {
           final String colorString =
               '0x${command.fillColorArgb!.toRadixString(16).toUpperCase().padLeft(8, '0')}';
           buffer.writeln('      paint.color = const Color($colorString);');
@@ -98,7 +130,16 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
             '      canvas.drawCircle(const Offset(${command.cx}, ${command.cy}), ${command.radius}, paint);',
           );
         }
-        if (command.strokeColorArgb != null && command.strokeColorArgb != 0x00000000) {
+        if (command.strokeShaderId != null) {
+          buffer.writeln(
+            '      paint.shader = _grad_${command.strokeShaderId}.createShader(Rect.fromCircle(center: const Offset(${command.cx}, ${command.cy}), radius: ${command.radius}));',
+          );
+          buffer.writeln('      paint.style = PaintingStyle.stroke;');
+          buffer.writeln('      paint.strokeWidth = ${command.strokeWidth};');
+          buffer.writeln(
+            '      canvas.drawCircle(const Offset(${command.cx}, ${command.cy}), ${command.radius}, paint);',
+          );
+        } else if (command.strokeColorArgb != null && command.strokeColorArgb != 0x00000000) {
           final String colorString =
               '0x${command.strokeColorArgb!.toRadixString(16).toUpperCase().padLeft(8, '0')}';
           buffer.writeln('      paint.color = const Color($colorString);');
@@ -110,9 +151,20 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
         }
         buffer.writeln('    }');
       } else if (command is DrawOval) {
+        if (command.rx <= 0 || command.ry <= 0) {
+          continue;
+        }
         buffer.writeln('    {');
         buffer.writeln('      final Paint paint = Paint();');
-        if (command.fillColorArgb != null && command.fillColorArgb != 0x00000000) {
+        if (command.fillShaderId != null) {
+          buffer.writeln(
+            '      paint.shader = _grad_${command.fillShaderId}.createShader(Rect.fromCenter(center: const Offset(${command.cx}, ${command.cy}), width: ${command.rx * 2}, height: ${command.ry * 2}));',
+          );
+          buffer.writeln('      paint.style = PaintingStyle.fill;');
+          buffer.writeln(
+            '      canvas.drawOval(Rect.fromCenter(center: const Offset(${command.cx}, ${command.cy}), width: ${command.rx * 2}, height: ${command.ry * 2}), paint);',
+          );
+        } else if (command.fillColorArgb != null && command.fillColorArgb != 0x00000000) {
           final String colorString =
               '0x${command.fillColorArgb!.toRadixString(16).toUpperCase().padLeft(8, '0')}';
           buffer.writeln('      paint.color = const Color($colorString);');
@@ -121,7 +173,16 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
             '      canvas.drawOval(Rect.fromCenter(center: const Offset(${command.cx}, ${command.cy}), width: ${command.rx * 2}, height: ${command.ry * 2}), paint);',
           );
         }
-        if (command.strokeColorArgb != null && command.strokeColorArgb != 0x00000000) {
+        if (command.strokeShaderId != null) {
+          buffer.writeln(
+            '      paint.shader = _grad_${command.strokeShaderId}.createShader(Rect.fromCenter(center: const Offset(${command.cx}, ${command.cy}), width: ${command.rx * 2}, height: ${command.ry * 2}));',
+          );
+          buffer.writeln('      paint.style = PaintingStyle.stroke;');
+          buffer.writeln('      paint.strokeWidth = ${command.strokeWidth};');
+          buffer.writeln(
+            '      canvas.drawOval(Rect.fromCenter(center: const Offset(${command.cx}, ${command.cy}), width: ${command.rx * 2}, height: ${command.ry * 2}), paint);',
+          );
+        } else if (command.strokeColorArgb != null && command.strokeColorArgb != 0x00000000) {
           final String colorString =
               '0x${command.strokeColorArgb!.toRadixString(16).toUpperCase().padLeft(8, '0')}';
           buffer.writeln('      paint.color = const Color($colorString);');
@@ -130,6 +191,43 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
           buffer.writeln(
             '      canvas.drawOval(Rect.fromCenter(center: const Offset(${command.cx}, ${command.cy}), width: ${command.rx * 2}, height: ${command.ry * 2}), paint);',
           );
+        }
+        buffer.writeln('    }');
+      } else if (command is DrawRect) {
+        buffer.writeln('    {');
+        buffer.writeln('      final Paint paint = Paint();');
+        final String rectCode = command.rx > 0 || command.ry > 0
+            ? 'RRect.fromRectAndRadius(Rect.fromLTWH(${command.x}, ${command.y}, ${command.width}, ${command.height}), Radius.elliptical(${command.rx}, ${command.ry}))'
+            : 'Rect.fromLTWH(${command.x}, ${command.y}, ${command.width}, ${command.height})';
+        final String drawMethod = command.rx > 0 || command.ry > 0 ? 'drawRRect' : 'drawRect';
+
+        if (command.fillShaderId != null) {
+          buffer.writeln(
+            '      paint.shader = _grad_${command.fillShaderId}.createShader(Rect.fromLTWH(${command.x}, ${command.y}, ${command.width}, ${command.height}));',
+          );
+          buffer.writeln('      paint.style = PaintingStyle.fill;');
+          buffer.writeln('      canvas.$drawMethod($rectCode, paint);');
+        } else if (command.fillColorArgb != null && command.fillColorArgb != 0x00000000) {
+          final String colorString =
+              '0x${command.fillColorArgb!.toRadixString(16).toUpperCase().padLeft(8, '0')}';
+          buffer.writeln('      paint.color = const Color($colorString);');
+          buffer.writeln('      paint.style = PaintingStyle.fill;');
+          buffer.writeln('      canvas.$drawMethod($rectCode, paint);');
+        }
+        if (command.strokeShaderId != null) {
+          buffer.writeln(
+            '      paint.shader = _grad_${command.strokeShaderId}.createShader(Rect.fromLTWH(${command.x}, ${command.y}, ${command.width}, ${command.height}));',
+          );
+          buffer.writeln('      paint.style = PaintingStyle.stroke;');
+          buffer.writeln('      paint.strokeWidth = ${command.strokeWidth};');
+          buffer.writeln('      canvas.$drawMethod($rectCode, paint);');
+        } else if (command.strokeColorArgb != null && command.strokeColorArgb != 0x00000000) {
+          final String colorString =
+              '0x${command.strokeColorArgb!.toRadixString(16).toUpperCase().padLeft(8, '0')}';
+          buffer.writeln('      paint.color = const Color($colorString);');
+          buffer.writeln('      paint.style = PaintingStyle.stroke;');
+          buffer.writeln('      paint.strokeWidth = ${command.strokeWidth};');
+          buffer.writeln('      canvas.$drawMethod($rectCode, paint);');
         }
         buffer.writeln('    }');
       }

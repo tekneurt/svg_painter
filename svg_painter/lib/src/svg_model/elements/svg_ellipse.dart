@@ -10,6 +10,7 @@ final class SvgEllipse extends SvgGraphicsElement {
     required this.cy,
     required this.rx,
     required this.ry,
+    super.id,
     super.fill,
     super.stroke,
     super.strokeWidth,

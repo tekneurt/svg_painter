@@ -23,6 +23,14 @@ extension XmlElementToSvgElement on XmlElement {
         return toSvgEllipse();
       case XmlElementName.rect:
         return toSvgRect();
+      case XmlElementName.defs:
+        return toSvgDefs();
+      case XmlElementName.radialGradient:
+        return toSvgRadialGradient();
+      case XmlElementName.linearGradient:
+        return toSvgLinearGradient();
+      case XmlElementName.stop:
+        return toSvgStop();
     }
   }
 }

@@ -12,6 +12,7 @@ final class SvgRect extends SvgGraphicsElement {
     required this.height,
     required this.rx,
     required this.ry,
+    super.id,
     super.fill,
     super.stroke,
     super.strokeWidth,

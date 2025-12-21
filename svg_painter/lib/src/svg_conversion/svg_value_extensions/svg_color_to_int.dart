@@ -23,6 +23,7 @@ extension SvgColorToInt on SvgColor? {
       final SvgHslColor hsl => _hslToArgb(hsl),
       final SvgNoneColor _ => 0x00000000,
       final SvgCurrentColor _ => 0xFF000000, // TODO(Gemini): Support currentColor context
+      final SvgPaintReference ref => ref.fallback.toArgb(fallback: fallback),
     };
   }
 
