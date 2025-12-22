@@ -15,11 +15,13 @@ extension XmlAttributeDefaultValues on XmlAttributeName {
       case .y2:
         return switch (elementName) {
           .linearGradient => const SvgPercentage(0.0),
+          .line => const SvgLength(0.0),
           (_) => throw UnsupportedError('Invalid combination $this x $elementName '),
         };
       case .x2:
         return switch (elementName) {
           .linearGradient => const SvgPercentage(100.0),
+          .line => const SvgLength(0.0),
           (_) => throw UnsupportedError('Invalid combination $this x $elementName '),
         };
       case .cx:

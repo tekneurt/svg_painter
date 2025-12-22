@@ -1,0 +1,52 @@
+import 'package:xml/xml.dart';
+
+import '../../base/_base.dart';
+import '../../svg_model/_svg_model.dart';
+import '../../xml_model/_xml_model.dart';
+import '../_xml_conversion.dart';
+
+extension ElementToSvgLine on XmlElement {
+  /// Converts this [XmlElement] to an [SvgLine].
+  Result<SvgLine> toSvgLine() {
+    const XmlElementName elementName = XmlElementName.line;
+
+    final SvgLengthPercentage x1 = toSvgValue<SvgLengthPercentage>(
+      elementName,
+      XmlAttributeName.x1,
+    );
+    final SvgLengthPercentage y1 = toSvgValue<SvgLengthPercentage>(
+      elementName,
+      XmlAttributeName.y1,
+    );
+    final SvgLengthPercentage x2 = toSvgValue<SvgLengthPercentage>(
+      elementName,
+      XmlAttributeName.x2,
+    );
+    final SvgLengthPercentage y2 = toSvgValue<SvgLengthPercentage>(
+      elementName,
+      XmlAttributeName.y2,
+    );
+
+    final SvgColor? fill = toSvgValueOrNull<SvgColor>(elementName, XmlAttributeName.fill);
+    final SvgColor? stroke = toSvgValueOrNull<SvgColor>(elementName, XmlAttributeName.stroke);
+    final SvgLengthPercentage? strokeWidth = toSvgValueOrNull<SvgLengthPercentage>(
+      elementName,
+      XmlAttributeName.strokeWidth,
+    );
+
+    final String? id = getXmlAttributeValue(XmlAttributeName.id);
+
+    return Success<SvgLine>(
+      SvgLine(
+        x1: x1,
+        y1: y1,
+        x2: x2,
+        y2: y2,
+        fill: fill,
+        stroke: stroke,
+        strokeWidth: strokeWidth,
+        id: id,
+      ),
+    );
+  }
+}

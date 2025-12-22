@@ -95,14 +95,20 @@ Implement support for additional SVG shapes using the new layered architecture.
     - [x] Add `toDrawOval` extension.
     - [x] Update Code Generator.
     - [x] Add Fixtures and Tests.
-- [ ] **Rect** (`<rect>`)
+- [x] **Rect** (`<rect>`)
     - [x] Add `SvgRect` to SVG Model.
     - [x] Add `toSvgRect` extension.
     - [x] Add `DrawRect` to Painting Model.
     - [x] Add `toDrawRect` extension.
     - [x] Update Code Generator.
     - [x] Add Fixtures and Tests.
-- [ ] **Line** (`<line>`)
+- [x] **Line** (`<line>`)
+    - [x] Add `SvgLine` to SVG Model.
+    - [x] Add `toSvgLine` extension.
+    - [x] Add `DrawLine` to Painting Model.
+    - [x] Add `toDrawLine` extension.
+    - [x] Update Code Generator.
+    - [x] Add Fixtures and Tests.
 - [ ] **Polyline** (`<polyline>`)
 - [ ] **Polygon** (`<polygon>`)
 - [ ] **Path** (`<path>`)
@@ -111,7 +117,11 @@ Implement support for additional SVG shapes using the new layered architecture.
 - [ ] **TODO(Gemini)**: Implement runtime scaling in the widget tree (support relative width/height/viewBox).
 - [ ] **TODO(Gemini)**: Improve coordinate mapping for gradients (currently uses rough alignment approximation).
 - [ ] **TODO(Gemini)**: Support `currentColor` context in color resolution.
+- [ ] **TODO(Gemini)**: Implement full `gradientUnits` support (currently assumes `userSpaceOnUse` mapping).
+- [ ] **TODO(Gemini)**: Implement `objectBoundingBox` for gradients.
 - [ ] **TODO(Gemini)**: Implement full `gradientTransform` support (currently only `rotate(90)`).
+- [ ] **TODO(Gemini)**: Support `preserveAspectRatio` for `viewBox` mapping.
+- [ ] **TODO(Gemini)**: Improve `toPosition` mapping for nested elements and complex coordinate systems.
 - [ ] **TODO(Gemini)**: Determine default behavior for unknown named colors (render vs throw).
 - [ ] **TODO(Gemini)**: Handle failure cases in `SvgToPainting` converter.
 - [ ] **Attributes**

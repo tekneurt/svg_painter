@@ -12,6 +12,9 @@ enum XmlElementName {
   /// The <rect> element.
   rect('rect'),
 
+  /// The <line> element.
+  line('line'),
+
   /// The <defs> element.
   defs('defs'),
 

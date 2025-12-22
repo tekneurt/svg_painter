@@ -230,6 +230,24 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
           buffer.writeln('      canvas.$drawMethod($rectCode, paint);');
         }
         buffer.writeln('    }');
+      } else if (command is DrawLine) {
+        buffer.writeln('    {');
+        buffer.writeln('      final Paint paint = Paint();');
+        if (command.strokeShaderId != null) {
+          buffer.writeln(
+            '      paint.shader = _grad_${command.strokeShaderId}.createShader(Rect.fromPoints(Offset(${command.x1}, ${command.y1}), Offset(${command.x2}, ${command.y2})));',
+          );
+        } else if (command.strokeColorArgb != null && command.strokeColorArgb != 0x00000000) {
+          final String colorString =
+              '0x${command.strokeColorArgb!.toRadixString(16).toUpperCase().padLeft(8, '0')}';
+          buffer.writeln('      paint.color = const Color($colorString);');
+        }
+        buffer.writeln('      paint.style = PaintingStyle.stroke;');
+        buffer.writeln('      paint.strokeWidth = ${command.strokeWidth};');
+        buffer.writeln(
+          '      canvas.drawLine(Offset(${command.x1}, ${command.y1}), Offset(${command.x2}, ${command.y2}), paint);',
+        );
+        buffer.writeln('    }');
       }
     }
 
