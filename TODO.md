@@ -109,9 +109,25 @@ Implement support for additional SVG shapes using the new layered architecture.
     - [x] Add `toDrawLine` extension.
     - [x] Update Code Generator.
     - [x] Add Fixtures and Tests.
-- [ ] **Polyline** (`<polyline>`)
-- [ ] **Polygon** (`<polygon>`)
+- [x] **Polyline** (`<polyline>`)
+    - [x] Add `SvgPolyline` to SVG Model.
+    - [x] Add `toSvgPolyline` extension.
+    - [x] Add `DrawPolyline` to Painting Model.
+    - [x] Add `toDrawPolyline` extension.
+    - [x] Update Code Generator.
+    - [x] Add Fixtures and Tests.
+- [x] **Polygon** (`<polygon>`)
+    - [x] Add `SvgPolygon` to SVG Model.
+    - [x] Add `toSvgPolygon` extension.
+    - [x] Add `DrawPolygon` to Painting Model.
+    - [x] Add `toDrawPolygon` extension.
+    - [x] Update Code Generator.
+    - [x] Add Fixtures and Tests.
+- [ ] **Group** (`<g>`)
 - [ ] **Path** (`<path>`)
+- [ ] **Text** (`<text>`)
+- [ ] **Image** (`<image>`)
+- [ ] **Use** (`<use>`)
 - [x] **TODO(Gemini)**: Implement zero-radius handling (0-radius elements are not rendered).
 - [ ] **TODO(Gemini)**: Add `pathLength` support to SVG models.
 - [ ] **TODO(Gemini)**: Add comprehensive tests for all `BoxFit` values (separate from MDN examples).

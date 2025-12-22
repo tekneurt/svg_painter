@@ -65,6 +65,8 @@ extension XmlAttributeDefaultValues on XmlAttributeName {
         return const SvgNamedColor(SvgColorName.black);
       case .stopOpacity:
         return const SvgLength(1.0);
+      case .points:
+        return const SvgPointList(<double>[]);
       case .fx:
       case .fy:
         // fx/fy default to cx/cy if not specified?

@@ -289,6 +289,91 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
           '      canvas.drawLine(Offset(${command.x1}, ${command.y1}), Offset(${command.x2}, ${command.y2}), paint);',
         );
         buffer.writeln('    }');
+      } else if (command is DrawPolyline) {
+        buffer.writeln('    {');
+        buffer.writeln('      final Paint paint = Paint();');
+        buffer.writeln('      final Path path = Path();');
+        final String pointsStr = command.points.map((e) => 'Offset(${command.points.indexOf(e) % 2 == 0 ? e : command.points[command.points.indexOf(e) - 1]}, $e)').toList().toString();
+        // Wait, map index is hard in string interpolation.
+        // I should reconstruct Offsets string from the flat list.
+        final StringBuffer offsets = StringBuffer();
+        for (int i = 0; i < command.points.length; i += 2) {
+          if (i > 0) offsets.write(', ');
+          offsets.write('const Offset(${command.points[i]}, ${command.points[i + 1]})');
+        }
+        buffer.writeln('      path.addPolygon([$offsets], false);');
+
+        if (command.fillShaderId != null) {
+          buffer.writeln(
+            '      paint.shader = _grad_${command.fillShaderId}.createShader(path.getBounds());',
+          );
+          buffer.writeln('      paint.style = PaintingStyle.fill;');
+          buffer.writeln('      canvas.drawPath(path, paint);');
+        } else if (command.fillColorArgb != null && command.fillColorArgb != 0x00000000) {
+          final String colorString =
+              '0x${command.fillColorArgb!.toRadixString(16).toUpperCase().padLeft(8, '0')}';
+          buffer.writeln('      paint.color = const Color($colorString);');
+          buffer.writeln('      paint.style = PaintingStyle.fill;');
+          buffer.writeln('      canvas.drawPath(path, paint);');
+        }
+
+        if (command.strokeShaderId != null) {
+          buffer.writeln(
+            '      paint.shader = _grad_${command.strokeShaderId}.createShader(path.getBounds());',
+          );
+          buffer.writeln('      paint.style = PaintingStyle.stroke;');
+          buffer.writeln('      paint.strokeWidth = ${command.strokeWidth};');
+          buffer.writeln('      canvas.drawPath(path, paint);');
+        } else if (command.strokeColorArgb != null && command.strokeColorArgb != 0x00000000) {
+          final String colorString =
+              '0x${command.strokeColorArgb!.toRadixString(16).toUpperCase().padLeft(8, '0')}';
+          buffer.writeln('      paint.color = const Color($colorString);');
+          buffer.writeln('      paint.style = PaintingStyle.stroke;');
+          buffer.writeln('      paint.strokeWidth = ${command.strokeWidth};');
+          buffer.writeln('      canvas.drawPath(path, paint);');
+        }
+        buffer.writeln('    }');
+      } else if (command is DrawPolygon) {
+        buffer.writeln('    {');
+        buffer.writeln('      final Paint paint = Paint();');
+        buffer.writeln('      final Path path = Path();');
+        final StringBuffer offsets = StringBuffer();
+        for (int i = 0; i < command.points.length; i += 2) {
+          if (i > 0) offsets.write(', ');
+          offsets.write('const Offset(${command.points[i]}, ${command.points[i + 1]})');
+        }
+        buffer.writeln('      path.addPolygon([$offsets], true);');
+
+        if (command.fillShaderId != null) {
+          buffer.writeln(
+            '      paint.shader = _grad_${command.fillShaderId}.createShader(path.getBounds());',
+          );
+          buffer.writeln('      paint.style = PaintingStyle.fill;');
+          buffer.writeln('      canvas.drawPath(path, paint);');
+        } else if (command.fillColorArgb != null && command.fillColorArgb != 0x00000000) {
+          final String colorString =
+              '0x${command.fillColorArgb!.toRadixString(16).toUpperCase().padLeft(8, '0')}';
+          buffer.writeln('      paint.color = const Color($colorString);');
+          buffer.writeln('      paint.style = PaintingStyle.fill;');
+          buffer.writeln('      canvas.drawPath(path, paint);');
+        }
+
+        if (command.strokeShaderId != null) {
+          buffer.writeln(
+            '      paint.shader = _grad_${command.strokeShaderId}.createShader(path.getBounds());',
+          );
+          buffer.writeln('      paint.style = PaintingStyle.stroke;');
+          buffer.writeln('      paint.strokeWidth = ${command.strokeWidth};');
+          buffer.writeln('      canvas.drawPath(path, paint);');
+        } else if (command.strokeColorArgb != null && command.strokeColorArgb != 0x00000000) {
+          final String colorString =
+              '0x${command.strokeColorArgb!.toRadixString(16).toUpperCase().padLeft(8, '0')}';
+          buffer.writeln('      paint.color = const Color($colorString);');
+          buffer.writeln('      paint.style = PaintingStyle.stroke;');
+          buffer.writeln('      paint.strokeWidth = ${command.strokeWidth};');
+          buffer.writeln('      canvas.drawPath(path, paint);');
+        }
+        buffer.writeln('    }');
       }
     }
 

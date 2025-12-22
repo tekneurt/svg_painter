@@ -1,0 +1,11 @@
+/// Fixture for `<polyline>`.
+/// Source: https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Element/polyline
+const String mdnPolyline = '''
+<svg viewBox="0 0 200 100" xmlns="http://www.w3.org/2000/svg">
+  <!-- Example of a polyline with the default fill -->
+  <polyline points="0,100 50,25 50,75 100,0" />
+
+  <!-- Example of the same polyline shape with stroke and no fill -->
+  <polyline points="100,100 150,25 150,75 200,0" fill="none" stroke="black" />
+</svg>
+''';

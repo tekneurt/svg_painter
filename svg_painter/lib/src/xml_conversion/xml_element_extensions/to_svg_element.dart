@@ -25,6 +25,10 @@ extension XmlElementToSvgElement on XmlElement {
         return toSvgRect();
       case XmlElementName.line:
         return toSvgLine();
+      case XmlElementName.polyline:
+        return toSvgPolyline();
+      case XmlElementName.polygon:
+        return toSvgPolygon();
       case XmlElementName.defs:
         return toSvgDefs();
       case XmlElementName.radialGradient:

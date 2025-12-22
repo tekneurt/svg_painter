@@ -9,6 +9,8 @@ part 'elements/svg_line.dart';
 part 'elements/svg_rect.dart';
 part 'elements/svg_radial_gradient.dart';
 part 'elements/svg_linear_gradient.dart';
+part 'elements/svg_polyline.dart';
+part 'elements/svg_polygon.dart';
 part 'elements/svg_svg.dart';
 
 /// The base class for all SVG elements in the domain model.

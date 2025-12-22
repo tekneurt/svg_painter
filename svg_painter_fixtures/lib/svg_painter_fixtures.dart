@@ -15,6 +15,8 @@ export 'src/mdn/elements/circle.dart';
 export 'src/mdn/elements/ellipse.dart';
 export 'src/mdn/elements/line.dart';
 export 'src/mdn/elements/linear_gradient.dart';
+export 'src/mdn/elements/polygon.dart';
+export 'src/mdn/elements/polyline.dart';
 export 'src/mdn/elements/radial_gradient.dart';
 export 'src/mdn/elements/rect.dart';
 

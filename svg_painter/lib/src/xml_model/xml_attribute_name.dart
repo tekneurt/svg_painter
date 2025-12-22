@@ -34,6 +34,10 @@ enum XmlAttributeName {
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/cy
   cy('cy'),
 
+  /// The points of a polyline or polygon.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/points
+  points('points'),
+
   /// The radius of the element.
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/r
   r('r'),

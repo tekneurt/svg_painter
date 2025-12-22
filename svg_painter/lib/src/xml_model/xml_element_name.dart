@@ -15,6 +15,12 @@ enum XmlElementName {
   /// The <line> element.
   line('line'),
 
+  /// The <polyline> element.
+  polyline('polyline'),
+
+  /// The <polygon> element.
+  polygon('polygon'),
+
   /// The <defs> element.
   defs('defs'),
 
