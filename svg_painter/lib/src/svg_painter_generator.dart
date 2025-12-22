@@ -67,6 +67,31 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
       );
     }
 
+    double viewBoxX = 0.0;
+    double viewBoxY = 0.0;
+    double viewBoxWidth = 100.0;
+    double viewBoxHeight = 100.0;
+
+    if (svgRoot is SvgRoot) {
+      if (svgRoot.viewBox != null) {
+        viewBoxX = svgRoot.viewBox!.minX;
+        viewBoxY = svgRoot.viewBox!.minY;
+        viewBoxWidth = svgRoot.viewBox!.width;
+        viewBoxHeight = svgRoot.viewBox!.height;
+      } else {
+        // Fallback if no viewBox: use width/height if absolute, else default.
+        // This must match SvgToPainting logic.
+        // Actually SvgToPainting uses 100.0 default if not SvgLength.
+        // We should replicate or share that logic.
+        if (svgRoot.width is SvgLength) {
+          viewBoxWidth = (svgRoot.width as SvgLength).toDouble();
+        }
+        if (svgRoot.height is SvgLength) {
+          viewBoxHeight = (svgRoot.height as SvgLength).toDouble();
+        }
+      }
+    }
+
     final Result<List<PaintCommand>> paintingResult = svgRoot.toPaintCommands();
     final List<PaintCommand> commands = paintingResult.fold(
       (Failure<List<PaintCommand>> failure) => throw InvalidGenerationSourceError(
@@ -82,8 +107,24 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
         : annotation.read('painterClassName').stringValue;
 
     buffer.writeln('class $className extends CustomPainter {');
+    buffer.writeln('  const $className({this.fit = BoxFit.contain});');
+    buffer.writeln('');
+    buffer.writeln('  final BoxFit fit;');
+    buffer.writeln('');
     buffer.writeln('  @override');
     buffer.writeln('  void paint(Canvas canvas, Size size) {');
+    
+    // Viewport scaling using applyBoxFit
+    buffer.writeln('    final FittedSizes fittedSizes = applyBoxFit(fit, const Size($viewBoxWidth, $viewBoxHeight), size);');
+    buffer.writeln('    final Size sourceSize = fittedSizes.source;');
+    buffer.writeln('    final Rect destRect = Alignment.center.inscribe(fittedSizes.destination, Offset.zero & size);');
+    buffer.writeln('');
+    buffer.writeln('    canvas.save();');
+    buffer.writeln('    canvas.translate(destRect.left, destRect.top);');
+    buffer.writeln('    canvas.scale(destRect.width / sourceSize.width, destRect.height / sourceSize.height);');
+    buffer.writeln('    // Clip to the viewBox (source size)');
+    buffer.writeln('    canvas.clipRect(Rect.fromLTWH(0, 0, $viewBoxWidth, $viewBoxHeight));');
+    buffer.writeln('');
 
     // Gradient definitions (as variables)
     for (final PaintCommand command in commands) {
@@ -251,9 +292,12 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
       }
     }
 
+    buffer.writeln('    canvas.restore();');
     buffer.writeln('  }');
     buffer.writeln('  @override');
-    buffer.writeln('  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;');
+    buffer.writeln('  bool shouldRepaint(covariant $className oldDelegate) {');
+    buffer.writeln('    return fit != oldDelegate.fit;');
+    buffer.writeln('  }');
     buffer.writeln('}');
 
     return buffer.toString();

@@ -59,8 +59,8 @@ extension SvgRectToPainting on SvgRect {
 
     return Success<DrawRect>(
       DrawRect(
-        x: x.toDouble(context, SvgOrientation.horizontal),
-        y: y.toDouble(context, SvgOrientation.vertical),
+        x: x.toPosition(context, SvgOrientation.horizontal),
+        y: y.toPosition(context, SvgOrientation.vertical),
         width: widthPx,
         height: heightPx,
         rx: finalRx,

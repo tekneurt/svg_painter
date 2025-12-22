@@ -26,4 +26,14 @@ extension SvgLengthPercentageAutoToDouble on SvgLengthPercentageAuto {
       SvgAuto() => null,
     };
   }
+
+  double? toPositionOrNull(SvgPaintingContext context, SvgOrientation orientation) {
+    final double? val = toDoubleOrNull(context, orientation);
+    if (val == null) return null;
+    return switch (orientation) {
+      SvgOrientation.horizontal => val - context.viewBoxMinX,
+      SvgOrientation.vertical => val - context.viewBoxMinY,
+      SvgOrientation.normalized => val,
+    };
+  }
 }

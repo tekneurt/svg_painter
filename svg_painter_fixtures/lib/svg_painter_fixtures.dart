@@ -6,7 +6,7 @@ export 'src/mdn/attributes/cy.dart';
 export 'src/mdn/attributes/r.dart';
 export 'src/mdn/attributes/rx.dart';
 export 'src/mdn/attributes/ry.dart';
-export 'src/mdn/attributes/stroke_width.dart';
+export 'src/mdn/attributes/view_box.dart';
 export 'src/mdn/attributes/x1.dart';
 export 'src/mdn/attributes/x2.dart';
 export 'src/mdn/attributes/y1.dart';

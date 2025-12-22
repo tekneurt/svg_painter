@@ -31,12 +31,17 @@ extension SvgToPainting on SvgElement {
             _ => 100.0,
           });
 
+      final double minX = self.viewBox?.minX ?? 0.0;
+      final double minY = self.viewBox?.minY ?? 0.0;
+
       final Map<String, SvgElement> definitions = <String, SvgElement>{};
       self.collectDefinitions(definitions);
 
       final SvgPaintingContext rootContext = SvgPaintingContext(
         viewBoxWidth: width,
         viewBoxHeight: height,
+        viewBoxMinX: minX,
+        viewBoxMinY: minY,
         definitions: definitions,
       );
       return self._toPaintCommands(rootContext);

@@ -7,8 +7,32 @@ part of 'cy_painter.dart';
 // **************************************************************************
 
 class _$CyPainter extends CustomPainter {
+  const _$CyPainter({this.fit = BoxFit.contain});
+
+  final BoxFit fit;
+
   @override
   void paint(Canvas canvas, Size size) {
+    final FittedSizes fittedSizes = applyBoxFit(
+      fit,
+      const Size(100.0, 300.0),
+      size,
+    );
+    final Size sourceSize = fittedSizes.source;
+    final Rect destRect = Alignment.center.inscribe(
+      fittedSizes.destination,
+      Offset.zero & size,
+    );
+
+    canvas.save();
+    canvas.translate(destRect.left, destRect.top);
+    canvas.scale(
+      destRect.width / sourceSize.width,
+      destRect.height / sourceSize.height,
+    );
+    // Clip to the viewBox (source size)
+    canvas.clipRect(Rect.fromLTWH(0, 0, 100.0, 300.0));
+
     final Gradient _grad_myGradient = RadialGradient(
       center: Alignment(0.0, -0.5),
       radius: 0.5,
@@ -42,8 +66,11 @@ class _$CyPainter extends CustomPainter {
       paint.style = PaintingStyle.fill;
       canvas.drawRect(Rect.fromLTWH(5.0, 205.0, 90.0, 90.0), paint);
     }
+    canvas.restore();
   }
 
   @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+  bool shouldRepaint(covariant _$CyPainter oldDelegate) {
+    return fit != oldDelegate.fit;
+  }
 }

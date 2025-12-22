@@ -114,13 +114,12 @@ Implement support for additional SVG shapes using the new layered architecture.
 - [ ] **Path** (`<path>`)
 - [x] **TODO(Gemini)**: Implement zero-radius handling (0-radius elements are not rendered).
 - [ ] **TODO(Gemini)**: Add `pathLength` support to SVG models.
-- [ ] **TODO(Gemini)**: Implement runtime scaling in the widget tree (support relative width/height/viewBox).
+- [ ] **TODO(Gemini)**: Add comprehensive tests for all `BoxFit` values (separate from MDN examples).
 - [ ] **TODO(Gemini)**: Improve coordinate mapping for gradients (currently uses rough alignment approximation).
 - [ ] **TODO(Gemini)**: Support `currentColor` context in color resolution.
 - [ ] **TODO(Gemini)**: Implement full `gradientUnits` support (currently assumes `userSpaceOnUse` mapping).
 - [ ] **TODO(Gemini)**: Implement `objectBoundingBox` for gradients.
 - [ ] **TODO(Gemini)**: Implement full `gradientTransform` support (currently only `rotate(90)`).
-- [ ] **TODO(Gemini)**: Support `preserveAspectRatio` for `viewBox` mapping.
 - [ ] **TODO(Gemini)**: Improve `toPosition` mapping for nested elements and complex coordinate systems.
 - [ ] **TODO(Gemini)**: Determine default behavior for unknown named colors (render vs throw).
 - [ ] **TODO(Gemini)**: Handle failure cases in `SvgToPainting` converter.

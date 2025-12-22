@@ -1,22 +1,14 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import '../../../test_utils.dart';
 import 'cx_painter.dart';
 
 void main() {
   testWidgets('CxPainter renders correctly', (WidgetTester tester) async {
-    await tester.pumpWidget(
-      Center(
-        child: CustomPaint(
-          size: const Size(300, 100),
-          painter: CxPainter(),
-        ),
-      ),
-    );
-
-    await expectLater(
-      find.byType(CustomPaint),
-      matchesGoldenFile('goldens/cx_painter.png'),
+    await testSvgPainter(
+      tester: tester,
+      painter: CxPainter(),
+      goldenName: 'cx_painter.png',
     );
   });
 }

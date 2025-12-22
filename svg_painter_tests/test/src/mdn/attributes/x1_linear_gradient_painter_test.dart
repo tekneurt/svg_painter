@@ -1,22 +1,14 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import '../../../test_utils.dart';
 import 'x1_linear_gradient_painter.dart';
 
 void main() {
   testWidgets('X1LinearGradientPainter renders correctly', (WidgetTester tester) async {
-    await tester.pumpWidget(
-      Center(
-        child: CustomPaint(
-          size: const Size(20, 10),
-          painter: X1LinearGradientPainter(),
-        ),
-      ),
-    );
-
-    await expectLater(
-      find.byType(CustomPaint),
-      matchesGoldenFile('goldens/x1_linear_gradient_painter.png'),
+    await testSvgPainter(
+      tester: tester,
+      painter: X1LinearGradientPainter(),
+      goldenName: 'x1_linear_gradient_painter.png',
     );
   });
 }

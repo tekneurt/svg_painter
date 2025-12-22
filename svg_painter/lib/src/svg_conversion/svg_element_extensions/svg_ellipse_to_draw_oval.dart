@@ -52,8 +52,8 @@ extension SvgEllipseToPainting on SvgEllipse {
 
     return Success<DrawOval>(
       DrawOval(
-        cx: cx.toDouble(context, SvgOrientation.horizontal),
-        cy: cy.toDouble(context, SvgOrientation.vertical),
+        cx: cx.toPosition(context, SvgOrientation.horizontal),
+        cy: cy.toPosition(context, SvgOrientation.vertical),
         rx: finalRx,
         ry: finalRy,
         fillColorArgb: fillColorArgb,

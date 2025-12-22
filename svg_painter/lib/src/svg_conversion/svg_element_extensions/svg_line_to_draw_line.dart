@@ -25,10 +25,10 @@ extension SvgLineToPainting on SvgLine {
 
     return Success<DrawLine>(
       DrawLine(
-        x1: x1.toDouble(context, SvgOrientation.horizontal),
-        y1: y1.toDouble(context, SvgOrientation.vertical),
-        x2: x2.toDouble(context, SvgOrientation.horizontal),
-        y2: y2.toDouble(context, SvgOrientation.vertical),
+        x1: x1.toPosition(context, SvgOrientation.horizontal),
+        y1: y1.toPosition(context, SvgOrientation.vertical),
+        x2: x2.toPosition(context, SvgOrientation.horizontal),
+        y2: y2.toPosition(context, SvgOrientation.vertical),
         strokeColorArgb: strokeColorArgb,
         strokeWidth: strokeWidth?.toDouble(context, SvgOrientation.normalized) ?? 1.0,
         strokeShaderId: strokeShaderId,

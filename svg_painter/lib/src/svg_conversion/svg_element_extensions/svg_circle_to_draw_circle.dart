@@ -31,8 +31,8 @@ extension SvgCircleToPainting on SvgCircle {
 
     return Success<DrawCircle>(
       DrawCircle(
-        cx: cx.toDouble(context, SvgOrientation.horizontal),
-        cy: cy.toDouble(context, SvgOrientation.vertical),
+        cx: cx.toPosition(context, SvgOrientation.horizontal),
+        cy: cy.toPosition(context, SvgOrientation.vertical),
         radius: r.toDouble(context, SvgOrientation.normalized),
         fillColorArgb: fillColorArgb,
         strokeColorArgb: strokeColorArgb,

@@ -1,22 +1,14 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import '../../../test_utils.dart';
 import 'y2_linear_gradient_painter.dart';
 
 void main() {
   testWidgets('Y2LinearGradientPainter renders correctly', (WidgetTester tester) async {
-    await tester.pumpWidget(
-      Center(
-        child: CustomPaint(
-          size: const Size(20, 10),
-          painter: Y2LinearGradientPainter(),
-        ),
-      ),
-    );
-
-    await expectLater(
-      find.byType(CustomPaint),
-      matchesGoldenFile('goldens/y2_linear_gradient_painter.png'),
+    await testSvgPainter(
+      tester: tester,
+      painter: Y2LinearGradientPainter(),
+      goldenName: 'y2_linear_gradient_painter.png',
     );
   });
 }
