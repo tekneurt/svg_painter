@@ -13,6 +13,7 @@ final class SvgCircle extends SvgGraphicsElement {
     super.fill,
     super.stroke,
     super.strokeWidth,
+    super.transform,
   });
 
   /// The x-coordinate of the center of the circle.

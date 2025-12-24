@@ -1,6 +1,6 @@
 import 'package:xml/xml.dart';
 
-import '../base/result.dart';
+import '../../base/result.dart';
 
 /// Extension on [String] to parse it into an [XmlDocument].
 extension StringToXml on String {

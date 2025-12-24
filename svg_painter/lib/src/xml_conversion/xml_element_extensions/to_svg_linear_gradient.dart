@@ -31,12 +31,9 @@ extension ElementToSvgLinearGradient on XmlElement {
     for (final XmlNode child in children) {
       if (child is XmlElement && child.name.local == XmlElementName.stop.tagName) {
         final Result<SvgStop> result = child.toSvgStop();
-        result.fold(
-          (Failure<SvgStop> failure) {},
-          (SvgStop value) {
-            stops.add(value);
-          },
-        );
+        result.fold((Failure<SvgStop> failure) {}, (SvgStop value) {
+          stops.add(value);
+        });
       }
     }
 

@@ -13,11 +13,15 @@ extension SvgPolygonToPainting on SvgPolygon {
     // Resolve points relative to viewBox
     final List<double> resolvedPoints = <double>[];
     for (int i = 0; i < points.points.length; i += 2) {
-      if (i + 1 >= points.points.length) break;
+      if (i + 1 >= points.points.length) {
+        break;
+      }
       final double x = points.points[i];
       final double y = points.points[i + 1];
-      resolvedPoints.add(x - context.viewBoxMinX);
-      resolvedPoints.add(y - context.viewBoxMinY);
+
+      // Apply transform directly to points
+      resolvedPoints.add((x * context.parentSx) + context.parentTx);
+      resolvedPoints.add((y * context.parentSy) + context.parentTy);
     }
 
     int? fillColorArgb;
@@ -25,28 +29,33 @@ extension SvgPolygonToPainting on SvgPolygon {
     int? strokeColorArgb;
     String? strokeShaderId;
 
-    final SvgColor? fillPaint = fill;
+    final SvgColor? fillPaint = fill ?? context.inheritedFill;
     if (fillPaint is SvgPaintReference) {
       fillShaderId = fillPaint.id;
     } else {
       fillColorArgb = fillPaint.toFillArgb();
     }
 
-    final SvgColor? strokePaint = stroke;
+    final SvgColor? strokePaint = stroke ?? context.inheritedStroke;
     if (strokePaint is SvgPaintReference) {
       strokeShaderId = strokePaint.id;
     } else {
       strokeColorArgb = strokePaint.toStrokeArgb();
     }
 
+    final SvgLengthPercentage? sw = strokeWidth ?? context.inheritedStrokeWidth;
+    final double finalStrokeWidth =
+        (sw?.toDouble(context, SvgOrientation.normalized) ?? 1.0) * context.parentScale;
+
     return Success<DrawPolygon>(
       DrawPolygon(
         points: resolvedPoints,
         fillColorArgb: fillColorArgb,
         strokeColorArgb: strokeColorArgb,
-        strokeWidth: strokeWidth?.toDouble(context, SvgOrientation.normalized) ?? 1.0,
+        strokeWidth: finalStrokeWidth,
         fillShaderId: fillShaderId,
         strokeShaderId: strokeShaderId,
+        transform: transform,
       ),
     );
   }

@@ -16,10 +16,7 @@ extension SvgColorToInt on SvgColor? {
 
     return switch (self) {
       final SvgNamedColor named => svgColorNameMap[named.name] ?? 0xFF000000,
-      final SvgRgbColor rgb => (rgb.alpha << 24) |
-          (rgb.red << 16) |
-          (rgb.green << 8) |
-          rgb.blue,
+      final SvgRgbColor rgb => (rgb.alpha << 24) | (rgb.red << 16) | (rgb.green << 8) | rgb.blue,
       final SvgHslColor hsl => _hslToArgb(hsl),
       final SvgNoneColor _ => 0x00000000,
       final SvgCurrentColor _ => 0xFF000000, // TODO(Gemini): Support currentColor context
@@ -70,5 +67,5 @@ extension SvgColorToInt on SvgColor? {
   int toFillArgb() => toArgb(fallback: 0xFF000000);
 
   /// Returns the ARGB integer for a stroke color, defaulting to none/transparent if null.
-  int toStrokeArgb() => toArgb(fallback: 0x00000000);
+  int toStrokeArgb() => toArgb();
 }

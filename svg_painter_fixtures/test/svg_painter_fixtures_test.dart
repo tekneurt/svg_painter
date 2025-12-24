@@ -11,10 +11,7 @@ void main() {
 
   group('IO Fixtures', () {
     test('ioTestFileSvgPath is correct', () {
-      expect(
-        ioTestFileSvgPath,
-        'package:svg_painter_fixtures/src/io/test_file.svg',
-      );
+      expect(ioTestFileSvgPath, 'package:svg_painter_fixtures/src/io/test_file.svg');
     });
   });
 }

@@ -31,6 +31,8 @@ extension XmlElementToSvgElement on XmlElement {
         return toSvgPolygon();
       case XmlElementName.defs:
         return toSvgDefs();
+      case XmlElementName.use:
+        return toSvgUse();
       case XmlElementName.radialGradient:
         return toSvgRadialGradient();
       case XmlElementName.linearGradient:

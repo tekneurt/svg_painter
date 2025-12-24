@@ -14,8 +14,8 @@ extension SvgEllipseToPainting on SvgEllipse {
     final double? resolvedRx = rx.toDoubleOrNull(context, SvgOrientation.horizontal);
     final double? resolvedRy = ry.toDoubleOrNull(context, SvgOrientation.vertical);
 
-    final double finalRx;
-    final double finalRy;
+    double finalRx;
+    double finalRy;
 
     if (resolvedRx == null && resolvedRy == null) {
       finalRx = 0.0;
@@ -31,36 +31,50 @@ extension SvgEllipseToPainting on SvgEllipse {
       finalRy = resolvedRy;
     }
 
+    double cxVal = cx.toDouble(context, SvgOrientation.horizontal);
+    double cyVal = cy.toDouble(context, SvgOrientation.vertical);
+
+    // Apply transformation
+    cxVal = (cxVal * context.parentSx) + context.parentTx;
+    cyVal = (cyVal * context.parentSy) + context.parentTy;
+    finalRx = finalRx * context.parentSx;
+    finalRy = finalRy * context.parentSy;
+
     int? fillColorArgb;
     String? fillShaderId;
     int? strokeColorArgb;
     String? strokeShaderId;
 
-    final SvgColor? fillPaint = fill;
+    final SvgColor? fillPaint = fill ?? context.inheritedFill;
     if (fillPaint is SvgPaintReference) {
       fillShaderId = fillPaint.id;
     } else {
       fillColorArgb = fillPaint.toFillArgb();
     }
 
-    final SvgColor? strokePaint = stroke;
+    final SvgColor? strokePaint = stroke ?? context.inheritedStroke;
     if (strokePaint is SvgPaintReference) {
       strokeShaderId = strokePaint.id;
     } else {
       strokeColorArgb = strokePaint.toStrokeArgb();
     }
 
+    final SvgLengthPercentage? sw = strokeWidth ?? context.inheritedStrokeWidth;
+    final double finalStrokeWidth =
+        (sw?.toDouble(context, SvgOrientation.normalized) ?? 1.0) * context.parentScale;
+
     return Success<DrawOval>(
       DrawOval(
-        cx: cx.toPosition(context, SvgOrientation.horizontal),
-        cy: cy.toPosition(context, SvgOrientation.vertical),
+        cx: cxVal,
+        cy: cyVal,
         rx: finalRx,
         ry: finalRy,
         fillColorArgb: fillColorArgb,
         strokeColorArgb: strokeColorArgb,
-        strokeWidth: strokeWidth?.toDouble(context, SvgOrientation.normalized) ?? 1.0,
+        strokeWidth: finalStrokeWidth,
         fillShaderId: fillShaderId,
         strokeShaderId: strokeShaderId,
+        transform: transform,
       ),
     );
   }

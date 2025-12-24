@@ -14,16 +14,10 @@ Future<void> testSvgPainter({
           border: Border.all(color: Colors.red, width: 10),
           color: Colors.grey[200],
         ),
-        child: CustomPaint(
-          size: size,
-          painter: painter,
-        ),
+        child: CustomPaint(size: size, painter: painter),
       ),
     ),
   );
 
-  await expectLater(
-    find.byType(Container),
-    matchesGoldenFile('goldens/$goldenName'),
-  );
+  await expectLater(find.byType(Container), matchesGoldenFile('goldens/$goldenName'));
 }

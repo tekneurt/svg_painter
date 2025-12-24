@@ -13,25 +13,38 @@ extension SvgLineToPainting on SvgLine {
     int? strokeColorArgb;
     String? strokeShaderId;
 
-    final SvgColor? strokePaint = stroke;
+    final SvgColor? strokePaint = stroke ?? context.inheritedStroke;
     if (strokePaint is SvgPaintReference) {
       strokeShaderId = strokePaint.id;
     } else {
-      // For lines, initial value of stroke is 'none' (transparent)
-      // but if specified it defaults to black? No, MDN says 'none'.
-      // SvgColorToInt.toStrokeArgb handles this.
       strokeColorArgb = strokePaint.toStrokeArgb();
     }
 
+    final SvgLengthPercentage? sw = strokeWidth ?? context.inheritedStrokeWidth;
+    final double finalStrokeWidth =
+        (sw?.toDouble(context, SvgOrientation.normalized) ?? 1.0) * context.parentScale;
+
+    double x1Val = x1.toDouble(context, SvgOrientation.horizontal);
+    double y1Val = y1.toDouble(context, SvgOrientation.vertical);
+    double x2Val = x2.toDouble(context, SvgOrientation.horizontal);
+    double y2Val = y2.toDouble(context, SvgOrientation.vertical);
+
+    // Apply transformation
+    x1Val = (x1Val * context.parentSx) + context.parentTx;
+    y1Val = (y1Val * context.parentSy) + context.parentTy;
+    x2Val = (x2Val * context.parentSx) + context.parentTx;
+    y2Val = (y2Val * context.parentSy) + context.parentTy;
+
     return Success<DrawLine>(
       DrawLine(
-        x1: x1.toPosition(context, SvgOrientation.horizontal),
-        y1: y1.toPosition(context, SvgOrientation.vertical),
-        x2: x2.toPosition(context, SvgOrientation.horizontal),
-        y2: y2.toPosition(context, SvgOrientation.vertical),
+        x1: x1Val,
+        y1: y1Val,
+        x2: x2Val,
+        y2: y2Val,
         strokeColorArgb: strokeColorArgb,
-        strokeWidth: strokeWidth?.toDouble(context, SvgOrientation.normalized) ?? 1.0,
+        strokeWidth: finalStrokeWidth,
         strokeShaderId: strokeShaderId,
+        transform: transform,
       ),
     );
   }

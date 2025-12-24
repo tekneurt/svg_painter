@@ -37,14 +37,9 @@ class MyHomePage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Text(
-              'Generated CirclePainter:',
-            ),
+            const Text('Generated CirclePainter:'),
             const SizedBox(height: 20),
-            CustomPaint(
-              size: const Size(100, 100),
-              painter: CirclePainter(),
-            ),
+            CustomPaint(size: const Size(100, 100), painter: CirclePainter()),
           ],
         ),
       ),

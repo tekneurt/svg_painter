@@ -1,5 +1,5 @@
 import 'package:xml/xml.dart';
-import '_xml_model.dart';
+import '../../xml_model/_xml_model.dart';
 
 /// Extensions on [XmlElement] to facilitate working with [XmlAttributeName]s.
 extension XmlElementExtensions on XmlElement {

@@ -5,10 +5,7 @@ part of '../svg_element.dart';
 /// See: https://developer.mozilla.org/en-US/docs/Web/SVG/Element/defs
 @immutable
 final class SvgDefs extends SvgElement {
-  const SvgDefs({
-    required this.children,
-    super.id,
-  });
+  const SvgDefs({required this.children, super.id});
 
   /// The child elements contained within these definitions.
   final List<SvgElement> children;

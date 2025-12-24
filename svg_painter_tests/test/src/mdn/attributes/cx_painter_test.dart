@@ -5,10 +5,6 @@ import 'cx_painter.dart';
 
 void main() {
   testWidgets('CxPainter renders correctly', (WidgetTester tester) async {
-    await testSvgPainter(
-      tester: tester,
-      painter: CxPainter(),
-      goldenName: 'cx_painter.png',
-    );
+    await testSvgPainter(tester: tester, painter: CxPainter(), goldenName: 'cx_painter.png');
   });
 }

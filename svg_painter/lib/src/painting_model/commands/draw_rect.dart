@@ -15,6 +15,7 @@ final class DrawRect extends PaintCommand {
     this.strokeWidth = 0.0,
     this.fillShaderId,
     this.strokeShaderId,
+    this.transform,
   });
 
   final double x;
@@ -33,8 +34,9 @@ final class DrawRect extends PaintCommand {
   final double strokeWidth;
   final String? fillShaderId;
   final String? strokeShaderId;
+  final String? transform;
 
   @override
   String toString() =>
-      'DrawRect(x: $x, y: $y, w: $width, h: $height, rx: $rx, ry: $ry, fill: $fillColorArgb, stroke: $strokeColorArgb, fillShader: $fillShaderId)';
+      'DrawRect(x: $x, y: $y, w: $width, h: $height, rx: $rx, ry: $ry, fill: $fillColorArgb, stroke: $strokeColorArgb, fillShader: $fillShaderId, transform: $transform)';
 }

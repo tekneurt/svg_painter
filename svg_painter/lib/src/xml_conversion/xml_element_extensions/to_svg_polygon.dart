@@ -10,10 +10,7 @@ extension ElementToSvgPolygon on XmlElement {
   Result<SvgPolygon> toSvgPolygon() {
     const XmlElementName elementName = XmlElementName.polygon;
 
-    final SvgPointList points = toSvgValue<SvgPointList>(
-      elementName,
-      XmlAttributeName.points,
-    );
+    final SvgPointList points = toSvgValue<SvgPointList>(elementName, XmlAttributeName.points);
 
     final SvgColor? fill = toSvgValueOrNull<SvgColor>(elementName, XmlAttributeName.fill);
     final SvgColor? stroke = toSvgValueOrNull<SvgColor>(elementName, XmlAttributeName.stroke);
@@ -23,6 +20,7 @@ extension ElementToSvgPolygon on XmlElement {
     );
 
     final String? id = getXmlAttributeValue(XmlAttributeName.id);
+    final String? transform = getXmlAttributeValue(XmlAttributeName.transform);
 
     return Success<SvgPolygon>(
       SvgPolygon(
@@ -30,6 +28,7 @@ extension ElementToSvgPolygon on XmlElement {
         fill: fill,
         stroke: stroke,
         strokeWidth: strokeWidth,
+        transform: transform,
         id: id,
       ),
     );

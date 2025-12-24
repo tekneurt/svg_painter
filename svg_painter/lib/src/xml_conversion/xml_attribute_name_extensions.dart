@@ -4,82 +4,82 @@ import '../xml_model/_xml_model.dart';
 extension XmlAttributeDefaultValues on XmlAttributeName {
   SvgBaseValue getDefaultValue(final XmlElementName elementName) {
     switch (this) {
-      case .x:
-      case .y:
+      case XmlAttributeName.x:
+      case XmlAttributeName.y:
         return switch (elementName) {
-          .rect => const SvgLength(0.0),
+          XmlElementName.rect || XmlElementName.use => const SvgLength(0.0),
           (_) => throw UnsupportedError('Invalid combination $this x $elementName '),
         };
-      case .x1:
-      case .y1:
-      case .y2:
+      case XmlAttributeName.x1:
+      case XmlAttributeName.y1:
+      case XmlAttributeName.y2:
         return switch (elementName) {
-          .linearGradient => const SvgPercentage(0.0),
-          .line => const SvgLength(0.0),
+          XmlElementName.linearGradient => const SvgPercentage(0.0),
+          XmlElementName.line => const SvgLength(0.0),
           (_) => throw UnsupportedError('Invalid combination $this x $elementName '),
         };
-      case .x2:
+      case XmlAttributeName.x2:
         return switch (elementName) {
-          .linearGradient => const SvgPercentage(100.0),
-          .line => const SvgLength(0.0),
+          XmlElementName.linearGradient => const SvgPercentage(100.0),
+          XmlElementName.line => const SvgLength(0.0),
           (_) => throw UnsupportedError('Invalid combination $this x $elementName '),
         };
-      case .cx:
-      case .cy:
+      case XmlAttributeName.cx:
+      case XmlAttributeName.cy:
         return switch (elementName) {
-          .circle || .ellipse => const SvgLength(0.0),
-          .radialGradient => const SvgPercentage(50.0),
+          XmlElementName.circle || XmlElementName.ellipse => const SvgLength(0.0),
+          XmlElementName.radialGradient => const SvgPercentage(50.0),
           (_) => throw UnsupportedError('Invalid combination $this x $elementName '),
         };
-      case .r:
+      case XmlAttributeName.r:
         return switch (elementName) {
-          .circle => const SvgLength(0.0),
-          .radialGradient => const SvgPercentage(50.0),
+          XmlElementName.circle => const SvgLength(0.0),
+          XmlElementName.radialGradient => const SvgPercentage(50.0),
           (_) => throw UnsupportedError('Invalid combination $this x $elementName '),
         };
-      case .rx:
-      case .ry:
+      case XmlAttributeName.rx:
+      case XmlAttributeName.ry:
         return switch (elementName) {
-          .ellipse || .rect => const SvgAuto(),
+          XmlElementName.ellipse || XmlElementName.rect => const SvgAuto(),
           (_) => throw UnsupportedError('Invalid combination $this x $elementName '),
         };
-      case .width:
-      case .height:
+      case XmlAttributeName.width:
+      case XmlAttributeName.height:
         return switch (elementName) {
-          .svg || .rect => const SvgAuto(),
+          XmlElementName.svg || XmlElementName.rect || XmlElementName.use => const SvgAuto(),
           (_) => throw UnsupportedError('Invalid combination $this x $elementName '),
         };
-      case .viewBox:
-      case .id:
-      case .gradientTransform:
-        throw UnsupportedError('$name does not have a SvgBaseValue default');
-      case .fill:
-        return const SvgNamedColor(SvgColorName.black); // Default fill is black
-      case .stroke:
-        return const SvgNoneColor(); // Default stroke is none
-      case .strokeWidth:
-        return const SvgLength(1.0);
-      case .offset:
-        return const SvgLength(0.0);
-      case .stopColor:
-        return const SvgNamedColor(SvgColorName.black);
-      case .stopOpacity:
-        return const SvgLength(1.0);
-      case .points:
+      case XmlAttributeName.points:
         return const SvgPointList(<double>[]);
-      case .fx:
-      case .fy:
-        // fx/fy default to cx/cy if not specified?
-        // Spec says: "If the attribute is not specified, the effect is as if a value of '50%' were specified."
-        // Wait, cx/cy default is 50%.
-        // Our cx/cy default for circle/ellipse is 0.
-        // For RadialGradient, cx/cy default is 50%.
-        // I need to update cx/cy defaults to be context dependent!
-        // My `getDefaultValue` logic splits by element name.
+      case XmlAttributeName.fill:
+        return const SvgNamedColor(SvgColorName.black);
+      case XmlAttributeName.stroke:
+        return const SvgNoneColor();
+      case XmlAttributeName.strokeWidth:
+        return const SvgLength(1.0);
+      case XmlAttributeName.offset:
+        return const SvgLength(0.0);
+      case XmlAttributeName.stopColor:
+        return const SvgNamedColor(SvgColorName.black);
+      case XmlAttributeName.stopOpacity:
+        return const SvgLength(1.0);
+      case XmlAttributeName.fx:
+      case XmlAttributeName.fy:
         return switch (elementName) {
-          .radialGradient => const SvgPercentage(50.0),
+          XmlElementName.radialGradient => const SvgPercentage(50.0),
           (_) => throw UnsupportedError('Invalid combination $this x $elementName '),
         };
+      case XmlAttributeName.fr:
+        return switch (elementName) {
+          XmlElementName.radialGradient => const SvgPercentage(0.0),
+          (_) => throw UnsupportedError('Invalid combination $this x $elementName '),
+        };
+      case XmlAttributeName.viewBox:
+      case XmlAttributeName.id:
+      case XmlAttributeName.href:
+      case XmlAttributeName.transform:
+      case XmlAttributeName.gradientTransform:
+        throw UnsupportedError('$name does not have a SvgBaseValue default');
     }
   }
 }

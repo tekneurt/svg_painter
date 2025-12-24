@@ -50,33 +50,25 @@ enum XmlAttributeName {
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/ry
   ry('ry'),
 
-  /// The width of the element.
+  /// The width of the rectangle.
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/width
   width('width'),
 
-  /// The height of the element.
+  /// The height of the rectangle.
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/height
   height('height'),
 
-  /// The viewBox of the element.
-  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/viewBox
-  viewBox('viewBox'),
-
-  /// The fill color of the element.
-  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/fill
-  fill('fill'),
-
-  /// The stroke color of the element.
-  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke
-  stroke('stroke'),
-
-  /// The width of the stroke.
-  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-width
-  strokeWidth('stroke-width'),
+  /// The transformation applied to the element.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/transform
+  transform('transform'),
 
   /// The unique identifier of the element.
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/id
   id('id'),
+
+  /// The reference to another element.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/href
+  href('href'),
 
   /// The x-axis coordinate of the focal point for radial gradients.
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/fx
@@ -85,6 +77,10 @@ enum XmlAttributeName {
   /// The y-axis coordinate of the focal point for radial gradients.
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/fy
   fy('fy'),
+
+  /// The radius of the focal circle for radial gradients.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/fr
+  fr('fr'),
 
   /// The offset of a gradient stop.
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/offset
@@ -100,7 +96,23 @@ enum XmlAttributeName {
 
   /// The transform applied to a gradient.
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/gradientTransform
-  gradientTransform('gradientTransform');
+  gradientTransform('gradientTransform'),
+
+  /// The fill color of the element.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/fill
+  fill('fill'),
+
+  /// The stroke color of the element.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke
+  stroke('stroke'),
+
+  /// The width of the stroke.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-width
+  strokeWidth('stroke-width'),
+
+  /// The viewBox of the element.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/viewBox
+  viewBox('viewBox');
 
   const XmlAttributeName(this.name);
 

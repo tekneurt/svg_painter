@@ -12,6 +12,7 @@ final class SvgRadialGradient extends SvgElement {
     required this.r,
     required this.fx,
     required this.fy,
+    required this.fr,
     this.gradientTransform,
     super.id,
   });
@@ -33,6 +34,9 @@ final class SvgRadialGradient extends SvgElement {
 
   /// The y-coordinate of the focal point.
   final SvgLengthPercentage fy;
+
+  /// The focal radius of the gradient.
+  final SvgLengthPercentage fr;
 
   /// The transform applied to the gradient.
   final String? gradientTransform;

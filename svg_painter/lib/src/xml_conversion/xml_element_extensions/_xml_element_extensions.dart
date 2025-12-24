@@ -1,13 +1,15 @@
+export 'get_xml_attribute_value.dart';
 export 'to_svg_circle.dart';
 export 'to_svg_defs.dart';
 export 'to_svg_element.dart';
 export 'to_svg_ellipse.dart';
-export 'to_svg_linear_gradient.dart';
 export 'to_svg_line.dart';
+export 'to_svg_linear_gradient.dart';
 export 'to_svg_polygon.dart';
 export 'to_svg_polyline.dart';
 export 'to_svg_radial_gradient.dart';
 export 'to_svg_rect.dart';
 export 'to_svg_root.dart';
 export 'to_svg_stop.dart';
+export 'to_svg_use.dart';
 export 'to_svg_value.dart';

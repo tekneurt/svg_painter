@@ -33,6 +33,14 @@ extension ElementToSvgRoot on XmlElement {
       elementName,
       XmlAttributeName.height,
     );
+    final SvgLengthPercentage? x = toSvgValueOrNull<SvgLengthPercentage>(
+      elementName,
+      XmlAttributeName.x,
+    );
+    final SvgLengthPercentage? y = toSvgValueOrNull<SvgLengthPercentage>(
+      elementName,
+      XmlAttributeName.y,
+    );
     final SvgViewBox? viewBox = getXmlAttributeValue(XmlAttributeName.viewBox)?.toSvgViewBox();
 
     final SvgColor? fill = toSvgValueOrNull<SvgColor>(elementName, XmlAttributeName.fill);
@@ -42,15 +50,22 @@ extension ElementToSvgRoot on XmlElement {
       XmlAttributeName.strokeWidth,
     );
 
+    final String? id = getXmlAttributeValue(XmlAttributeName.id);
+    final String? transform = getXmlAttributeValue(XmlAttributeName.transform);
+
     return Success<SvgRoot>(
       SvgRoot(
         children: childElements,
+        x: x,
+        y: y,
         width: width,
         height: height,
         viewBox: viewBox,
         fill: fill,
         stroke: stroke,
         strokeWidth: strokeWidth,
+        transform: transform,
+        id: id,
       ),
     );
   }

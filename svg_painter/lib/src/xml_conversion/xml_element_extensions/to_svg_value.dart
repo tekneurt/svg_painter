@@ -45,21 +45,24 @@ extension XmlElementToSvgValue on XmlElement {
       XmlAttributeName.r ||
       XmlAttributeName.fx ||
       XmlAttributeName.fy ||
+      XmlAttributeName.fr ||
       XmlAttributeName.offset ||
       XmlAttributeName.stopOpacity ||
-      XmlAttributeName.strokeWidth =>
-        attributeValue.toSvgLengthPercentage(),
+      XmlAttributeName.strokeWidth => attributeValue.toSvgLengthPercentage(),
       XmlAttributeName.rx ||
       XmlAttributeName.ry ||
       XmlAttributeName.width ||
-      XmlAttributeName.height =>
-        attributeValue.toSvgLengthPercentageAuto(),
+      XmlAttributeName.height => attributeValue.toSvgLengthPercentageAuto(),
       XmlAttributeName.points => attributeValue.toSvgPointList(),
       XmlAttributeName.fill ||
       XmlAttributeName.stroke ||
-      XmlAttributeName.stopColor =>
-        attributeValue.toSvgColor(),
-      _ => null,
+      XmlAttributeName.stopColor => attributeValue.toSvgColor(),
+      XmlAttributeName.viewBox ||
+      XmlAttributeName.id ||
+      XmlAttributeName.href ||
+      XmlAttributeName.transform ||
+      XmlAttributeName.gradientTransform =>
+        null, // These are strings or special types handled elsewhere
     };
 
     if (parsedValue == null) {

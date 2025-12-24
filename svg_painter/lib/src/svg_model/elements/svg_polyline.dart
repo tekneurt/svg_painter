@@ -11,6 +11,7 @@ final class SvgPolyline extends SvgGraphicsElement {
     super.fill,
     super.stroke,
     super.strokeWidth,
+    super.transform,
   });
 
   /// The list of points defining the polyline.

@@ -34,6 +34,9 @@ extension ElementToSvgEllipse on XmlElement {
       XmlAttributeName.strokeWidth,
     );
 
+    final String? id = getXmlAttributeValue(XmlAttributeName.id);
+    final String? transform = getXmlAttributeValue(XmlAttributeName.transform);
+
     return Success<SvgEllipse>(
       SvgEllipse(
         cx: cx,
@@ -43,6 +46,8 @@ extension ElementToSvgEllipse on XmlElement {
         fill: fill,
         stroke: stroke,
         strokeWidth: strokeWidth,
+        transform: transform,
+        id: id,
       ),
     );
   }

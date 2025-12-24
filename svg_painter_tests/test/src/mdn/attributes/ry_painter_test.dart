@@ -5,10 +5,6 @@ import 'ry_painter.dart';
 
 void main() {
   testWidgets('RyPainter renders correctly', (WidgetTester tester) async {
-    await testSvgPainter(
-      tester: tester,
-      painter: RyPainter(),
-      goldenName: 'ry_painter.png',
-    );
+    await testSvgPainter(tester: tester, painter: RyPainter(), goldenName: 'ry_painter.png');
   });
 }

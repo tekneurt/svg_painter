@@ -8,21 +8,18 @@ import 'package:xml/xml.dart';
 void main() {
   group('ElementToSvg - RadialGradient', () {
     test('converts <radialGradient> with attributes correctly', () {
-      final XmlDocument document = XmlDocument.parse(
-        '''
+      final XmlDocument document = XmlDocument.parse('''
         <radialGradient id="grad1" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
           <stop offset="0%" stop-color="rgb(255,255,255)" stop-opacity="0" />
           <stop offset="100%" stop-color="rgb(0,0,255)" stop-opacity="1" />
         </radialGradient>
-        ''',
-      );
+        ''');
       final XmlElement element = document.rootElement;
 
       final Result<SvgElement> result = element.toSvgElement();
 
       expect(result, isA<Success<SvgElement>>());
-      final SvgRadialGradient gradient =
-          (result as Success<SvgElement>).value as SvgRadialGradient;
+      final SvgRadialGradient gradient = (result as Success<SvgElement>).value as SvgRadialGradient;
 
       expect(gradient.id, 'grad1');
       expect((gradient.cx as SvgPercentage).value, 50.0);
@@ -48,8 +45,7 @@ void main() {
       final Result<SvgElement> result = element.toSvgElement();
 
       expect(result, isA<Success<SvgElement>>());
-      final SvgRadialGradient gradient =
-          (result as Success<SvgElement>).value as SvgRadialGradient;
+      final SvgRadialGradient gradient = (result as Success<SvgElement>).value as SvgRadialGradient;
 
       expect((gradient.cx as SvgPercentage).value, 50.0);
       expect((gradient.cy as SvgPercentage).value, 50.0);

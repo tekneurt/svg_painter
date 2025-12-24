@@ -32,7 +32,7 @@ void main() {
           SvgCircle(
             cx: SvgPercentage(50.0), // 50% of 200 = 100
             cy: SvgPercentage(20.0), // 20% of 100 = 20
-            r: SvgPercentage(10.0),  // 10% of normalized diagonal
+            r: SvgPercentage(10.0), // 10% of normalized diagonal
           ),
         ],
       );
@@ -61,23 +61,19 @@ void main() {
       );
 
       final Result<List<PaintCommand>> result = circle.toPaintCommands();
-      final DrawCircle drawCircle = (result as Success<List<PaintCommand>>).value.first as DrawCircle;
+      final DrawCircle drawCircle =
+          (result as Success<List<PaintCommand>>).value.first as DrawCircle;
 
       expect(drawCircle.fillColorArgb, 0xFFFF0000);
       expect(drawCircle.strokeColorArgb, 0xFF0000FF);
     });
 
     test('resolves default colors when null', () {
-      const SvgCircle circle = SvgCircle(
-        cx: SvgLength(0),
-        cy: SvgLength(0),
-        r: SvgLength(0),
-        fill: null,
-        stroke: null,
-      );
+      const SvgCircle circle = SvgCircle(cx: SvgLength(0), cy: SvgLength(0), r: SvgLength(0));
 
       final Result<List<PaintCommand>> result = circle.toPaintCommands();
-      final DrawCircle drawCircle = (result as Success<List<PaintCommand>>).value.first as DrawCircle;
+      final DrawCircle drawCircle =
+          (result as Success<List<PaintCommand>>).value.first as DrawCircle;
 
       expect(drawCircle.fillColorArgb, 0xFF000000); // Default black
       expect(drawCircle.strokeColorArgb, 0x00000000); // Default none
@@ -96,10 +92,10 @@ void main() {
 
       expect(result, isA<Success<List<PaintCommand>>>());
       final List<PaintCommand> commands = (result as Success<List<PaintCommand>>).value;
-      
+
       expect(commands, hasLength(1));
       expect(commands.first, isA<DrawOval>());
-      
+
       final DrawOval drawOval = commands.first as DrawOval;
       expect(drawOval.cx, 100.0);
       expect(drawOval.cy, 50.0);
@@ -112,11 +108,11 @@ void main() {
 
     test('resolves SvgEllipse auto values correctly', () {
       // Case 1: rx=auto, ry=20 -> rx=20, ry=20
-      final SvgEllipse ellipse1 = SvgEllipse(
-        cx: const SvgLength(0),
-        cy: const SvgLength(0),
-        rx: const SvgAuto(),
-        ry: const SvgLength(20),
+      const SvgEllipse ellipse1 = SvgEllipse(
+        cx: SvgLength(0),
+        cy: SvgLength(0),
+        rx: SvgAuto(),
+        ry: SvgLength(20),
       );
       final DrawOval cmd1 =
           (ellipse1.toPaintCommands() as Success<List<PaintCommand>>).value.first as DrawOval;
@@ -124,11 +120,11 @@ void main() {
       expect(cmd1.ry, 20.0);
 
       // Case 2: rx=30, ry=auto -> rx=30, ry=30
-      final SvgEllipse ellipse2 = SvgEllipse(
-        cx: const SvgLength(0),
-        cy: const SvgLength(0),
-        rx: const SvgLength(30),
-        ry: const SvgAuto(),
+      const SvgEllipse ellipse2 = SvgEllipse(
+        cx: SvgLength(0),
+        cy: SvgLength(0),
+        rx: SvgLength(30),
+        ry: SvgAuto(),
       );
       final DrawOval cmd2 =
           (ellipse2.toPaintCommands() as Success<List<PaintCommand>>).value.first as DrawOval;
@@ -136,11 +132,11 @@ void main() {
       expect(cmd2.ry, 30.0);
 
       // Case 3: rx=auto, ry=auto -> rx=0, ry=0
-      final SvgEllipse ellipse3 = SvgEllipse(
-        cx: const SvgLength(0),
-        cy: const SvgLength(0),
-        rx: const SvgAuto(),
-        ry: const SvgAuto(),
+      const SvgEllipse ellipse3 = SvgEllipse(
+        cx: SvgLength(0),
+        cy: SvgLength(0),
+        rx: SvgAuto(),
+        ry: SvgAuto(),
       );
       final DrawOval cmd3 =
           (ellipse3.toPaintCommands() as Success<List<PaintCommand>>).value.first as DrawOval;

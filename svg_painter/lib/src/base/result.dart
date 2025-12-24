@@ -24,7 +24,8 @@ sealed class Result<T> {
   /// If this [Result] is a [Failure], the failure is propagated.
   Future<Result<R>> mapAsync<R>(Future<R> Function(T value) transform) async {
     return fold(
-      (Failure<T> failure) => Future<Result<R>>.value(Failure<R>(failure.message)), // Propagate failure with Future
+      (Failure<T> failure) =>
+          Future<Result<R>>.value(Failure<R>(failure.message)), // Propagate failure with Future
       (T value) async => Success<R>(await transform(value)),
     );
   }
@@ -46,7 +47,8 @@ sealed class Result<T> {
   /// If this [Result] is a [Failure], the failure is propagated.
   Future<Result<R>> flatMapAsync<R>(Future<Result<R>> Function(T value) transform) async {
     return fold(
-      (Failure<T> failure) => Future<Result<R>>.value(Failure<R>(failure.message)), // Propagate failure with Future
+      (Failure<T> failure) =>
+          Future<Result<R>>.value(Failure<R>(failure.message)), // Propagate failure with Future
       (T value) => transform(value),
     );
   }
@@ -67,9 +69,7 @@ final class Success<T> extends Result<T> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is Success<T> &&
-          runtimeType == other.runtimeType &&
-          value == other.value);
+      (other is Success<T> && runtimeType == other.runtimeType && value == other.value);
 
   @override
   int get hashCode => value.hashCode;
@@ -93,9 +93,7 @@ final class Failure<T> extends Result<T> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is Failure<T> &&
-          runtimeType == other.runtimeType &&
-          message == other.message);
+      (other is Failure<T> && runtimeType == other.runtimeType && message == other.message);
 
   @override
   int get hashCode => message.hashCode;

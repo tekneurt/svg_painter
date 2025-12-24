@@ -27,6 +27,9 @@ extension ElementToSvg on XmlElement {
       XmlAttributeName.strokeWidth,
     );
 
+    final String? id = getXmlAttributeValue(XmlAttributeName.id);
+    final String? transform = getXmlAttributeValue(XmlAttributeName.transform);
+
     return Success<SvgCircle>(
       SvgCircle(
         cx: cx,
@@ -35,6 +38,8 @@ extension ElementToSvg on XmlElement {
         fill: fill,
         stroke: stroke,
         strokeWidth: strokeWidth,
+        transform: transform,
+        id: id,
       ),
     );
   }

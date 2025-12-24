@@ -127,7 +127,7 @@ Implement support for additional SVG shapes using the new layered architecture.
 - [ ] **Path** (`<path>`)
 - [ ] **Text** (`<text>`)
 - [ ] **Image** (`<image>`)
-- [ ] **Use** (`<use>`)
+- [x] **Use** (`<use>`)
 - [x] **TODO(Gemini)**: Implement zero-radius handling (0-radius elements are not rendered).
 - [ ] **TODO(Gemini)**: Add `pathLength` support to SVG models.
 - [ ] **TODO(Gemini)**: Add comprehensive tests for all `BoxFit` values (separate from MDN examples).
@@ -136,7 +136,16 @@ Implement support for additional SVG shapes using the new layered architecture.
 - [ ] **TODO(Gemini)**: Implement full `gradientUnits` support (currently assumes `userSpaceOnUse` mapping).
 - [ ] **TODO(Gemini)**: Implement `objectBoundingBox` for gradients.
 - [ ] **TODO(Gemini)**: Implement full `gradientTransform` support (currently only `rotate(90)`).
-- [ ] **TODO(Gemini)**: Improve `toPosition` mapping for nested elements and complex coordinate systems.
+- [ ] **TODO(Gemini)**: Implement `fill` attribute example from MDN (requires `path`).
+- [ ] **TODO(Gemini)**: Implement `stroke` attribute example from MDN (requires `path`).
+- [ ] **TODO(Gemini)**: Implement `fy` attribute example from MDN (requires `text`).
+- [ ] **TODO(Gemini)**: Implement `points` attribute example from MDN (requires `transform`).
+- [ ] **TODO(Gemini)**: Implement other examples from the `<svg>` element MDN page.
+- [ ] **TODO(Gemini)**: Implement full `transform` attribute support (parsing matrices, rotate, translate, etc.).
+- [ ] **TODO(Gemini)**: Implement `fr` (focal radius) for radial gradients.
+- [x] **TODO(Gemini)**: Implement `<use>` element support.
+- [x] **TODO(Gemini)**: Improve `toPosition` mapping for nested elements and complex coordinate systems.
+- [ ] **TODO(Gemini)**: Simplify golden tests by using a single function that enumerates all fixtures.
 - [ ] **TODO(Gemini)**: Determine default behavior for unknown named colors (render vs throw).
 - [ ] **TODO(Gemini)**: Handle failure cases in `SvgToPainting` converter.
 - [ ] **Attributes**
@@ -144,12 +153,20 @@ Implement support for additional SVG shapes using the new layered architecture.
     - [x] Stroke (color, width)
     - [ ] Stroke (cap, join)
     - [ ] Opacity
-- [ ] **Transforms** (translate, rotate, scale, skew)
+- [x] **Transforms** (translate, scale via nested SVG and use)
 - [ ] **Test**: Verify against the Daphnia SVG.
 
-### Phase 6: Polish & Release
-- [ ] **Refactor**: `SvgPainterGenerator` — remove large `else if` blocks and modularize code generation logic.
-- [ ] **Refactor**: Convert existing code to use dot shorthand for enum values and static members (e.g. `.horizontal` instead of `SvgOrientation.horizontal`) per new contributing guidelines.
+### Phase 6: Polish & Release (MVP 0.1.0)
+- [ ] **Refactor (High Priority)**: `SvgPaintingContext` — Encapsulate coordinate transformations (e.g., `context.transformPoint(x, y)`) to deduplicate math in shape converters.
+- [ ] **Refactor (High Priority)**: `SvgPainterGenerator` — Modularize code generation logic (e.g., Strategy Pattern) to eliminate the monolithic `if/else` block and deduplicate `Paint` boilerplate.
+- [ ] **Refactor (High Priority)**: XML Conversion — Deduplicate parsing logic for common attributes (`fill`, `stroke`, `strokeWidth`, `id`) using a mixin or helper.
+- [ ] **Refactor (Medium Priority)**: `Painting Model` — Consolidate fill/stroke properties into a `PaintingStyle` data class to simplify generator and models.
+- [ ] **Refactor (Medium Priority)**: `SvgToPainting` — Create a `resolvePaint` helper to standardize `fill` vs `fillShaderId` resolution and reduce boilerplate in shape converters.
+- [ ] **Refactor (Medium Priority)**: `SvgValue` — Update `toDouble()` to accept `SvgPaintingContext` for future-proofing unit resolution (e.g., `em`).
+- [ ] **Refactor (Medium Priority)**: SVG Model — Investigate grouping SVG elements by category (e.g., using sealed classes for `BasicShapes`, `Containers`, etc.) to better reflect the spec and share properties.
+- [ ] **Refactor (Low Priority)**: `Result` — Add ergonomic extensions (e.g., `combine()`) to simplify list folding and result aggregation.
+- [ ] **Refactor (Low Priority)**: Convert existing code to use dot shorthand for enum values and static members consistently.
+- [ ] **Refactor (Low Priority)**: Standardize extension naming across all layers (e.g., `To[Target]`).
 - [ ] comprehensive documentation.
 - [ ] API polishing.
 - [ ] Publish to pub.dev (dry run).

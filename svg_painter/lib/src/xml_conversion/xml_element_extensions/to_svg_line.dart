@@ -35,6 +35,7 @@ extension ElementToSvgLine on XmlElement {
     );
 
     final String? id = getXmlAttributeValue(XmlAttributeName.id);
+    final String? transform = getXmlAttributeValue(XmlAttributeName.transform);
 
     return Success<SvgLine>(
       SvgLine(
@@ -45,6 +46,7 @@ extension ElementToSvgLine on XmlElement {
         fill: fill,
         stroke: stroke,
         strokeWidth: strokeWidth,
+        transform: transform,
         id: id,
       ),
     );

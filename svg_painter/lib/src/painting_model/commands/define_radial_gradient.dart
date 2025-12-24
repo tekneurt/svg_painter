@@ -19,21 +19,30 @@ final class DefineRadialGradient extends PaintCommand {
     required this.radius,
     required this.fx,
     required this.fy,
+    required this.focalRadius,
     required this.stops,
     this.transform,
   });
 
   final String id;
+
   /// Normalized x-coordinate (0.0 - 1.0).
   final double cx;
+
   /// Normalized y-coordinate (0.0 - 1.0).
   final double cy;
+
   /// Normalized radius (0.0 - 1.0).
   final double radius;
+
   /// Normalized focal x-coordinate (0.0 - 1.0).
   final double fx;
+
   /// Normalized focal y-coordinate (0.0 - 1.0).
   final double fy;
+
+  /// Normalized focal radius (0.0 - 1.0).
+  final double focalRadius;
   final List<GradientStop> stops;
   final String? transform;
 

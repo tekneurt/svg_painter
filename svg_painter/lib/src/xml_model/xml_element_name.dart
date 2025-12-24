@@ -24,6 +24,9 @@ enum XmlElementName {
   /// The <defs> element.
   defs('defs'),
 
+  /// The <use> element.
+  use('use'),
+
   /// The <radialGradient> element.
   radialGradient('radialGradient'),
 

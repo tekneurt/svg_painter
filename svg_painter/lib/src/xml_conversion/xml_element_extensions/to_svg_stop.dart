@@ -14,10 +14,7 @@ extension ElementToSvgStop on XmlElement {
       elementName,
       XmlAttributeName.offset,
     );
-    final SvgColor? stopColor = toSvgValueOrNull<SvgColor>(
-      elementName,
-      XmlAttributeName.stopColor,
-    );
+    final SvgColor? stopColor = toSvgValueOrNull<SvgColor>(elementName, XmlAttributeName.stopColor);
     final SvgLengthPercentage stopOpacity = toSvgValue<SvgLengthPercentage>(
       elementName,
       XmlAttributeName.stopOpacity,
@@ -26,12 +23,7 @@ extension ElementToSvgStop on XmlElement {
     final String? id = getXmlAttributeValue(XmlAttributeName.id);
 
     return Success<SvgStop>(
-      SvgStop(
-        offset: offset,
-        stopColor: stopColor,
-        stopOpacity: stopOpacity,
-        id: id,
-      ),
+      SvgStop(offset: offset, stopColor: stopColor, stopOpacity: stopOpacity, id: id),
     );
   }
 }

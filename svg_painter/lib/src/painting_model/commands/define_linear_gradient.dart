@@ -14,12 +14,16 @@ final class DefineLinearGradient extends PaintCommand {
   });
 
   final String id;
+
   /// Normalized x-axis start coordinate (0.0 - 1.0).
   final double x1;
+
   /// Normalized y-axis start coordinate (0.0 - 1.0).
   final double y1;
+
   /// Normalized x-axis end coordinate (0.0 - 1.0).
   final double x2;
+
   /// Normalized y-axis end coordinate (0.0 - 1.0).
   final double y2;
   final List<GradientStop> stops;

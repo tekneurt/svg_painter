@@ -9,7 +9,9 @@ import '../svg_value_extensions/svg_percentage_to_double.dart';
 extension SvgRadialGradientToPainting on SvgRadialGradient {
   Result<DefineRadialGradient> toPaintCommand(SvgPaintingContext context) {
     if (id == null) {
-      return const Failure('RadialGradient must have an ID to be referenced.');
+      return const Failure<DefineRadialGradient>(
+        'RadialGradient must have an ID to be referenced.',
+      );
     }
 
     const SvgPaintingContext fractionContext = SvgPaintingContext(
@@ -24,7 +26,7 @@ extension SvgRadialGradientToPainting on SvgRadialGradient {
       );
     }).toList();
 
-    return Success(
+    return Success<DefineRadialGradient>(
       DefineRadialGradient(
         id: id!,
         cx: cx.toDouble(fractionContext, SvgOrientation.horizontal),
@@ -32,6 +34,7 @@ extension SvgRadialGradientToPainting on SvgRadialGradient {
         radius: r.toDouble(fractionContext, SvgOrientation.normalized),
         fx: fx.toDouble(fractionContext, SvgOrientation.horizontal),
         fy: fy.toDouble(fractionContext, SvgOrientation.vertical),
+        focalRadius: fr.toDouble(fractionContext, SvgOrientation.normalized),
         stops: paintStops,
         transform: gradientTransform,
       ),
@@ -42,7 +45,9 @@ extension SvgRadialGradientToPainting on SvgRadialGradient {
 extension SvgLinearGradientToPainting on SvgLinearGradient {
   Result<DefineLinearGradient> toPaintCommand(SvgPaintingContext context) {
     if (id == null) {
-      return const Failure('LinearGradient must have an ID to be referenced.');
+      return const Failure<DefineLinearGradient>(
+        'LinearGradient must have an ID to be referenced.',
+      );
     }
 
     const SvgPaintingContext fractionContext = SvgPaintingContext(
@@ -57,7 +62,7 @@ extension SvgLinearGradientToPainting on SvgLinearGradient {
       );
     }).toList();
 
-    return Success(
+    return Success<DefineLinearGradient>(
       DefineLinearGradient(
         id: id!,
         x1: x1.toDouble(fractionContext, SvgOrientation.horizontal),

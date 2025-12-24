@@ -11,6 +11,7 @@ final class DrawLine extends PaintCommand {
     this.strokeColorArgb,
     this.strokeWidth = 1.0,
     this.strokeShaderId,
+    this.transform,
   });
 
   final double x1;
@@ -21,8 +22,9 @@ final class DrawLine extends PaintCommand {
   final int? strokeColorArgb;
   final double strokeWidth;
   final String? strokeShaderId;
+  final String? transform;
 
   @override
   String toString() =>
-      'DrawLine(x1: $x1, y1: $y1, x2: $x2, y2: $y2, stroke: $strokeColorArgb, width: $strokeWidth, shader: $strokeShaderId)';
+      'DrawLine(x1: $x1, y1: $y1, x2: $x2, y2: $y2, stroke: $strokeColorArgb, width: $strokeWidth, shader: $strokeShaderId, transform: $transform)';
 }

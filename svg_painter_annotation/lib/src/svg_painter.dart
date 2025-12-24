@@ -9,14 +9,12 @@ sealed class SvgPainter {
   ///
   /// [path] should be the relative path to the SVG file from the package root
   /// or an absolute asset path (e.g., `package:my_package/assets/icon.svg`).
-  const factory SvgPainter.file(String path, {String? painterClassName}) =
-      SvgFilePainter;
+  const factory SvgPainter.file(String path, {String? painterClassName}) = SvgFilePainter;
 
   /// Creates an annotation from raw SVG code.
   ///
   /// [code] should be the valid XML string of the SVG.
-  const factory SvgPainter.code(String code, {String? painterClassName}) =
-      SvgCodePainter;
+  const factory SvgPainter.code(String code, {String? painterClassName}) = SvgCodePainter;
 
   /// The name of the generated CustomPainter class.
   /// If null, the generator will use `$[ClassName]Painter`.

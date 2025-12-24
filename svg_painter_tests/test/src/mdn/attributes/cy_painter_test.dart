@@ -5,10 +5,6 @@ import 'cy_painter.dart';
 
 void main() {
   testWidgets('CyPainter renders correctly', (WidgetTester tester) async {
-    await testSvgPainter(
-      tester: tester,
-      painter: CyPainter(),
-      goldenName: 'cy_painter.png',
-    );
+    await testSvgPainter(tester: tester, painter: CyPainter(), goldenName: 'cy_painter.png');
   });
 }

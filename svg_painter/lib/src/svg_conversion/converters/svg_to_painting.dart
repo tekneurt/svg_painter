@@ -9,7 +9,10 @@ import '../svg_element_extensions/svg_line_to_draw_line.dart';
 import '../svg_element_extensions/svg_polygon_to_draw_polygon.dart';
 import '../svg_element_extensions/svg_polyline_to_draw_polyline.dart';
 import '../svg_element_extensions/svg_rect_to_draw_rect.dart';
+import '../svg_value_extensions/svg_auto_to_double.dart';
+import '../svg_value_extensions/svg_length_percentage_to_double.dart';
 import '../svg_value_extensions/svg_length_to_double.dart';
+import '../svg_value_extensions/svg_percentage_to_double.dart';
 import 'svg_definition_collector.dart';
 import 'svg_painting_context.dart';
 
@@ -18,7 +21,7 @@ extension SvgToPainting on SvgElement {
   /// Converts this [SvgElement] to a list of [PaintCommand]s.
   Result<List<PaintCommand>> toPaintCommands([SvgPaintingContext? context]) {
     final SvgElement self = this;
-    if (self is SvgRoot) {
+    if (self is SvgRoot && context == null) {
       // Establish context from SvgRoot
       final double width =
           self.viewBox?.width ??
@@ -39,50 +42,108 @@ extension SvgToPainting on SvgElement {
       final Map<String, SvgElement> definitions = <String, SvgElement>{};
       self.collectDefinitions(definitions);
 
+      // Root context: parent transform maps (minX, minY) to (0, 0) in the painter's canvas.
+      // Point P maps to: (P.x - minX) * 1.0 + 0 = P.x - minX
       final SvgPaintingContext rootContext = SvgPaintingContext(
         viewBoxWidth: width,
         viewBoxHeight: height,
         viewBoxMinX: minX,
         viewBoxMinY: minY,
+        inheritedFill: self.fill,
+        inheritedStroke: self.stroke,
+        inheritedStrokeWidth: self.strokeWidth,
         definitions: definitions,
       );
       return self._toPaintCommands(rootContext);
     }
 
-    if (context == null) {
-      // Fallback context if none provided and not SvgRoot
-      context = const SvgPaintingContext(viewBoxWidth: 100.0, viewBoxHeight: 100.0);
+    context ??= const SvgPaintingContext(viewBoxWidth: 100.0, viewBoxHeight: 100.0);
+
+    // Determine context for children (override inherited with current element styles)
+    final SvgPaintingContext childContext;
+    if (self is SvgGraphicsElement) {
+      childContext = SvgPaintingContext(
+        viewBoxWidth: context.viewBoxWidth,
+        viewBoxHeight: context.viewBoxHeight,
+        viewBoxMinX: context.viewBoxMinX,
+        viewBoxMinY: context.viewBoxMinY,
+        parentTx: context.parentTx,
+        parentTy: context.parentTy,
+        parentSx: context.parentSx,
+        parentSy: context.parentSy,
+        inheritedFill: self.fill ?? context.inheritedFill,
+        inheritedStroke: self.stroke ?? context.inheritedStroke,
+        inheritedStrokeWidth: self.strokeWidth ?? context.inheritedStrokeWidth,
+        definitions: context.definitions,
+      );
+    } else {
+      childContext = context;
     }
 
     return switch (self) {
-      final SvgSvg container => container._toPaintCommands(context),
-      final SvgCircle circle => circle
-          .toDrawCircle(context)
-          .map((DrawCircle cmd) => <PaintCommand>[cmd]),
-      final SvgEllipse ellipse => ellipse
-          .toDrawOval(context)
-          .map((DrawOval cmd) => <PaintCommand>[cmd]),
-      final SvgRect rect => rect
-          .toDrawRect(context)
-          .map((DrawRect cmd) => <PaintCommand>[cmd]),
-      final SvgLine line => line
-          .toDrawLine(context)
-          .map((DrawLine cmd) => <PaintCommand>[cmd]),
-      final SvgPolyline polyline => polyline
-          .toDrawPolyline(context)
-          .map((DrawPolyline cmd) => <PaintCommand>[cmd]),
-      final SvgPolygon polygon => polygon
-          .toDrawPolygon(context)
-          .map((DrawPolygon cmd) => <PaintCommand>[cmd]),
-      final SvgDefs defs => defs._toPaintCommands(context),
-      final SvgRadialGradient radialGradient => radialGradient
-          .toPaintCommand(context)
-          .map((DefineRadialGradient cmd) => <PaintCommand>[cmd]),
-      final SvgLinearGradient linearGradient => linearGradient
-          .toPaintCommand(context)
-          .map((DefineLinearGradient cmd) => <PaintCommand>[cmd]),
-      (_) => Success<List<PaintCommand>>(<PaintCommand>[]),
+      final SvgSvg container => container._toPaintCommands(childContext),
+      final SvgCircle circle =>
+        circle.toDrawCircle(childContext).map((DrawCircle cmd) => <PaintCommand>[cmd]),
+      final SvgEllipse ellipse =>
+        ellipse.toDrawOval(childContext).map((DrawOval cmd) => <PaintCommand>[cmd]),
+      final SvgRect rect =>
+        rect.toDrawRect(childContext).map((DrawRect cmd) => <PaintCommand>[cmd]),
+      final SvgLine line =>
+        line.toDrawLine(childContext).map((DrawLine cmd) => <PaintCommand>[cmd]),
+      final SvgPolyline polyline =>
+        polyline.toDrawPolyline(childContext).map((DrawPolyline cmd) => <PaintCommand>[cmd]),
+      final SvgPolygon polygon =>
+        polygon.toDrawPolygon(childContext).map((DrawPolygon cmd) => <PaintCommand>[cmd]),
+      final SvgUse use => use._toPaintCommands(childContext),
+      final SvgDefs defs => defs._toPaintCommands(childContext),
+      final SvgRadialGradient radialGradient =>
+        radialGradient
+            .toPaintCommand(childContext)
+            .map((DefineRadialGradient cmd) => <PaintCommand>[cmd]),
+      final SvgLinearGradient linearGradient =>
+        linearGradient
+            .toPaintCommand(childContext)
+            .map((DefineLinearGradient cmd) => <PaintCommand>[cmd]),
+      (_) => const Success<List<PaintCommand>>(<PaintCommand>[]),
     };
+  }
+}
+
+extension _SvgUseToPainting on SvgUse {
+  Result<List<PaintCommand>> _toPaintCommands(SvgPaintingContext context) {
+    // 1. Resolve ID from href (remove leading #)
+    final String targetId = href.startsWith('#') ? href.substring(1) : href;
+
+    // 2. Lookup definition
+    final SvgElement? target = context.definitions[targetId];
+    if (target == null) {
+      return const Success<List<PaintCommand>>(
+        <PaintCommand>[],
+      ); // Silently ignore missing refs?
+    }
+
+    // 3. Apply x/y translation (relative to current user space)
+    final double dx = x.toDouble(context, SvgOrientation.horizontal);
+    final double dy = y.toDouble(context, SvgOrientation.vertical);
+
+    // Create context for target, preserving inherited styles.
+    // Note: <use> offsets the origin by (dx, dy) in the current space.
+    final SvgPaintingContext useCtx = SvgPaintingContext(
+      viewBoxWidth: context.viewBoxWidth,
+      viewBoxHeight: context.viewBoxHeight,
+      viewBoxMinX: context.viewBoxMinX,
+      viewBoxMinY: context.viewBoxMinY,
+      parentTx: context.parentTx + (dx * context.parentSx),
+      parentTy: context.parentTy + (dy * context.parentSy),
+      parentSx: context.parentSx,
+      parentSy: context.parentSy,
+      inheritedFill: fill ?? context.inheritedFill,
+      inheritedStroke: stroke ?? context.inheritedStroke,
+      inheritedStrokeWidth: strokeWidth ?? context.inheritedStrokeWidth,
+      definitions: context.definitions,
+    );
+
+    return target.toPaintCommands(useCtx);
   }
 }
 
@@ -99,7 +160,12 @@ extension _SvgDefsToPainting on SvgDefs {
           return <PaintCommand>[];
         },
         (List<PaintCommand> value) {
-          commands.addAll(value);
+          // Only include definition commands (Gradients), exclude drawing commands
+          commands.addAll(
+            value.where(
+              (PaintCommand cmd) => cmd is DefineLinearGradient || cmd is DefineRadialGradient,
+            ),
+          );
         },
       );
     }
@@ -110,10 +176,56 @@ extension _SvgDefsToPainting on SvgDefs {
 
 extension _SvgSvgToPainting on SvgSvg {
   Result<List<PaintCommand>> _toPaintCommands(SvgPaintingContext context) {
+    // 1. Resolve viewport geometry (relative to parent coordinate system)
+    final double xVal = (x ?? const SvgLength(0.0)).toDouble(context, SvgOrientation.horizontal);
+    final double yVal = (y ?? const SvgLength(0.0)).toDouble(context, SvgOrientation.vertical);
+
+    final double wVal =
+        width?.toDoubleOrNull(context, SvgOrientation.horizontal) ?? context.viewBoxWidth;
+    final double hVal =
+        height?.toDoubleOrNull(context, SvgOrientation.vertical) ?? context.viewBoxHeight;
+
+    // ViewBox establishes the internal coordinate system mapping.
+    final double vbW = viewBox?.width ?? wVal;
+    final double vbH = viewBox?.height ?? hVal;
+    final double vbMinX = viewBox?.minX ?? 0.0;
+    final double vbMinY = viewBox?.minY ?? 0.0;
+
+    // Scale factors to map viewBox to the viewport rectangle.
+    final double sx = wVal / vbW;
+    final double sy = hVal / vbH;
+
+    final double newSx = context.parentSx * sx;
+    final double newSy = context.parentSy * sy;
+
+    // newTx = screen position where internal coord (vbMinX, vbMinY) maps to screen point (x, y).
+    // P_screen = (P_inner - vbMinX) * newSx + screenX
+    //          = P_inner * newSx + screenX - vbMinX * newSx
+    final double screenX = (xVal * context.parentSx) + context.parentTx;
+    final double screenY = (yVal * context.parentSy) + context.parentTy;
+
+    final double newTx = screenX - (vbMinX * newSx);
+    final double newTy = screenY - (vbMinY * newSy);
+
+    final SvgPaintingContext innerContext = SvgPaintingContext(
+      viewBoxWidth: vbW,
+      viewBoxHeight: vbH,
+      viewBoxMinX: vbMinX,
+      viewBoxMinY: vbMinY,
+      parentTx: newTx,
+      parentTy: newTy,
+      parentSx: newSx,
+      parentSy: newSy,
+      inheritedFill: fill ?? context.inheritedFill,
+      inheritedStroke: stroke ?? context.inheritedStroke,
+      inheritedStrokeWidth: strokeWidth ?? context.inheritedStrokeWidth,
+      definitions: context.definitions,
+    );
+
     final List<PaintCommand> commands = <PaintCommand>[];
 
     for (final SvgElement child in children) {
-      final Result<List<PaintCommand>> result = child.toPaintCommands(context);
+      final Result<List<PaintCommand>> result = child.toPaintCommands(innerContext);
 
       result.fold(
         (Failure<List<PaintCommand>> failure) {

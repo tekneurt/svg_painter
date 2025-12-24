@@ -34,7 +34,7 @@ void main() {
 
       expect(result, isA<Success<SvgElement>>());
       final SvgRect rect = (result as Success<SvgElement>).value as SvgRect;
-      
+
       expect((rect.x as SvgLength).value, 0.0);
       expect((rect.y as SvgLength).value, 0.0);
       expect(rect.width, isA<SvgAuto>());

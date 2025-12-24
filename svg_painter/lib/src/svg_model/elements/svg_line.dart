@@ -14,6 +14,7 @@ final class SvgLine extends SvgGraphicsElement {
     super.fill,
     super.stroke,
     super.strokeWidth,
+    super.transform,
   });
 
   /// The x-axis coordinate of the start of the line.

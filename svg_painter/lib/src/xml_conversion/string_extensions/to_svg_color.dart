@@ -89,8 +89,7 @@ extension StringToColor on String {
     final int g = parsePart(match.group(2)!);
     final int b = parsePart(match.group(3)!);
     final String? aGroup = match.group(4);
-    final int a =
-        aGroup == null ? 255 : (double.parse(aGroup) * 255).round().clamp(0, 255);
+    final int a = aGroup == null ? 255 : (double.parse(aGroup) * 255).round().clamp(0, 255);
 
     return SvgRgbColor(a, r, g, b);
   }

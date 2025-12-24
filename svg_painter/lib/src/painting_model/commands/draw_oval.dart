@@ -13,6 +13,7 @@ final class DrawOval extends PaintCommand {
     this.strokeWidth = 0.0,
     this.fillShaderId,
     this.strokeShaderId,
+    this.transform,
   });
 
   /// The x-coordinate of the center.
@@ -42,7 +43,10 @@ final class DrawOval extends PaintCommand {
   /// The ID of the stroke shader.
   final String? strokeShaderId;
 
+  /// The transformation string.
+  final String? transform;
+
   @override
   String toString() =>
-      'DrawOval(cx: $cx, cy: $cy, rx: $rx, ry: $ry, fill: $fillColorArgb, stroke: $strokeColorArgb, width: $strokeWidth, fillShader: $fillShaderId, strokeShader: $strokeShaderId)';
+      'DrawOval(cx: $cx, cy: $cy, rx: $rx, ry: $ry, fill: $fillColorArgb, stroke: $strokeColorArgb, width: $strokeWidth, fillShader: $fillShaderId, strokeShader: $strokeShaderId, transform: $transform)';
 }

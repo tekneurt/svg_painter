@@ -12,6 +12,7 @@ part 'elements/svg_linear_gradient.dart';
 part 'elements/svg_polyline.dart';
 part 'elements/svg_polygon.dart';
 part 'elements/svg_svg.dart';
+part 'elements/svg_use.dart';
 
 /// The base class for all SVG elements in the domain model.
 @immutable
@@ -26,7 +27,7 @@ sealed class SvgElement {
 /// Corresponds to the 'SVGGraphicsElement' interface in the SVG DOM.
 @immutable
 sealed class SvgGraphicsElement extends SvgElement {
-  const SvgGraphicsElement({super.id, this.fill, this.stroke, this.strokeWidth});
+  const SvgGraphicsElement({super.id, this.fill, this.stroke, this.strokeWidth, this.transform});
 
   /// The fill color of the element.
   final SvgColor? fill;
@@ -36,4 +37,7 @@ sealed class SvgGraphicsElement extends SvgElement {
 
   /// The width of the stroke.
   final SvgLengthPercentage? strokeWidth;
+
+  /// The transform applied to the element.
+  final String? transform;
 }

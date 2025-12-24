@@ -10,14 +10,8 @@ extension ElementToSvgRect on XmlElement {
   Result<SvgRect> toSvgRect() {
     const XmlElementName elementName = XmlElementName.rect;
 
-    final SvgLengthPercentage x = toSvgValue<SvgLengthPercentage>(
-      elementName,
-      XmlAttributeName.x,
-    );
-    final SvgLengthPercentage y = toSvgValue<SvgLengthPercentage>(
-      elementName,
-      XmlAttributeName.y,
-    );
+    final SvgLengthPercentage x = toSvgValue<SvgLengthPercentage>(elementName, XmlAttributeName.x);
+    final SvgLengthPercentage y = toSvgValue<SvgLengthPercentage>(elementName, XmlAttributeName.y);
     final SvgLengthPercentageAuto width = toSvgValue<SvgLengthPercentageAuto>(
       elementName,
       XmlAttributeName.width,
@@ -41,6 +35,8 @@ extension ElementToSvgRect on XmlElement {
       elementName,
       XmlAttributeName.strokeWidth,
     );
+    final String? id = getXmlAttributeValue(XmlAttributeName.id);
+    final String? transform = getXmlAttributeValue(XmlAttributeName.transform);
 
     return Success<SvgRect>(
       SvgRect(
@@ -53,6 +49,8 @@ extension ElementToSvgRect on XmlElement {
         fill: fill,
         stroke: stroke,
         strokeWidth: strokeWidth,
+        transform: transform,
+        id: id,
       ),
     );
   }

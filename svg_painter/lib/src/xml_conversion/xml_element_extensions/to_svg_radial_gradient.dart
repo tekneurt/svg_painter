@@ -18,31 +18,28 @@ extension ElementToSvgRadialGradient on XmlElement {
       elementName,
       XmlAttributeName.cy,
     );
-    final SvgLengthPercentage r = toSvgValue<SvgLengthPercentage>(
+    final SvgLengthPercentage r = toSvgValue<SvgLengthPercentage>(elementName, XmlAttributeName.r);
+
+    final SvgLengthPercentage fr = toSvgValue<SvgLengthPercentage>(
       elementName,
-      XmlAttributeName.r,
+      XmlAttributeName.fr,
     );
 
     // fx defaults to cx if not specified.
     final SvgLengthPercentage fx =
-        toSvgValueOrNull<SvgLengthPercentage>(elementName, XmlAttributeName.fx) ??
-        cx;
+        toSvgValueOrNull<SvgLengthPercentage>(elementName, XmlAttributeName.fx) ?? cx;
 
     // fy defaults to cy if not specified.
     final SvgLengthPercentage fy =
-        toSvgValueOrNull<SvgLengthPercentage>(elementName, XmlAttributeName.fy) ??
-        cy;
+        toSvgValueOrNull<SvgLengthPercentage>(elementName, XmlAttributeName.fy) ?? cy;
 
     final List<SvgStop> stops = <SvgStop>[];
     for (final XmlNode child in children) {
       if (child is XmlElement && child.name.local == XmlElementName.stop.tagName) {
         final Result<SvgStop> result = child.toSvgStop();
-        result.fold(
-          (Failure<SvgStop> failure) {},
-          (SvgStop value) {
-            stops.add(value);
-          },
-        );
+        result.fold((Failure<SvgStop> failure) {}, (SvgStop value) {
+          stops.add(value);
+        });
       }
     }
 
@@ -57,6 +54,7 @@ extension ElementToSvgRadialGradient on XmlElement {
         r: r,
         fx: fx,
         fy: fy,
+        fr: fr,
         gradientTransform: gradientTransform,
         id: id,
       ),

@@ -7,6 +7,8 @@ part of '../svg_element.dart';
 base class SvgSvg extends SvgGraphicsElement {
   const SvgSvg({
     required this.children,
+    this.x,
+    this.y,
     this.width,
     this.height,
     this.viewBox,
@@ -14,10 +16,17 @@ base class SvgSvg extends SvgGraphicsElement {
     super.fill,
     super.stroke,
     super.strokeWidth,
+    super.transform,
   });
 
   /// The child elements contained within this SVG.
   final List<SvgElement> children;
+
+  /// The x-axis coordinate of the SVG.
+  final SvgLengthPercentage? x;
+
+  /// The y-axis coordinate of the SVG.
+  final SvgLengthPercentage? y;
 
   /// The width of the SVG.
   final SvgLengthPercentageAuto? width;
@@ -34,6 +43,8 @@ base class SvgSvg extends SvgGraphicsElement {
 final class SvgRoot extends SvgSvg {
   const SvgRoot({
     required super.children,
+    super.x,
+    super.y,
     super.width,
     super.height,
     super.viewBox,
@@ -41,5 +52,6 @@ final class SvgRoot extends SvgSvg {
     super.fill,
     super.stroke,
     super.strokeWidth,
+    super.transform,
   });
 }

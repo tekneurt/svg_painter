@@ -56,7 +56,7 @@ void main() {
 
       expect(result, isA<Success<SvgElement>>());
       final SvgEllipse ellipse = (result as Success<SvgElement>).value as SvgEllipse;
-      
+
       expect((ellipse.cx as SvgLength).value, 0.0);
       expect((ellipse.cy as SvgLength).value, 0.0);
       expect(ellipse.rx, isA<SvgAuto>());

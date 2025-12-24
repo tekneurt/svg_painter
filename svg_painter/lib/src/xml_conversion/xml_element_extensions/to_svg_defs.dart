@@ -8,7 +8,6 @@ import '../_xml_conversion.dart';
 extension ElementToSvgDefs on XmlElement {
   /// Converts this [XmlElement] to an [SvgDefs].
   Result<SvgDefs> toSvgDefs() {
-    const XmlElementName elementName = XmlElementName.defs;
     final List<SvgElement> childElements = <SvgElement>[];
 
     for (final XmlNode child in children) {
