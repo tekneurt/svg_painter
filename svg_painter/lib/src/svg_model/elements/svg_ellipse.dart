@@ -4,7 +4,7 @@ part of '../svg_element.dart';
 ///
 /// See: https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Element/ellipse
 @immutable
-final class SvgEllipse extends SvgGraphicsElement {
+final class SvgEllipse extends SvgBasicShape {
   const SvgEllipse({
     required this.cx,
     required this.cy,
@@ -17,10 +17,10 @@ final class SvgEllipse extends SvgGraphicsElement {
     super.transform,
   });
 
-  /// The x-coordinate of the center of the ellipse.
+  /// The x-axis coordinate of the center of the ellipse.
   final SvgLengthPercentage cx;
 
-  /// The y-coordinate of the center of the ellipse.
+  /// The y-axis coordinate of the center of the ellipse.
   final SvgLengthPercentage cy;
 
   /// The x-axis radius of the ellipse.

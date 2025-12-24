@@ -17,13 +17,23 @@ class _$FxPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final FittedSizes fittedSizes = applyBoxFit(fit, const Size(480.0, 200.0), size);
+    final FittedSizes fittedSizes = applyBoxFit(
+      fit,
+      const Size(480.0, 200.0),
+      size,
+    );
     final Size sourceSize = fittedSizes.source;
-    final Rect destRect = Alignment.center.inscribe(fittedSizes.destination, Offset.zero & size);
+    final Rect destRect = Alignment.center.inscribe(
+      fittedSizes.destination,
+      Offset.zero & size,
+    );
 
     canvas.save();
     canvas.translate(destRect.left, destRect.top);
-    canvas.scale(destRect.width / sourceSize.width, destRect.height / sourceSize.height);
+    canvas.scale(
+      destRect.width / sourceSize.width,
+      destRect.height / sourceSize.height,
+    );
     canvas.clipRect(Rect.fromLTWH(0, 0, 480.0, 200.0));
 
     final Gradient _grad_gradient1 = RadialGradient(
@@ -43,20 +53,24 @@ class _$FxPainter extends CustomPainter {
       stops: [0.0, 1.0],
     );
     {
-      final Paint paint = Paint();
-      paint.shader = _grad_gradient1.createShader(
-        Rect.fromCircle(center: const Offset(100.0, 100.0), radius: 100.0),
-      );
-      paint.style = PaintingStyle.fill;
-      canvas.drawCircle(const Offset(100.0, 100.0), 100.0, paint);
+      {
+        final Paint paint = Paint();
+        paint.shader = _grad_gradient1.createShader(
+          Rect.fromCircle(center: const Offset(100.0, 100.0), radius: 100.0),
+        );
+        paint.style = PaintingStyle.fill;
+        canvas.drawCircle(const Offset(100.0, 100.0), 100.0, paint);
+      }
     }
     {
-      final Paint paint = Paint();
-      paint.shader = _grad_gradient2.createShader(
-        Rect.fromCircle(center: const Offset(340.0, 100.0), radius: 100.0),
-      );
-      paint.style = PaintingStyle.fill;
-      canvas.drawCircle(const Offset(340.0, 100.0), 100.0, paint);
+      {
+        final Paint paint = Paint();
+        paint.shader = _grad_gradient2.createShader(
+          Rect.fromCircle(center: const Offset(340.0, 100.0), radius: 100.0),
+        );
+        paint.style = PaintingStyle.fill;
+        canvas.drawCircle(const Offset(340.0, 100.0), 100.0, paint);
+      }
     }
     canvas.restore();
   }

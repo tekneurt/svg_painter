@@ -17,17 +17,26 @@ class _$PointsPolygonPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final FittedSizes fittedSizes = applyBoxFit(fit, const Size(120.0, 120.0), size);
+    final FittedSizes fittedSizes = applyBoxFit(
+      fit,
+      const Size(120.0, 120.0),
+      size,
+    );
     final Size sourceSize = fittedSizes.source;
-    final Rect destRect = Alignment.center.inscribe(fittedSizes.destination, Offset.zero & size);
+    final Rect destRect = Alignment.center.inscribe(
+      fittedSizes.destination,
+      Offset.zero & size,
+    );
 
     canvas.save();
     canvas.translate(destRect.left, destRect.top);
-    canvas.scale(destRect.width / sourceSize.width, destRect.height / sourceSize.height);
+    canvas.scale(
+      destRect.width / sourceSize.width,
+      destRect.height / sourceSize.height,
+    );
     canvas.clipRect(Rect.fromLTWH(0, 0, 120.0, 120.0));
 
     {
-      final Paint paint = Paint();
       final Path path = Path();
       path.addPolygon([
         const Offset(60.0, 10.0),
@@ -36,10 +45,13 @@ class _$PointsPolygonPainter extends CustomPainter {
         const Offset(12.0, 45.0),
         const Offset(89.0, 100.0),
       ], true);
-      paint.color = const Color(0xFF000000);
-      paint.style = PaintingStyle.stroke;
-      paint.strokeWidth = 1.0;
-      canvas.drawPath(path, paint);
+      {
+        final Paint paint = Paint();
+        paint.color = const Color(0xFF000000);
+        paint.style = PaintingStyle.stroke;
+        paint.strokeWidth = 1.0;
+        canvas.drawPath(path, paint);
+      }
     }
     canvas.restore();
   }

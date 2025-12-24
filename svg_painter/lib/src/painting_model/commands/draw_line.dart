@@ -8,9 +8,7 @@ final class DrawLine extends PaintCommand {
     required this.y1,
     required this.x2,
     required this.y2,
-    this.strokeColorArgb,
-    this.strokeWidth = 1.0,
-    this.strokeShaderId,
+    required this.style,
     this.transform,
   });
 
@@ -19,12 +17,12 @@ final class DrawLine extends PaintCommand {
   final double x2;
   final double y2;
 
-  final int? strokeColorArgb;
-  final double strokeWidth;
-  final String? strokeShaderId;
+  /// The visual style of the line.
+  final PaintingStyle style;
+
   final String? transform;
 
   @override
   String toString() =>
-      'DrawLine(x1: $x1, y1: $y1, x2: $x2, y2: $y2, stroke: $strokeColorArgb, width: $strokeWidth, shader: $strokeShaderId, transform: $transform)';
+      'DrawLine(x1: $x1, y1: $y1, x2: $x2, y2: $y2, style: $style, transform: $transform)';
 }

@@ -157,13 +157,14 @@ Implement support for additional SVG shapes using the new layered architecture.
 - [ ] **Test**: Verify against the Daphnia SVG.
 
 ### Phase 6: Polish & Release (MVP 0.1.0)
-- [ ] **Refactor (High Priority)**: `SvgPaintingContext` — Encapsulate coordinate transformations (e.g., `context.transformPoint(x, y)`) to deduplicate math in shape converters.
-- [ ] **Refactor (High Priority)**: `SvgPainterGenerator` — Modularize code generation logic (e.g., Strategy Pattern) to eliminate the monolithic `if/else` block and deduplicate `Paint` boilerplate.
-- [ ] **Refactor (High Priority)**: XML Conversion — Deduplicate parsing logic for common attributes (`fill`, `stroke`, `strokeWidth`, `id`) using a mixin or helper.
-- [ ] **Refactor (Medium Priority)**: `Painting Model` — Consolidate fill/stroke properties into a `PaintingStyle` data class to simplify generator and models.
-- [ ] **Refactor (Medium Priority)**: `SvgToPainting` — Create a `resolvePaint` helper to standardize `fill` vs `fillShaderId` resolution and reduce boilerplate in shape converters.
+- [x] **Refactor (High Priority)**: `SvgPaintingContext` — Encapsulate coordinate transformations (e.g., `context.transformPoint(x, y)`) to deduplicate math in shape converters.
+- [x] **Refactor (High Priority)**: `SvgPainterGenerator` — Modularize code generation logic (e.g., Strategy Pattern) to eliminate the monolithic `if/else` block and deduplicate `Paint` boilerplate.
+- [x] **Refactor (High Priority)**: `Radii Resolver` — Deduplicate `rx`/`ry` auto-inheritance logic for `ellipse` and `rect` using a shared Record-based helper.
+- [x] **Refactor (High Priority)**: `SvgPaintingContext` — Add a `derive()` or `copyWith()` method to simplify creating child contexts with transformations and style inheritance.
+- [x] **Refactor (High Priority)**: `Paint & Stroke Resolver` — Create a shared helper (`resolvePaint`) to standardize `fill` vs `fillShaderId` resolution and deduplicate code across shape converters.
+- [x] **Refactor (High Priority)**: XML Conversion — Deduplicate parsing logic for common attributes (`fill`, stroke, strokeWidth, id) using a mixin or helper.
 - [ ] **Refactor (Medium Priority)**: `SvgValue` — Update `toDouble()` to accept `SvgPaintingContext` for future-proofing unit resolution (e.g., `em`).
-- [ ] **Refactor (Medium Priority)**: SVG Model — Investigate grouping SVG elements by category (e.g., using sealed classes for `BasicShapes`, `Containers`, etc.) to better reflect the spec and share properties.
+- [x] **Refactor (Medium Priority)**: SVG Model — Investigate grouping SVG elements by category (e.g., using sealed classes for `BasicShapes`, `Containers`, etc.) to better reflect the spec and share properties.
 - [ ] **Refactor (Low Priority)**: `Result` — Add ergonomic extensions (e.g., `combine()`) to simplify list folding and result aggregation.
 - [ ] **Refactor (Low Priority)**: Convert existing code to use dot shorthand for enum values and static members consistently.
 - [ ] **Refactor (Low Priority)**: Standardize extension naming across all layers (e.g., `To[Target]`).

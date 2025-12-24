@@ -10,11 +10,7 @@ final class DrawRect extends PaintCommand {
     required this.height,
     required this.rx,
     required this.ry,
-    this.fillColorArgb,
-    this.strokeColorArgb,
-    this.strokeWidth = 0.0,
-    this.fillShaderId,
-    this.strokeShaderId,
+    required this.style,
     this.transform,
   });
 
@@ -29,14 +25,12 @@ final class DrawRect extends PaintCommand {
   /// Rounded corner y-radius.
   final double ry;
 
-  final int? fillColorArgb;
-  final int? strokeColorArgb;
-  final double strokeWidth;
-  final String? fillShaderId;
-  final String? strokeShaderId;
+  /// The visual style of the rectangle.
+  final PaintingStyle style;
+
   final String? transform;
 
   @override
   String toString() =>
-      'DrawRect(x: $x, y: $y, w: $width, h: $height, rx: $rx, ry: $ry, fill: $fillColorArgb, stroke: $strokeColorArgb, fillShader: $fillShaderId, transform: $transform)';
+      'DrawRect(x: $x, y: $y, w: $width, h: $height, rx: $rx, ry: $ry, style: $style, transform: $transform)';
 }

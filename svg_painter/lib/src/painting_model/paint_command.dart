@@ -1,4 +1,5 @@
 import 'package:meta/meta.dart';
+import 'painting_style.dart';
 
 part 'commands/draw_circle.dart';
 part 'commands/draw_line.dart';
@@ -6,6 +7,7 @@ part 'commands/draw_oval.dart';
 part 'commands/draw_polygon.dart';
 part 'commands/draw_polyline.dart';
 part 'commands/draw_rect.dart';
+part 'commands/define_gradient.dart';
 part 'commands/define_radial_gradient.dart';
 part 'commands/define_linear_gradient.dart';
 

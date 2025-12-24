@@ -17,13 +17,23 @@ class _$DefsElementPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final FittedSizes fittedSizes = applyBoxFit(fit, const Size(10.0, 10.0), size);
+    final FittedSizes fittedSizes = applyBoxFit(
+      fit,
+      const Size(10.0, 10.0),
+      size,
+    );
     final Size sourceSize = fittedSizes.source;
-    final Rect destRect = Alignment.center.inscribe(fittedSizes.destination, Offset.zero & size);
+    final Rect destRect = Alignment.center.inscribe(
+      fittedSizes.destination,
+      Offset.zero & size,
+    );
 
     canvas.save();
     canvas.translate(destRect.left, destRect.top);
-    canvas.scale(destRect.width / sourceSize.width, destRect.height / sourceSize.height);
+    canvas.scale(
+      destRect.width / sourceSize.width,
+      destRect.height / sourceSize.height,
+    );
     canvas.clipRect(Rect.fromLTWH(0, 0, 10.0, 10.0));
 
     final Gradient _grad_myGradient = LinearGradient(
@@ -34,12 +44,14 @@ class _$DefsElementPainter extends CustomPainter {
       transform: const GradientRotation(3.141592653589793 / 2),
     );
     {
-      final Paint paint = Paint();
-      paint.shader = _grad_myGradient.createShader(
-        Rect.fromCircle(center: const Offset(5.0, 5.0), radius: 5.0),
-      );
-      paint.style = PaintingStyle.fill;
-      canvas.drawCircle(const Offset(5.0, 5.0), 5.0, paint);
+      {
+        final Paint paint = Paint();
+        paint.shader = _grad_myGradient.createShader(
+          Rect.fromCircle(center: const Offset(5.0, 5.0), radius: 5.0),
+        );
+        paint.style = PaintingStyle.fill;
+        canvas.drawCircle(const Offset(5.0, 5.0), 5.0, paint);
+      }
     }
     canvas.restore();
   }

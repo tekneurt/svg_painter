@@ -17,44 +17,69 @@ class _$StrokeWidthPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final FittedSizes fittedSizes = applyBoxFit(fit, const Size(30.0, 10.0), size);
+    final FittedSizes fittedSizes = applyBoxFit(
+      fit,
+      const Size(30.0, 10.0),
+      size,
+    );
     final Size sourceSize = fittedSizes.source;
-    final Rect destRect = Alignment.center.inscribe(fittedSizes.destination, Offset.zero & size);
+    final Rect destRect = Alignment.center.inscribe(
+      fittedSizes.destination,
+      Offset.zero & size,
+    );
 
     canvas.save();
     canvas.translate(destRect.left, destRect.top);
-    canvas.scale(destRect.width / sourceSize.width, destRect.height / sourceSize.height);
+    canvas.scale(
+      destRect.width / sourceSize.width,
+      destRect.height / sourceSize.height,
+    );
     canvas.clipRect(Rect.fromLTWH(0, 0, 30.0, 10.0));
 
     {
-      final Paint paint = Paint();
-      paint.color = const Color(0xFF000000);
-      paint.style = PaintingStyle.fill;
-      canvas.drawCircle(const Offset(5.0, 5.0), 3.0, paint);
-      paint.color = const Color(0xFF008000);
-      paint.style = PaintingStyle.stroke;
-      paint.strokeWidth = 1.0;
-      canvas.drawCircle(const Offset(5.0, 5.0), 3.0, paint);
+      {
+        final Paint paint = Paint();
+        paint.color = const Color(0xFF000000);
+        paint.style = PaintingStyle.fill;
+        canvas.drawCircle(const Offset(5.0, 5.0), 3.0, paint);
+      }
+      {
+        final Paint paint = Paint();
+        paint.color = const Color(0xFF008000);
+        paint.style = PaintingStyle.stroke;
+        paint.strokeWidth = 1.0;
+        canvas.drawCircle(const Offset(5.0, 5.0), 3.0, paint);
+      }
     }
     {
-      final Paint paint = Paint();
-      paint.color = const Color(0xFF000000);
-      paint.style = PaintingStyle.fill;
-      canvas.drawCircle(const Offset(15.0, 5.0), 3.0, paint);
-      paint.color = const Color(0xFF008000);
-      paint.style = PaintingStyle.stroke;
-      paint.strokeWidth = 3.0;
-      canvas.drawCircle(const Offset(15.0, 5.0), 3.0, paint);
+      {
+        final Paint paint = Paint();
+        paint.color = const Color(0xFF000000);
+        paint.style = PaintingStyle.fill;
+        canvas.drawCircle(const Offset(15.0, 5.0), 3.0, paint);
+      }
+      {
+        final Paint paint = Paint();
+        paint.color = const Color(0xFF008000);
+        paint.style = PaintingStyle.stroke;
+        paint.strokeWidth = 3.0;
+        canvas.drawCircle(const Offset(15.0, 5.0), 3.0, paint);
+      }
     }
     {
-      final Paint paint = Paint();
-      paint.color = const Color(0xFF000000);
-      paint.style = PaintingStyle.fill;
-      canvas.drawCircle(const Offset(25.0, 5.0), 3.0, paint);
-      paint.color = const Color(0xFF008000);
-      paint.style = PaintingStyle.stroke;
-      paint.strokeWidth = 0.44721359549995787;
-      canvas.drawCircle(const Offset(25.0, 5.0), 3.0, paint);
+      {
+        final Paint paint = Paint();
+        paint.color = const Color(0xFF000000);
+        paint.style = PaintingStyle.fill;
+        canvas.drawCircle(const Offset(25.0, 5.0), 3.0, paint);
+      }
+      {
+        final Paint paint = Paint();
+        paint.color = const Color(0xFF008000);
+        paint.style = PaintingStyle.stroke;
+        paint.strokeWidth = 0.44721359549995787;
+        canvas.drawCircle(const Offset(25.0, 5.0), 3.0, paint);
+      }
     }
     canvas.restore();
   }

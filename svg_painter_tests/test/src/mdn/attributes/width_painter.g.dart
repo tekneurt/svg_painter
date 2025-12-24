@@ -17,34 +17,54 @@ class _$WidthPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final FittedSizes fittedSizes = applyBoxFit(fit, const Size(100.0, 300.0), size);
+    final FittedSizes fittedSizes = applyBoxFit(
+      fit,
+      const Size(100.0, 300.0),
+      size,
+    );
     final Size sourceSize = fittedSizes.source;
-    final Rect destRect = Alignment.center.inscribe(fittedSizes.destination, Offset.zero & size);
+    final Rect destRect = Alignment.center.inscribe(
+      fittedSizes.destination,
+      Offset.zero & size,
+    );
 
     canvas.save();
     canvas.translate(destRect.left, destRect.top);
-    canvas.scale(destRect.width / sourceSize.width, destRect.height / sourceSize.height);
+    canvas.scale(
+      destRect.width / sourceSize.width,
+      destRect.height / sourceSize.height,
+    );
     canvas.clipRect(Rect.fromLTWH(0, 0, 100.0, 300.0));
 
     {
-      final Paint paint = Paint();
-      paint.color = const Color(0xFFFF0000);
-      paint.style = PaintingStyle.fill;
-      canvas.drawRect(Rect.fromLTWH(0.0, 100.0, 60.0, 90.0), paint);
-      paint.color = const Color(0xFF000000);
-      paint.style = PaintingStyle.stroke;
-      paint.strokeWidth = 5.0;
-      canvas.drawRect(Rect.fromLTWH(0.0, 100.0, 60.0, 90.0), paint);
+      {
+        final Paint paint = Paint();
+        paint.color = const Color(0xFFFF0000);
+        paint.style = PaintingStyle.fill;
+        canvas.drawRect(Rect.fromLTWH(0.0, 100.0, 60.0, 90.0), paint);
+      }
+      {
+        final Paint paint = Paint();
+        paint.color = const Color(0xFF000000);
+        paint.style = PaintingStyle.stroke;
+        paint.strokeWidth = 5.0;
+        canvas.drawRect(Rect.fromLTWH(0.0, 100.0, 60.0, 90.0), paint);
+      }
     }
     {
-      final Paint paint = Paint();
-      paint.color = const Color(0xFFFF0000);
-      paint.style = PaintingStyle.fill;
-      canvas.drawRect(Rect.fromLTWH(0.0, 200.0, 100.0, 90.0), paint);
-      paint.color = const Color(0xFF000000);
-      paint.style = PaintingStyle.stroke;
-      paint.strokeWidth = 5.0;
-      canvas.drawRect(Rect.fromLTWH(0.0, 200.0, 100.0, 90.0), paint);
+      {
+        final Paint paint = Paint();
+        paint.color = const Color(0xFFFF0000);
+        paint.style = PaintingStyle.fill;
+        canvas.drawRect(Rect.fromLTWH(0.0, 200.0, 100.0, 90.0), paint);
+      }
+      {
+        final Paint paint = Paint();
+        paint.color = const Color(0xFF000000);
+        paint.style = PaintingStyle.stroke;
+        paint.strokeWidth = 5.0;
+        canvas.drawRect(Rect.fromLTWH(0.0, 200.0, 100.0, 90.0), paint);
+      }
     }
     canvas.restore();
   }

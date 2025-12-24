@@ -13,11 +13,6 @@ extension SvgLengthPercentageToValue on SvgLengthPercentage {
   }
 
   double toPosition(SvgPaintingContext context, SvgOrientation orientation) {
-    final double val = toDouble(context, orientation);
-    return switch (orientation) {
-      SvgOrientation.horizontal => val - context.viewBoxMinX,
-      SvgOrientation.vertical => val - context.viewBoxMinY,
-      SvgOrientation.normalized => val, // Radii are not positions
-    };
+    return toDouble(context, orientation);
   }
 }

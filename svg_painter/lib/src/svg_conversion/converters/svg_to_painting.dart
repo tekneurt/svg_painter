@@ -43,12 +43,16 @@ extension SvgToPainting on SvgElement {
       self.collectDefinitions(definitions);
 
       // Root context: parent transform maps (minX, minY) to (0, 0) in the painter's canvas.
-      // Point P maps to: (P.x - minX) * 1.0 + 0 = P.x - minX
+      // Note: _toPaintCommands will handle the viewBox (minX, minY) -> (0, 0) mapping.
       final SvgPaintingContext rootContext = SvgPaintingContext(
         viewBoxWidth: width,
         viewBoxHeight: height,
         viewBoxMinX: minX,
         viewBoxMinY: minY,
+        parentTx: 0.0,
+        parentTy: 0.0,
+        parentSx: 1.0,
+        parentSy: 1.0,
         inheritedFill: self.fill,
         inheritedStroke: self.stroke,
         inheritedStrokeWidth: self.strokeWidth,
@@ -60,25 +64,13 @@ extension SvgToPainting on SvgElement {
     context ??= const SvgPaintingContext(viewBoxWidth: 100.0, viewBoxHeight: 100.0);
 
     // Determine context for children (override inherited with current element styles)
-    final SvgPaintingContext childContext;
-    if (self is SvgGraphicsElement) {
-      childContext = SvgPaintingContext(
-        viewBoxWidth: context.viewBoxWidth,
-        viewBoxHeight: context.viewBoxHeight,
-        viewBoxMinX: context.viewBoxMinX,
-        viewBoxMinY: context.viewBoxMinY,
-        parentTx: context.parentTx,
-        parentTy: context.parentTy,
-        parentSx: context.parentSx,
-        parentSy: context.parentSy,
-        inheritedFill: self.fill ?? context.inheritedFill,
-        inheritedStroke: self.stroke ?? context.inheritedStroke,
-        inheritedStrokeWidth: self.strokeWidth ?? context.inheritedStrokeWidth,
-        definitions: context.definitions,
-      );
-    } else {
-      childContext = context;
-    }
+    final SvgPaintingContext childContext = (self is SvgGraphicsElement)
+        ? context.derive(
+            inheritedFill: self.fill ?? context.inheritedFill,
+            inheritedStroke: self.stroke ?? context.inheritedStroke,
+            inheritedStrokeWidth: self.strokeWidth ?? context.inheritedStrokeWidth,
+          )
+        : context;
 
     return switch (self) {
       final SvgSvg container => container._toPaintCommands(childContext),
@@ -104,7 +96,7 @@ extension SvgToPainting on SvgElement {
         linearGradient
             .toPaintCommand(childContext)
             .map((DefineLinearGradient cmd) => <PaintCommand>[cmd]),
-      (_) => const Success<List<PaintCommand>>(<PaintCommand>[]),
+      final SvgStop _ => const Success<List<PaintCommand>>(<PaintCommand>[]),
     };
   }
 }
@@ -117,9 +109,8 @@ extension _SvgUseToPainting on SvgUse {
     // 2. Lookup definition
     final SvgElement? target = context.definitions[targetId];
     if (target == null) {
-      return const Success<List<PaintCommand>>(
-        <PaintCommand>[],
-      ); // Silently ignore missing refs?
+      // TODO(Gemini): Handle missing references properly (logging/warning).
+      return const Success<List<PaintCommand>>(<PaintCommand>[]); // Silently ignore missing refs?
     }
 
     // 3. Apply x/y translation (relative to current user space)
@@ -128,19 +119,12 @@ extension _SvgUseToPainting on SvgUse {
 
     // Create context for target, preserving inherited styles.
     // Note: <use> offsets the origin by (dx, dy) in the current space.
-    final SvgPaintingContext useCtx = SvgPaintingContext(
-      viewBoxWidth: context.viewBoxWidth,
-      viewBoxHeight: context.viewBoxHeight,
-      viewBoxMinX: context.viewBoxMinX,
-      viewBoxMinY: context.viewBoxMinY,
+    final SvgPaintingContext useCtx = context.derive(
       parentTx: context.parentTx + (dx * context.parentSx),
       parentTy: context.parentTy + (dy * context.parentSy),
-      parentSx: context.parentSx,
-      parentSy: context.parentSy,
       inheritedFill: fill ?? context.inheritedFill,
       inheritedStroke: stroke ?? context.inheritedStroke,
       inheritedStrokeWidth: strokeWidth ?? context.inheritedStrokeWidth,
-      definitions: context.definitions,
     );
 
     return target.toPaintCommands(useCtx);
@@ -207,7 +191,7 @@ extension _SvgSvgToPainting on SvgSvg {
     final double newTx = screenX - (vbMinX * newSx);
     final double newTy = screenY - (vbMinY * newSy);
 
-    final SvgPaintingContext innerContext = SvgPaintingContext(
+    final SvgPaintingContext innerContext = context.derive(
       viewBoxWidth: vbW,
       viewBoxHeight: vbH,
       viewBoxMinX: vbMinX,
@@ -219,7 +203,6 @@ extension _SvgSvgToPainting on SvgSvg {
       inheritedFill: fill ?? context.inheritedFill,
       inheritedStroke: stroke ?? context.inheritedStroke,
       inheritedStrokeWidth: strokeWidth ?? context.inheritedStrokeWidth,
-      definitions: context.definitions,
     );
 
     final List<PaintCommand> commands = <PaintCommand>[];

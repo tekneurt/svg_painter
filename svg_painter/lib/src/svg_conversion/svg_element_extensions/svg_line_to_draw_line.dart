@@ -1,8 +1,7 @@
 import '../../base/_base.dart';
 import '../../painting_model/_painting_model.dart';
 import '../../svg_model/_svg_model.dart';
-import '../converters/svg_painting_context.dart';
-import '../svg_value_extensions/svg_color_to_int.dart';
+import '../converters/_converters.dart';
 import '../svg_value_extensions/svg_length_percentage_to_double.dart';
 import '../svg_value_extensions/svg_percentage_to_double.dart';
 
@@ -10,40 +9,25 @@ import '../svg_value_extensions/svg_percentage_to_double.dart';
 extension SvgLineToPainting on SvgLine {
   /// Converts this [SvgLine] to a [DrawLine].
   Result<DrawLine> toDrawLine(SvgPaintingContext context) {
-    int? strokeColorArgb;
-    String? strokeShaderId;
+    final PaintingStyle paint = resolvePaint(
+      context,
+      fill: fill,
+      stroke: stroke,
+      strokeWidth: strokeWidth,
+    );
 
-    final SvgColor? strokePaint = stroke ?? context.inheritedStroke;
-    if (strokePaint is SvgPaintReference) {
-      strokeShaderId = strokePaint.id;
-    } else {
-      strokeColorArgb = strokePaint.toStrokeArgb();
-    }
-
-    final SvgLengthPercentage? sw = strokeWidth ?? context.inheritedStrokeWidth;
-    final double finalStrokeWidth =
-        (sw?.toDouble(context, SvgOrientation.normalized) ?? 1.0) * context.parentScale;
-
-    double x1Val = x1.toDouble(context, SvgOrientation.horizontal);
-    double y1Val = y1.toDouble(context, SvgOrientation.vertical);
-    double x2Val = x2.toDouble(context, SvgOrientation.horizontal);
-    double y2Val = y2.toDouble(context, SvgOrientation.vertical);
-
-    // Apply transformation
-    x1Val = (x1Val * context.parentSx) + context.parentTx;
-    y1Val = (y1Val * context.parentSy) + context.parentTy;
-    x2Val = (x2Val * context.parentSx) + context.parentTx;
-    y2Val = (y2Val * context.parentSy) + context.parentTy;
+    final double finalX1 = context.transformX(x1.toDouble(context, SvgOrientation.horizontal));
+    final double finalY1 = context.transformY(y1.toDouble(context, SvgOrientation.vertical));
+    final double finalX2 = context.transformX(x2.toDouble(context, SvgOrientation.horizontal));
+    final double finalY2 = context.transformY(y2.toDouble(context, SvgOrientation.vertical));
 
     return Success<DrawLine>(
       DrawLine(
-        x1: x1Val,
-        y1: y1Val,
-        x2: x2Val,
-        y2: y2Val,
-        strokeColorArgb: strokeColorArgb,
-        strokeWidth: finalStrokeWidth,
-        strokeShaderId: strokeShaderId,
+        x1: finalX1,
+        y1: finalY1,
+        x2: finalX2,
+        y2: finalY2,
+        style: paint,
         transform: transform,
       ),
     );

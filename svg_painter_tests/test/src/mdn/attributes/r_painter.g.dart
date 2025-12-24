@@ -17,13 +17,23 @@ class _$RPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final FittedSizes fittedSizes = applyBoxFit(fit, const Size(300.0, 200.0), size);
+    final FittedSizes fittedSizes = applyBoxFit(
+      fit,
+      const Size(300.0, 200.0),
+      size,
+    );
     final Size sourceSize = fittedSizes.source;
-    final Rect destRect = Alignment.center.inscribe(fittedSizes.destination, Offset.zero & size);
+    final Rect destRect = Alignment.center.inscribe(
+      fittedSizes.destination,
+      Offset.zero & size,
+    );
 
     canvas.save();
     canvas.translate(destRect.left, destRect.top);
-    canvas.scale(destRect.width / sourceSize.width, destRect.height / sourceSize.height);
+    canvas.scale(
+      destRect.width / sourceSize.width,
+      destRect.height / sourceSize.height,
+    );
     canvas.clipRect(Rect.fromLTWH(0, 0, 300.0, 200.0));
 
     final Gradient _grad_myGradient000 = RadialGradient(
@@ -51,34 +61,50 @@ class _$RPainter extends CustomPainter {
       stops: [0.0, 1.0],
     );
     {
-      final Paint paint = Paint();
-      paint.color = const Color(0xFF000000);
-      paint.style = PaintingStyle.fill;
-      canvas.drawCircle(const Offset(150.0, 50.0), 25.0, paint);
+      {
+        final Paint paint = Paint();
+        paint.color = const Color(0xFF000000);
+        paint.style = PaintingStyle.fill;
+        canvas.drawCircle(const Offset(150.0, 50.0), 25.0, paint);
+      }
     }
     {
-      final Paint paint = Paint();
-      paint.color = const Color(0xFF000000);
-      paint.style = PaintingStyle.fill;
-      canvas.drawCircle(const Offset(250.0, 50.0), 50.0, paint);
+      {
+        final Paint paint = Paint();
+        paint.color = const Color(0xFF000000);
+        paint.style = PaintingStyle.fill;
+        canvas.drawCircle(const Offset(250.0, 50.0), 50.0, paint);
+      }
     }
     {
-      final Paint paint = Paint();
-      paint.shader = _grad_myGradient000.createShader(Rect.fromLTWH(20.0, 120.0, 60.0, 60.0));
-      paint.style = PaintingStyle.fill;
-      canvas.drawRect(Rect.fromLTWH(20.0, 120.0, 60.0, 60.0), paint);
+      {
+        final Paint paint = Paint();
+        paint.shader = _grad_myGradient000.createShader(
+          Rect.fromLTWH(20.0, 120.0, 60.0, 60.0),
+        );
+        paint.style = PaintingStyle.fill;
+        canvas.drawRect(Rect.fromLTWH(20.0, 120.0, 60.0, 60.0), paint);
+      }
     }
     {
-      final Paint paint = Paint();
-      paint.shader = _grad_myGradient050.createShader(Rect.fromLTWH(120.0, 120.0, 60.0, 60.0));
-      paint.style = PaintingStyle.fill;
-      canvas.drawRect(Rect.fromLTWH(120.0, 120.0, 60.0, 60.0), paint);
+      {
+        final Paint paint = Paint();
+        paint.shader = _grad_myGradient050.createShader(
+          Rect.fromLTWH(120.0, 120.0, 60.0, 60.0),
+        );
+        paint.style = PaintingStyle.fill;
+        canvas.drawRect(Rect.fromLTWH(120.0, 120.0, 60.0, 60.0), paint);
+      }
     }
     {
-      final Paint paint = Paint();
-      paint.shader = _grad_myGradient100.createShader(Rect.fromLTWH(220.0, 120.0, 60.0, 60.0));
-      paint.style = PaintingStyle.fill;
-      canvas.drawRect(Rect.fromLTWH(220.0, 120.0, 60.0, 60.0), paint);
+      {
+        final Paint paint = Paint();
+        paint.shader = _grad_myGradient100.createShader(
+          Rect.fromLTWH(220.0, 120.0, 60.0, 60.0),
+        );
+        paint.style = PaintingStyle.fill;
+        canvas.drawRect(Rect.fromLTWH(220.0, 120.0, 60.0, 60.0), paint);
+      }
     }
     canvas.restore();
   }

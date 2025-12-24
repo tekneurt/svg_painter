@@ -4,7 +4,7 @@ part of '../svg_element.dart';
 ///
 /// See: https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Element/circle
 @immutable
-final class SvgCircle extends SvgGraphicsElement {
+final class SvgCircle extends SvgBasicShape {
   const SvgCircle({
     required this.cx,
     required this.cy,
@@ -16,10 +16,10 @@ final class SvgCircle extends SvgGraphicsElement {
     super.transform,
   });
 
-  /// The x-coordinate of the center of the circle.
+  /// The x-axis coordinate of the center of the circle.
   final SvgLengthPercentage cx;
 
-  /// The y-coordinate of the center of the circle.
+  /// The y-axis coordinate of the center of the circle.
   final SvgLengthPercentage cy;
 
   /// The radius of the circle.

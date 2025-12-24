@@ -17,13 +17,23 @@ class _$X1LinearGradientPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final FittedSizes fittedSizes = applyBoxFit(fit, const Size(20.0, 10.0), size);
+    final FittedSizes fittedSizes = applyBoxFit(
+      fit,
+      const Size(20.0, 10.0),
+      size,
+    );
     final Size sourceSize = fittedSizes.source;
-    final Rect destRect = Alignment.center.inscribe(fittedSizes.destination, Offset.zero & size);
+    final Rect destRect = Alignment.center.inscribe(
+      fittedSizes.destination,
+      Offset.zero & size,
+    );
 
     canvas.save();
     canvas.translate(destRect.left, destRect.top);
-    canvas.scale(destRect.width / sourceSize.width, destRect.height / sourceSize.height);
+    canvas.scale(
+      destRect.width / sourceSize.width,
+      destRect.height / sourceSize.height,
+    );
     canvas.clipRect(Rect.fromLTWH(0, 0, 20.0, 10.0));
 
     final Gradient _grad_g0 = LinearGradient(
@@ -39,16 +49,22 @@ class _$X1LinearGradientPainter extends CustomPainter {
       stops: [0.0, 1.0],
     );
     {
-      final Paint paint = Paint();
-      paint.shader = _grad_g0.createShader(Rect.fromLTWH(1.0, 1.0, 8.0, 8.0));
-      paint.style = PaintingStyle.fill;
-      canvas.drawRect(Rect.fromLTWH(1.0, 1.0, 8.0, 8.0), paint);
+      {
+        final Paint paint = Paint();
+        paint.shader = _grad_g0.createShader(Rect.fromLTWH(1.0, 1.0, 8.0, 8.0));
+        paint.style = PaintingStyle.fill;
+        canvas.drawRect(Rect.fromLTWH(1.0, 1.0, 8.0, 8.0), paint);
+      }
     }
     {
-      final Paint paint = Paint();
-      paint.shader = _grad_g1.createShader(Rect.fromLTWH(11.0, 1.0, 8.0, 8.0));
-      paint.style = PaintingStyle.fill;
-      canvas.drawRect(Rect.fromLTWH(11.0, 1.0, 8.0, 8.0), paint);
+      {
+        final Paint paint = Paint();
+        paint.shader = _grad_g1.createShader(
+          Rect.fromLTWH(11.0, 1.0, 8.0, 8.0),
+        );
+        paint.style = PaintingStyle.fill;
+        canvas.drawRect(Rect.fromLTWH(11.0, 1.0, 8.0, 8.0), paint);
+      }
     }
     canvas.restore();
   }

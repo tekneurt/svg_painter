@@ -5,24 +5,18 @@ part of '../paint_command.dart';
 final class DrawPolyline extends PaintCommand {
   const DrawPolyline({
     required this.points,
-    this.fillColorArgb,
-    this.strokeColorArgb,
-    this.strokeWidth = 1.0,
-    this.fillShaderId,
-    this.strokeShaderId,
+    required this.style,
     this.transform,
   });
 
   final List<double> points;
 
-  final int? fillColorArgb;
-  final int? strokeColorArgb;
-  final double strokeWidth;
-  final String? fillShaderId;
-  final String? strokeShaderId;
+  /// The visual style of the polyline.
+  final PaintingStyle style;
+
   final String? transform;
 
   @override
   String toString() =>
-      'DrawPolyline(points: ${points.length}, fill: $fillColorArgb, stroke: $strokeColorArgb, width: $strokeWidth, fillShader: $fillShaderId, strokeShader: $strokeShaderId, transform: $transform)';
+      'DrawPolyline(points: ${points.length}, style: $style, transform: $transform)';
 }

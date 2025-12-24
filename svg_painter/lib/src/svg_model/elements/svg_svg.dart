@@ -4,9 +4,9 @@ part of '../svg_element.dart';
 ///
 /// See: https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Element/svg
 @immutable
-base class SvgSvg extends SvgGraphicsElement {
+base class SvgSvg extends SvgContainerElement {
   const SvgSvg({
-    required this.children,
+    required super.children,
     this.x,
     this.y,
     this.width,
@@ -18,9 +18,6 @@ base class SvgSvg extends SvgGraphicsElement {
     super.strokeWidth,
     super.transform,
   });
-
-  /// The child elements contained within this SVG.
-  final List<SvgElement> children;
 
   /// The x-axis coordinate of the SVG.
   final SvgLengthPercentage? x;

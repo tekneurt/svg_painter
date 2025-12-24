@@ -4,7 +4,7 @@ part of '../svg_element.dart';
 ///
 /// See: https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Element/polygon
 @immutable
-final class SvgPolygon extends SvgGraphicsElement {
+final class SvgPolygon extends SvgBasicShape {
   const SvgPolygon({
     required this.points,
     super.id,
@@ -14,6 +14,6 @@ final class SvgPolygon extends SvgGraphicsElement {
     super.transform,
   });
 
-  /// The list of points defining the polygon.
+  /// The points that make up the polygon.
   final SvgPointList points;
 }

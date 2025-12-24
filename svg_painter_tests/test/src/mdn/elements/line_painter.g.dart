@@ -17,13 +17,23 @@ class _$LinePainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final FittedSizes fittedSizes = applyBoxFit(fit, const Size(100.0, 100.0), size);
+    final FittedSizes fittedSizes = applyBoxFit(
+      fit,
+      const Size(100.0, 100.0),
+      size,
+    );
     final Size sourceSize = fittedSizes.source;
-    final Rect destRect = Alignment.center.inscribe(fittedSizes.destination, Offset.zero & size);
+    final Rect destRect = Alignment.center.inscribe(
+      fittedSizes.destination,
+      Offset.zero & size,
+    );
 
     canvas.save();
     canvas.translate(destRect.left, destRect.top);
-    canvas.scale(destRect.width / sourceSize.width, destRect.height / sourceSize.height);
+    canvas.scale(
+      destRect.width / sourceSize.width,
+      destRect.height / sourceSize.height,
+    );
     canvas.clipRect(Rect.fromLTWH(0, 0, 100.0, 100.0));
 
     {
@@ -31,7 +41,11 @@ class _$LinePainter extends CustomPainter {
       paint.color = const Color(0xFF000000);
       paint.style = PaintingStyle.stroke;
       paint.strokeWidth = 1.0;
-      canvas.drawLine(Offset(0.0, 80.0), Offset(100.0, 20.0), paint);
+      canvas.drawLine(
+        const Offset(0.0, 80.0),
+        const Offset(100.0, 20.0),
+        paint,
+      );
     }
     canvas.restore();
   }

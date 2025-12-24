@@ -1,10 +1,7 @@
 import '../../base/_base.dart';
 import '../../painting_model/_painting_model.dart';
 import '../../svg_model/_svg_model.dart';
-import '../converters/svg_painting_context.dart';
-import '../svg_value_extensions/svg_color_to_int.dart';
-import '../svg_value_extensions/svg_length_percentage_to_double.dart';
-import '../svg_value_extensions/svg_percentage_to_double.dart';
+import '../converters/_converters.dart';
 
 /// Extension to convert [SvgPolyline] to [DrawPolyline].
 extension SvgPolylineToPainting on SvgPolyline {
@@ -20,41 +17,21 @@ extension SvgPolylineToPainting on SvgPolyline {
       final double y = points.points[i + 1];
 
       // Apply transform directly to points
-      resolvedPoints.add((x * context.parentSx) + context.parentTx);
-      resolvedPoints.add((y * context.parentSy) + context.parentTy);
+      resolvedPoints.add(context.transformX(x));
+      resolvedPoints.add(context.transformY(y));
     }
 
-    int? fillColorArgb;
-    String? fillShaderId;
-    int? strokeColorArgb;
-    String? strokeShaderId;
-
-    final SvgColor? fillPaint = fill ?? context.inheritedFill;
-    if (fillPaint is SvgPaintReference) {
-      fillShaderId = fillPaint.id;
-    } else {
-      fillColorArgb = fillPaint.toFillArgb();
-    }
-
-    final SvgColor? strokePaint = stroke ?? context.inheritedStroke;
-    if (strokePaint is SvgPaintReference) {
-      strokeShaderId = strokePaint.id;
-    } else {
-      strokeColorArgb = strokePaint.toStrokeArgb();
-    }
-
-    final SvgLengthPercentage? sw = strokeWidth ?? context.inheritedStrokeWidth;
-    final double finalStrokeWidth =
-        (sw?.toDouble(context, SvgOrientation.normalized) ?? 1.0) * context.parentScale;
+    final PaintingStyle paint = resolvePaint(
+      context,
+      fill: fill,
+      stroke: stroke,
+      strokeWidth: strokeWidth,
+    );
 
     return Success<DrawPolyline>(
       DrawPolyline(
         points: resolvedPoints,
-        fillColorArgb: fillColorArgb,
-        strokeColorArgb: strokeColorArgb,
-        strokeWidth: finalStrokeWidth,
-        fillShaderId: fillShaderId,
-        strokeShaderId: strokeShaderId,
+        style: paint,
         transform: transform,
       ),
     );

@@ -27,15 +27,7 @@ extension ElementToSvgLine on XmlElement {
       XmlAttributeName.y2,
     );
 
-    final SvgColor? fill = toSvgValueOrNull<SvgColor>(elementName, XmlAttributeName.fill);
-    final SvgColor? stroke = toSvgValueOrNull<SvgColor>(elementName, XmlAttributeName.stroke);
-    final SvgLengthPercentage? strokeWidth = toSvgValueOrNull<SvgLengthPercentage>(
-      elementName,
-      XmlAttributeName.strokeWidth,
-    );
-
-    final String? id = getXmlAttributeValue(XmlAttributeName.id);
-    final String? transform = getXmlAttributeValue(XmlAttributeName.transform);
+    final CommonAttributes common = getCommonAttributes(elementName);
 
     return Success<SvgLine>(
       SvgLine(
@@ -43,11 +35,11 @@ extension ElementToSvgLine on XmlElement {
         y1: y1,
         x2: x2,
         y2: y2,
-        fill: fill,
-        stroke: stroke,
-        strokeWidth: strokeWidth,
-        transform: transform,
-        id: id,
+        fill: common.fill,
+        stroke: common.stroke,
+        strokeWidth: common.strokeWidth,
+        transform: common.transform,
+        id: common.id,
       ),
     );
   }

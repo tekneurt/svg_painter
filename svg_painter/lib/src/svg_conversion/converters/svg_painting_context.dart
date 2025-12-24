@@ -66,4 +66,49 @@ final class SvgPaintingContext {
   double get parentScale {
     return math.sqrt(parentSx * parentSx + parentSy * parentSy) / math.sqrt(2.0);
   }
+
+  /// Creates a new context derived from this one, optionally overriding properties.
+  SvgPaintingContext derive({
+    double? viewBoxWidth,
+    double? viewBoxHeight,
+    double? viewBoxMinX,
+    double? viewBoxMinY,
+    double? parentTx,
+    double? parentTy,
+    double? parentSx,
+    double? parentSy,
+    SvgColor? inheritedFill,
+    SvgColor? inheritedStroke,
+    SvgLengthPercentage? inheritedStrokeWidth,
+  }) {
+    return SvgPaintingContext(
+      viewBoxWidth: viewBoxWidth ?? this.viewBoxWidth,
+      viewBoxHeight: viewBoxHeight ?? this.viewBoxHeight,
+      viewBoxMinX: viewBoxMinX ?? this.viewBoxMinX,
+      viewBoxMinY: viewBoxMinY ?? this.viewBoxMinY,
+      parentTx: parentTx ?? this.parentTx,
+      parentTy: parentTy ?? this.parentTy,
+      parentSx: parentSx ?? this.parentSx,
+      parentSy: parentSy ?? this.parentSy,
+      inheritedFill: inheritedFill ?? this.inheritedFill,
+      inheritedStroke: inheritedStroke ?? this.inheritedStroke,
+      inheritedStrokeWidth: inheritedStrokeWidth ?? this.inheritedStrokeWidth,
+      definitions: definitions,
+    );
+  }
+
+  /// Transforms an x-coordinate from current user space to root coordinate space.
+  double transformX(double x) => (x * parentSx) + parentTx;
+
+  /// Transforms a y-coordinate from current user space to root coordinate space.
+  double transformY(double y) => (y * parentSy) + parentTy;
+
+  /// Scales a horizontal length from current user space to root coordinate space.
+  double scaleHorizontal(double w) => w * parentSx;
+
+  /// Scales a vertical length from current user space to root coordinate space.
+  double scaleVertical(double h) => h * parentSy;
+
+  /// Scales a normalized length (like radius) from current user space to root coordinate space.
+  double scaleNormalized(double l) => l * parentScale;
 }

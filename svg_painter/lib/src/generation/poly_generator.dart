@@ -1,0 +1,41 @@
+import '../painting_model/_painting_model.dart';
+import 'command_generator.dart';
+
+class PolyGenerator extends ShapeGenerator<PaintCommand> {
+  const PolyGenerator();
+
+  @override
+  void generate(PaintCommand command, StringBuffer buffer) {
+    final List<double> pts;
+    final bool closed;
+    final PaintingStyle style;
+    final String? transform;
+
+    if (command is DrawPolyline) {
+      pts = command.points;
+      closed = false;
+      style = command.style;
+      transform = command.transform;
+    } else if (command is DrawPolygon) {
+      pts = command.points;
+      closed = true;
+      style = command.style;
+      transform = command.transform;
+    } else {
+      return;
+    }
+
+    wrapWithTransform(buffer, transform, () {
+      buffer.writeln('      final Path path = Path();');
+      final StringBuffer sb = StringBuffer();
+      for (int i = 0; i < pts.length; i += 2) {
+        if (i > 0) sb.write(', ');
+        sb.write('const Offset(${pts[i]}, ${pts[i + 1]})');
+      }
+      buffer.writeln('      path.addPolygon([$sb], $closed);');
+      generatePaintingCode(buffer, style, 'path.getBounds()', (String p) {
+        buffer.writeln('      canvas.drawPath(path, $p);');
+      });
+    });
+  }
+}

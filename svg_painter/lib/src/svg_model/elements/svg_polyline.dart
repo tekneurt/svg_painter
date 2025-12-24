@@ -4,7 +4,7 @@ part of '../svg_element.dart';
 ///
 /// See: https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Element/polyline
 @immutable
-final class SvgPolyline extends SvgGraphicsElement {
+final class SvgPolyline extends SvgBasicShape {
   const SvgPolyline({
     required this.points,
     super.id,
@@ -14,6 +14,6 @@ final class SvgPolyline extends SvgGraphicsElement {
     super.transform,
   });
 
-  /// The list of points defining the polyline.
+  /// The points that make up the polyline.
   final SvgPointList points;
 }

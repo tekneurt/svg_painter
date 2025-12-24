@@ -1,3 +1,4 @@
+export 'get_common_attributes.dart';
 export 'get_xml_attribute_value.dart';
 export 'to_svg_circle.dart';
 export 'to_svg_defs.dart';

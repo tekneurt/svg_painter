@@ -14,7 +14,7 @@ extension ElementToSvgStop on XmlElement {
       elementName,
       XmlAttributeName.offset,
     );
-    final SvgColor? stopColor = toSvgValueOrNull<SvgColor>(elementName, XmlAttributeName.stopColor);
+    final SvgColor stopColor = toSvgValue<SvgColor>(elementName, XmlAttributeName.stopColor);
     final SvgLengthPercentage stopOpacity = toSvgValue<SvgLengthPercentage>(
       elementName,
       XmlAttributeName.stopOpacity,

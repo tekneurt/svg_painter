@@ -43,15 +43,7 @@ extension ElementToSvgRoot on XmlElement {
     );
     final SvgViewBox? viewBox = getXmlAttributeValue(XmlAttributeName.viewBox)?.toSvgViewBox();
 
-    final SvgColor? fill = toSvgValueOrNull<SvgColor>(elementName, XmlAttributeName.fill);
-    final SvgColor? stroke = toSvgValueOrNull<SvgColor>(elementName, XmlAttributeName.stroke);
-    final SvgLengthPercentage? strokeWidth = toSvgValueOrNull<SvgLengthPercentage>(
-      elementName,
-      XmlAttributeName.strokeWidth,
-    );
-
-    final String? id = getXmlAttributeValue(XmlAttributeName.id);
-    final String? transform = getXmlAttributeValue(XmlAttributeName.transform);
+    final CommonAttributes common = getCommonAttributes(elementName);
 
     return Success<SvgRoot>(
       SvgRoot(
@@ -61,11 +53,11 @@ extension ElementToSvgRoot on XmlElement {
         width: width,
         height: height,
         viewBox: viewBox,
-        fill: fill,
-        stroke: stroke,
-        strokeWidth: strokeWidth,
-        transform: transform,
-        id: id,
+        fill: common.fill,
+        stroke: common.stroke,
+        strokeWidth: common.strokeWidth,
+        transform: common.transform,
+        id: common.id,
       ),
     );
   }

@@ -4,7 +4,7 @@ part of '../svg_element.dart';
 ///
 /// See: https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Element/line
 @immutable
-final class SvgLine extends SvgGraphicsElement {
+final class SvgLine extends SvgBasicShape {
   const SvgLine({
     required this.x1,
     required this.y1,

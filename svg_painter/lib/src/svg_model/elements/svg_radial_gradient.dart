@@ -2,64 +2,36 @@ part of '../svg_element.dart';
 
 /// Represents a <radialGradient> element in SVG.
 ///
-/// See: https://developer.mozilla.org/en-US/docs/Web/SVG/Element/radialGradient
+/// See: https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Element/radialGradient
 @immutable
-final class SvgRadialGradient extends SvgElement {
+final class SvgRadialGradient extends SvgGradient {
   const SvgRadialGradient({
-    required this.stops,
     required this.cx,
     required this.cy,
     required this.r,
     required this.fx,
     required this.fy,
     required this.fr,
-    this.gradientTransform,
+    required super.stops,
     super.id,
+    super.gradientTransform,
   });
 
-  /// The stops defining the gradient.
-  final List<SvgStop> stops;
-
-  /// The x-coordinate of the center of the gradient.
+  /// The x-axis coordinate of the center of the largest circle for the gradient.
   final SvgLengthPercentage cx;
 
-  /// The y-coordinate of the center of the gradient.
+  /// The y-axis coordinate of the center of the largest circle for the gradient.
   final SvgLengthPercentage cy;
 
-  /// The radius of the gradient.
+  /// The radius of the largest circle for the gradient.
   final SvgLengthPercentage r;
 
-  /// The x-coordinate of the focal point.
+  /// The x-axis coordinate of the focal point for the gradient.
   final SvgLengthPercentage fx;
 
-  /// The y-coordinate of the focal point.
+  /// The y-axis coordinate of the focal point for the gradient.
   final SvgLengthPercentage fy;
 
-  /// The focal radius of the gradient.
+  /// The radius of the focal circle for the gradient.
   final SvgLengthPercentage fr;
-
-  /// The transform applied to the gradient.
-  final String? gradientTransform;
-}
-
-/// Represents a <stop> element in SVG.
-///
-/// See: https://developer.mozilla.org/en-US/docs/Web/SVG/Element/stop
-@immutable
-final class SvgStop extends SvgElement {
-  const SvgStop({
-    required this.offset,
-    required this.stopColor,
-    required this.stopOpacity,
-    super.id,
-  });
-
-  /// The offset of the gradient stop.
-  final SvgLengthPercentage offset;
-
-  /// The color of the gradient stop.
-  final SvgColor? stopColor;
-
-  /// The opacity of the gradient stop.
-  final SvgLengthPercentage stopOpacity;
 }

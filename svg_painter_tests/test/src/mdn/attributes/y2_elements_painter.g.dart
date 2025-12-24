@@ -17,13 +17,23 @@ class _$Y2ElementsPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final FittedSizes fittedSizes = applyBoxFit(fit, const Size(10.0, 10.0), size);
+    final FittedSizes fittedSizes = applyBoxFit(
+      fit,
+      const Size(10.0, 10.0),
+      size,
+    );
     final Size sourceSize = fittedSizes.source;
-    final Rect destRect = Alignment.center.inscribe(fittedSizes.destination, Offset.zero & size);
+    final Rect destRect = Alignment.center.inscribe(
+      fittedSizes.destination,
+      Offset.zero & size,
+    );
 
     canvas.save();
     canvas.translate(destRect.left, destRect.top);
-    canvas.scale(destRect.width / sourceSize.width, destRect.height / sourceSize.height);
+    canvas.scale(
+      destRect.width / sourceSize.width,
+      destRect.height / sourceSize.height,
+    );
     canvas.clipRect(Rect.fromLTWH(0, 0, 10.0, 10.0));
 
     {
@@ -31,21 +41,21 @@ class _$Y2ElementsPainter extends CustomPainter {
       paint.color = const Color(0xFFFF0000);
       paint.style = PaintingStyle.stroke;
       paint.strokeWidth = 1.0;
-      canvas.drawLine(Offset(1.0, 5.0), Offset(9.0, 1.0), paint);
+      canvas.drawLine(const Offset(1.0, 5.0), const Offset(9.0, 1.0), paint);
     }
     {
       final Paint paint = Paint();
       paint.color = const Color(0xFF008000);
       paint.style = PaintingStyle.stroke;
       paint.strokeWidth = 1.0;
-      canvas.drawLine(Offset(1.0, 5.0), Offset(9.0, 5.0), paint);
+      canvas.drawLine(const Offset(1.0, 5.0), const Offset(9.0, 5.0), paint);
     }
     {
       final Paint paint = Paint();
       paint.color = const Color(0xFF0000FF);
       paint.style = PaintingStyle.stroke;
       paint.strokeWidth = 1.0;
-      canvas.drawLine(Offset(1.0, 5.0), Offset(9.0, 9.0), paint);
+      canvas.drawLine(const Offset(1.0, 5.0), const Offset(9.0, 9.0), paint);
     }
     canvas.restore();
   }

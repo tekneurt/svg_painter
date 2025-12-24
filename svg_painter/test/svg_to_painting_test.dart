@@ -64,19 +64,23 @@ void main() {
       final DrawCircle drawCircle =
           (result as Success<List<PaintCommand>>).value.first as DrawCircle;
 
-      expect(drawCircle.fillColorArgb, 0xFFFF0000);
-      expect(drawCircle.strokeColorArgb, 0xFF0000FF);
+      expect(drawCircle.style.fillColorArgb, 0xFFFF0000);
+      expect(drawCircle.style.strokeColorArgb, 0xFF0000FF);
     });
 
     test('resolves default colors when null', () {
-      const SvgCircle circle = SvgCircle(cx: SvgLength(0), cy: SvgLength(0), r: SvgLength(0));
+      const SvgCircle circle = SvgCircle(
+        cx: SvgLength(0),
+        cy: SvgLength(0),
+        r: SvgLength(0),
+      );
 
       final Result<List<PaintCommand>> result = circle.toPaintCommands();
       final DrawCircle drawCircle =
           (result as Success<List<PaintCommand>>).value.first as DrawCircle;
 
-      expect(drawCircle.fillColorArgb, 0xFF000000); // Default black
-      expect(drawCircle.strokeColorArgb, 0x00000000); // Default none
+      expect(drawCircle.style.fillColorArgb, 0xFF000000); // Default black
+      expect(drawCircle.style.strokeColorArgb, 0x00000000); // Default none
     });
 
     test('converts SvgEllipse to DrawOval correctly', () {
@@ -101,9 +105,9 @@ void main() {
       expect(drawOval.cy, 50.0);
       expect(drawOval.rx, 40.0);
       expect(drawOval.ry, 20.0);
-      expect(drawOval.fillColorArgb, 0xFF0000FF);
-      expect(drawOval.strokeColorArgb, 0x00000000); // Default none
-      expect(drawOval.strokeWidth, 1.0); // Default
+      expect(drawOval.style.fillColorArgb, 0xFF0000FF);
+      expect(drawOval.style.strokeColorArgb, 0x00000000); // Default none
+      expect(drawOval.style.strokeWidth, 1.0); // Default
     });
 
     test('resolves SvgEllipse auto values correctly', () {
