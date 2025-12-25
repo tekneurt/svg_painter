@@ -124,7 +124,7 @@ Implement support for additional SVG shapes using the new layered architecture.
     - [x] Update Code Generator.
     - [x] Add Fixtures and Tests.
 - [ ] **Group** (`<g>`)
-- [ ] **Path** (`<path>`)
+- [x] **Path** (`<path>`)
 - [ ] **Text** (`<text>`)
 - [ ] **Image** (`<image>`)
 - [x] **Use** (`<use>`)
@@ -136,8 +136,10 @@ Implement support for additional SVG shapes using the new layered architecture.
 - [ ] **TODO(Gemini)**: Implement full `gradientUnits` support (currently assumes `userSpaceOnUse` mapping).
 - [ ] **TODO(Gemini)**: Implement `objectBoundingBox` for gradients.
 - [ ] **TODO(Gemini)**: Implement full `gradientTransform` support (currently only `rotate(90)`).
-- [ ] **TODO(Gemini)**: Implement `fill` attribute example from MDN (requires `path`).
-- [ ] **TODO(Gemini)**: Implement `stroke` attribute example from MDN (requires `path`).
+- [x] **TODO(Gemini)**: Implement `fill` attribute example from MDN.
+- [x] **TODO(Gemini)**: Implement `stroke` attribute example from MDN.
+- [ ] **TODO(Gemini)**: Implement `<animate>` support (e.g., from MDN fill example).
+- [ ] **TODO(Gemini)**: Implement `<marker>` support (required for context-fill MDN example).
 - [ ] **TODO(Gemini)**: Implement `fy` attribute example from MDN (requires `text`).
 - [ ] **TODO(Gemini)**: Implement `points` attribute example from MDN (requires `transform`).
 - [ ] **TODO(Gemini)**: Implement other examples from the `<svg>` element MDN page.

@@ -6,6 +6,7 @@ export 'to_svg_element.dart';
 export 'to_svg_ellipse.dart';
 export 'to_svg_line.dart';
 export 'to_svg_linear_gradient.dart';
+export 'to_svg_path.dart';
 export 'to_svg_polygon.dart';
 export 'to_svg_polyline.dart';
 export 'to_svg_radial_gradient.dart';

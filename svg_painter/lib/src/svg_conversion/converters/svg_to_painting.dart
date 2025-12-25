@@ -6,6 +6,7 @@ import '../svg_element_extensions/svg_circle_to_draw_circle.dart';
 import '../svg_element_extensions/svg_ellipse_to_draw_oval.dart';
 import '../svg_element_extensions/svg_gradient_to_painting.dart';
 import '../svg_element_extensions/svg_line_to_draw_line.dart';
+import '../svg_element_extensions/svg_path_to_draw_path.dart';
 import '../svg_element_extensions/svg_polygon_to_draw_polygon.dart';
 import '../svg_element_extensions/svg_polyline_to_draw_polyline.dart';
 import '../svg_element_extensions/svg_rect_to_draw_rect.dart';
@@ -82,6 +83,8 @@ extension SvgToPainting on SvgElement {
         rect.toDrawRect(childContext).map((DrawRect cmd) => <PaintCommand>[cmd]),
       final SvgLine line =>
         line.toDrawLine(childContext).map((DrawLine cmd) => <PaintCommand>[cmd]),
+      final SvgPath path =>
+        path.toDrawPath(childContext).map((DrawPath cmd) => <PaintCommand>[cmd]),
       final SvgPolyline polyline =>
         polyline.toDrawPolyline(childContext).map((DrawPolyline cmd) => <PaintCommand>[cmd]),
       final SvgPolygon polygon =>

@@ -25,6 +25,8 @@ extension XmlElementToSvgElement on XmlElement {
         return toSvgRect();
       case XmlElementName.line:
         return toSvgLine();
+      case XmlElementName.path:
+        return toSvgPath();
       case XmlElementName.polyline:
         return toSvgPolyline();
       case XmlElementName.polygon:

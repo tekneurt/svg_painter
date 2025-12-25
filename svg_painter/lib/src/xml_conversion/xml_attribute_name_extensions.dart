@@ -76,6 +76,7 @@ extension XmlAttributeDefaultValues on XmlAttributeName {
         };
       case XmlAttributeName.viewBox:
       case XmlAttributeName.id:
+      case XmlAttributeName.d:
       case XmlAttributeName.href:
       case XmlAttributeName.transform:
       case XmlAttributeName.gradientTransform:

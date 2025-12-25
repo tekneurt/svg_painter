@@ -15,6 +15,9 @@ enum XmlElementName {
   /// The <line> element.
   line('line'),
 
+  /// The <path> element.
+  path('path'),
+
   /// The <polyline> element.
   polyline('polyline'),
 

@@ -6,6 +6,7 @@ part 'elements/svg_circle.dart';
 part 'elements/svg_defs.dart';
 part 'elements/svg_ellipse.dart';
 part 'elements/svg_line.dart';
+part 'elements/svg_path.dart';
 part 'elements/svg_rect.dart';
 part 'elements/svg_radial_gradient.dart';
 part 'elements/svg_linear_gradient.dart';

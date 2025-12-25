@@ -59,6 +59,7 @@ extension XmlElementToSvgValue on XmlElement {
       XmlAttributeName.stopColor => attributeValue.toSvgColor(),
       XmlAttributeName.viewBox ||
       XmlAttributeName.id ||
+      XmlAttributeName.d ||
       XmlAttributeName.href ||
       XmlAttributeName.transform ||
       XmlAttributeName.gradientTransform =>

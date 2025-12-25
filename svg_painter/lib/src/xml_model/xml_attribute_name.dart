@@ -82,6 +82,10 @@ enum XmlAttributeName {
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/fr
   fr('fr'),
 
+  /// The path data.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/d
+  d('d'),
+
   /// The offset of a gradient stop.
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/offset
   offset('offset'),

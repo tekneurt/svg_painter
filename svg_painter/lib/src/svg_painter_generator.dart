@@ -27,6 +27,7 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
     DrawCircle: CircleGenerator(),
     DrawOval: OvalGenerator(),
     DrawRect: RectGenerator(),
+    DrawPath: PathGenerator(),
     DrawLine: LineGenerator(),
     DrawPolyline: PolyGenerator(),
     DrawPolygon: PolyGenerator(),
