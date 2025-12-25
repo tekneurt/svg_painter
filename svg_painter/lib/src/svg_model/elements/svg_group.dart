@@ -9,6 +9,9 @@ final class SvgGroup extends SvgContainerElement {
     super.fill,
     super.stroke,
     super.strokeWidth,
+    super.strokeLinecap,
+    super.strokeLinejoin,
+    super.opacity,
     super.transform,
   });
 }

@@ -47,6 +47,7 @@ extension XmlElementToSvgValue on XmlElement {
       XmlAttributeName.fy ||
       XmlAttributeName.fr ||
       XmlAttributeName.offset ||
+      XmlAttributeName.opacity ||
       XmlAttributeName.stopOpacity ||
       XmlAttributeName.strokeWidth => attributeValue.toSvgLengthPercentage(),
       XmlAttributeName.rx ||
@@ -57,6 +58,8 @@ extension XmlElementToSvgValue on XmlElement {
       XmlAttributeName.fill ||
       XmlAttributeName.stroke ||
       XmlAttributeName.stopColor => attributeValue.toSvgColor(),
+      XmlAttributeName.strokeLinecap => attributeValue.toSvgStrokeLinecap(),
+      XmlAttributeName.strokeLinejoin => attributeValue.toSvgStrokeLinejoin(),
       XmlAttributeName.viewBox ||
       XmlAttributeName.id ||
       XmlAttributeName.d ||

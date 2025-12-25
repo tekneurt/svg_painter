@@ -5,6 +5,8 @@ part 'values/svg_length.dart';
 part 'values/svg_percentage.dart';
 part 'values/svg_view_box.dart';
 part 'values/svg_color.dart';
+part 'values/svg_stroke_linecap.dart';
+part 'values/svg_stroke_linejoin.dart';
 part 'values/colors/svg_named_color.dart';
 part 'values/colors/svg_rgb_color.dart';
 part 'values/colors/svg_hsl_color.dart';

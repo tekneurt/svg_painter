@@ -5,15 +5,18 @@ import '../converters/_converters.dart';
 import '../svg_value_extensions/svg_length_percentage_to_double.dart';
 import '../svg_value_extensions/svg_percentage_to_double.dart';
 
-/// Extension to convert [SvgLine] to [DrawLine].
+/// Extension to convert [SvgLine] to [PaintCommand]s.
 extension SvgLineToPainting on SvgLine {
-  /// Converts this [SvgLine] to a [DrawLine].
-  Result<DrawLine> toDrawLine(SvgPaintingContext context) {
+  /// Converts this [SvgLine] to a list of [PaintCommand]s.
+  Result<List<PaintCommand>> toPaintCommands(SvgPaintingContext context) {
     final PaintingStyle paint = resolvePaint(
       context,
       fill: fill,
       stroke: stroke,
       strokeWidth: strokeWidth,
+      strokeLinecap: strokeLinecap,
+      strokeLinejoin: strokeLinejoin,
+      opacity: opacity,
     );
 
     final double finalX1 = context.transformX(x1.toDouble(context, SvgOrientation.horizontal));
@@ -21,7 +24,7 @@ extension SvgLineToPainting on SvgLine {
     final double finalX2 = context.transformX(x2.toDouble(context, SvgOrientation.horizontal));
     final double finalY2 = context.transformY(y2.toDouble(context, SvgOrientation.vertical));
 
-    return Success<DrawLine>(
+    return Success<List<PaintCommand>>(<PaintCommand>[
       DrawLine(
         x1: finalX1,
         y1: finalY1,
@@ -30,6 +33,6 @@ extension SvgLineToPainting on SvgLine {
         style: paint,
         transform: transform,
       ),
-    );
+    ]);
   }
 }

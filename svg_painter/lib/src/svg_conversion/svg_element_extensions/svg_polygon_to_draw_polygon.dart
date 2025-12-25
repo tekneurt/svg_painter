@@ -3,10 +3,14 @@ import '../../painting_model/_painting_model.dart';
 import '../../svg_model/_svg_model.dart';
 import '../converters/_converters.dart';
 
-/// Extension to convert [SvgPolygon] to [DrawPolygon].
+/// Extension to convert [SvgPolygon] to [PaintCommand]s.
 extension SvgPolygonToPainting on SvgPolygon {
-  /// Converts this [SvgPolygon] to a [DrawPolygon].
-  Result<DrawPolygon> toDrawPolygon(SvgPaintingContext context) {
+  /// Converts this [SvgPolygon] to a list of [PaintCommand]s.
+  Result<List<PaintCommand>> toPaintCommands(SvgPaintingContext context) {
+    if (points.points.length < 4) {
+      return const Success<List<PaintCommand>>(<PaintCommand>[]);
+    }
+
     // Resolve points relative to viewBox
     final List<double> resolvedPoints = <double>[];
     for (int i = 0; i < points.points.length; i += 2) {
@@ -26,14 +30,17 @@ extension SvgPolygonToPainting on SvgPolygon {
       fill: fill,
       stroke: stroke,
       strokeWidth: strokeWidth,
+      strokeLinecap: strokeLinecap,
+      strokeLinejoin: strokeLinejoin,
+      opacity: opacity,
     );
 
-    return Success<DrawPolygon>(
+    return Success<List<PaintCommand>>(<PaintCommand>[
       DrawPolygon(
         points: resolvedPoints,
         style: paint,
         transform: transform,
       ),
-    );
+    ]);
   }
 }

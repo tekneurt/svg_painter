@@ -16,6 +16,9 @@ base class SvgSvg extends SvgContainerElement {
     super.fill,
     super.stroke,
     super.strokeWidth,
+    super.strokeLinecap,
+    super.strokeLinejoin,
+    super.opacity,
     super.transform,
   });
 
@@ -49,6 +52,9 @@ final class SvgRoot extends SvgSvg {
     super.fill,
     super.stroke,
     super.strokeWidth,
+    super.strokeLinecap,
+    super.strokeLinejoin,
+    super.opacity,
     super.transform,
   });
 }

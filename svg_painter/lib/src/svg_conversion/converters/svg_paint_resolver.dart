@@ -1,4 +1,4 @@
-import '../../painting_model/painting_style.dart';
+import '../../painting_model/_painting_model.dart';
 import '../../svg_model/_svg_model.dart';
 import '../svg_value_extensions/svg_color_to_int.dart';
 import '../svg_value_extensions/svg_length_percentage_to_double.dart';
@@ -11,6 +11,9 @@ PaintingStyle resolvePaint(
   SvgColor? fill,
   SvgColor? stroke,
   SvgLengthPercentage? strokeWidth,
+  SvgStrokeLinecap? strokeLinecap,
+  SvgStrokeLinejoin? strokeLinejoin,
+  SvgLengthPercentage? opacity,
 }) {
   int? fillColorArgb;
   String? fillShaderId;
@@ -36,11 +39,50 @@ PaintingStyle resolvePaint(
     sw?.toDouble(context, SvgOrientation.normalized) ?? 1.0,
   );
 
+  final SvgStrokeLinecap resolvedCap =
+      strokeLinecap ?? context.inheritedStrokeLinecap ?? SvgStrokeLinecap.butt;
+
+  final SvgStrokeLinejoin resolvedJoin =
+      strokeLinejoin ?? context.inheritedStrokeLinejoin ?? SvgStrokeLinejoin.miter;
+
+  // Resolve opacity (0.0 to 1.0). Inherited opacity is multiplied.
+  // Note: For now we just use the element's opacity or inherited one.
+  // Technically SVG opacity multiplies through the hierarchy.
+  final double elementOpacity =
+      opacity?.toDouble(context, SvgOrientation.normalized) ??
+      context.inheritedOpacity?.toDouble(context, SvgOrientation.normalized) ??
+      1.0;
+
   return PaintingStyle(
     fillColorArgb: fillColorArgb,
     fillShaderId: fillShaderId,
     strokeColorArgb: strokeColorArgb,
     strokeShaderId: strokeShaderId,
     strokeWidth: finalStrokeWidth,
+    strokeCap: resolvedCap.toStrokeCap(),
+    strokeJoin: resolvedJoin.toStrokeJoin(),
+    opacity: elementOpacity,
   );
+}
+
+extension on SvgStrokeLinecap {
+  StrokeCap toStrokeCap() {
+    return switch (this) {
+      SvgStrokeLinecap.butt => StrokeCap.butt,
+      SvgStrokeLinecap.round => StrokeCap.round,
+      SvgStrokeLinecap.square => StrokeCap.square,
+    };
+  }
+}
+
+extension on SvgStrokeLinejoin {
+  StrokeJoin toStrokeJoin() {
+    return switch (this) {
+      SvgStrokeLinejoin.miter => StrokeJoin.miter,
+      SvgStrokeLinejoin.round => StrokeJoin.round,
+      SvgStrokeLinejoin.bevel => StrokeJoin.bevel,
+      SvgStrokeLinejoin.miterClip => StrokeJoin.miter,
+      SvgStrokeLinejoin.arcs => StrokeJoin.miter,
+    };
+  }
 }

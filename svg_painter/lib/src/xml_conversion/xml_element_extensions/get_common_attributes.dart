@@ -10,6 +10,9 @@ typedef CommonAttributes = ({
   SvgColor? fill,
   SvgColor? stroke,
   SvgLengthPercentage? strokeWidth,
+  SvgStrokeLinecap? strokeLinecap,
+  SvgStrokeLinejoin? strokeLinejoin,
+  SvgLengthPercentage? opacity,
   String? transform,
 });
 
@@ -21,6 +24,10 @@ extension XmlElementCommonAttributes on XmlElement {
       fill: toSvgValueOrNull<SvgColor>(elementName, XmlAttributeName.fill),
       stroke: toSvgValueOrNull<SvgColor>(elementName, XmlAttributeName.stroke),
       strokeWidth: toSvgValueOrNull<SvgLengthPercentage>(elementName, XmlAttributeName.strokeWidth),
+      strokeLinecap: toSvgValueOrNull<SvgStrokeLinecap>(elementName, XmlAttributeName.strokeLinecap),
+      strokeLinejoin:
+          toSvgValueOrNull<SvgStrokeLinejoin>(elementName, XmlAttributeName.strokeLinejoin),
+      opacity: toSvgValueOrNull<SvgLengthPercentage>(elementName, XmlAttributeName.opacity),
       transform: getXmlAttributeValue(XmlAttributeName.transform),
     );
   }

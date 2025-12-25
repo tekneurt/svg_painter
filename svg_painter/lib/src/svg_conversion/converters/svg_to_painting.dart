@@ -16,7 +16,6 @@ import '../svg_value_extensions/svg_length_to_double.dart';
 import '../svg_value_extensions/svg_percentage_to_double.dart';
 import 'svg_definition_collector.dart';
 import 'svg_painting_context.dart';
-import 'svg_radii_resolver.dart';
 
 /// Extension to convert [SvgElement] to [PaintCommand]s.
 extension SvgToPainting on SvgElement {
@@ -51,6 +50,11 @@ extension SvgToPainting on SvgElement {
         viewBoxHeight: height,
         viewBoxMinX: minX,
         viewBoxMinY: minY,
+        inheritedFill: self.fill,
+        inheritedStroke: self.stroke,
+        inheritedStrokeWidth: self.strokeWidth,
+        inheritedStrokeLinecap: self.strokeLinecap,
+        inheritedStrokeLinejoin: self.strokeLinejoin,
         definitions: definitions,
       );
       return self._toPaintCommands(rootContext);
@@ -64,38 +68,21 @@ extension SvgToPainting on SvgElement {
             inheritedFill: self.fill ?? context.inheritedFill,
             inheritedStroke: self.stroke ?? context.inheritedStroke,
             inheritedStrokeWidth: self.strokeWidth ?? context.inheritedStrokeWidth,
+            inheritedStrokeLinecap: self.strokeLinecap ?? context.inheritedStrokeLinecap,
+            inheritedStrokeLinejoin: self.strokeLinejoin ?? context.inheritedStrokeLinejoin,
           )
         : context;
 
     return switch (self) {
       final SvgSvg container => container._toPaintCommands(childContext),
-      final SvgCircle circle => (circle.r.toDouble(childContext, SvgOrientation.normalized) <= 0)
-          ? const Success<List<PaintCommand>>(<PaintCommand>[])
-          : circle.toDrawCircle(childContext).map((DrawCircle cmd) => <PaintCommand>[cmd]),
-      final SvgEllipse ellipse => (() {
-          final (double rx, double ry) = resolveRadii(ellipse.rx, ellipse.ry, childContext);
-          return (rx <= 0 || ry <= 0)
-              ? const Success<List<PaintCommand>>(<PaintCommand>[])
-              : ellipse.toDrawOval(childContext).map((DrawOval cmd) => <PaintCommand>[cmd]);
-        })(),
-      final SvgRect rect => (() {
-          final double w =
-              rect.width.toDoubleOrNull(childContext, SvgOrientation.horizontal) ?? 0.0;
-          final double h = rect.height.toDoubleOrNull(childContext, SvgOrientation.vertical) ?? 0.0;
-          return (w <= 0 || h <= 0)
-              ? const Success<List<PaintCommand>>(<PaintCommand>[])
-              : rect.toDrawRect(childContext).map((DrawRect cmd) => <PaintCommand>[cmd]);
-        })(),
+      final SvgCircle circle => circle.toPaintCommands(childContext),
+      final SvgEllipse ellipse => ellipse.toPaintCommands(childContext),
+      final SvgRect rect => rect.toPaintCommands(childContext),
       final SvgGroup group => group._toPaintCommands(childContext),
-      final SvgLine line =>
-        line.toDrawLine(childContext).map((DrawLine cmd) => <PaintCommand>[cmd]),
-      final SvgPath path => (path.d.trim().isEmpty)
-          ? const Success<List<PaintCommand>>(<PaintCommand>[])
-          : path.toDrawPath(childContext).map((DrawPath cmd) => <PaintCommand>[cmd]),
-      final SvgPolyline polyline =>
-        polyline.toDrawPolyline(childContext).map((DrawPolyline cmd) => <PaintCommand>[cmd]),
-      final SvgPolygon polygon =>
-        polygon.toDrawPolygon(childContext).map((DrawPolygon cmd) => <PaintCommand>[cmd]),
+      final SvgLine line => line.toPaintCommands(childContext),
+      final SvgPath path => path.toPaintCommands(childContext),
+      final SvgPolyline polyline => polyline.toPaintCommands(childContext),
+      final SvgPolygon polygon => polygon.toPaintCommands(childContext),
       final SvgUse use => use._toPaintCommands(childContext),
       final SvgDefs defs => defs._toPaintCommands(childContext),
       final SvgRadialGradient radialGradient =>
@@ -135,6 +122,8 @@ extension _SvgUseToPainting on SvgUse {
       inheritedFill: fill ?? context.inheritedFill,
       inheritedStroke: stroke ?? context.inheritedStroke,
       inheritedStrokeWidth: strokeWidth ?? context.inheritedStrokeWidth,
+      inheritedStrokeLinecap: strokeLinecap ?? context.inheritedStrokeLinecap,
+      inheritedStrokeLinejoin: strokeLinejoin ?? context.inheritedStrokeLinejoin,
     );
 
     return target.toPaintCommands(useCtx);
@@ -213,6 +202,8 @@ extension _SvgSvgToPainting on SvgSvg {
       inheritedFill: fill ?? context.inheritedFill,
       inheritedStroke: stroke ?? context.inheritedStroke,
       inheritedStrokeWidth: strokeWidth ?? context.inheritedStrokeWidth,
+      inheritedStrokeLinecap: strokeLinecap ?? context.inheritedStrokeLinecap,
+      inheritedStrokeLinejoin: strokeLinejoin ?? context.inheritedStrokeLinejoin,
     );
 
     final List<PaintCommand> commands = <PaintCommand>[];

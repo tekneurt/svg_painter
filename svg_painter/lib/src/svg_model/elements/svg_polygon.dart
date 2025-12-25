@@ -11,6 +11,9 @@ final class SvgPolygon extends SvgBasicShape {
     super.fill,
     super.stroke,
     super.strokeWidth,
+    super.strokeLinecap,
+    super.strokeLinejoin,
+    super.opacity,
     super.transform,
   });
 

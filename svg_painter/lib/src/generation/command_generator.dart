@@ -28,14 +28,21 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
       buffer.writeln('      {');
       buffer.writeln('        final Paint paint = Paint();');
       buffer.writeln('        paint.shader = _grad_${style.fillShaderId}.createShader($boundsRect);');
+      if (style.opacity < 1.0) {
+        buffer.writeln('        paint.color = paint.color.withOpacity(${style.opacity});');
+      }
       buffer.writeln('        paint.style = PaintingStyle.fill;');
       drawCall('paint');
       buffer.writeln('      }');
     } else if (style.fillColorArgb != null && style.fillColorArgb != 0) {
       buffer.writeln('      {');
       buffer.writeln('        final Paint paint = Paint();');
+      final double finalOpacity =
+          ((style.fillColorArgb! >> 24) & 0xFF) / 255.0 * style.opacity;
+      final int colorWithoutAlpha = style.fillColorArgb! & 0x00FFFFFF;
+      final String colorHex = colorWithoutAlpha.toRadixString(16).toUpperCase().padLeft(6, '0');
       buffer.writeln(
-        '        paint.color = const Color(0x${style.fillColorArgb!.toRadixString(16).toUpperCase()});',
+        '        paint.color = const Color(0x${(finalOpacity * 255).round().toRadixString(16).toUpperCase().padLeft(2, '0')}$colorHex);',
       );
       buffer.writeln('        paint.style = PaintingStyle.fill;');
       drawCall('paint');
@@ -47,18 +54,37 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
       buffer.writeln('      {');
       buffer.writeln('        final Paint paint = Paint();');
       buffer.writeln('        paint.shader = _grad_${style.strokeShaderId}.createShader($boundsRect);');
+      if (style.opacity < 1.0) {
+        buffer.writeln('        paint.color = paint.color.withOpacity(${style.opacity});');
+      }
       buffer.writeln('        paint.style = PaintingStyle.stroke;');
       buffer.writeln('        paint.strokeWidth = ${style.strokeWidth};');
+      if (style.strokeCap != StrokeCap.butt) {
+        buffer.writeln('        paint.strokeCap = ${style.strokeCap.toFlutterString()};');
+      }
+      if (style.strokeJoin != StrokeJoin.miter) {
+        buffer.writeln('        paint.strokeJoin = ${style.strokeJoin.toFlutterString()};');
+      }
       drawCall('paint');
       buffer.writeln('      }');
     } else if (style.strokeColorArgb != null && style.strokeColorArgb != 0) {
       buffer.writeln('      {');
       buffer.writeln('        final Paint paint = Paint();');
+      final double finalOpacity =
+          ((style.strokeColorArgb! >> 24) & 0xFF) / 255.0 * style.opacity;
+      final int colorWithoutAlpha = style.strokeColorArgb! & 0x00FFFFFF;
+      final String colorHex = colorWithoutAlpha.toRadixString(16).toUpperCase().padLeft(6, '0');
       buffer.writeln(
-        '        paint.color = const Color(0x${style.strokeColorArgb!.toRadixString(16).toUpperCase()});',
+        '        paint.color = const Color(0x${(finalOpacity * 255).round().toRadixString(16).toUpperCase().padLeft(2, '0')}$colorHex);',
       );
       buffer.writeln('        paint.style = PaintingStyle.stroke;');
       buffer.writeln('        paint.strokeWidth = ${style.strokeWidth};');
+      if (style.strokeCap != StrokeCap.butt) {
+        buffer.writeln('        paint.strokeCap = ${style.strokeCap.toFlutterString()};');
+      }
+      if (style.strokeJoin != StrokeJoin.miter) {
+        buffer.writeln('        paint.strokeJoin = ${style.strokeJoin.toFlutterString()};');
+      }
       drawCall('paint');
       buffer.writeln('      }');
     }
@@ -89,5 +115,25 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
       buffer.writeln(tEnd);
     }
     buffer.writeln('    }');
+  }
+}
+
+extension on StrokeCap {
+  String toFlutterString() {
+    return switch (this) {
+      StrokeCap.butt => 'StrokeCap.butt',
+      StrokeCap.round => 'StrokeCap.round',
+      StrokeCap.square => 'StrokeCap.square',
+    };
+  }
+}
+
+extension on StrokeJoin {
+  String toFlutterString() {
+    return switch (this) {
+      StrokeJoin.miter => 'StrokeJoin.miter',
+      StrokeJoin.round => 'StrokeJoin.round',
+      StrokeJoin.bevel => 'StrokeJoin.bevel',
+    };
   }
 }

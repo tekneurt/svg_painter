@@ -17,6 +17,9 @@ final class SvgPaintingContext {
     this.inheritedFill,
     this.inheritedStroke,
     this.inheritedStrokeWidth,
+    this.inheritedStrokeLinecap,
+    this.inheritedStrokeLinejoin,
+    this.inheritedOpacity,
     this.definitions = const <String, SvgElement>{},
   });
 
@@ -53,6 +56,15 @@ final class SvgPaintingContext {
   /// Inherited stroke width.
   final SvgLengthPercentage? inheritedStrokeWidth;
 
+  /// Inherited stroke linecap.
+  final SvgStrokeLinecap? inheritedStrokeLinecap;
+
+  /// Inherited stroke linejoin.
+  final SvgStrokeLinejoin? inheritedStrokeLinejoin;
+
+  /// Inherited opacity.
+  final SvgLengthPercentage? inheritedOpacity;
+
   /// Map of element IDs to SvgElements.
   final Map<String, SvgElement> definitions;
 
@@ -80,6 +92,9 @@ final class SvgPaintingContext {
     SvgColor? inheritedFill,
     SvgColor? inheritedStroke,
     SvgLengthPercentage? inheritedStrokeWidth,
+    SvgStrokeLinecap? inheritedStrokeLinecap,
+    SvgStrokeLinejoin? inheritedStrokeLinejoin,
+    SvgLengthPercentage? inheritedOpacity,
   }) {
     return SvgPaintingContext(
       viewBoxWidth: viewBoxWidth ?? this.viewBoxWidth,
@@ -93,6 +108,9 @@ final class SvgPaintingContext {
       inheritedFill: inheritedFill ?? this.inheritedFill,
       inheritedStroke: inheritedStroke ?? this.inheritedStroke,
       inheritedStrokeWidth: inheritedStrokeWidth ?? this.inheritedStrokeWidth,
+      inheritedStrokeLinecap: inheritedStrokeLinecap ?? this.inheritedStrokeLinecap,
+      inheritedStrokeLinejoin: inheritedStrokeLinejoin ?? this.inheritedStrokeLinejoin,
+      inheritedOpacity: inheritedOpacity ?? this.inheritedOpacity,
       definitions: definitions,
     );
   }

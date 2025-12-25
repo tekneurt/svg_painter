@@ -3,10 +3,14 @@ import '../../painting_model/_painting_model.dart';
 import '../../svg_model/_svg_model.dart';
 import '../converters/_converters.dart';
 
-/// Extension to convert [SvgPath] to [DrawPath].
+/// Extension to convert [SvgPath] to [PaintCommand]s.
 extension SvgPathToPainting on SvgPath {
-  /// Converts this [SvgPath] to a [DrawPath].
-  Result<DrawPath> toDrawPath(SvgPaintingContext context) {
+  /// Converts this [SvgPath] to a list of [PaintCommand]s.
+  Result<List<PaintCommand>> toPaintCommands(SvgPaintingContext context) {
+    if (d.trim().isEmpty) {
+      return const Success<List<PaintCommand>>(<PaintCommand>[]);
+    }
+
     final List<PathOperation> operations = PathDataParser.parse(d, context);
 
     final PaintingStyle style = resolvePaint(
@@ -14,8 +18,13 @@ extension SvgPathToPainting on SvgPath {
       fill: fill,
       stroke: stroke,
       strokeWidth: strokeWidth,
+      strokeLinecap: strokeLinecap,
+      strokeLinejoin: strokeLinejoin,
+      opacity: opacity,
     );
 
-    return Success<DrawPath>(DrawPath(operations: operations, style: style, transform: transform));
+    return Success<List<PaintCommand>>(<PaintCommand>[
+      DrawPath(operations: operations, style: style, transform: transform),
+    ]);
   }
 }

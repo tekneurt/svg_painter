@@ -127,9 +127,11 @@ Implement support for additional SVG shapes using the new layered architecture.
 - [x] **Path** (`<path>`)
 - [ ] **Text** (`<text>`)
 - [ ] **Image** (`<image>`)
+- [ ] **Mask** (`<mask>`)
 - [x] **Use** (`<use>`)
 - [x] **TODO(Gemini)**: Implement zero-radius handling (0-radius elements are not rendered).
-- [ ] **TODO(Gemini)**: Refactor zero-dimension checks into specific element-to-painting extensions.
+- [x] **TODO(Gemini)**: Refactor zero-dimension checks into specific element-to-painting extensions.
+- [ ] **TODO(Gemini)**: Implement nested opacity multiplication (currently selects highest level defined).
 - [ ] **TODO(Gemini)**: Add `pathLength` support to SVG models.
 - [ ] **TODO(Gemini)**: Add comprehensive tests for all `BoxFit` values (separate from MDN examples).
 - [ ] **TODO(Gemini)**: Improve coordinate mapping for gradients (currently uses rough alignment approximation).
@@ -154,8 +156,8 @@ Implement support for additional SVG shapes using the new layered architecture.
 - [ ] **Attributes**
     - [x] Fill (color, none)
     - [x] Stroke (color, width)
-    - [ ] Stroke (cap, join)
-    - [ ] Opacity
+    - [x] Stroke (cap, join)
+    - [x] Opacity
 - [x] **Transforms** (translate, scale via nested SVG and use)
 - [ ] **Test**: Verify against the Daphnia SVG.
 
@@ -166,11 +168,14 @@ Implement support for additional SVG shapes using the new layered architecture.
 - [x] **Refactor (High Priority)**: `SvgPaintingContext` — Add a `derive()` or `copyWith()` method to simplify creating child contexts with transformations and style inheritance.
 - [x] **Refactor (High Priority)**: `Paint & Stroke Resolver` — Create a shared helper (`resolvePaint`) to standardize `fill` vs `fillShaderId` resolution and deduplicate code across shape converters.
 - [x] **Refactor (High Priority)**: XML Conversion — Deduplicate parsing logic for common attributes (`fill`, stroke, strokeWidth, id) using a mixin or helper.
+- [ ] **Refactor (High Priority)**: Replace silent continues and "should not happen" comments with explicit generator errors (e.g. `GroupGenerator`, `SvgToPainting`).
+- [ ] **Refactor (Medium Priority)**: Simplify stroke attribute handling across the SVG Model and conversion layers (investigate using a shared `StrokeStyle` or mixin to reduce constructor boilerplate).
 - [ ] **Refactor (Medium Priority)**: `SvgValue` — Update `toDouble()` to accept `SvgPaintingContext` for future-proofing unit resolution (e.g., `em`).
 - [x] **Refactor (Medium Priority)**: SVG Model — Investigate grouping SVG elements by category (e.g., using sealed classes for `BasicShapes`, `Containers`, etc.) to better reflect the spec and share properties.
 - [ ] **Refactor (Low Priority)**: `Result` — Add ergonomic extensions (e.g., `combine()`) to simplify list folding and result aggregation.
 - [ ] **Refactor (Low Priority)**: Convert existing code to use dot shorthand for enum values and static members consistently.
 - [ ] **Refactor (Low Priority)**: Standardize extension naming across all layers (e.g., `To[Target]`).
+- [ ] **Refactor (Low Priority)**: Cleanly integrate or refactor `StrokeCap.toFlutterString()` (currently in `command_generator.dart`).
 - [ ] comprehensive documentation.
 - [ ] **TODO(Gemini)**: API polishing.
 - [ ] **TODO(Gemini)**: Optimize generated code (remove comments, unnecessary braces, unused variables).

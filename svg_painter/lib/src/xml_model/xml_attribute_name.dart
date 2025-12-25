@@ -114,6 +114,18 @@ enum XmlAttributeName {
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-width
   strokeWidth('stroke-width'),
 
+  /// The shape to be used at the end of open subpaths when they are stroked.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-linecap
+  strokeLinecap('stroke-linecap'),
+
+  /// The shape to be used at the corners of paths or basic shapes.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-linejoin
+  strokeLinejoin('stroke-linejoin'),
+
+  /// The transparency of an object or a group of objects.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/opacity
+  opacity('opacity'),
+
   /// The viewBox of the element.
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/viewBox
   viewBox('viewBox');

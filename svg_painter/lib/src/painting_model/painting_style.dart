@@ -1,4 +1,6 @@
 import 'package:meta/meta.dart';
+import 'stroke_cap.dart';
+import 'stroke_join.dart';
 
 /// Represents the visual style (fill and stroke) for a drawing command.
 @immutable
@@ -9,6 +11,9 @@ final class PaintingStyle {
     this.strokeColorArgb,
     this.strokeShaderId,
     this.strokeWidth = 1.0,
+    this.strokeCap = StrokeCap.butt,
+    this.strokeJoin = StrokeJoin.miter,
+    this.opacity = 1.0,
   });
 
   /// The ARGB integer for the fill color.
@@ -26,8 +31,17 @@ final class PaintingStyle {
   /// The width of the stroke.
   final double strokeWidth;
 
+  /// The shape to be used at the end of open subpaths.
+  final StrokeCap strokeCap;
+
+  /// The shape to be used at the corners of paths or basic shapes.
+  final StrokeJoin strokeJoin;
+
+  /// The transparency of the element (0.0 to 1.0).
+  final double opacity;
+
   @override
   String toString() {
-    return 'PaintingStyle(fill: $fillColorArgb/$fillShaderId, stroke: $strokeColorArgb/$strokeShaderId, width: $strokeWidth)';
+    return 'PaintingStyle(fill: $fillColorArgb/$fillShaderId, stroke: $strokeColorArgb/$strokeShaderId, width: $strokeWidth, cap: $strokeCap, join: $strokeJoin, opacity: $opacity)';
   }
 }

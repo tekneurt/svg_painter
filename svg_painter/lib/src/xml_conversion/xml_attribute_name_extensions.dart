@@ -60,11 +60,17 @@ extension XmlAttributeDefaultValues on XmlAttributeName {
         return const SvgNoneColor();
       case XmlAttributeName.strokeWidth:
         return const SvgLength(1.0);
+      case XmlAttributeName.strokeLinecap:
+        return SvgStrokeLinecap.butt;
+      case XmlAttributeName.strokeLinejoin:
+        return SvgStrokeLinejoin.miter;
       case XmlAttributeName.offset:
         return const SvgLength(0.0);
       case XmlAttributeName.stopColor:
         return const SvgNamedColor(SvgColorName.black);
       case XmlAttributeName.stopOpacity:
+        return const SvgLength(1.0);
+      case XmlAttributeName.opacity:
         return const SvgLength(1.0);
       case XmlAttributeName.fx:
       case XmlAttributeName.fy:

@@ -5,22 +5,29 @@ import '../converters/_converters.dart';
 import '../svg_value_extensions/svg_length_percentage_to_double.dart';
 import '../svg_value_extensions/svg_percentage_to_double.dart';
 
-/// Extension to convert [SvgCircle] to [DrawCircle].
+/// Extension to convert [SvgCircle] to [PaintCommand]s.
 extension SvgCircleToPainting on SvgCircle {
-  /// Converts this [SvgCircle] to a [DrawCircle].
-  Result<DrawCircle> toDrawCircle(SvgPaintingContext context) {
+  /// Converts this [SvgCircle] to a list of [PaintCommand]s.
+  Result<List<PaintCommand>> toPaintCommands(SvgPaintingContext context) {
+    if (r.toDouble(context, SvgOrientation.normalized) <= 0) {
+      return const Success<List<PaintCommand>>(<PaintCommand>[]);
+    }
+
     final PaintingStyle paint = resolvePaint(
       context,
       fill: fill,
       stroke: stroke,
       strokeWidth: strokeWidth,
+      strokeLinecap: strokeLinecap,
+      strokeLinejoin: strokeLinejoin,
+      opacity: opacity,
     );
 
     final double finalCx = context.transformX(cx.toPosition(context, SvgOrientation.horizontal));
     final double finalCy = context.transformY(cy.toPosition(context, SvgOrientation.vertical));
     final double finalR = context.scaleNormalized(r.toDouble(context, SvgOrientation.normalized));
 
-    return Success<DrawCircle>(
+    return Success<List<PaintCommand>>(<PaintCommand>[
       DrawCircle(
         cx: finalCx,
         cy: finalCy,
@@ -28,6 +35,6 @@ extension SvgCircleToPainting on SvgCircle {
         style: paint,
         transform: transform,
       ),
-    );
+    ]);
   }
 }

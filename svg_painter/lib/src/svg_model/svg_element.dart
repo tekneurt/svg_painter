@@ -34,7 +34,16 @@ mixin SvgParent {
 /// Base class for SVG graphics elements (elements that can be rendered).
 @immutable
 sealed class SvgGraphicsElement extends SvgElement {
-  const SvgGraphicsElement({super.id, this.fill, this.stroke, this.strokeWidth, this.transform});
+  const SvgGraphicsElement({
+    super.id,
+    this.fill,
+    this.stroke,
+    this.strokeWidth,
+    this.strokeLinecap,
+    this.strokeLinejoin,
+    this.opacity,
+    this.transform,
+  });
 
   /// The fill color of the element.
   final SvgColor? fill;
@@ -45,6 +54,15 @@ sealed class SvgGraphicsElement extends SvgElement {
   /// The width of the stroke.
   final SvgLengthPercentage? strokeWidth;
 
+  /// The shape to be used at the end of open subpaths.
+  final SvgStrokeLinecap? strokeLinecap;
+
+  /// The shape to be used at the corners of paths or basic shapes.
+  final SvgStrokeLinejoin? strokeLinejoin;
+
+  /// The transparency of the element.
+  final SvgLengthPercentage? opacity;
+
   /// The transform applied to the element.
   final String? transform;
 }
@@ -52,7 +70,16 @@ sealed class SvgGraphicsElement extends SvgElement {
 /// Base class for basic shape elements (<circle>, <rect>, etc.).
 @immutable
 sealed class SvgBasicShape extends SvgGraphicsElement {
-  const SvgBasicShape({super.id, super.fill, super.stroke, super.strokeWidth, super.transform});
+  const SvgBasicShape({
+    super.id,
+    super.fill,
+    super.stroke,
+    super.strokeWidth,
+    super.strokeLinecap,
+    super.strokeLinejoin,
+    super.opacity,
+    super.transform,
+  });
 }
 
 /// Base class for container elements (<svg>, <g>).
@@ -64,6 +91,9 @@ sealed class SvgContainerElement extends SvgGraphicsElement with SvgParent {
     super.fill,
     super.stroke,
     super.strokeWidth,
+    super.strokeLinecap,
+    super.strokeLinejoin,
+    super.opacity,
     super.transform,
   });
 

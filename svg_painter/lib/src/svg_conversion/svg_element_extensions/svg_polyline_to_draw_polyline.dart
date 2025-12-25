@@ -3,10 +3,14 @@ import '../../painting_model/_painting_model.dart';
 import '../../svg_model/_svg_model.dart';
 import '../converters/_converters.dart';
 
-/// Extension to convert [SvgPolyline] to [DrawPolyline].
+/// Extension to convert [SvgPolyline] to [PaintCommand]s.
 extension SvgPolylineToPainting on SvgPolyline {
-  /// Converts this [SvgPolyline] to a [DrawPolyline].
-  Result<DrawPolyline> toDrawPolyline(SvgPaintingContext context) {
+  /// Converts this [SvgPolyline] to a list of [PaintCommand]s.
+  Result<List<PaintCommand>> toPaintCommands(SvgPaintingContext context) {
+    if (points.points.length < 4) {
+      return const Success<List<PaintCommand>>(<PaintCommand>[]);
+    }
+
     // Resolve points relative to viewBox
     final List<double> resolvedPoints = <double>[];
     for (int i = 0; i < points.points.length; i += 2) {
@@ -26,14 +30,17 @@ extension SvgPolylineToPainting on SvgPolyline {
       fill: fill,
       stroke: stroke,
       strokeWidth: strokeWidth,
+      strokeLinecap: strokeLinecap,
+      strokeLinejoin: strokeLinejoin,
+      opacity: opacity,
     );
 
-    return Success<DrawPolyline>(
+    return Success<List<PaintCommand>>(<PaintCommand>[
       DrawPolyline(
         points: resolvedPoints,
         style: paint,
         transform: transform,
       ),
-    );
+    ]);
   }
 }
