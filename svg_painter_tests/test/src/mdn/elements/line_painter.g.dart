@@ -37,15 +37,27 @@ class _$LinePainter extends CustomPainter {
     canvas.clipRect(Rect.fromLTWH(0, 0, 100.0, 100.0));
 
     {
-      final Paint paint = Paint();
-      paint.color = const Color(0xFF000000);
-      paint.style = PaintingStyle.stroke;
-      paint.strokeWidth = 1.0;
-      canvas.drawLine(
-        const Offset(0.0, 80.0),
-        const Offset(100.0, 20.0),
-        paint,
-      );
+      {
+        final Paint paint = Paint();
+        paint.color = const Color(0xFF000000);
+        paint.style = PaintingStyle.fill;
+        canvas.drawLine(
+          const Offset(0.0, 80.0),
+          const Offset(100.0, 20.0),
+          paint,
+        );
+      }
+      {
+        final Paint paint = Paint();
+        paint.color = const Color(0xFF000000);
+        paint.style = PaintingStyle.stroke;
+        paint.strokeWidth = 1.0;
+        canvas.drawLine(
+          const Offset(0.0, 80.0),
+          const Offset(100.0, 20.0),
+          paint,
+        );
+      }
     }
     canvas.restore();
   }

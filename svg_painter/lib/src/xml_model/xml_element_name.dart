@@ -27,6 +27,9 @@ enum XmlElementName {
   /// The <defs> element.
   defs('defs'),
 
+  /// The <g> element.
+  g('g'),
+
   /// The <use> element.
   use('use'),
 

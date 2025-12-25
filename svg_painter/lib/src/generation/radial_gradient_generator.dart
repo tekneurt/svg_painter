@@ -5,7 +5,11 @@ class RadialGradientGenerator extends CommandGenerator<DefineRadialGradient> {
   const RadialGradientGenerator();
 
   @override
-  void generate(DefineRadialGradient command, StringBuffer buffer) {
+  void generate(
+    DefineRadialGradient command,
+    StringBuffer buffer, {
+    Map<Type, CommandGenerator<PaintCommand>>? generators,
+  }) {
     final String colors =
         '[${command.stops.map((GradientStop s) => 'Color(0x${s.colorArgb.toRadixString(16).toUpperCase()})').join(', ')}]';
     final String stops = '[${command.stops.map((GradientStop s) => s.offset.toString()).join(', ')}]';

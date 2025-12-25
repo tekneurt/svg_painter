@@ -21,6 +21,7 @@ export 'src/mdn/attributes/y2.dart';
 export 'src/mdn/elements/circle.dart';
 export 'src/mdn/elements/defs_element.dart';
 export 'src/mdn/elements/ellipse.dart';
+export 'src/mdn/elements/g.dart';
 export 'src/mdn/elements/line.dart';
 export 'src/mdn/elements/linear_gradient.dart';
 export 'src/mdn/elements/path.dart';

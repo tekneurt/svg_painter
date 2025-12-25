@@ -2,6 +2,7 @@ import 'package:meta/meta.dart';
 import 'painting_style.dart';
 
 part 'commands/draw_circle.dart';
+part 'commands/draw_group.dart';
 part 'commands/draw_line.dart';
 part 'commands/draw_oval.dart';
 part 'commands/draw_path.dart';

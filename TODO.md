@@ -123,12 +123,13 @@ Implement support for additional SVG shapes using the new layered architecture.
     - [x] Add `toDrawPolygon` extension.
     - [x] Update Code Generator.
     - [x] Add Fixtures and Tests.
-- [ ] **Group** (`<g>`)
+- [x] **Group** (`<g>`)
 - [x] **Path** (`<path>`)
 - [ ] **Text** (`<text>`)
 - [ ] **Image** (`<image>`)
 - [x] **Use** (`<use>`)
 - [x] **TODO(Gemini)**: Implement zero-radius handling (0-radius elements are not rendered).
+- [ ] **TODO(Gemini)**: Refactor zero-dimension checks into specific element-to-painting extensions.
 - [ ] **TODO(Gemini)**: Add `pathLength` support to SVG models.
 - [ ] **TODO(Gemini)**: Add comprehensive tests for all `BoxFit` values (separate from MDN examples).
 - [ ] **TODO(Gemini)**: Improve coordinate mapping for gradients (currently uses rough alignment approximation).
@@ -171,5 +172,6 @@ Implement support for additional SVG shapes using the new layered architecture.
 - [ ] **Refactor (Low Priority)**: Convert existing code to use dot shorthand for enum values and static members consistently.
 - [ ] **Refactor (Low Priority)**: Standardize extension naming across all layers (e.g., `To[Target]`).
 - [ ] comprehensive documentation.
-- [ ] API polishing.
-- [ ] Publish to pub.dev (dry run).
+- [ ] **TODO(Gemini)**: API polishing.
+- [ ] **TODO(Gemini)**: Optimize generated code (remove comments, unnecessary braces, unused variables).
+- [ ] **TODO(Gemini)**: Publish to pub.dev (dry run).

@@ -16,6 +16,7 @@ import '../svg_value_extensions/svg_length_to_double.dart';
 import '../svg_value_extensions/svg_percentage_to_double.dart';
 import 'svg_definition_collector.dart';
 import 'svg_painting_context.dart';
+import 'svg_radii_resolver.dart';
 
 /// Extension to convert [SvgElement] to [PaintCommand]s.
 extension SvgToPainting on SvgElement {
@@ -50,13 +51,6 @@ extension SvgToPainting on SvgElement {
         viewBoxHeight: height,
         viewBoxMinX: minX,
         viewBoxMinY: minY,
-        parentTx: 0.0,
-        parentTy: 0.0,
-        parentSx: 1.0,
-        parentSy: 1.0,
-        inheritedFill: self.fill,
-        inheritedStroke: self.stroke,
-        inheritedStrokeWidth: self.strokeWidth,
         definitions: definitions,
       );
       return self._toPaintCommands(rootContext);
@@ -75,16 +69,29 @@ extension SvgToPainting on SvgElement {
 
     return switch (self) {
       final SvgSvg container => container._toPaintCommands(childContext),
-      final SvgCircle circle =>
-        circle.toDrawCircle(childContext).map((DrawCircle cmd) => <PaintCommand>[cmd]),
-      final SvgEllipse ellipse =>
-        ellipse.toDrawOval(childContext).map((DrawOval cmd) => <PaintCommand>[cmd]),
-      final SvgRect rect =>
-        rect.toDrawRect(childContext).map((DrawRect cmd) => <PaintCommand>[cmd]),
+      final SvgCircle circle => (circle.r.toDouble(childContext, SvgOrientation.normalized) <= 0)
+          ? const Success<List<PaintCommand>>(<PaintCommand>[])
+          : circle.toDrawCircle(childContext).map((DrawCircle cmd) => <PaintCommand>[cmd]),
+      final SvgEllipse ellipse => (() {
+          final (double rx, double ry) = resolveRadii(ellipse.rx, ellipse.ry, childContext);
+          return (rx <= 0 || ry <= 0)
+              ? const Success<List<PaintCommand>>(<PaintCommand>[])
+              : ellipse.toDrawOval(childContext).map((DrawOval cmd) => <PaintCommand>[cmd]);
+        })(),
+      final SvgRect rect => (() {
+          final double w =
+              rect.width.toDoubleOrNull(childContext, SvgOrientation.horizontal) ?? 0.0;
+          final double h = rect.height.toDoubleOrNull(childContext, SvgOrientation.vertical) ?? 0.0;
+          return (w <= 0 || h <= 0)
+              ? const Success<List<PaintCommand>>(<PaintCommand>[])
+              : rect.toDrawRect(childContext).map((DrawRect cmd) => <PaintCommand>[cmd]);
+        })(),
+      final SvgGroup group => group._toPaintCommands(childContext),
       final SvgLine line =>
         line.toDrawLine(childContext).map((DrawLine cmd) => <PaintCommand>[cmd]),
-      final SvgPath path =>
-        path.toDrawPath(childContext).map((DrawPath cmd) => <PaintCommand>[cmd]),
+      final SvgPath path => (path.d.trim().isEmpty)
+          ? const Success<List<PaintCommand>>(<PaintCommand>[])
+          : path.toDrawPath(childContext).map((DrawPath cmd) => <PaintCommand>[cmd]),
       final SvgPolyline polyline =>
         polyline.toDrawPolyline(childContext).map((DrawPolyline cmd) => <PaintCommand>[cmd]),
       final SvgPolygon polygon =>
@@ -225,5 +232,28 @@ extension _SvgSvgToPainting on SvgSvg {
     }
 
     return Success<List<PaintCommand>>(commands);
+  }
+}
+
+extension _SvgGroupToPainting on SvgGroup {
+  Result<List<PaintCommand>> _toPaintCommands(SvgPaintingContext context) {
+    final List<PaintCommand> childCommands = <PaintCommand>[];
+
+    for (final SvgElement child in children) {
+      final Result<List<PaintCommand>> result = child.toPaintCommands(context);
+
+      result.fold(
+        (Failure<List<PaintCommand>> failure) {
+          // TODO(Gemini): Handle failure.
+        },
+        (List<PaintCommand> value) {
+          childCommands.addAll(value);
+        },
+      );
+    }
+
+    return Success<List<PaintCommand>>(<PaintCommand>[
+      DrawGroup(commands: childCommands, transform: transform),
+    ]);
   }
 }

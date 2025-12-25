@@ -5,7 +5,11 @@ abstract class CommandGenerator<T extends PaintCommand> {
   const CommandGenerator();
 
   /// Generates the Dart code for the given [command] and appends it to the [buffer].
-  void generate(T command, StringBuffer buffer);
+  void generate(
+    T command,
+    StringBuffer buffer, {
+    Map<Type, CommandGenerator<PaintCommand>>? generators,
+  });
 }
 
 /// Base class for generators that produce drawing commands (shapes).

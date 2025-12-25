@@ -5,9 +5,11 @@ class RectGenerator extends ShapeGenerator<DrawRect> {
   const RectGenerator();
 
   @override
-  void generate(DrawRect command, StringBuffer buffer) {
-    if (command.width <= 0 || command.height <= 0) return;
-
+  void generate(
+    DrawRect command,
+    StringBuffer buffer, {
+    Map<Type, CommandGenerator<PaintCommand>>? generators,
+  }) {
     wrapWithTransform(buffer, command.transform, () {
       final String r =
           'Rect.fromLTWH(${command.x}, ${command.y}, ${command.width}, ${command.height})';

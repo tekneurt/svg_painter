@@ -1,9 +1,10 @@
-export 'command_generator.dart';
 export 'circle_generator.dart';
-export 'oval_generator.dart';
-export 'rect_generator.dart';
+export 'command_generator.dart';
+export 'group_generator.dart';
 export 'line_generator.dart';
+export 'linear_gradient_generator.dart';
+export 'oval_generator.dart';
 export 'path_generator.dart';
 export 'poly_generator.dart';
-export 'linear_gradient_generator.dart';
 export 'radial_gradient_generator.dart';
+export 'rect_generator.dart';

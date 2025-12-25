@@ -6,7 +6,11 @@ class PathGenerator extends ShapeGenerator<DrawPath> {
   const PathGenerator();
 
   @override
-  void generate(DrawPath command, StringBuffer buffer) {
+  void generate(
+    DrawPath command,
+    StringBuffer buffer, {
+    Map<Type, CommandGenerator<PaintCommand>>? generators,
+  }) {
     wrapWithTransform(buffer, command.transform, () {
       buffer.writeln('      // Path');
       buffer.writeln('      {');

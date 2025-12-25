@@ -5,7 +5,11 @@ class PolyGenerator extends ShapeGenerator<PaintCommand> {
   const PolyGenerator();
 
   @override
-  void generate(PaintCommand command, StringBuffer buffer) {
+  void generate(
+    PaintCommand command,
+    StringBuffer buffer, {
+    Map<Type, CommandGenerator<PaintCommand>>? generators,
+  }) {
     final List<double> pts;
     final bool closed;
     final PaintingStyle style;
@@ -26,16 +30,20 @@ class PolyGenerator extends ShapeGenerator<PaintCommand> {
     }
 
     wrapWithTransform(buffer, transform, () {
-      buffer.writeln('      final Path path = Path();');
+      buffer.writeln('      {');
+      buffer.writeln('        final Path path = Path();');
       final StringBuffer sb = StringBuffer();
       for (int i = 0; i < pts.length; i += 2) {
-        if (i > 0) sb.write(', ');
+        if (i > 0) {
+          sb.write(', ');
+        }
         sb.write('const Offset(${pts[i]}, ${pts[i + 1]})');
       }
-      buffer.writeln('      path.addPolygon([$sb], $closed);');
+      buffer.writeln('        path.addPolygon([$sb], $closed);');
       generatePaintingCode(buffer, style, 'path.getBounds()', (String p) {
-        buffer.writeln('      canvas.drawPath(path, $p);');
+        buffer.writeln('        canvas.drawPath(path, $p);');
       });
+      buffer.writeln('      }');
     });
   }
 }

@@ -5,7 +5,11 @@ class LinearGradientGenerator extends CommandGenerator<DefineLinearGradient> {
   const LinearGradientGenerator();
 
   @override
-  void generate(DefineLinearGradient command, StringBuffer buffer) {
+  void generate(
+    DefineLinearGradient command,
+    StringBuffer buffer, {
+    Map<Type, CommandGenerator<PaintCommand>>? generators,
+  }) {
     final String colors =
         '[${command.stops.map((GradientStop s) => 'Color(0x${s.colorArgb.toRadixString(16).toUpperCase()})').join(', ')}]';
     final String stops = '[${command.stops.map((GradientStop s) => s.offset.toString()).join(', ')}]';

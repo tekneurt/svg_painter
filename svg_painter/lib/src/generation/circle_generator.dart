@@ -5,9 +5,11 @@ class CircleGenerator extends ShapeGenerator<DrawCircle> {
   const CircleGenerator();
 
   @override
-  void generate(DrawCircle command, StringBuffer buffer) {
-    if (command.radius <= 0) return;
-
+  void generate(
+    DrawCircle command,
+    StringBuffer buffer, {
+    Map<Type, CommandGenerator<PaintCommand>>? generators,
+  }) {
     wrapWithTransform(buffer, command.transform, () {
       final String bounds =
           'Rect.fromCircle(center: const Offset(${command.cx}, ${command.cy}), radius: ${command.radius})';

@@ -5,9 +5,11 @@ class OvalGenerator extends ShapeGenerator<DrawOval> {
   const OvalGenerator();
 
   @override
-  void generate(DrawOval command, StringBuffer buffer) {
-    if (command.rx <= 0 || command.ry <= 0) return;
-
+  void generate(
+    DrawOval command,
+    StringBuffer buffer, {
+    Map<Type, CommandGenerator<PaintCommand>>? generators,
+  }) {
     wrapWithTransform(buffer, command.transform, () {
       final String bounds =
           'Rect.fromCenter(center: const Offset(${command.cx}, ${command.cy}), width: ${command.rx * 2}, height: ${command.ry * 2})';

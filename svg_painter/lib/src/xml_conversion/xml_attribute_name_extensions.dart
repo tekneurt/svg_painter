@@ -52,7 +52,10 @@ extension XmlAttributeDefaultValues on XmlAttributeName {
       case XmlAttributeName.points:
         return const SvgPointList(<double>[]);
       case XmlAttributeName.fill:
-        return const SvgNamedColor(SvgColorName.black);
+        return switch (elementName) {
+          XmlElementName.line => const SvgNoneColor(),
+          (_) => const SvgNamedColor(SvgColorName.black),
+        };
       case XmlAttributeName.stroke:
         return const SvgNoneColor();
       case XmlAttributeName.strokeWidth:
