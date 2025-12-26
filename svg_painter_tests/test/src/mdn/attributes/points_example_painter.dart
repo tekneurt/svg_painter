@@ -4,5 +4,7 @@ import 'package:svg_painter_fixtures/svg_painter_fixtures.dart';
 
 part 'points_example_painter.g.dart';
 
-@SvgCodePainter(pointsExample)
-class PointsExamplePainter extends _$PointsExamplePainter {}
+@SvgCodePainter(mdnPointsExample)
+class PointsExamplePainter extends _$PointsExamplePainter {
+  const PointsExamplePainter({super.fit});
+}

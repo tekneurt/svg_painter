@@ -1,5 +1,5 @@
-/// https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Element/ellipse
-const String mdnEllipse = '''
+/// https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Element/ellipse#example
+const String mdnEllipseExample = '''
 <svg viewBox="0 0 200 100" xmlns="http://www.w3.org/2000/svg">
   <!--
   rx: x-axis radius of the ellipse

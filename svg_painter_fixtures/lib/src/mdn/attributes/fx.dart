@@ -1,5 +1,5 @@
 /// https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/fx#example
-const String fxExample = '''
+const String mdnFxExample = '''
 <svg viewBox="0 0 480 200" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <radialGradient

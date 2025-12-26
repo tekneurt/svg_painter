@@ -1,6 +1,5 @@
-/// Fixture for `<defs>`.
-/// Source: https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Element/defs
-const String mdnDefsElement = '''
+/// https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Element/defs#example
+const String mdnDefsExample = '''
 <svg viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg">
   <!-- Some graphical objects to use -->
   <defs>

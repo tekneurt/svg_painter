@@ -4,5 +4,7 @@ import 'package:svg_painter_fixtures/svg_painter_fixtures.dart';
 
 part 'r_painter.g.dart';
 
-@SvgCodePainter(rExample)
-class RPainter extends _$RPainter {}
+@SvgCodePainter(mdnRExample)
+class RPainter extends _$RPainter {
+  const RPainter({super.fit});
+}

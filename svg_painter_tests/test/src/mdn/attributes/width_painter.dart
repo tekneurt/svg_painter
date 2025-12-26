@@ -4,5 +4,7 @@ import 'package:svg_painter_fixtures/svg_painter_fixtures.dart';
 
 part 'width_painter.g.dart';
 
-@SvgCodePainter(widthExample)
-class WidthPainter extends _$WidthPainter {}
+@SvgCodePainter(mdnWidthExample)
+class WidthPainter extends _$WidthPainter {
+  const WidthPainter({super.fit});
+}

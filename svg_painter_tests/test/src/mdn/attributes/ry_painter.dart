@@ -4,5 +4,7 @@ import 'package:svg_painter_fixtures/svg_painter_fixtures.dart';
 
 part 'ry_painter.g.dart';
 
-@SvgCodePainter(ryExample)
-class RyPainter extends _$RyPainter {}
+@SvgCodePainter(mdnRyExample)
+class RyPainter extends _$RyPainter {
+  const RyPainter({super.fit});
+}

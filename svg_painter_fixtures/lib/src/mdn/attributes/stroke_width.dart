@@ -1,6 +1,5 @@
-/// Fixture for testing the `stroke-width` attribute.
-/// Source: https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/stroke-width
-const String strokeWidthExample = '''
+/// https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/stroke-width#example
+const String mdnStrokeWidthExample = '''
 <svg viewBox="0 0 30 10" xmlns="http://www.w3.org/2000/svg">
   <!-- Default stroke width: 1 -->
   <circle cx="5" cy="5" r="3" stroke="green" />

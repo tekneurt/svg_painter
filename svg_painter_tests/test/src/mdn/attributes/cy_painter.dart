@@ -4,5 +4,7 @@ import 'package:svg_painter_fixtures/svg_painter_fixtures.dart';
 
 part 'cy_painter.g.dart';
 
-@SvgCodePainter(cyExample)
-class CyPainter extends _$CyPainter {}
+@SvgCodePainter(mdnCyExample)
+class CyPainter extends _$CyPainter {
+  const CyPainter({super.fit});
+}

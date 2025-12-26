@@ -4,5 +4,7 @@ import 'package:svg_painter_fixtures/svg_painter_fixtures.dart';
 
 part 'fx_painter.g.dart';
 
-@SvgCodePainter(fxExample)
-class FxPainter extends _$FxPainter {}
+@SvgCodePainter(mdnFxExample)
+class FxPainter extends _$FxPainter {
+  const FxPainter({super.fit});
+}

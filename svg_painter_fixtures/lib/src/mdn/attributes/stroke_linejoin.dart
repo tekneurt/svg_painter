@@ -1,6 +1,5 @@
-/// Fixture for `stroke-linejoin` attribute.
-/// Source: https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-linejoin
-const String mdnStrokeLinejoinAttribute = '''
+/// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-linejoin#example
+const String mdnStrokeLinejoinExample = '''
 <svg viewBox="0 0 18 12" xmlns="http://www.w3.org/2000/svg">
   <!-- Upper left path: Effect of the "miter" value -->
   <path

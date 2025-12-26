@@ -1,6 +1,5 @@
-/// Fixture for `fill` attribute.
-/// Source: https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/fill
-const String mdnFillAttribute = '''
+/// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/fill#example
+const String mdnFillExample = '''
 <svg viewBox="0 0 300 100" xmlns="http://www.w3.org/2000/svg">
   <!-- Basic color fill -->
   <circle cx="50" cy="50" r="40" fill="pink" />

@@ -15,6 +15,8 @@ class _$PointsExamplePainter extends CustomPainter {
 
   final BoxFit fit;
 
+  Size get viewBox => const Size(220.0, 120.0);
+
   @override
   void paint(Canvas canvas, Size size) {
     final FittedSizes fittedSizes = applyBoxFit(
@@ -55,25 +57,26 @@ class _$PointsExamplePainter extends CustomPainter {
         }
       }
     }
+    canvas.save();
+    canvas.translate(100.0, 0.0);
     {
+      final Path path = Path();
+      path.addPolygon([
+        const Offset(60.0, 10.0),
+        const Offset(31.0, 100.0),
+        const Offset(108.0, 45.0),
+        const Offset(12.0, 45.0),
+        const Offset(89.0, 100.0),
+      ], true);
       {
-        final Path path = Path();
-        path.addPolygon([
-          const Offset(60.0, 10.0),
-          const Offset(31.0, 100.0),
-          const Offset(108.0, 45.0),
-          const Offset(12.0, 45.0),
-          const Offset(89.0, 100.0),
-        ], true);
-        {
-          final Paint paint = Paint();
-          paint.color = const Color(0xFF000000);
-          paint.style = PaintingStyle.stroke;
-          paint.strokeWidth = 1.0;
-          canvas.drawPath(path, paint);
-        }
+        final Paint paint = Paint();
+        paint.color = const Color(0xFF000000);
+        paint.style = PaintingStyle.stroke;
+        paint.strokeWidth = 1.0;
+        canvas.drawPath(path, paint);
       }
     }
+    canvas.restore();
     canvas.restore();
   }
 

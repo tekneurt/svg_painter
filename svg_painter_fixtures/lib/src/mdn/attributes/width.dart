@@ -1,5 +1,5 @@
-/// https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/width#examples
-const String widthExample = '''
+/// https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/width#example
+const String mdnWidthExample = '''
 <svg viewBox="0 0 100 300" xmlns="http://www.w3.org/2000/svg">
   <!-- With a width of 0 or less, nothing will be rendered -->
   <rect

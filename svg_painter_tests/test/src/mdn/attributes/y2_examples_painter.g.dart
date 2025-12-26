@@ -15,6 +15,8 @@ class _$Y2ExamplesPainter extends CustomPainter {
 
   final BoxFit fit;
 
+  Size get viewBox => const Size(25.0, 25.0);
+
   @override
   void paint(Canvas canvas, Size size) {
     final FittedSizes fittedSizes = applyBoxFit(

@@ -1,6 +1,5 @@
-/// Fixture for `<use>`.
-/// Source: https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Element/use
-const String mdnUseElement = '''
+/// https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Element/use#example
+const String mdnUseExample = '''
 <svg viewBox="0 0 30 10" xmlns="http://www.w3.org/2000/svg">
   <circle id="myCircle" cx="5" cy="5" r="4" stroke="blue" />
   <use href="#myCircle" x="10" fill="blue" />

@@ -4,5 +4,7 @@ import 'package:svg_painter_fixtures/svg_painter_fixtures.dart';
 
 part 'points_polygon_painter.g.dart';
 
-@SvgCodePainter(pointsPolygon)
-class PointsPolygonPainter extends _$PointsPolygonPainter {}
+@SvgCodePainter(mdnPointsPolygonExample)
+class PointsPolygonPainter extends _$PointsPolygonPainter {
+  const PointsPolygonPainter({super.fit});
+}

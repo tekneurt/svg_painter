@@ -1,6 +1,5 @@
-/// Fixture for `<g>`.
-/// Source: https://developer.mozilla.org/en-US/docs/Web/SVG/Element/g
-const String mdnGElement = '''
+/// https://developer.mozilla.org/en-US/docs/Web/SVG/Element/g#example
+const String mdnGroupExample = '''
 <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
   <!-- Using g to inherit presentation attributes -->
   <g fill="white" stroke="green" stroke-width="5">

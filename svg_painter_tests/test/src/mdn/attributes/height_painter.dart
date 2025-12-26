@@ -4,5 +4,7 @@ import 'package:svg_painter_fixtures/svg_painter_fixtures.dart';
 
 part 'height_painter.g.dart';
 
-@SvgCodePainter(heightExample)
-class HeightPainter extends _$HeightPainter {}
+@SvgCodePainter(mdnHeightExample)
+class HeightPainter extends _$HeightPainter {
+  const HeightPainter({super.fit});
+}

@@ -4,5 +4,7 @@ import 'package:svg_painter_fixtures/svg_painter_fixtures.dart';
 
 part 'y2_examples_painter.g.dart';
 
-@SvgCodePainter(y2Examples)
-class Y2ExamplesPainter extends _$Y2ExamplesPainter {}
+@SvgCodePainter(mdnY2Example)
+class Y2ExamplesPainter extends _$Y2ExamplesPainter {
+  const Y2ExamplesPainter({super.fit});
+}

@@ -4,5 +4,7 @@ import 'package:svg_painter_fixtures/svg_painter_fixtures.dart';
 
 part 'radial_gradient_painter.g.dart';
 
-@SvgCodePainter(radialGradientExample)
-class RadialGradientPainter extends _$RadialGradientPainter {}
+@SvgCodePainter(mdnRadialGradientExample)
+class RadialGradientPainter extends _$RadialGradientPainter {
+  const RadialGradientPainter({super.fit});
+}

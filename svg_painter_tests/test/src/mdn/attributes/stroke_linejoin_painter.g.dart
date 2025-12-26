@@ -15,6 +15,8 @@ class _$StrokeLinejoinPainter extends CustomPainter {
 
   final BoxFit fit;
 
+  Size get viewBox => const Size(18.0, 12.0);
+
   @override
   void paint(Canvas canvas, Size size) {
     final FittedSizes fittedSizes = applyBoxFit(

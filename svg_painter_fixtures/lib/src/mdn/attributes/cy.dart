@@ -1,5 +1,5 @@
-/// https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/cy
-const String cyExample = '''
+/// https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/cy#example
+const String mdnCyExample = '''
 <svg viewBox="0 0 100 300" xmlns="http://www.w3.org/2000/svg">
   <radialGradient cy="25%" id="myGradient">
     <stop offset="0" stop-color="white" />

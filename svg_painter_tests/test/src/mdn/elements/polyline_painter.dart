@@ -4,5 +4,7 @@ import 'package:svg_painter_fixtures/svg_painter_fixtures.dart';
 
 part 'polyline_painter.g.dart';
 
-@SvgCodePainter(mdnPolyline)
-class PolylinePainter extends _$PolylinePainter {}
+@SvgCodePainter(mdnPolylineExample)
+class PolylinePainter extends _$PolylinePainter {
+  const PolylinePainter({super.fit});
+}

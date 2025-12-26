@@ -4,5 +4,7 @@ import 'package:svg_painter_fixtures/svg_painter_fixtures.dart';
 
 part 'line_painter.g.dart';
 
-@SvgCodePainter(mdnLine)
-class LinePainter extends _$LinePainter {}
+@SvgCodePainter(mdnLineExample)
+class LinePainter extends _$LinePainter {
+  const LinePainter({super.fit});
+}

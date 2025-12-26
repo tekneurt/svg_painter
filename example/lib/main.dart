@@ -33,13 +33,13 @@ class MyHomePage extends StatelessWidget {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(title),
       ),
-      body: Center(
+      body: const Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Text('Generated CirclePainter:'),
-            const SizedBox(height: 20),
-            CustomPaint(size: const Size(100, 100), painter: CirclePainter()),
+            Text('Generated CirclePainter:'),
+            SizedBox(height: 20),
+            CustomPaint(size: Size(100, 100), painter: CirclePainter()),
           ],
         ),
       ),

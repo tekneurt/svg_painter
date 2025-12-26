@@ -91,30 +91,78 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
   }
 
   /// Helper to wrap a block of code with a transform if present.
-  void wrapWithTransform(StringBuffer buffer, String? transformValue, void Function() body) {
-    String? tBegin;
-    String? tEnd;
+  void wrapWithTransform(
+    StringBuffer buffer,
+    String? transformValue,
+    void Function() body,
+  ) {
+    if (transformValue == null || transformValue.trim().isEmpty) {
+      buffer.writeln('    {');
+      body();
+      buffer.writeln('    }');
+      return;
+    }
 
-    if (transformValue != null) {
-      final RegExp reg = RegExp(r'translate(\s*([\d.-]+)\s*(?:[\s,]?\s*([\d.-]+))?)\s*');
-      final Match? match = reg.firstMatch(transformValue);
-      if (match != null) {
-        final String tx = match.group(1)!;
-        final String ty = match.group(2) ?? '0';
-        tBegin = '      canvas.save();\n      canvas.translate($tx, $ty);';
-        tEnd = '      canvas.restore();';
+    final List<String> transforms = <String>[];
+
+    // Simple parser for functional notation: type(params)
+    final RegExp transformReg = RegExp(r'(\w+)\s*\(([^)]+)\)');
+    final Iterable<Match> matches = transformReg.allMatches(transformValue);
+
+    for (final Match match in matches) {
+      final String type = match.group(1)!;
+      final String paramsStr = match.group(2)!;
+      final List<double> params = paramsStr
+          .split(RegExp(r'[\s,]+'))
+          .where((String s) => s.isNotEmpty)
+          .map((String s) => double.tryParse(s) ?? 0.0)
+          .toList();
+
+      if (params.isEmpty) {
+        continue;
+      }
+
+      switch (type) {
+        case 'translate':
+          final double tx = params[0];
+          final double ty = params.length > 1 ? params[1] : 0.0;
+          transforms.add('canvas.translate($tx, $ty);');
+        case 'rotate':
+          final double angle = params[0];
+          final double radians = angle * 0.017453292519943295;
+          if (params.length == 3) {
+            final double cx = params[1];
+            final double cy = params[2];
+            transforms.add('canvas.translate($cx, $cy);');
+            transforms.add('canvas.rotate($radians);');
+            transforms.add('canvas.translate(${-cx}, ${-cy});');
+          } else {
+            transforms.add('canvas.rotate($radians);');
+          }
+        case 'scale':
+          final double sx = params[0];
+          final double sy = params.length > 1 ? params[1] : sx;
+          transforms.add('canvas.scale($sx, $sy);');
+        // TODO(Gemini): Support 'matrix', 'skewX', 'skewY'.
       }
     }
 
-    buffer.writeln('    {');
-    if (tBegin != null) {
-      buffer.writeln(tBegin);
+    if (transforms.isNotEmpty) {
+      buffer.writeln('    canvas.save();');
+      for (final String t in transforms) {
+        buffer.writeln('    $t');
+      }
+    } else {
+      buffer.writeln('    {');
     }
+
     body();
-    if (tEnd != null) {
-      buffer.writeln(tEnd);
+
+    if (transforms.isNotEmpty) {
+      buffer.writeln('    canvas.restore();');
+    } else {
+      buffer.writeln('    }');
     }
-    buffer.writeln('    }');
   }
 }
 

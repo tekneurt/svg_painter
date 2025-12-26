@@ -85,19 +85,13 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
     double viewBoxHeight = 100.0;
 
     if (svgRoot is SvgRoot) {
-      if (svgRoot.viewBox != null) {
-        viewBoxWidth = svgRoot.viewBox!.width;
-        viewBoxHeight = svgRoot.viewBox!.height;
-      } else {
-        final SvgLengthPercentageAuto? width = svgRoot.width;
-        if (width is SvgLength) {
-          viewBoxWidth = width.toDouble();
-        }
-        final SvgLengthPercentageAuto? height = svgRoot.height;
-        if (height is SvgLength) {
-          viewBoxHeight = height.toDouble();
-        }
-      }
+      final SvgLengthPercentageAuto? w = svgRoot.width;
+      final SvgLength? wLen = w is SvgLength ? w : null;
+      final SvgLengthPercentageAuto? h = svgRoot.height;
+      final SvgLength? hLen = h is SvgLength ? h : null;
+
+      viewBoxWidth = wLen?.toDouble() ?? svgRoot.viewBox?.width ?? 100.0;
+      viewBoxHeight = hLen?.toDouble() ?? svgRoot.viewBox?.height ?? 100.0;
     }
 
     final Result<List<PaintCommand>> paintingResult = svgRoot.toPaintCommands();
@@ -127,6 +121,8 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
     buffer.writeln('  const $className({this.fit = BoxFit.contain});');
     buffer.writeln();
     buffer.writeln('  final BoxFit fit;');
+    buffer.writeln();
+    buffer.writeln('  Size get viewBox => const Size($viewBoxWidth, $viewBoxHeight);');
     buffer.writeln();
     buffer.writeln('  @override');
     buffer.writeln('  void paint(Canvas canvas, Size size) {');

@@ -1,6 +1,5 @@
-/// Fixture for `<radialGradient>`.
-/// Source: https://developer.mozilla.org/en-US/docs/Web/SVG/Element/radialGradient
-const String radialGradientExample = '''
+/// https://developer.mozilla.org/en-US/docs/Web/SVG/Element/radialGradient#example
+const String mdnRadialGradientExample = '''
 <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <radialGradient id="myGradient">

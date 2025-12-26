@@ -4,5 +4,7 @@ import 'package:svg_painter_fixtures/svg_painter_fixtures.dart';
 
 part 'y1_linear_gradient_painter.g.dart';
 
-@SvgCodePainter(y1LinearGradient)
-class Y1LinearGradientPainter extends _$Y1LinearGradientPainter {}
+@SvgCodePainter(mdnY1LinearGradientExample)
+class Y1LinearGradientPainter extends _$Y1LinearGradientPainter {
+  const Y1LinearGradientPainter({super.fit});
+}

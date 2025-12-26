@@ -10,10 +10,12 @@ part of 'ellipse_painter.dart';
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
 
-class _$MdnEllipsePainter extends CustomPainter {
-  const _$MdnEllipsePainter({this.fit = BoxFit.contain});
+class _$EllipsePainter extends CustomPainter {
+  const _$EllipsePainter({this.fit = BoxFit.contain});
 
   final BoxFit fit;
+
+  Size get viewBox => const Size(200.0, 100.0);
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -55,7 +57,7 @@ class _$MdnEllipsePainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(covariant _$MdnEllipsePainter oldDelegate) {
+  bool shouldRepaint(covariant _$EllipsePainter oldDelegate) {
     return fit != oldDelegate.fit;
   }
 }

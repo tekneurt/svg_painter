@@ -4,5 +4,7 @@ import 'package:svg_painter_fixtures/svg_painter_fixtures.dart';
 
 part 'rect_painter.g.dart';
 
-@SvgCodePainter(mdnRect)
-class RectPainter extends _$RectPainter {}
+@SvgCodePainter(mdnRectExample)
+class RectPainter extends _$RectPainter {
+  const RectPainter({super.fit});
+}

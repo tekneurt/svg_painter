@@ -15,6 +15,8 @@ class _$RxPainter extends CustomPainter {
 
   final BoxFit fit;
 
+  Size get viewBox => const Size(300.0, 200.0);
+
   @override
   void paint(Canvas canvas, Size size) {
     final FittedSizes fittedSizes = applyBoxFit(

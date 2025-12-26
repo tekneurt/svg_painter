@@ -148,10 +148,12 @@ Implement support for additional SVG shapes using the new layered architecture.
 - [ ] **TODO(Gemini)**: Implement `points` attribute example from MDN (requires `transform`).
 - [ ] **TODO(Gemini)**: Implement other examples from the `<svg>` element MDN page.
 - [ ] **TODO(Gemini)**: Implement full `transform` attribute support (parsing matrices, rotate, translate, etc.).
+- [x] **TODO(Gemini)**: Support `rotate(angle [cx cy])` transform (encountered in W3C shapes).
+- [x] **TODO(Gemini)**: Verify/Implement root viewport resolution for absolute units like `cm` (encountered in W3C shapes).
 - [ ] **TODO(Gemini)**: Implement `fr` (focal radius) for radial gradients.
 - [x] **TODO(Gemini)**: Implement `<use>` element support.
 - [x] **TODO(Gemini)**: Improve `toPosition` mapping for nested elements and complex coordinate systems.
-- [ ] **TODO(Gemini)**: Simplify golden tests by using a single function that enumerates all fixtures.
+- [x] **TODO(Gemini)**: Simplify golden tests by using a single function that enumerates all fixtures.
 - [ ] **TODO(Gemini)**: Determine default behavior for unknown named colors (render vs throw).
 - [ ] **TODO(Gemini)**: Handle failure cases in `SvgToPainting` converter.
 - [x] **Attributes**

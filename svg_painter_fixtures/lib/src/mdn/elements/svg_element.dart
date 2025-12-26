@@ -1,6 +1,5 @@
-/// Fixture for `<svg>`.
-/// Source: https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Element/svg
-const String mdnSvgElement = '''
+/// https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Element/svg#example
+const String mdnSvgExample = '''
 <svg
   viewBox="0 0 300 100"
   xmlns="http://www.w3.org/2000/svg"

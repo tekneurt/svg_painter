@@ -15,6 +15,8 @@ class _$PointsPolygonPainter extends CustomPainter {
 
   final BoxFit fit;
 
+  Size get viewBox => const Size(120.0, 120.0);
+
   @override
   void paint(Canvas canvas, Size size) {
     final FittedSizes fittedSizes = applyBoxFit(

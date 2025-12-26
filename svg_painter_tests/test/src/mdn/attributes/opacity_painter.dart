@@ -4,7 +4,7 @@ import 'package:svg_painter_fixtures/svg_painter_fixtures.dart';
 
 part 'opacity_painter.g.dart';
 
-@SvgCodePainter(mdnOpacityAttribute)
+@SvgCodePainter(mdnOpacityExample)
 class OpacityPainter extends _$OpacityPainter {
   const OpacityPainter({super.fit});
 }

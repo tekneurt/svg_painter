@@ -4,7 +4,7 @@ import 'package:svg_painter_fixtures/svg_painter_fixtures.dart';
 
 part 'path_painter.g.dart';
 
-@SvgCodePainter(mdnPathElement)
+@SvgCodePainter(mdnPathExample)
 class PathPainter extends _$PathPainter {
   const PathPainter({super.fit});
 }

@@ -1,5 +1,5 @@
 /// https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/x1#elements
-const String x1Elements = '''
+const String mdnX1ElementsExample = '''
 <svg viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg">
   <line x1="1" x2="5" y1="1" y2="9" stroke="red" />
   <line x1="5" x2="5" y1="1" y2="9" stroke="green" />
@@ -8,7 +8,7 @@ const String x1Elements = '''
 ''';
 
 /// https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/x1#lineargradient
-const String x1LinearGradient = '''
+const String mdnX1LinearGradientExample = '''
 <svg viewBox="0 0 20 10" xmlns="http://www.w3.org/2000/svg">
   <!-- By default the gradient vector start at the left bounding limit of the shape it is applied to -->
   <linearGradient x1="0%" id="g0">
@@ -25,8 +25,8 @@ const String x1LinearGradient = '''
 </svg>
 ''';
 
-/// https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/x1#examples
-const String x1Examples = '''
+/// https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/x1#example
+const String mdnX1Example = '''
 <svg viewBox="0 0 25 25" xmlns="http://www.w3.org/2000/svg">
   <line x1="2" x2="22" y1="5" y2="20" stroke="red" />
   <line x1="12" x2="22" y1="5" y2="20" stroke="green" />

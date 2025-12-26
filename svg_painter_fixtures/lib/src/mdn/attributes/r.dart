@@ -1,5 +1,5 @@
-/// https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/r
-const String rExample = '''
+/// https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/r#example
+const String mdnRExample = '''
 <svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
  <radialGradient r="0" id="myGradient000">
  <stop offset="0" stop-color="white" />

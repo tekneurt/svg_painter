@@ -15,6 +15,8 @@ class _$Y2LinearGradientPainter extends CustomPainter {
 
   final BoxFit fit;
 
+  Size get viewBox => const Size(20.0, 10.0);
+
   @override
   void paint(Canvas canvas, Size size) {
     final FittedSizes fittedSizes = applyBoxFit(

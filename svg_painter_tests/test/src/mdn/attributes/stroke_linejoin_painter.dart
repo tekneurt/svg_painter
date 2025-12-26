@@ -4,7 +4,7 @@ import 'package:svg_painter_fixtures/svg_painter_fixtures.dart';
 
 part 'stroke_linejoin_painter.g.dart';
 
-@SvgCodePainter(mdnStrokeLinejoinAttribute)
+@SvgCodePainter(mdnStrokeLinejoinExample)
 class StrokeLinejoinPainter extends _$StrokeLinejoinPainter {
   const StrokeLinejoinPainter({super.fit});
 }

@@ -1,5 +1,5 @@
-/// https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/ry
-const String ryExample = '''
+/// https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/ry#example
+const String mdnRyExample = '''
 <svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
   <ellipse cx="50" cy="50" ry="0" rx="25" />
   <ellipse cx="150" cy="50" ry="25" rx="25" />

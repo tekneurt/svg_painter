@@ -1,6 +1,5 @@
-/// Fixture for `stroke-linecap` attribute.
-/// Source: https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-linecap
-const String mdnStrokeLinecapAttribute = '''
+/// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-linecap#example
+const String mdnStrokeLinecapExample = '''
 <svg viewBox="0 0 6 6" xmlns="http://www.w3.org/2000/svg">
   <!-- Effect of the (default) "butt" value -->
   <line x1="1" y1="1" x2="5" y2="1" stroke="black" stroke-linecap="butt" />

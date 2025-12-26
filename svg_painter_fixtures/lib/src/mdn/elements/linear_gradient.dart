@@ -1,6 +1,5 @@
-/// Fixture for `<linearGradient>`.
-/// Source: https://developer.mozilla.org/en-US/docs/Web/SVG/Element/linearGradient
-const String linearGradientExample = '''
+/// https://developer.mozilla.org/en-US/docs/Web/SVG/Element/linearGradient#example
+const String mdnLinearGradientExample = '''
 <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <linearGradient id="myGradient" gradientTransform="rotate(90)">

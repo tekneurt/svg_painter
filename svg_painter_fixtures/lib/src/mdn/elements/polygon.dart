@@ -1,6 +1,5 @@
-/// Fixture for `<polygon>`.
-/// Source: https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Element/polygon
-const String mdnPolygon = '''
+/// https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Element/polygon#example
+const String mdnPolygonExample = '''
 <svg viewBox="0 0 200 100" xmlns="http://www.w3.org/2000/svg">
   <!-- Example of a polygon with the default fill -->
   <polygon points="0,100 50,25 50,75 100,0" />

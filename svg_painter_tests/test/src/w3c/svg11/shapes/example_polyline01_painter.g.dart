@@ -1,0 +1,101 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
+part of 'example_polyline01_painter.dart';
+
+// **************************************************************************
+// SvgPainterGenerator
+// **************************************************************************
+
+// coverage:ignore-file
+// ignore_for_file: type=lint
+// ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
+
+class _$ExamplePolyline01Painter extends CustomPainter {
+  const _$ExamplePolyline01Painter({this.fit = BoxFit.contain});
+
+  final BoxFit fit;
+
+  Size get viewBox => const Size(453.54330708661416, 151.1811023622047);
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final FittedSizes fittedSizes = applyBoxFit(
+      fit,
+      const Size(453.54330708661416, 151.1811023622047),
+      size,
+    );
+    final Size sourceSize = fittedSizes.source;
+    final Rect destRect = Alignment.center.inscribe(
+      fittedSizes.destination,
+      Offset.zero & size,
+    );
+
+    canvas.save();
+    canvas.translate(destRect.left, destRect.top);
+    canvas.scale(
+      destRect.width / sourceSize.width,
+      destRect.height / sourceSize.height,
+    );
+    canvas.clipRect(Rect.fromLTWH(0, 0, 453.54330708661416, 151.1811023622047));
+
+    {
+      {
+        final Paint paint = Paint();
+        paint.color = const Color(0xFF0000FF);
+        paint.style = PaintingStyle.stroke;
+        paint.strokeWidth = 0.7559055118110235;
+        canvas.drawRect(
+          Rect.fromLTWH(
+            0.3779527559055118,
+            0.3779527559055118,
+            452.78740157480314,
+            150.4251968503937,
+          ),
+          paint,
+        );
+      }
+    }
+    {
+      {
+        final Path path = Path();
+        path.addPolygon([
+          const Offset(18.89763779527559, 141.73228346456693),
+          const Offset(56.69291338582677, 141.73228346456693),
+          const Offset(56.69291338582677, 122.83464566929133),
+          const Offset(94.48818897637796, 122.83464566929133),
+          const Offset(94.48818897637796, 141.73228346456693),
+          const Offset(132.28346456692913, 141.73228346456693),
+          const Offset(132.28346456692913, 94.48818897637796),
+          const Offset(170.07874015748033, 94.48818897637796),
+          const Offset(170.07874015748033, 141.73228346456693),
+          const Offset(207.8740157480315, 141.73228346456693),
+          const Offset(207.8740157480315, 66.14173228346456),
+          const Offset(245.66929133858267, 66.14173228346456),
+          const Offset(245.66929133858267, 141.73228346456693),
+          const Offset(283.46456692913387, 141.73228346456693),
+          const Offset(283.46456692913387, 37.79527559055118),
+          const Offset(321.25984251968504, 37.79527559055118),
+          const Offset(321.25984251968504, 141.73228346456693),
+          const Offset(359.0551181102362, 141.73228346456693),
+          const Offset(359.0551181102362, 9.448818897637794),
+          const Offset(396.8503937007874, 9.448818897637794),
+          const Offset(396.8503937007874, 141.73228346456693),
+          const Offset(434.64566929133855, 141.73228346456693),
+        ], false);
+        {
+          final Paint paint = Paint();
+          paint.color = const Color(0xFF0000FF);
+          paint.style = PaintingStyle.stroke;
+          paint.strokeWidth = 3.7795275590551176;
+          canvas.drawPath(path, paint);
+        }
+      }
+    }
+    canvas.restore();
+  }
+
+  @override
+  bool shouldRepaint(covariant _$ExamplePolyline01Painter oldDelegate) {
+    return fit != oldDelegate.fit;
+  }
+}

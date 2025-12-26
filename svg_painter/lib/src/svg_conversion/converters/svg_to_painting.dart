@@ -23,19 +23,15 @@ extension SvgToPainting on SvgElement {
   Result<List<PaintCommand>> toPaintCommands([SvgPaintingContext? context]) {
     final SvgElement self = this;
     if (self is SvgRoot && context == null) {
-      // Establish context from SvgRoot
-      final double width =
-          self.viewBox?.width ??
-          (switch (self.width) {
-            final SvgLength l => l.toDouble(),
-            _ => 100.0,
-          });
-      final double height =
-          self.viewBox?.height ??
-          (switch (self.height) {
-            final SvgLength l => l.toDouble(),
-            _ => 100.0,
-          });
+      // Establish context from SvgRoot.
+      // Prefer explicit absolute width/height for the intrinsic viewport size.
+      final SvgLengthPercentageAuto? w = self.width;
+      final SvgLength? wLen = w is SvgLength ? w : null;
+      final SvgLengthPercentageAuto? h = self.height;
+      final SvgLength? hLen = h is SvgLength ? h : null;
+
+      final double width = wLen?.toDouble() ?? self.viewBox?.width ?? 100.0;
+      final double height = hLen?.toDouble() ?? self.viewBox?.height ?? 100.0;
 
       final double minX = self.viewBox?.minX ?? 0.0;
       final double minY = self.viewBox?.minY ?? 0.0;

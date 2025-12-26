@@ -4,5 +4,7 @@ import 'package:svg_painter_fixtures/svg_painter_fixtures.dart';
 
 part 'defs_element_painter.g.dart';
 
-@SvgCodePainter(mdnDefsElement)
-class DefsElementPainter extends _$DefsElementPainter {}
+@SvgCodePainter(mdnDefsExample)
+class DefsElementPainter extends _$DefsElementPainter {
+  const DefsElementPainter({super.fit});
+}

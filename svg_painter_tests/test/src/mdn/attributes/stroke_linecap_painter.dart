@@ -4,7 +4,7 @@ import 'package:svg_painter_fixtures/svg_painter_fixtures.dart';
 
 part 'stroke_linecap_painter.g.dart';
 
-@SvgCodePainter(mdnStrokeLinecapAttribute)
+@SvgCodePainter(mdnStrokeLinecapExample)
 class StrokeLinecapPainter extends _$StrokeLinecapPainter {
   const StrokeLinecapPainter({super.fit});
 }

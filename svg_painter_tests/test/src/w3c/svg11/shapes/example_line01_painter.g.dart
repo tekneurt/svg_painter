@@ -1,0 +1,182 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
+part of 'example_line01_painter.dart';
+
+// **************************************************************************
+// SvgPainterGenerator
+// **************************************************************************
+
+// coverage:ignore-file
+// ignore_for_file: type=lint
+// ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
+
+class _$ExampleLine01Painter extends CustomPainter {
+  const _$ExampleLine01Painter({this.fit = BoxFit.contain});
+
+  final BoxFit fit;
+
+  Size get viewBox => const Size(453.54330708661416, 151.1811023622047);
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final FittedSizes fittedSizes = applyBoxFit(
+      fit,
+      const Size(453.54330708661416, 151.1811023622047),
+      size,
+    );
+    final Size sourceSize = fittedSizes.source;
+    final Rect destRect = Alignment.center.inscribe(
+      fittedSizes.destination,
+      Offset.zero & size,
+    );
+
+    canvas.save();
+    canvas.translate(destRect.left, destRect.top);
+    canvas.scale(
+      destRect.width / sourceSize.width,
+      destRect.height / sourceSize.height,
+    );
+    canvas.clipRect(Rect.fromLTWH(0, 0, 453.54330708661416, 151.1811023622047));
+
+    {
+      {
+        final Paint paint = Paint();
+        paint.color = const Color(0xFF0000FF);
+        paint.style = PaintingStyle.stroke;
+        paint.strokeWidth = 0.7559055118110235;
+        canvas.drawRect(
+          Rect.fromLTWH(
+            0.3779527559055118,
+            0.3779527559055118,
+            452.78740157480314,
+            150.4251968503937,
+          ),
+          paint,
+        );
+      }
+    }
+    {
+      {
+        {
+          final Paint paint = Paint();
+          paint.color = const Color(0xFF000000);
+          paint.style = PaintingStyle.fill;
+          canvas.drawLine(
+            const Offset(37.79527559055118, 113.38582677165354),
+            const Offset(113.38582677165354, 37.79527559055118),
+            paint,
+          );
+        }
+        {
+          final Paint paint = Paint();
+          paint.color = const Color(0xFF008000);
+          paint.style = PaintingStyle.stroke;
+          paint.strokeWidth = 1.8897637795275588;
+          canvas.drawLine(
+            const Offset(37.79527559055118, 113.38582677165354),
+            const Offset(113.38582677165354, 37.79527559055118),
+            paint,
+          );
+        }
+      }
+      {
+        {
+          final Paint paint = Paint();
+          paint.color = const Color(0xFF000000);
+          paint.style = PaintingStyle.fill;
+          canvas.drawLine(
+            const Offset(113.38582677165354, 113.38582677165354),
+            const Offset(188.9763779527559, 37.79527559055118),
+            paint,
+          );
+        }
+        {
+          final Paint paint = Paint();
+          paint.color = const Color(0xFF008000);
+          paint.style = PaintingStyle.stroke;
+          paint.strokeWidth = 3.7795275590551176;
+          canvas.drawLine(
+            const Offset(113.38582677165354, 113.38582677165354),
+            const Offset(188.9763779527559, 37.79527559055118),
+            paint,
+          );
+        }
+      }
+      {
+        {
+          final Paint paint = Paint();
+          paint.color = const Color(0xFF000000);
+          paint.style = PaintingStyle.fill;
+          canvas.drawLine(
+            const Offset(188.9763779527559, 113.38582677165354),
+            const Offset(264.56692913385825, 37.79527559055118),
+            paint,
+          );
+        }
+        {
+          final Paint paint = Paint();
+          paint.color = const Color(0xFF008000);
+          paint.style = PaintingStyle.stroke;
+          paint.strokeWidth = 5.669291338582676;
+          canvas.drawLine(
+            const Offset(188.9763779527559, 113.38582677165354),
+            const Offset(264.56692913385825, 37.79527559055118),
+            paint,
+          );
+        }
+      }
+      {
+        {
+          final Paint paint = Paint();
+          paint.color = const Color(0xFF000000);
+          paint.style = PaintingStyle.fill;
+          canvas.drawLine(
+            const Offset(264.56692913385825, 113.38582677165354),
+            const Offset(340.15748031496065, 37.79527559055118),
+            paint,
+          );
+        }
+        {
+          final Paint paint = Paint();
+          paint.color = const Color(0xFF008000);
+          paint.style = PaintingStyle.stroke;
+          paint.strokeWidth = 7.559055118110235;
+          canvas.drawLine(
+            const Offset(264.56692913385825, 113.38582677165354),
+            const Offset(340.15748031496065, 37.79527559055118),
+            paint,
+          );
+        }
+      }
+      {
+        {
+          final Paint paint = Paint();
+          paint.color = const Color(0xFF000000);
+          paint.style = PaintingStyle.fill;
+          canvas.drawLine(
+            const Offset(340.15748031496065, 113.38582677165354),
+            const Offset(415.748031496063, 37.79527559055118),
+            paint,
+          );
+        }
+        {
+          final Paint paint = Paint();
+          paint.color = const Color(0xFF008000);
+          paint.style = PaintingStyle.stroke;
+          paint.strokeWidth = 9.448818897637794;
+          canvas.drawLine(
+            const Offset(340.15748031496065, 113.38582677165354),
+            const Offset(415.748031496063, 37.79527559055118),
+            paint,
+          );
+        }
+      }
+    }
+    canvas.restore();
+  }
+
+  @override
+  bool shouldRepaint(covariant _$ExampleLine01Painter oldDelegate) {
+    return fit != oldDelegate.fit;
+  }
+}

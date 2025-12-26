@@ -4,5 +4,7 @@ import 'package:svg_painter_fixtures/svg_painter_fixtures.dart';
 
 part 'ellipse_painter.g.dart';
 
-@SvgCodePainter(mdnEllipse)
-class MdnEllipsePainter extends _$MdnEllipsePainter {}
+@SvgCodePainter(mdnEllipseExample)
+class EllipsePainter extends _$EllipsePainter {
+  const EllipsePainter({super.fit});
+}

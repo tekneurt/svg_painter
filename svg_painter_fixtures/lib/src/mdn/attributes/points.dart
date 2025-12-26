@@ -1,5 +1,5 @@
 /// https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/points#example
-const String pointsExample = '''
+const String mdnPointsExample = '''
 <svg viewBox="-10 -10 220 120" xmlns="http://www.w3.org/2000/svg">
   <!-- polyline is an open shape -->
   <polyline stroke="black" fill="none" points="50,0 21,90 98,35 2,35 79,90" />
@@ -20,7 +20,7 @@ const String pointsExample = '''
 ''';
 
 /// https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/points#polyline
-const String pointsPolyline = '''
+const String mdnPointsPolylineExample = '''
 <svg viewBox="-10 -10 120 120" xmlns="http://www.w3.org/2000/svg">
   <!-- polyline is an open shape -->
   <polyline stroke="black" fill="none" points="50,0 21,90 98,35 2,35 79,90" />
@@ -28,7 +28,7 @@ const String pointsPolyline = '''
 ''';
 
 /// https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/points#polygon
-const String pointsPolygon = '''
+const String mdnPointsPolygonExample = '''
 <svg viewBox="-10 -10 120 120" xmlns="http://www.w3.org/2000/svg">
   <!-- polygon is a closed shape -->
   <polygon stroke="black" fill="none" points="50,0 21,90 98,35 2,35 79,90" />

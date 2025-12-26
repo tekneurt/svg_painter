@@ -15,6 +15,8 @@ class _$StrokeLinecapPainter extends CustomPainter {
 
   final BoxFit fit;
 
+  Size get viewBox => const Size(6.0, 6.0);
+
   @override
   void paint(Canvas canvas, Size size) {
     final FittedSizes fittedSizes = applyBoxFit(

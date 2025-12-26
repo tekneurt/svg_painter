@@ -1,5 +1,5 @@
-/// https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/cx
-const String cxExample = '''
+/// https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/cx#example
+const String mdnCxExample = '''
 <svg viewBox="0 0 300 100" xmlns="http://www.w3.org/2000/svg">
   <radialGradient cx="25%" id="myGradient">
     <stop offset="0" stop-color="white" />

@@ -4,7 +4,7 @@ import 'package:svg_painter_fixtures/svg_painter_fixtures.dart';
 
 part 'fill_painter.g.dart';
 
-@SvgCodePainter(mdnFillAttribute)
+@SvgCodePainter(mdnFillExample)
 class FillPainter extends _$FillPainter {
   const FillPainter({super.fit});
 }
