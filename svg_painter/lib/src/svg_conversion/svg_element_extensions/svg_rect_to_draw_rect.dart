@@ -31,6 +31,8 @@ extension SvgRectToPainting on SvgRect {
       strokeLinecap: strokeLinecap,
       strokeLinejoin: strokeLinejoin,
       opacity: opacity,
+      cssClass: cssClass,
+      inlineStyle: inlineStyle,
     );
 
     // Apply transformation

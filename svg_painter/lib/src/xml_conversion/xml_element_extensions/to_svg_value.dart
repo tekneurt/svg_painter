@@ -63,6 +63,8 @@ extension XmlElementToSvgValue on XmlElement {
       XmlAttributeName.viewBox ||
       XmlAttributeName.id ||
       XmlAttributeName.d ||
+      XmlAttributeName.className ||
+      XmlAttributeName.style ||
       XmlAttributeName.href ||
       XmlAttributeName.transform ||
       XmlAttributeName.gradientTransform =>

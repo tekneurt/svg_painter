@@ -18,6 +18,8 @@ final class SvgUse extends SvgGraphicsElement {
     super.strokeLinecap,
     super.strokeLinejoin,
     super.opacity,
+    super.cssClass,
+    super.inlineStyle,
     super.transform,
   });
 

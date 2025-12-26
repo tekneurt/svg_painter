@@ -55,6 +55,7 @@ extension SvgToPainting on SvgElement {
         inheritedStrokeWidth: self.strokeWidth,
         inheritedStrokeLinecap: self.strokeLinecap,
         inheritedStrokeLinejoin: self.strokeLinejoin,
+        styleSheet: self.styleSheet,
         definitions: definitions,
       );
       return self._toPaintCommands(rootContext);
@@ -93,7 +94,7 @@ extension SvgToPainting on SvgElement {
         linearGradient
             .toPaintCommand(childContext)
             .map((DefineLinearGradient cmd) => <PaintCommand>[cmd]),
-      final SvgStop _ => const Success<List<PaintCommand>>(<PaintCommand>[]),
+      final SvgStop _ || final SvgStyle _ => const Success<List<PaintCommand>>(<PaintCommand>[]),
     };
   }
 }

@@ -20,6 +20,7 @@ final class SvgPaintingContext {
     this.inheritedStrokeLinecap,
     this.inheritedStrokeLinejoin,
     this.inheritedOpacity,
+    this.styleSheet = const SvgStyleSheet(<String, Map<String, String>>{}),
     this.definitions = const <String, SvgElement>{},
   });
 
@@ -64,6 +65,9 @@ final class SvgPaintingContext {
 
   /// Inherited opacity.
   final SvgLengthPercentage? inheritedOpacity;
+
+  /// The CSS rules defined for the document.
+  final SvgStyleSheet styleSheet;
 
   /// Map of element IDs to SvgElements.
   final Map<String, SvgElement> definitions;
@@ -111,6 +115,7 @@ final class SvgPaintingContext {
       inheritedStrokeLinecap: inheritedStrokeLinecap ?? this.inheritedStrokeLinecap,
       inheritedStrokeLinejoin: inheritedStrokeLinejoin ?? this.inheritedStrokeLinejoin,
       inheritedOpacity: inheritedOpacity ?? this.inheritedOpacity,
+      styleSheet: styleSheet,
       definitions: definitions,
     );
   }

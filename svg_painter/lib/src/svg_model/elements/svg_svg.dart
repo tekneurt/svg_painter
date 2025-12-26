@@ -19,6 +19,8 @@ base class SvgSvg extends SvgContainerElement {
     super.strokeLinecap,
     super.strokeLinejoin,
     super.opacity,
+    super.cssClass,
+    super.inlineStyle,
     super.transform,
   });
 
@@ -43,6 +45,7 @@ base class SvgSvg extends SvgContainerElement {
 final class SvgRoot extends SvgSvg {
   const SvgRoot({
     required super.children,
+    this.styleSheet = const SvgStyleSheet(<String, Map<String, String>>{}),
     super.x,
     super.y,
     super.width,
@@ -55,6 +58,11 @@ final class SvgRoot extends SvgSvg {
     super.strokeLinecap,
     super.strokeLinejoin,
     super.opacity,
+    super.cssClass,
+    super.inlineStyle,
     super.transform,
   });
+
+  /// The CSS rules defined for this SVG.
+  final SvgStyleSheet styleSheet;
 }

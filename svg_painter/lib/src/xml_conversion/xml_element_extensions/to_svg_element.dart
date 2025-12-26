@@ -43,6 +43,8 @@ extension XmlElementToSvgElement on XmlElement {
         return toSvgLinearGradient();
       case XmlElementName.stop:
         return toSvgStop();
+      case XmlElementName.style:
+        return toSvgStyle();
     }
   }
 }

@@ -11,6 +11,23 @@ extension ElementToSvgRoot on XmlElement {
     const XmlElementName elementName = XmlElementName.svg;
     final List<SvgElement> childElements = <SvgElement>[];
 
+    // Collect all CSS rules from <style> elements
+    final List<Map<String, Map<String, String>>> allRules = <Map<String, Map<String, String>>>[];
+    final Iterable<XmlElement> styleElements = findAllElements(XmlElementName.style.tagName);
+    for (final XmlElement styleEl in styleElements) {
+      final String css = styleEl.innerText;
+      allRules.add(SvgStyleParser.parse(css).rules);
+    }
+
+    // Merge rules (later ones override earlier ones)
+    final Map<String, Map<String, String>> mergedRules = <String, Map<String, String>>{};
+    for (final Map<String, Map<String, String>> rules in allRules) {
+      for (final String className in rules.keys) {
+        mergedRules.putIfAbsent(className, () => <String, String>{}).addAll(rules[className]!);
+      }
+    }
+    final SvgStyleSheet styleSheet = SvgStyleSheet(mergedRules);
+
     for (final XmlNode child in children) {
       if (child is XmlElement) {
         final Result<SvgElement> result = child.toSvgElement();
@@ -48,6 +65,7 @@ extension ElementToSvgRoot on XmlElement {
     return Success<SvgRoot>(
       SvgRoot(
         children: childElements,
+        styleSheet: styleSheet,
         x: x,
         y: y,
         width: width,
@@ -59,6 +77,8 @@ extension ElementToSvgRoot on XmlElement {
         strokeLinecap: common.strokeLinecap,
         strokeLinejoin: common.strokeLinejoin,
         opacity: common.opacity,
+        cssClass: common.cssClass,
+        inlineStyle: common.inlineStyle,
         transform: common.transform,
         id: common.id,
       ),

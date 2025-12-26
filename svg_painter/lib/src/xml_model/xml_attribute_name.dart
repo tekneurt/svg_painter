@@ -102,6 +102,14 @@ enum XmlAttributeName {
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/gradientTransform
   gradientTransform('gradientTransform'),
 
+  /// The CSS class(es) of the element.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/class
+  className('class'),
+
+  /// Inline style rules for the element.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/style
+  style('style'),
+
   /// The fill color of the element.
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/fill
   fill('fill'),

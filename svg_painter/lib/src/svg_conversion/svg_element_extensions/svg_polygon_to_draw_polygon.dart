@@ -33,6 +33,8 @@ extension SvgPolygonToPainting on SvgPolygon {
       strokeLinecap: strokeLinecap,
       strokeLinejoin: strokeLinejoin,
       opacity: opacity,
+      cssClass: cssClass,
+      inlineStyle: inlineStyle,
     );
 
     return Success<List<PaintCommand>>(<PaintCommand>[

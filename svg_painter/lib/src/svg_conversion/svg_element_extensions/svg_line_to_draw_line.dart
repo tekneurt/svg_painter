@@ -17,6 +17,8 @@ extension SvgLineToPainting on SvgLine {
       strokeLinecap: strokeLinecap,
       strokeLinejoin: strokeLinejoin,
       opacity: opacity,
+      cssClass: cssClass,
+      inlineStyle: inlineStyle,
     );
 
     final double finalX1 = context.transformX(x1.toDouble(context, SvgOrientation.horizontal));

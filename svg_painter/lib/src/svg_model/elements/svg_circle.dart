@@ -16,6 +16,8 @@ final class SvgCircle extends SvgBasicShape {
     super.strokeLinecap,
     super.strokeLinejoin,
     super.opacity,
+    super.cssClass,
+    super.inlineStyle,
     super.transform,
   });
 

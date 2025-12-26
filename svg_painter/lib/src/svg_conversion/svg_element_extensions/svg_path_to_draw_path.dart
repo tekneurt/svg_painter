@@ -21,6 +21,8 @@ extension SvgPathToPainting on SvgPath {
       strokeLinecap: strokeLinecap,
       strokeLinejoin: strokeLinejoin,
       opacity: opacity,
+      cssClass: cssClass,
+      inlineStyle: inlineStyle,
     );
 
     return Success<List<PaintCommand>>(<PaintCommand>[

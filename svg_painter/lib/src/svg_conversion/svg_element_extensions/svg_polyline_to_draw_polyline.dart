@@ -33,6 +33,8 @@ extension SvgPolylineToPainting on SvgPolyline {
       strokeLinecap: strokeLinecap,
       strokeLinejoin: strokeLinejoin,
       opacity: opacity,
+      cssClass: cssClass,
+      inlineStyle: inlineStyle,
     );
 
     return Success<List<PaintCommand>>(<PaintCommand>[

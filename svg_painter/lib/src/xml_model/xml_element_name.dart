@@ -40,7 +40,10 @@ enum XmlElementName {
   linearGradient('linearGradient'),
 
   /// The <stop> element.
-  stop('stop');
+  stop('stop'),
+
+  /// The <style> element.
+  style('style');
 
   const XmlElementName(this.tagName);
 

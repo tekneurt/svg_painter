@@ -21,6 +21,8 @@ extension SvgCircleToPainting on SvgCircle {
       strokeLinecap: strokeLinecap,
       strokeLinejoin: strokeLinejoin,
       opacity: opacity,
+      cssClass: cssClass,
+      inlineStyle: inlineStyle,
     );
 
     final double finalCx = context.transformX(cx.toPosition(context, SvgOrientation.horizontal));

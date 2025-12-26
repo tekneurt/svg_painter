@@ -45,6 +45,8 @@ extension ElementToSvgRect on XmlElement {
         strokeLinecap: common.strokeLinecap,
         strokeLinejoin: common.strokeLinejoin,
         opacity: common.opacity,
+        cssClass: common.cssClass,
+        inlineStyle: common.inlineStyle,
         transform: common.transform,
         id: common.id,
       ),

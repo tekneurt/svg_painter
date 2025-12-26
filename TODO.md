@@ -125,6 +125,7 @@ Implement support for additional SVG shapes using the new layered architecture.
     - [x] Add Fixtures and Tests.
 - [x] **Group** (`<g>`)
 - [x] **Path** (`<path>`)
+- [x] **CSS/Class Support**: Implement basic `<style>` parsing and `class` attribute mapping for presentation attributes.
 - [ ] **Text** (`<text>`)
 - [ ] **Image** (`<image>`)
 - [ ] **Mask** (`<mask>`)
@@ -153,13 +154,13 @@ Implement support for additional SVG shapes using the new layered architecture.
 - [ ] **TODO(Gemini)**: Simplify golden tests by using a single function that enumerates all fixtures.
 - [ ] **TODO(Gemini)**: Determine default behavior for unknown named colors (render vs throw).
 - [ ] **TODO(Gemini)**: Handle failure cases in `SvgToPainting` converter.
-- [ ] **Attributes**
+- [x] **Attributes**
     - [x] Fill (color, none)
     - [x] Stroke (color, width)
     - [x] Stroke (cap, join)
     - [x] Opacity
 - [x] **Transforms** (translate, scale via nested SVG and use)
-- [ ] **Test**: Verify against the Daphnia SVG.
+- [x] **Test**: Verify against the Daphnia SVG.
 
 ### Phase 6: Polish & Release (MVP 0.1.0)
 - [x] **Refactor (High Priority)**: `SvgPaintingContext` — Encapsulate coordinate transformations (e.g., `context.transformPoint(x, y)`) to deduplicate math in shape converters.

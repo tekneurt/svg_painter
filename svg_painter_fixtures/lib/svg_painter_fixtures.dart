@@ -15,6 +15,7 @@ export 'src/mdn/attributes/stroke.dart';
 export 'src/mdn/attributes/stroke_linecap.dart';
 export 'src/mdn/attributes/stroke_linejoin.dart';
 export 'src/mdn/attributes/stroke_width.dart';
+export 'src/mdn/attributes/style.dart';
 export 'src/mdn/attributes/view_box.dart';
 export 'src/mdn/attributes/width.dart';
 export 'src/mdn/attributes/x1.dart';
@@ -37,3 +38,6 @@ export 'src/mdn/elements/use.dart';
 
 /// Path to the IO test file SVG (used for file-loading tests).
 const String ioTestFileSvgPath = 'package:svg_painter_fixtures/src/io/test_file.svg';
+
+/// Path to the Daphnia SVG.
+const String daphniaSvgPath = 'package:svg_painter_fixtures/src/io/daphnia.svg';

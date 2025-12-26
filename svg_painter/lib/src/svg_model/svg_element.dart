@@ -1,5 +1,6 @@
 import 'package:meta/meta.dart';
 
+import 'svg_style_sheet.dart';
 import 'svg_value.dart';
 
 part 'elements/svg_circle.dart';
@@ -9,6 +10,7 @@ part 'elements/svg_group.dart';
 part 'elements/svg_line.dart';
 part 'elements/svg_path.dart';
 part 'elements/svg_rect.dart';
+part 'elements/svg_style.dart';
 part 'elements/svg_radial_gradient.dart';
 part 'elements/svg_linear_gradient.dart';
 part 'elements/svg_polyline.dart';
@@ -42,6 +44,8 @@ sealed class SvgGraphicsElement extends SvgElement {
     this.strokeLinecap,
     this.strokeLinejoin,
     this.opacity,
+    this.cssClass,
+    this.inlineStyle,
     this.transform,
   });
 
@@ -63,6 +67,12 @@ sealed class SvgGraphicsElement extends SvgElement {
   /// The transparency of the element.
   final SvgLengthPercentage? opacity;
 
+  /// The CSS class(es) of the element.
+  final String? cssClass;
+
+  /// Inline CSS style rules for the element.
+  final String? inlineStyle;
+
   /// The transform applied to the element.
   final String? transform;
 }
@@ -78,6 +88,8 @@ sealed class SvgBasicShape extends SvgGraphicsElement {
     super.strokeLinecap,
     super.strokeLinejoin,
     super.opacity,
+    super.cssClass,
+    super.inlineStyle,
     super.transform,
   });
 }
@@ -94,6 +106,8 @@ sealed class SvgContainerElement extends SvgGraphicsElement with SvgParent {
     super.strokeLinecap,
     super.strokeLinejoin,
     super.opacity,
+    super.cssClass,
+    super.inlineStyle,
     super.transform,
   });
 

@@ -23,6 +23,8 @@ extension SvgEllipseToPainting on SvgEllipse {
       strokeLinecap: strokeLinecap,
       strokeLinejoin: strokeLinejoin,
       opacity: opacity,
+      cssClass: cssClass,
+      inlineStyle: inlineStyle,
     );
 
     // Apply transformation
