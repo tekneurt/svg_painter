@@ -43,7 +43,8 @@ void main() {
           tester: tester,
           painter: fixture.painter,
           name: fixture.name,
-          type: SvgTestType.mdnElement,
+          type: SvgTestType.mdn,
+          folder: 'elements',
         );
       });
     }

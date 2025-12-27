@@ -139,15 +139,15 @@ Implement support for additional SVG shapes using the new layered architecture.
 - [ ] **TODO(Gemini)**: Support `currentColor` context in color resolution.
 - [ ] **TODO(Gemini)**: Implement full `gradientUnits` support (currently assumes `userSpaceOnUse` mapping).
 - [ ] **TODO(Gemini)**: Implement `objectBoundingBox` for gradients.
-- [ ] **TODO(Gemini)**: Implement full `gradientTransform` support (currently only `rotate(90)`).
+- [x] **TODO(Gemini)**: Implement full `gradientTransform` support (currently only `rotate(90)`).
 - [x] **TODO(Gemini)**: Implement `fill` attribute example from MDN.
 - [x] **TODO(Gemini)**: Implement `stroke` attribute example from MDN.
 - [ ] **TODO(Gemini)**: Implement `<animate>` support (e.g., from MDN fill example).
 - [ ] **TODO(Gemini)**: Implement `<marker>` support (required for context-fill MDN example).
 - [ ] **TODO(Gemini)**: Implement `fy` attribute example from MDN (requires `text`).
-- [ ] **TODO(Gemini)**: Implement `points` attribute example from MDN (requires `transform`).
+- [x] **TODO(Gemini)**: Implement `points` attribute example from MDN (requires `transform`).
 - [ ] **TODO(Gemini)**: Implement other examples from the `<svg>` element MDN page.
-- [ ] **TODO(Gemini)**: Implement full `transform` attribute support (parsing matrices, rotate, translate, etc.).
+- [x] **TODO(Gemini)**: Implement full `transform` attribute support (parsing matrices, rotate, translate, etc.).
 - [x] **TODO(Gemini)**: Support `rotate(angle [cx cy])` transform (encountered in W3C shapes).
 - [x] **TODO(Gemini)**: Verify/Implement root viewport resolution for absolute units like `cm` (encountered in W3C shapes).
 - [ ] **TODO(Gemini)**: Implement `fr` (focal radius) for radial gradients.
@@ -156,6 +156,8 @@ Implement support for additional SVG shapes using the new layered architecture.
 - [x] **TODO(Gemini)**: Simplify golden tests by using a single function that enumerates all fixtures.
 - [ ] **TODO(Gemini)**: Determine default behavior for unknown named colors (render vs throw).
 - [ ] **TODO(Gemini)**: Handle failure cases in `SvgToPainting` converter.
+- [ ] **TODO(Gemini)**: Support W3C SVG 2 path examples.
+    - Analysis: `PathDataParser` currently expects space/comma separators between arc flags. SVG spec allows concatenated flags (e.g., `01` means `0` then `1`). The current regex `(-?\d*\.?\d+(?:[eE][+-]?\d+)?)` treats `01` as `1.0`, breaking parsing for compact arc commands often found in W3C examples. Needs a more robust tokenizer that respects the grammar for arc arguments.
 - [x] **Attributes**
     - [x] Fill (color, none)
     - [x] Stroke (color, width)

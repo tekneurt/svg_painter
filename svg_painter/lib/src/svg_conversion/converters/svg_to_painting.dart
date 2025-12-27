@@ -14,6 +14,7 @@ import '../svg_value_extensions/svg_auto_to_double.dart';
 import '../svg_value_extensions/svg_length_percentage_to_double.dart';
 import '../svg_value_extensions/svg_length_to_double.dart';
 import '../svg_value_extensions/svg_percentage_to_double.dart';
+import '../svg_transform_parser.dart';
 import 'svg_definition_collector.dart';
 import 'svg_painting_context.dart';
 
@@ -241,7 +242,10 @@ extension _SvgGroupToPainting on SvgGroup {
     }
 
     return Success<List<PaintCommand>>(<PaintCommand>[
-      DrawGroup(commands: childCommands, transform: transform),
+      DrawGroup(
+        commands: childCommands,
+        transform: SvgTransformParser.scaleTransform(transform, context.parentSx, context.parentSy),
+      ),
     ]);
   }
 }

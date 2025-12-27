@@ -5,6 +5,7 @@ import '../converters/_converters.dart';
 import '../svg_value_extensions/svg_auto_to_double.dart';
 import '../svg_value_extensions/svg_length_percentage_to_double.dart';
 import '../svg_value_extensions/svg_percentage_to_double.dart';
+import '../svg_transform_parser.dart';
 
 /// Extension to convert [SvgRect] to [PaintCommand]s.
 extension SvgRectToPainting on SvgRect {
@@ -52,7 +53,7 @@ extension SvgRectToPainting on SvgRect {
         rx: finalRx,
         ry: finalRy,
         style: paint,
-        transform: transform,
+        transform: SvgTransformParser.scaleTransform(transform, context.parentSx, context.parentSy),
       ),
     ]);
   }

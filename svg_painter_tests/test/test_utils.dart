@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 enum SvgTestType {
-  mdnAttribute,
-  mdnElement,
+  mdn,
   w3c,
   various,
 }
@@ -84,11 +83,11 @@ Future<void> testDualResolutionPainter({
   required CustomPainter painter,
   required String name,
   required SvgTestType type,
+  String? folder,
 }) async {
   final String goldenPath = switch (type) {
-    SvgTestType.mdnAttribute => 'attributes/goldens',
-    SvgTestType.mdnElement => 'elements/goldens',
-    SvgTestType.w3c || SvgTestType.various => 'goldens',
+    SvgTestType.mdn || SvgTestType.w3c => '$folder/goldens',
+    SvgTestType.various => 'goldens',
   };
 
   await testSvgPainter(

@@ -4,6 +4,7 @@ import '../../svg_model/_svg_model.dart';
 import '../converters/_converters.dart';
 import '../svg_value_extensions/svg_length_percentage_to_double.dart';
 import '../svg_value_extensions/svg_percentage_to_double.dart';
+import '../svg_transform_parser.dart';
 
 /// Extension to convert [SvgCircle] to [PaintCommand]s.
 extension SvgCircleToPainting on SvgCircle {
@@ -35,7 +36,7 @@ extension SvgCircleToPainting on SvgCircle {
         cy: finalCy,
         radius: finalR,
         style: paint,
-        transform: transform,
+        transform: SvgTransformParser.scaleTransform(transform, context.parentSx, context.parentSy),
       ),
     ]);
   }

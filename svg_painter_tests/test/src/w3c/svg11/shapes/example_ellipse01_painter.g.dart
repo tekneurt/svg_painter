@@ -56,7 +56,7 @@ class _$ExampleEllipse01Painter extends CustomPainter {
       }
     }
     canvas.save();
-    canvas.translate(300.0, 200.0);
+    canvas.translate(113.38582677165354, 75.59055118110236);
     {
       {
         final Paint paint = Paint();
@@ -74,7 +74,7 @@ class _$ExampleEllipse01Painter extends CustomPainter {
     }
     canvas.restore();
     canvas.save();
-    canvas.translate(900.0, 200.0);
+    canvas.translate(340.15748031496065, 75.59055118110236);
     canvas.rotate(-0.5235987755982988);
     {
       final Paint paint = Paint();

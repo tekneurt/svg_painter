@@ -4,6 +4,7 @@ import '../../svg_model/_svg_model.dart';
 import '../converters/_converters.dart';
 import '../svg_value_extensions/svg_length_percentage_to_double.dart';
 import '../svg_value_extensions/svg_percentage_to_double.dart';
+import '../svg_transform_parser.dart';
 
 /// Extension to convert [SvgLine] to [PaintCommand]s.
 extension SvgLineToPainting on SvgLine {
@@ -33,7 +34,7 @@ extension SvgLineToPainting on SvgLine {
         x2: finalX2,
         y2: finalY2,
         style: paint,
-        transform: transform,
+        transform: SvgTransformParser.scaleTransform(transform, context.parentSx, context.parentSy),
       ),
     ]);
   }

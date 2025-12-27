@@ -75,7 +75,7 @@ class _$ExampleRect02Painter extends CustomPainter {
       }
     }
     canvas.save();
-    canvas.translate(700.0, 210.0);
+    canvas.translate(264.56692913385825, 79.37007874015748);
     canvas.rotate(-0.5235987755982988);
     {
       {
