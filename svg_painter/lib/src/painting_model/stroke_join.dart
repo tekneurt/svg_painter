@@ -7,5 +7,5 @@ enum StrokeJoin {
   round,
 
   /// A beveled corner is created.
-  bevel;
+  bevel,
 }

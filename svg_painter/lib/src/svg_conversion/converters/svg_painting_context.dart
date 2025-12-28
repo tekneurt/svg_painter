@@ -20,6 +20,10 @@ final class SvgPaintingContext {
     this.inheritedStrokeLinecap,
     this.inheritedStrokeLinejoin,
     this.inheritedOpacity,
+    this.inheritedFontSize,
+    this.inheritedFontWeight,
+    this.inheritedFontStyle,
+    this.inheritedFontFamily,
     this.styleSheet = const SvgStyleSheet(<String, Map<String, String>>{}),
     this.definitions = const <String, SvgElement>{},
   });
@@ -66,6 +70,18 @@ final class SvgPaintingContext {
   /// Inherited opacity.
   final SvgLengthPercentage? inheritedOpacity;
 
+  /// Inherited font size.
+  final SvgLengthPercentage? inheritedFontSize;
+
+  /// Inherited font weight.
+  final String? inheritedFontWeight;
+
+  /// Inherited font style.
+  final String? inheritedFontStyle;
+
+  /// Inherited font family.
+  final String? inheritedFontFamily;
+
   /// The CSS rules defined for the document.
   final SvgStyleSheet styleSheet;
 
@@ -99,6 +115,10 @@ final class SvgPaintingContext {
     SvgStrokeLinecap? inheritedStrokeLinecap,
     SvgStrokeLinejoin? inheritedStrokeLinejoin,
     SvgLengthPercentage? inheritedOpacity,
+    SvgLengthPercentage? inheritedFontSize,
+    String? inheritedFontWeight,
+    String? inheritedFontStyle,
+    String? inheritedFontFamily,
   }) {
     return SvgPaintingContext(
       viewBoxWidth: viewBoxWidth ?? this.viewBoxWidth,
@@ -115,6 +135,10 @@ final class SvgPaintingContext {
       inheritedStrokeLinecap: inheritedStrokeLinecap ?? this.inheritedStrokeLinecap,
       inheritedStrokeLinejoin: inheritedStrokeLinejoin ?? this.inheritedStrokeLinejoin,
       inheritedOpacity: inheritedOpacity ?? this.inheritedOpacity,
+      inheritedFontSize: inheritedFontSize ?? this.inheritedFontSize,
+      inheritedFontWeight: inheritedFontWeight ?? this.inheritedFontWeight,
+      inheritedFontStyle: inheritedFontStyle ?? this.inheritedFontStyle,
+      inheritedFontFamily: inheritedFontFamily ?? this.inheritedFontFamily,
       styleSheet: styleSheet,
       definitions: definitions,
     );

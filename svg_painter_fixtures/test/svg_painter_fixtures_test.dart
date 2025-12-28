@@ -11,17 +11,11 @@ void main() {
 
   group('Various Fixtures', () {
     test('ioTestFileSvgPath is correct', () {
-      expect(
-        ioTestFileSvgPath,
-        'package:svg_painter_fixtures/src/various/io/test_file.svg',
-      );
+      expect(ioTestFileSvgPath, 'package:svg_painter_fixtures/src/various/io/test_file.svg');
     });
 
     test('daphniaSvgPath is correct', () {
-      expect(
-        daphniaSvgPath,
-        'package:svg_painter_fixtures/src/various/daphnia/daphnia.svg',
-      );
+      expect(daphniaSvgPath, 'package:svg_painter_fixtures/src/various/daphnia/daphnia.svg');
     });
   });
 

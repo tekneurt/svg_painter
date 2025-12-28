@@ -49,6 +49,7 @@ extension XmlElementToSvgValue on XmlElement {
       XmlAttributeName.offset ||
       XmlAttributeName.opacity ||
       XmlAttributeName.stopOpacity ||
+      XmlAttributeName.fontSize ||
       XmlAttributeName.strokeWidth => attributeValue.toSvgLengthPercentage(),
       XmlAttributeName.rx ||
       XmlAttributeName.ry ||
@@ -67,8 +68,10 @@ extension XmlElementToSvgValue on XmlElement {
       XmlAttributeName.style ||
       XmlAttributeName.href ||
       XmlAttributeName.transform ||
-      XmlAttributeName.gradientTransform =>
-        null, // These are strings or special types handled elsewhere
+      XmlAttributeName.gradientTransform ||
+      XmlAttributeName.fontWeight ||
+      XmlAttributeName.fontStyle ||
+      XmlAttributeName.fontFamily => null, // These are strings or special types handled elsewhere
     };
 
     if (parsedValue == null) {

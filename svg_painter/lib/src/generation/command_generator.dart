@@ -27,7 +27,9 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
     if (style.fillShaderId != null) {
       buffer.writeln('      {');
       buffer.writeln('        final Paint paint = Paint();');
-      buffer.writeln('        paint.shader = _grad_${style.fillShaderId}.createShader($boundsRect);');
+      buffer.writeln(
+        '        paint.shader = _grad_${style.fillShaderId}.createShader($boundsRect);',
+      );
       if (style.opacity < 1.0) {
         buffer.writeln('        paint.color = paint.color.withOpacity(${style.opacity});');
       }
@@ -37,8 +39,7 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
     } else if (style.fillColorArgb != null && style.fillColorArgb != 0) {
       buffer.writeln('      {');
       buffer.writeln('        final Paint paint = Paint();');
-      final double finalOpacity =
-          ((style.fillColorArgb! >> 24) & 0xFF) / 255.0 * style.opacity;
+      final double finalOpacity = ((style.fillColorArgb! >> 24) & 0xFF) / 255.0 * style.opacity;
       final int colorWithoutAlpha = style.fillColorArgb! & 0x00FFFFFF;
       final String colorHex = colorWithoutAlpha.toRadixString(16).toUpperCase().padLeft(6, '0');
       buffer.writeln(
@@ -53,7 +54,9 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
     if (style.strokeShaderId != null) {
       buffer.writeln('      {');
       buffer.writeln('        final Paint paint = Paint();');
-      buffer.writeln('        paint.shader = _grad_${style.strokeShaderId}.createShader($boundsRect);');
+      buffer.writeln(
+        '        paint.shader = _grad_${style.strokeShaderId}.createShader($boundsRect);',
+      );
       if (style.opacity < 1.0) {
         buffer.writeln('        paint.color = paint.color.withOpacity(${style.opacity});');
       }
@@ -70,8 +73,7 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
     } else if (style.strokeColorArgb != null && style.strokeColorArgb != 0) {
       buffer.writeln('      {');
       buffer.writeln('        final Paint paint = Paint();');
-      final double finalOpacity =
-          ((style.strokeColorArgb! >> 24) & 0xFF) / 255.0 * style.opacity;
+      final double finalOpacity = ((style.strokeColorArgb! >> 24) & 0xFF) / 255.0 * style.opacity;
       final int colorWithoutAlpha = style.strokeColorArgb! & 0x00FFFFFF;
       final String colorHex = colorWithoutAlpha.toRadixString(16).toUpperCase().padLeft(6, '0');
       buffer.writeln(
@@ -91,11 +93,7 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
   }
 
   /// Helper to wrap a block of code with a transform if present.
-  void wrapWithTransform(
-    StringBuffer buffer,
-    String? transformValue,
-    void Function() body,
-  ) {
+  void wrapWithTransform(StringBuffer buffer, String? transformValue, void Function() body) {
     if (transformValue == null || transformValue.trim().isEmpty) {
       buffer.writeln('    {');
       body();

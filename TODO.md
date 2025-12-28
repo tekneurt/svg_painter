@@ -126,7 +126,7 @@ Implement support for additional SVG shapes using the new layered architecture.
 - [x] **Group** (`<g>`)
 - [x] **Path** (`<path>`)
 - [x] **CSS/Class Support**: Implement basic `<style>` parsing and `class` attribute mapping for presentation attributes.
-- [ ] **Text** (`<text>`)
+- [x] **Text** (`<text>`)
 - [ ] **Image** (`<image>`)
 - [ ] **Mask** (`<mask>`)
 - [x] **Use** (`<use>`)
@@ -144,13 +144,13 @@ Implement support for additional SVG shapes using the new layered architecture.
 - [x] **TODO(Gemini)**: Implement `stroke` attribute example from MDN.
 - [ ] **TODO(Gemini)**: Implement `<animate>` support (e.g., from MDN fill example).
 - [ ] **TODO(Gemini)**: Implement `<marker>` support (required for context-fill MDN example).
-- [ ] **TODO(Gemini)**: Implement `fy` attribute example from MDN (requires `text`).
+- [x] **TODO(Gemini)**: Implement `fy` attribute example from MDN (requires `text`).
 - [x] **TODO(Gemini)**: Implement `points` attribute example from MDN (requires `transform`).
 - [ ] **TODO(Gemini)**: Implement other examples from the `<svg>` element MDN page.
 - [x] **TODO(Gemini)**: Implement full `transform` attribute support (parsing matrices, rotate, translate, etc.).
 - [x] **TODO(Gemini)**: Support `rotate(angle [cx cy])` transform (encountered in W3C shapes).
 - [x] **TODO(Gemini)**: Verify/Implement root viewport resolution for absolute units like `cm` (encountered in W3C shapes).
-- [ ] **TODO(Gemini)**: Implement `fr` (focal radius) for radial gradients.
+- [x] **TODO(Gemini)**: Implement `fr` (focal radius) for radial gradients.
 - [x] **TODO(Gemini)**: Implement `<use>` element support.
 - [x] **TODO(Gemini)**: Improve `toPosition` mapping for nested elements and complex coordinate systems.
 - [x] **TODO(Gemini)**: Simplify golden tests by using a single function that enumerates all fixtures.
@@ -158,6 +158,15 @@ Implement support for additional SVG shapes using the new layered architecture.
 - [ ] **TODO(Gemini)**: Handle failure cases in `SvgToPainting` converter.
 - [ ] **TODO(Gemini)**: Support W3C SVG 2 path examples.
     - Analysis: `PathDataParser` currently expects space/comma separators between arc flags. SVG spec allows concatenated flags (e.g., `01` means `0` then `1`). The current regex `(-?\d*\.?\d+(?:[eE][+-]?\d+)?)` treats `01` as `1.0`, breaking parsing for compact arc commands often found in W3C examples. Needs a more robust tokenizer that respects the grammar for arc arguments.
+- [ ] **TODO(Gemini)**: Font Management.
+    - [x] Bundle standard open-source fonts (Roboto, Noto Serif) with all weights/styles (static files) in the package.
+    - [ ] Implement `PubspecScanner` to detect if required fonts are registered in the user's `pubspec.yaml`.
+    - [ ] Implement `AssetExporter` to automatically copy used fonts to the user's project assets if `autoCopyFonts` is enabled.
+    - [x] Fix UI tests to ensure real fonts are rendered instead of the default `Ahem` block font in golden images.
+    - [x] Map SVG generic font-family names (`sans-serif`, `serif`, `monospace`) to bundled fonts.
+    - [ ] Document how to properly add custom fonts (step-by-step).
+    - [ ] Investigate how to detect existing fonts in the target package and use them without duplication.
+    - [ ] Consider generating a `font_loader` initialization helper.
 - [x] **Attributes**
     - [x] Fill (color, none)
     - [x] Stroke (color, width)

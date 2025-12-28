@@ -134,6 +134,22 @@ enum XmlAttributeName {
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/opacity
   opacity('opacity'),
 
+  /// The size of the font.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/font-size
+  fontSize('font-size'),
+
+  /// The weight of the font.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/font-weight
+  fontWeight('font-weight'),
+
+  /// The style of the font.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/font-style
+  fontStyle('font-style'),
+
+  /// The family of the font.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/font-family
+  fontFamily('font-family'),
+
   /// The viewBox of the element.
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/viewBox
   viewBox('viewBox');

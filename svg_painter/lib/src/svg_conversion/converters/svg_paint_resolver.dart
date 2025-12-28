@@ -13,6 +13,10 @@ PaintingStyle resolvePaint(
   SvgStrokeLinecap? strokeLinecap,
   SvgStrokeLinejoin? strokeLinejoin,
   SvgLengthPercentage? opacity,
+  SvgLengthPercentage? fontSize,
+  String? fontWeight,
+  String? fontStyle,
+  String? fontFamily,
   String? cssClass,
   String? inlineStyle,
 }) {
@@ -51,6 +55,26 @@ PaintingStyle resolvePaint(
   SvgStrokeLinecap? cssStrokeLinecap;
   SvgStrokeLinejoin? cssStrokeLinejoin;
   SvgLengthPercentage? cssOpacity;
+  String? cssFontWeight;
+  String? cssFontStyle;
+  SvgLengthPercentage? cssFontSize;
+  String? cssFontFamily;
+
+  if (resolvedRules.containsKey('font')) {
+    // Basic font shorthand support: [style] [weight] size [family]
+    final List<String> parts = resolvedRules['font']!.split(RegExp(r'\s+'));
+    for (final String part in parts) {
+      if (part == 'italic') {
+        cssFontStyle = 'italic';
+      } else if (part == 'bold' || part == 'heavy') {
+        cssFontWeight = 'bold';
+      } else if (part.contains(RegExp(r'\d'))) {
+        cssFontSize = part.toSvgLengthPercentage();
+      } else if (part != 'normal') {
+        cssFontFamily ??= part;
+      }
+    }
+  }
 
   if (resolvedRules.containsKey('fill')) {
     cssFill = resolvedRules['fill']!.toSvgColor();
@@ -69,6 +93,18 @@ PaintingStyle resolvePaint(
   }
   if (resolvedRules.containsKey('opacity')) {
     cssOpacity = resolvedRules['opacity']!.toSvgLengthPercentage();
+  }
+  if (resolvedRules.containsKey('font-weight')) {
+    cssFontWeight = resolvedRules['font-weight'];
+  }
+  if (resolvedRules.containsKey('font-style')) {
+    cssFontStyle = resolvedRules['font-style'];
+  }
+  if (resolvedRules.containsKey('font-size')) {
+    cssFontSize = resolvedRules['font-size']!.toSvgLengthPercentage();
+  }
+  if (resolvedRules.containsKey('font-family')) {
+    cssFontFamily = resolvedRules['font-family'];
   }
 
   // 4. Resolve final values using priority: Inline Style/CSS > Presentation Attribute > Inherited
@@ -95,12 +131,11 @@ PaintingStyle resolvePaint(
     sw?.toDouble(context, SvgOrientation.normalized) ?? 1.0,
   );
 
-  final SvgStrokeLinecap resolvedCap = cssStrokeLinecap ??
-      strokeLinecap ??
-      context.inheritedStrokeLinecap ??
-      SvgStrokeLinecap.butt;
+  final SvgStrokeLinecap resolvedCap =
+      cssStrokeLinecap ?? strokeLinecap ?? context.inheritedStrokeLinecap ?? SvgStrokeLinecap.butt;
 
-  final SvgStrokeLinejoin resolvedJoin = cssStrokeLinejoin ??
+  final SvgStrokeLinejoin resolvedJoin =
+      cssStrokeLinejoin ??
       strokeLinejoin ??
       context.inheritedStrokeLinejoin ??
       SvgStrokeLinejoin.miter;
@@ -109,6 +144,24 @@ PaintingStyle resolvePaint(
       (cssOpacity ?? opacity)?.toDouble(context, SvgOrientation.normalized) ??
       context.inheritedOpacity?.toDouble(context, SvgOrientation.normalized) ??
       1.0;
+
+  final double? rawFontSize = (cssFontSize ?? fontSize ?? context.inheritedFontSize)?.toDouble(
+    context,
+    SvgOrientation.vertical,
+  );
+  final double? finalFontSize = rawFontSize != null ? context.scaleVertical(rawFontSize) : null;
+
+  final String? finalFontWeight = cssFontWeight ?? fontWeight ?? context.inheritedFontWeight;
+  final String? finalFontStyle = cssFontStyle ?? fontStyle ?? context.inheritedFontStyle;
+  final String? rawFontFamily = cssFontFamily ?? fontFamily ?? context.inheritedFontFamily;
+
+  // Map generic font families to bundled font files for Flutter rendering.
+  final String? finalFontFamily = switch (rawFontFamily) {
+    'sans-serif' => 'Roboto',
+    'serif' => 'Noto Serif',
+    'monospace' => 'Roboto Mono',
+    _ => rawFontFamily,
+  };
 
   return PaintingStyle(
     fillColorArgb: fillColorArgb,
@@ -119,6 +172,10 @@ PaintingStyle resolvePaint(
     strokeCap: resolvedCap.toStrokeCap(),
     strokeJoin: resolvedJoin.toStrokeJoin(),
     opacity: elementOpacity,
+    fontSize: finalFontSize,
+    fontWeight: finalFontWeight,
+    fontStyle: finalFontStyle,
+    fontFamily: finalFontFamily,
   );
 }
 

@@ -16,6 +16,7 @@ part 'elements/svg_linear_gradient.dart';
 part 'elements/svg_polyline.dart';
 part 'elements/svg_polygon.dart';
 part 'elements/svg_svg.dart';
+part 'elements/svg_text.dart';
 part 'elements/svg_use.dart';
 
 /// The base class for all SVG elements in the domain model.
@@ -44,6 +45,10 @@ sealed class SvgGraphicsElement extends SvgElement {
     this.strokeLinecap,
     this.strokeLinejoin,
     this.opacity,
+    this.fontSize,
+    this.fontWeight,
+    this.fontStyle,
+    this.fontFamily,
     this.cssClass,
     this.inlineStyle,
     this.transform,
@@ -67,6 +72,18 @@ sealed class SvgGraphicsElement extends SvgElement {
   /// The transparency of the element.
   final SvgLengthPercentage? opacity;
 
+  /// The size of the font.
+  final SvgLengthPercentage? fontSize;
+
+  /// The weight of the font.
+  final String? fontWeight;
+
+  /// The style of the font.
+  final String? fontStyle;
+
+  /// The family of the font.
+  final String? fontFamily;
+
   /// The CSS class(es) of the element.
   final String? cssClass;
 
@@ -88,6 +105,10 @@ sealed class SvgBasicShape extends SvgGraphicsElement {
     super.strokeLinecap,
     super.strokeLinejoin,
     super.opacity,
+    super.fontSize,
+    super.fontWeight,
+    super.fontStyle,
+    super.fontFamily,
     super.cssClass,
     super.inlineStyle,
     super.transform,
@@ -106,6 +127,10 @@ sealed class SvgContainerElement extends SvgGraphicsElement with SvgParent {
     super.strokeLinecap,
     super.strokeLinejoin,
     super.opacity,
+    super.fontSize,
+    super.fontWeight,
+    super.fontStyle,
+    super.fontFamily,
     super.cssClass,
     super.inlineStyle,
     super.transform,
@@ -144,11 +169,7 @@ final class SvgStop extends SvgDefinitionElement {
 /// Base class for gradient elements (<linearGradient>, <radialGradient>).
 @immutable
 sealed class SvgGradient extends SvgDefinitionElement {
-  const SvgGradient({
-    required this.stops,
-    super.id,
-    this.gradientTransform,
-  });
+  const SvgGradient({required this.stops, super.id, this.gradientTransform});
 
   /// The color stops for this gradient.
   final List<SvgStop> stops;

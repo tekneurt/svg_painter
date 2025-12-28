@@ -12,7 +12,8 @@ class RadialGradientGenerator extends CommandGenerator<DefineRadialGradient> {
   }) {
     final String colors =
         '[${command.stops.map((GradientStop s) => 'Color(0x${s.colorArgb.toRadixString(16).toUpperCase()})').join(', ')}]';
-    final String stops = '[${command.stops.map((GradientStop s) => s.offset.toString()).join(', ')}]';
+    final String stops =
+        '[${command.stops.map((GradientStop s) => s.offset.toString()).join(', ')}]';
     final String transform = command.transform == 'rotate(90)'
         ? 'transform: const GradientRotation(3.141592653589793 / 2),'
         : '';

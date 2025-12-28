@@ -49,7 +49,7 @@ void main() {
     });
 
     test('returns Failure for unsupported element', () {
-      final XmlDocument document = XmlDocument.parse('<path />');
+      final XmlDocument document = XmlDocument.parse('<unknown />');
       final XmlElement element = document.rootElement;
 
       final Result<SvgElement> result = element.toSvgElement();

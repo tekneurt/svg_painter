@@ -55,7 +55,7 @@ void main() {
       const SvgCircle circle = SvgCircle(
         cx: SvgLength(0),
         cy: SvgLength(0),
-        r: SvgLength(0),
+        r: SvgLength(5),
         fill: SvgRgbColor(255, 255, 0, 0), // Red
         stroke: SvgRgbColor(255, 0, 0, 255), // Blue
       );
@@ -72,7 +72,7 @@ void main() {
       const SvgCircle circle = SvgCircle(
         cx: SvgLength(0),
         cy: SvgLength(0),
-        r: SvgLength(0),
+        r: SvgLength(5),
       );
 
       final Result<List<PaintCommand>> result = circle.toPaintCommands();
@@ -135,17 +135,16 @@ void main() {
       expect(cmd2.rx, 30.0);
       expect(cmd2.ry, 30.0);
 
-      // Case 3: rx=auto, ry=auto -> rx=0, ry=0
+      // Case 3: rx=auto, ry=auto -> returns empty list (radius 0)
       const SvgEllipse ellipse3 = SvgEllipse(
         cx: SvgLength(0),
         cy: SvgLength(0),
         rx: SvgAuto(),
         ry: SvgAuto(),
       );
-      final DrawOval cmd3 =
-          (ellipse3.toPaintCommands() as Success<List<PaintCommand>>).value.first as DrawOval;
-      expect(cmd3.rx, 0.0);
-      expect(cmd3.ry, 0.0);
+      final List<PaintCommand> cmds3 =
+          (ellipse3.toPaintCommands() as Success<List<PaintCommand>>).value;
+      expect(cmds3, isEmpty);
     });
   });
 }

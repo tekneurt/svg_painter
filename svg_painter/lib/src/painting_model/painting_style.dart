@@ -14,6 +14,10 @@ final class PaintingStyle {
     this.strokeCap = StrokeCap.butt,
     this.strokeJoin = StrokeJoin.miter,
     this.opacity = 1.0,
+    this.fontSize,
+    this.fontWeight,
+    this.fontStyle,
+    this.fontFamily,
   });
 
   /// The ARGB integer for the fill color.
@@ -40,8 +44,20 @@ final class PaintingStyle {
   /// The transparency of the element (0.0 to 1.0).
   final double opacity;
 
+  /// The size of the font.
+  final double? fontSize;
+
+  /// The weight of the font (e.g., 'bold').
+  final String? fontWeight;
+
+  /// The style of the font (e.g., 'italic').
+  final String? fontStyle;
+
+  /// The family of the font.
+  final String? fontFamily;
+
   @override
   String toString() {
-    return 'PaintingStyle(fill: $fillColorArgb/$fillShaderId, stroke: $strokeColorArgb/$strokeShaderId, width: $strokeWidth, cap: $strokeCap, join: $strokeJoin, opacity: $opacity)';
+    return 'PaintingStyle(fill: $fillColorArgb/$fillShaderId, stroke: $strokeColorArgb/$strokeShaderId, width: $strokeWidth, cap: $strokeCap, join: $strokeJoin, opacity: $opacity, font: $fontStyle $fontWeight $fontSize $fontFamily)';
   }
 }

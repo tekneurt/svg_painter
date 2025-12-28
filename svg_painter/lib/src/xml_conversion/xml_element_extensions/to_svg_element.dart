@@ -4,6 +4,7 @@ import '../../base/_base.dart';
 import '../../svg_model/_svg_model.dart';
 import '../../xml_model/_xml_model.dart';
 import '../_xml_conversion.dart';
+import '_xml_element_extensions.dart';
 
 extension XmlElementToSvgElement on XmlElement {
   /// Converts this [XmlElement] to an [SvgElement].
@@ -45,6 +46,8 @@ extension XmlElementToSvgElement on XmlElement {
         return toSvgStop();
       case XmlElementName.style:
         return toSvgStyle();
+      case XmlElementName.text:
+        return toSvgText();
     }
   }
 }

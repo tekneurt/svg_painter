@@ -7,5 +7,5 @@ enum StrokeCap {
   round,
 
   /// The stroke is terminated with a square end.
-  square;
+  square,
 }

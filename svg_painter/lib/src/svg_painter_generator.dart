@@ -23,18 +23,20 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
     'package:svg_painter_annotation/src/svg_painter.dart#SvgCodePainter',
   );
 
-  static const Map<Type, CommandGenerator<PaintCommand>> _generators = <Type, CommandGenerator<PaintCommand>>{
-    DrawCircle: CircleGenerator(),
-    DrawOval: OvalGenerator(),
-    DrawRect: RectGenerator(),
-    DrawGroup: GroupGenerator(),
-    DrawPath: PathGenerator(),
-    DrawLine: LineGenerator(),
-    DrawPolyline: PolyGenerator(),
-    DrawPolygon: PolyGenerator(),
-    DefineLinearGradient: LinearGradientGenerator(),
-    DefineRadialGradient: RadialGradientGenerator(),
-  };
+  static const Map<Type, CommandGenerator<PaintCommand>> _generators =
+      <Type, CommandGenerator<PaintCommand>>{
+        DrawCircle: CircleGenerator(),
+        DrawOval: OvalGenerator(),
+        DrawRect: RectGenerator(),
+        DrawText: TextGenerator(),
+        DrawGroup: GroupGenerator(),
+        DrawPath: PathGenerator(),
+        DrawLine: LineGenerator(),
+        DrawPolyline: PolyGenerator(),
+        DrawPolygon: PolyGenerator(),
+        DefineLinearGradient: LinearGradientGenerator(),
+        DefineRadialGradient: RadialGradientGenerator(),
+      };
 
   @override
   FutureOr<String> generateForAnnotatedElement(
@@ -145,16 +147,14 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
     // 1st pass: Gradient definitions
     for (final PaintCommand command in commands) {
       if (command is DefineGradient) {
-        _generators[command.runtimeType]
-            ?.generate(command, buffer, generators: _generators);
+        _generators[command.runtimeType]?.generate(command, buffer, generators: _generators);
       }
     }
 
     // 2nd pass: Drawing commands
     for (final PaintCommand command in commands) {
       if (command is! DefineGradient) {
-        _generators[command.runtimeType]
-            ?.generate(command, buffer, generators: _generators);
+        _generators[command.runtimeType]?.generate(command, buffer, generators: _generators);
       }
     }
 

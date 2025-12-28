@@ -9,6 +9,7 @@ part 'commands/draw_path.dart';
 part 'commands/draw_polygon.dart';
 part 'commands/draw_polyline.dart';
 part 'commands/draw_rect.dart';
+part 'commands/draw_text.dart';
 part 'commands/define_gradient.dart';
 part 'commands/define_radial_gradient.dart';
 part 'commands/define_linear_gradient.dart';

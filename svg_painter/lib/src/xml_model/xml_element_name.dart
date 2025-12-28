@@ -32,18 +32,11 @@ enum XmlElementName {
 
   /// The <use> element.
   use('use'),
-
-  /// The <radialGradient> element.
   radialGradient('radialGradient'),
-
-  /// The <linearGradient> element.
   linearGradient('linearGradient'),
-
-  /// The <stop> element.
   stop('stop'),
-
-  /// The <style> element.
-  style('style');
+  style('style'),
+  text('text');
 
   const XmlElementName(this.tagName);
 

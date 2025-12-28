@@ -91,6 +91,10 @@ extension XmlAttributeDefaultValues on XmlAttributeName {
       case XmlAttributeName.href:
       case XmlAttributeName.transform:
       case XmlAttributeName.gradientTransform:
+      case XmlAttributeName.fontSize:
+      case XmlAttributeName.fontWeight:
+      case XmlAttributeName.fontStyle:
+      case XmlAttributeName.fontFamily:
         throw UnsupportedError('$name does not have a SvgBaseValue default');
     }
   }

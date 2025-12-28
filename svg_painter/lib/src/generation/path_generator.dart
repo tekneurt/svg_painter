@@ -36,14 +36,9 @@ class PathGenerator extends ShapeGenerator<DrawPath> {
         }
       }
 
-      generatePaintingCode(
-        buffer,
-        command.style,
-        'path.getBounds()',
-        (String paintVar) {
-          buffer.writeln('        canvas.drawPath(path, $paintVar);');
-        },
-      );
+      generatePaintingCode(buffer, command.style, 'path.getBounds()', (String paintVar) {
+        buffer.writeln('        canvas.drawPath(path, $paintVar);');
+      });
 
       buffer.writeln('      }');
     });

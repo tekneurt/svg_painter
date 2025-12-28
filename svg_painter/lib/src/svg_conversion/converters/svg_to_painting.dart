@@ -1,6 +1,5 @@
 import '../../base/_base.dart';
 import '../../painting_model/paint_command.dart';
-
 import '../../svg_model/_svg_model.dart';
 import '../svg_element_extensions/svg_circle_to_draw_circle.dart';
 import '../svg_element_extensions/svg_ellipse_to_draw_oval.dart';
@@ -10,11 +9,12 @@ import '../svg_element_extensions/svg_path_to_draw_path.dart';
 import '../svg_element_extensions/svg_polygon_to_draw_polygon.dart';
 import '../svg_element_extensions/svg_polyline_to_draw_polyline.dart';
 import '../svg_element_extensions/svg_rect_to_draw_rect.dart';
+import '../svg_element_extensions/svg_text_to_painting.dart';
+import '../svg_transform_parser.dart';
 import '../svg_value_extensions/svg_auto_to_double.dart';
 import '../svg_value_extensions/svg_length_percentage_to_double.dart';
 import '../svg_value_extensions/svg_length_to_double.dart';
 import '../svg_value_extensions/svg_percentage_to_double.dart';
-import '../svg_transform_parser.dart';
 import 'svg_definition_collector.dart';
 import 'svg_painting_context.dart';
 
@@ -52,6 +52,10 @@ extension SvgToPainting on SvgElement {
         inheritedStrokeWidth: self.strokeWidth,
         inheritedStrokeLinecap: self.strokeLinecap,
         inheritedStrokeLinejoin: self.strokeLinejoin,
+        inheritedFontSize: self.fontSize,
+        inheritedFontWeight: self.fontWeight,
+        inheritedFontStyle: self.fontStyle,
+        inheritedFontFamily: self.fontFamily,
         styleSheet: self.styleSheet,
         definitions: definitions,
       );
@@ -68,6 +72,10 @@ extension SvgToPainting on SvgElement {
             inheritedStrokeWidth: self.strokeWidth ?? context.inheritedStrokeWidth,
             inheritedStrokeLinecap: self.strokeLinecap ?? context.inheritedStrokeLinecap,
             inheritedStrokeLinejoin: self.strokeLinejoin ?? context.inheritedStrokeLinejoin,
+            inheritedFontSize: self.fontSize ?? context.inheritedFontSize,
+            inheritedFontWeight: self.fontWeight ?? context.inheritedFontWeight,
+            inheritedFontStyle: self.fontStyle ?? context.inheritedFontStyle,
+            inheritedFontFamily: self.fontFamily ?? context.inheritedFontFamily,
           )
         : context;
 
@@ -76,6 +84,7 @@ extension SvgToPainting on SvgElement {
       final SvgCircle circle => circle.toPaintCommands(childContext),
       final SvgEllipse ellipse => ellipse.toPaintCommands(childContext),
       final SvgRect rect => rect.toPaintCommands(childContext),
+      final SvgText text => text.toPaintCommands(childContext),
       final SvgGroup group => group._toPaintCommands(childContext),
       final SvgLine line => line.toPaintCommands(childContext),
       final SvgPath path => path.toPaintCommands(childContext),

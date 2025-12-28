@@ -1,10 +1,36 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-enum SvgTestType {
-  mdn,
-  w3c,
-  various,
+enum SvgTestType { mdn, w3c, various }
+
+Future<void> loadTestFonts() async {
+  final Map<String, String> families = {
+    'Roboto': '../svg_painter/assets/fonts/roboto',
+    'Noto Serif': '../svg_painter/assets/fonts/noto_serif',
+    'Roboto Mono': '../svg_painter/assets/fonts/roboto_mono',
+  };
+
+  for (final entry in families.entries) {
+    final String familyName = entry.key;
+    final Directory dir = Directory(entry.value);
+
+    if (!dir.existsSync()) continue;
+
+    final FontLoader loader = FontLoader(familyName);
+    final List<FileSystemEntity> files = dir.listSync();
+
+    for (final file in files) {
+      if (file is File && file.path.endsWith('.ttf')) {
+        final ByteData data = await file.readAsBytes().then((bytes) {
+          return ByteData.view(Uint8List.fromList(bytes).buffer);
+        });
+        loader.addFont(Future.value(data));
+      }
+    }
+    await loader.load();
+  }
 }
 
 Future<void> testSvgPainter({

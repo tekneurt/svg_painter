@@ -10,18 +10,16 @@ import 'shapes/example_polyline01_painter.dart';
 import 'shapes/example_rect01_painter.dart';
 import 'shapes/example_rect02_painter.dart';
 
-final List<({CustomPainter painter, String name})> _fixtures = <({
-  CustomPainter painter,
-  String name
-})>[
-  (painter: const ExampleCircle01Painter(), name: 'w3c_svg11_example_circle01'),
-  (painter: const ExampleEllipse01Painter(), name: 'w3c_svg11_example_ellipse01'),
-  (painter: const ExampleLine01Painter(), name: 'w3c_svg11_example_line01'),
-  (painter: const ExamplePolygon01Painter(), name: 'w3c_svg11_example_polygon01'),
-  (painter: const ExamplePolyline01Painter(), name: 'w3c_svg11_example_polyline01'),
-  (painter: const ExampleRect01Painter(), name: 'w3c_svg11_example_rect01'),
-  (painter: const ExampleRect02Painter(), name: 'w3c_svg11_example_rect02'),
-];
+final List<({CustomPainter painter, String name})> _fixtures =
+    <({CustomPainter painter, String name})>[
+      (painter: const ExampleCircle01Painter(), name: 'w3c_svg11_example_circle01'),
+      (painter: const ExampleEllipse01Painter(), name: 'w3c_svg11_example_ellipse01'),
+      (painter: const ExampleLine01Painter(), name: 'w3c_svg11_example_line01'),
+      (painter: const ExamplePolygon01Painter(), name: 'w3c_svg11_example_polygon01'),
+      (painter: const ExamplePolyline01Painter(), name: 'w3c_svg11_example_polyline01'),
+      (painter: const ExampleRect01Painter(), name: 'w3c_svg11_example_rect01'),
+      (painter: const ExampleRect02Painter(), name: 'w3c_svg11_example_rect02'),
+    ];
 
 void main() {
   group('W3C SVG 1.1 Shapes', () {

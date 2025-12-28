@@ -22,6 +22,10 @@ extension SvgPathToPainting on SvgPath {
       strokeLinecap: strokeLinecap,
       strokeLinejoin: strokeLinejoin,
       opacity: opacity,
+      fontSize: fontSize,
+      fontWeight: fontWeight,
+      fontStyle: fontStyle,
+      fontFamily: fontFamily,
       cssClass: cssClass,
       inlineStyle: inlineStyle,
     );
