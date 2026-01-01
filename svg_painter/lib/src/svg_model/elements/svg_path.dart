@@ -19,6 +19,8 @@ final class SvgPath extends SvgGraphicsElement {
     super.cssClass,
     super.inlineStyle,
     super.transform,
+    super.pathLength,
+    super.strokeDasharray,
   });
 
   /// The path data.

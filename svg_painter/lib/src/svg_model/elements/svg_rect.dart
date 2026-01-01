@@ -26,6 +26,8 @@ final class SvgRect extends SvgBasicShape {
     super.cssClass,
     super.inlineStyle,
     super.transform,
+    super.pathLength,
+    super.strokeDasharray,
   });
 
   /// The x-axis coordinate of the side of the rectangle which has the smaller x-axis coordinate value.

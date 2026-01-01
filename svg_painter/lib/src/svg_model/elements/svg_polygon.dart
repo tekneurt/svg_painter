@@ -21,6 +21,8 @@ final class SvgPolygon extends SvgBasicShape {
     super.cssClass,
     super.inlineStyle,
     super.transform,
+    super.pathLength,
+    super.strokeDasharray,
   });
 
   /// The points that make up the polygon.

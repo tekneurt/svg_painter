@@ -28,9 +28,12 @@ extension SvgPolylineToPainting on SvgPolyline {
 
     final PaintingStyle paint = resolvePaint(
       context,
+      tagName: 'polyline',
       fill: fill,
       stroke: stroke,
       strokeWidth: strokeWidth,
+      strokeDasharray: strokeDasharray,
+      pathLength: pathLength,
       strokeLinecap: strokeLinecap,
       strokeLinejoin: strokeLinejoin,
       opacity: opacity,

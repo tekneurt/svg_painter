@@ -14,11 +14,14 @@ extension SvgPathToPainting on SvgPath {
 
     final List<PathOperation> operations = PathDataParser.parse(d, context);
 
-    final PaintingStyle style = resolvePaint(
+    final PaintingStyle paint = resolvePaint(
       context,
+      tagName: 'path',
       fill: fill,
       stroke: stroke,
       strokeWidth: strokeWidth,
+      strokeDasharray: strokeDasharray,
+      pathLength: pathLength,
       strokeLinecap: strokeLinecap,
       strokeLinejoin: strokeLinejoin,
       opacity: opacity,
@@ -33,7 +36,7 @@ extension SvgPathToPainting on SvgPath {
     return Success<List<PaintCommand>>(<PaintCommand>[
       DrawPath(
         operations: operations,
-        style: style,
+        style: paint,
         transform: SvgTransformParser.scaleTransform(transform, context.parentSx, context.parentSy),
       ),
     ]);

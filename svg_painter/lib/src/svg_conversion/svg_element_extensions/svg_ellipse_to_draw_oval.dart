@@ -18,9 +18,12 @@ extension SvgEllipseToPainting on SvgEllipse {
 
     final PaintingStyle paint = resolvePaint(
       context,
+      tagName: 'ellipse',
       fill: fill,
       stroke: stroke,
       strokeWidth: strokeWidth,
+      strokeDasharray: strokeDasharray,
+      pathLength: pathLength,
       strokeLinecap: strokeLinecap,
       strokeLinejoin: strokeLinejoin,
       opacity: opacity,

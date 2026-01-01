@@ -7,9 +7,12 @@ import 'svg_painting_context.dart';
 /// Resolves the fill, stroke, and stroke-width for an element, handling CSS classes, inline styles, inheritance and scaling.
 PaintingStyle resolvePaint(
   SvgPaintingContext context, {
+  String? tagName,
   SvgColor? fill,
   SvgColor? stroke,
   SvgLengthPercentage? strokeWidth,
+  SvgPointList? strokeDasharray,
+  SvgLength? pathLength,
   SvgStrokeLinecap? strokeLinecap,
   SvgStrokeLinejoin? strokeLinejoin,
   SvgLengthPercentage? opacity,
@@ -20,9 +23,20 @@ PaintingStyle resolvePaint(
   String? cssClass,
   String? inlineStyle,
 }) {
-  // 1. Resolve CSS properties from classes
+  // 1. Resolve CSS properties
   final Map<String, String> resolvedRules = <String, String>{};
 
+  // Priority: Tag selector < Class selector < Inline style
+
+  // a. Tag selector rules
+  if (tagName != null) {
+    final Map<String, String>? rules = context.styleSheet.rules[tagName];
+    if (rules != null) {
+      resolvedRules.addAll(rules);
+    }
+  }
+
+  // b. Class selector rules
   if (cssClass != null) {
     final List<String> classes = cssClass.split(RegExp(r'\s+'));
     for (final String className in classes) {
@@ -33,7 +47,7 @@ PaintingStyle resolvePaint(
     }
   }
 
-  // 2. Resolve properties from inline style (overrides classes)
+  // c. Inline style (overrides classes and tags)
   if (inlineStyle != null) {
     final List<String> declarations = inlineStyle.split(';');
     for (final String decl in declarations) {
@@ -52,6 +66,7 @@ PaintingStyle resolvePaint(
   SvgColor? cssFill;
   SvgColor? cssStroke;
   SvgLengthPercentage? cssStrokeWidth;
+  SvgPointList? cssStrokeDasharray;
   SvgStrokeLinecap? cssStrokeLinecap;
   SvgStrokeLinejoin? cssStrokeLinejoin;
   SvgLengthPercentage? cssOpacity;
@@ -59,6 +74,7 @@ PaintingStyle resolvePaint(
   String? cssFontStyle;
   SvgLengthPercentage? cssFontSize;
   String? cssFontFamily;
+  SvgLength? cssPathLength;
 
   if (resolvedRules.containsKey('font')) {
     // Basic font shorthand support: [style] [weight] size [family]
@@ -85,6 +101,9 @@ PaintingStyle resolvePaint(
   if (resolvedRules.containsKey('stroke-width')) {
     cssStrokeWidth = resolvedRules['stroke-width']!.toSvgLengthPercentage();
   }
+  if (resolvedRules.containsKey('stroke-dasharray')) {
+    cssStrokeDasharray = resolvedRules['stroke-dasharray']!.toSvgPointList();
+  }
   if (resolvedRules.containsKey('stroke-linecap')) {
     cssStrokeLinecap = SvgStrokeLinecap.from(resolvedRules['stroke-linecap']!);
   }
@@ -105,6 +124,9 @@ PaintingStyle resolvePaint(
   }
   if (resolvedRules.containsKey('font-family')) {
     cssFontFamily = resolvedRules['font-family'];
+  }
+  if (resolvedRules.containsKey('pathLength')) {
+    cssPathLength = resolvedRules['pathLength']!.toSvgLength();
   }
 
   // 4. Resolve final values using priority: Inline Style/CSS > Presentation Attribute > Inherited
@@ -130,6 +152,16 @@ PaintingStyle resolvePaint(
   final double finalStrokeWidth = context.scaleNormalized(
     sw?.toDouble(context, SvgOrientation.normalized) ?? 1.0,
   );
+
+  final SvgPointList? sda =
+      cssStrokeDasharray ?? strokeDasharray ?? context.inheritedStrokeDasharray;
+  List<double>? finalDashArray;
+  if (sda != null && sda.points.isNotEmpty) {
+    finalDashArray = sda.points.map((double d) => context.scaleNormalized(d)).toList();
+  }
+
+  final SvgLength? pLength = cssPathLength ?? pathLength;
+  final double? finalPathLength = pLength?.value;
 
   final SvgStrokeLinecap resolvedCap =
       cssStrokeLinecap ?? strokeLinecap ?? context.inheritedStrokeLinecap ?? SvgStrokeLinecap.butt;
@@ -169,6 +201,8 @@ PaintingStyle resolvePaint(
     strokeColorArgb: strokeColorArgb,
     strokeShaderId: strokeShaderId,
     strokeWidth: finalStrokeWidth,
+    strokeDashArray: finalDashArray,
+    pathLength: finalPathLength,
     strokeCap: resolvedCap.toStrokeCap(),
     strokeJoin: resolvedJoin.toStrokeJoin(),
     opacity: elementOpacity,

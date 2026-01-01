@@ -69,11 +69,7 @@ void main() {
     });
 
     test('resolves default colors when null', () {
-      const SvgCircle circle = SvgCircle(
-        cx: SvgLength(0),
-        cy: SvgLength(0),
-        r: SvgLength(5),
-      );
+      const SvgCircle circle = SvgCircle(cx: SvgLength(0), cy: SvgLength(0), r: SvgLength(5));
 
       final Result<List<PaintCommand>> result = circle.toPaintCommands();
       final DrawCircle drawCircle =

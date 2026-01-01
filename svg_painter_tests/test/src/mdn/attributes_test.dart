@@ -9,6 +9,7 @@ import 'attributes/fx_painter.dart';
 import 'attributes/fy_painter.dart';
 import 'attributes/height_painter.dart';
 import 'attributes/opacity_painter.dart';
+import 'attributes/path_length_painter.dart';
 import 'attributes/points_example_painter.dart';
 import 'attributes/points_polygon_painter.dart';
 import 'attributes/points_polyline_painter.dart';
@@ -45,9 +46,9 @@ final List<({CustomPainter painter, String name})> _fixtures =
       (painter: const FxPainter(), name: 'fx_painter'),
       (painter: const FyPainter(), name: 'fy_painter'),
       (painter: const HeightPainter(), name: 'height_painter'),
-      (painter: const OpacityPainter(), name: 'opacity_painter'),
-      (painter: const PointsExamplePainter(), name: 'points_example_painter'),
-      (painter: const PointsPolygonPainter(), name: 'points_polygon_painter'),
+        (painter: const OpacityPainter(), name: 'opacity_painter'),
+        (painter: const PathLengthPainter(), name: 'path_length_painter'),
+        (painter: const PointsExamplePainter(), name: 'points_example_painter'),      (painter: const PointsPolygonPainter(), name: 'points_polygon_painter'),
       (painter: const PointsPolylinePainter(), name: 'points_polyline_painter'),
       (painter: const RPainter(), name: 'r_painter'),
       (painter: const RxPainter(), name: 'rx_painter'),

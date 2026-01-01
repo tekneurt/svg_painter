@@ -21,7 +21,7 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
     StringBuffer buffer,
     PaintingStyle style,
     String boundsRect,
-    void Function(String paintVar) drawCall,
+    void Function(String paintVar, {String? dashArray, String? pathLength}) drawCall,
   ) {
     // Fill
     if (style.fillShaderId != null) {
@@ -68,7 +68,15 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
       if (style.strokeJoin != StrokeJoin.miter) {
         buffer.writeln('        paint.strokeJoin = ${style.strokeJoin.toFlutterString()};');
       }
-      drawCall('paint');
+      if (style.strokeDashArray != null) {
+        buffer.writeln(
+          '        final List<double> dashArray = [${style.strokeDashArray!.join(', ')}];',
+        );
+        final String? pl = style.pathLength?.toString();
+        drawCall('paint', dashArray: 'dashArray', pathLength: pl);
+      } else {
+        drawCall('paint');
+      }
       buffer.writeln('      }');
     } else if (style.strokeColorArgb != null && style.strokeColorArgb != 0) {
       buffer.writeln('      {');
@@ -87,7 +95,15 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
       if (style.strokeJoin != StrokeJoin.miter) {
         buffer.writeln('        paint.strokeJoin = ${style.strokeJoin.toFlutterString()};');
       }
-      drawCall('paint');
+      if (style.strokeDashArray != null) {
+        buffer.writeln(
+          '        final List<double> dashArray = [${style.strokeDashArray!.join(', ')}];',
+        );
+        final String? pl = style.pathLength?.toString();
+        drawCall('paint', dashArray: 'dashArray', pathLength: pl);
+      } else {
+        drawCall('paint');
+      }
       buffer.writeln('      }');
     }
   }

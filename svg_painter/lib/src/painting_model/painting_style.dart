@@ -18,6 +18,8 @@ final class PaintingStyle {
     this.fontWeight,
     this.fontStyle,
     this.fontFamily,
+    this.strokeDashArray,
+    this.pathLength,
   });
 
   /// The ARGB integer for the fill color.
@@ -40,6 +42,12 @@ final class PaintingStyle {
 
   /// The shape to be used at the corners of paths or basic shapes.
   final StrokeJoin strokeJoin;
+
+  /// The pattern of dashes and gaps used to stroke paths.
+  final List<double>? strokeDashArray;
+
+  /// The total length of the path in user units, used for scaling dashes.
+  final double? pathLength;
 
   /// The transparency of the element (0.0 to 1.0).
   final double opacity;

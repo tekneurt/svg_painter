@@ -55,7 +55,9 @@ extension XmlElementToSvgValue on XmlElement {
       XmlAttributeName.ry ||
       XmlAttributeName.width ||
       XmlAttributeName.height => attributeValue.toSvgLengthPercentageAuto(),
-      XmlAttributeName.points => attributeValue.toSvgPointList(),
+      XmlAttributeName.pathLength => attributeValue.toSvgLength(),
+      XmlAttributeName.points ||
+      XmlAttributeName.strokeDasharray => attributeValue.toSvgPointList(),
       XmlAttributeName.fill ||
       XmlAttributeName.stroke ||
       XmlAttributeName.stopColor => attributeValue.toSvgColor(),

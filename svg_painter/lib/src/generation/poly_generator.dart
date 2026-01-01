@@ -40,8 +40,19 @@ class PolyGenerator extends ShapeGenerator<PaintCommand> {
         sb.write('const Offset(${pts[i]}, ${pts[i + 1]})');
       }
       buffer.writeln('        path.addPolygon([$sb], $closed);');
-      generatePaintingCode(buffer, style, 'path.getBounds()', (String p) {
-        buffer.writeln('        canvas.drawPath(path, $p);');
+      generatePaintingCode(buffer, style, 'path.getBounds()', (
+        String p, {
+        String? dashArray,
+        String? pathLength,
+      }) {
+        if (dashArray != null) {
+          final String plArg = (pathLength != null && pathLength.isNotEmpty)
+              ? ', pathLength: $pathLength'
+              : '';
+          buffer.writeln('        canvas.drawPath(_dashPath(path, $dashArray$plArg), $p);');
+        } else {
+          buffer.writeln('        canvas.drawPath(path, $p);');
+        }
       });
       buffer.writeln('      }');
     });

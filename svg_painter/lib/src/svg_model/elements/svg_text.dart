@@ -23,6 +23,8 @@ final class SvgText extends SvgGraphicsElement {
     super.cssClass,
     super.inlineStyle,
     super.transform,
+    super.pathLength,
+    super.strokeDasharray,
   });
 
   /// The x-axis coordinate of the starting point of the text.

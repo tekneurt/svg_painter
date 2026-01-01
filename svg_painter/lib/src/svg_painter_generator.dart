@@ -160,6 +160,39 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
 
     buffer.writeln('    canvas.restore();');
     buffer.writeln('  }');
+    buffer.writeln();
+
+    if (_hasDashes(commands)) {
+      buffer.writeln(
+        '  Path _dashPath(Path source, List<double> dashArray, {double? pathLength}) {',
+      );
+      buffer.writeln('    if (dashArray.isEmpty) return source;');
+      buffer.writeln('    final Path dest = Path();');
+      buffer.writeln('    for (final metric in source.computeMetrics()) {');
+      buffer.writeln(
+        '      final double scale = (pathLength != null && pathLength > 0) ? (metric.length / pathLength) : 1.0;',
+      );
+      buffer.writeln('      double distance = 0.0;');
+      buffer.writeln('      int index = 0;');
+      buffer.writeln('      bool draw = true;');
+      buffer.writeln('      while (distance < metric.length) {');
+      buffer.writeln('        final double len = dashArray[index] * scale;');
+      buffer.writeln('        if (draw) {');
+      buffer.writeln(
+        '          final double end = distance + len < metric.length ? distance + len : metric.length;',
+      );
+      buffer.writeln('          dest.addPath(metric.extractPath(distance, end), Offset.zero);');
+      buffer.writeln('        }');
+      buffer.writeln('        distance += len;');
+      buffer.writeln('        draw = !draw;');
+      buffer.writeln('        index = (index + 1) % dashArray.length;');
+      buffer.writeln('      }');
+      buffer.writeln('    }');
+      buffer.writeln('    return dest;');
+      buffer.writeln('  }');
+      buffer.writeln();
+    }
+
     buffer.writeln('  @override');
     buffer.writeln('  bool shouldRepaint(covariant $className oldDelegate) {');
     buffer.writeln('    return fit != oldDelegate.fit;');
@@ -167,6 +200,25 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
     buffer.writeln('}');
 
     return buffer.toString();
+  }
+
+  bool _hasDashes(List<PaintCommand> commands) {
+    for (final PaintCommand command in commands) {
+      if (command is DrawCircle && command.style.strokeDashArray != null) return true;
+      if (command is DrawOval && command.style.strokeDashArray != null) return true;
+      if (command is DrawRect && command.style.strokeDashArray != null) return true;
+      if (command is DrawText && command.style.strokeDashArray != null) return true;
+      if (command is DrawPath && command.style.strokeDashArray != null) return true;
+      if (command is DrawLine && command.style.strokeDashArray != null) return true;
+      if (command is DrawPolyline && command.style.strokeDashArray != null) return true;
+      if (command is DrawPolygon && command.style.strokeDashArray != null) return true;
+      if (command is DrawGroup) {
+        if (_hasDashes(command.commands)) {
+          return true;
+        }
+      }
+    }
+    return false;
   }
 
   Future<Result<String>> _loadSvgContent(ConstantReader annotation, BuildStep buildStep) async {

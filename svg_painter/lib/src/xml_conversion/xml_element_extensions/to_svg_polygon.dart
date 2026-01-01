@@ -26,6 +26,8 @@ extension ElementToSvgPolygon on XmlElement {
         cssClass: common.cssClass,
         inlineStyle: common.inlineStyle,
         transform: common.transform,
+        pathLength: common.pathLength,
+        strokeDasharray: common.strokeDasharray,
         id: common.id,
       ),
     );

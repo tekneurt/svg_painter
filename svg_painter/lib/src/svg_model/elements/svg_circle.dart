@@ -23,6 +23,8 @@ final class SvgCircle extends SvgBasicShape {
     super.cssClass,
     super.inlineStyle,
     super.transform,
+    super.pathLength,
+    super.strokeDasharray,
   });
 
   /// The x-axis coordinate of the center of the circle.

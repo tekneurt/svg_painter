@@ -122,6 +122,10 @@ enum XmlAttributeName {
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-width
   strokeWidth('stroke-width'),
 
+  /// The dash pattern for the stroke.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-dasharray
+  strokeDasharray('stroke-dasharray'),
+
   /// The shape to be used at the end of open subpaths when they are stroked.
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-linecap
   strokeLinecap('stroke-linecap'),
@@ -152,7 +156,11 @@ enum XmlAttributeName {
 
   /// The viewBox of the element.
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/viewBox
-  viewBox('viewBox');
+  viewBox('viewBox'),
+
+  /// The total length of the path in user units.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/pathLength
+  pathLength('pathLength');
 
   const XmlAttributeName(this.name);
 

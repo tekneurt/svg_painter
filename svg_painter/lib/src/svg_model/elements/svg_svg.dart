@@ -3,7 +3,6 @@ part of '../svg_element.dart';
 /// Represents an <svg> element (generic container).
 ///
 /// See: https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Element/svg
-@immutable
 base class SvgSvg extends SvgContainerElement {
   const SvgSvg({
     required super.children,
@@ -16,6 +15,7 @@ base class SvgSvg extends SvgContainerElement {
     super.fill,
     super.stroke,
     super.strokeWidth,
+    super.strokeDasharray,
     super.strokeLinecap,
     super.strokeLinejoin,
     super.opacity,
@@ -26,6 +26,7 @@ base class SvgSvg extends SvgContainerElement {
     super.cssClass,
     super.inlineStyle,
     super.transform,
+    super.pathLength,
   });
 
   /// The x-axis coordinate of the SVG.
@@ -45,7 +46,6 @@ base class SvgSvg extends SvgContainerElement {
 }
 
 /// Represents the root <svg> element.
-@immutable
 final class SvgRoot extends SvgSvg {
   const SvgRoot({
     required super.children,
@@ -59,6 +59,7 @@ final class SvgRoot extends SvgSvg {
     super.fill,
     super.stroke,
     super.strokeWidth,
+    super.strokeDasharray,
     super.strokeLinecap,
     super.strokeLinejoin,
     super.opacity,
@@ -69,6 +70,7 @@ final class SvgRoot extends SvgSvg {
     super.cssClass,
     super.inlineStyle,
     super.transform,
+    super.pathLength,
   });
 
   /// The CSS rules defined for this SVG.

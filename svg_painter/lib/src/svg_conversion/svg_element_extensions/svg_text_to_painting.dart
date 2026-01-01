@@ -14,11 +14,14 @@ extension SvgTextToPainting on SvgText {
       return const Success<List<PaintCommand>>(<PaintCommand>[]);
     }
 
-    final PaintingStyle style = resolvePaint(
+    final PaintingStyle paint = resolvePaint(
       context,
+      tagName: 'text',
       fill: fill,
       stroke: stroke,
       strokeWidth: strokeWidth,
+      strokeDasharray: strokeDasharray,
+      pathLength: pathLength,
       strokeLinecap: strokeLinecap,
       strokeLinejoin: strokeLinejoin,
       opacity: opacity,
@@ -38,7 +41,7 @@ extension SvgTextToPainting on SvgText {
         x: finalX,
         y: finalY,
         text: text,
-        style: style,
+        style: paint,
         transform: SvgTransformParser.scaleTransform(transform, context.parentSx, context.parentSy),
       ),
     ]);

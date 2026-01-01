@@ -52,6 +52,8 @@ sealed class SvgGraphicsElement extends SvgElement {
     this.cssClass,
     this.inlineStyle,
     this.transform,
+    this.pathLength,
+    this.strokeDasharray,
   });
 
   /// The fill color of the element.
@@ -62,6 +64,9 @@ sealed class SvgGraphicsElement extends SvgElement {
 
   /// The width of the stroke.
   final SvgLengthPercentage? strokeWidth;
+
+  /// The dash pattern for the stroke.
+  final SvgPointList? strokeDasharray;
 
   /// The shape to be used at the end of open subpaths.
   final SvgStrokeLinecap? strokeLinecap;
@@ -92,6 +97,9 @@ sealed class SvgGraphicsElement extends SvgElement {
 
   /// The transform applied to the element.
   final String? transform;
+
+  /// The total length of the path in user units.
+  final SvgLength? pathLength;
 }
 
 /// Base class for basic shape elements (<circle>, <rect>, etc.).
@@ -112,6 +120,8 @@ sealed class SvgBasicShape extends SvgGraphicsElement {
     super.cssClass,
     super.inlineStyle,
     super.transform,
+    super.pathLength,
+    super.strokeDasharray,
   });
 }
 
@@ -124,6 +134,7 @@ sealed class SvgContainerElement extends SvgGraphicsElement with SvgParent {
     super.fill,
     super.stroke,
     super.strokeWidth,
+    super.strokeDasharray,
     super.strokeLinecap,
     super.strokeLinejoin,
     super.opacity,
@@ -134,6 +145,7 @@ sealed class SvgContainerElement extends SvgGraphicsElement with SvgParent {
     super.cssClass,
     super.inlineStyle,
     super.transform,
+    super.pathLength,
   });
 
   @override

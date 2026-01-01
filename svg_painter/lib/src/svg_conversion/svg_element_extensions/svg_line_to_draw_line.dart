@@ -12,9 +12,12 @@ extension SvgLineToPainting on SvgLine {
   Result<List<PaintCommand>> toPaintCommands(SvgPaintingContext context) {
     final PaintingStyle paint = resolvePaint(
       context,
+      tagName: 'line',
       fill: fill,
       stroke: stroke,
       strokeWidth: strokeWidth,
+      strokeDasharray: strokeDasharray,
+      pathLength: pathLength,
       strokeLinecap: strokeLinecap,
       strokeLinejoin: strokeLinejoin,
       opacity: opacity,

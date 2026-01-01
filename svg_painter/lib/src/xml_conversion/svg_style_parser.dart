@@ -11,14 +11,19 @@ class SvgStyleParser {
     // Remove comments
     final String cleanCss = css.replaceAll(RegExp(r'/\*[\s\S]*?\*/'), '');
 
-    // Regex to match class rules: .className { properties }
-    // Group 1: class name (without dot)
+    // Regex to match selectors: .className or tagName { properties }
+    // Group 1: selector name
     // Group 2: properties block
-    final RegExp ruleRegex = RegExp(r'\.([a-zA-Z0-9_-]+)\s*\{([^}]*)\}');
+    final RegExp ruleRegex = RegExp(r'([\.a-zA-Z0-9_-]+)\s*\{([^}]*)\}');
 
     for (final Match match in ruleRegex.allMatches(cleanCss)) {
-      final String className = match.group(1)!;
+      String selector = match.group(1)!;
       final String propsBlock = match.group(2)!;
+
+      // If it's a class selector, remove the dot for easier lookup by class name
+      if (selector.startsWith('.')) {
+        selector = selector.substring(1);
+      }
 
       final Map<String, String> properties = <String, String>{};
       final List<String> declarations = propsBlock.split(';');
@@ -37,7 +42,7 @@ class SvgStyleParser {
       }
 
       if (properties.isNotEmpty) {
-        rules[className] = properties;
+        rules[selector] = properties;
       }
     }
 

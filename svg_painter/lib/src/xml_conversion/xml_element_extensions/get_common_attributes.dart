@@ -20,6 +20,8 @@ typedef CommonAttributes = ({
   String? cssClass,
   String? inlineStyle,
   String? transform,
+  SvgLength? pathLength,
+  SvgPointList? strokeDasharray,
 });
 
 extension XmlElementCommonAttributes on XmlElement {
@@ -30,6 +32,10 @@ extension XmlElementCommonAttributes on XmlElement {
       fill: toSvgValueOrNull<SvgColor>(elementName, XmlAttributeName.fill),
       stroke: toSvgValueOrNull<SvgColor>(elementName, XmlAttributeName.stroke),
       strokeWidth: toSvgValueOrNull<SvgLengthPercentage>(elementName, XmlAttributeName.strokeWidth),
+      strokeDasharray: toSvgValueOrNull<SvgPointList>(
+        elementName,
+        XmlAttributeName.strokeDasharray,
+      ),
       strokeLinecap: toSvgValueOrNull<SvgStrokeLinecap>(
         elementName,
         XmlAttributeName.strokeLinecap,
@@ -46,6 +52,7 @@ extension XmlElementCommonAttributes on XmlElement {
       cssClass: getXmlAttributeValue(XmlAttributeName.className),
       inlineStyle: getXmlAttributeValue(XmlAttributeName.style),
       transform: getXmlAttributeValue(XmlAttributeName.transform),
+      pathLength: toSvgValueOrNull<SvgLength>(elementName, XmlAttributeName.pathLength),
     );
   }
 }

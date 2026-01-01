@@ -17,6 +17,7 @@ final class SvgPaintingContext {
     this.inheritedFill,
     this.inheritedStroke,
     this.inheritedStrokeWidth,
+    this.inheritedStrokeDasharray,
     this.inheritedStrokeLinecap,
     this.inheritedStrokeLinejoin,
     this.inheritedOpacity,
@@ -60,6 +61,9 @@ final class SvgPaintingContext {
 
   /// Inherited stroke width.
   final SvgLengthPercentage? inheritedStrokeWidth;
+
+  /// Inherited stroke dasharray.
+  final SvgPointList? inheritedStrokeDasharray;
 
   /// Inherited stroke linecap.
   final SvgStrokeLinecap? inheritedStrokeLinecap;
@@ -112,6 +116,7 @@ final class SvgPaintingContext {
     SvgColor? inheritedFill,
     SvgColor? inheritedStroke,
     SvgLengthPercentage? inheritedStrokeWidth,
+    SvgPointList? inheritedStrokeDasharray,
     SvgStrokeLinecap? inheritedStrokeLinecap,
     SvgStrokeLinejoin? inheritedStrokeLinejoin,
     SvgLengthPercentage? inheritedOpacity,
@@ -132,6 +137,7 @@ final class SvgPaintingContext {
       inheritedFill: inheritedFill ?? this.inheritedFill,
       inheritedStroke: inheritedStroke ?? this.inheritedStroke,
       inheritedStrokeWidth: inheritedStrokeWidth ?? this.inheritedStrokeWidth,
+      inheritedStrokeDasharray: inheritedStrokeDasharray ?? this.inheritedStrokeDasharray,
       inheritedStrokeLinecap: inheritedStrokeLinecap ?? this.inheritedStrokeLinecap,
       inheritedStrokeLinejoin: inheritedStrokeLinejoin ?? this.inheritedStrokeLinejoin,
       inheritedOpacity: inheritedOpacity ?? this.inheritedOpacity,

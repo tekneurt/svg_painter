@@ -133,7 +133,7 @@ Implement support for additional SVG shapes using the new layered architecture.
 - [x] **TODO(Gemini)**: Implement zero-radius handling (0-radius elements are not rendered).
 - [x] **TODO(Gemini)**: Refactor zero-dimension checks into specific element-to-painting extensions.
 - [ ] **TODO(Gemini)**: Implement nested opacity multiplication (currently selects highest level defined).
-- [ ] **TODO(Gemini)**: Add `pathLength` support to SVG models.
+- [x] **TODO(Gemini)**: Add `pathLength` support to SVG models.
 - [ ] **TODO(Gemini)**: Add comprehensive tests for all `BoxFit` values (separate from MDN examples).
 - [ ] **TODO(Gemini)**: Improve coordinate mapping for gradients (currently uses rough alignment approximation).
 - [ ] **TODO(Gemini)**: Support `currentColor` context in color resolution.
@@ -142,7 +142,6 @@ Implement support for additional SVG shapes using the new layered architecture.
 - [x] **TODO(Gemini)**: Implement full `gradientTransform` support (currently only `rotate(90)`).
 - [x] **TODO(Gemini)**: Implement `fill` attribute example from MDN.
 - [x] **TODO(Gemini)**: Implement `stroke` attribute example from MDN.
-- [ ] **TODO(Gemini)**: Implement `<animate>` support (e.g., from MDN fill example).
 - [ ] **TODO(Gemini)**: Implement `<marker>` support (required for context-fill MDN example).
 - [x] **TODO(Gemini)**: Implement `fy` attribute example from MDN (requires `text`).
 - [x] **TODO(Gemini)**: Implement `points` attribute example from MDN (requires `transform`).
@@ -194,3 +193,8 @@ Implement support for additional SVG shapes using the new layered architecture.
 - [ ] **TODO(Gemini)**: API polishing.
 - [ ] **TODO(Gemini)**: Optimize generated code (remove comments, unnecessary braces, unused variables).
 - [ ] **TODO(Gemini)**: Publish to pub.dev (dry run).
+
+### Phase 7: Animation Support (Post 1.0.0)
+- [ ] **TODO(Gemini)**: Implement `<animate>` support (e.g., from MDN fill example).
+- [ ] **TODO(Gemini)**: Implement `animateMotion` support (utilizes `pathLength`).
+

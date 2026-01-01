@@ -5,6 +5,7 @@ export 'fx.dart';
 export 'fy.dart';
 export 'height.dart';
 export 'opacity.dart';
+export 'path_length.dart';
 export 'points.dart';
 export 'r.dart';
 export 'rx.dart';

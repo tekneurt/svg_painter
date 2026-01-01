@@ -95,6 +95,8 @@ extension XmlAttributeDefaultValues on XmlAttributeName {
       case XmlAttributeName.fontWeight:
       case XmlAttributeName.fontStyle:
       case XmlAttributeName.fontFamily:
+      case XmlAttributeName.pathLength:
+      case XmlAttributeName.strokeDasharray:
         throw UnsupportedError('$name does not have a SvgBaseValue default');
     }
   }

@@ -26,9 +26,12 @@ extension SvgRectToPainting on SvgRect {
 
     final PaintingStyle paint = resolvePaint(
       context,
+      tagName: 'rect',
       fill: fill,
       stroke: stroke,
       strokeWidth: strokeWidth,
+      strokeDasharray: strokeDasharray,
+      pathLength: pathLength,
       strokeLinecap: strokeLinecap,
       strokeLinejoin: strokeLinejoin,
       opacity: opacity,

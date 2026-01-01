@@ -28,9 +28,12 @@ extension SvgPolygonToPainting on SvgPolygon {
 
     final PaintingStyle paint = resolvePaint(
       context,
+      tagName: 'polygon',
       fill: fill,
       stroke: stroke,
       strokeWidth: strokeWidth,
+      strokeDasharray: strokeDasharray,
+      pathLength: pathLength,
       strokeLinecap: strokeLinecap,
       strokeLinejoin: strokeLinejoin,
       opacity: opacity,
