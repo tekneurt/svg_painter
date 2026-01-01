@@ -172,10 +172,9 @@ PaintingStyle resolvePaint(
       context.inheritedStrokeLinejoin ??
       SvgStrokeLinejoin.miter;
 
-  final double elementOpacity =
-      (cssOpacity ?? opacity)?.toDouble(context, SvgOrientation.normalized) ??
-      context.inheritedOpacity?.toDouble(context, SvgOrientation.normalized) ??
-      1.0;
+  final double selfOpacity =
+      (cssOpacity ?? opacity)?.toDouble(context, SvgOrientation.normalized) ?? 1.0;
+  final double elementOpacity = selfOpacity * context.parentOpacity;
 
   final double? rawFontSize = (cssFontSize ?? fontSize ?? context.inheritedFontSize)?.toDouble(
     context,

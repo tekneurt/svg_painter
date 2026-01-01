@@ -132,7 +132,7 @@ Implement support for additional SVG shapes using the new layered architecture.
 - [x] **Use** (`<use>`)
 - [x] **TODO(Gemini)**: Implement zero-radius handling (0-radius elements are not rendered).
 - [x] **TODO(Gemini)**: Refactor zero-dimension checks into specific element-to-painting extensions.
-- [ ] **TODO(Gemini)**: Implement nested opacity multiplication (currently selects highest level defined).
+- [x] **TODO(Gemini)**: Implement nested opacity multiplication (currently selects highest level defined).
 - [x] **TODO(Gemini)**: Add `pathLength` support to SVG models.
 - [ ] **TODO(Gemini)**: Add comprehensive tests for all `BoxFit` values (separate from MDN examples).
 - [ ] **TODO(Gemini)**: Improve coordinate mapping for gradients (currently uses rough alignment approximation).

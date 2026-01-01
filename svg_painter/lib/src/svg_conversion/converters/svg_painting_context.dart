@@ -20,7 +20,7 @@ final class SvgPaintingContext {
     this.inheritedStrokeDasharray,
     this.inheritedStrokeLinecap,
     this.inheritedStrokeLinejoin,
-    this.inheritedOpacity,
+    this.parentOpacity = 1.0,
     this.inheritedFontSize,
     this.inheritedFontWeight,
     this.inheritedFontStyle,
@@ -71,8 +71,8 @@ final class SvgPaintingContext {
   /// Inherited stroke linejoin.
   final SvgStrokeLinejoin? inheritedStrokeLinejoin;
 
-  /// Inherited opacity.
-  final SvgLengthPercentage? inheritedOpacity;
+  /// Accumulated opacity from parents.
+  final double parentOpacity;
 
   /// Inherited font size.
   final SvgLengthPercentage? inheritedFontSize;
@@ -119,7 +119,7 @@ final class SvgPaintingContext {
     SvgPointList? inheritedStrokeDasharray,
     SvgStrokeLinecap? inheritedStrokeLinecap,
     SvgStrokeLinejoin? inheritedStrokeLinejoin,
-    SvgLengthPercentage? inheritedOpacity,
+    double? parentOpacity,
     SvgLengthPercentage? inheritedFontSize,
     String? inheritedFontWeight,
     String? inheritedFontStyle,
@@ -140,7 +140,7 @@ final class SvgPaintingContext {
       inheritedStrokeDasharray: inheritedStrokeDasharray ?? this.inheritedStrokeDasharray,
       inheritedStrokeLinecap: inheritedStrokeLinecap ?? this.inheritedStrokeLinecap,
       inheritedStrokeLinejoin: inheritedStrokeLinejoin ?? this.inheritedStrokeLinejoin,
-      inheritedOpacity: inheritedOpacity ?? this.inheritedOpacity,
+      parentOpacity: parentOpacity ?? this.parentOpacity,
       inheritedFontSize: inheritedFontSize ?? this.inheritedFontSize,
       inheritedFontWeight: inheritedFontWeight ?? this.inheritedFontWeight,
       inheritedFontStyle: inheritedFontStyle ?? this.inheritedFontStyle,

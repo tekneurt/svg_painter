@@ -65,7 +65,7 @@ class _$OpacityPainter extends CustomPainter {
     {
       {
         final Paint paint = Paint();
-        paint.color = const Color(0x4D000000);
+        paint.color = const Color(0x17000000);
         paint.style = PaintingStyle.fill;
         canvas.drawCircle(const Offset(150.0, 50.0), 40.0, paint);
       }

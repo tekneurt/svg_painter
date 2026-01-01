@@ -53,6 +53,12 @@ extension SvgToPainting on SvgElement {
         inheritedStrokeDasharray: self.strokeDasharray,
         inheritedStrokeLinecap: self.strokeLinecap,
         inheritedStrokeLinejoin: self.strokeLinejoin,
+        // Opacity on root element.
+        parentOpacity: self.opacity?.toDouble(
+              const SvgPaintingContext(viewBoxWidth: 1, viewBoxHeight: 1),
+              SvgOrientation.normalized,
+            ) ??
+            1.0,
         inheritedFontSize: self.fontSize,
         inheritedFontWeight: self.fontWeight,
         inheritedFontStyle: self.fontStyle,
@@ -74,6 +80,9 @@ extension SvgToPainting on SvgElement {
             inheritedStrokeDasharray: self.strokeDasharray ?? context.inheritedStrokeDasharray,
             inheritedStrokeLinecap: self.strokeLinecap ?? context.inheritedStrokeLinecap,
             inheritedStrokeLinejoin: self.strokeLinejoin ?? context.inheritedStrokeLinejoin,
+            // Multiply parent opacity with current element opacity.
+            parentOpacity: context.parentOpacity *
+                (self.opacity?.toDouble(context, SvgOrientation.normalized) ?? 1.0),
             inheritedFontSize: self.fontSize ?? context.inheritedFontSize,
             inheritedFontWeight: self.fontWeight ?? context.inheritedFontWeight,
             inheritedFontStyle: self.fontStyle ?? context.inheritedFontStyle,
