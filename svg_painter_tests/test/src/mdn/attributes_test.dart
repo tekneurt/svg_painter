@@ -27,7 +27,7 @@ import 'attributes/view_box_1_painter.dart';
 import 'attributes/view_box_2_painter.dart';
 import 'attributes/view_box_3_painter.dart';
 import 'attributes/width_painter.dart';
-import 'attributes/x1_elements_painter.dart';
+import 'attributes/x1_line_painter.dart';
 import 'attributes/x1_examples_painter.dart';
 import 'attributes/x1_linear_gradient_painter.dart';
 import 'attributes/x2_elements_painter.dart';
@@ -77,7 +77,7 @@ final List<({CustomPainter painter, String name})> _fixtures =
       (painter: const ViewBox2Painter(), name: 'view_box_2_painter'),
       (painter: const ViewBox3Painter(), name: 'view_box_3_painter'),
       (painter: const WidthPainter(), name: 'width_painter'),
-      (painter: const X1ElementsPainter(), name: 'x1_elements_painter'),
+      (painter: const X1LinePainter(), name: 'x1_line_painter'),
       (painter: const X1ExamplesPainter(), name: 'x1_examples_painter'),
       (painter: const X1LinearGradientPainter(), name: 'x1_linear_gradient_painter'),
       (painter: const X2ElementsPainter(), name: 'x2_elements_painter'),
