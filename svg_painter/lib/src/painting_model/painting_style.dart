@@ -8,9 +8,11 @@ final class PaintingStyle {
   const PaintingStyle({
     this.fillColorArgb,
     this.fillShaderId,
+    this.fillOpacity = 1.0,
     this.strokeColorArgb,
     this.strokeShaderId,
     this.strokeWidth = 1.0,
+    this.strokeOpacity = 1.0,
     this.strokeCap = StrokeCap.butt,
     this.strokeJoin = StrokeJoin.miter,
     this.opacity = 1.0,
@@ -28,6 +30,9 @@ final class PaintingStyle {
   /// The ID of the shader (e.g., gradient) to use for filling.
   final String? fillShaderId;
 
+  /// The opacity of the fill (0.0 to 1.0).
+  final double fillOpacity;
+
   /// The ARGB integer for the stroke color.
   final int? strokeColorArgb;
 
@@ -36,6 +41,9 @@ final class PaintingStyle {
 
   /// The width of the stroke.
   final double strokeWidth;
+
+  /// The opacity of the stroke (0.0 to 1.0).
+  final double strokeOpacity;
 
   /// The shape to be used at the end of open subpaths.
   final StrokeCap strokeCap;

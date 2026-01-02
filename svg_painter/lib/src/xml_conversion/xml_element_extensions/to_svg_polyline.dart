@@ -18,7 +18,9 @@ extension ElementToSvgPolyline on XmlElement {
       SvgPolyline(
         points: points,
         fill: common.fill,
+        fillOpacity: common.fillOpacity,
         stroke: common.stroke,
+        strokeOpacity: common.strokeOpacity,
         strokeWidth: common.strokeWidth,
         strokeLinecap: common.strokeLinecap,
         strokeLinejoin: common.strokeLinejoin,

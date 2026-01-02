@@ -48,6 +48,8 @@ extension XmlElementToSvgValue on XmlElement {
       XmlAttributeName.fr ||
       XmlAttributeName.offset ||
       XmlAttributeName.opacity ||
+      XmlAttributeName.fillOpacity ||
+      XmlAttributeName.strokeOpacity ||
       XmlAttributeName.stopOpacity ||
       XmlAttributeName.fontSize ||
       XmlAttributeName.strokeWidth => attributeValue.toSvgLengthPercentage(),

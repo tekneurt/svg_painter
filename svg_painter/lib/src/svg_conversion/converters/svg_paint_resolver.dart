@@ -9,7 +9,9 @@ PaintingStyle resolvePaint(
   SvgPaintingContext context, {
   String? tagName,
   SvgColor? fill,
+  SvgLengthPercentage? fillOpacity,
   SvgColor? stroke,
+  SvgLengthPercentage? strokeOpacity,
   SvgLengthPercentage? strokeWidth,
   SvgPointList? strokeDasharray,
   SvgLength? pathLength,
@@ -64,7 +66,9 @@ PaintingStyle resolvePaint(
 
   // 3. Extract values from resolved rules
   SvgColor? cssFill;
+  SvgLengthPercentage? cssFillOpacity;
   SvgColor? cssStroke;
+  SvgLengthPercentage? cssStrokeOpacity;
   SvgLengthPercentage? cssStrokeWidth;
   SvgPointList? cssStrokeDasharray;
   SvgStrokeLinecap? cssStrokeLinecap;
@@ -95,8 +99,14 @@ PaintingStyle resolvePaint(
   if (resolvedRules.containsKey('fill')) {
     cssFill = resolvedRules['fill']!.toSvgColor();
   }
+  if (resolvedRules.containsKey('fill-opacity')) {
+    cssFillOpacity = resolvedRules['fill-opacity']!.toSvgLengthPercentage();
+  }
   if (resolvedRules.containsKey('stroke')) {
     cssStroke = resolvedRules['stroke']!.toSvgColor();
+  }
+  if (resolvedRules.containsKey('stroke-opacity')) {
+    cssStrokeOpacity = resolvedRules['stroke-opacity']!.toSvgLengthPercentage();
   }
   if (resolvedRules.containsKey('stroke-width')) {
     cssStrokeWidth = resolvedRules['stroke-width']!.toSvgLengthPercentage();
@@ -173,8 +183,24 @@ PaintingStyle resolvePaint(
       SvgStrokeLinejoin.miter;
 
   final double selfOpacity =
-      (cssOpacity ?? opacity)?.toDouble(context, SvgOrientation.normalized) ?? 1.0;
+      (cssOpacity ?? opacity)?.toDouble(context, SvgOrientation.unit) ?? 1.0;
   final double elementOpacity = selfOpacity * context.parentOpacity;
+
+  final double finalFillOpacity =
+      elementOpacity *
+      ((cssFillOpacity ?? fillOpacity ?? context.inheritedFillOpacity)?.toDouble(
+            context,
+            SvgOrientation.unit,
+          ) ??
+          1.0);
+
+  final double finalStrokeOpacity =
+      elementOpacity *
+      ((cssStrokeOpacity ?? strokeOpacity ?? context.inheritedStrokeOpacity)?.toDouble(
+            context,
+            SvgOrientation.unit,
+          ) ??
+          1.0);
 
   final double? rawFontSize = (cssFontSize ?? fontSize ?? context.inheritedFontSize)?.toDouble(
     context,
@@ -197,10 +223,12 @@ PaintingStyle resolvePaint(
   return PaintingStyle(
     fillColorArgb: fillColorArgb,
     fillShaderId: fillShaderId,
+    fillOpacity: finalFillOpacity,
     strokeColorArgb: strokeColorArgb,
     strokeShaderId: strokeShaderId,
     strokeWidth: finalStrokeWidth,
     strokeDashArray: finalDashArray,
+    strokeOpacity: finalStrokeOpacity,
     pathLength: finalPathLength,
     strokeCap: resolvedCap.toStrokeCap(),
     strokeJoin: resolvedJoin.toStrokeJoin(),

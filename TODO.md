@@ -133,6 +133,7 @@ Implement support for additional SVG shapes using the new layered architecture.
 - [x] **TODO(Gemini)**: Implement zero-radius handling (0-radius elements are not rendered).
 - [x] **TODO(Gemini)**: Refactor zero-dimension checks into specific element-to-painting extensions.
 - [x] **TODO(Gemini)**: Implement nested opacity multiplication (currently selects highest level defined).
+- [x] **TODO(Gemini)**: Implement `stroke-opacity` and `fill-opacity` support (including MDN examples).
 - [x] **TODO(Gemini)**: Add `pathLength` support to SVG models.
 - [ ] **TODO(Gemini)**: Add comprehensive tests for all `BoxFit` values (separate from MDN examples).
 - [ ] **TODO(Gemini)**: Improve coordinate mapping for gradients (currently uses rough alignment approximation).
@@ -175,6 +176,7 @@ Implement support for additional SVG shapes using the new layered architecture.
 - [x] **Test**: Verify against the Daphnia SVG.
 
 ### Phase 6: Polish & Release (MVP 0.1.0)
+- [ ] **Refactor (High Priority)**: `PaintingStyle` Composition — Refactor the flat `PaintingStyle` into dedicated `FillStyle` and `StrokeStyle` objects. Update `resolvePaint` and `ShapeGenerator` to utilize these objects, aligning the model with Flutter's dual-Paint approach and improving scalability for future attributes.
 - [x] **Refactor (High Priority)**: `SvgPaintingContext` — Encapsulate coordinate transformations (e.g., `context.transformPoint(x, y)`) to deduplicate math in shape converters.
 - [x] **Refactor (High Priority)**: `SvgPainterGenerator` — Modularize code generation logic (e.g., Strategy Pattern) to eliminate the monolithic `if/else` block and deduplicate `Paint` boilerplate.
 - [x] **Refactor (High Priority)**: `Radii Resolver` — Deduplicate `rx`/`ry` auto-inheritance logic for `ellipse` and `rect` using a shared Record-based helper.

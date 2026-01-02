@@ -40,7 +40,9 @@ sealed class SvgGraphicsElement extends SvgElement {
   const SvgGraphicsElement({
     super.id,
     this.fill,
+    this.fillOpacity,
     this.stroke,
+    this.strokeOpacity,
     this.strokeWidth,
     this.strokeLinecap,
     this.strokeLinejoin,
@@ -59,8 +61,14 @@ sealed class SvgGraphicsElement extends SvgElement {
   /// The fill color of the element.
   final SvgColor? fill;
 
+  /// The opacity of the fill.
+  final SvgLengthPercentage? fillOpacity;
+
   /// The stroke color of the element.
   final SvgColor? stroke;
+
+  /// The opacity of the stroke.
+  final SvgLengthPercentage? strokeOpacity;
 
   /// The width of the stroke.
   final SvgLengthPercentage? strokeWidth;
@@ -108,7 +116,9 @@ sealed class SvgBasicShape extends SvgGraphicsElement {
   const SvgBasicShape({
     super.id,
     super.fill,
+    super.fillOpacity,
     super.stroke,
+    super.strokeOpacity,
     super.strokeWidth,
     super.strokeLinecap,
     super.strokeLinejoin,
@@ -132,7 +142,9 @@ sealed class SvgContainerElement extends SvgGraphicsElement with SvgParent {
     required this.children,
     super.id,
     super.fill,
+    super.fillOpacity,
     super.stroke,
+    super.strokeOpacity,
     super.strokeWidth,
     super.strokeDasharray,
     super.strokeLinecap,

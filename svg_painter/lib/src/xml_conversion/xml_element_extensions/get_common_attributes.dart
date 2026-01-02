@@ -8,7 +8,9 @@ import '_xml_element_extensions.dart';
 typedef CommonAttributes = ({
   String? id,
   SvgColor? fill,
+  SvgLengthPercentage? fillOpacity,
   SvgColor? stroke,
+  SvgLengthPercentage? strokeOpacity,
   SvgLengthPercentage? strokeWidth,
   SvgStrokeLinecap? strokeLinecap,
   SvgStrokeLinejoin? strokeLinejoin,
@@ -30,7 +32,12 @@ extension XmlElementCommonAttributes on XmlElement {
     return (
       id: getXmlAttributeValue(XmlAttributeName.id),
       fill: toSvgValueOrNull<SvgColor>(elementName, XmlAttributeName.fill),
+      fillOpacity: toSvgValueOrNull<SvgLengthPercentage>(elementName, XmlAttributeName.fillOpacity),
       stroke: toSvgValueOrNull<SvgColor>(elementName, XmlAttributeName.stroke),
+      strokeOpacity: toSvgValueOrNull<SvgLengthPercentage>(
+        elementName,
+        XmlAttributeName.strokeOpacity,
+      ),
       strokeWidth: toSvgValueOrNull<SvgLengthPercentage>(elementName, XmlAttributeName.strokeWidth),
       strokeDasharray: toSvgValueOrNull<SvgPointList>(
         elementName,

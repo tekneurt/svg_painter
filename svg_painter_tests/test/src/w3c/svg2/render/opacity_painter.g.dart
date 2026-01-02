@@ -57,7 +57,7 @@ class _$OpacityPainter extends CustomPainter {
     {
       {
         final Paint paint = Paint();
-        paint.color = const Color(0xA3FF0000);
+        paint.color = const Color(0xCCFF0000);
         paint.style = PaintingStyle.fill;
         canvas.drawCircle(const Offset(200.0, 50.0), 25.0, paint);
       }
@@ -65,7 +65,7 @@ class _$OpacityPainter extends CustomPainter {
     {
       {
         final Paint paint = Paint();
-        paint.color = const Color(0x5CFF0000);
+        paint.color = const Color(0x99FF0000);
         paint.style = PaintingStyle.fill;
         canvas.drawCircle(const Offset(300.0, 50.0), 25.0, paint);
       }
@@ -73,7 +73,7 @@ class _$OpacityPainter extends CustomPainter {
     {
       {
         final Paint paint = Paint();
-        paint.color = const Color(0x29FF0000);
+        paint.color = const Color(0x66FF0000);
         paint.style = PaintingStyle.fill;
         canvas.drawCircle(const Offset(400.0, 50.0), 25.0, paint);
       }
@@ -81,7 +81,7 @@ class _$OpacityPainter extends CustomPainter {
     {
       {
         final Paint paint = Paint();
-        paint.color = const Color(0x0AFF0000);
+        paint.color = const Color(0x33FF0000);
         paint.style = PaintingStyle.fill;
         canvas.drawCircle(const Offset(500.0, 50.0), 25.0, paint);
       }
@@ -105,10 +105,11 @@ class _$OpacityPainter extends CustomPainter {
       }
     }
     {
+      canvas.saveLayer(null, Paint()..color = Color.fromRGBO(0, 0, 0, 0.5));
       {
         {
           final Paint paint = Paint();
-          paint.color = const Color(0x80FF0000);
+          paint.color = const Color(0xFFFF0000);
           paint.style = PaintingStyle.fill;
           canvas.drawCircle(const Offset(191.25, 125.0), 25.0, paint);
         }
@@ -116,17 +117,18 @@ class _$OpacityPainter extends CustomPainter {
       {
         {
           final Paint paint = Paint();
-          paint.color = const Color(0x80008000);
+          paint.color = const Color(0xFF008000);
           paint.style = PaintingStyle.fill;
           canvas.drawCircle(const Offset(208.75, 125.0), 25.0, paint);
         }
       }
+      canvas.restore();
     }
     {
       {
         {
           final Paint paint = Paint();
-          paint.color = const Color(0x40FF0000);
+          paint.color = const Color(0x80FF0000);
           paint.style = PaintingStyle.fill;
           canvas.drawCircle(const Offset(291.25, 125.0), 25.0, paint);
         }
@@ -134,7 +136,7 @@ class _$OpacityPainter extends CustomPainter {
       {
         {
           final Paint paint = Paint();
-          paint.color = const Color(0x40008000);
+          paint.color = const Color(0x80008000);
           paint.style = PaintingStyle.fill;
           canvas.drawCircle(const Offset(308.75, 125.0), 25.0, paint);
         }
@@ -144,7 +146,7 @@ class _$OpacityPainter extends CustomPainter {
       {
         {
           final Paint paint = Paint();
-          paint.color = const Color(0x40008000);
+          paint.color = const Color(0x80008000);
           paint.style = PaintingStyle.fill;
           canvas.drawCircle(const Offset(408.75, 125.0), 25.0, paint);
         }
@@ -152,17 +154,18 @@ class _$OpacityPainter extends CustomPainter {
       {
         {
           final Paint paint = Paint();
-          paint.color = const Color(0x40FF0000);
+          paint.color = const Color(0x80FF0000);
           paint.style = PaintingStyle.fill;
           canvas.drawCircle(const Offset(391.25, 125.0), 25.0, paint);
         }
       }
     }
     {
+      canvas.saveLayer(null, Paint()..color = Color.fromRGBO(0, 0, 0, 0.5));
       {
         {
           final Paint paint = Paint();
-          paint.color = const Color(0x20FF0000);
+          paint.color = const Color(0x80FF0000);
           paint.style = PaintingStyle.fill;
           canvas.drawCircle(const Offset(491.25, 125.0), 25.0, paint);
         }
@@ -170,11 +173,12 @@ class _$OpacityPainter extends CustomPainter {
       {
         {
           final Paint paint = Paint();
-          paint.color = const Color(0x20008000);
+          paint.color = const Color(0x80008000);
           paint.style = PaintingStyle.fill;
           canvas.drawCircle(const Offset(508.75, 125.0), 25.0, paint);
         }
       }
+      canvas.restore();
     }
     canvas.restore();
   }

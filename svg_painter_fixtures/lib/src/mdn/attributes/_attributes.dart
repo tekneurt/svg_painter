@@ -1,6 +1,7 @@
 export 'cx.dart';
 export 'cy.dart';
 export 'fill.dart';
+export 'fill_opacity.dart';
 export 'fx.dart';
 export 'fy.dart';
 export 'height.dart';
@@ -13,6 +14,7 @@ export 'ry.dart';
 export 'stroke.dart';
 export 'stroke_linecap.dart';
 export 'stroke_linejoin.dart';
+export 'stroke_opacity.dart';
 export 'stroke_width.dart';
 export 'style.dart';
 export 'view_box.dart';

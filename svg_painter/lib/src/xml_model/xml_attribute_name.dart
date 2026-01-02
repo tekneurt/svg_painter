@@ -114,9 +114,17 @@ enum XmlAttributeName {
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/fill
   fill('fill'),
 
+  /// The opacity of the fill.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/fill-opacity
+  fillOpacity('fill-opacity'),
+
   /// The stroke color of the element.
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke
   stroke('stroke'),
+
+  /// The opacity of the stroke.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-opacity
+  strokeOpacity('stroke-opacity'),
 
   /// The width of the stroke.
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-width

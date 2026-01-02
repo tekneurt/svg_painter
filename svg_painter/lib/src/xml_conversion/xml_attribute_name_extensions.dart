@@ -71,6 +71,8 @@ extension XmlAttributeDefaultValues on XmlAttributeName {
       case XmlAttributeName.stopOpacity:
         return const SvgLength(1.0);
       case XmlAttributeName.opacity:
+      case XmlAttributeName.fillOpacity:
+      case XmlAttributeName.strokeOpacity:
         return const SvgLength(1.0);
       case XmlAttributeName.fx:
       case XmlAttributeName.fy:

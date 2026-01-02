@@ -30,13 +30,15 @@ extension ElementToSvgUse on XmlElement {
 
     return Success<SvgUse>(
       SvgUse(
-        href: href,
         x: x,
         y: y,
         width: width,
         height: height,
+        href: href,
         fill: common.fill,
+        fillOpacity: common.fillOpacity,
         stroke: common.stroke,
+        strokeOpacity: common.strokeOpacity,
         strokeWidth: common.strokeWidth,
         strokeLinecap: common.strokeLinecap,
         strokeLinejoin: common.strokeLinejoin,

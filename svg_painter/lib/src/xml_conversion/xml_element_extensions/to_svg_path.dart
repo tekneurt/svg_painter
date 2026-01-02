@@ -21,7 +21,9 @@ extension ElementToSvgPath on XmlElement {
       SvgPath(
         d: d,
         fill: common.fill,
+        fillOpacity: common.fillOpacity,
         stroke: common.stroke,
+        strokeOpacity: common.strokeOpacity,
         strokeWidth: common.strokeWidth,
         strokeLinecap: common.strokeLinecap,
         strokeLinejoin: common.strokeLinejoin,

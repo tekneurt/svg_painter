@@ -9,6 +9,7 @@ extension SvgPercentageToValue on SvgPercentage {
       SvgOrientation.horizontal => percentage * context.viewBoxWidth,
       SvgOrientation.vertical => percentage * context.viewBoxHeight,
       SvgOrientation.normalized => percentage * context.viewBoxNormalizedDiagonal,
+      SvgOrientation.unit => percentage,
     };
   }
 }
@@ -23,4 +24,7 @@ enum SvgOrientation {
 
   /// Normalized orientation (resolved against diagonal).
   normalized,
+
+  /// Unit orientation (100% = 1.0). Used for opacity.
+  unit,
 }

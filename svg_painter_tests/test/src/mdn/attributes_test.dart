@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import '../../test_utils.dart';
 import 'attributes/cx_painter.dart';
 import 'attributes/cy_painter.dart';
+import 'attributes/fill_opacity_painter.dart';
 import 'attributes/fill_painter.dart';
 import 'attributes/fx_painter.dart';
 import 'attributes/fy_painter.dart';
@@ -18,6 +19,7 @@ import 'attributes/rx_painter.dart';
 import 'attributes/ry_painter.dart';
 import 'attributes/stroke_linecap_painter.dart';
 import 'attributes/stroke_linejoin_painter.dart';
+import 'attributes/stroke_opacity_painter.dart';
 import 'attributes/stroke_painter.dart';
 import 'attributes/stroke_width_painter.dart';
 import 'attributes/style_painter.dart';
@@ -42,6 +44,7 @@ final List<({CustomPainter painter, String name})> _fixtures =
     <({CustomPainter painter, String name})>[
       (painter: const CxPainter(), name: 'cx_painter'),
       (painter: const CyPainter(), name: 'cy_painter'),
+      (painter: const FillOpacityPainter(), name: 'fill_opacity_painter'),
       (painter: const FillPainter(), name: 'fill_painter'),
       (painter: const FxPainter(), name: 'fx_painter'),
       (painter: const FyPainter(), name: 'fy_painter'),
@@ -55,6 +58,7 @@ final List<({CustomPainter painter, String name})> _fixtures =
       (painter: const RyPainter(), name: 'ry_painter'),
       (painter: const StrokeLinecapPainter(), name: 'stroke_linecap_painter'),
       (painter: const StrokeLinejoinPainter(), name: 'stroke_linejoin_painter'),
+      (painter: const StrokeOpacityPainter(), name: 'stroke_opacity_painter'),
       (painter: const StrokePainter(), name: 'stroke_painter'),
       (painter: const StrokeWidthPainter(), name: 'stroke_width_painter'),
       (painter: const StylePainter(), name: 'style_painter'),

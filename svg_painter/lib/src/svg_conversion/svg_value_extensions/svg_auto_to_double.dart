@@ -36,6 +36,7 @@ extension SvgLengthPercentageAutoToDouble on SvgLengthPercentageAuto {
       SvgOrientation.horizontal => val - context.viewBoxMinX,
       SvgOrientation.vertical => val - context.viewBoxMinY,
       SvgOrientation.normalized => val,
+      SvgOrientation.unit => val,
     };
   }
 }
