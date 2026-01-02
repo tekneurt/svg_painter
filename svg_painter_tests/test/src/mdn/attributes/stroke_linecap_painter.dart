@@ -8,3 +8,18 @@ part 'stroke_linecap_painter.g.dart';
 class StrokeLinecapPainter extends _$StrokeLinecapPainter {
   const StrokeLinecapPainter({super.fit});
 }
+
+@SvgCodePainter(mdnStrokeLinecapButtExample)
+class StrokeLinecapButtPainter extends _$StrokeLinecapButtPainter {
+  const StrokeLinecapButtPainter({super.fit});
+}
+
+@SvgCodePainter(mdnStrokeLinecapRoundExample)
+class StrokeLinecapRoundPainter extends _$StrokeLinecapRoundPainter {
+  const StrokeLinecapRoundPainter({super.fit});
+}
+
+@SvgCodePainter(mdnStrokeLinecapSquareExample)
+class StrokeLinecapSquarePainter extends _$StrokeLinecapSquarePainter {
+  const StrokeLinecapSquarePainter({super.fit});
+}

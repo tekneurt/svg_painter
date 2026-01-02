@@ -21,7 +21,7 @@ class GroupGenerator extends ShapeGenerator<DrawGroup> {
         buffer.writeln('      canvas.saveLayer(');
         buffer.writeln('        null,');
         buffer.writeln(
-          '        Paint()..color = Color.fromRGBO(0, 0, 0, ${command.groupOpacity}),',
+          '        Paint()..color = Color.fromRGBO(255, 255, 255, ${command.groupOpacity}),',
         );
         buffer.writeln('      );');
       }

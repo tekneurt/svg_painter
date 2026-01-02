@@ -105,7 +105,10 @@ class _$OpacityPainter extends CustomPainter {
       }
     }
     {
-      canvas.saveLayer(null, Paint()..color = Color.fromRGBO(0, 0, 0, 0.5));
+      canvas.saveLayer(
+        null,
+        Paint()..color = Color.fromRGBO(255, 255, 255, 0.5),
+      );
       {
         {
           final Paint paint = Paint();
@@ -161,7 +164,10 @@ class _$OpacityPainter extends CustomPainter {
       }
     }
     {
-      canvas.saveLayer(null, Paint()..color = Color.fromRGBO(0, 0, 0, 0.5));
+      canvas.saveLayer(
+        null,
+        Paint()..color = Color.fromRGBO(255, 255, 255, 0.5),
+      );
       {
         {
           final Paint paint = Paint();
