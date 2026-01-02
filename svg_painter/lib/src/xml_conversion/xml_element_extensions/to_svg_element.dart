@@ -48,6 +48,16 @@ extension XmlElementToSvgElement on XmlElement {
         return toSvgStyle();
       case XmlElementName.text:
         return toSvgText();
+      case XmlElementName.title:
+        return Success<SvgTitle>(SvgTitle(
+          content: innerText.trim(),
+          id: getXmlAttributeValue(XmlAttributeName.id),
+        ));
+      case XmlElementName.desc:
+        return Success<SvgDesc>(SvgDesc(
+          content: innerText.trim(),
+          id: getXmlAttributeValue(XmlAttributeName.id),
+        ));
     }
   }
 }

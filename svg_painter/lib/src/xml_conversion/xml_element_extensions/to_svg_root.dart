@@ -28,19 +28,10 @@ extension ElementToSvgRoot on XmlElement {
     }
     final SvgStyleSheet styleSheet = SvgStyleSheet(mergedRules);
 
-    for (final XmlNode child in children) {
-      if (child is XmlElement) {
-        final Result<SvgElement> result = child.toSvgElement();
-        result.fold(
-          (Failure<SvgElement> failure) {
-            // Ignore unsupported children
-          },
-          (SvgElement value) {
-            childElements.add(value);
-          },
-        );
-      }
-    }
+    final Result<List<SvgElement>> childrenResult = children
+        .whereType<XmlElement>()
+        .map((XmlElement child) => child.toSvgElement())
+        .combine();
 
     final SvgLengthPercentageAuto width = toSvgValue<SvgLengthPercentageAuto>(
       elementName,
@@ -62,8 +53,8 @@ extension ElementToSvgRoot on XmlElement {
 
     final CommonAttributes common = getCommonAttributes(elementName);
 
-    return Success<SvgRoot>(
-      SvgRoot(
+    return childrenResult.map(
+      (List<SvgElement> childElements) => SvgRoot(
         children: childElements,
         styleSheet: styleSheet,
         x: x,

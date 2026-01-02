@@ -6,9 +6,9 @@
 *Foundational work to enable dynamic properties and ensure a robust implementation.*
 
 - [x] **PaintingStyle Composition**: Refactor the flat `PaintingStyle` into structured `FillStyle` and `StrokeStyle` objects. Update `resolvePaint` and `ShapeGenerator` to align with Flutter's dual-Paint approach.
-- [ ] **Generator Robustness & Error Reporting**:
-    - [ ] Replace silent continues with explicit generator errors.
-    - [ ] Implement helpful console error messages for malformed SVGs or unsupported features.
+- [x] **Generator Robustness & Error Reporting**:
+    - [x] Replace silent continues with explicit generator errors.
+    - [x] Implement helpful console error messages for malformed SVGs or unsupported features.
 - [ ] **Standardization**:
     - [ ] Convert code to use dot shorthand for enum values consistently.
     - [ ] Standardize extension naming (e.g., `To[Target]`).
@@ -56,7 +56,7 @@
 ### Phase 5: Advanced Units & Path Syntax (0.3.0)
 - [ ] **SVG 2 Path Syntax**: Robust tokenizer for compact arc syntax (concatenated flags).
 - [ ] **Relative Units**: Support for `em`, `ex`, and other CSS relative units.
-- [ ] **Result Ergonomics**: Add `combine()` and other functional extensions to `Result`.
+- [x] **Result Ergonomics**: Add ergonomic extensions (e.g., `combine()`) to simplify list folding and result aggregation in `Result`.
 
 ### Phase 6: Niche & Future Roadmap (1.0.0+)
 - [ ] **SMIL Animation**: `<animate>`, `<animateMotion>`, etc.

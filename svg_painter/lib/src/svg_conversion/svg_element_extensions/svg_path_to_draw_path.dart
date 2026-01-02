@@ -12,7 +12,7 @@ extension SvgPathToPainting on SvgPath {
       return const Success<List<PaintCommand>>(<PaintCommand>[]);
     }
 
-    final List<PathOperation> operations = PathDataParser.parse(d, context);
+    final Result<List<PathOperation>> operationsResult = PathDataParser.parse(d, context);
 
     final PaintingStyle paint = resolvePaint(
       context,
@@ -35,12 +35,13 @@ extension SvgPathToPainting on SvgPath {
       inlineStyle: inlineStyle,
     );
 
-    return Success<List<PaintCommand>>(<PaintCommand>[
-      DrawPath(
-        operations: operations,
-        style: paint,
-        transform: SvgTransformParser.scaleTransform(transform, context.parentSx, context.parentSy),
-      ),
-    ]);
+    return operationsResult.map((List<PathOperation> operations) => <PaintCommand>[
+          DrawPath(
+            operations: operations,
+            style: paint,
+            transform:
+                SvgTransformParser.scaleTransform(transform, context.parentSx, context.parentSy),
+          ),
+        ]);
   }
 }

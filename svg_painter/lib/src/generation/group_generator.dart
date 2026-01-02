@@ -32,7 +32,7 @@ class GroupGenerator extends ShapeGenerator<DrawGroup> {
         if (generator != null) {
           generator.generate(child, buffer, generators: generators);
         } else {
-          // Fallback or ignore?
+          throw StateError('No generator found for command type ${child.runtimeType}');
         }
       }
 

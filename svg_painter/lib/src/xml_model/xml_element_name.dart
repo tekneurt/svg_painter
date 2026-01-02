@@ -36,7 +36,9 @@ enum XmlElementName {
   linearGradient('linearGradient'),
   stop('stop'),
   style('style'),
-  text('text');
+  text('text'),
+  title('title'),
+  desc('desc');
 
   const XmlElementName(this.tagName);
 

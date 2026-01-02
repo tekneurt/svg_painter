@@ -1,10 +1,11 @@
+import '../../base/_base.dart';
 import '../../painting_model/_painting_model.dart';
 import 'svg_painting_context.dart';
 
 /// Parser for SVG path data ('d' attribute).
 class PathDataParser {
   /// Parses the path data string into a list of [PathOperation]s.
-  static List<PathOperation> parse(String d, SvgPaintingContext context) {
+  static Result<List<PathOperation>> parse(String d, SvgPaintingContext context) {
     final List<PathOperation> operations = <PathOperation>[];
     // Improved regex to handle commas, scientific notation, and multiple numbers
     final RegExp commandRegex = RegExp(r'([a-zA-Z])|(-?\d*\.?\d+(?:[eE][+-]?\d+)?)|[, \t\n\r]+');
@@ -20,8 +21,10 @@ class PathDataParser {
     double subpathStartX = 0.0;
     double subpathStartY = 0.0;
 
+    String? errorMessage;
+
     void flushCommand() {
-      if (currentCommand == null) {
+      if (currentCommand == null || errorMessage != null) {
         return;
       }
 
@@ -30,8 +33,13 @@ class PathDataParser {
 
       int i = 0;
       while (i < params.length || cmd == 'Z') {
+        final int remaining = params.length - i;
         switch (cmd) {
           case 'M':
+            if (remaining < 2) {
+              errorMessage = 'Insufficient parameters for M command';
+              return;
+            }
             final double x = isRelative ? lastX + params[i++] : params[i++];
             final double y = isRelative ? lastY + params[i++] : params[i++];
             operations.add(MoveTo(context.transformX(x), context.transformY(y)));
@@ -44,6 +52,10 @@ class PathDataParser {
             // After M, subsequent pairs are treated as L
             currentCommand = isRelative ? 'l' : 'L';
           case 'L':
+            if (remaining < 2) {
+              errorMessage = 'Insufficient parameters for L command';
+              return;
+            }
             final double x = isRelative ? lastX + params[i++] : params[i++];
             final double y = isRelative ? lastY + params[i++] : params[i++];
             operations.add(LineTo(context.transformX(x), context.transformY(y)));
@@ -52,18 +64,30 @@ class PathDataParser {
             lastControlX = null;
             lastControlY = null;
           case 'H':
+            if (remaining < 1) {
+              errorMessage = 'Insufficient parameters for H command';
+              return;
+            }
             final double x = isRelative ? lastX + params[i++] : params[i++];
             operations.add(LineTo(context.transformX(x), context.transformY(lastY)));
             lastX = x;
             lastControlX = null;
             lastControlY = null;
           case 'V':
+            if (remaining < 1) {
+              errorMessage = 'Insufficient parameters for V command';
+              return;
+            }
             final double y = isRelative ? lastY + params[i++] : params[i++];
             operations.add(LineTo(context.transformX(lastX), context.transformY(y)));
             lastY = y;
             lastControlX = null;
             lastControlY = null;
           case 'C':
+            if (remaining < 6) {
+              errorMessage = 'Insufficient parameters for C command';
+              return;
+            }
             final double x1 = isRelative ? lastX + params[i++] : params[i++];
             final double y1 = isRelative ? lastY + params[i++] : params[i++];
             final double x2 = isRelative ? lastX + params[i++] : params[i++];
@@ -85,6 +109,10 @@ class PathDataParser {
             lastX = x;
             lastY = y;
           case 'S':
+            if (remaining < 4) {
+              errorMessage = 'Insufficient parameters for S command';
+              return;
+            }
             final double x2 = isRelative ? lastX + params[i++] : params[i++];
             final double y2 = isRelative ? lastY + params[i++] : params[i++];
             final double x = isRelative ? lastX + params[i++] : params[i++];
@@ -114,6 +142,10 @@ class PathDataParser {
             lastX = x;
             lastY = y;
           case 'Q':
+            if (remaining < 4) {
+              errorMessage = 'Insufficient parameters for Q command';
+              return;
+            }
             final double x1 = isRelative ? lastX + params[i++] : params[i++];
             final double y1 = isRelative ? lastY + params[i++] : params[i++];
             final double x = isRelative ? lastX + params[i++] : params[i++];
@@ -131,6 +163,10 @@ class PathDataParser {
             lastX = x;
             lastY = y;
           case 'T':
+            if (remaining < 2) {
+              errorMessage = 'Insufficient parameters for T command';
+              return;
+            }
             final double x = isRelative ? lastX + params[i++] : params[i++];
             final double y = isRelative ? lastY + params[i++] : params[i++];
 
@@ -156,6 +192,10 @@ class PathDataParser {
             lastX = x;
             lastY = y;
           case 'A':
+            if (remaining < 7) {
+              errorMessage = 'Insufficient parameters for A command';
+              return;
+            }
             final double rx = params[i++];
             final double ry = params[i++];
             final double xAxisRotation = params[i++];
@@ -190,7 +230,8 @@ class PathDataParser {
             i = params.length; // Ensure exit if there are trailing params
 
           default:
-            i = params.length; // Skip unknown
+            errorMessage = 'Unknown path command: $cmd';
+            return;
         }
       }
       params.clear();
@@ -200,6 +241,9 @@ class PathDataParser {
       if (match.group(1) != null) {
         // New command
         flushCommand();
+        if (errorMessage != null) {
+          return Failure<List<PathOperation>>(errorMessage!);
+        }
         currentCommand = match.group(1);
       } else if (match.group(2) != null) {
         // Parameter
@@ -209,6 +253,10 @@ class PathDataParser {
     }
     flushCommand();
 
-    return operations;
+    if (errorMessage != null) {
+      return Failure<List<PathOperation>>(errorMessage!);
+    }
+
+    return Success<List<PathOperation>>(operations);
   }
 }

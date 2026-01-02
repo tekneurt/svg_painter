@@ -101,3 +101,37 @@ final class Failure<T> extends Result<T> {
   @override
   String toString() => 'Failure($message)';
 }
+
+/// Extensions for aggregating [Result]s.
+extension ResultListExtension<T> on Iterable<Result<List<T>>> {
+  /// Combines an iterable of [Result<List<T>>] into a single [Result<List<T>>].
+  ///
+  /// If any [Result] is a [Failure], the first [Failure] is returned.
+  Result<List<T>> combine() {
+    final List<T> combined = <T>[];
+    for (final Result<List<T>> result in this) {
+      if (result is Failure<List<T>>) {
+        return Failure<List<T>>(result.message);
+      }
+      combined.addAll((result as Success<List<T>>).value);
+    }
+    return Success<List<T>>(combined);
+  }
+}
+
+/// Extensions for aggregating single [Result]s into lists.
+extension ResultIterableExtension<T> on Iterable<Result<T>> {
+  /// Combines an iterable of [Result<T>] into a [Result<List<T>>].
+  ///
+  /// If any [Result] is a [Failure], the first [Failure] is returned.
+  Result<List<T>> combine() {
+    final List<T> combined = <T>[];
+    for (final Result<T> result in this) {
+      if (result is Failure<T>) {
+        return Failure<List<T>>(result.message);
+      }
+      combined.add((result as Success<T>).value);
+    }
+    return Success<List<T>>(combined);
+  }
+}

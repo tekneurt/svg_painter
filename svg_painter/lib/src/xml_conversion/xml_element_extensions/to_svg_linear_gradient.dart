@@ -27,21 +27,17 @@ extension ElementToSvgLinearGradient on XmlElement {
       XmlAttributeName.y2,
     );
 
-    final List<SvgStop> stops = <SvgStop>[];
-    for (final XmlNode child in children) {
-      if (child is XmlElement && child.name.local == XmlElementName.stop.tagName) {
-        final Result<SvgStop> result = child.toSvgStop();
-        result.fold((Failure<SvgStop> failure) {}, (SvgStop value) {
-          stops.add(value);
-        });
-      }
-    }
+    final Result<List<SvgStop>> stopsResult = children
+        .whereType<XmlElement>()
+        .where((XmlElement child) => child.name.local == XmlElementName.stop.tagName)
+        .map((XmlElement child) => child.toSvgStop())
+        .combine();
 
     final String? id = getXmlAttributeValue(XmlAttributeName.id);
     final String? gradientTransform = getXmlAttributeValue(XmlAttributeName.gradientTransform);
 
-    return Success<SvgLinearGradient>(
-      SvgLinearGradient(
+    return stopsResult.map(
+      (List<SvgStop> stops) => SvgLinearGradient(
         stops: stops,
         x1: x1,
         y1: y1,

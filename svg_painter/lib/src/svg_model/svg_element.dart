@@ -170,3 +170,24 @@ sealed class SvgContainerElement extends SvgGraphicsElement with SvgParent {
 sealed class SvgDefinitionElement extends SvgElement {
   const SvgDefinitionElement({super.id});
 }
+
+/// Represents a metadata element (<title>, <desc>).
+@immutable
+sealed class SvgMetadataElement extends SvgElement {
+  const SvgMetadataElement({required this.content, super.id});
+
+  /// The text content of the metadata element.
+  final String content;
+}
+
+/// Represents a <title> element.
+@immutable
+final class SvgTitle extends SvgMetadataElement {
+  const SvgTitle({required super.content, super.id});
+}
+
+/// Represents a <desc> element.
+@immutable
+final class SvgDesc extends SvgMetadataElement {
+  const SvgDesc({required super.content, super.id});
+}

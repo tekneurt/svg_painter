@@ -9,26 +9,16 @@ extension ElementToSvgGroup on XmlElement {
   /// Converts this [XmlElement] to an [SvgGroup].
   Result<SvgGroup> toSvgGroup() {
     const XmlElementName elementName = XmlElementName.g;
-    final List<SvgElement> childElements = <SvgElement>[];
 
-    for (final XmlNode child in children) {
-      if (child is XmlElement) {
-        final Result<SvgElement> result = child.toSvgElement();
-        result.fold(
-          (Failure<SvgElement> failure) {
-            // Ignore unsupported children
-          },
-          (SvgElement value) {
-            childElements.add(value);
-          },
-        );
-      }
-    }
+    final Result<List<SvgElement>> childrenResult = children
+        .whereType<XmlElement>()
+        .map((XmlElement child) => child.toSvgElement())
+        .combine();
 
     final CommonAttributes common = getCommonAttributes(elementName);
 
-    return Success<SvgGroup>(
-      SvgGroup(
+    return childrenResult.map(
+      (List<SvgElement> childElements) => SvgGroup(
         children: childElements,
         fill: common.fill,
         fillOpacity: common.fillOpacity,

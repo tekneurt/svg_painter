@@ -115,7 +115,10 @@ extension SvgToPainting on SvgElement {
         linearGradient
             .toPaintCommand(childContext)
             .map((DefineLinearGradient cmd) => <PaintCommand>[cmd]),
-      final SvgStop _ || final SvgStyle _ => const Success<List<PaintCommand>>(<PaintCommand>[]),
+      final SvgStop _ ||
+      final SvgStyle _ ||
+      final SvgMetadataElement _ =>
+        const Success<List<PaintCommand>>(<PaintCommand>[]),
     };
   }
 }
@@ -128,8 +131,9 @@ extension _SvgUseToPainting on SvgUse {
     // 2. Lookup definition
     final SvgElement? target = context.definitions[targetId];
     if (target == null) {
-      // TODO(Gemini): Handle missing references properly (logging/warning).
-      return const Success<List<PaintCommand>>(<PaintCommand>[]); // Silently ignore missing refs?
+      return Failure<List<PaintCommand>>(
+        'Could not find definition for ID "$targetId" referenced by <use>.',
+      );
     }
 
     // 3. Apply x/y translation (relative to current user space)
@@ -156,28 +160,17 @@ extension _SvgUseToPainting on SvgUse {
 
 extension _SvgDefsToPainting on SvgDefs {
   Result<List<PaintCommand>> _toPaintCommands(SvgPaintingContext context) {
-    final List<PaintCommand> commands = <PaintCommand>[];
-
-    for (final SvgElement child in children) {
-      final Result<List<PaintCommand>> result = child.toPaintCommands(context);
-
-      result.fold(
-        (Failure<List<PaintCommand>> failure) {
-          // TODO(Gemini): Handle failure.
-          return <PaintCommand>[];
-        },
-        (List<PaintCommand> value) {
-          // Only include definition commands (Gradients), exclude drawing commands
-          commands.addAll(
-            value.where(
-              (PaintCommand cmd) => cmd is DefineLinearGradient || cmd is DefineRadialGradient,
-            ),
-          );
-        },
-      );
-    }
-
-    return Success<List<PaintCommand>>(commands);
+    return children
+        .map((SvgElement child) => child.toPaintCommands(context))
+        .combine()
+        .map((List<PaintCommand> commands) {
+      // Only include definition commands (Gradients), exclude drawing commands
+      return commands
+          .where(
+            (PaintCommand cmd) => cmd is DefineLinearGradient || cmd is DefineRadialGradient,
+          )
+          .toList();
+    });
   }
 }
 
@@ -232,23 +225,7 @@ extension _SvgSvgToPainting on SvgSvg {
       inheritedStrokeLinejoin: strokeLinejoin ?? context.inheritedStrokeLinejoin,
     );
 
-    final List<PaintCommand> commands = <PaintCommand>[];
-
-    for (final SvgElement child in children) {
-      final Result<List<PaintCommand>> result = child.toPaintCommands(innerContext);
-
-      result.fold(
-        (Failure<List<PaintCommand>> failure) {
-          // TODO(Gemini): Handle failure.
-          return <PaintCommand>[];
-        },
-        (List<PaintCommand> value) {
-          commands.addAll(value);
-        },
-      );
-    }
-
-    return Success<List<PaintCommand>>(commands);
+    return children.map((SvgElement child) => child.toPaintCommands(innerContext)).combine();
   }
 }
 
@@ -269,27 +246,17 @@ extension _SvgGroupToPainting on SvgGroup {
         ? context.derive(parentOpacity: childParentOpacity)
         : context; // If flattening, context already has combinedOpacity.
 
-    final List<PaintCommand> childCommands = <PaintCommand>[];
-
-    for (final SvgElement child in children) {
-      final Result<List<PaintCommand>> result = child.toPaintCommands(childContext);
-
-      result.fold(
-        (Failure<List<PaintCommand>> failure) {
-          // TODO(Gemini): Handle failure.
-        },
-        (List<PaintCommand> value) {
-          childCommands.addAll(value);
-        },
-      );
-    }
-
-    return Success<List<PaintCommand>>(<PaintCommand>[
-      DrawGroup(
-        commands: childCommands,
-        transform: SvgTransformParser.scaleTransform(transform, context.parentSx, context.parentSy),
-        groupOpacity: groupOpacity,
-      ),
-    ]);
+    return children.map((SvgElement child) => child.toPaintCommands(childContext)).combine().map((
+      List<PaintCommand> childCommands,
+    ) {
+      return <PaintCommand>[
+        DrawGroup(
+          commands: childCommands,
+          transform:
+              SvgTransformParser.scaleTransform(transform, context.parentSx, context.parentSy),
+          groupOpacity: groupOpacity,
+        ),
+      ];
+    });
   }
 }
