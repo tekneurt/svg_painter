@@ -13,6 +13,7 @@ import 'elements/polygon_painter.dart';
 import 'elements/polyline_painter.dart';
 import 'elements/radial_gradient_painter.dart';
 import 'elements/rect_painter.dart';
+import 'elements/stop_painter.dart';
 import 'elements/svg_element_painter.dart';
 import 'elements/text_painter.dart';
 import 'elements/use_element_painter.dart';
@@ -30,6 +31,7 @@ final List<({CustomPainter painter, String name})> _fixtures =
       (painter: const PolylinePainter(), name: 'polyline_painter'),
       (painter: const RadialGradientPainter(), name: 'radial_gradient_painter'),
       (painter: const RectPainter(), name: 'rect_painter'),
+      (painter: const StopPainter(), name: 'stop_painter'),
       (painter: const SvgElementPainter(), name: 'svg_element_painter'),
       (painter: const MdnTextExamplePainter(), name: 'text_painter'),
       (painter: const UseElementPainter(), name: 'use_element_painter'),

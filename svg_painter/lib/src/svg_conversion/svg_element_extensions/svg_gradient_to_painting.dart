@@ -20,9 +20,16 @@ extension SvgRadialGradientToPainting on SvgRadialGradient {
     );
 
     final List<GradientStop> paintStops = stops.map((SvgStop stop) {
+      int argb = stop.stopColor.toFillArgb();
+      final double opacity = stop.stopOpacity.toDouble(fractionContext, SvgOrientation.unit);
+      if (opacity < 1.0) {
+        int alpha = (argb >> 24) & 0xFF;
+        alpha = (alpha * opacity).round().clamp(0, 255);
+        argb = (argb & 0x00FFFFFF) | (alpha << 24);
+      }
       return GradientStop(
         stop.offset.toDouble(fractionContext, SvgOrientation.normalized),
-        stop.stopColor.toFillArgb(), // stop-color defaults to black
+        argb,
       );
     }).toList();
 
@@ -56,9 +63,16 @@ extension SvgLinearGradientToPainting on SvgLinearGradient {
     );
 
     final List<GradientStop> paintStops = stops.map((SvgStop stop) {
+      int argb = stop.stopColor.toFillArgb();
+      final double opacity = stop.stopOpacity.toDouble(fractionContext, SvgOrientation.unit);
+      if (opacity < 1.0) {
+        int alpha = (argb >> 24) & 0xFF;
+        alpha = (alpha * opacity).round().clamp(0, 255);
+        argb = (argb & 0x00FFFFFF) | (alpha << 24);
+      }
       return GradientStop(
         stop.offset.toDouble(fractionContext, SvgOrientation.normalized),
-        stop.stopColor.toFillArgb(),
+        argb,
       );
     }).toList();
 

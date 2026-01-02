@@ -10,6 +10,7 @@ part 'elements/svg_group.dart';
 part 'elements/svg_line.dart';
 part 'elements/svg_path.dart';
 part 'elements/svg_rect.dart';
+part 'elements/svg_stop.dart';
 part 'elements/svg_style.dart';
 part 'elements/svg_radial_gradient.dart';
 part 'elements/svg_linear_gradient.dart';
@@ -168,36 +169,4 @@ sealed class SvgContainerElement extends SvgGraphicsElement with SvgParent {
 @immutable
 sealed class SvgDefinitionElement extends SvgElement {
   const SvgDefinitionElement({super.id});
-}
-
-/// Represents a <stop> element within a gradient.
-@immutable
-final class SvgStop extends SvgDefinitionElement {
-  const SvgStop({
-    required this.offset,
-    required this.stopColor,
-    required this.stopOpacity,
-    super.id,
-  });
-
-  /// The location of the color stop (length or percentage).
-  final SvgLengthPercentage offset;
-
-  /// The color of the stop.
-  final SvgColor stopColor;
-
-  /// The opacity of the stop (0.0 to 1.0).
-  final SvgLengthPercentage stopOpacity;
-}
-
-/// Base class for gradient elements (<linearGradient>, <radialGradient>).
-@immutable
-sealed class SvgGradient extends SvgDefinitionElement {
-  const SvgGradient({required this.stops, super.id, this.gradientTransform});
-
-  /// The color stops for this gradient.
-  final List<SvgStop> stops;
-
-  /// The transformation applied to the gradient.
-  final String? gradientTransform;
 }
