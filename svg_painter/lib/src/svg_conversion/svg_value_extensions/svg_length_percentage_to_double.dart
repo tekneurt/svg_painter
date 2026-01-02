@@ -7,7 +7,7 @@ extension SvgLengthPercentageToValue on SvgLengthPercentage {
   double toDouble(SvgPaintingContext context, SvgOrientation orientation) {
     final SvgLengthPercentage self = this;
     return switch (self) {
-      final SvgLength length => length.toDouble(),
+      final SvgLength length => length.toDouble(context),
       final SvgPercentage percentage => percentage.toDouble(context, orientation),
     };
   }

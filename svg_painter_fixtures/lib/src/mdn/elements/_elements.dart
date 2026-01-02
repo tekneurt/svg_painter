@@ -10,6 +10,6 @@ export 'polyline.dart';
 export 'radial_gradient.dart';
 export 'rect.dart';
 export 'stop.dart';
-export 'svg_element.dart';
+export 'svg.dart';
 export 'text.dart';
 export 'use.dart';

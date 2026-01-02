@@ -34,4 +34,16 @@ enum SvgLengthUnit {
 
   /// Picas.
   pc,
+
+  /// 1% of the viewport's width.
+  vw,
+
+  /// 1% of the viewport's height.
+  vh,
+
+  /// 1% of the smaller dimension of the viewport.
+  vmin,
+
+  /// 1% of the larger dimension of the viewport.
+  vmax,
 }

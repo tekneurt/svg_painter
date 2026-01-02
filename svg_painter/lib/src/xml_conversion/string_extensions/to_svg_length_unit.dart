@@ -20,4 +20,8 @@ const Map<String, SvgLengthUnit> _suffixToUnit = <String, SvgLengthUnit>{
   'in': SvgLengthUnit.inUnit,
   'pt': SvgLengthUnit.pt,
   'pc': SvgLengthUnit.pc,
+  'vw': SvgLengthUnit.vw,
+  'vh': SvgLengthUnit.vh,
+  'vmin': SvgLengthUnit.vmin,
+  'vmax': SvgLengthUnit.vmax,
 };

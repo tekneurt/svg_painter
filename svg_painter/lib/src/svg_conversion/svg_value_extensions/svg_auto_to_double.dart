@@ -21,7 +21,7 @@ extension SvgLengthPercentageAutoToDouble on SvgLengthPercentageAuto {
   double? toDoubleOrNull(SvgPaintingContext context, SvgOrientation orientation) {
     final SvgLengthPercentageAuto self = this;
     return switch (self) {
-      final SvgLength length => length.toDouble(),
+      final SvgLength length => length.toDouble(context),
       final SvgPercentage percentage => percentage.toDouble(context, orientation),
       SvgAuto() => null,
     };
