@@ -458,3 +458,732 @@ class _$StrokeLinejoinPainter extends CustomPainter {
     return fit != oldDelegate.fit;
   }
 }
+
+// coverage:ignore-file
+// ignore_for_file: type=lint
+// ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
+
+class _$StrokeLinejoinArcsPainter extends CustomPainter {
+  const _$StrokeLinejoinArcsPainter({this.fit = BoxFit.contain});
+
+  final BoxFit fit;
+
+  Size get viewBox => const Size(6.0, 6.0);
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final FittedSizes fittedSizes = applyBoxFit(
+      fit,
+      const Size(6.0, 6.0),
+      size,
+    );
+    final Size sourceSize = fittedSizes.source;
+    final Rect destRect = Alignment.center.inscribe(
+      fittedSizes.destination,
+      Offset.zero & size,
+    );
+
+    canvas.save();
+    canvas.translate(destRect.left, destRect.top);
+    canvas.scale(
+      destRect.width / sourceSize.width,
+      destRect.height / sourceSize.height,
+    );
+    canvas.clipRect(Rect.fromLTWH(0, 0, 6.0, 6.0));
+
+    {
+      // Path
+      {
+        final Path path = Path();
+        path.moveTo(1.0, 5.0);
+        path.arcToPoint(
+          const Offset(3.0, 2.0),
+          radius: const Radius.elliptical(2.0, 2.0),
+          rotation: 0.0,
+          largeArc: false,
+          clockwise: false,
+        );
+        path.arcToPoint(
+          const Offset(5.0, 5.0),
+          radius: const Radius.elliptical(3.0, 3.0),
+          rotation: 0.0,
+          largeArc: false,
+          clockwise: true,
+        );
+        {
+          final Paint paint = Paint();
+          paint.color = const Color(0xFF000000);
+          paint.style = PaintingStyle.stroke;
+          paint.strokeWidth = 1.0;
+          canvas.drawPath(path, paint);
+        }
+      }
+    }
+    {
+      {
+        // Path
+        {
+          final Path path = Path();
+          path.moveTo(1.0, 5.0);
+          path.arcToPoint(
+            const Offset(3.0, 2.0),
+            radius: const Radius.elliptical(2.0, 2.0),
+            rotation: 0.0,
+            largeArc: false,
+            clockwise: false,
+          );
+          path.arcToPoint(
+            const Offset(5.0, 5.0),
+            radius: const Radius.elliptical(3.0, 3.0),
+            rotation: 0.0,
+            largeArc: false,
+            clockwise: true,
+          );
+          {
+            final Paint paint = Paint();
+            paint.color = const Color(0xFFFFC0CB);
+            paint.style = PaintingStyle.stroke;
+            paint.strokeWidth = 0.025;
+            canvas.drawPath(path, paint);
+          }
+        }
+      }
+      {
+        {
+          final Paint paint = Paint();
+          paint.color = const Color(0xFFFFC0CB);
+          paint.style = PaintingStyle.fill;
+          canvas.drawCircle(const Offset(1.0, 5.0), 0.05, paint);
+        }
+      }
+      {
+        {
+          final Paint paint = Paint();
+          paint.color = const Color(0xFFFFC0CB);
+          paint.style = PaintingStyle.fill;
+          canvas.drawCircle(const Offset(3.0, 2.0), 0.05, paint);
+        }
+      }
+      {
+        {
+          final Paint paint = Paint();
+          paint.color = const Color(0xFFFFC0CB);
+          paint.style = PaintingStyle.fill;
+          canvas.drawCircle(const Offset(5.0, 5.0), 0.05, paint);
+        }
+      }
+    }
+    canvas.restore();
+  }
+
+  @override
+  bool shouldRepaint(covariant _$StrokeLinejoinArcsPainter oldDelegate) {
+    return fit != oldDelegate.fit;
+  }
+}
+
+// coverage:ignore-file
+// ignore_for_file: type=lint
+// ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
+
+class _$StrokeLinejoinBevelPainter extends CustomPainter {
+  const _$StrokeLinejoinBevelPainter({this.fit = BoxFit.contain});
+
+  final BoxFit fit;
+
+  Size get viewBox => const Size(6.0, 6.0);
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final FittedSizes fittedSizes = applyBoxFit(
+      fit,
+      const Size(6.0, 6.0),
+      size,
+    );
+    final Size sourceSize = fittedSizes.source;
+    final Rect destRect = Alignment.center.inscribe(
+      fittedSizes.destination,
+      Offset.zero & size,
+    );
+
+    canvas.save();
+    canvas.translate(destRect.left, destRect.top);
+    canvas.scale(
+      destRect.width / sourceSize.width,
+      destRect.height / sourceSize.height,
+    );
+    canvas.clipRect(Rect.fromLTWH(0, 0, 6.0, 6.0));
+
+    {
+      // Path
+      {
+        final Path path = Path();
+        path.moveTo(1.0, 5.0);
+        path.lineTo(3.0, 2.0);
+        path.lineTo(5.0, 5.0);
+        {
+          final Paint paint = Paint();
+          paint.color = const Color(0xFF000000);
+          paint.style = PaintingStyle.stroke;
+          paint.strokeWidth = 1.0;
+          paint.strokeJoin = StrokeJoin.bevel;
+          canvas.drawPath(path, paint);
+        }
+      }
+    }
+    {
+      {
+        // Path
+        {
+          final Path path = Path();
+          path.moveTo(1.0, 5.0);
+          path.lineTo(3.0, 2.0);
+          path.lineTo(5.0, 5.0);
+          {
+            final Paint paint = Paint();
+            paint.color = const Color(0xFFFFC0CB);
+            paint.style = PaintingStyle.stroke;
+            paint.strokeWidth = 0.025;
+            canvas.drawPath(path, paint);
+          }
+        }
+      }
+      {
+        {
+          final Paint paint = Paint();
+          paint.color = const Color(0xFFFFC0CB);
+          paint.style = PaintingStyle.fill;
+          canvas.drawCircle(const Offset(1.0, 5.0), 0.05, paint);
+        }
+      }
+      {
+        {
+          final Paint paint = Paint();
+          paint.color = const Color(0xFFFFC0CB);
+          paint.style = PaintingStyle.fill;
+          canvas.drawCircle(const Offset(3.0, 2.0), 0.05, paint);
+        }
+      }
+      {
+        {
+          final Paint paint = Paint();
+          paint.color = const Color(0xFFFFC0CB);
+          paint.style = PaintingStyle.fill;
+          canvas.drawCircle(const Offset(5.0, 5.0), 0.05, paint);
+        }
+      }
+    }
+    canvas.restore();
+  }
+
+  @override
+  bool shouldRepaint(covariant _$StrokeLinejoinBevelPainter oldDelegate) {
+    return fit != oldDelegate.fit;
+  }
+}
+
+// coverage:ignore-file
+// ignore_for_file: type=lint
+// ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
+
+class _$StrokeLinejoinMiterPainter extends CustomPainter {
+  const _$StrokeLinejoinMiterPainter({this.fit = BoxFit.contain});
+
+  final BoxFit fit;
+
+  Size get viewBox => const Size(10.0, 7.0);
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final FittedSizes fittedSizes = applyBoxFit(
+      fit,
+      const Size(10.0, 7.0),
+      size,
+    );
+    final Size sourceSize = fittedSizes.source;
+    final Rect destRect = Alignment.center.inscribe(
+      fittedSizes.destination,
+      Offset.zero & size,
+    );
+
+    canvas.save();
+    canvas.translate(destRect.left, destRect.top);
+    canvas.scale(
+      destRect.width / sourceSize.width,
+      destRect.height / sourceSize.height,
+    );
+    canvas.clipRect(Rect.fromLTWH(0, 0, 10.0, 7.0));
+
+    {
+      // Path
+      {
+        final Path path = Path();
+        path.moveTo(1.0, 6.0);
+        path.lineTo(3.0, 3.0);
+        path.lineTo(5.0, 6.0);
+        {
+          final Paint paint = Paint();
+          paint.color = const Color(0xFF000000);
+          paint.style = PaintingStyle.stroke;
+          paint.strokeWidth = 1.0;
+          canvas.drawPath(path, paint);
+        }
+      }
+    }
+    {
+      // Path
+      {
+        final Path path = Path();
+        path.moveTo(7.0, 6.0);
+        path.lineTo(7.75, 3.0);
+        path.lineTo(8.5, 6.0);
+        {
+          final Paint paint = Paint();
+          paint.color = const Color(0xFF000000);
+          paint.style = PaintingStyle.stroke;
+          paint.strokeWidth = 1.0;
+          canvas.drawPath(path, paint);
+        }
+      }
+    }
+    {
+      // Path
+      {
+        final Path path = Path();
+        path.moveTo(0.0, 1.0);
+        path.lineTo(10.0, 1.0);
+        {
+          final Paint paint = Paint();
+          paint.color = const Color(0xFF000000);
+          paint.style = PaintingStyle.fill;
+          canvas.drawPath(path, paint);
+        }
+        {
+          final Paint paint = Paint();
+          paint.color = const Color(0xFFFF0000);
+          paint.style = PaintingStyle.stroke;
+          paint.strokeWidth = 0.025;
+          final List<double> dashArray = [0.05];
+          canvas.drawPath(_dashPath(path, dashArray), paint);
+        }
+      }
+    }
+    {
+      {
+        // Path
+        {
+          final Path path = Path();
+          path.moveTo(1.0, 6.0);
+          path.lineTo(3.0, 3.0);
+          path.lineTo(5.0, 6.0);
+          {
+            final Paint paint = Paint();
+            paint.color = const Color(0xFFFFC0CB);
+            paint.style = PaintingStyle.stroke;
+            paint.strokeWidth = 0.025;
+            canvas.drawPath(path, paint);
+          }
+        }
+      }
+      {
+        {
+          final Paint paint = Paint();
+          paint.color = const Color(0xFFFFC0CB);
+          paint.style = PaintingStyle.fill;
+          canvas.drawCircle(const Offset(1.0, 6.0), 0.05, paint);
+        }
+      }
+      {
+        {
+          final Paint paint = Paint();
+          paint.color = const Color(0xFFFFC0CB);
+          paint.style = PaintingStyle.fill;
+          canvas.drawCircle(const Offset(3.0, 3.0), 0.05, paint);
+        }
+      }
+      {
+        {
+          final Paint paint = Paint();
+          paint.color = const Color(0xFFFFC0CB);
+          paint.style = PaintingStyle.fill;
+          canvas.drawCircle(const Offset(5.0, 6.0), 0.05, paint);
+        }
+      }
+      {
+        // Path
+        {
+          final Path path = Path();
+          path.moveTo(7.0, 6.0);
+          path.lineTo(7.75, 3.0);
+          path.lineTo(8.5, 6.0);
+          {
+            final Paint paint = Paint();
+            paint.color = const Color(0xFFFFC0CB);
+            paint.style = PaintingStyle.stroke;
+            paint.strokeWidth = 0.025;
+            canvas.drawPath(path, paint);
+          }
+        }
+      }
+      {
+        {
+          final Paint paint = Paint();
+          paint.color = const Color(0xFFFFC0CB);
+          paint.style = PaintingStyle.fill;
+          canvas.drawCircle(const Offset(7.0, 6.0), 0.05, paint);
+        }
+      }
+      {
+        {
+          final Paint paint = Paint();
+          paint.color = const Color(0xFFFFC0CB);
+          paint.style = PaintingStyle.fill;
+          canvas.drawCircle(const Offset(7.75, 3.0), 0.05, paint);
+        }
+      }
+      {
+        {
+          final Paint paint = Paint();
+          paint.color = const Color(0xFFFFC0CB);
+          paint.style = PaintingStyle.fill;
+          canvas.drawCircle(const Offset(8.5, 6.0), 0.05, paint);
+        }
+      }
+    }
+    canvas.restore();
+  }
+
+  Path _dashPath(Path source, List<double> dashArray, {double? pathLength}) {
+    if (dashArray.isEmpty) return source;
+    final Path dest = Path();
+    for (final metric in source.computeMetrics()) {
+      final double scale = (pathLength != null && pathLength > 0)
+          ? (metric.length / pathLength)
+          : 1.0;
+      double distance = 0.0;
+      int index = 0;
+      bool draw = true;
+      while (distance < metric.length) {
+        final double len = dashArray[index] * scale;
+        if (draw) {
+          final double end = distance + len < metric.length
+              ? distance + len
+              : metric.length;
+          dest.addPath(metric.extractPath(distance, end), Offset.zero);
+        }
+        distance += len;
+        draw = !draw;
+        index = (index + 1) % dashArray.length;
+      }
+    }
+    return dest;
+  }
+
+  @override
+  bool shouldRepaint(covariant _$StrokeLinejoinMiterPainter oldDelegate) {
+    return fit != oldDelegate.fit;
+  }
+}
+
+// coverage:ignore-file
+// ignore_for_file: type=lint
+// ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
+
+class _$StrokeLinejoinMiterClipPainter extends CustomPainter {
+  const _$StrokeLinejoinMiterClipPainter({this.fit = BoxFit.contain});
+
+  final BoxFit fit;
+
+  Size get viewBox => const Size(10.0, 7.0);
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final FittedSizes fittedSizes = applyBoxFit(
+      fit,
+      const Size(10.0, 7.0),
+      size,
+    );
+    final Size sourceSize = fittedSizes.source;
+    final Rect destRect = Alignment.center.inscribe(
+      fittedSizes.destination,
+      Offset.zero & size,
+    );
+
+    canvas.save();
+    canvas.translate(destRect.left, destRect.top);
+    canvas.scale(
+      destRect.width / sourceSize.width,
+      destRect.height / sourceSize.height,
+    );
+    canvas.clipRect(Rect.fromLTWH(0, 0, 10.0, 7.0));
+
+    {
+      // Path
+      {
+        final Path path = Path();
+        path.moveTo(1.0, 6.0);
+        path.lineTo(3.0, 3.0);
+        path.lineTo(5.0, 6.0);
+        {
+          final Paint paint = Paint();
+          paint.color = const Color(0xFF000000);
+          paint.style = PaintingStyle.stroke;
+          paint.strokeWidth = 1.0;
+          canvas.drawPath(path, paint);
+        }
+      }
+    }
+    {
+      // Path
+      {
+        final Path path = Path();
+        path.moveTo(7.0, 6.0);
+        path.lineTo(7.75, 3.0);
+        path.lineTo(8.5, 6.0);
+        {
+          final Paint paint = Paint();
+          paint.color = const Color(0xFF000000);
+          paint.style = PaintingStyle.stroke;
+          paint.strokeWidth = 1.0;
+          canvas.drawPath(path, paint);
+        }
+      }
+    }
+    {
+      // Path
+      {
+        final Path path = Path();
+        path.moveTo(0.0, 1.0);
+        path.lineTo(10.0, 1.0);
+        {
+          final Paint paint = Paint();
+          paint.color = const Color(0xFF000000);
+          paint.style = PaintingStyle.fill;
+          canvas.drawPath(path, paint);
+        }
+        {
+          final Paint paint = Paint();
+          paint.color = const Color(0xFFFF0000);
+          paint.style = PaintingStyle.stroke;
+          paint.strokeWidth = 0.025;
+          final List<double> dashArray = [0.05];
+          canvas.drawPath(_dashPath(path, dashArray), paint);
+        }
+      }
+    }
+    {
+      {
+        // Path
+        {
+          final Path path = Path();
+          path.moveTo(1.0, 6.0);
+          path.lineTo(3.0, 3.0);
+          path.lineTo(5.0, 6.0);
+          {
+            final Paint paint = Paint();
+            paint.color = const Color(0xFFFFC0CB);
+            paint.style = PaintingStyle.stroke;
+            paint.strokeWidth = 0.025;
+            canvas.drawPath(path, paint);
+          }
+        }
+      }
+      {
+        {
+          final Paint paint = Paint();
+          paint.color = const Color(0xFFFFC0CB);
+          paint.style = PaintingStyle.fill;
+          canvas.drawCircle(const Offset(1.0, 6.0), 0.05, paint);
+        }
+      }
+      {
+        {
+          final Paint paint = Paint();
+          paint.color = const Color(0xFFFFC0CB);
+          paint.style = PaintingStyle.fill;
+          canvas.drawCircle(const Offset(3.0, 3.0), 0.05, paint);
+        }
+      }
+      {
+        {
+          final Paint paint = Paint();
+          paint.color = const Color(0xFFFFC0CB);
+          paint.style = PaintingStyle.fill;
+          canvas.drawCircle(const Offset(5.0, 6.0), 0.05, paint);
+        }
+      }
+      {
+        // Path
+        {
+          final Path path = Path();
+          path.moveTo(7.0, 6.0);
+          path.lineTo(7.75, 3.0);
+          path.lineTo(8.5, 6.0);
+          {
+            final Paint paint = Paint();
+            paint.color = const Color(0xFFFFC0CB);
+            paint.style = PaintingStyle.stroke;
+            paint.strokeWidth = 0.025;
+            canvas.drawPath(path, paint);
+          }
+        }
+      }
+      {
+        {
+          final Paint paint = Paint();
+          paint.color = const Color(0xFFFFC0CB);
+          paint.style = PaintingStyle.fill;
+          canvas.drawCircle(const Offset(7.0, 6.0), 0.05, paint);
+        }
+      }
+      {
+        {
+          final Paint paint = Paint();
+          paint.color = const Color(0xFFFFC0CB);
+          paint.style = PaintingStyle.fill;
+          canvas.drawCircle(const Offset(7.75, 3.0), 0.05, paint);
+        }
+      }
+      {
+        {
+          final Paint paint = Paint();
+          paint.color = const Color(0xFFFFC0CB);
+          paint.style = PaintingStyle.fill;
+          canvas.drawCircle(const Offset(8.5, 6.0), 0.05, paint);
+        }
+      }
+    }
+    canvas.restore();
+  }
+
+  Path _dashPath(Path source, List<double> dashArray, {double? pathLength}) {
+    if (dashArray.isEmpty) return source;
+    final Path dest = Path();
+    for (final metric in source.computeMetrics()) {
+      final double scale = (pathLength != null && pathLength > 0)
+          ? (metric.length / pathLength)
+          : 1.0;
+      double distance = 0.0;
+      int index = 0;
+      bool draw = true;
+      while (distance < metric.length) {
+        final double len = dashArray[index] * scale;
+        if (draw) {
+          final double end = distance + len < metric.length
+              ? distance + len
+              : metric.length;
+          dest.addPath(metric.extractPath(distance, end), Offset.zero);
+        }
+        distance += len;
+        draw = !draw;
+        index = (index + 1) % dashArray.length;
+      }
+    }
+    return dest;
+  }
+
+  @override
+  bool shouldRepaint(covariant _$StrokeLinejoinMiterClipPainter oldDelegate) {
+    return fit != oldDelegate.fit;
+  }
+}
+
+// coverage:ignore-file
+// ignore_for_file: type=lint
+// ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
+
+class _$StrokeLinejoinRoundPainter extends CustomPainter {
+  const _$StrokeLinejoinRoundPainter({this.fit = BoxFit.contain});
+
+  final BoxFit fit;
+
+  Size get viewBox => const Size(6.0, 6.0);
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final FittedSizes fittedSizes = applyBoxFit(
+      fit,
+      const Size(6.0, 6.0),
+      size,
+    );
+    final Size sourceSize = fittedSizes.source;
+    final Rect destRect = Alignment.center.inscribe(
+      fittedSizes.destination,
+      Offset.zero & size,
+    );
+
+    canvas.save();
+    canvas.translate(destRect.left, destRect.top);
+    canvas.scale(
+      destRect.width / sourceSize.width,
+      destRect.height / sourceSize.height,
+    );
+    canvas.clipRect(Rect.fromLTWH(0, 0, 6.0, 6.0));
+
+    {
+      // Path
+      {
+        final Path path = Path();
+        path.moveTo(1.0, 5.0);
+        path.lineTo(3.0, 2.0);
+        path.lineTo(5.0, 5.0);
+        {
+          final Paint paint = Paint();
+          paint.color = const Color(0xFF000000);
+          paint.style = PaintingStyle.stroke;
+          paint.strokeWidth = 1.0;
+          paint.strokeJoin = StrokeJoin.round;
+          canvas.drawPath(path, paint);
+        }
+      }
+    }
+    {
+      {
+        // Path
+        {
+          final Path path = Path();
+          path.moveTo(1.0, 5.0);
+          path.lineTo(3.0, 2.0);
+          path.lineTo(5.0, 5.0);
+          {
+            final Paint paint = Paint();
+            paint.color = const Color(0xFFFFC0CB);
+            paint.style = PaintingStyle.stroke;
+            paint.strokeWidth = 0.025;
+            canvas.drawPath(path, paint);
+          }
+        }
+      }
+      {
+        {
+          final Paint paint = Paint();
+          paint.color = const Color(0xFFFFC0CB);
+          paint.style = PaintingStyle.fill;
+          canvas.drawCircle(const Offset(1.0, 5.0), 0.05, paint);
+        }
+      }
+      {
+        {
+          final Paint paint = Paint();
+          paint.color = const Color(0xFFFFC0CB);
+          paint.style = PaintingStyle.fill;
+          canvas.drawCircle(const Offset(3.0, 2.0), 0.05, paint);
+        }
+      }
+      {
+        {
+          final Paint paint = Paint();
+          paint.color = const Color(0xFFFFC0CB);
+          paint.style = PaintingStyle.fill;
+          canvas.drawCircle(const Offset(5.0, 5.0), 0.05, paint);
+        }
+      }
+    }
+    canvas.restore();
+  }
+
+  @override
+  bool shouldRepaint(covariant _$StrokeLinejoinRoundPainter oldDelegate) {
+    return fit != oldDelegate.fit;
+  }
+}

@@ -8,3 +8,28 @@ part 'stroke_linejoin_painter.g.dart';
 class StrokeLinejoinPainter extends _$StrokeLinejoinPainter {
   const StrokeLinejoinPainter({super.fit});
 }
+
+@SvgCodePainter(mdnStrokeLinejoinArcsExample)
+class StrokeLinejoinArcsPainter extends _$StrokeLinejoinArcsPainter {
+  const StrokeLinejoinArcsPainter({super.fit});
+}
+
+@SvgCodePainter(mdnStrokeLinejoinBevelExample)
+class StrokeLinejoinBevelPainter extends _$StrokeLinejoinBevelPainter {
+  const StrokeLinejoinBevelPainter({super.fit});
+}
+
+@SvgCodePainter(mdnStrokeLinejoinMiterExample)
+class StrokeLinejoinMiterPainter extends _$StrokeLinejoinMiterPainter {
+  const StrokeLinejoinMiterPainter({super.fit});
+}
+
+@SvgCodePainter(mdnStrokeLinejoinMiterClipExample)
+class StrokeLinejoinMiterClipPainter extends _$StrokeLinejoinMiterClipPainter {
+  const StrokeLinejoinMiterClipPainter({super.fit});
+}
+
+@SvgCodePainter(mdnStrokeLinejoinRoundExample)
+class StrokeLinejoinRoundPainter extends _$StrokeLinejoinRoundPainter {
+  const StrokeLinejoinRoundPainter({super.fit});
+}
