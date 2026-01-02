@@ -114,8 +114,8 @@ Future<void> testDualResolutionPainter({
   String? folder,
 }) async {
   final String goldenPath = switch (type) {
-    SvgTestType.mdn || SvgTestType.w3c => '$folder/goldens',
-    SvgTestType.various => 'goldens',
+    .mdn || .w3c => '$folder/goldens',
+    .various => 'goldens',
   };
 
   await testSvgPainter(

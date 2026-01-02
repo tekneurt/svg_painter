@@ -16,44 +16,44 @@ extension XmlElementToSvgElement on XmlElement {
     }
 
     switch (elementName) {
-      case XmlElementName.svg:
+      case .svg:
         return toSvgRoot();
-      case XmlElementName.circle:
+      case .circle:
         return toSvgCircle();
-      case XmlElementName.ellipse:
+      case .ellipse:
         return toSvgEllipse();
-      case XmlElementName.rect:
+      case .rect:
         return toSvgRect();
-      case XmlElementName.line:
+      case .line:
         return toSvgLine();
-      case XmlElementName.path:
+      case .path:
         return toSvgPath();
-      case XmlElementName.polyline:
+      case .polyline:
         return toSvgPolyline();
-      case XmlElementName.polygon:
+      case .polygon:
         return toSvgPolygon();
-      case XmlElementName.defs:
+      case .defs:
         return toSvgDefs();
-      case XmlElementName.g:
+      case .g:
         return toSvgGroup();
-      case XmlElementName.use:
+      case .use:
         return toSvgUse();
-      case XmlElementName.radialGradient:
+      case .radialGradient:
         return toSvgRadialGradient();
-      case XmlElementName.linearGradient:
+      case .linearGradient:
         return toSvgLinearGradient();
-      case XmlElementName.stop:
+      case .stop:
         return toSvgStop();
-      case XmlElementName.style:
+      case .style:
         return toSvgStyle();
-      case XmlElementName.text:
+      case .text:
         return toSvgText();
-      case XmlElementName.title:
+      case .title:
         return Success<SvgTitle>(SvgTitle(
           content: innerText.trim(),
           id: getXmlAttributeValue(XmlAttributeName.id),
         ));
-      case XmlElementName.desc:
+      case .desc:
         return Success<SvgDesc>(SvgDesc(
           content: innerText.trim(),
           id: getXmlAttributeValue(XmlAttributeName.id),

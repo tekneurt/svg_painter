@@ -140,7 +140,7 @@ PaintingStyle resolvePaint(
   }
 
   // 4. Resolve element opacity (group opacity)
-  final double selfOpacity = (cssOpacity ?? opacity)?.toDouble(context, SvgOrientation.unit) ?? 1.0;
+  final double selfOpacity = (cssOpacity ?? opacity)?.toDouble(context, .unit) ?? 1.0;
   final double elementOpacity = selfOpacity * context.parentOpacity;
 
   // 5. Resolve final values using priority: Inline Style/CSS > Presentation Attribute > Inherited
@@ -160,7 +160,7 @@ PaintingStyle resolvePaint(
         elementOpacity *
         ((cssFillOpacity ?? fillOpacity ?? context.inheritedFillOpacity)?.toDouble(
               context,
-              SvgOrientation.unit,
+              .unit,
             ) ??
             1.0);
 
@@ -185,7 +185,7 @@ PaintingStyle resolvePaint(
 
     final SvgLengthPercentage? sw = cssStrokeWidth ?? strokeWidth ?? context.inheritedStrokeWidth;
     final double finalStrokeWidth = context.scaleNormalized(
-      sw?.toDouble(context, SvgOrientation.normalized) ?? 1.0,
+      sw?.toDouble(context, .normalized) ?? 1.0,
     );
 
     final SvgPointList? sda =
@@ -199,19 +199,19 @@ PaintingStyle resolvePaint(
     final double? finalPathLength = pLength?.value;
 
     final SvgStrokeLinecap resolvedCap =
-        cssStrokeLinecap ?? strokeLinecap ?? context.inheritedStrokeLinecap ?? SvgStrokeLinecap.butt;
+        cssStrokeLinecap ?? strokeLinecap ?? context.inheritedStrokeLinecap ?? .butt;
 
     final SvgStrokeLinejoin resolvedJoin =
         cssStrokeLinejoin ??
         strokeLinejoin ??
         context.inheritedStrokeLinejoin ??
-        SvgStrokeLinejoin.miter;
+        .miter;
 
     final double finalStrokeOpacity =
         elementOpacity *
         ((cssStrokeOpacity ?? strokeOpacity ?? context.inheritedStrokeOpacity)?.toDouble(
               context,
-              SvgOrientation.unit,
+              .unit,
             ) ??
             1.0);
 
@@ -229,7 +229,7 @@ PaintingStyle resolvePaint(
 
   final double? rawFontSize = (cssFontSize ?? fontSize ?? context.inheritedFontSize)?.toDouble(
     context,
-    SvgOrientation.vertical,
+    .vertical,
   );
   final double? finalFontSize = rawFontSize != null ? context.scaleVertical(rawFontSize) : null;
 
@@ -263,9 +263,9 @@ PaintingStyle resolvePaint(
 extension on SvgStrokeLinecap {
   PaintingStrokeCap toStrokeCap() {
     return switch (this) {
-      SvgStrokeLinecap.butt => PaintingStrokeCap.butt,
-      SvgStrokeLinecap.round => PaintingStrokeCap.round,
-      SvgStrokeLinecap.square => PaintingStrokeCap.square,
+      .butt => .butt,
+      .round => .round,
+      .square => .square,
     };
   }
 }
@@ -273,11 +273,11 @@ extension on SvgStrokeLinecap {
 extension on SvgStrokeLinejoin {
   PaintingStrokeJoin toStrokeJoin() {
     return switch (this) {
-      SvgStrokeLinejoin.miter => PaintingStrokeJoin.miter,
-      SvgStrokeLinejoin.round => PaintingStrokeJoin.round,
-      SvgStrokeLinejoin.bevel => PaintingStrokeJoin.bevel,
-      SvgStrokeLinejoin.miterClip => PaintingStrokeJoin.miter,
-      SvgStrokeLinejoin.arcs => PaintingStrokeJoin.miter,
+      .miter => .miter,
+      .round => .round,
+      .bevel => .bevel,
+      .miterClip => .miter,
+      .arcs => .miter,
     };
   }
 }

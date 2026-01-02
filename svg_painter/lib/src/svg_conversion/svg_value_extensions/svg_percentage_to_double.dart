@@ -6,10 +6,10 @@ extension SvgPercentageToValue on SvgPercentage {
   double toDouble(SvgPaintingContext context, SvgOrientation orientation) {
     final double percentage = value / 100.0;
     return switch (orientation) {
-      SvgOrientation.horizontal => percentage * context.viewBoxWidth,
-      SvgOrientation.vertical => percentage * context.viewBoxHeight,
-      SvgOrientation.normalized => percentage * context.viewBoxNormalizedDiagonal,
-      SvgOrientation.unit => percentage,
+      .horizontal => percentage * context.viewBoxWidth,
+      .vertical => percentage * context.viewBoxHeight,
+      .normalized => percentage * context.viewBoxNormalizedDiagonal,
+      .unit => percentage,
     };
   }
 }

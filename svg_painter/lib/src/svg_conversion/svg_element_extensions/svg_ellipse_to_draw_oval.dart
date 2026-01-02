@@ -4,7 +4,6 @@ import '../../svg_model/_svg_model.dart';
 import '../converters/_converters.dart';
 import '../svg_transform_parser.dart';
 import '../svg_value_extensions/svg_length_percentage_to_double.dart';
-import '../svg_value_extensions/svg_percentage_to_double.dart';
 
 /// Extension to convert [SvgEllipse] to [PaintCommand]s.
 extension SvgEllipseToPainting on SvgEllipse {
@@ -38,8 +37,8 @@ extension SvgEllipseToPainting on SvgEllipse {
     );
 
     // Apply transformation
-    final double finalCx = context.transformX(cx.toPosition(context, SvgOrientation.horizontal));
-    final double finalCy = context.transformY(cy.toPosition(context, SvgOrientation.vertical));
+    final double finalCx = context.transformX(cx.toPosition(context, .horizontal));
+    final double finalCy = context.transformY(cy.toPosition(context, .vertical));
     final double finalRx = context.scaleHorizontal(initialRx);
     final double finalRy = context.scaleVertical(initialRy);
 

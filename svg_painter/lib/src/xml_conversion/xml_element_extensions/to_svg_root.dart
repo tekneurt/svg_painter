@@ -9,7 +9,6 @@ extension ElementToSvgRoot on XmlElement {
   /// Converts this [XmlElement] to an [SvgRoot].
   Result<SvgRoot> toSvgRoot() {
     const XmlElementName elementName = XmlElementName.svg;
-    final List<SvgElement> childElements = <SvgElement>[];
 
     // Collect all CSS rules from <style> elements
     final List<Map<String, Map<String, String>>> allRules = <Map<String, Map<String, String>>>[];

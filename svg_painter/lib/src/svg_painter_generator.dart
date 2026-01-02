@@ -204,15 +204,31 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
 
   bool _hasDashes(List<PaintCommand> commands) {
     for (final PaintCommand command in commands) {
-              if (command is DrawCircle && command.style.stroke?.dashArray != null) return true;
-              if (command is DrawOval && command.style.stroke?.dashArray != null) return true;
-              if (command is DrawRect && command.style.stroke?.dashArray != null) return true;
-              if (command is DrawText && command.style.stroke?.dashArray != null) return true;
-              if (command is DrawPath && command.style.stroke?.dashArray != null) return true;
-              if (command is DrawLine && command.style.stroke?.dashArray != null) return true;
-              if (command is DrawPolyline && command.style.stroke?.dashArray != null) return true;
-              if (command is DrawPolygon && command.style.stroke?.dashArray != null) return true;
-      
+      if (command is DrawCircle && command.style.stroke?.dashArray != null) {
+        return true;
+      }
+      if (command is DrawOval && command.style.stroke?.dashArray != null) {
+        return true;
+      }
+      if (command is DrawRect && command.style.stroke?.dashArray != null) {
+        return true;
+      }
+      if (command is DrawText && command.style.stroke?.dashArray != null) {
+        return true;
+      }
+      if (command is DrawPath && command.style.stroke?.dashArray != null) {
+        return true;
+      }
+      if (command is DrawLine && command.style.stroke?.dashArray != null) {
+        return true;
+      }
+      if (command is DrawPolyline && command.style.stroke?.dashArray != null) {
+        return true;
+      }
+      if (command is DrawPolygon && command.style.stroke?.dashArray != null) {
+        return true;
+      }
+
       if (command is DrawGroup) {
         if (_hasDashes(command.commands)) {
           return true;

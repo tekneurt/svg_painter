@@ -29,7 +29,7 @@ void main() {
           tester: tester,
           painter: fixture.painter,
           name: fixture.name,
-          type: SvgTestType.w3c,
+          type: .w3c,
           folder: 'shapes',
         );
       });

@@ -39,8 +39,8 @@ void main() {
       final SvgLengthPercentage result = '10foo'.toSvgLengthPercentage();
       expect(result, isA<SvgLength>());
       final SvgLength length = result as SvgLength;
-      expect(length.value, 10.0); // Now it should parse the number
-      expect(length.unit, SvgLengthUnit.none); // And unit should be none
+      expect(length.value, 10.0);
+      expect(length.unit, SvgLengthUnit.none);
     });
 
     test('parses empty string as 0', () {

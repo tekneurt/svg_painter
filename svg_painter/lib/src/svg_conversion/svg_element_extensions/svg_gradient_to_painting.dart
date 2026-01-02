@@ -4,7 +4,6 @@ import '../../svg_model/_svg_model.dart';
 import '../converters/svg_painting_context.dart';
 import '../svg_value_extensions/svg_color_to_int.dart';
 import '../svg_value_extensions/svg_length_percentage_to_double.dart';
-import '../svg_value_extensions/svg_percentage_to_double.dart';
 
 extension SvgRadialGradientToPainting on SvgRadialGradient {
   Result<DefineRadialGradient> toPaintCommand(SvgPaintingContext context) {
@@ -21,14 +20,14 @@ extension SvgRadialGradientToPainting on SvgRadialGradient {
 
     final List<GradientStop> paintStops = stops.map((SvgStop stop) {
       int argb = stop.stopColor.toFillArgb();
-      final double opacity = stop.stopOpacity.toDouble(fractionContext, SvgOrientation.unit);
+      final double opacity = stop.stopOpacity.toDouble(fractionContext, .unit);
       if (opacity < 1.0) {
         int alpha = (argb >> 24) & 0xFF;
         alpha = (alpha * opacity).round().clamp(0, 255);
         argb = (argb & 0x00FFFFFF) | (alpha << 24);
       }
       return GradientStop(
-        stop.offset.toDouble(fractionContext, SvgOrientation.normalized),
+        stop.offset.toDouble(fractionContext, .normalized),
         argb,
       );
     }).toList();
@@ -36,12 +35,12 @@ extension SvgRadialGradientToPainting on SvgRadialGradient {
     return Success<DefineRadialGradient>(
       DefineRadialGradient(
         id: id!,
-        cx: cx.toDouble(fractionContext, SvgOrientation.horizontal),
-        cy: cy.toDouble(fractionContext, SvgOrientation.vertical),
-        radius: r.toDouble(fractionContext, SvgOrientation.normalized),
-        fx: fx.toDouble(fractionContext, SvgOrientation.horizontal),
-        fy: fy.toDouble(fractionContext, SvgOrientation.vertical),
-        focalRadius: fr.toDouble(fractionContext, SvgOrientation.normalized),
+        cx: cx.toDouble(fractionContext, .horizontal),
+        cy: cy.toDouble(fractionContext, .vertical),
+        radius: r.toDouble(fractionContext, .normalized),
+        fx: fx.toDouble(fractionContext, .horizontal),
+        fy: fy.toDouble(fractionContext, .vertical),
+        focalRadius: fr.toDouble(fractionContext, .normalized),
         stops: paintStops,
         transform: gradientTransform,
       ),
@@ -64,14 +63,14 @@ extension SvgLinearGradientToPainting on SvgLinearGradient {
 
     final List<GradientStop> paintStops = stops.map((SvgStop stop) {
       int argb = stop.stopColor.toFillArgb();
-      final double opacity = stop.stopOpacity.toDouble(fractionContext, SvgOrientation.unit);
+      final double opacity = stop.stopOpacity.toDouble(fractionContext, .unit);
       if (opacity < 1.0) {
         int alpha = (argb >> 24) & 0xFF;
         alpha = (alpha * opacity).round().clamp(0, 255);
         argb = (argb & 0x00FFFFFF) | (alpha << 24);
       }
       return GradientStop(
-        stop.offset.toDouble(fractionContext, SvgOrientation.normalized),
+        stop.offset.toDouble(fractionContext, .normalized),
         argb,
       );
     }).toList();
@@ -79,10 +78,10 @@ extension SvgLinearGradientToPainting on SvgLinearGradient {
     return Success<DefineLinearGradient>(
       DefineLinearGradient(
         id: id!,
-        x1: x1.toDouble(fractionContext, SvgOrientation.horizontal),
-        y1: y1.toDouble(fractionContext, SvgOrientation.vertical),
-        x2: x2.toDouble(fractionContext, SvgOrientation.horizontal),
-        y2: y2.toDouble(fractionContext, SvgOrientation.vertical),
+        x1: x1.toDouble(fractionContext, .horizontal),
+        y1: y1.toDouble(fractionContext, .vertical),
+        x2: x2.toDouble(fractionContext, .horizontal),
+        y2: y2.toDouble(fractionContext, .vertical),
         stops: paintStops,
         transform: gradientTransform,
       ),

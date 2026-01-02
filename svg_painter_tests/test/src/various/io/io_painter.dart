@@ -5,4 +5,6 @@ import 'package:svg_painter_fixtures/svg_painter_fixtures.dart';
 part 'io_painter.g.dart';
 
 @SvgPainter.file(ioTestFileSvgPath)
-class IoPainter extends _$IoPainter {}
+class IoPainter extends _$IoPainter {
+  const IoPainter({super.fit});
+}

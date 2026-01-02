@@ -27,17 +27,17 @@ import 'attributes/view_box_1_painter.dart';
 import 'attributes/view_box_2_painter.dart';
 import 'attributes/view_box_3_painter.dart';
 import 'attributes/width_painter.dart';
-import 'attributes/x1_line_painter.dart';
 import 'attributes/x1_examples_painter.dart';
+import 'attributes/x1_line_painter.dart';
 import 'attributes/x1_linear_gradient_painter.dart';
-import 'attributes/x2_line_painter.dart';
 import 'attributes/x2_examples_painter.dart';
+import 'attributes/x2_line_painter.dart';
 import 'attributes/x2_linear_gradient_painter.dart';
-import 'attributes/y1_line_painter.dart';
 import 'attributes/y1_examples_painter.dart';
+import 'attributes/y1_line_painter.dart';
 import 'attributes/y1_linear_gradient_painter.dart';
-import 'attributes/y2_line_painter.dart';
 import 'attributes/y2_examples_painter.dart';
+import 'attributes/y2_line_painter.dart';
 import 'attributes/y2_linear_gradient_painter.dart';
 
 final List<({CustomPainter painter, String name})> _fixtures =
@@ -103,7 +103,7 @@ void main() {
           tester: tester,
           painter: fixture.painter,
           name: fixture.name,
-          type: SvgTestType.mdn,
+          type: .mdn,
           folder: 'attributes',
         );
       });

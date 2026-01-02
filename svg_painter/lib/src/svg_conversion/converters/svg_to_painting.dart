@@ -14,7 +14,6 @@ import '../svg_transform_parser.dart';
 import '../svg_value_extensions/svg_auto_to_double.dart';
 import '../svg_value_extensions/svg_length_percentage_to_double.dart';
 import '../svg_value_extensions/svg_length_to_double.dart';
-import '../svg_value_extensions/svg_percentage_to_double.dart';
 import 'svg_definition_collector.dart';
 import 'svg_painting_context.dart';
 
@@ -58,7 +57,7 @@ extension SvgToPainting on SvgElement {
         // Opacity on root element.
         parentOpacity: self.opacity?.toDouble(
               const SvgPaintingContext(viewBoxWidth: 1, viewBoxHeight: 1),
-              SvgOrientation.unit,
+              .unit,
             ) ??
             1.0,
         inheritedFontSize: self.fontSize,
@@ -86,7 +85,7 @@ extension SvgToPainting on SvgElement {
             inheritedStrokeLinejoin: self.strokeLinejoin ?? context.inheritedStrokeLinejoin,
             // Multiply parent opacity with current element opacity.
             parentOpacity: context.parentOpacity *
-                (self.opacity?.toDouble(context, SvgOrientation.unit) ?? 1.0),
+                (self.opacity?.toDouble(context, .unit) ?? 1.0),
             inheritedFontSize: self.fontSize ?? context.inheritedFontSize,
             inheritedFontWeight: self.fontWeight ?? context.inheritedFontWeight,
             inheritedFontStyle: self.fontStyle ?? context.inheritedFontStyle,
@@ -137,8 +136,8 @@ extension _SvgUseToPainting on SvgUse {
     }
 
     // 3. Apply x/y translation (relative to current user space)
-    final double dx = x.toDouble(context, SvgOrientation.horizontal);
-    final double dy = y.toDouble(context, SvgOrientation.vertical);
+    final double dx = x.toDouble(context, .horizontal);
+    final double dy = y.toDouble(context, .vertical);
 
     // Create context for target, preserving inherited styles.
     // Note: <use> offsets the origin by (dx, dy) in the current space.
@@ -177,13 +176,13 @@ extension _SvgDefsToPainting on SvgDefs {
 extension _SvgSvgToPainting on SvgSvg {
   Result<List<PaintCommand>> _toPaintCommands(SvgPaintingContext context) {
     // 1. Resolve viewport geometry (relative to parent coordinate system)
-    final double xVal = (x ?? const SvgLength(0.0)).toDouble(context, SvgOrientation.horizontal);
-    final double yVal = (y ?? const SvgLength(0.0)).toDouble(context, SvgOrientation.vertical);
+    final double xVal = (x ?? const SvgLength(0.0)).toDouble(context, .horizontal);
+    final double yVal = (y ?? const SvgLength(0.0)).toDouble(context, .vertical);
 
     final double wVal =
-        width?.toDoubleOrNull(context, SvgOrientation.horizontal) ?? context.viewBoxWidth;
+        width?.toDoubleOrNull(context, .horizontal) ?? context.viewBoxWidth;
     final double hVal =
-        height?.toDoubleOrNull(context, SvgOrientation.vertical) ?? context.viewBoxHeight;
+        height?.toDoubleOrNull(context, .vertical) ?? context.viewBoxHeight;
 
     // ViewBox establishes the internal coordinate system mapping.
     final double vbW = viewBox?.width ?? wVal;

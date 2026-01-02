@@ -50,7 +50,7 @@ void main() {
           tester: tester,
           painter: fixture.painter,
           name: fixture.name,
-          type: SvgTestType.mdn,
+          type: .mdn,
           folder: 'elements',
         );
       });

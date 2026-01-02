@@ -166,9 +166,9 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
 extension on PaintingStrokeCap {
   String toFlutterString() {
     return switch (this) {
-      PaintingStrokeCap.butt => 'StrokeCap.butt',
-      PaintingStrokeCap.round => 'StrokeCap.round',
-      PaintingStrokeCap.square => 'StrokeCap.square',
+      .butt => 'StrokeCap.butt',
+      .round => 'StrokeCap.round',
+      .square => 'StrokeCap.square',
     };
   }
 }
@@ -176,9 +176,9 @@ extension on PaintingStrokeCap {
 extension on PaintingStrokeJoin {
   String toFlutterString() {
     return switch (this) {
-      PaintingStrokeJoin.miter => 'StrokeJoin.miter',
-      PaintingStrokeJoin.round => 'StrokeJoin.round',
-      PaintingStrokeJoin.bevel => 'StrokeJoin.bevel',
+      .miter => 'StrokeJoin.miter',
+      .round => 'StrokeJoin.round',
+      .bevel => 'StrokeJoin.bevel',
     };
   }
 }
