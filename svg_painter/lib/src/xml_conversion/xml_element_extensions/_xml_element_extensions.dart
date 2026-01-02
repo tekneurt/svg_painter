@@ -1,5 +1,4 @@
-export 'get_common_attributes.dart';
-export 'get_xml_attribute_value.dart';
+export 'to_common_attributes.dart';
 export 'to_svg_circle.dart';
 export 'to_svg_defs.dart';
 export 'to_svg_element.dart';
@@ -18,3 +17,4 @@ export 'to_svg_style.dart';
 export 'to_svg_text.dart';
 export 'to_svg_use.dart';
 export 'to_svg_value.dart';
+export 'to_xml_attribute_value.dart';

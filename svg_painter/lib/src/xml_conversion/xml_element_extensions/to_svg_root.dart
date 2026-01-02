@@ -5,7 +5,7 @@ import '../../svg_model/_svg_model.dart';
 import '../../xml_model/_xml_model.dart';
 import '../_xml_conversion.dart';
 
-extension ElementToSvgRoot on XmlElement {
+extension ToSvgRoot on XmlElement {
   /// Converts this [XmlElement] to an [SvgRoot].
   Result<SvgRoot> toSvgRoot() {
     const XmlElementName elementName = XmlElementName.svg;
@@ -48,9 +48,9 @@ extension ElementToSvgRoot on XmlElement {
       elementName,
       XmlAttributeName.y,
     );
-    final SvgViewBox? viewBox = getXmlAttributeValue(XmlAttributeName.viewBox)?.toSvgViewBox();
+    final SvgViewBox? viewBox = toXmlAttributeValue(XmlAttributeName.viewBox)?.toSvgViewBox();
 
-    final CommonAttributes common = getCommonAttributes(elementName);
+    final CommonAttributes common = toCommonAttributes(elementName);
 
     return childrenResult.map(
       (List<SvgElement> childElements) => SvgRoot(

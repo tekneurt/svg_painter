@@ -5,7 +5,7 @@ import '../../svg_model/_svg_model.dart';
 import '../../xml_model/_xml_model.dart';
 import '../_xml_conversion.dart';
 
-extension ElementToSvgEllipse on XmlElement {
+extension ToSvgEllipse on XmlElement {
   /// Converts this [XmlElement] to an [SvgEllipse].
   Result<SvgEllipse> toSvgEllipse() {
     const XmlElementName elementName = XmlElementName.ellipse;
@@ -27,7 +27,7 @@ extension ElementToSvgEllipse on XmlElement {
       XmlAttributeName.ry,
     );
 
-    final CommonAttributes common = getCommonAttributes(elementName);
+    final CommonAttributes common = toCommonAttributes(elementName);
 
     return Success<SvgEllipse>(
       SvgEllipse(

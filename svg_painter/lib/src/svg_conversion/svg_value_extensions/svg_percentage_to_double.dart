@@ -1,9 +1,9 @@
 import '../../svg_model/_svg_model.dart';
 import '../converters/svg_painting_context.dart';
 
-extension SvgPercentageToValue on SvgPercentage {
+extension SvgPercentageToDouble on SvgPercentage {
   /// Converts this [SvgPercentage] to a double value based on context and orientation.
-  double toDouble(SvgPaintingContext context, SvgOrientation orientation) {
+  double resolve(SvgPaintingContext context, SvgOrientation orientation) {
     final double percentage = value / 100.0;
     return switch (orientation) {
       .horizontal => percentage * context.viewBoxWidth,

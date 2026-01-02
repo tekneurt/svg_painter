@@ -2,7 +2,7 @@ import 'dart:math';
 import '../../svg_model/_svg_model.dart';
 import '../converters/svg_painting_context.dart';
 
-extension SvgLengthToValue on SvgLength {
+extension SvgLengthToDouble on SvgLength {
   double toDouble([SvgPaintingContext? context]) {
     const double dpi = 96.0;
 

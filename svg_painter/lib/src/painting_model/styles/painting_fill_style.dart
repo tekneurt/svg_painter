@@ -3,11 +3,7 @@ part of 'painting_style.dart';
 /// Represents the filling style for an SVG element.
 @immutable
 final class PaintingFillStyle {
-  const PaintingFillStyle({
-    this.colorArgb,
-    this.shaderId,
-    this.opacity = 1.0,
-  });
+  const PaintingFillStyle({this.colorArgb, this.shaderId, this.opacity = 1.0});
 
   /// The ARGB integer for the fill color.
   final int? colorArgb;

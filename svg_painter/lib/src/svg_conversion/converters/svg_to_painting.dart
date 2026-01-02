@@ -18,7 +18,7 @@ import 'svg_definition_collector.dart';
 import 'svg_painting_context.dart';
 
 /// Extension to convert [SvgElement] to [PaintCommand]s.
-extension SvgToPainting on SvgElement {
+extension SvgElementToPaintCommands on SvgElement {
   /// Converts this [SvgElement] to a list of [PaintCommand]s.
   Result<List<PaintCommand>> toPaintCommands([SvgPaintingContext? context]) {
     final SvgElement self = this;
@@ -55,7 +55,8 @@ extension SvgToPainting on SvgElement {
         inheritedStrokeLinecap: self.strokeLinecap,
         inheritedStrokeLinejoin: self.strokeLinejoin,
         // Opacity on root element.
-        parentOpacity: self.opacity?.toDouble(
+        parentOpacity:
+            self.opacity?.resolve(
               const SvgPaintingContext(viewBoxWidth: 1, viewBoxHeight: 1),
               .unit,
             ) ??
@@ -84,8 +85,7 @@ extension SvgToPainting on SvgElement {
             inheritedStrokeLinecap: self.strokeLinecap ?? context.inheritedStrokeLinecap,
             inheritedStrokeLinejoin: self.strokeLinejoin ?? context.inheritedStrokeLinejoin,
             // Multiply parent opacity with current element opacity.
-            parentOpacity: context.parentOpacity *
-                (self.opacity?.toDouble(context, .unit) ?? 1.0),
+            parentOpacity: context.parentOpacity * (self.opacity?.resolve(context, .unit) ?? 1.0),
             inheritedFontSize: self.fontSize ?? context.inheritedFontSize,
             inheritedFontWeight: self.fontWeight ?? context.inheritedFontWeight,
             inheritedFontStyle: self.fontStyle ?? context.inheritedFontStyle,
@@ -116,13 +116,12 @@ extension SvgToPainting on SvgElement {
             .map((DefineLinearGradient cmd) => <PaintCommand>[cmd]),
       final SvgStop _ ||
       final SvgStyle _ ||
-      final SvgMetadataElement _ =>
-        const Success<List<PaintCommand>>(<PaintCommand>[]),
+      final SvgMetadataElement _ => const Success<List<PaintCommand>>(<PaintCommand>[]),
     };
   }
 }
 
-extension _SvgUseToPainting on SvgUse {
+extension _SvgUseToPaintCommands on SvgUse {
   Result<List<PaintCommand>> _toPaintCommands(SvgPaintingContext context) {
     // 1. Resolve ID from href (remove leading #)
     final String targetId = href.startsWith('#') ? href.substring(1) : href;
@@ -136,8 +135,8 @@ extension _SvgUseToPainting on SvgUse {
     }
 
     // 3. Apply x/y translation (relative to current user space)
-    final double dx = x.toDouble(context, .horizontal);
-    final double dy = y.toDouble(context, .vertical);
+    final double dx = x.resolve(context, .horizontal);
+    final double dy = y.resolve(context, .vertical);
 
     // Create context for target, preserving inherited styles.
     // Note: <use> offsets the origin by (dx, dy) in the current space.
@@ -157,32 +156,27 @@ extension _SvgUseToPainting on SvgUse {
   }
 }
 
-extension _SvgDefsToPainting on SvgDefs {
+extension _SvgDefsToPaintCommands on SvgDefs {
   Result<List<PaintCommand>> _toPaintCommands(SvgPaintingContext context) {
-    return children
-        .map((SvgElement child) => child.toPaintCommands(context))
-        .combine()
-        .map((List<PaintCommand> commands) {
+    return children.map((SvgElement child) => child.toPaintCommands(context)).combine().map((
+      List<PaintCommand> commands,
+    ) {
       // Only include definition commands (Gradients), exclude drawing commands
       return commands
-          .where(
-            (PaintCommand cmd) => cmd is DefineLinearGradient || cmd is DefineRadialGradient,
-          )
+          .where((PaintCommand cmd) => cmd is DefineLinearGradient || cmd is DefineRadialGradient)
           .toList();
     });
   }
 }
 
-extension _SvgSvgToPainting on SvgSvg {
+extension _SvgSvgToPaintCommands on SvgSvg {
   Result<List<PaintCommand>> _toPaintCommands(SvgPaintingContext context) {
     // 1. Resolve viewport geometry (relative to parent coordinate system)
-    final double xVal = (x ?? const SvgLength(0.0)).toDouble(context, .horizontal);
-    final double yVal = (y ?? const SvgLength(0.0)).toDouble(context, .vertical);
+    final double xVal = (x ?? const SvgLength(0.0)).resolve(context, .horizontal);
+    final double yVal = (y ?? const SvgLength(0.0)).resolve(context, .vertical);
 
-    final double wVal =
-        width?.toDoubleOrNull(context, .horizontal) ?? context.viewBoxWidth;
-    final double hVal =
-        height?.toDoubleOrNull(context, .vertical) ?? context.viewBoxHeight;
+    final double wVal = width?.resolveOrNull(context, .horizontal) ?? context.viewBoxWidth;
+    final double hVal = height?.resolveOrNull(context, .vertical) ?? context.viewBoxHeight;
 
     // ViewBox establishes the internal coordinate system mapping.
     final double vbW = viewBox?.width ?? wVal;
@@ -228,7 +222,7 @@ extension _SvgSvgToPainting on SvgSvg {
   }
 }
 
-extension _SvgGroupToPainting on SvgGroup {
+extension _SvgGroupToPaintCommands on SvgGroup {
   Result<List<PaintCommand>> _toPaintCommands(SvgPaintingContext context) {
     // Determine if we should use saveLayer (group opacity) or flattening (multiplication).
     // context.parentOpacity already contains the accumulated opacity including this group's opacity.
@@ -251,8 +245,11 @@ extension _SvgGroupToPainting on SvgGroup {
       return <PaintCommand>[
         DrawGroup(
           commands: childCommands,
-          transform:
-              SvgTransformParser.scaleTransform(transform, context.parentSx, context.parentSy),
+          transform: SvgTransformParser.scaleTransform(
+            transform,
+            context.parentSx,
+            context.parentSy,
+          ),
           groupOpacity: groupOpacity,
         ),
       ];

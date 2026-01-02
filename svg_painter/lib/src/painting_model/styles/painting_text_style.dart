@@ -3,12 +3,7 @@ part of 'painting_style.dart';
 /// Represents the text style for an SVG element.
 @immutable
 final class PaintingTextStyle {
-  const PaintingTextStyle({
-    this.fontSize,
-    this.fontWeight,
-    this.fontStyle,
-    this.fontFamily,
-  });
+  const PaintingTextStyle({this.fontSize, this.fontWeight, this.fontStyle, this.fontFamily});
 
   /// The size of the font.
   final double? fontSize;

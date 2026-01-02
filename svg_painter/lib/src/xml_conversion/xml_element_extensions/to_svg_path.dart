@@ -5,17 +5,17 @@ import '../../svg_model/_svg_model.dart';
 import '../../xml_model/_xml_model.dart';
 import '../_xml_conversion.dart';
 
-extension ElementToSvgPath on XmlElement {
+extension ToSvgPath on XmlElement {
   /// Converts this [XmlElement] to an [SvgPath].
   Result<SvgPath> toSvgPath() {
     const XmlElementName elementName = XmlElementName.path;
 
-    final String? d = getXmlAttributeValue(XmlAttributeName.d);
+    final String? d = toXmlAttributeValue(XmlAttributeName.d);
     if (d == null) {
       return const Failure<SvgPath>('Path element must have a "d" attribute');
     }
 
-    final CommonAttributes common = getCommonAttributes(elementName);
+    final CommonAttributes common = toCommonAttributes(elementName);
 
     return Success<SvgPath>(
       SvgPath(

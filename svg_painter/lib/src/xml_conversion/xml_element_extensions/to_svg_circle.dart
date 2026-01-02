@@ -5,7 +5,7 @@ import '../../svg_model/_svg_model.dart';
 import '../../xml_model/_xml_model.dart';
 import '../_xml_conversion.dart';
 
-extension ElementToSvg on XmlElement {
+extension ToSvgCircle on XmlElement {
   /// Converts this [XmlElement] to an [SvgCircle].
   Result<SvgCircle> toSvgCircle() {
     const XmlElementName elementName = XmlElementName.circle;
@@ -20,7 +20,7 @@ extension ElementToSvg on XmlElement {
     );
     final SvgLengthPercentage r = toSvgValue<SvgLengthPercentage>(elementName, XmlAttributeName.r);
 
-    final CommonAttributes common = getCommonAttributes(elementName);
+    final CommonAttributes common = toCommonAttributes(elementName);
 
     return Success<SvgCircle>(
       SvgCircle(

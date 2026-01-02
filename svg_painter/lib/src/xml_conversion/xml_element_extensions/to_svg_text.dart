@@ -5,7 +5,7 @@ import '../../svg_model/_svg_model.dart';
 import '../../xml_model/_xml_model.dart';
 import '../_xml_conversion.dart';
 
-extension TextElementToSvg on XmlElement {
+extension ToSvgText on XmlElement {
   /// Converts this [XmlElement] to an [SvgText].
   Result<SvgText> toSvgText() {
     const XmlElementName elementName = XmlElementName.text;
@@ -13,7 +13,7 @@ extension TextElementToSvg on XmlElement {
     final SvgLengthPercentage x = toSvgValue<SvgLengthPercentage>(elementName, XmlAttributeName.x);
     final SvgLengthPercentage y = toSvgValue<SvgLengthPercentage>(elementName, XmlAttributeName.y);
 
-    final CommonAttributes common = getCommonAttributes(elementName);
+    final CommonAttributes common = toCommonAttributes(elementName);
 
     // Extract text content. This handles nested text nodes.
     // We trim to handle basic whitespace normalization (e.g. indentation in XML).

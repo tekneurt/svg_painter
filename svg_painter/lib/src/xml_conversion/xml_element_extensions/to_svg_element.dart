@@ -6,7 +6,7 @@ import '../../xml_model/_xml_model.dart';
 import '../_xml_conversion.dart';
 import '_xml_element_extensions.dart';
 
-extension XmlElementToSvgElement on XmlElement {
+extension ToSvgElement on XmlElement {
   /// Converts this [XmlElement] to an [SvgElement].
   Result<SvgElement> toSvgElement() {
     final XmlElementName? elementName = XmlElementName.from(name.local);
@@ -49,15 +49,13 @@ extension XmlElementToSvgElement on XmlElement {
       case .text:
         return toSvgText();
       case .title:
-        return Success<SvgTitle>(SvgTitle(
-          content: innerText.trim(),
-          id: getXmlAttributeValue(XmlAttributeName.id),
-        ));
+        return Success<SvgTitle>(
+          SvgTitle(content: innerText.trim(), id: toXmlAttributeValue(XmlAttributeName.id)),
+        );
       case .desc:
-        return Success<SvgDesc>(SvgDesc(
-          content: innerText.trim(),
-          id: getXmlAttributeValue(XmlAttributeName.id),
-        ));
+        return Success<SvgDesc>(
+          SvgDesc(content: innerText.trim(), id: toXmlAttributeValue(XmlAttributeName.id)),
+        );
     }
   }
 }

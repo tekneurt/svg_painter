@@ -5,7 +5,7 @@ import '../../svg_model/_svg_model.dart';
 import '../../xml_model/_xml_model.dart';
 import '../_xml_conversion.dart';
 
-extension ElementToSvgLinearGradient on XmlElement {
+extension ToSvgLinearGradient on XmlElement {
   /// Converts this [XmlElement] to an [SvgLinearGradient].
   Result<SvgLinearGradient> toSvgLinearGradient() {
     const XmlElementName elementName = XmlElementName.linearGradient;
@@ -33,8 +33,8 @@ extension ElementToSvgLinearGradient on XmlElement {
         .map((XmlElement child) => child.toSvgStop())
         .combine();
 
-    final String? id = getXmlAttributeValue(XmlAttributeName.id);
-    final String? gradientTransform = getXmlAttributeValue(XmlAttributeName.gradientTransform);
+    final String? id = toXmlAttributeValue(XmlAttributeName.id);
+    final String? gradientTransform = toXmlAttributeValue(XmlAttributeName.gradientTransform);
 
     return stopsResult.map(
       (List<SvgStop> stops) => SvgLinearGradient(

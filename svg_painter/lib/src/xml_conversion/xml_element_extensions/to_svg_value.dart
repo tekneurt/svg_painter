@@ -5,7 +5,7 @@ import '../../xml_model/_xml_model.dart';
 import '../_xml_conversion.dart';
 
 /// Extension to convert [XmlElement] to [SvgValue].
-extension XmlElementToSvgValue on XmlElement {
+extension ToSvgValue on XmlElement {
   /// Converts an XML attribute to an [SvgBaseValue], falling back to the default value.
   T toSvgValue<T extends SvgBaseValue>(XmlElementName elementName, XmlAttributeName attributeName) {
     final T? value = toSvgValueOrNull<T>(elementName, attributeName);
@@ -13,7 +13,7 @@ extension XmlElementToSvgValue on XmlElement {
       return value;
     }
 
-    final SvgBaseValue defaultValue = attributeName.getDefaultValue(elementName);
+    final SvgBaseValue defaultValue = attributeName.toDefaultValue(elementName);
     if (defaultValue is T) {
       return defaultValue;
     }
@@ -28,7 +28,7 @@ extension XmlElementToSvgValue on XmlElement {
     XmlElementName elementName,
     XmlAttributeName attributeName,
   ) {
-    final String? attributeValue = getXmlAttributeValue(attributeName);
+    final String? attributeValue = toXmlAttributeValue(attributeName);
     if (attributeValue == null) {
       return null;
     }
@@ -53,16 +53,10 @@ extension XmlElementToSvgValue on XmlElement {
       .stopOpacity ||
       .fontSize ||
       .strokeWidth => attributeValue.toSvgLengthPercentage(),
-      .rx ||
-      .ry ||
-      .width ||
-      .height => attributeValue.toSvgLengthPercentageAuto(),
+      .rx || .ry || .width || .height => attributeValue.toSvgLengthPercentageAuto(),
       .pathLength => attributeValue.toSvgLength(),
-      .points ||
-      .strokeDasharray => attributeValue.toSvgPointList(),
-      .fill ||
-      .stroke ||
-      .stopColor => attributeValue.toSvgColor(),
+      .points || .strokeDasharray => attributeValue.toSvgPointList(),
+      .fill || .stroke || .stopColor => attributeValue.toSvgColor(),
       .strokeLinecap => attributeValue.toSvgStrokeLinecap(),
       .strokeLinejoin => attributeValue.toSvgStrokeLinejoin(),
       .viewBox ||

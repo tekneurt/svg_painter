@@ -5,14 +5,14 @@ import '../../svg_model/_svg_model.dart';
 import '../../xml_model/_xml_model.dart';
 import '../_xml_conversion.dart';
 
-extension ElementToSvgPolyline on XmlElement {
+extension ToSvgPolyline on XmlElement {
   /// Converts this [XmlElement] to an [SvgPolyline].
   Result<SvgPolyline> toSvgPolyline() {
     const XmlElementName elementName = XmlElementName.polyline;
 
     final SvgPointList points = toSvgValue<SvgPointList>(elementName, XmlAttributeName.points);
 
-    final CommonAttributes common = getCommonAttributes(elementName);
+    final CommonAttributes common = toCommonAttributes(elementName);
 
     return Success<SvgPolyline>(
       SvgPolyline(

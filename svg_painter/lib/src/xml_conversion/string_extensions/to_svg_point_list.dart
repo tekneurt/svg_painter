@@ -1,7 +1,8 @@
 import '../../svg_model/_svg_model.dart';
 
-extension StringToPointList on String {
-  /// Parses a string of points into an [SvgPointList].
+/// Extension on [String] to convert it to an [SvgPointList].
+extension ToSvgPointList on String {
+  /// Parses the string as an [SvgPointList].
   SvgPointList toSvgPointList() {
     final List<double> points = <double>[];
     final RegExp regex = RegExp(r'[+-]?(\d*\.\d+|\d+)');

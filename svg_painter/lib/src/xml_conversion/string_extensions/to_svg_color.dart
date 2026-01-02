@@ -1,8 +1,8 @@
 import '../../svg_model/_svg_model.dart';
 import 'to_svg_url.dart';
 
-/// Extension on [String] to convert it to [SvgColor].
-extension StringToColor on String {
+/// Extension on [String] to convert it to an [SvgColor].
+extension ToSvgColor on String {
   /// Parses the string as an [SvgColor].
   SvgColor? toSvgColor() {
     final String trimmed = trim();

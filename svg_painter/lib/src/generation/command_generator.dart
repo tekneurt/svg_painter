@@ -29,9 +29,7 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
       buffer.writeln('      {');
       buffer.writeln('        final Paint paint = Paint();');
       if (fill.shaderId != null) {
-        buffer.writeln(
-          '        paint.shader = _grad_${fill.shaderId}.createShader($boundsRect);',
-        );
+        buffer.writeln('        paint.shader = _grad_${fill.shaderId}.createShader($boundsRect);');
         if (fill.opacity < 1.0) {
           buffer.writeln('        paint.color = paint.color.withOpacity(${fill.opacity});');
         }
@@ -79,9 +77,7 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
       }
 
       if (stroke.dashArray != null) {
-        buffer.writeln(
-          '        final List<double> dashArray = [${stroke.dashArray!.join(', ')}];',
-        );
+        buffer.writeln('        final List<double> dashArray = [${stroke.dashArray!.join(', ')}];');
         final String? pl = stroke.pathLength?.toString();
         drawCall('paint', dashArray: 'dashArray', pathLength: pl);
       } else {

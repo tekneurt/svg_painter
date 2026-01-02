@@ -140,7 +140,7 @@ PaintingStyle resolvePaint(
   }
 
   // 4. Resolve element opacity (group opacity)
-  final double selfOpacity = (cssOpacity ?? opacity)?.toDouble(context, .unit) ?? 1.0;
+  final double selfOpacity = (cssOpacity ?? opacity)?.resolve(context, .unit) ?? 1.0;
   final double elementOpacity = selfOpacity * context.parentOpacity;
 
   // 5. Resolve final values using priority: Inline Style/CSS > Presentation Attribute > Inherited
@@ -158,10 +158,7 @@ PaintingStyle resolvePaint(
 
     final double finalFillOpacity =
         elementOpacity *
-        ((cssFillOpacity ?? fillOpacity ?? context.inheritedFillOpacity)?.toDouble(
-              context,
-              .unit,
-            ) ??
+        ((cssFillOpacity ?? fillOpacity ?? context.inheritedFillOpacity)?.resolve(context, .unit) ??
             1.0);
 
     fillStyle = PaintingFillStyle(
@@ -172,7 +169,7 @@ PaintingStyle resolvePaint(
   }
 
   final SvgColor? strokePaint = cssStroke ?? stroke ?? context.inheritedStroke;
-  final bool hasStroke = strokePaint is! SvgNoneColor;
+  final bool hasStroke = strokePaint != null && strokePaint is! SvgNoneColor;
   PaintingStrokeStyle? strokeStyle;
   if (hasStroke) {
     int? strokeColorArgb;
@@ -185,7 +182,7 @@ PaintingStyle resolvePaint(
 
     final SvgLengthPercentage? sw = cssStrokeWidth ?? strokeWidth ?? context.inheritedStrokeWidth;
     final double finalStrokeWidth = context.scaleNormalized(
-      sw?.toDouble(context, .normalized) ?? 1.0,
+      sw?.resolve(context, .normalized) ?? 1.0,
     );
 
     final SvgPointList? sda =
@@ -202,14 +199,11 @@ PaintingStyle resolvePaint(
         cssStrokeLinecap ?? strokeLinecap ?? context.inheritedStrokeLinecap ?? .butt;
 
     final SvgStrokeLinejoin resolvedJoin =
-        cssStrokeLinejoin ??
-        strokeLinejoin ??
-        context.inheritedStrokeLinejoin ??
-        .miter;
+        cssStrokeLinejoin ?? strokeLinejoin ?? context.inheritedStrokeLinejoin ?? .miter;
 
     final double finalStrokeOpacity =
         elementOpacity *
-        ((cssStrokeOpacity ?? strokeOpacity ?? context.inheritedStrokeOpacity)?.toDouble(
+        ((cssStrokeOpacity ?? strokeOpacity ?? context.inheritedStrokeOpacity)?.resolve(
               context,
               .unit,
             ) ??
@@ -227,7 +221,7 @@ PaintingStyle resolvePaint(
     );
   }
 
-  final double? rawFontSize = (cssFontSize ?? fontSize ?? context.inheritedFontSize)?.toDouble(
+  final double? rawFontSize = (cssFontSize ?? fontSize ?? context.inheritedFontSize)?.resolve(
     context,
     .vertical,
   );

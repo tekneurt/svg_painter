@@ -26,11 +26,11 @@ typedef CommonAttributes = ({
   SvgPointList? strokeDasharray,
 });
 
-extension XmlElementCommonAttributes on XmlElement {
+extension ToCommonAttributes on XmlElement {
   /// Extracts common graphics attributes from this element.
-  CommonAttributes getCommonAttributes(XmlElementName elementName) {
+  CommonAttributes toCommonAttributes(XmlElementName elementName) {
     return (
-      id: getXmlAttributeValue(XmlAttributeName.id),
+      id: toXmlAttributeValue(XmlAttributeName.id),
       fill: toSvgValueOrNull<SvgColor>(elementName, XmlAttributeName.fill),
       fillOpacity: toSvgValueOrNull<SvgLengthPercentage>(elementName, XmlAttributeName.fillOpacity),
       stroke: toSvgValueOrNull<SvgColor>(elementName, XmlAttributeName.stroke),
@@ -53,12 +53,12 @@ extension XmlElementCommonAttributes on XmlElement {
       ),
       opacity: toSvgValueOrNull<SvgLengthPercentage>(elementName, XmlAttributeName.opacity),
       fontSize: toSvgValueOrNull<SvgLengthPercentage>(elementName, XmlAttributeName.fontSize),
-      fontWeight: getXmlAttributeValue(XmlAttributeName.fontWeight),
-      fontStyle: getXmlAttributeValue(XmlAttributeName.fontStyle),
-      fontFamily: getXmlAttributeValue(XmlAttributeName.fontFamily),
-      cssClass: getXmlAttributeValue(XmlAttributeName.className),
-      inlineStyle: getXmlAttributeValue(XmlAttributeName.style),
-      transform: getXmlAttributeValue(XmlAttributeName.transform),
+      fontWeight: toXmlAttributeValue(XmlAttributeName.fontWeight),
+      fontStyle: toXmlAttributeValue(XmlAttributeName.fontStyle),
+      fontFamily: toXmlAttributeValue(XmlAttributeName.fontFamily),
+      cssClass: toXmlAttributeValue(XmlAttributeName.className),
+      inlineStyle: toXmlAttributeValue(XmlAttributeName.style),
+      transform: toXmlAttributeValue(XmlAttributeName.transform),
       pathLength: toSvgValueOrNull<SvgLength>(elementName, XmlAttributeName.pathLength),
     );
   }

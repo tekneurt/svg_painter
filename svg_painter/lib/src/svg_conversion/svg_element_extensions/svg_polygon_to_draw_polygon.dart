@@ -5,7 +5,7 @@ import '../converters/_converters.dart';
 import '../svg_transform_parser.dart';
 
 /// Extension to convert [SvgPolygon] to [PaintCommand]s.
-extension SvgPolygonToPainting on SvgPolygon {
+extension SvgPolygonToPaintCommands on SvgPolygon {
   /// Converts this [SvgPolygon] to a list of [PaintCommand]s.
   Result<List<PaintCommand>> toPaintCommands(SvgPaintingContext context) {
     if (points.points.length < 4) {

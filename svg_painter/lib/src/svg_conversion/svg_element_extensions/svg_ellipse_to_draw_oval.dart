@@ -6,7 +6,7 @@ import '../svg_transform_parser.dart';
 import '../svg_value_extensions/svg_length_percentage_to_double.dart';
 
 /// Extension to convert [SvgEllipse] to [PaintCommand]s.
-extension SvgEllipseToPainting on SvgEllipse {
+extension SvgEllipseToPaintCommands on SvgEllipse {
   /// Converts this [SvgEllipse] to a list of [PaintCommand]s.
   Result<List<PaintCommand>> toPaintCommands(SvgPaintingContext context) {
     final (double initialRx, double initialRy) = resolveRadii(rx, ry, context);

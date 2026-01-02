@@ -2,9 +2,9 @@ import 'package:xml/xml.dart';
 
 import '../../base/result.dart';
 
-/// Extension on [String] to parse it into an [XmlDocument].
-extension StringToXml on String {
-  /// Parses this string into an [XmlDocument].
+/// Extension on [String] to facilitate conversion to XML.
+extension ToXml on String {
+  /// Parses the string as an [XmlDocument].
   ///
   /// Returns a [Success] containing the [XmlDocument] if parsing is successful.
   /// Returns a [Failure] containing an error message if parsing fails (e.g., due to malformed XML).

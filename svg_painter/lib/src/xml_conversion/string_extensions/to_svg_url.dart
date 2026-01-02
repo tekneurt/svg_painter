@@ -1,6 +1,6 @@
-/// Extension on [String] to parse 'url(#id)'.
-extension StringToUrl on String {
-  /// Extracts the ID from a 'url(#id)' string.
+/// Extension on [String] to facilitate parsing of `url(#id)` references.
+extension ToSvgUrl on String {
+  /// Extracts the ID from a `url(#id)` string.
   /// Returns null if the format doesn't match.
   String? extractUrlId() {
     final String trimmed = trim();

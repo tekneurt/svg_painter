@@ -2,7 +2,7 @@ import '../../svg_model/_svg_model.dart'; // For SvgLength, SvgPercentage, SvgLe
 import 'to_svg_length_unit.dart'; // For StringToSvgLengthUnit extension
 
 /// Extension on [String] to convert it to [SvgLengthPercentage].
-extension StringToLengthPercentage on String {
+extension ToSvgLengthPercentage on String {
   /// Parses the string as an [SvgLengthPercentage].
   SvgLengthPercentage toSvgLengthPercentage() {
     final String trimmed = trim();

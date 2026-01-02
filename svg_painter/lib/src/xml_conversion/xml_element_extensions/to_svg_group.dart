@@ -5,7 +5,7 @@ import '../../svg_model/_svg_model.dart';
 import '../../xml_model/_xml_model.dart';
 import '../_xml_conversion.dart';
 
-extension ElementToSvgGroup on XmlElement {
+extension ToSvgGroup on XmlElement {
   /// Converts this [XmlElement] to an [SvgGroup].
   Result<SvgGroup> toSvgGroup() {
     const XmlElementName elementName = XmlElementName.g;
@@ -15,7 +15,7 @@ extension ElementToSvgGroup on XmlElement {
         .map((XmlElement child) => child.toSvgElement())
         .combine();
 
-    final CommonAttributes common = getCommonAttributes(elementName);
+    final CommonAttributes common = toCommonAttributes(elementName);
 
     return childrenResult.map(
       (List<SvgElement> childElements) => SvgGroup(

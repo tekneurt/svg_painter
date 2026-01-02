@@ -5,7 +5,7 @@ import '../converters/_converters.dart';
 import '../svg_transform_parser.dart';
 
 /// Extension to convert [SvgPolyline] to [PaintCommand]s.
-extension SvgPolylineToPainting on SvgPolyline {
+extension SvgPolylineToPaintCommands on SvgPolyline {
   /// Converts this [SvgPolyline] to a list of [PaintCommand]s.
   Result<List<PaintCommand>> toPaintCommands(SvgPaintingContext context) {
     if (points.points.length < 4) {

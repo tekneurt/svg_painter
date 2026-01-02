@@ -5,7 +5,7 @@ import '../../svg_model/_svg_model.dart';
 import '../../xml_model/_xml_model.dart';
 import '../_xml_conversion.dart';
 
-extension ElementToSvgLine on XmlElement {
+extension ToSvgLine on XmlElement {
   /// Converts this [XmlElement] to an [SvgLine].
   Result<SvgLine> toSvgLine() {
     const XmlElementName elementName = XmlElementName.line;
@@ -27,7 +27,7 @@ extension ElementToSvgLine on XmlElement {
       XmlAttributeName.y2,
     );
 
-    final CommonAttributes common = getCommonAttributes(elementName);
+    final CommonAttributes common = toCommonAttributes(elementName);
 
     return Success<SvgLine>(
       SvgLine(

@@ -5,7 +5,7 @@ import '../converters/_converters.dart';
 import '../svg_transform_parser.dart';
 
 /// Extension to convert [SvgPath] to [PaintCommand]s.
-extension SvgPathToPainting on SvgPath {
+extension SvgPathToPaintCommands on SvgPath {
   /// Converts this [SvgPath] to a list of [PaintCommand]s.
   Result<List<PaintCommand>> toPaintCommands(SvgPaintingContext context) {
     if (d.trim().isEmpty) {
@@ -35,13 +35,18 @@ extension SvgPathToPainting on SvgPath {
       inlineStyle: inlineStyle,
     );
 
-    return operationsResult.map((List<PathOperation> operations) => <PaintCommand>[
-          DrawPath(
-            operations: operations,
-            style: paint,
-            transform:
-                SvgTransformParser.scaleTransform(transform, context.parentSx, context.parentSy),
+    return operationsResult.map(
+      (List<PathOperation> operations) => <PaintCommand>[
+        DrawPath(
+          operations: operations,
+          style: paint,
+          transform: SvgTransformParser.scaleTransform(
+            transform,
+            context.parentSx,
+            context.parentSy,
           ),
-        ]);
+        ),
+      ],
+    );
   }
 }

@@ -1,7 +1,7 @@
 import '../../svg_model/_svg_model.dart';
 import '../converters/svg_color_name_map.dart';
 
-extension SvgColorToInt on SvgColor? {
+extension SvgColorToArgb on SvgColor? {
   /// Returns the ARGB integer value of this color.
   ///
   /// If this color is null (not specified in SVG), it defaults to [fallback].

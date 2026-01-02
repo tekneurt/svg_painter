@@ -5,7 +5,7 @@ import '../../svg_model/_svg_model.dart';
 import '../../xml_model/_xml_model.dart';
 import '../_xml_conversion.dart';
 
-extension ElementToSvgRect on XmlElement {
+extension ToSvgRect on XmlElement {
   /// Converts this [XmlElement] to an [SvgRect].
   Result<SvgRect> toSvgRect() {
     const XmlElementName elementName = XmlElementName.rect;
@@ -29,7 +29,7 @@ extension ElementToSvgRect on XmlElement {
       XmlAttributeName.ry,
     );
 
-    final CommonAttributes common = getCommonAttributes(elementName);
+    final CommonAttributes common = toCommonAttributes(elementName);
 
     return Success<SvgRect>(
       SvgRect(

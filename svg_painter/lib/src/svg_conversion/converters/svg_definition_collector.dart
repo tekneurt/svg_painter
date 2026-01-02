@@ -1,6 +1,6 @@
 import '../../svg_model/_svg_model.dart';
 
-extension SvgDefinitionCollector on SvgElement {
+extension SvgElementToDefinitions on SvgElement {
   /// recursively collects all elements with IDs into a map.
   void collectDefinitions(Map<String, SvgElement> map) {
     final SvgElement self = this;

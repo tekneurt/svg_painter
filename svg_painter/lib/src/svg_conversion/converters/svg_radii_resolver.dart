@@ -13,8 +13,8 @@ import 'svg_painting_context.dart';
   SvgLengthPercentageAuto ry,
   SvgPaintingContext context,
 ) {
-  final double? x = rx.toDoubleOrNull(context, .horizontal);
-  final double? y = ry.toDoubleOrNull(context, .vertical);
+  final double? x = rx.resolveOrNull(context, .horizontal);
+  final double? y = ry.resolveOrNull(context, .vertical);
 
   return switch ((x, y)) {
     (null, null) => (0.0, 0.0),

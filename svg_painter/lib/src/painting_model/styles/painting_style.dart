@@ -7,12 +7,7 @@ part 'painting_text_style.dart';
 /// Represents the visual style (fill and stroke) for a drawing command.
 @immutable
 final class PaintingStyle {
-  const PaintingStyle({
-    this.fill,
-    this.stroke,
-    this.text,
-    this.groupOpacity = 1.0,
-  });
+  const PaintingStyle({this.fill, this.stroke, this.text, this.groupOpacity = 1.0});
 
   /// The filling style, or null if the element is not filled.
   final PaintingFillStyle? fill;

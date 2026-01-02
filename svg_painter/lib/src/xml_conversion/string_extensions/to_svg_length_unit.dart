@@ -1,7 +1,7 @@
 import '../../svg_model/_svg_model.dart'; // For SvgLengthUnit
 
 /// Extension on [String] to convert XML unit suffixes to [SvgLengthUnit] enum values.
-extension StringToSvgLengthUnit on String {
+extension ToSvgLengthUnit on String {
   /// Converts this string unit suffix to an [SvgLengthUnit].
   ///
   /// Returns [SvgLengthUnit.none] if the suffix is empty or unknown.

@@ -2,7 +2,7 @@ import '../../svg_model/_svg_model.dart';
 import 'to_svg_length_unit.dart';
 
 /// Extension on [String] to convert it to [SvgLength].
-extension StringToLength on String {
+extension ToSvgLength on String {
   /// Parses the string as an [SvgLength].
   SvgLength toSvgLength() {
     final String trimmed = trim();

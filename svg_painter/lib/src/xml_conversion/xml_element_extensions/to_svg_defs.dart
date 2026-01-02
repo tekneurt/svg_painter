@@ -5,7 +5,7 @@ import '../../svg_model/_svg_model.dart';
 import '../../xml_model/_xml_model.dart';
 import '../_xml_conversion.dart';
 
-extension ElementToSvgDefs on XmlElement {
+extension ToSvgDefs on XmlElement {
   /// Converts this [XmlElement] to an [SvgDefs].
   Result<SvgDefs> toSvgDefs() {
     final Result<List<SvgElement>> childrenResult = children
@@ -13,11 +13,10 @@ extension ElementToSvgDefs on XmlElement {
         .map((XmlElement child) => child.toSvgElement())
         .combine();
 
-    final String? id = getXmlAttributeValue(XmlAttributeName.id);
+    final String? id = toXmlAttributeValue(XmlAttributeName.id);
 
-    return childrenResult.map((List<SvgElement> childElements) => SvgDefs(
-          children: childElements,
-          id: id,
-        ));
+    return childrenResult.map(
+      (List<SvgElement> childElements) => SvgDefs(children: childElements, id: id),
+    );
   }
 }

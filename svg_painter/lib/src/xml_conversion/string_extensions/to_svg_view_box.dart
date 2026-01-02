@@ -1,7 +1,7 @@
 import '../../svg_model/_svg_model.dart';
 
-/// Extension on [String] to convert it to [SvgViewBox].
-extension StringToViewBox on String {
+/// Extension on [String] to convert it to an [SvgViewBox].
+extension ToSvgViewBox on String {
   /// Parses the string as an [SvgViewBox].
   SvgViewBox? toSvgViewBox() {
     final List<String> parts = trim().split(RegExp(r'[\s,]+'));

@@ -1,8 +1,9 @@
-import '../svg_model/_svg_model.dart';
-import '../xml_model/_xml_model.dart';
+import '../../svg_model/_svg_model.dart';
+import '../../xml_model/_xml_model.dart';
 
-extension XmlAttributeDefaultValues on XmlAttributeName {
-  SvgBaseValue getDefaultValue(final XmlElementName elementName) {
+/// Extension to provide default values for [XmlAttributeName]s based on the element.
+extension ToDefaultValue on XmlAttributeName {
+  SvgBaseValue toDefaultValue(final XmlElementName elementName) {
     switch (this) {
       case .x:
       case .y:
