@@ -30,7 +30,7 @@ import 'attributes/width_painter.dart';
 import 'attributes/x1_line_painter.dart';
 import 'attributes/x1_examples_painter.dart';
 import 'attributes/x1_linear_gradient_painter.dart';
-import 'attributes/x2_elements_painter.dart';
+import 'attributes/x2_line_painter.dart';
 import 'attributes/x2_examples_painter.dart';
 import 'attributes/x2_linear_gradient_painter.dart';
 import 'attributes/y1_elements_painter.dart';
@@ -80,7 +80,7 @@ final List<({CustomPainter painter, String name})> _fixtures =
       (painter: const X1LinePainter(), name: 'x1_line_painter'),
       (painter: const X1ExamplesPainter(), name: 'x1_examples_painter'),
       (painter: const X1LinearGradientPainter(), name: 'x1_linear_gradient_painter'),
-      (painter: const X2ElementsPainter(), name: 'x2_elements_painter'),
+      (painter: const X2LinePainter(), name: 'x2_line_painter'),
       (painter: const X2ExamplesPainter(), name: 'x2_examples_painter'),
       (painter: const X2LinearGradientPainter(), name: 'x2_linear_gradient_painter'),
       (painter: const Y1ElementsPainter(), name: 'y1_elements_painter'),

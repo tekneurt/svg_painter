@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'x2_elements_painter.dart';
+part of 'x2_line_painter.dart';
 
 // **************************************************************************
 // SvgPainterGenerator
@@ -10,8 +10,8 @@ part of 'x2_elements_painter.dart';
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
 
-class _$X2ElementsPainter extends CustomPainter {
-  const _$X2ElementsPainter({this.fit = BoxFit.contain});
+class _$X2LinePainter extends CustomPainter {
+  const _$X2LinePainter({this.fit = BoxFit.contain});
 
   final BoxFit fit;
 
@@ -87,7 +87,7 @@ class _$X2ElementsPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(covariant _$X2ElementsPainter oldDelegate) {
+  bool shouldRepaint(covariant _$X2LinePainter oldDelegate) {
     return fit != oldDelegate.fit;
   }
 }

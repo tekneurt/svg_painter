@@ -1,5 +1,5 @@
-/// https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/x2#elements
-const String mdnX2ElementsExample = '''
+/// https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/x2#line
+const String mdnX2LineExample = r'''
 <svg viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg">
   <line x1="5" x2="1" y1="1" y2="9" stroke="red" />
   <line x1="5" x2="5" y1="1" y2="9" stroke="green" />
