@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'defs_element_painter.dart';
+part of 'defs_painter.dart';
 
 // **************************************************************************
 // SvgPainterGenerator
@@ -10,8 +10,8 @@ part of 'defs_element_painter.dart';
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
 
-class _$DefsElementPainter extends CustomPainter {
-  const _$DefsElementPainter({this.fit = BoxFit.contain});
+class _$DefsPainter extends CustomPainter {
+  const _$DefsPainter({this.fit = BoxFit.contain});
 
   final BoxFit fit;
 
@@ -59,7 +59,7 @@ class _$DefsElementPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(covariant _$DefsElementPainter oldDelegate) {
+  bool shouldRepaint(covariant _$DefsPainter oldDelegate) {
     return fit != oldDelegate.fit;
   }
 }

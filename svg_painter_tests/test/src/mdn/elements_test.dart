@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 import '../../test_utils.dart';
 import 'elements/circle_painter.dart';
-import 'elements/defs_element_painter.dart';
+import 'elements/defs_painter.dart';
 import 'elements/ellipse_painter.dart';
 import 'elements/g_painter.dart';
 import 'elements/line_painter.dart';
@@ -20,7 +20,7 @@ import 'elements/use_element_painter.dart';
 final List<({CustomPainter painter, String name})> _fixtures =
     <({CustomPainter painter, String name})>[
       (painter: const CirclePainter(), name: 'circle_painter'),
-      (painter: const DefsElementPainter(), name: 'defs_element_painter'),
+      (painter: const DefsPainter(), name: 'defs_painter'),
       (painter: const EllipsePainter(), name: 'ellipse_painter'),
       (painter: const GPainter(), name: 'g_painter'),
       (painter: const LinePainter(), name: 'line_painter'),

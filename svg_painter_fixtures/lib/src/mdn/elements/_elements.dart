@@ -1,5 +1,5 @@
 export 'circle.dart';
-export 'defs_element.dart';
+export 'defs.dart';
 export 'ellipse.dart';
 export 'g.dart';
 export 'line.dart';

@@ -175,8 +175,26 @@ Implement support for additional SVG shapes using the new layered architecture.
 - [x] **Transforms** (translate, scale via nested SVG and use)
 - [x] **Test**: Verify against the Daphnia SVG.
 
-### Phase 6: Polish & Release (MVP 0.1.0)
-- [ ] **Refactor (High Priority)**: `PaintingStyle` Composition — Refactor the flat `PaintingStyle` into dedicated `FillStyle` and `StrokeStyle` objects. Update `resolvePaint` and `ShapeGenerator` to utilize these objects, aligning the model with Flutter's dual-Paint approach and improving scalability for future attributes.
+### Phase 6: Dynamic Properties & Customization (Key Value Prop)
+Transform the generator from a static renderer into a customizable component builder by allowing users to override SVG properties.
+
+- [ ] **Step 1: Architecture Prep (PaintingStyle Composition)**
+    - [ ] Refactor `PaintingStyle` into structured `FillStyle` and `StrokeStyle` objects (Composition pattern).
+    - [ ] Update `resolvePaint` and `ShapeGenerator` to use these structures.
+- [ ] **Step 2: Property Mapping Strategy**
+    - [ ] Define the rule set for exposing properties (e.g., using element `id`s like `id="circle1"` -> `circle1Fill`).
+    - [ ] Implement `IdentifierSanitizer` to ensure generated field names are valid Dart identifiers.
+- [ ] **Step 3: Dynamic Fill Colors**
+    - [ ] Detect elements with valid `id`s.
+    - [ ] Generate `final Color? [id]Fill` fields in the `CustomPainter` class.
+    - [ ] Pass these fields to the painting logic, using the SVG's static color as the default fallback.
+- [ ] **Step 4: Dynamic Stroke Properties**
+    - [ ] Generate `final Color? [id]Stroke` fields.
+    - [ ] Generate `final double? [id]StrokeWidth` fields.
+- [ ] **Step 5: "CurrentColor" Support**
+    - [ ] Implement proper handling for `currentColor` keyword, mapping it to a primary `color` property on the Painter (matching Flutter's `Icon` behavior).
+
+### Phase 7: Polish & Release (MVP 0.1.0)
 - [x] **Refactor (High Priority)**: `SvgPaintingContext` — Encapsulate coordinate transformations (e.g., `context.transformPoint(x, y)`) to deduplicate math in shape converters.
 - [x] **Refactor (High Priority)**: `SvgPainterGenerator` — Modularize code generation logic (e.g., Strategy Pattern) to eliminate the monolithic `if/else` block and deduplicate `Paint` boilerplate.
 - [x] **Refactor (High Priority)**: `Radii Resolver` — Deduplicate `rx`/`ry` auto-inheritance logic for `ellipse` and `rect` using a shared Record-based helper.
@@ -196,7 +214,7 @@ Implement support for additional SVG shapes using the new layered architecture.
 - [ ] **TODO(Gemini)**: Optimize generated code (remove comments, unnecessary braces, unused variables).
 - [ ] **TODO(Gemini)**: Publish to pub.dev (dry run).
 
-### Phase 7: Animation Support (Post 1.0.0)
+### Phase 8: Animation Support (Post 1.0.0)
 - [ ] **TODO(Gemini)**: Implement `<animate>` support (e.g., from MDN fill example).
 - [ ] **TODO(Gemini)**: Implement `animateMotion` support (utilizes `pathLength`).
 
