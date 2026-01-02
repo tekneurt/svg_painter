@@ -1,5 +1,5 @@
-/// https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/y1#elements
-const String mdnY1ElementsExample = '''
+/// https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/y1#line
+const String mdnY1LineExample = r'''
 <svg viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg">
   <line x1="1" x2="9" y1="1" y2="5" stroke="red" />
   <line x1="1" x2="9" y1="5" y2="5" stroke="green" />

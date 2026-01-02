@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'y1_elements_painter.dart';
+part of 'y2_line_painter.dart';
 
 // **************************************************************************
 // SvgPainterGenerator
@@ -10,8 +10,8 @@ part of 'y1_elements_painter.dart';
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
 
-class _$Y1ElementsPainter extends CustomPainter {
-  const _$Y1ElementsPainter({this.fit = BoxFit.contain});
+class _$Y2LinePainter extends CustomPainter {
+  const _$Y2LinePainter({this.fit = BoxFit.contain});
 
   final BoxFit fit;
 
@@ -43,14 +43,14 @@ class _$Y1ElementsPainter extends CustomPainter {
         final Paint paint = Paint();
         paint.color = const Color(0xFF000000);
         paint.style = PaintingStyle.fill;
-        canvas.drawLine(const Offset(1.0, 1.0), const Offset(9.0, 5.0), paint);
+        canvas.drawLine(const Offset(1.0, 5.0), const Offset(9.0, 1.0), paint);
       }
       {
         final Paint paint = Paint();
         paint.color = const Color(0xFFFF0000);
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.0;
-        canvas.drawLine(const Offset(1.0, 1.0), const Offset(9.0, 5.0), paint);
+        canvas.drawLine(const Offset(1.0, 5.0), const Offset(9.0, 1.0), paint);
       }
     }
     {
@@ -73,21 +73,21 @@ class _$Y1ElementsPainter extends CustomPainter {
         final Paint paint = Paint();
         paint.color = const Color(0xFF000000);
         paint.style = PaintingStyle.fill;
-        canvas.drawLine(const Offset(1.0, 9.0), const Offset(9.0, 5.0), paint);
+        canvas.drawLine(const Offset(1.0, 5.0), const Offset(9.0, 9.0), paint);
       }
       {
         final Paint paint = Paint();
         paint.color = const Color(0xFF0000FF);
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.0;
-        canvas.drawLine(const Offset(1.0, 9.0), const Offset(9.0, 5.0), paint);
+        canvas.drawLine(const Offset(1.0, 5.0), const Offset(9.0, 9.0), paint);
       }
     }
     canvas.restore();
   }
 
   @override
-  bool shouldRepaint(covariant _$Y1ElementsPainter oldDelegate) {
+  bool shouldRepaint(covariant _$Y2LinePainter oldDelegate) {
     return fit != oldDelegate.fit;
   }
 }

@@ -33,10 +33,10 @@ import 'attributes/x1_linear_gradient_painter.dart';
 import 'attributes/x2_line_painter.dart';
 import 'attributes/x2_examples_painter.dart';
 import 'attributes/x2_linear_gradient_painter.dart';
-import 'attributes/y1_elements_painter.dart';
+import 'attributes/y1_line_painter.dart';
 import 'attributes/y1_examples_painter.dart';
 import 'attributes/y1_linear_gradient_painter.dart';
-import 'attributes/y2_elements_painter.dart';
+import 'attributes/y2_line_painter.dart';
 import 'attributes/y2_examples_painter.dart';
 import 'attributes/y2_linear_gradient_painter.dart';
 
@@ -83,10 +83,10 @@ final List<({CustomPainter painter, String name})> _fixtures =
       (painter: const X2LinePainter(), name: 'x2_line_painter'),
       (painter: const X2ExamplesPainter(), name: 'x2_examples_painter'),
       (painter: const X2LinearGradientPainter(), name: 'x2_linear_gradient_painter'),
-      (painter: const Y1ElementsPainter(), name: 'y1_elements_painter'),
+      (painter: const Y1LinePainter(), name: 'y1_line_painter'),
       (painter: const Y1ExamplesPainter(), name: 'y1_examples_painter'),
       (painter: const Y1LinearGradientPainter(), name: 'y1_linear_gradient_painter'),
-      (painter: const Y2ElementsPainter(), name: 'y2_elements_painter'),
+      (painter: const Y2LinePainter(), name: 'y2_line_painter'),
       (painter: const Y2ExamplesPainter(), name: 'y2_examples_painter'),
       (painter: const Y2LinearGradientPainter(), name: 'y2_linear_gradient_painter'),
     ];
