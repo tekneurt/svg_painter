@@ -43,7 +43,9 @@ import 'attributes/y2_linear_gradient_painter.dart';
 final List<({CustomPainter painter, String name})> _fixtures =
     <({CustomPainter painter, String name})>[
       (painter: const CxPainter(), name: 'cx_painter'),
+      (painter: const CxRadialGradientPainter(), name: 'cx_radial_gradient_painter'),
       (painter: const CyPainter(), name: 'cy_painter'),
+      (painter: const CyRadialGradientPainter(), name: 'cy_radial_gradient_painter'),
       (painter: const FillOpacityPainter(), name: 'fill_opacity_painter'),
       (painter: const FillPainter(), name: 'fill_painter'),
       (painter: const FxPainter(), name: 'fx_painter'),

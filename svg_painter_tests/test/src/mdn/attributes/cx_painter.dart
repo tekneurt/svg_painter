@@ -8,3 +8,8 @@ part 'cx_painter.g.dart';
 class CxPainter extends _$CxPainter {
   const CxPainter({super.fit});
 }
+
+@SvgCodePainter(mdnCxRadialGradientExample)
+class CxRadialGradientPainter extends _$CxRadialGradientPainter {
+  const CxRadialGradientPainter({super.fit});
+}

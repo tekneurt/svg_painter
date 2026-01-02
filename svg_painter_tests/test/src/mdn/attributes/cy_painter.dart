@@ -8,3 +8,8 @@ part 'cy_painter.g.dart';
 class CyPainter extends _$CyPainter {
   const CyPainter({super.fit});
 }
+
+@SvgCodePainter(mdnCyRadialGradientExample)
+class CyRadialGradientPainter extends _$CyRadialGradientPainter {
+  const CyRadialGradientPainter({super.fit});
+}
