@@ -4,7 +4,12 @@ import 'package:svg_painter_fixtures/svg_painter_fixtures.dart';
 
 part 'fy_painter.g.dart';
 
-@SvgCodePainter(mdnFyExample)
-class FyPainter extends _$FyPainter {
-  const FyPainter({super.fit});
+@SvgCodePainter(mdnFy1Example)
+class Fy1Painter extends _$Fy1Painter {
+  const Fy1Painter({super.fit});
+}
+
+@SvgCodePainter(mdnFy2Example)
+class Fy2Painter extends _$Fy2Painter {
+  const Fy2Painter({super.fit});
 }
