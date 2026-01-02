@@ -45,12 +45,26 @@ class _$ViewBox3Painter extends CustomPainter {
         paint.style = PaintingStyle.fill;
         canvas.drawRect(Rect.fromLTWH(5.0, 5.0, 10.0, 10.0), paint);
       }
+      {
+        final Paint paint = Paint();
+        paint.color = const Color(0x00000000);
+        paint.style = PaintingStyle.stroke;
+        paint.strokeWidth = 1.0;
+        canvas.drawRect(Rect.fromLTWH(5.0, 5.0, 10.0, 10.0), paint);
+      }
     }
     {
       {
         final Paint paint = Paint();
         paint.color = const Color(0xFFFFFFFF);
         paint.style = PaintingStyle.fill;
+        canvas.drawCircle(const Offset(10.0, 10.0), 4.0, paint);
+      }
+      {
+        final Paint paint = Paint();
+        paint.color = const Color(0x00000000);
+        paint.style = PaintingStyle.stroke;
+        paint.strokeWidth = 1.0;
         canvas.drawCircle(const Offset(10.0, 10.0), 4.0, paint);
       }
     }

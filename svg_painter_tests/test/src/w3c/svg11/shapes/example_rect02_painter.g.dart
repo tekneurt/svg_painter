@@ -73,6 +73,24 @@ class _$ExampleRect02Painter extends CustomPainter {
           paint,
         );
       }
+      {
+        final Paint paint = Paint();
+        paint.color = const Color(0x00000000);
+        paint.style = PaintingStyle.stroke;
+        paint.strokeWidth = 0.37795275590551175;
+        canvas.drawRRect(
+          RRect.fromRectAndRadius(
+            Rect.fromLTWH(
+              37.79527559055118,
+              37.79527559055118,
+              151.1811023622047,
+              75.59055118110236,
+            ),
+            Radius.elliptical(18.89763779527559, 18.89763779527559),
+          ),
+          paint,
+        );
+      }
     }
     canvas.save();
     canvas.translate(264.56692913385825, 79.37007874015748);

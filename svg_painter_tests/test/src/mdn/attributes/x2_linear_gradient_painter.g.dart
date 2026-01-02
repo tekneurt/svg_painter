@@ -57,6 +57,13 @@ class _$X2LinearGradientPainter extends CustomPainter {
         paint.style = PaintingStyle.fill;
         canvas.drawRect(Rect.fromLTWH(1.0, 1.0, 8.0, 8.0), paint);
       }
+      {
+        final Paint paint = Paint();
+        paint.color = const Color(0x00000000);
+        paint.style = PaintingStyle.stroke;
+        paint.strokeWidth = 1.0;
+        canvas.drawRect(Rect.fromLTWH(1.0, 1.0, 8.0, 8.0), paint);
+      }
     }
     {
       {
@@ -65,6 +72,13 @@ class _$X2LinearGradientPainter extends CustomPainter {
           Rect.fromLTWH(11.0, 1.0, 8.0, 8.0),
         );
         paint.style = PaintingStyle.fill;
+        canvas.drawRect(Rect.fromLTWH(11.0, 1.0, 8.0, 8.0), paint);
+      }
+      {
+        final Paint paint = Paint();
+        paint.color = const Color(0x00000000);
+        paint.style = PaintingStyle.stroke;
+        paint.strokeWidth = 1.0;
         canvas.drawRect(Rect.fromLTWH(11.0, 1.0, 8.0, 8.0), paint);
       }
     }

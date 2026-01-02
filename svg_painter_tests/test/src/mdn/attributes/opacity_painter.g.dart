@@ -53,6 +53,13 @@ class _$OpacityPainter extends CustomPainter {
         paint.style = PaintingStyle.fill;
         canvas.drawRect(Rect.fromLTWH(0.0, 0.0, 200.0, 100.0), paint);
       }
+      {
+        final Paint paint = Paint();
+        paint.color = const Color(0x00000000);
+        paint.style = PaintingStyle.stroke;
+        paint.strokeWidth = 1.0;
+        canvas.drawRect(Rect.fromLTWH(0.0, 0.0, 200.0, 100.0), paint);
+      }
     }
     {
       {
@@ -61,12 +68,26 @@ class _$OpacityPainter extends CustomPainter {
         paint.style = PaintingStyle.fill;
         canvas.drawCircle(const Offset(50.0, 50.0), 40.0, paint);
       }
+      {
+        final Paint paint = Paint();
+        paint.color = const Color(0x00000000);
+        paint.style = PaintingStyle.stroke;
+        paint.strokeWidth = 1.0;
+        canvas.drawCircle(const Offset(50.0, 50.0), 40.0, paint);
+      }
     }
     {
       {
         final Paint paint = Paint();
         paint.color = const Color(0x4D000000);
         paint.style = PaintingStyle.fill;
+        canvas.drawCircle(const Offset(150.0, 50.0), 40.0, paint);
+      }
+      {
+        final Paint paint = Paint();
+        paint.color = const Color(0x00000000);
+        paint.style = PaintingStyle.stroke;
+        paint.strokeWidth = 1.0;
         canvas.drawCircle(const Offset(150.0, 50.0), 40.0, paint);
       }
     }

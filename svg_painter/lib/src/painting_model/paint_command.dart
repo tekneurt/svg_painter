@@ -1,5 +1,5 @@
 import 'package:meta/meta.dart';
-import 'painting_style.dart';
+import 'styles/painting_style.dart';
 
 part 'commands/draw_circle.dart';
 part 'commands/draw_group.dart';

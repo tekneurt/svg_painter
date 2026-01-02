@@ -5,7 +5,7 @@
 ### Phase 1: High Priority Architecture & Refactoring
 *Foundational work to enable dynamic properties and ensure a robust implementation.*
 
-- [ ] **PaintingStyle Composition**: Refactor the flat `PaintingStyle` into structured `FillStyle` and `StrokeStyle` objects. Update `resolvePaint` and `ShapeGenerator` to align with Flutter's dual-Paint approach.
+- [x] **PaintingStyle Composition**: Refactor the flat `PaintingStyle` into structured `FillStyle` and `StrokeStyle` objects. Update `resolvePaint` and `ShapeGenerator` to align with Flutter's dual-Paint approach.
 - [ ] **Generator Robustness & Error Reporting**:
     - [ ] Replace silent continues with explicit generator errors.
     - [ ] Implement helpful console error messages for malformed SVGs or unsupported features.

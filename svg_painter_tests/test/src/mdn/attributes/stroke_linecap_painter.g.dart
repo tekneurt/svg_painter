@@ -221,6 +221,13 @@ class _$StrokeLinecapButtPainter extends CustomPainter {
         paint.style = PaintingStyle.fill;
         canvas.drawCircle(const Offset(1.0, 1.0), 0.05, paint);
       }
+      {
+        final Paint paint = Paint();
+        paint.color = const Color(0x00000000);
+        paint.style = PaintingStyle.stroke;
+        paint.strokeWidth = 1.0;
+        canvas.drawCircle(const Offset(1.0, 1.0), 0.05, paint);
+      }
     }
     {
       {
@@ -229,12 +236,26 @@ class _$StrokeLinecapButtPainter extends CustomPainter {
         paint.style = PaintingStyle.fill;
         canvas.drawCircle(const Offset(5.0, 1.0), 0.05, paint);
       }
+      {
+        final Paint paint = Paint();
+        paint.color = const Color(0x00000000);
+        paint.style = PaintingStyle.stroke;
+        paint.strokeWidth = 1.0;
+        canvas.drawCircle(const Offset(5.0, 1.0), 0.05, paint);
+      }
     }
     {
       {
         final Paint paint = Paint();
         paint.color = const Color(0xFFFFC0CB);
         paint.style = PaintingStyle.fill;
+        canvas.drawCircle(const Offset(3.0, 3.0), 0.05, paint);
+      }
+      {
+        final Paint paint = Paint();
+        paint.color = const Color(0x00000000);
+        paint.style = PaintingStyle.stroke;
+        paint.strokeWidth = 1.0;
         canvas.drawCircle(const Offset(3.0, 3.0), 0.05, paint);
       }
     }
@@ -351,6 +372,13 @@ class _$StrokeLinecapRoundPainter extends CustomPainter {
         paint.style = PaintingStyle.fill;
         canvas.drawCircle(const Offset(1.0, 1.0), 0.05, paint);
       }
+      {
+        final Paint paint = Paint();
+        paint.color = const Color(0x00000000);
+        paint.style = PaintingStyle.stroke;
+        paint.strokeWidth = 1.0;
+        canvas.drawCircle(const Offset(1.0, 1.0), 0.05, paint);
+      }
     }
     {
       {
@@ -359,12 +387,26 @@ class _$StrokeLinecapRoundPainter extends CustomPainter {
         paint.style = PaintingStyle.fill;
         canvas.drawCircle(const Offset(5.0, 1.0), 0.05, paint);
       }
+      {
+        final Paint paint = Paint();
+        paint.color = const Color(0x00000000);
+        paint.style = PaintingStyle.stroke;
+        paint.strokeWidth = 1.0;
+        canvas.drawCircle(const Offset(5.0, 1.0), 0.05, paint);
+      }
     }
     {
       {
         final Paint paint = Paint();
         paint.color = const Color(0xFFFFC0CB);
         paint.style = PaintingStyle.fill;
+        canvas.drawCircle(const Offset(3.0, 3.0), 0.05, paint);
+      }
+      {
+        final Paint paint = Paint();
+        paint.color = const Color(0x00000000);
+        paint.style = PaintingStyle.stroke;
+        paint.strokeWidth = 1.0;
         canvas.drawCircle(const Offset(3.0, 3.0), 0.05, paint);
       }
     }
@@ -481,6 +523,13 @@ class _$StrokeLinecapSquarePainter extends CustomPainter {
         paint.style = PaintingStyle.fill;
         canvas.drawCircle(const Offset(1.0, 1.0), 0.05, paint);
       }
+      {
+        final Paint paint = Paint();
+        paint.color = const Color(0x00000000);
+        paint.style = PaintingStyle.stroke;
+        paint.strokeWidth = 1.0;
+        canvas.drawCircle(const Offset(1.0, 1.0), 0.05, paint);
+      }
     }
     {
       {
@@ -489,12 +538,26 @@ class _$StrokeLinecapSquarePainter extends CustomPainter {
         paint.style = PaintingStyle.fill;
         canvas.drawCircle(const Offset(5.0, 1.0), 0.05, paint);
       }
+      {
+        final Paint paint = Paint();
+        paint.color = const Color(0x00000000);
+        paint.style = PaintingStyle.stroke;
+        paint.strokeWidth = 1.0;
+        canvas.drawCircle(const Offset(5.0, 1.0), 0.05, paint);
+      }
     }
     {
       {
         final Paint paint = Paint();
         paint.color = const Color(0xFFFFC0CB);
         paint.style = PaintingStyle.fill;
+        canvas.drawCircle(const Offset(3.0, 3.0), 0.05, paint);
+      }
+      {
+        final Paint paint = Paint();
+        paint.color = const Color(0x00000000);
+        paint.style = PaintingStyle.stroke;
+        paint.strokeWidth = 1.0;
         canvas.drawCircle(const Offset(3.0, 3.0), 0.05, paint);
       }
     }

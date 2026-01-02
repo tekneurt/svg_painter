@@ -131,6 +131,13 @@ class _$Svg2Painter extends CustomPainter {
         paint.style = PaintingStyle.fill;
         canvas.drawRect(Rect.fromLTWH(0.0, 0.0, 18.0, 18.0), paint);
       }
+      {
+        final Paint paint = Paint();
+        paint.color = const Color(0x00000000);
+        paint.style = PaintingStyle.stroke;
+        paint.strokeWidth = 0.08999999999999998;
+        canvas.drawRect(Rect.fromLTWH(0.0, 0.0, 18.0, 18.0), paint);
+      }
     }
     {
       {
@@ -139,12 +146,26 @@ class _$Svg2Painter extends CustomPainter {
         paint.style = PaintingStyle.fill;
         canvas.drawRect(Rect.fromLTWH(9.0, 9.0, 18.0, 18.0), paint);
       }
+      {
+        final Paint paint = Paint();
+        paint.color = const Color(0x00000000);
+        paint.style = PaintingStyle.stroke;
+        paint.strokeWidth = 0.08999999999999998;
+        canvas.drawRect(Rect.fromLTWH(9.0, 9.0, 18.0, 18.0), paint);
+      }
     }
     {
       {
         final Paint paint = Paint();
         paint.color = const Color(0xBF808000);
         paint.style = PaintingStyle.fill;
+        canvas.drawRect(Rect.fromLTWH(18.0, 18.0, 18.0, 18.0), paint);
+      }
+      {
+        final Paint paint = Paint();
+        paint.color = const Color(0x00000000);
+        paint.style = PaintingStyle.stroke;
+        paint.strokeWidth = 0.08999999999999998;
         canvas.drawRect(Rect.fromLTWH(18.0, 18.0, 18.0, 18.0), paint);
       }
     }

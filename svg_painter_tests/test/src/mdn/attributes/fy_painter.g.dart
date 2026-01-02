@@ -63,6 +63,13 @@ class _$Fy1Painter extends CustomPainter {
         paint.style = PaintingStyle.fill;
         canvas.drawCircle(const Offset(100.0, 100.0), 100.0, paint);
       }
+      {
+        final Paint paint = Paint();
+        paint.color = const Color(0x00000000);
+        paint.style = PaintingStyle.stroke;
+        paint.strokeWidth = 1.0;
+        canvas.drawCircle(const Offset(100.0, 100.0), 100.0, paint);
+      }
     }
     {
       {
@@ -71,6 +78,13 @@ class _$Fy1Painter extends CustomPainter {
           Rect.fromCircle(center: const Offset(340.0, 100.0), radius: 100.0),
         );
         paint.style = PaintingStyle.fill;
+        canvas.drawCircle(const Offset(340.0, 100.0), 100.0, paint);
+      }
+      {
+        final Paint paint = Paint();
+        paint.color = const Color(0x00000000);
+        paint.style = PaintingStyle.stroke;
+        paint.strokeWidth = 1.0;
         canvas.drawCircle(const Offset(340.0, 100.0), 100.0, paint);
       }
     }
@@ -168,6 +182,12 @@ class _$Fy2Painter extends CustomPainter {
       }
     }
     {
+      {
+        final Paint paint = Paint();
+        paint.color = const Color(0x00000000);
+        paint.style = PaintingStyle.fill;
+        canvas.drawCircle(const Offset(100.0, 100.0), 83.33333333333333, paint);
+      }
       {
         final Paint paint = Paint();
         paint.color = const Color(0xFFFFFFFF);

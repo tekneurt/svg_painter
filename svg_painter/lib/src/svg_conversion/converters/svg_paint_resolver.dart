@@ -139,68 +139,93 @@ PaintingStyle resolvePaint(
     cssPathLength = resolvedRules['pathLength']!.toSvgLength();
   }
 
-  // 4. Resolve final values using priority: Inline Style/CSS > Presentation Attribute > Inherited
+  // 4. Resolve element opacity (group opacity)
+  final double selfOpacity = (cssOpacity ?? opacity)?.toDouble(context, SvgOrientation.unit) ?? 1.0;
+  final double elementOpacity = selfOpacity * context.parentOpacity;
+
+  // 5. Resolve final values using priority: Inline Style/CSS > Presentation Attribute > Inherited
   final SvgColor? fillPaint = cssFill ?? fill ?? context.inheritedFill;
-  int? fillColorArgb;
-  String? fillShaderId;
-  if (fillPaint is SvgPaintReference) {
-    fillShaderId = fillPaint.id;
-  } else {
-    fillColorArgb = fillPaint.toFillArgb();
+  final bool hasFill = fillPaint is! SvgNoneColor;
+  PaintingFillStyle? fillStyle;
+  if (hasFill) {
+    int? fillColorArgb;
+    String? fillShaderId;
+    if (fillPaint is SvgPaintReference) {
+      fillShaderId = fillPaint.id;
+    } else {
+      fillColorArgb = fillPaint.toFillArgb();
+    }
+
+    final double finalFillOpacity =
+        elementOpacity *
+        ((cssFillOpacity ?? fillOpacity ?? context.inheritedFillOpacity)?.toDouble(
+              context,
+              SvgOrientation.unit,
+            ) ??
+            1.0);
+
+    fillStyle = PaintingFillStyle(
+      colorArgb: fillColorArgb,
+      shaderId: fillShaderId,
+      opacity: finalFillOpacity,
+    );
   }
 
   final SvgColor? strokePaint = cssStroke ?? stroke ?? context.inheritedStroke;
-  int? strokeColorArgb;
-  String? strokeShaderId;
-  if (strokePaint is SvgPaintReference) {
-    strokeShaderId = strokePaint.id;
-  } else {
-    strokeColorArgb = strokePaint.toStrokeArgb();
+  final bool hasStroke = strokePaint is! SvgNoneColor;
+  PaintingStrokeStyle? strokeStyle;
+  if (hasStroke) {
+    int? strokeColorArgb;
+    String? strokeShaderId;
+    if (strokePaint is SvgPaintReference) {
+      strokeShaderId = strokePaint.id;
+    } else {
+      strokeColorArgb = strokePaint.toStrokeArgb();
+    }
+
+    final SvgLengthPercentage? sw = cssStrokeWidth ?? strokeWidth ?? context.inheritedStrokeWidth;
+    final double finalStrokeWidth = context.scaleNormalized(
+      sw?.toDouble(context, SvgOrientation.normalized) ?? 1.0,
+    );
+
+    final SvgPointList? sda =
+        cssStrokeDasharray ?? strokeDasharray ?? context.inheritedStrokeDasharray;
+    List<double>? finalDashArray;
+    if (sda != null && sda.points.isNotEmpty) {
+      finalDashArray = sda.points.map((double d) => context.scaleNormalized(d)).toList();
+    }
+
+    final SvgLength? pLength = cssPathLength ?? pathLength;
+    final double? finalPathLength = pLength?.value;
+
+    final SvgStrokeLinecap resolvedCap =
+        cssStrokeLinecap ?? strokeLinecap ?? context.inheritedStrokeLinecap ?? SvgStrokeLinecap.butt;
+
+    final SvgStrokeLinejoin resolvedJoin =
+        cssStrokeLinejoin ??
+        strokeLinejoin ??
+        context.inheritedStrokeLinejoin ??
+        SvgStrokeLinejoin.miter;
+
+    final double finalStrokeOpacity =
+        elementOpacity *
+        ((cssStrokeOpacity ?? strokeOpacity ?? context.inheritedStrokeOpacity)?.toDouble(
+              context,
+              SvgOrientation.unit,
+            ) ??
+            1.0);
+
+    strokeStyle = PaintingStrokeStyle(
+      colorArgb: strokeColorArgb,
+      shaderId: strokeShaderId,
+      width: finalStrokeWidth,
+      opacity: finalStrokeOpacity,
+      cap: resolvedCap.toStrokeCap(),
+      join: resolvedJoin.toStrokeJoin(),
+      dashArray: finalDashArray,
+      pathLength: finalPathLength,
+    );
   }
-
-  final SvgLengthPercentage? sw = cssStrokeWidth ?? strokeWidth ?? context.inheritedStrokeWidth;
-  final double finalStrokeWidth = context.scaleNormalized(
-    sw?.toDouble(context, SvgOrientation.normalized) ?? 1.0,
-  );
-
-  final SvgPointList? sda =
-      cssStrokeDasharray ?? strokeDasharray ?? context.inheritedStrokeDasharray;
-  List<double>? finalDashArray;
-  if (sda != null && sda.points.isNotEmpty) {
-    finalDashArray = sda.points.map((double d) => context.scaleNormalized(d)).toList();
-  }
-
-  final SvgLength? pLength = cssPathLength ?? pathLength;
-  final double? finalPathLength = pLength?.value;
-
-  final SvgStrokeLinecap resolvedCap =
-      cssStrokeLinecap ?? strokeLinecap ?? context.inheritedStrokeLinecap ?? SvgStrokeLinecap.butt;
-
-  final SvgStrokeLinejoin resolvedJoin =
-      cssStrokeLinejoin ??
-      strokeLinejoin ??
-      context.inheritedStrokeLinejoin ??
-      SvgStrokeLinejoin.miter;
-
-  final double selfOpacity =
-      (cssOpacity ?? opacity)?.toDouble(context, SvgOrientation.unit) ?? 1.0;
-  final double elementOpacity = selfOpacity * context.parentOpacity;
-
-  final double finalFillOpacity =
-      elementOpacity *
-      ((cssFillOpacity ?? fillOpacity ?? context.inheritedFillOpacity)?.toDouble(
-            context,
-            SvgOrientation.unit,
-          ) ??
-          1.0);
-
-  final double finalStrokeOpacity =
-      elementOpacity *
-      ((cssStrokeOpacity ?? strokeOpacity ?? context.inheritedStrokeOpacity)?.toDouble(
-            context,
-            SvgOrientation.unit,
-          ) ??
-          1.0);
 
   final double? rawFontSize = (cssFontSize ?? fontSize ?? context.inheritedFontSize)?.toDouble(
     context,
@@ -220,44 +245,39 @@ PaintingStyle resolvePaint(
     _ => rawFontFamily,
   };
 
-  return PaintingStyle(
-    fillColorArgb: fillColorArgb,
-    fillShaderId: fillShaderId,
-    fillOpacity: finalFillOpacity,
-    strokeColorArgb: strokeColorArgb,
-    strokeShaderId: strokeShaderId,
-    strokeWidth: finalStrokeWidth,
-    strokeDashArray: finalDashArray,
-    strokeOpacity: finalStrokeOpacity,
-    pathLength: finalPathLength,
-    strokeCap: resolvedCap.toStrokeCap(),
-    strokeJoin: resolvedJoin.toStrokeJoin(),
-    opacity: elementOpacity,
+  final PaintingTextStyle textStyle = PaintingTextStyle(
     fontSize: finalFontSize,
     fontWeight: finalFontWeight,
     fontStyle: finalFontStyle,
     fontFamily: finalFontFamily,
   );
+
+  return PaintingStyle(
+    fill: fillStyle,
+    stroke: strokeStyle,
+    text: textStyle,
+    groupOpacity: elementOpacity,
+  );
 }
 
 extension on SvgStrokeLinecap {
-  StrokeCap toStrokeCap() {
+  PaintingStrokeCap toStrokeCap() {
     return switch (this) {
-      SvgStrokeLinecap.butt => StrokeCap.butt,
-      SvgStrokeLinecap.round => StrokeCap.round,
-      SvgStrokeLinecap.square => StrokeCap.square,
+      SvgStrokeLinecap.butt => PaintingStrokeCap.butt,
+      SvgStrokeLinecap.round => PaintingStrokeCap.round,
+      SvgStrokeLinecap.square => PaintingStrokeCap.square,
     };
   }
 }
 
 extension on SvgStrokeLinejoin {
-  StrokeJoin toStrokeJoin() {
+  PaintingStrokeJoin toStrokeJoin() {
     return switch (this) {
-      SvgStrokeLinejoin.miter => StrokeJoin.miter,
-      SvgStrokeLinejoin.round => StrokeJoin.round,
-      SvgStrokeLinejoin.bevel => StrokeJoin.bevel,
-      SvgStrokeLinejoin.miterClip => StrokeJoin.miter,
-      SvgStrokeLinejoin.arcs => StrokeJoin.miter,
+      SvgStrokeLinejoin.miter => PaintingStrokeJoin.miter,
+      SvgStrokeLinejoin.round => PaintingStrokeJoin.round,
+      SvgStrokeLinejoin.bevel => PaintingStrokeJoin.bevel,
+      SvgStrokeLinejoin.miterClip => PaintingStrokeJoin.miter,
+      SvgStrokeLinejoin.arcs => PaintingStrokeJoin.miter,
     };
   }
 }

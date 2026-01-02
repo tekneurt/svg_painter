@@ -45,12 +45,26 @@ class _$HeightPainter extends CustomPainter {
         paint.style = PaintingStyle.fill;
         canvas.drawRect(Rect.fromLTWH(100.0, 0.0, 90.0, 60.0), paint);
       }
+      {
+        final Paint paint = Paint();
+        paint.color = const Color(0x00000000);
+        paint.style = PaintingStyle.stroke;
+        paint.strokeWidth = 1.0;
+        canvas.drawRect(Rect.fromLTWH(100.0, 0.0, 90.0, 60.0), paint);
+      }
     }
     {
       {
         final Paint paint = Paint();
         paint.color = const Color(0xFF000000);
         paint.style = PaintingStyle.fill;
+        canvas.drawRect(Rect.fromLTWH(200.0, 0.0, 90.0, 100.0), paint);
+      }
+      {
+        final Paint paint = Paint();
+        paint.color = const Color(0x00000000);
+        paint.style = PaintingStyle.stroke;
+        paint.strokeWidth = 1.0;
         canvas.drawRect(Rect.fromLTWH(200.0, 0.0, 90.0, 100.0), paint);
       }
     }

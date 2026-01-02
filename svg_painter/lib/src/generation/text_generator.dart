@@ -17,36 +17,36 @@ class TextGenerator extends ShapeGenerator<DrawText> {
       buffer.writeln("          text: '''${command.text}''',");
       buffer.writeln('          style: TextStyle(');
 
-      if (command.style.fillColorArgb != null) {
-        final double finalOpacity =
-            ((command.style.fillColorArgb! >> 24) & 0xFF) / 255.0 * command.style.opacity;
-        final int colorWithoutAlpha = command.style.fillColorArgb! & 0x00FFFFFF;
+      final PaintingFillStyle? fill = command.style.fill;
+      if (fill != null && fill.colorArgb != null) {
+        final double finalOpacity = ((fill.colorArgb! >> 24) & 0xFF) / 255.0 * fill.opacity;
+        final int colorWithoutAlpha = fill.colorArgb! & 0x00FFFFFF;
         final String colorHex = colorWithoutAlpha.toRadixString(16).toUpperCase().padLeft(6, '0');
         buffer.writeln(
           '            color: const Color(0x${(finalOpacity * 255).round().toRadixString(16).toUpperCase().padLeft(2, '0')}$colorHex),',
         );
       }
 
-      if (command.style.fontSize != null) {
-        buffer.writeln('            fontSize: ${command.style.fontSize},');
-      }
-
-      if (command.style.fontFamily != null) {
-        buffer.writeln("            fontFamily: '${command.style.fontFamily}',");
-      }
-
-      if (command.style.fontWeight != null) {
-        // Simple mapping for now
-        if (command.style.fontWeight == 'bold') {
-          buffer.writeln('            fontWeight: FontWeight.bold,');
-        } else {
-          // TODO(Gemini): Handle numeric weights
+      final PaintingTextStyle? textStyle = command.style.text;
+      if (textStyle != null) {
+        if (textStyle.fontSize != null) {
+          buffer.writeln('            fontSize: ${textStyle.fontSize},');
         }
-      }
 
-      if (command.style.fontStyle != null) {
-        if (command.style.fontStyle == 'italic') {
-          buffer.writeln('            fontStyle: FontStyle.italic,');
+        if (textStyle.fontFamily != null) {
+          buffer.writeln("            fontFamily: '${textStyle.fontFamily}',");
+        }
+
+        if (textStyle.fontWeight != null) {
+          if (textStyle.fontWeight == 'bold') {
+            buffer.writeln('            fontWeight: FontWeight.bold,');
+          }
+        }
+
+        if (textStyle.fontStyle != null) {
+          if (textStyle.fontStyle == 'italic') {
+            buffer.writeln('            fontStyle: FontStyle.italic,');
+          }
         }
       }
 

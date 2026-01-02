@@ -45,12 +45,32 @@ class _$RectPainter extends CustomPainter {
         paint.style = PaintingStyle.fill;
         canvas.drawRect(Rect.fromLTWH(0.0, 0.0, 100.0, 100.0), paint);
       }
+      {
+        final Paint paint = Paint();
+        paint.color = const Color(0x00000000);
+        paint.style = PaintingStyle.stroke;
+        paint.strokeWidth = 1.0;
+        canvas.drawRect(Rect.fromLTWH(0.0, 0.0, 100.0, 100.0), paint);
+      }
     }
     {
       {
         final Paint paint = Paint();
         paint.color = const Color(0xFF000000);
         paint.style = PaintingStyle.fill;
+        canvas.drawRRect(
+          RRect.fromRectAndRadius(
+            Rect.fromLTWH(120.0, 0.0, 100.0, 100.0),
+            Radius.elliptical(15.0, 15.0),
+          ),
+          paint,
+        );
+      }
+      {
+        final Paint paint = Paint();
+        paint.color = const Color(0x00000000);
+        paint.style = PaintingStyle.stroke;
+        paint.strokeWidth = 1.0;
         canvas.drawRRect(
           RRect.fromRectAndRadius(
             Rect.fromLTWH(120.0, 0.0, 100.0, 100.0),

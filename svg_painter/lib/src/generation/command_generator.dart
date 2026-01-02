@@ -23,85 +23,66 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
     String boundsRect,
     void Function(String paintVar, {String? dashArray, String? pathLength}) drawCall,
   ) {
-    // Fill
-    if (style.fillShaderId != null) {
+    // 1. Fill
+    final PaintingFillStyle? fill = style.fill;
+    if (fill != null) {
       buffer.writeln('      {');
       buffer.writeln('        final Paint paint = Paint();');
-      buffer.writeln(
-        '        paint.shader = _grad_${style.fillShaderId}.createShader($boundsRect);',
-      );
-      if (style.fillOpacity < 1.0) {
-        buffer.writeln('        paint.color = paint.color.withOpacity(${style.fillOpacity});');
+      if (fill.shaderId != null) {
+        buffer.writeln(
+          '        paint.shader = _grad_${fill.shaderId}.createShader($boundsRect);',
+        );
+        if (fill.opacity < 1.0) {
+          buffer.writeln('        paint.color = paint.color.withOpacity(${fill.opacity});');
+        }
+      } else if (fill.colorArgb != null) {
+        final double finalOpacity = ((fill.colorArgb! >> 24) & 0xFF) / 255.0 * fill.opacity;
+        final int colorWithoutAlpha = fill.colorArgb! & 0x00FFFFFF;
+        final String colorHex = colorWithoutAlpha.toRadixString(16).toUpperCase().padLeft(6, '0');
+        buffer.writeln(
+          '        paint.color = const Color(0x${(finalOpacity * 255).round().toRadixString(16).toUpperCase().padLeft(2, '0')}$colorHex);',
+        );
       }
-      buffer.writeln('        paint.style = PaintingStyle.fill;');
-      drawCall('paint');
-      buffer.writeln('      }');
-    } else if (style.fillColorArgb != null && style.fillColorArgb != 0) {
-      buffer.writeln('      {');
-      buffer.writeln('        final Paint paint = Paint();');
-      final double finalOpacity =
-          ((style.fillColorArgb! >> 24) & 0xFF) / 255.0 * style.fillOpacity;
-      final int colorWithoutAlpha = style.fillColorArgb! & 0x00FFFFFF;
-      final String colorHex = colorWithoutAlpha.toRadixString(16).toUpperCase().padLeft(6, '0');
-      buffer.writeln(
-        '        paint.color = const Color(0x${(finalOpacity * 255).round().toRadixString(16).toUpperCase().padLeft(2, '0')}$colorHex);',
-      );
       buffer.writeln('        paint.style = PaintingStyle.fill;');
       drawCall('paint');
       buffer.writeln('      }');
     }
 
-    // Stroke
-    if (style.strokeShaderId != null) {
+    // 2. Stroke
+    final PaintingStrokeStyle? stroke = style.stroke;
+    if (stroke != null) {
       buffer.writeln('      {');
       buffer.writeln('        final Paint paint = Paint();');
-      buffer.writeln(
-        '        paint.shader = _grad_${style.strokeShaderId}.createShader($boundsRect);',
-      );
-      if (style.strokeOpacity < 1.0) {
-        buffer.writeln('        paint.color = paint.color.withOpacity(${style.strokeOpacity});');
-      }
-      buffer.writeln('        paint.style = PaintingStyle.stroke;');
-      buffer.writeln('        paint.strokeWidth = ${style.strokeWidth};');
-      if (style.strokeCap != StrokeCap.butt) {
-        buffer.writeln('        paint.strokeCap = ${style.strokeCap.toFlutterString()};');
-      }
-      if (style.strokeJoin != StrokeJoin.miter) {
-        buffer.writeln('        paint.strokeJoin = ${style.strokeJoin.toFlutterString()};');
-      }
-      if (style.strokeDashArray != null) {
+      if (stroke.shaderId != null) {
         buffer.writeln(
-          '        final List<double> dashArray = [${style.strokeDashArray!.join(', ')}];',
+          '        paint.shader = _grad_${stroke.shaderId}.createShader($boundsRect);',
         );
-        final String? pl = style.pathLength?.toString();
-        drawCall('paint', dashArray: 'dashArray', pathLength: pl);
-      } else {
-        drawCall('paint');
-      }
-      buffer.writeln('      }');
-    } else if (style.strokeColorArgb != null && style.strokeColorArgb != 0) {
-      buffer.writeln('      {');
-      buffer.writeln('        final Paint paint = Paint();');
-      final double finalOpacity =
-          ((style.strokeColorArgb! >> 24) & 0xFF) / 255.0 * style.strokeOpacity;
-      final int colorWithoutAlpha = style.strokeColorArgb! & 0x00FFFFFF;
-      final String colorHex = colorWithoutAlpha.toRadixString(16).toUpperCase().padLeft(6, '0');
-      buffer.writeln(
-        '        paint.color = const Color(0x${(finalOpacity * 255).round().toRadixString(16).toUpperCase().padLeft(2, '0')}$colorHex);',
-      );
-      buffer.writeln('        paint.style = PaintingStyle.stroke;');
-      buffer.writeln('        paint.strokeWidth = ${style.strokeWidth};');
-      if (style.strokeCap != StrokeCap.butt) {
-        buffer.writeln('        paint.strokeCap = ${style.strokeCap.toFlutterString()};');
-      }
-      if (style.strokeJoin != StrokeJoin.miter) {
-        buffer.writeln('        paint.strokeJoin = ${style.strokeJoin.toFlutterString()};');
-      }
-      if (style.strokeDashArray != null) {
+        if (stroke.opacity < 1.0) {
+          buffer.writeln('        paint.color = paint.color.withOpacity(${stroke.opacity});');
+        }
+      } else if (stroke.colorArgb != null) {
+        final double finalOpacity = ((stroke.colorArgb! >> 24) & 0xFF) / 255.0 * stroke.opacity;
+        final int colorWithoutAlpha = stroke.colorArgb! & 0x00FFFFFF;
+        final String colorHex = colorWithoutAlpha.toRadixString(16).toUpperCase().padLeft(6, '0');
         buffer.writeln(
-          '        final List<double> dashArray = [${style.strokeDashArray!.join(', ')}];',
+          '        paint.color = const Color(0x${(finalOpacity * 255).round().toRadixString(16).toUpperCase().padLeft(2, '0')}$colorHex);',
         );
-        final String? pl = style.pathLength?.toString();
+      }
+
+      buffer.writeln('        paint.style = PaintingStyle.stroke;');
+      buffer.writeln('        paint.strokeWidth = ${stroke.width};');
+      if (stroke.cap != PaintingStrokeCap.butt) {
+        buffer.writeln('        paint.strokeCap = ${stroke.cap.toFlutterString()};');
+      }
+      if (stroke.join != PaintingStrokeJoin.miter) {
+        buffer.writeln('        paint.strokeJoin = ${stroke.join.toFlutterString()};');
+      }
+
+      if (stroke.dashArray != null) {
+        buffer.writeln(
+          '        final List<double> dashArray = [${stroke.dashArray!.join(', ')}];',
+        );
+        final String? pl = stroke.pathLength?.toString();
         drawCall('paint', dashArray: 'dashArray', pathLength: pl);
       } else {
         drawCall('paint');
@@ -182,22 +163,22 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
   }
 }
 
-extension on StrokeCap {
+extension on PaintingStrokeCap {
   String toFlutterString() {
     return switch (this) {
-      StrokeCap.butt => 'StrokeCap.butt',
-      StrokeCap.round => 'StrokeCap.round',
-      StrokeCap.square => 'StrokeCap.square',
+      PaintingStrokeCap.butt => 'StrokeCap.butt',
+      PaintingStrokeCap.round => 'StrokeCap.round',
+      PaintingStrokeCap.square => 'StrokeCap.square',
     };
   }
 }
 
-extension on StrokeJoin {
+extension on PaintingStrokeJoin {
   String toFlutterString() {
     return switch (this) {
-      StrokeJoin.miter => 'StrokeJoin.miter',
-      StrokeJoin.round => 'StrokeJoin.round',
-      StrokeJoin.bevel => 'StrokeJoin.bevel',
+      PaintingStrokeJoin.miter => 'StrokeJoin.miter',
+      PaintingStrokeJoin.round => 'StrokeJoin.round',
+      PaintingStrokeJoin.bevel => 'StrokeJoin.bevel',
     };
   }
 }
