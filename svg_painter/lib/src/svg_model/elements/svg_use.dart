@@ -15,10 +15,6 @@ final class SvgUse extends SvgGraphicsElement {
     super.fill,
     super.fillOpacity,
     super.stroke,
-    super.strokeOpacity,
-    super.strokeWidth,
-    super.strokeLinecap,
-    super.strokeLinejoin,
     super.opacity,
     super.fontSize,
     super.fontWeight,
@@ -28,7 +24,6 @@ final class SvgUse extends SvgGraphicsElement {
     super.inlineStyle,
     super.transform,
     super.pathLength,
-    super.strokeDasharray,
   });
 
   /// The URI reference to the element to be cloned.

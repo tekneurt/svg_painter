@@ -9,10 +9,6 @@ final class SvgGroup extends SvgContainerElement {
     super.fill,
     super.fillOpacity,
     super.stroke,
-    super.strokeOpacity,
-    super.strokeWidth,
-    super.strokeLinecap,
-    super.strokeLinejoin,
     super.opacity,
     super.fontSize,
     super.fontWeight,
@@ -22,6 +18,5 @@ final class SvgGroup extends SvgContainerElement {
     super.inlineStyle,
     super.transform,
     super.pathLength,
-    super.strokeDasharray,
   });
 }

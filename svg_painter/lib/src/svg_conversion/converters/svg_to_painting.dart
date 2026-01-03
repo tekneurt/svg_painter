@@ -48,12 +48,12 @@ extension SvgElementToPaintCommands on SvgElement {
         viewBoxMinY: minY,
         inheritedFill: self.fill,
         inheritedFillOpacity: self.fillOpacity,
-        inheritedStroke: self.stroke,
-        inheritedStrokeOpacity: self.strokeOpacity,
-        inheritedStrokeWidth: self.strokeWidth,
-        inheritedStrokeDasharray: self.strokeDasharray,
-        inheritedStrokeLinecap: self.strokeLinecap,
-        inheritedStrokeLinejoin: self.strokeLinejoin,
+        inheritedStroke: self.stroke?.color,
+        inheritedStrokeOpacity: self.stroke?.opacity,
+        inheritedStrokeWidth: self.stroke?.width,
+        inheritedStrokeDasharray: self.stroke?.dashArray,
+        inheritedStrokeLinecap: self.stroke?.linecap,
+        inheritedStrokeLinejoin: self.stroke?.linejoin,
         // Opacity on root element.
         parentOpacity:
             self.opacity?.resolve(
@@ -78,12 +78,12 @@ extension SvgElementToPaintCommands on SvgElement {
         ? context.derive(
             inheritedFill: self.fill ?? context.inheritedFill,
             inheritedFillOpacity: self.fillOpacity ?? context.inheritedFillOpacity,
-            inheritedStroke: self.stroke ?? context.inheritedStroke,
-            inheritedStrokeOpacity: self.strokeOpacity ?? context.inheritedStrokeOpacity,
-            inheritedStrokeWidth: self.strokeWidth ?? context.inheritedStrokeWidth,
-            inheritedStrokeDasharray: self.strokeDasharray ?? context.inheritedStrokeDasharray,
-            inheritedStrokeLinecap: self.strokeLinecap ?? context.inheritedStrokeLinecap,
-            inheritedStrokeLinejoin: self.strokeLinejoin ?? context.inheritedStrokeLinejoin,
+            inheritedStroke: self.stroke?.color ?? context.inheritedStroke,
+            inheritedStrokeOpacity: self.stroke?.opacity ?? context.inheritedStrokeOpacity,
+            inheritedStrokeWidth: self.stroke?.width ?? context.inheritedStrokeWidth,
+            inheritedStrokeDasharray: self.stroke?.dashArray ?? context.inheritedStrokeDasharray,
+            inheritedStrokeLinecap: self.stroke?.linecap ?? context.inheritedStrokeLinecap,
+            inheritedStrokeLinejoin: self.stroke?.linejoin ?? context.inheritedStrokeLinejoin,
             // Multiply parent opacity with current element opacity.
             parentOpacity: context.parentOpacity * (self.opacity?.resolve(context, .unit) ?? 1.0),
             inheritedFontSize: self.fontSize ?? context.inheritedFontSize,
@@ -145,11 +145,11 @@ extension _SvgUseToPaintCommands on SvgUse {
       parentTy: context.parentTy + (dy * context.parentSy),
       inheritedFill: fill ?? context.inheritedFill,
       inheritedFillOpacity: fillOpacity ?? context.inheritedFillOpacity,
-      inheritedStroke: stroke ?? context.inheritedStroke,
-      inheritedStrokeOpacity: strokeOpacity ?? context.inheritedStrokeOpacity,
-      inheritedStrokeWidth: strokeWidth ?? context.inheritedStrokeWidth,
-      inheritedStrokeLinecap: strokeLinecap ?? context.inheritedStrokeLinecap,
-      inheritedStrokeLinejoin: strokeLinejoin ?? context.inheritedStrokeLinejoin,
+      inheritedStroke: stroke?.color ?? context.inheritedStroke,
+      inheritedStrokeOpacity: stroke?.opacity ?? context.inheritedStrokeOpacity,
+      inheritedStrokeWidth: stroke?.width ?? context.inheritedStrokeWidth,
+      inheritedStrokeLinecap: stroke?.linecap ?? context.inheritedStrokeLinecap,
+      inheritedStrokeLinejoin: stroke?.linejoin ?? context.inheritedStrokeLinejoin,
     );
 
     return target.toPaintCommands(useCtx);
@@ -211,11 +211,11 @@ extension _SvgSvgToPaintCommands on SvgSvg {
       parentSy: newSy,
       inheritedFill: fill ?? context.inheritedFill,
       inheritedFillOpacity: fillOpacity ?? context.inheritedFillOpacity,
-      inheritedStroke: stroke ?? context.inheritedStroke,
-      inheritedStrokeOpacity: strokeOpacity ?? context.inheritedStrokeOpacity,
-      inheritedStrokeWidth: strokeWidth ?? context.inheritedStrokeWidth,
-      inheritedStrokeLinecap: strokeLinecap ?? context.inheritedStrokeLinecap,
-      inheritedStrokeLinejoin: strokeLinejoin ?? context.inheritedStrokeLinejoin,
+      inheritedStroke: stroke?.color ?? context.inheritedStroke,
+      inheritedStrokeOpacity: stroke?.opacity ?? context.inheritedStrokeOpacity,
+      inheritedStrokeWidth: stroke?.width ?? context.inheritedStrokeWidth,
+      inheritedStrokeLinecap: stroke?.linecap ?? context.inheritedStrokeLinecap,
+      inheritedStrokeLinejoin: stroke?.linejoin ?? context.inheritedStrokeLinejoin,
     );
 
     return children.map((SvgElement child) => child.toPaintCommands(innerContext)).combine();

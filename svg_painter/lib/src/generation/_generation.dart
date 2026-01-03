@@ -1,5 +1,6 @@
 export 'circle_generator.dart';
 export 'command_generator.dart';
+export 'generation_extensions.dart';
 export 'group_generator.dart';
 export 'line_generator.dart';
 export 'linear_gradient_generator.dart';

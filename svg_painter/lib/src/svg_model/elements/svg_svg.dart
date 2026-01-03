@@ -6,20 +6,16 @@ part of '../svg_element.dart';
 base class SvgSvg extends SvgContainerElement {
   const SvgSvg({
     required super.children,
-    this.x,
-    this.y,
     this.width,
     this.height,
     this.viewBox,
+    this.x,
+    this.y,
+    this.styleSheet = const SvgStyleSheet.empty(),
     super.id,
     super.fill,
     super.fillOpacity,
     super.stroke,
-    super.strokeOpacity,
-    super.strokeWidth,
-    super.strokeDasharray,
-    super.strokeLinecap,
-    super.strokeLinejoin,
     super.opacity,
     super.fontSize,
     super.fontWeight,
@@ -45,13 +41,16 @@ base class SvgSvg extends SvgContainerElement {
 
   /// The viewBox of the SVG.
   final SvgViewBox? viewBox;
+
+  /// The CSS rules defined for this SVG (or empty for non-root SVGs).
+  final SvgStyleSheet styleSheet;
 }
 
 /// Represents the root <svg> element.
 final class SvgRoot extends SvgSvg {
   const SvgRoot({
     required super.children,
-    this.styleSheet = const SvgStyleSheet(<String, Map<String, String>>{}),
+    super.styleSheet,
     super.x,
     super.y,
     super.width,
@@ -61,11 +60,6 @@ final class SvgRoot extends SvgSvg {
     super.fill,
     super.fillOpacity,
     super.stroke,
-    super.strokeOpacity,
-    super.strokeWidth,
-    super.strokeDasharray,
-    super.strokeLinecap,
-    super.strokeLinejoin,
     super.opacity,
     super.fontSize,
     super.fontWeight,
@@ -76,7 +70,4 @@ final class SvgRoot extends SvgSvg {
     super.transform,
     super.pathLength,
   });
-
-  /// The CSS rules defined for this SVG.
-  final SvgStyleSheet styleSheet;
 }

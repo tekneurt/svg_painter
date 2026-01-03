@@ -10,14 +10,9 @@ final class SvgEllipse extends SvgBasicShape {
     required this.cy,
     required this.rx,
     required this.ry,
-    super.id,
     super.fill,
     super.fillOpacity,
     super.stroke,
-    super.strokeOpacity,
-    super.strokeWidth,
-    super.strokeLinecap,
-    super.strokeLinejoin,
     super.opacity,
     super.fontSize,
     super.fontWeight,
@@ -27,7 +22,7 @@ final class SvgEllipse extends SvgBasicShape {
     super.inlineStyle,
     super.transform,
     super.pathLength,
-    super.strokeDasharray,
+    super.id,
   });
 
   /// The x-axis coordinate of the center of the ellipse.

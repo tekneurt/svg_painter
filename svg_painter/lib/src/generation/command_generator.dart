@@ -1,4 +1,5 @@
 import '../painting_model/_painting_model.dart';
+import 'generation_extensions.dart';
 
 /// Base class for all command-specific code generators.
 abstract class CommandGenerator<T extends PaintCommand> {
@@ -156,25 +157,5 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
     } else {
       buffer.writeln('    }');
     }
-  }
-}
-
-extension on PaintingStrokeCap {
-  String toFlutterString() {
-    return switch (this) {
-      .butt => 'StrokeCap.butt',
-      .round => 'StrokeCap.round',
-      .square => 'StrokeCap.square',
-    };
-  }
-}
-
-extension on PaintingStrokeJoin {
-  String toFlutterString() {
-    return switch (this) {
-      .miter => 'StrokeJoin.miter',
-      .round => 'StrokeJoin.round',
-      .bevel => 'StrokeJoin.bevel',
-    };
   }
 }

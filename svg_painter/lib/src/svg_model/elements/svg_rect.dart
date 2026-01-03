@@ -12,14 +12,9 @@ final class SvgRect extends SvgBasicShape {
     required this.height,
     required this.rx,
     required this.ry,
-    super.id,
     super.fill,
     super.fillOpacity,
     super.stroke,
-    super.strokeOpacity,
-    super.strokeWidth,
-    super.strokeLinecap,
-    super.strokeLinejoin,
     super.opacity,
     super.fontSize,
     super.fontWeight,
@@ -29,7 +24,7 @@ final class SvgRect extends SvgBasicShape {
     super.inlineStyle,
     super.transform,
     super.pathLength,
-    super.strokeDasharray,
+    super.id,
   });
 
   /// The x-axis coordinate of the side of the rectangle which has the smaller x-axis coordinate value.

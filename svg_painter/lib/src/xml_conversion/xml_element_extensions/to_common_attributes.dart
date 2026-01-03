@@ -9,11 +9,7 @@ typedef CommonAttributes = ({
   String? id,
   SvgColor? fill,
   SvgLengthPercentage? fillOpacity,
-  SvgColor? stroke,
-  SvgLengthPercentage? strokeOpacity,
-  SvgLengthPercentage? strokeWidth,
-  SvgStrokeLinecap? strokeLinecap,
-  SvgStrokeLinejoin? strokeLinejoin,
+  SvgStrokeAttributes? stroke,
   SvgLengthPercentage? opacity,
   SvgLengthPercentage? fontSize,
   String? fontWeight,
@@ -23,7 +19,6 @@ typedef CommonAttributes = ({
   String? inlineStyle,
   String? transform,
   SvgLength? pathLength,
-  SvgPointList? strokeDasharray,
 });
 
 extension ToCommonAttributes on XmlElement {
@@ -33,23 +28,25 @@ extension ToCommonAttributes on XmlElement {
       id: toXmlAttributeValue(XmlAttributeName.id),
       fill: toSvgValueOrNull<SvgColor>(elementName, XmlAttributeName.fill),
       fillOpacity: toSvgValueOrNull<SvgLengthPercentage>(elementName, XmlAttributeName.fillOpacity),
-      stroke: toSvgValueOrNull<SvgColor>(elementName, XmlAttributeName.stroke),
-      strokeOpacity: toSvgValueOrNull<SvgLengthPercentage>(
-        elementName,
-        XmlAttributeName.strokeOpacity,
-      ),
-      strokeWidth: toSvgValueOrNull<SvgLengthPercentage>(elementName, XmlAttributeName.strokeWidth),
-      strokeDasharray: toSvgValueOrNull<SvgPointList>(
-        elementName,
-        XmlAttributeName.strokeDasharray,
-      ),
-      strokeLinecap: toSvgValueOrNull<SvgStrokeLinecap>(
-        elementName,
-        XmlAttributeName.strokeLinecap,
-      ),
-      strokeLinejoin: toSvgValueOrNull<SvgStrokeLinejoin>(
-        elementName,
-        XmlAttributeName.strokeLinejoin,
+      stroke: SvgStrokeAttributes(
+        color: toSvgValueOrNull<SvgColor>(elementName, XmlAttributeName.stroke),
+        opacity: toSvgValueOrNull<SvgLengthPercentage>(
+          elementName,
+          XmlAttributeName.strokeOpacity,
+        ),
+        width: toSvgValueOrNull<SvgLengthPercentage>(elementName, XmlAttributeName.strokeWidth),
+        dashArray: toSvgValueOrNull<SvgPointList>(
+          elementName,
+          XmlAttributeName.strokeDasharray,
+        ),
+        linecap: toSvgValueOrNull<SvgStrokeLinecap>(
+          elementName,
+          XmlAttributeName.strokeLinecap,
+        ),
+        linejoin: toSvgValueOrNull<SvgStrokeLinejoin>(
+          elementName,
+          XmlAttributeName.strokeLinejoin,
+        ),
       ),
       opacity: toSvgValueOrNull<SvgLengthPercentage>(elementName, XmlAttributeName.opacity),
       fontSize: toSvgValueOrNull<SvgLengthPercentage>(elementName, XmlAttributeName.fontSize),

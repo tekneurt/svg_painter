@@ -57,7 +57,7 @@ void main() {
         cy: SvgLength(0),
         r: SvgLength(5),
         fill: SvgRgbColor(255, 255, 0, 0), // Red
-        stroke: SvgRgbColor(255, 0, 0, 255), // Blue
+        stroke: SvgStrokeAttributes(color: SvgRgbColor(255, 0, 0, 255)), // Blue
       );
 
       final Result<List<PaintCommand>> result = circle.toPaintCommands();

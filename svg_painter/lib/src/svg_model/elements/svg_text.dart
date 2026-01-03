@@ -9,14 +9,9 @@ final class SvgText extends SvgGraphicsElement {
     required this.x,
     required this.y,
     required this.text,
-    super.id,
     super.fill,
     super.fillOpacity,
     super.stroke,
-    super.strokeOpacity,
-    super.strokeWidth,
-    super.strokeLinecap,
-    super.strokeLinejoin,
     super.opacity,
     super.fontSize,
     super.fontWeight,
@@ -26,7 +21,7 @@ final class SvgText extends SvgGraphicsElement {
     super.inlineStyle,
     super.transform,
     super.pathLength,
-    super.strokeDasharray,
+    super.id,
   });
 
   /// The x-axis coordinate of the starting point of the text.

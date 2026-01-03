@@ -9,11 +9,11 @@
 - [x] **Generator Robustness & Error Reporting**:
     - [x] Replace silent continues with explicit generator errors.
     - [x] Implement helpful console error messages for malformed SVGs or unsupported features.
-- [ ] **Standardization**:
+- [x] **Standardization**:
     - [x] Convert code to use dot shorthand for enum values and static members consistently.
     - [x] Standardize extension naming (e.g., `To[Target]`).
-    - [ ] Cleanly integrate `StrokeCap.toFlutterString()` (currently duplicated/loosely placed).
-- [ ] **Stroke Simplification**: Use a shared `StrokeStyle` or mixin across layers to reduce constructor boilerplate.
+    - [x] Cleanly integrate `StrokeCap.toFlutterString()` (currently duplicated/loosely placed).
+- [x] **Stroke Simplification**: Use a shared `StrokeStyle` or mixin across layers to reduce constructor boilerplate.
 
 ### Phase 2: Dynamic Properties & Customizable Widget (Heart of Value Prop)
 *The core differentiator: creating plug-and-play components.*

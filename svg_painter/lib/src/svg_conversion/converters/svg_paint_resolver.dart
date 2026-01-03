@@ -10,13 +10,7 @@ PaintingStyle resolvePaint(
   String? tagName,
   SvgColor? fill,
   SvgLengthPercentage? fillOpacity,
-  SvgColor? stroke,
-  SvgLengthPercentage? strokeOpacity,
-  SvgLengthPercentage? strokeWidth,
-  SvgPointList? strokeDasharray,
-  SvgLength? pathLength,
-  SvgStrokeLinecap? strokeLinecap,
-  SvgStrokeLinejoin? strokeLinejoin,
+  SvgStrokeAttributes? stroke,
   SvgLengthPercentage? opacity,
   SvgLengthPercentage? fontSize,
   String? fontWeight,
@@ -24,6 +18,7 @@ PaintingStyle resolvePaint(
   String? fontFamily,
   String? cssClass,
   String? inlineStyle,
+  SvgLength? pathLength,
 }) {
   // 1. Resolve CSS properties
   final Map<String, String> resolvedRules = <String, String>{};
@@ -168,7 +163,7 @@ PaintingStyle resolvePaint(
     );
   }
 
-  final SvgColor? strokePaint = cssStroke ?? stroke ?? context.inheritedStroke;
+  final SvgColor? strokePaint = cssStroke ?? stroke?.color ?? context.inheritedStroke;
   final bool hasStroke = strokePaint != null && strokePaint is! SvgNoneColor;
   PaintingStrokeStyle? strokeStyle;
   if (hasStroke) {
@@ -180,13 +175,14 @@ PaintingStyle resolvePaint(
       strokeColorArgb = strokePaint.toStrokeArgb();
     }
 
-    final SvgLengthPercentage? sw = cssStrokeWidth ?? strokeWidth ?? context.inheritedStrokeWidth;
+    final SvgLengthPercentage? sw =
+        cssStrokeWidth ?? stroke?.width ?? context.inheritedStrokeWidth;
     final double finalStrokeWidth = context.scaleNormalized(
       sw?.resolve(context, .normalized) ?? 1.0,
     );
 
     final SvgPointList? sda =
-        cssStrokeDasharray ?? strokeDasharray ?? context.inheritedStrokeDasharray;
+        cssStrokeDasharray ?? stroke?.dashArray ?? context.inheritedStrokeDasharray;
     List<double>? finalDashArray;
     if (sda != null && sda.points.isNotEmpty) {
       finalDashArray = sda.points.map((double d) => context.scaleNormalized(d)).toList();
@@ -196,14 +192,14 @@ PaintingStyle resolvePaint(
     final double? finalPathLength = pLength?.value;
 
     final SvgStrokeLinecap resolvedCap =
-        cssStrokeLinecap ?? strokeLinecap ?? context.inheritedStrokeLinecap ?? .butt;
+        cssStrokeLinecap ?? stroke?.linecap ?? context.inheritedStrokeLinecap ?? .butt;
 
     final SvgStrokeLinejoin resolvedJoin =
-        cssStrokeLinejoin ?? strokeLinejoin ?? context.inheritedStrokeLinejoin ?? .miter;
+        cssStrokeLinejoin ?? stroke?.linejoin ?? context.inheritedStrokeLinejoin ?? .miter;
 
     final double finalStrokeOpacity =
         elementOpacity *
-        ((cssStrokeOpacity ?? strokeOpacity ?? context.inheritedStrokeOpacity)?.resolve(
+        ((cssStrokeOpacity ?? stroke?.opacity ?? context.inheritedStrokeOpacity)?.resolve(
               context,
               .unit,
             ) ??

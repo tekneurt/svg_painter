@@ -5,14 +5,9 @@ part of '../svg_element.dart';
 final class SvgPath extends SvgGraphicsElement {
   const SvgPath({
     required this.d,
-    super.id,
     super.fill,
     super.fillOpacity,
     super.stroke,
-    super.strokeOpacity,
-    super.strokeWidth,
-    super.strokeLinecap,
-    super.strokeLinejoin,
     super.opacity,
     super.fontSize,
     super.fontWeight,
@@ -22,7 +17,7 @@ final class SvgPath extends SvgGraphicsElement {
     super.inlineStyle,
     super.transform,
     super.pathLength,
-    super.strokeDasharray,
+    super.id,
   });
 
   /// The path data.

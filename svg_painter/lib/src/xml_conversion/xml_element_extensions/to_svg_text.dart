@@ -27,10 +27,6 @@ extension ToSvgText on XmlElement {
         fill: common.fill,
         fillOpacity: common.fillOpacity,
         stroke: common.stroke,
-        strokeOpacity: common.strokeOpacity,
-        strokeWidth: common.strokeWidth,
-        strokeLinecap: common.strokeLinecap,
-        strokeLinejoin: common.strokeLinejoin,
         opacity: common.opacity,
         fontSize: common.fontSize,
         fontWeight: common.fontWeight,
@@ -40,7 +36,6 @@ extension ToSvgText on XmlElement {
         inlineStyle: common.inlineStyle,
         transform: common.transform,
         pathLength: common.pathLength,
-        strokeDasharray: common.strokeDasharray,
         id: common.id,
       ),
     );

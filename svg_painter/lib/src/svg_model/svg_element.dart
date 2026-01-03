@@ -1,5 +1,6 @@
 import 'package:meta/meta.dart';
 
+import 'attributes/svg_stroke_attributes.dart';
 import 'svg_style_sheet.dart';
 import 'svg_value.dart';
 
@@ -43,10 +44,6 @@ sealed class SvgGraphicsElement extends SvgElement {
     this.fill,
     this.fillOpacity,
     this.stroke,
-    this.strokeOpacity,
-    this.strokeWidth,
-    this.strokeLinecap,
-    this.strokeLinejoin,
     this.opacity,
     this.fontSize,
     this.fontWeight,
@@ -56,7 +53,6 @@ sealed class SvgGraphicsElement extends SvgElement {
     this.inlineStyle,
     this.transform,
     this.pathLength,
-    this.strokeDasharray,
   });
 
   /// The fill color of the element.
@@ -65,23 +61,8 @@ sealed class SvgGraphicsElement extends SvgElement {
   /// The opacity of the fill.
   final SvgLengthPercentage? fillOpacity;
 
-  /// The stroke color of the element.
-  final SvgColor? stroke;
-
-  /// The opacity of the stroke.
-  final SvgLengthPercentage? strokeOpacity;
-
-  /// The width of the stroke.
-  final SvgLengthPercentage? strokeWidth;
-
-  /// The dash pattern for the stroke.
-  final SvgPointList? strokeDasharray;
-
-  /// The shape to be used at the end of open subpaths.
-  final SvgStrokeLinecap? strokeLinecap;
-
-  /// The shape to be used at the corners of paths or basic shapes.
-  final SvgStrokeLinejoin? strokeLinejoin;
+  /// The grouped stroke attributes of the element.
+  final SvgStrokeAttributes? stroke;
 
   /// The transparency of the element.
   final SvgLengthPercentage? opacity;
@@ -119,10 +100,6 @@ sealed class SvgBasicShape extends SvgGraphicsElement {
     super.fill,
     super.fillOpacity,
     super.stroke,
-    super.strokeOpacity,
-    super.strokeWidth,
-    super.strokeLinecap,
-    super.strokeLinejoin,
     super.opacity,
     super.fontSize,
     super.fontWeight,
@@ -132,7 +109,6 @@ sealed class SvgBasicShape extends SvgGraphicsElement {
     super.inlineStyle,
     super.transform,
     super.pathLength,
-    super.strokeDasharray,
   });
 }
 
@@ -145,11 +121,6 @@ sealed class SvgContainerElement extends SvgGraphicsElement with SvgParent {
     super.fill,
     super.fillOpacity,
     super.stroke,
-    super.strokeOpacity,
-    super.strokeWidth,
-    super.strokeDasharray,
-    super.strokeLinecap,
-    super.strokeLinejoin,
     super.opacity,
     super.fontSize,
     super.fontWeight,

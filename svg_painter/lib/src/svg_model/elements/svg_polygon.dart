@@ -7,14 +7,9 @@ part of '../svg_element.dart';
 final class SvgPolygon extends SvgBasicShape {
   const SvgPolygon({
     required this.points,
-    super.id,
     super.fill,
     super.fillOpacity,
     super.stroke,
-    super.strokeOpacity,
-    super.strokeWidth,
-    super.strokeLinecap,
-    super.strokeLinejoin,
     super.opacity,
     super.fontSize,
     super.fontWeight,
@@ -24,7 +19,7 @@ final class SvgPolygon extends SvgBasicShape {
     super.inlineStyle,
     super.transform,
     super.pathLength,
-    super.strokeDasharray,
+    super.id,
   });
 
   /// The points that make up the polygon.
