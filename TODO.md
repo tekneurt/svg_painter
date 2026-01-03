@@ -26,7 +26,7 @@
 - [x] **Generation - Shapes**: Unit tests for `CircleGenerator`, `OvalGenerator`, `LineGenerator`, and `RectGenerator`.
 - [x] **Generation - Paths & Polys**: Unit tests for `PathGenerator` and `PolyGenerator` (Polygon/Polyline).
 - [x] **Generation - Text & Groups**: Unit tests for `TextGenerator` and `GroupGenerator`.
-- [ ] **Generation - Gradients**: Unit tests for `LinearGradientGenerator` and `RadialGradientGenerator`.
+- [x] **Generation - Gradients**: Unit tests for `LinearGradientGenerator` and `RadialGradientGenerator`.
 
 #### XML Conversion Tests
 - [ ] **XML Conversion - Shapes**: Unit tests for `ToSvgCircle`, `ToSvgEllipse`, `ToSvgLine`, and `ToSvgRect`.
