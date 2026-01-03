@@ -35,7 +35,7 @@
 - [x] **XML Conversion - Gradients**: Unit tests for `ToSvgLinearGradient`, `ToSvgRadialGradient`, and `ToSvgStop`.
 
 - [x] **Refactor Tests to Mirror Lib Structure**: Reorganize all unit tests to exactly mirror the `lib/` directory structure (1:1 mapping of source file to test file), ensuring strict discoverability and maintainability.
-- [ ] **Coverage Helper**: Create a tool to generate a `coverage_helper_test.dart` that imports all library files, ensuring the coverage report reflects the true codebase size (including currently untested files).
+- [x] **Coverage Helper**: Create a tool to generate a `coverage_helper_test.dart` that imports all library files, ensuring the coverage report reflects the true codebase size (including currently untested files).
 - [ ] **Coverage Analysis & Finalization**: Analyze the final coverage report, identify remaining gaps, and implement necessary tests to reach a high confidence level (aiming for >90% branch coverage on core logic).
 
 ### Phase 2: Dynamic Properties & Customizable Widget (Heart of Value Prop)
