@@ -29,10 +29,10 @@ class PathDataParser {
       }
 
       final bool isRelative = currentCommand!.toLowerCase() == currentCommand;
-      final String cmd = currentCommand!.toUpperCase();
 
       int i = 0;
-      while (i < params.length || cmd == 'Z') {
+      while (i < params.length || currentCommand?.toUpperCase() == 'Z') {
+        final String cmd = currentCommand!.toUpperCase();
         final int remaining = params.length - i;
         switch (cmd) {
           case 'M':

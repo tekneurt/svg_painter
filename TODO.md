@@ -19,7 +19,7 @@
 *Addressing critical coverage gaps before adding feature complexity.*
 
 - [x] **SVG Transform Parser Tests**: Verify `translate`, `scale`, `rotate`, `skewX`, `skewY`, and `matrix` parsing, including chaining and edge cases.
-- [ ] **Path Data Parser Tests**: Verify all SVG path commands (M, L, H, V, C, S, Q, T, A, Z) including relative/absolute variants, optional whitespace, and comma handling.
+- [x] **Path Data Parser Tests**: Verify all SVG path commands (M, L, H, V, C, S, Q, T, A, Z) including relative/absolute variants, optional whitespace, and comma handling.
 - [ ] **Paint Resolver Tests**: Verify style inheritance, CSS precedence (inline > attribute > inherited), and unit conversion context.
 
 #### Code Generation Tests
