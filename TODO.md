@@ -18,11 +18,22 @@
 ### Phase 1.5: Test Hardening & Quality Assurance (Immediate Priority)
 *Addressing critical coverage gaps before adding feature complexity.*
 
-- [ ] **SVG Transform Parser Tests**: Verify `translate`, `scale`, `rotate`, `skewX`, `skewY`, and `matrix` parsing, including chaining and edge cases.
+- [x] **SVG Transform Parser Tests**: Verify `translate`, `scale`, `rotate`, `skewX`, `skewY`, and `matrix` parsing, including chaining and edge cases.
 - [ ] **Path Data Parser Tests**: Verify all SVG path commands (M, L, H, V, C, S, Q, T, A, Z) including relative/absolute variants, optional whitespace, and comma handling.
 - [ ] **Paint Resolver Tests**: Verify style inheritance, CSS precedence (inline > attribute > inherited), and unit conversion context.
-- [ ] **Code Generation Unit Tests**: Create a test suite for `CommandGenerator`s to verify Dart code output strings directly from `PaintCommand`s, independent of the XML parser.
-- [ ] **XML Conversion Completeness**: Add unit tests for missing `ToSvg*` extensions (e.g., `ToSvgCircle`, `ToSvgRect`, `ToSvgGradient`) to ensure attribute mapping accuracy.
+
+#### Code Generation Tests
+- [ ] **Generation - Shapes**: Unit tests for `CircleGenerator`, `OvalGenerator`, `LineGenerator`, and `RectGenerator`.
+- [ ] **Generation - Paths & Polys**: Unit tests for `PathGenerator` and `PolyGenerator` (Polygon/Polyline).
+- [ ] **Generation - Text & Groups**: Unit tests for `TextGenerator` and `GroupGenerator`.
+- [ ] **Generation - Gradients**: Unit tests for `LinearGradientGenerator` and `RadialGradientGenerator`.
+
+#### XML Conversion Tests
+- [ ] **XML Conversion - Shapes**: Unit tests for `ToSvgCircle`, `ToSvgEllipse`, `ToSvgLine`, and `ToSvgRect`.
+- [ ] **XML Conversion - Paths & Polys**: Unit tests for `ToSvgPath`, `ToSvgPolygon`, and `ToSvgPolyline`.
+- [ ] **XML Conversion - Text & Containers**: Unit tests for `ToSvgText`, `ToSvgGroup`, `ToSvgSvg`, `ToSvgUse`, and `ToSvgDefs`.
+- [ ] **XML Conversion - Gradients**: Unit tests for `ToSvgLinearGradient`, `ToSvgRadialGradient`, and `ToSvgStop`.
+
 - [ ] **Coverage Helper**: Create a tool to generate a `coverage_helper_test.dart` that imports all library files, ensuring the coverage report reflects the true codebase size (including currently untested files).
 - [ ] **Coverage Analysis & Finalization**: Analyze the final coverage report, identify remaining gaps, and implement necessary tests to reach a high confidence level (aiming for >90% branch coverage on core logic).
 
