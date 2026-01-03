@@ -30,23 +30,11 @@ extension ToCommonAttributes on XmlElement {
       fillOpacity: toSvgValueOrNull<SvgLengthPercentage>(elementName, XmlAttributeName.fillOpacity),
       stroke: SvgStrokeAttributes(
         color: toSvgValueOrNull<SvgColor>(elementName, XmlAttributeName.stroke),
-        opacity: toSvgValueOrNull<SvgLengthPercentage>(
-          elementName,
-          XmlAttributeName.strokeOpacity,
-        ),
+        opacity: toSvgValueOrNull<SvgLengthPercentage>(elementName, XmlAttributeName.strokeOpacity),
         width: toSvgValueOrNull<SvgLengthPercentage>(elementName, XmlAttributeName.strokeWidth),
-        dashArray: toSvgValueOrNull<SvgPointList>(
-          elementName,
-          XmlAttributeName.strokeDasharray,
-        ),
-        linecap: toSvgValueOrNull<SvgStrokeLinecap>(
-          elementName,
-          XmlAttributeName.strokeLinecap,
-        ),
-        linejoin: toSvgValueOrNull<SvgStrokeLinejoin>(
-          elementName,
-          XmlAttributeName.strokeLinejoin,
-        ),
+        dashArray: toSvgValueOrNull<SvgPointList>(elementName, XmlAttributeName.strokeDasharray),
+        linecap: toSvgValueOrNull<SvgStrokeLinecap>(elementName, XmlAttributeName.strokeLinecap),
+        linejoin: toSvgValueOrNull<SvgStrokeLinejoin>(elementName, XmlAttributeName.strokeLinejoin),
       ),
       opacity: toSvgValueOrNull<SvgLengthPercentage>(elementName, XmlAttributeName.opacity),
       fontSize: toSvgValueOrNull<SvgLengthPercentage>(elementName, XmlAttributeName.fontSize),

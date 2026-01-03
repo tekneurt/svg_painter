@@ -175,8 +175,7 @@ PaintingStyle resolvePaint(
       strokeColorArgb = strokePaint.toStrokeArgb();
     }
 
-    final SvgLengthPercentage? sw =
-        cssStrokeWidth ?? stroke?.width ?? context.inheritedStrokeWidth;
+    final SvgLengthPercentage? sw = cssStrokeWidth ?? stroke?.width ?? context.inheritedStrokeWidth;
     final double finalStrokeWidth = context.scaleNormalized(
       sw?.resolve(context, .normalized) ?? 1.0,
     );

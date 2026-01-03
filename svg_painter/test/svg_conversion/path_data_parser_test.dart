@@ -4,10 +4,7 @@ import 'package:svg_painter/src/svg_conversion/converters/_converters.dart';
 import 'package:test/test.dart';
 
 void main() {
-  const SvgPaintingContext context = SvgPaintingContext(
-    viewBoxWidth: 100,
-    viewBoxHeight: 100,
-  );
+  const SvgPaintingContext context = SvgPaintingContext(viewBoxWidth: 100, viewBoxHeight: 100);
 
   group('PathDataParser', () {
     group('parse', () {
@@ -286,7 +283,10 @@ void main() {
 
         // Assert
         expect(result, isA<Failure<List<PathOperation>>>());
-        expect((result as Failure<List<PathOperation>>).message, contains('Insufficient parameters'));
+        expect(
+          (result as Failure<List<PathOperation>>).message,
+          contains('Insufficient parameters'),
+        );
       });
 
       test('should return Failure when unknown command is provided', () {

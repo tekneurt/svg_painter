@@ -52,21 +52,17 @@ void main() {
 
     test('should prioritize CSS class over tag selector', () {
       // Arrange
-      final SvgPaintingContext context = SvgPaintingContext(
+      const SvgPaintingContext context = SvgPaintingContext(
         viewBoxWidth: 100,
         viewBoxHeight: 100,
-        styleSheet: const SvgStyleSheet({
-          'circle': {'fill': 'red'},
-          'my-class': {'fill': 'blue'},
+        styleSheet: SvgStyleSheet(<String, Map<String, String>>{
+          'circle': <String, String>{'fill': 'red'},
+          'my-class': <String, String>{'fill': 'blue'},
         }),
       );
 
       // Act
-      final PaintingStyle result = resolvePaint(
-        context,
-        tagName: 'circle',
-        cssClass: 'my-class',
-      );
+      final PaintingStyle result = resolvePaint(context, tagName: 'circle', cssClass: 'my-class');
 
       // Assert
       expect(result.fill?.colorArgb, 0xFF0000FF);
@@ -103,12 +99,10 @@ void main() {
 
     test('should resolve font-size with scaling', () {
       // Arrange
-      final SvgPaintingContext context = SvgPaintingContext(
+      const SvgPaintingContext context = SvgPaintingContext(
         viewBoxWidth: 200,
         viewBoxHeight: 200,
         parentSx: 2.0,
-        parentTy: 0.0,
-        parentTx: 0.0,
         parentSy: 2.0,
       );
       const SvgLengthPercentage fontSize = SvgLength(16.0);
