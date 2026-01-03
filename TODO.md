@@ -29,7 +29,7 @@
 - [x] **Generation - Gradients**: Unit tests for `LinearGradientGenerator` and `RadialGradientGenerator`.
 
 #### XML Conversion Tests
-- [ ] **XML Conversion - Shapes**: Unit tests for `ToSvgCircle`, `ToSvgEllipse`, `ToSvgLine`, and `ToSvgRect`.
+- [x] **XML Conversion - Shapes**: Unit tests for `ToSvgCircle`, `ToSvgEllipse`, `ToSvgLine`, and `ToSvgRect`.
 - [ ] **XML Conversion - Paths & Polys**: Unit tests for `ToSvgPath`, `ToSvgPolygon`, and `ToSvgPolyline`.
 - [ ] **XML Conversion - Text & Containers**: Unit tests for `ToSvgText`, `ToSvgGroup`, `ToSvgSvg`, `ToSvgUse`, and `ToSvgDefs`.
 - [ ] **XML Conversion - Gradients**: Unit tests for `ToSvgLinearGradient`, `ToSvgRadialGradient`, and `ToSvgStop`.
