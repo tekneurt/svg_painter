@@ -15,6 +15,17 @@
     - [x] Cleanly integrate `StrokeCap.toFlutterString()` (currently duplicated/loosely placed).
 - [x] **Stroke Simplification**: Use a shared `StrokeStyle` or mixin across layers to reduce constructor boilerplate.
 
+### Phase 1.5: Test Hardening & Quality Assurance (Immediate Priority)
+*Addressing critical coverage gaps before adding feature complexity.*
+
+- [ ] **SVG Transform Parser Tests**: Verify `translate`, `scale`, `rotate`, `skewX`, `skewY`, and `matrix` parsing, including chaining and edge cases.
+- [ ] **Path Data Parser Tests**: Verify all SVG path commands (M, L, H, V, C, S, Q, T, A, Z) including relative/absolute variants, optional whitespace, and comma handling.
+- [ ] **Paint Resolver Tests**: Verify style inheritance, CSS precedence (inline > attribute > inherited), and unit conversion context.
+- [ ] **Code Generation Unit Tests**: Create a test suite for `CommandGenerator`s to verify Dart code output strings directly from `PaintCommand`s, independent of the XML parser.
+- [ ] **XML Conversion Completeness**: Add unit tests for missing `ToSvg*` extensions (e.g., `ToSvgCircle`, `ToSvgRect`, `ToSvgGradient`) to ensure attribute mapping accuracy.
+- [ ] **Coverage Helper**: Create a tool to generate a `coverage_helper_test.dart` that imports all library files, ensuring the coverage report reflects the true codebase size (including currently untested files).
+- [ ] **Coverage Analysis & Finalization**: Analyze the final coverage report, identify remaining gaps, and implement necessary tests to reach a high confidence level (aiming for >90% branch coverage on core logic).
+
 ### Phase 2: Dynamic Properties & Customizable Widget (Heart of Value Prop)
 *The core differentiator: creating plug-and-play components.*
 
