@@ -4,9 +4,7 @@ import 'package:test/test.dart';
 
 void main() {
   group('Path & Poly Generators', () {
-    const PaintingStyle fillRed = PaintingStyle(
-      fill: PaintingFillStyle(colorArgb: 0xFFFF0000),
-    );
+    const PaintingStyle fillRed = PaintingStyle(fill: PaintingFillStyle(colorArgb: 0xFFFF0000));
 
     const PaintingStyle strokeBlack = PaintingStyle(
       stroke: PaintingStrokeStyle(colorArgb: 0xFF000000),
@@ -17,11 +15,7 @@ void main() {
         // Arrange
         const PathGenerator generator = PathGenerator();
         const DrawPath command = DrawPath(
-          operations: <PathOperation>[
-            MoveTo(10.0, 10.0),
-            LineTo(20.0, 20.0),
-            ClosePath(),
-          ],
+          operations: <PathOperation>[MoveTo(10.0, 10.0), LineTo(20.0, 20.0), ClosePath()],
           style: strokeBlack,
         );
         final StringBuffer buffer = StringBuffer();
@@ -91,10 +85,7 @@ void main() {
         const DrawPath command = DrawPath(
           operations: <PathOperation>[MoveTo(0.0, 0.0), LineTo(10.0, 10.0)],
           style: PaintingStyle(
-            stroke: PaintingStrokeStyle(
-              colorArgb: 0xFF000000,
-              dashArray: <double>[5.0, 5.0],
-            ),
+            stroke: PaintingStrokeStyle(colorArgb: 0xFF000000, dashArray: <double>[5.0, 5.0]),
           ),
         );
         final StringBuffer buffer = StringBuffer();
