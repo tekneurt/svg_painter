@@ -8,7 +8,7 @@ extension ToDefaultValue on XmlAttributeName {
       case .x:
       case .y:
         return switch (elementName) {
-          .rect || .use => const SvgLength(0.0),
+          .rect || .use || .text || .svg => const SvgLength(0.0),
           (_) => throw UnsupportedError('Invalid combination $this x $elementName '),
         };
       case .x1:
