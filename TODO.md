@@ -88,7 +88,13 @@
         [x] `lib/src/xml_model/extensions/string_extensions.dart`
         [x] `lib/src/xml_model/xml_attribute_name.dart`
         [x] `lib/src/xml_model/xml_element_name.dart`
-    [ ] **Final Coverage Check**: Verify high coverage (>90%).
+    - [ ] **Low-Coverage File Hardening**:
+        [x] **Builder Factory Tests**: Add a unit test for `lib/builder.dart` to verify builder initialization.
+        - [ ] **Generator Core Hardening**: Expand tests for `generatePainterClass` and `_hasDashes` in `lib/src/svg_painter_generator.dart`.
+        - [ ] **Base SVG Element toString Tests**: Ensure base `toString()` methods in `lib/src/svg_model/svg_element.dart` are fully covered.
+        - [ ] **Default Value Exception Audit**: Systematically test all `UnsupportedError` paths in `to_default_value.dart`.
+    - [ ] **Final Coverage Check**: Verify high coverage (>90%).
+
 
 ### Phase 2: Dynamic Properties & Customizable Widget (Heart of Value Prop)
 *The core differentiator: creating plug-and-play components.*
