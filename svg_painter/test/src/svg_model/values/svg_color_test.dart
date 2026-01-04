@@ -4,27 +4,59 @@ import 'package:test/test.dart';
 void main() {
   group('SvgColor', () {
     test('SvgNoneColor should return "none"', () {
-      expect(const SvgNoneColor().toString(), 'none');
+      // Act
+      final String result = const SvgNoneColor().toString();
+      // Assert
+      expect(result, 'none');
     });
 
     test('SvgCurrentColor should return "currentColor"', () {
-      expect(const SvgCurrentColor().toString(), 'currentColor');
+      // Act
+      final String result = const SvgCurrentColor().toString();
+      // Assert
+      expect(result, 'currentColor');
     });
 
     test('SvgNamedColor should return correct string', () {
-      expect(const SvgNamedColor(SvgColorName.red).toString(), 'SvgNamedColor(red)');
+      // Act
+      final String result = const SvgNamedColor(SvgColorName.red).toString();
+      // Assert
+      expect(result, 'SvgNamedColor(red)');
     });
 
     test('SvgRgbColor should return correct string', () {
-      expect(const SvgRgbColor(255, 255, 0, 0).toString(), 'SvgRgbColor(255, 255, 0, 0)');
+      // Act
+      final String result = const SvgRgbColor(255, 255, 0, 0).toString();
+      // Assert
+      expect(result, 'SvgRgbColor(255, 255, 0, 0)');
     });
 
     test('SvgHslColor should return correct string', () {
-      expect(const SvgHslColor(1.0, 0.0, 100.0, 50.0).toString(), 'SvgHslColor(1.0, 0.0, 100.0%, 50.0%)');
+      // Act
+      final String result = const SvgHslColor(1.0, 0.0, 100.0, 50.0).toString();
+      // Assert
+      expect(result, 'SvgHslColor(1.0, 0.0, 100.0%, 50.0%)');
     });
 
     test('SvgPaintReference should return correct string', () {
-      expect(const SvgPaintReference('grad1').toString(), 'SvgPaintReference(grad1, fallback: none)');
+      // Act
+      final String result = const SvgPaintReference('grad1').toString();
+      // Assert
+      expect(result, 'SvgPaintReference(grad1, fallback: null)');
+    });
+  });
+
+  group('SvgColorName', () {
+    test('fromName should return correct enum for valid names', () {
+      // Act & Assert
+      expect(SvgColorName.fromName('red'), SvgColorName.red);
+      expect(SvgColorName.fromName('BLUE'), SvgColorName.blue);
+      expect(SvgColorName.fromName('Transparent'), SvgColorName.transparent);
+    });
+
+    test('fromName should return null for invalid names', () {
+      // Act & Assert
+      expect(SvgColorName.fromName('blacky'), isNull);
     });
   });
 }
