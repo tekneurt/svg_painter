@@ -90,7 +90,7 @@
         [x] `lib/src/xml_model/xml_element_name.dart`
     - [ ] **Low-Coverage File Hardening**:
         [x] **Builder Factory Tests**: Add a unit test for `lib/builder.dart` to verify builder initialization.
-        - [ ] **Generator Core Hardening**: Expand tests for `generatePainterClass` and `_hasDashes` in `lib/src/svg_painter_generator.dart`.
+        [x] **Generator Core Hardening**: Expand tests for `generatePainterClass` and `_hasDashes` in `lib/src/svg_painter_generator.dart`.
         - [ ] **Base SVG Element toString Tests**: Ensure base `toString()` methods in `lib/src/svg_model/svg_element.dart` are fully covered.
         - [ ] **Default Value Exception Audit**: Systematically test all `UnsupportedError` paths in `to_default_value.dart`.
     - [ ] **Final Coverage Check**: Verify high coverage (>90%).

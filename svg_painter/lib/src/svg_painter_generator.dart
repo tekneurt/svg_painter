@@ -45,7 +45,7 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
     ConstantReader annotation,
     BuildStep buildStep,
   ) async {
-    final Result<String> contentResult = await _loadSvgContent(annotation, buildStep);
+    final Result<String> contentResult = await loadSvgContent(annotation, buildStep);
 
     final String svgContent = contentResult.fold(
       (Failure<String> failure) => throw InvalidGenerationSourceError(
@@ -55,24 +55,46 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
       (String content) => content,
     );
 
+    final String? painterClassName = annotation.read('painterClassName').isNull
+        ? null
+        : annotation.read('painterClassName').stringValue;
+
+    return generateFromSvg(
+      elementName: element.name ?? 'Unknown',
+      svgContent: svgContent,
+      painterClassName: painterClassName,
+    );
+  }
+
+  /// Generates the painter class from SVG content string.
+  @visibleForTesting
+  String generateFromSvg({
+    required String elementName,
+    required String svgContent,
+    String? painterClassName,
+  }) {
     final Result<XmlDocument> parseResult = svgContent.toXmlDocument();
 
     final XmlDocument document = parseResult.fold(
       (Failure<XmlDocument> failure) => throw InvalidGenerationSourceError(
-        'Invalid SVG content for ${element.name}: ${failure.message}',
-        element: element,
+        'Invalid SVG content for $elementName: ${failure.message}',
       ),
       (XmlDocument doc) => doc,
     );
 
-    final XmlElement svgXmlElement = document.findAllElements(XmlElementName.svg.tagName).first;
+    final Iterable<XmlElement> svgElements = document.findAllElements(XmlElementName.svg.tagName);
+    if (svgElements.isEmpty) {
+      throw InvalidGenerationSourceError(
+        'Invalid SVG content for $elementName: Could not find <svg> root element.',
+      );
+    }
+    final XmlElement svgXmlElement = svgElements.first;
 
     final Result<SvgElement> mapResult = svgXmlElement.toSvgElement();
 
     final SvgElement svgRoot = mapResult.fold(
       (Failure<SvgElement> failure) => throw InvalidGenerationSourceError(
-        'Failed to map SVG content for ${element.name}: ${failure.message}',
-        element: element,
+        'Failed to map SVG content for $elementName: ${failure.message}',
       ),
       (SvgElement value) => value,
     );
@@ -80,7 +102,6 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
     if (svgRoot is! SvgSvg) {
       throw InvalidGenerationSourceError(
         'Root element must be <svg>, but found ${svgRoot.runtimeType}',
-        element: element,
       );
     }
 
@@ -100,15 +121,12 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
     final Result<List<PaintCommand>> paintingResult = svgRoot.toPaintCommands();
     final List<PaintCommand> commands = paintingResult.fold(
       (Failure<List<PaintCommand>> failure) => throw InvalidGenerationSourceError(
-        'Failed to convert SVG to painting commands for ${element.name}: ${failure.message}',
-        element: element,
+        'Failed to convert SVG to painting commands for $elementName: ${failure.message}',
       ),
       (List<PaintCommand> value) => value,
     );
 
-    final String className = annotation.read('painterClassName').isNull
-        ? r'_$' + (element.name ?? '')
-        : annotation.read('painterClassName').stringValue;
+    final String className = painterClassName ?? r'_$' + elementName;
 
     return generatePainterClass(
       className: className,
@@ -255,9 +273,10 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
     return false;
   }
 
-  Future<Result<String>> _loadSvgContent(ConstantReader annotation, BuildStep buildStep) async {
+  @visibleForTesting
+  Future<Result<String>> loadSvgContent(ConstantReader annotation, BuildStep buildStep) async {
     if (_fileChecker.isExactlyType(annotation.objectValue.type!)) {
-      return _loadFromFile(annotation, buildStep);
+      return loadFromFile(annotation, buildStep);
     } else if (_codeChecker.isExactlyType(annotation.objectValue.type!)) {
       return Success<String>(annotation.read('code').stringValue);
     }
@@ -266,7 +285,8 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
     );
   }
 
-  Future<Result<String>> _loadFromFile(ConstantReader annotation, BuildStep buildStep) async {
+  @visibleForTesting
+  Future<Result<String>> loadFromFile(ConstantReader annotation, BuildStep buildStep) async {
     final String path = annotation.read('path').stringValue;
     if (!path.startsWith('package:')) {
       return const Failure<String>('Only package: URIs are supported for file assets.');

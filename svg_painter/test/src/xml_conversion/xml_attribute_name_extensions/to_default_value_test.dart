@@ -150,13 +150,62 @@ void main() {
 
     test('attributes without SvgBaseValue default should throw UnsupportedError', () {
       // Arrange & Act & Assert
+      final List<XmlAttributeName> noDefaultAttrs = <XmlAttributeName>[
+        XmlAttributeName.viewBox,
+        XmlAttributeName.id,
+        XmlAttributeName.d,
+        XmlAttributeName.className,
+        XmlAttributeName.style,
+        XmlAttributeName.href,
+        XmlAttributeName.transform,
+        XmlAttributeName.gradientTransform,
+        XmlAttributeName.fontSize,
+        XmlAttributeName.fontWeight,
+        XmlAttributeName.fontStyle,
+        XmlAttributeName.fontFamily,
+        XmlAttributeName.pathLength,
+        XmlAttributeName.strokeDasharray,
+      ];
+
+      for (final XmlAttributeName attr in noDefaultAttrs) {
+        expect(
+          () => attr.toDefaultValue(XmlElementName.svg),
+          throwsUnsupportedError,
+          reason: '$attr should throw UnsupportedError',
+        );
+      }
+    });
+
+    test('invalid element combinations should throw UnsupportedError', () {
+      // Arrange & Act & Assert
+      // x/y with circle
       expect(
-        () => XmlAttributeName.viewBox.toDefaultValue(XmlElementName.svg),
+        () => XmlAttributeName.x.toDefaultValue(XmlElementName.circle),
         throwsUnsupportedError,
       );
-      expect(() => XmlAttributeName.d.toDefaultValue(XmlElementName.path), throwsUnsupportedError);
+      // x1 with rect
+      expect(() => XmlAttributeName.x1.toDefaultValue(XmlElementName.rect), throwsUnsupportedError);
+      // x2 with path
+      expect(() => XmlAttributeName.x2.toDefaultValue(XmlElementName.path), throwsUnsupportedError);
+      // cx with path
+      expect(() => XmlAttributeName.cx.toDefaultValue(XmlElementName.path), throwsUnsupportedError);
+      // r with path
+      expect(() => XmlAttributeName.r.toDefaultValue(XmlElementName.path), throwsUnsupportedError);
+      // rx with path
+      expect(() => XmlAttributeName.rx.toDefaultValue(XmlElementName.path), throwsUnsupportedError);
+      // width with path
       expect(
-        () => XmlAttributeName.id.toDefaultValue(XmlElementName.circle),
+        () => XmlAttributeName.width.toDefaultValue(XmlElementName.path),
+        throwsUnsupportedError,
+      );
+      // fx with linearGradient
+      expect(
+        () => XmlAttributeName.fx.toDefaultValue(XmlElementName.linearGradient),
+        throwsUnsupportedError,
+      );
+      // fr with linearGradient
+      expect(
+        () => XmlAttributeName.fr.toDefaultValue(XmlElementName.linearGradient),
         throwsUnsupportedError,
       );
     });

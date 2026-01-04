@@ -32,6 +32,29 @@ void main() {
       // Assert
       expect(result, 'SvgPath(d: M 0 0 L 10 10, id: path1)');
     });
+
+    test('should return correct base string representation for shape', () {
+      // Arrange
+      const SvgRect element = SvgRect(
+        x: SvgLength(1),
+        y: SvgLength(2),
+        width: SvgLength(3),
+        height: SvgLength(4),
+        rx: SvgAuto(),
+        ry: SvgAuto(),
+        fill: SvgNamedColor(SvgColorName.red),
+        id: 'r1',
+      );
+
+      // Act
+      final String result = element.toString();
+
+      // Assert
+      expect(
+        result,
+        contains('SvgRect(x: 1.0, y: 2.0, w: 3.0, h: 4.0, rx: auto, ry: auto, id: r1)'),
+      );
+    });
   });
 
   group('SvgStyle', () {
