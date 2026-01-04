@@ -1,6 +1,9 @@
-import 'package:svg_painter/src/painting_model/_painting_model.dart';
-import 'package:svg_painter/src/svg_conversion/converters/_converters.dart';
-import 'package:svg_painter/src/svg_model/_svg_model.dart';
+import 'package:svg_painter/src/painting_model/styles/painting_style.dart';
+import 'package:svg_painter/src/svg_conversion/converters/svg_paint_resolver.dart';
+import 'package:svg_painter/src/svg_conversion/converters/svg_painting_context.dart';
+import 'package:svg_painter/src/svg_model/attributes/svg_stroke_attributes.dart';
+import 'package:svg_painter/src/svg_model/svg_style_sheet.dart';
+import 'package:svg_painter/src/svg_model/svg_value.dart';
 import 'package:test/test.dart';
 
 void main() {

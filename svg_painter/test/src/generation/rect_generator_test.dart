@@ -1,5 +1,6 @@
-import 'package:svg_painter/src/generation/_generation.dart';
-import 'package:svg_painter/src/painting_model/_painting_model.dart';
+import 'package:svg_painter/src/generation/rect_generator.dart';
+import 'package:svg_painter/src/painting_model/paint_command.dart';
+import 'package:svg_painter/src/painting_model/styles/painting_style.dart';
 import 'package:test/test.dart';
 
 void main() {

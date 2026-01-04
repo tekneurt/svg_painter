@@ -1,5 +1,6 @@
-import 'package:svg_painter/src/base/_base.dart';
-import 'package:svg_painter/src/svg_model/_svg_model.dart';
+import 'package:svg_painter/src/base/result.dart';
+import 'package:svg_painter/src/svg_model/svg_element.dart';
+import 'package:svg_painter/src/svg_model/svg_value.dart';
 import 'package:svg_painter/src/xml_conversion/xml_element_extensions/to_svg_text.dart';
 import 'package:test/test.dart';
 import 'package:xml/xml.dart';

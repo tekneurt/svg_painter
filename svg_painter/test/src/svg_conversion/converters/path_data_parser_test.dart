@@ -1,6 +1,7 @@
-import 'package:svg_painter/src/base/_base.dart';
-import 'package:svg_painter/src/painting_model/_painting_model.dart';
-import 'package:svg_painter/src/svg_conversion/converters/_converters.dart';
+import 'package:svg_painter/src/base/result.dart';
+import 'package:svg_painter/src/painting_model/paint_command.dart';
+import 'package:svg_painter/src/svg_conversion/converters/path_data_parser.dart';
+import 'package:svg_painter/src/svg_conversion/converters/svg_painting_context.dart';
 import 'package:test/test.dart';
 
 void main() {

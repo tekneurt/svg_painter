@@ -1,5 +1,5 @@
 import 'package:svg_painter/src/svg_conversion/svg_value_extensions/svg_color_to_int.dart';
-import 'package:svg_painter/src/xml_conversion/_xml_conversion.dart';
+import 'package:svg_painter/src/xml_conversion/string_extensions/to_svg_color.dart';
 import 'package:test/test.dart';
 
 void main() {

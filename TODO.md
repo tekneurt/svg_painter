@@ -36,6 +36,14 @@
 
 - [x] **Refactor Tests to Mirror Lib Structure**: Reorganize all unit tests to exactly mirror the `lib/` directory structure (1:1 mapping of source file to test file), ensuring strict discoverability and maintainability.
 - [x] **Coverage Helper**: Create a tool to generate a `coverage_helper_test.dart` that imports all library files, ensuring the coverage report reflects the true codebase size (including currently untested files).
+- [x] **Refactor Unit Test Imports**: Update all unit tests to import the specific file under test directly (e.g., `import '.../rect_generator.dart'`) instead of using barrel files or the public API, ensuring a clean and direct dependency for each test.
+
+#### Coverage Finalization (Addressing identified gaps)
+- [ ] **SVG to Painting Extensions**: Add unit tests for `svg_element_extensions` (e.g., `svg_path_to_draw_path`, `svg_line_to_draw_line`) to verify mapping from SVG model to Painting commands.
+- [ ] **Value Resolution Logic**: Add comprehensive tests for `svg_length_to_double` covering all SVG units and `svg_transform_parser` edge cases.
+- [ ] **String Parsing Extensions**: Add unit tests for `xml_conversion/string_extensions` (e.g., `to_svg_length`, `to_svg_stroke_linecap`).
+- [ ] **Generator Infrastructure**: Add basic unit tests for `svg_painter_generator.dart` logic where feasible.
+
 - [ ] **Coverage Analysis & Finalization**: Analyze the final coverage report, identify remaining gaps, and implement necessary tests to reach a high confidence level (aiming for >90% branch coverage on core logic).
 
 ### Phase 2: Dynamic Properties & Customizable Widget (Heart of Value Prop)

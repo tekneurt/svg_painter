@@ -1,4 +1,4 @@
-import 'package:svg_painter/src/svg_model/_svg_model.dart';
+import 'package:svg_painter/src/svg_model/svg_value.dart';
 import 'package:svg_painter/src/xml_conversion/string_extensions/to_svg_length_percentage.dart';
 import 'package:test/test.dart';
 
