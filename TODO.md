@@ -51,9 +51,9 @@
 - [x] **Path Operation Coverage**: Verify data integrity for all `PathOperation` subclasses.
 - [x] **Constant & Config Regression Tests**: Add regression tests for critical constants and mappings (e.g., `svgColorNameMap`, unit conversion factors, enum-to-string mappings) to prevent accidental modification.
 - [ ] **Test Quality Audit**: Systematically audit **ALL** unit tests to ensure:
-    1.  **Distinct Values**: Properties (x/y, width/height) use unique values to detect swapped variable bugs.
-    2.  **Asymmetric Context**: Test contexts use asymmetric dimensions (e.g., 100x200) to detect swapped scaling factors.
-    3.  **AAA Pattern**: All tests strictly follow the Arrange-Act-Assert structure with comments.
+    [x] **Distinct Values**: Properties (x/y, width/height) use unique values to detect swapped variable bugs.
+    [ ] **Asymmetric Context**: Test contexts use asymmetric dimensions (e.g., 100x200) to detect swapped scaling factors.
+    [ ] **AAA Pattern**: All tests strictly follow the Arrange-Act-Assert structure with comments.
 
 - [ ] **Test Value Audit**: Audit all unit tests to ensure distinct values are used for different properties (e.g., x != y, width != height) to prevent swapped property bugs from going undetected.
 

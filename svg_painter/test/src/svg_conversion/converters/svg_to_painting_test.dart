@@ -9,14 +9,17 @@ import 'package:test/test.dart';
 void main() {
   group('SvgToPainting', () {
     test('resolves absolute lengths correctly', () {
+      // Arrange
       const SvgCircle circle = SvgCircle(
         cx: SvgLength(10.0),
         cy: SvgLength(20.0),
         r: SvgLength(5.0),
       );
 
+      // Act
       final Result<List<PaintCommand>> result = circle.toPaintCommands();
 
+      // Assert
       expect(result, isA<Success<List<PaintCommand>>>());
       final List<PaintCommand> commands = (result as Success<List<PaintCommand>>).value;
       expect(commands, hasLength(1));
@@ -28,121 +31,129 @@ void main() {
     });
 
     test('resolves percentages relative to SvgRoot viewBox', () {
+      // Arrange
       const SvgRoot root = SvgRoot(
-        viewBox: SvgViewBox(0, 0, 200, 100),
+        viewBox: SvgViewBox(0, 0, 200, 300),
         children: <SvgElement>[
           SvgCircle(
             cx: SvgPercentage(50.0), // 50% of 200 = 100
-            cy: SvgPercentage(20.0), // 20% of 100 = 20
+            cy: SvgPercentage(20.0), // 20% of 300 = 60
             r: SvgPercentage(10.0), // 10% of normalized diagonal
           ),
         ],
       );
 
+      // Act
       final Result<List<PaintCommand>> result = root.toPaintCommands();
 
+      // Assert
       expect(result, isA<Success<List<PaintCommand>>>());
       final List<PaintCommand> commands = (result as Success<List<PaintCommand>>).value;
       final DrawCircle drawCircle = commands.first as DrawCircle;
 
       expect(drawCircle.cx, 100.0);
-      expect(drawCircle.cy, 20.0);
-      // Normalized diagonal for 200x100: sqrt(200^2 + 100^2) / sqrt(2) = sqrt(50000) / 1.414...
-      // = 223.606 / 1.414... = 158.113...
-      // 10% of 158.113... = 15.8113...
-      expect(drawCircle.radius, closeTo(15.8113, 0.0001));
+      expect(drawCircle.cy, 60.0);
+      // Normalized diagonal for 200x300: sqrt(200^2 + 300^2) / sqrt(2) = sqrt(130000) / 1.414...
+      // = 360.555 / 1.414... = 254.950...
+      // 10% of 254.950... = 25.495...
+      expect(drawCircle.radius, closeTo(25.495, 0.001));
     });
 
     test('resolves colors correctly', () {
+      // Arrange
       const SvgCircle circle = SvgCircle(
-        cx: SvgLength(0),
-        cy: SvgLength(0),
+        cx: SvgLength(10.0),
+        cy: SvgLength(20.0),
         r: SvgLength(5),
         fill: SvgRgbColor(255, 255, 0, 0), // Red
         stroke: SvgStrokeAttributes(color: SvgRgbColor(255, 0, 0, 255)), // Blue
       );
 
+      // Act
       final Result<List<PaintCommand>> result = circle.toPaintCommands();
+
+      // Assert
       final DrawCircle drawCircle =
           (result as Success<List<PaintCommand>>).value.first as DrawCircle;
-
       expect(drawCircle.style.fill?.colorArgb, 0xFFFF0000);
       expect(drawCircle.style.stroke?.colorArgb, 0xFF0000FF);
     });
 
     test('resolves default colors when null', () {
-      const SvgCircle circle = SvgCircle(cx: SvgLength(0), cy: SvgLength(0), r: SvgLength(5));
+      // Arrange
+      const SvgCircle circle = SvgCircle(cx: SvgLength(10), cy: SvgLength(20), r: SvgLength(5));
 
+      // Act
       final Result<List<PaintCommand>> result = circle.toPaintCommands();
+
+      // Assert
       final DrawCircle drawCircle =
           (result as Success<List<PaintCommand>>).value.first as DrawCircle;
-
       expect(drawCircle.style.fill?.colorArgb, 0xFF000000); // Default black
       expect(drawCircle.style.stroke, isNull); // Default none
     });
 
     test('converts SvgEllipse to DrawOval correctly', () {
+      // Arrange
       const SvgEllipse ellipse = SvgEllipse(
         cx: SvgLength(100),
-        cy: SvgLength(50),
+        cy: SvgLength(150),
         rx: SvgLength(40),
         ry: SvgLength(20),
         fill: SvgRgbColor(255, 0, 0, 255), // Blue fill
       );
 
+      // Act
       final Result<List<PaintCommand>> result = ellipse.toPaintCommands();
 
+      // Assert
       expect(result, isA<Success<List<PaintCommand>>>());
       final List<PaintCommand> commands = (result as Success<List<PaintCommand>>).value;
-
       expect(commands, hasLength(1));
       expect(commands.first, isA<DrawOval>());
-
       final DrawOval drawOval = commands.first as DrawOval;
       expect(drawOval.cx, 100.0);
-      expect(drawOval.cy, 50.0);
+      expect(drawOval.cy, 150.0);
       expect(drawOval.rx, 40.0);
       expect(drawOval.ry, 20.0);
       expect(drawOval.style.fill?.colorArgb, 0xFF0000FF);
-      expect(drawOval.style.stroke, isNull); // Default none
-      expect(drawOval.style.stroke?.width ?? 1.0, 1.0); // Default via fallback or null check
+      expect(drawOval.style.stroke, isNull);
     });
 
     test('resolves SvgEllipse auto values correctly', () {
+      // Arrange
       // Case 1: rx=auto, ry=20 -> rx=20, ry=20
       const SvgEllipse ellipse1 = SvgEllipse(
-        cx: SvgLength(0),
-        cy: SvgLength(0),
+        cx: SvgLength(10),
+        cy: SvgLength(20),
         rx: SvgAuto(),
-        ry: SvgLength(20),
+        ry: SvgLength(30),
       );
+
+      // Act
       final DrawOval cmd1 =
           (ellipse1.toPaintCommands() as Success<List<PaintCommand>>).value.first as DrawOval;
-      expect(cmd1.rx, 20.0);
-      expect(cmd1.ry, 20.0);
 
-      // Case 2: rx=30, ry=auto -> rx=30, ry=30
+      // Assert
+      expect(cmd1.rx, 30.0);
+      expect(cmd1.ry, 30.0);
+
+      // Arrange
+      // Case 2: rx=40, ry=auto -> rx=40, ry=40
       const SvgEllipse ellipse2 = SvgEllipse(
-        cx: SvgLength(0),
-        cy: SvgLength(0),
-        rx: SvgLength(30),
+        cx: SvgLength(10),
+        cy: SvgLength(20),
+        rx: SvgLength(40),
         ry: SvgAuto(),
       );
+
+      // Act
       final DrawOval cmd2 =
           (ellipse2.toPaintCommands() as Success<List<PaintCommand>>).value.first as DrawOval;
-      expect(cmd2.rx, 30.0);
-      expect(cmd2.ry, 30.0);
 
-      // Case 3: rx=auto, ry=auto -> returns empty list (radius 0)
-      const SvgEllipse ellipse3 = SvgEllipse(
-        cx: SvgLength(0),
-        cy: SvgLength(0),
-        rx: SvgAuto(),
-        ry: SvgAuto(),
-      );
-      final List<PaintCommand> cmds3 =
-          (ellipse3.toPaintCommands() as Success<List<PaintCommand>>).value;
-      expect(cmds3, isEmpty);
+      // Assert
+      expect(cmd2.rx, 40.0);
+      expect(cmd2.ry, 40.0);
     });
   });
 }

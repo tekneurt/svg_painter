@@ -9,7 +9,7 @@ void main() {
   group('ToSvgPath', () {
     test('should return Success with SvgPath when valid d attribute is provided', () {
       // Arrange
-      final XmlDocument document = XmlDocument.parse('<path d="M 10 10 L 20 20" />');
+      final XmlDocument document = XmlDocument.parse('<path d="M 10 11 L 20 21" />');
       final XmlElement element = document.rootElement;
 
       // Act
@@ -18,7 +18,7 @@ void main() {
       // Assert
       expect(result, isA<Success<SvgPath>>());
       final SvgPath path = (result as Success<SvgPath>).value;
-      expect(path.d, 'M 10 10 L 20 20');
+      expect(path.d, 'M 10 11 L 20 21');
     });
 
     test('should return Failure when d attribute is missing', () {
@@ -37,7 +37,7 @@ void main() {
     test('should map common attributes when provided', () {
       // Arrange
       final XmlDocument document = XmlDocument.parse(
-        '<path d="M0 0" id="path1" fill="red" stroke="blue" opacity="50%" />',
+        '<path d="M1 2" id="path1" fill="red" stroke="blue" opacity="50%" />',
       );
       final XmlElement element = document.rootElement;
 

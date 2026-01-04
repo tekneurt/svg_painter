@@ -9,7 +9,7 @@ void main() {
   group('ToSvgPolygon', () {
     test('should return Success with SvgPolygon when valid points attribute is provided', () {
       // Arrange
-      final XmlDocument document = XmlDocument.parse('<polygon points="10,10 20,20 30,10" />');
+      final XmlDocument document = XmlDocument.parse('<polygon points="10,11 20,21 30,31" />');
       final XmlElement element = document.rootElement;
 
       // Act
@@ -18,7 +18,7 @@ void main() {
       // Assert
       expect(result, isA<Success<SvgPolygon>>());
       final SvgPolygon polygon = (result as Success<SvgPolygon>).value;
-      expect(polygon.points.points, <double>[10.0, 10.0, 20.0, 20.0, 30.0, 10.0]);
+      expect(polygon.points.points, <double>[10.0, 11.0, 20.0, 21.0, 30.0, 31.0]);
     });
 
     test('should return Success with empty points when points attribute is missing', () {
@@ -38,7 +38,7 @@ void main() {
     test('should map common attributes when provided', () {
       // Arrange
       final XmlDocument document = XmlDocument.parse(
-        '<polygon points="0,0 1,1" id="poly1" fill="green" transform="scale(2)" />',
+        '<polygon points="1,2 3,4" id="poly1" fill="green" transform="scale(2)" />',
       );
       final XmlElement element = document.rootElement;
 
@@ -47,6 +47,7 @@ void main() {
 
       // Assert
       final SvgPolygon polygon = (result as Success<SvgPolygon>).value;
+      expect(polygon.points.points, <double>[1.0, 2.0, 3.0, 4.0]);
       expect(polygon.id, 'poly1');
       expect(polygon.fill, isA<SvgNamedColor>());
       expect(polygon.transform, 'scale(2)');

@@ -15,7 +15,7 @@ void main() {
       // Arrange
       const PolyGenerator generator = PolyGenerator();
       const DrawPolyline command = DrawPolyline(
-        points: <double>[0.0, 0.0, 10.0, 10.0, 20.0, 0.0],
+        points: <double>[1.0, 2.0, 10.0, 11.0, 20.0, 22.0],
         style: strokeBlack,
       );
       final StringBuffer buffer = StringBuffer();
@@ -28,7 +28,7 @@ void main() {
       expect(
         output,
         contains(
-          'path.addPolygon([const Offset(0.0, 0.0), const Offset(10.0, 10.0), const Offset(20.0, 0.0)], false);',
+          'path.addPolygon([const Offset(1.0, 2.0), const Offset(10.0, 11.0), const Offset(20.0, 22.0)], false);',
         ),
       );
     });
@@ -37,7 +37,7 @@ void main() {
       // Arrange
       const PolyGenerator generator = PolyGenerator();
       const DrawPolygon command = DrawPolygon(
-        points: <double>[0.0, 0.0, 10.0, 10.0, 20.0, 0.0],
+        points: <double>[1.0, 2.0, 10.0, 11.0, 20.0, 22.0],
         style: fillRed,
       );
       final StringBuffer buffer = StringBuffer();
@@ -50,7 +50,7 @@ void main() {
       expect(
         output,
         contains(
-          'path.addPolygon([const Offset(0.0, 0.0), const Offset(10.0, 10.0), const Offset(20.0, 0.0)], true);',
+          'path.addPolygon([const Offset(1.0, 2.0), const Offset(10.0, 11.0), const Offset(20.0, 22.0)], true);',
         ),
       );
     });

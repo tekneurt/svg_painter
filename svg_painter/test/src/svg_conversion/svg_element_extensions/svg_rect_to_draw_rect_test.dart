@@ -7,16 +7,16 @@ import 'package:svg_painter/src/svg_model/svg_value.dart';
 import 'package:test/test.dart';
 
 void main() {
-  const SvgPaintingContext context = SvgPaintingContext(viewBoxWidth: 100, viewBoxHeight: 100);
+  const SvgPaintingContext context = SvgPaintingContext(viewBoxWidth: 200, viewBoxHeight: 300);
 
   group('SvgRectToPaintCommands', () {
     test('should return Success with DrawRect when valid SvgRect is provided', () {
       // Arrange
       const SvgRect rect = SvgRect(
         x: SvgLength(10.0),
-        y: SvgLength(10.0),
+        y: SvgLength(20.0),
         width: SvgLength(50.0),
-        height: SvgLength(30.0),
+        height: SvgLength(60.0),
         rx: SvgAuto(),
         ry: SvgAuto(),
       );
@@ -31,7 +31,9 @@ void main() {
       expect(commands.first, isA<DrawRect>());
       final DrawRect drawRect = commands.first as DrawRect;
       expect(drawRect.x, 10.0);
+      expect(drawRect.y, 20.0);
       expect(drawRect.width, 50.0);
+      expect(drawRect.height, 60.0);
       expect(drawRect.rx, 0.0);
     });
   });

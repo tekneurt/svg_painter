@@ -10,7 +10,7 @@ void main() {
     test('should convert <rect> with all attributes when valid XML is provided', () {
       // Arrange
       final XmlDocument document = XmlDocument.parse(
-        '<rect x="10" y="20" width="100" height="50" rx="5" ry="5" fill="green" />',
+        '<rect x="10" y="20" width="100" height="50" rx="5" ry="8" fill="green" />',
       );
       final XmlElement element = document.rootElement;
 
@@ -25,7 +25,7 @@ void main() {
       expect((rect.width as SvgLength).value, 100.0);
       expect((rect.height as SvgLength).value, 50.0);
       expect((rect.rx as SvgLength).value, 5.0);
-      expect((rect.ry as SvgLength).value, 5.0);
+      expect((rect.ry as SvgLength).value, 8.0);
     });
 
     test('should return Success with default values when minimal rect is provided', () {

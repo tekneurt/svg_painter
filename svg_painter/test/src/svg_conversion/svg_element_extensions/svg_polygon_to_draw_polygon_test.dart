@@ -13,7 +13,7 @@ void main() {
     test('should return Success with DrawPolygon when valid SvgPolygon is provided', () {
       // Arrange
       const SvgPolygon polygon = SvgPolygon(
-        points: SvgPointList(<double>[0.0, 0.0, 10.0, 10.0, 20.0, 0.0]),
+        points: SvgPointList(<double>[1.0, 2.0, 10.0, 11.0, 20.0, 22.0]),
       );
 
       // Act
@@ -25,12 +25,12 @@ void main() {
       expect(commands, hasLength(1));
       expect(commands.first, isA<DrawPolygon>());
       final DrawPolygon drawPolygon = commands.first as DrawPolygon;
-      expect(drawPolygon.points, <double>[0.0, 0.0, 10.0, 10.0, 20.0, 0.0]);
+      expect(drawPolygon.points, <double>[1.0, 2.0, 10.0, 11.0, 20.0, 22.0]);
     });
 
     test('should return empty list when less than 2 points are provided', () {
       // Arrange
-      const SvgPolygon polygon = SvgPolygon(points: SvgPointList(<double>[0.0, 0.0]));
+      const SvgPolygon polygon = SvgPolygon(points: SvgPointList(<double>[1.0, 2.0]));
 
       // Act
       final Result<List<PaintCommand>> result = polygon.toPaintCommands(context);

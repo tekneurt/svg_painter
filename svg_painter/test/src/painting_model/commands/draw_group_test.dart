@@ -8,7 +8,7 @@ void main() {
       // Arrange
       const DrawGroup command = DrawGroup(
         commands: <PaintCommand>[DrawCircle(cx: 1.0, cy: 2.0, radius: 5.0, style: PaintingStyle())],
-        transform: 'translate(10, 20)',
+        transform: 'translate(10, 11)',
         groupOpacity: 0.5,
       );
 
@@ -16,7 +16,7 @@ void main() {
       final String result = command.toString();
 
       // Assert
-      expect(result, 'DrawGroup(cmds: 1, transform: translate(10, 20), opacity: 0.5)');
+      expect(result, 'DrawGroup(cmds: 1, transform: translate(10, 11), opacity: 0.5)');
     });
   });
 }

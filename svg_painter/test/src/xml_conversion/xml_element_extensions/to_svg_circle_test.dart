@@ -10,7 +10,7 @@ void main() {
     test('should convert <circle> with attributes when valid XML is provided', () {
       // Arrange
       final XmlDocument document = XmlDocument.parse(
-        '<circle cx="10" cy="20" r="5" fill="red" stroke="blue" stroke-width="2" />',
+        '<circle cx="10" cy="20" r="5" fill="red" stroke="blue" stroke-width="2.5" />',
       );
       final XmlElement element = document.rootElement;
 
@@ -25,7 +25,7 @@ void main() {
       expect((circle.r as SvgLength).value, 5.0);
       expect(circle.fill, isA<SvgNamedColor>());
       expect(circle.stroke?.color, isA<SvgNamedColor>());
-      expect((circle.stroke!.width! as SvgLength).value, 2.0);
+      expect((circle.stroke!.width! as SvgLength).value, 2.5);
     });
 
     test('should return Success with default values when no attributes are provided', () {

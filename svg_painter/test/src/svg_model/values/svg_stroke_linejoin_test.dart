@@ -13,7 +13,11 @@ void main() {
 
     test('from should return correct enum for all valid strings', () {
       expectedMapping.forEach((String key, SvgStrokeLinejoin value) {
-        expect(SvgStrokeLinejoin.from(key), equals(value), reason: 'String "$key" did not map to $value');
+        expect(
+          SvgStrokeLinejoin.from(key),
+          equals(value),
+          reason: 'String "$key" did not map to $value',
+        );
       });
     });
 
@@ -24,7 +28,11 @@ void main() {
     test('should verify all enum values are covered in test', () {
       final Set<SvgStrokeLinejoin> mappedValues = expectedMapping.values.toSet();
       for (final SvgStrokeLinejoin join in SvgStrokeLinejoin.values) {
-        expect(mappedValues.contains(join), isTrue, reason: 'Enum value $join is not covered by test expectations');
+        expect(
+          mappedValues.contains(join),
+          isTrue,
+          reason: 'Enum value $join is not covered by test expectations',
+        );
       }
     });
   });

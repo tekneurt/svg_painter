@@ -31,7 +31,7 @@ void main() {
         cy: 20.0,
         radius: 5.0,
         style: PaintingStyle(
-          stroke: PaintingStrokeStyle(colorArgb: 0xFF000000, dashArray: <double>[2.0, 2.0]),
+          stroke: PaintingStrokeStyle(colorArgb: 0xFF000000, dashArray: <double>[2.0, 3.0]),
         ),
       );
       final StringBuffer buffer = StringBuffer();
@@ -43,7 +43,7 @@ void main() {
       final String output = buffer.toString();
       expect(output, contains('final Path path = Path()..addOval'));
       expect(output, contains('canvas.drawPath(_dashPath(path, dashArray), paint)'));
-      expect(output, contains('final List<double> dashArray = [2.0, 2.0]'));
+      expect(output, contains('final List<double> dashArray = [2.0, 3.0]'));
     });
   });
 }

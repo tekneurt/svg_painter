@@ -7,16 +7,16 @@ import 'package:svg_painter/src/svg_model/svg_value.dart';
 import 'package:test/test.dart';
 
 void main() {
-  const SvgPaintingContext context = SvgPaintingContext(viewBoxWidth: 100, viewBoxHeight: 100);
+  const SvgPaintingContext context = SvgPaintingContext(viewBoxWidth: 200, viewBoxHeight: 300);
 
   group('SvgLineToPaintCommands', () {
     test('should return Success with DrawLine when valid SvgLine is provided', () {
       // Arrange
       const SvgLine line = SvgLine(
-        x1: SvgLength(0.0),
-        y1: SvgLength(0.0),
-        x2: SvgLength(50.0),
-        y2: SvgLength(50.0),
+        x1: SvgLength(10.0),
+        y1: SvgLength(20.0),
+        x2: SvgLength(100.0),
+        y2: SvgLength(200.0),
       );
 
       // Act
@@ -28,10 +28,10 @@ void main() {
       expect(commands, hasLength(1));
       expect(commands.first, isA<DrawLine>());
       final DrawLine drawLine = commands.first as DrawLine;
-      expect(drawLine.x1, 0.0);
-      expect(drawLine.y1, 0.0);
-      expect(drawLine.x2, 50.0);
-      expect(drawLine.y2, 50.0);
+      expect(drawLine.x1, 10.0);
+      expect(drawLine.y1, 20.0);
+      expect(drawLine.x2, 100.0);
+      expect(drawLine.y2, 200.0);
     });
   });
 }

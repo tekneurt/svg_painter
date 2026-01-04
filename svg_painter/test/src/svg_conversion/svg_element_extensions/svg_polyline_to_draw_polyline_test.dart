@@ -13,7 +13,7 @@ void main() {
     test('should return Success with DrawPolyline when valid SvgPolyline is provided', () {
       // Arrange
       const SvgPolyline polyline = SvgPolyline(
-        points: SvgPointList(<double>[0.0, 0.0, 50.0, 50.0, 100.0, 0.0]),
+        points: SvgPointList(<double>[1.0, 2.0, 50.0, 51.0, 100.0, 102.0]),
       );
 
       // Act
@@ -25,7 +25,7 @@ void main() {
       expect(commands, hasLength(1));
       expect(commands.first, isA<DrawPolyline>());
       final DrawPolyline drawPolyline = commands.first as DrawPolyline;
-      expect(drawPolyline.points, <double>[0.0, 0.0, 50.0, 50.0, 100.0, 0.0]);
+      expect(drawPolyline.points, <double>[1.0, 2.0, 50.0, 51.0, 100.0, 102.0]);
     });
   });
 }

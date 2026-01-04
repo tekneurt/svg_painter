@@ -40,7 +40,11 @@ void main() {
         // SvgLengthUnit.none is mapped to '' (and default).
         final Set<SvgLengthUnit> mappedUnits = expectedMapping.values.toSet();
         for (final SvgLengthUnit unit in SvgLengthUnit.values) {
-          expect(mappedUnits.contains(unit), isTrue, reason: 'Enum value $unit is not covered by test expectations');
+          expect(
+            mappedUnits.contains(unit),
+            isTrue,
+            reason: 'Enum value $unit is not covered by test expectations',
+          );
         }
       });
     });

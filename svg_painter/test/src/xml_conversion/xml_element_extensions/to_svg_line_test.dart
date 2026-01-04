@@ -10,7 +10,7 @@ void main() {
     test('should convert <line> with coordinates when valid XML is provided', () {
       // Arrange
       final XmlDocument document = XmlDocument.parse(
-        '<line x1="0" y1="0" x2="100" y2="100" stroke="black" />',
+        '<line x1="10" y1="20" x2="100" y2="200" stroke="black" />',
       );
       final XmlElement element = document.rootElement;
 
@@ -20,10 +20,10 @@ void main() {
       // Assert
       expect(result, isA<Success<SvgElement>>());
       final SvgLine line = (result as Success<SvgElement>).value as SvgLine;
-      expect((line.x1 as SvgLength).value, 0.0);
-      expect((line.y1 as SvgLength).value, 0.0);
+      expect((line.x1 as SvgLength).value, 10.0);
+      expect((line.y1 as SvgLength).value, 20.0);
       expect((line.x2 as SvgLength).value, 100.0);
-      expect((line.y2 as SvgLength).value, 100.0);
+      expect((line.y2 as SvgLength).value, 200.0);
     });
   });
 }

@@ -11,7 +11,7 @@ void main() {
   group('SvgPathToPaintCommands', () {
     test('should return Success with DrawPath when valid SvgPath is provided', () {
       // Arrange
-      const SvgPath path = SvgPath(d: 'M 10 10 L 20 20');
+      const SvgPath path = SvgPath(d: 'M 10 11 L 20 21');
 
       // Act
       final Result<List<PaintCommand>> result = path.toPaintCommands(context);

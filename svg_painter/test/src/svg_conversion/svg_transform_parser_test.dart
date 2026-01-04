@@ -143,33 +143,33 @@ void main() {
         // Arrange
         const String transform = 'translate(10  20),rotate(45,10,20) scale(2,3)';
         const double sx = 2.0;
-        const double sy = 2.0;
+        const double sy = 3.0;
 
         // Act
         final String? result = SvgTransformParser.scaleTransform(transform, sx, sy);
 
         // Assert
-        expect(result, 'translate(20.0, 40.0) rotate(45.0, 20.0, 40.0) scale(2.0, 3.0)');
+        expect(result, 'translate(20.0, 60.0) rotate(45.0, 20.0, 60.0) scale(2.0, 3.0)');
       });
 
       test('should correctly process multiple transforms when chained', () {
         // Arrange
         const String transform = 'translate(10, 20) rotate(45) scale(2)';
         const double sx = 2.0;
-        const double sy = 2.0;
+        const double sy = 3.0;
 
         // Act
         final String? result = SvgTransformParser.scaleTransform(transform, sx, sy);
 
         // Assert
-        expect(result, 'translate(20.0, 40.0) rotate(45.0) scale(2.0, 2.0)');
+        expect(result, 'translate(20.0, 60.0) rotate(45.0) scale(2.0, 2.0)');
       });
 
       test('should be case sensitive for transform type names', () {
         // Arrange
         const String transform = 'TRANSLATE(10, 20)';
         const double sx = 2.0;
-        const double sy = 2.0;
+        const double sy = 3.0;
 
         // Act
         final String? result = SvgTransformParser.scaleTransform(transform, sx, sy);
