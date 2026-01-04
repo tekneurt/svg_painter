@@ -10,7 +10,7 @@ void main() {
   group('resolvePaint', () {
     const SvgPaintingContext baseContext = SvgPaintingContext(
       viewBoxWidth: 100,
-      viewBoxHeight: 100,
+      viewBoxHeight: 200,
     );
 
     test('should resolve fill from attribute when provided', () {
@@ -57,7 +57,7 @@ void main() {
       // Arrange
       const SvgPaintingContext context = SvgPaintingContext(
         viewBoxWidth: 100,
-        viewBoxHeight: 100,
+        viewBoxHeight: 200,
         styleSheet: SvgStyleSheet(<String, Map<String, String>>{
           'circle': <String, String>{'fill': 'red'},
           'my-class': <String, String>{'fill': 'blue'},
@@ -104,9 +104,9 @@ void main() {
       // Arrange
       const SvgPaintingContext context = SvgPaintingContext(
         viewBoxWidth: 200,
-        viewBoxHeight: 200,
+        viewBoxHeight: 300,
         parentSx: 2.0,
-        parentSy: 2.0,
+        parentSy: 3.0,
       );
       const SvgLengthPercentage fontSize = SvgLength(16.0);
 
@@ -114,8 +114,8 @@ void main() {
       final PaintingStyle result = resolvePaint(context, fontSize: fontSize);
 
       // Assert
-      // 16.0 * parentSy (2.0) = 32.0
-      expect(result.text?.fontSize, 32.0);
+      // 16.0 * parentSy (3.0) = 48.0
+      expect(result.text?.fontSize, 48.0);
     });
 
     test('should map generic font families', () {

@@ -6,7 +6,7 @@ import 'package:svg_painter/src/svg_model/svg_element.dart';
 import 'package:test/test.dart';
 
 void main() {
-  const SvgPaintingContext context = SvgPaintingContext(viewBoxWidth: 100, viewBoxHeight: 100);
+  const SvgPaintingContext context = SvgPaintingContext(viewBoxWidth: 100, viewBoxHeight: 200);
 
   group('SvgPathToPaintCommands', () {
     test('should return Success with DrawPath when valid SvgPath is provided', () {

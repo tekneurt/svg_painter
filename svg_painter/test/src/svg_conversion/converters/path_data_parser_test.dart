@@ -5,7 +5,7 @@ import 'package:svg_painter/src/svg_conversion/converters/svg_painting_context.d
 import 'package:test/test.dart';
 
 void main() {
-  const SvgPaintingContext context = SvgPaintingContext(viewBoxWidth: 100, viewBoxHeight: 100);
+  const SvgPaintingContext context = SvgPaintingContext(viewBoxWidth: 100, viewBoxHeight: 200);
 
   group('PathDataParser', () {
     group('parse', () {
