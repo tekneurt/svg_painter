@@ -45,10 +45,10 @@
 - [x] **Generator Infrastructure**: Add basic unit tests for `svg_painter_generator.dart` logic where feasible.
 
 #### Coverage Finalization - Part 2 (Low-hanging fruit)
-- [ ] **Equality Audit**: Audit all classes for unused `operator ==` and `hashCode` overrides. Remove them if they are not used for logic (e.g., in Sets or Map keys) to adhere to YAGNI. List any exceptions.
+- [x] **Equality Audit**: Audit all classes for unused `operator ==` and `hashCode` overrides. Remove them if they are not used for logic (e.g., in Sets or Map keys) to adhere to YAGNI. List any exceptions.
 - [x] **Painting Model Coverage**: Add unit tests for `toString` for all classes in `lib/src/painting_model/` (commands and styles).
 - [x] **SVG Model Coverage**: Add unit tests for `toString` and data integrity for `lib/src/svg_model/` classes (elements, attributes, values).
-- [ ] **Path Operation Coverage**: Verify data integrity for all `PathOperation` subclasses.
+- [x] **Path Operation Coverage**: Verify data integrity for all `PathOperation` subclasses.
 - [x] **Constant & Config Regression Tests**: Add regression tests for critical constants and mappings (e.g., `svgColorNameMap`, unit conversion factors, enum-to-string mappings) to prevent accidental modification.
 - [ ] **Test Quality Audit**: Systematically audit **ALL** unit tests to ensure:
     1.  **Distinct Values**: Properties (x/y, width/height) use unique values to detect swapped variable bugs.
