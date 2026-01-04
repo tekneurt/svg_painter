@@ -40,7 +40,7 @@
 
 #### Coverage Finalization (Addressing identified gaps)
 - [x] **SVG to Painting Extensions**: Add unit tests for `svg_element_extensions` (e.g., `svg_path_to_draw_path`, `svg_line_to_draw_line`) to verify mapping from SVG model to Painting commands.
-- [ ] **Value Resolution Logic**: Add comprehensive tests for `svg_length_to_double` covering all SVG units and `svg_transform_parser` edge cases.
+- [x] **Value Resolution Logic**: Add comprehensive tests for `svg_length_to_double` covering all SVG units and `svg_transform_parser` edge cases.
 - [ ] **String Parsing Extensions**: Add unit tests for `xml_conversion/string_extensions` (e.g., `to_svg_length`, `to_svg_stroke_linecap`).
 - [ ] **Generator Infrastructure**: Add basic unit tests for `svg_painter_generator.dart` logic where feasible.
 
