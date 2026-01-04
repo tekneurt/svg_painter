@@ -59,34 +59,35 @@
     [x] **String Extensions Tests**: Add tests for `lib/src/xml_model/extensions/string_extensions.dart`.
     [x] **Attribute Value Tests**: Add tests for `lib/src/xml_conversion/xml_attribute_name_extensions/to_default_value.dart`.
     [x] **SVG Model toString Tests**: Add missing `toString` tests for `lib/src/svg_model`.
-    [ ] Files without (any) test
-      - [ ] **Generation Tests**:
-        - [ ] `lib/src/generation/command_generator.dart`
-        - [ ] `lib/src/generation/generation_extensions.dart`
-    - [ ] **Painting Model Tests**:
-        - [ ] `lib/src/painting_model/paint_command.dart`
-        - [ ] `lib/src/painting_model/styles/painting_style.dart`
-    - [ ] **SVG Conversion Tests**:
-        - [ ] `lib/src/svg_conversion/converters/svg_definition_collector.dart`
-        - [ ] `lib/src/svg_conversion/converters/svg_radii_resolver.dart`
-        - [ ] `lib/src/svg_conversion/svg_element_extensions/svg_ellipse_to_draw_oval.dart`
-        - [ ] `lib/src/svg_conversion/svg_element_extensions/svg_gradient_to_painting.dart`
-        - [ ] `lib/src/svg_conversion/svg_element_extensions/svg_rect_to_draw_rect.dart`
-        - [ ] `lib/src/svg_conversion/svg_value_extensions/svg_auto_to_double.dart`
-        - [ ] `lib/src/svg_conversion/svg_value_extensions/svg_length_percentage_to_double.dart`
-        - [ ] `lib/src/svg_conversion/svg_value_extensions/svg_percentage_to_double.dart`
-    - [ ] **SVG Model Tests**:
-        - [ ] `lib/src/svg_model/svg_style_sheet.dart`
-    - [ ] **XML Conversion Tests**:
-        - [ ] `lib/src/xml_conversion/svg_style_parser.dart`
-        - [ ] `lib/src/xml_conversion/xml_element_extensions/to_common_attributes.dart`
-        - [ ] `lib/src/xml_conversion/xml_element_extensions/to_svg_style.dart`
-        - [ ] `lib/src/xml_conversion/xml_element_extensions/to_svg_value.dart`
-        - [ ] `lib/src/xml_conversion/xml_element_extensions/to_xml_attribute_value.dart`
-    - [ ] **XML Model Tests**:
+    [x] Files without (any) test
+    - [x] **Generation Tests**:
+        [x] `lib/src/generation/command_generator.dart`
+        [x] `lib/src/generation/generation_extensions.dart`
+    - [x] **Painting Model Tests**:
+        [x] `lib/src/painting_model/paint_command.dart`
+        [x] `lib/src/painting_model/styles/painting_style.dart`
+    - [x] **SVG Conversion Tests**:
+        [x] `lib/src/svg_conversion/converters/svg_definition_collector.dart`
+        [x] `lib/src/svg_conversion/converters/svg_radii_resolver.dart`
+        [x] `lib/src/svg_conversion/svg_element_extensions/svg_ellipse_to_draw_oval.dart`
+        [x] `lib/src/svg_conversion/svg_element_extensions/svg_gradient_to_painting.dart`
+        [x] `lib/src/svg_conversion/svg_element_extensions/svg_rect_to_draw_rect.dart`
+        [x] `lib/src/svg_conversion/svg_value_extensions/svg_auto_to_double.dart`
+        [x] `lib/src/svg_conversion/svg_value_extensions/svg_length_percentage_to_double.dart`
+        [x] `lib/src/svg_conversion/svg_value_extensions/svg_percentage_to_double.dart`
+    - [x] **SVG Model Tests**:
+        [x] `lib/src/svg_model/svg_style_sheet.dart`
+    - [x] **XML Conversion Tests**:
+        [x] `lib/src/xml_conversion/svg_style_parser.dart`
+        [x] `lib/src/xml_conversion/xml_attribute_name_extensions/to_default_value.dart`
+        [x] `lib/src/xml_conversion/xml_element_extensions/to_common_attributes.dart`
+        [x] `lib/src/xml_conversion/xml_element_extensions/to_svg_style.dart`
+        [x] `lib/src/xml_conversion/xml_element_extensions/to_svg_value.dart`
+        [x] `lib/src/xml_conversion/xml_element_extensions/to_xml_attribute_value.dart`
+    - [x] **XML Model Tests**:
         [x] `lib/src/xml_model/extensions/string_extensions.dart`
-        - [ ] `lib/src/xml_model/xml_attribute_name.dart`
-        - [ ] `lib/src/xml_model/xml_element_name.dart`
+        [x] `lib/src/xml_model/xml_attribute_name.dart`
+        [x] `lib/src/xml_model/xml_element_name.dart`
     [ ] **Final Coverage Check**: Verify high coverage (>90%).
 
 ### Phase 2: Dynamic Properties & Customizable Widget (Heart of Value Prop)

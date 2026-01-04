@@ -19,7 +19,7 @@ void main() {
       SvgStop(
         offset: SvgLength(1.0),
         stopColor: SvgNamedColor(SvgColorName.black),
-        stopOpacity: SvgLength(1.0),
+        stopOpacity: SvgLength(0.5),
       ),
     ];
 
@@ -27,11 +27,12 @@ void main() {
       // Arrange
       const SvgLinearGradient grad = SvgLinearGradient(
         id: 'grad1',
-        x1: SvgLength(0.0),
-        y1: SvgLength(0.0),
-        x2: SvgLength(100.0),
-        y2: SvgLength(0.0),
+        x1: SvgLength(10.0),
+        y1: SvgLength(20.0),
+        x2: SvgLength(30.0),
+        y2: SvgLength(40.0),
         stops: stops,
+        gradientTransform: 'scale(2)',
       );
 
       // Act
@@ -41,7 +42,16 @@ void main() {
       expect(result, isA<Success<DefineLinearGradient>>());
       final DefineLinearGradient cmd = (result as Success<DefineLinearGradient>).value;
       expect(cmd.id, 'grad1');
+      expect(cmd.x1, 10.0);
+      expect(cmd.y1, 20.0);
+      expect(cmd.x2, 30.0);
+      expect(cmd.y2, 40.0);
       expect(cmd.stops, hasLength(2));
+      expect(cmd.stops[0].offset, 0.0);
+      expect(cmd.stops[0].colorArgb, 0xFFFFFFFF);
+      expect(cmd.stops[1].offset, 1.0);
+      expect(cmd.stops[1].colorArgb, 0x80000000);
+      expect(cmd.transform, 'scale(2)');
     });
 
     test('should return Success with DefineRadialGradient when SvgRadialGradient is provided', () {
@@ -49,11 +59,11 @@ void main() {
       const SvgRadialGradient grad = SvgRadialGradient(
         id: 'rad1',
         cx: SvgLength(50.0),
-        cy: SvgLength(50.0),
-        r: SvgLength(50.0),
-        fx: SvgLength(50.0),
-        fy: SvgLength(50.0),
-        fr: SvgLength(0.0),
+        cy: SvgLength(60.0),
+        r: SvgLength(70.0),
+        fx: SvgLength(80.0),
+        fy: SvgLength(90.0),
+        fr: SvgLength(5.0),
         stops: stops,
       );
 
@@ -64,6 +74,12 @@ void main() {
       expect(result, isA<Success<DefineRadialGradient>>());
       final DefineRadialGradient cmd = (result as Success<DefineRadialGradient>).value;
       expect(cmd.id, 'rad1');
+      expect(cmd.cx, 50.0);
+      expect(cmd.cy, 60.0);
+      expect(cmd.radius, 70.0);
+      expect(cmd.fx, 80.0);
+      expect(cmd.fy, 90.0);
+      expect(cmd.focalRadius, 5.0);
     });
   });
 }
