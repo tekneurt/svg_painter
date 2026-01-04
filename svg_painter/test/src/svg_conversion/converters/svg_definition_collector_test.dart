@@ -7,7 +7,12 @@ void main() {
   group('SvgElementToDefinitions', () {
     test('should collect definitions from SvgSvg and its children', () {
       // Arrange
-      const SvgCircle circle = SvgCircle(cx: SvgLength(0), cy: SvgLength(0), r: SvgLength(10), id: 'c1');
+      const SvgCircle circle = SvgCircle(
+        cx: SvgLength(0),
+        cy: SvgLength(0),
+        r: SvgLength(10),
+        id: 'c1',
+      );
       const SvgRect rect = SvgRect(
         x: SvgLength(1),
         y: SvgLength(2),

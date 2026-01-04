@@ -8,8 +8,11 @@ class TestShapeGenerator extends ShapeGenerator<DrawCircle> {
   const TestShapeGenerator();
 
   @override
-  void generate(DrawCircle command, StringBuffer buffer,
-      {Map<Type, CommandGenerator<PaintCommand>>? generators}) {
+  void generate(
+    DrawCircle command,
+    StringBuffer buffer, {
+    Map<Type, CommandGenerator<PaintCommand>>? generators,
+  }) {
     wrapWithTransform(buffer, command.transform, () {
       generatePaintingCode(
         buffer,
@@ -18,10 +21,12 @@ class TestShapeGenerator extends ShapeGenerator<DrawCircle> {
         (String paintVar, {String? dashArray, String? pathLength}) {
           if (dashArray != null) {
             buffer.writeln(
-                '        canvas.drawPath(_dashPath(Path()..addOval(Rect.fromCircle(center: const Offset(${command.cx}, ${command.cy}), radius: ${command.radius})), $dashArray, pathLength: $pathLength), $paintVar);');
+              '        canvas.drawPath(_dashPath(Path()..addOval(Rect.fromCircle(center: const Offset(${command.cx}, ${command.cy}), radius: ${command.radius})), $dashArray, pathLength: $pathLength), $paintVar);',
+            );
           } else {
             buffer.writeln(
-                '        canvas.drawCircle(const Offset(${command.cx}, ${command.cy}), ${command.radius}, $paintVar);');
+              '        canvas.drawCircle(const Offset(${command.cx}, ${command.cy}), ${command.radius}, $paintVar);',
+            );
           }
         },
       );
@@ -91,7 +96,12 @@ void main() {
 
         // Assert
         final String output = buffer.toString();
-        expect(output, contains('paint.shader = _grad_grad1.createShader(Rect.fromLTWH(5.0, 15.0, 10.0, 10.0));'));
+        expect(
+          output,
+          contains(
+            'paint.shader = _grad_grad1.createShader(Rect.fromLTWH(5.0, 15.0, 10.0, 10.0));',
+          ),
+        );
         expect(output, contains('paint.color = paint.color.withOpacity(0.8);'));
       });
 
@@ -122,8 +132,10 @@ void main() {
       test('should wrap with translate when provided', () {
         // Arrange
         const DrawCircle command = DrawCircle(
-          cx: 0, cy: 0, radius: 5, 
-          style: PaintingStyle(), 
+          cx: 0,
+          cy: 0,
+          radius: 5,
+          style: PaintingStyle(),
           transform: 'translate(10, 20)',
         );
         final StringBuffer buffer = StringBuffer();
@@ -141,8 +153,10 @@ void main() {
       test('should wrap with scale when provided', () {
         // Arrange
         const DrawCircle command = DrawCircle(
-          cx: 0, cy: 0, radius: 5, 
-          style: PaintingStyle(), 
+          cx: 0,
+          cy: 0,
+          radius: 5,
+          style: PaintingStyle(),
           transform: 'scale(2, 3)',
         );
         final StringBuffer buffer = StringBuffer();
@@ -158,8 +172,10 @@ void main() {
       test('should wrap with rotate when provided', () {
         // Arrange
         const DrawCircle command = DrawCircle(
-          cx: 0, cy: 0, radius: 5, 
-          style: PaintingStyle(), 
+          cx: 0,
+          cy: 0,
+          radius: 5,
+          style: PaintingStyle(),
           transform: 'rotate(45)',
         );
         final StringBuffer buffer = StringBuffer();
@@ -175,8 +191,10 @@ void main() {
       test('should wrap with rotate and pivot point when provided', () {
         // Arrange
         const DrawCircle command = DrawCircle(
-          cx: 0, cy: 0, radius: 5, 
-          style: PaintingStyle(), 
+          cx: 0,
+          cy: 0,
+          radius: 5,
+          style: PaintingStyle(),
           transform: 'rotate(45, 10, 10)',
         );
         final StringBuffer buffer = StringBuffer();
@@ -194,8 +212,10 @@ void main() {
       test('should handle multiple transforms', () {
         // Arrange
         const DrawCircle command = DrawCircle(
-          cx: 0, cy: 0, radius: 5, 
-          style: PaintingStyle(), 
+          cx: 0,
+          cy: 0,
+          radius: 5,
+          style: PaintingStyle(),
           transform: 'translate(10, 10) scale(2)',
         );
         final StringBuffer buffer = StringBuffer();
@@ -209,13 +229,13 @@ void main() {
         expect(output, contains('canvas.scale(2.0, 2.0);'));
       });
     });
-  group('CommandGenerator (Implicit)', () {
-    test('should exist as abstract base', () {
-      // Arrange
-      const CommandGenerator<DrawCircle>? gen = null;
-      // Assert
-      expect(gen, isNull);
+    group('CommandGenerator (Implicit)', () {
+      test('should exist as abstract base', () {
+        // Arrange
+        const CommandGenerator<DrawCircle>? gen = null;
+        // Assert
+        expect(gen, isNull);
+      });
     });
-  });
   });
 }

@@ -8,7 +8,9 @@ void main() {
   group('ToSvgStyle', () {
     test('should convert <style> correctly', () {
       // Arrange
-      final XmlDocument document = XmlDocument.parse('<style id="style1">.c1 { fill: red; }</style>');
+      final XmlDocument document = XmlDocument.parse(
+        '<style id="style1">.c1 { fill: red; }</style>',
+      );
       final XmlElement element = document.rootElement;
 
       // Act

@@ -31,7 +31,8 @@ void main() {
 
     test('should ignore comments', () {
       // Arrange
-      const String css = '/* comment */ .c1 { fill: red; } // not a css comment but handled by split';
+      const String css =
+          '/* comment */ .c1 { fill: red; } // not a css comment but handled by split';
 
       // Act
       final SvgStyleSheet result = SvgStyleParser.parse(css);

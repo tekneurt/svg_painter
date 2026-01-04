@@ -9,10 +9,7 @@ void main() {
         const Success<int> success = Success<int>(42);
 
         // Act
-        final String result = success.fold(
-          (Failure<int> f) => 'failure',
-          (int v) => 'success $v',
-        );
+        final String result = success.fold((Failure<int> f) => 'failure', (int v) => 'success $v');
 
         // Assert
         expect(result, 'success 42');
@@ -249,10 +246,7 @@ void main() {
     group('ResultIterableExtension.combine', () {
       test('should combine list of values when all are Success', () {
         // Arrange
-        final List<Result<int>> list = <Result<int>>[
-          const Success<int>(1),
-          const Success<int>(2),
-        ];
+        final List<Result<int>> list = <Result<int>>[const Success<int>(1), const Success<int>(2)];
 
         // Act
         final Result<List<int>> combined = list.combine();
