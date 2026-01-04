@@ -18,5 +18,6 @@ final class PaintingTextStyle {
   final String? fontFamily;
 
   @override
-  String toString() => 'PaintingTextStyle($fontStyle $fontWeight $fontSize $fontFamily)';
+  String toString() =>
+      'PaintingTextStyle(size: $fontSize, weight: $fontWeight, style: $fontStyle, family: $fontFamily)';
 }

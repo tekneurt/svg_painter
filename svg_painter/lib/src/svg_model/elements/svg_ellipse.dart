@@ -36,4 +36,7 @@ final class SvgEllipse extends SvgBasicShape {
 
   /// The y-axis radius of the ellipse.
   final SvgLengthPercentageAuto ry;
+
+  @override
+  String toString() => 'SvgEllipse(cx: $cx, cy: $cy, rx: $rx, ry: $ry, id: $id)';
 }

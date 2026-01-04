@@ -26,4 +26,7 @@ final class SvgLinearGradient extends SvgGradient {
 
   /// The y-axis coordinate of the end of the gradient vector.
   final SvgLengthPercentage y2;
+
+  @override
+  String toString() => 'SvgLinearGradient(stops: ${stops.length}, id: $id)';
 }

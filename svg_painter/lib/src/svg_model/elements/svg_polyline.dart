@@ -22,6 +22,9 @@ final class SvgPolyline extends SvgBasicShape {
     super.id,
   });
 
-  /// The points that make up the polyline.
+  /// The points that define the polyline.
   final SvgPointList points;
+
+  @override
+  String toString() => 'SvgPolyline(pts: ${points.points.length}, id: $id)';
 }

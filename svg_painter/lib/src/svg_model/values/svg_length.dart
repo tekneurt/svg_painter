@@ -8,6 +8,9 @@ final class SvgLength extends SvgLengthPercentage with SvgBaseValue {
 
   final double value;
   final SvgLengthUnit unit;
+
+  @override
+  String toString() => unit == SvgLengthUnit.none ? '$value' : '$value${unit.name}';
 }
 
 /// Units of measurement for SVG lengths.

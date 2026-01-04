@@ -7,6 +7,9 @@ final class GradientStop {
 
   final double offset;
   final int colorArgb;
+
+  @override
+  String toString() => 'GradientStop(offset: $offset, color: $colorArgb)';
 }
 
 /// Base class for commands that define a gradient.

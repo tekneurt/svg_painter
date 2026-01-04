@@ -38,6 +38,9 @@ final class SvgUse extends SvgGraphicsElement {
   /// The width of the element.
   final SvgLengthPercentageAuto width;
 
-  /// The height of the element.
-  final SvgLengthPercentageAuto height;
+  /// The height of the referenced element.
+  final SvgLengthPercentageAuto? height;
+
+  @override
+  String toString() => 'SvgUse(href: $href, id: $id)';
 }

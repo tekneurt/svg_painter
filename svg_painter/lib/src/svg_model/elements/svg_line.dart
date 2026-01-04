@@ -36,4 +36,7 @@ final class SvgLine extends SvgBasicShape {
 
   /// The y-axis coordinate of the end of the line.
   final SvgLengthPercentage y2;
+
+  @override
+  String toString() => 'SvgLine(x1: $x1, y1: $y1, x2: $x2, y2: $y2, id: $id)';
 }

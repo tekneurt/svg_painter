@@ -12,6 +12,9 @@ final class DrawPath extends PaintCommand {
 
   /// The transformation to apply to the canvas before drawing.
   final String? transform;
+
+  @override
+  String toString() => 'DrawPath(ops: ${operations.length}, style: $style, transform: $transform)';
 }
 
 /// Base class for path operations.
@@ -24,6 +27,9 @@ final class MoveTo extends PathOperation {
   const MoveTo(this.x, this.y);
   final double x;
   final double y;
+
+  @override
+  String toString() => 'MoveTo($x, $y)';
 }
 
 /// Line to a specific point (L/l, H/h, V/v).
@@ -31,6 +37,9 @@ final class LineTo extends PathOperation {
   const LineTo(this.x, this.y);
   final double x;
   final double y;
+
+  @override
+  String toString() => 'LineTo($x, $y)';
 }
 
 /// Cubic bezier curve (C/c, S/s).
@@ -42,6 +51,9 @@ final class CubicTo extends PathOperation {
   final double y2;
   final double x3;
   final double y3;
+
+  @override
+  String toString() => 'CubicTo(($x1, $y1), ($x2, $y2), ($x3, $y3))';
 }
 
 /// Quadratic bezier curve (Q/q, T/t).
@@ -51,6 +63,9 @@ final class QuadraticTo extends PathOperation {
   final double y1;
   final double x2;
   final double y2;
+
+  @override
+  String toString() => 'QuadraticTo(($x1, $y1), ($x2, $y2))';
 }
 
 /// Arc to (A/a).
@@ -71,9 +86,16 @@ final class ArcTo extends PathOperation {
   final bool sweepFlag;
   final double x;
   final double y;
+
+  @override
+  String toString() =>
+      'ArcTo(rx: $rx, ry: $ry, rot: $xAxisRotation, large: $largeArcFlag, sweep: $sweepFlag, to: ($x, $y))';
 }
 
 /// Close path (Z/z).
 final class ClosePath extends PathOperation {
   const ClosePath();
+
+  @override
+  String toString() => 'ClosePath()';
 }

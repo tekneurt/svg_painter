@@ -106,10 +106,9 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
       (List<PaintCommand> value) => value,
     );
 
-    final String className =
-        annotation.read('painterClassName').isNull
-            ? r'_$' + (element.name ?? '')
-            : annotation.read('painterClassName').stringValue;
+    final String className = annotation.read('painterClassName').isNull
+        ? r'_$' + (element.name ?? '')
+        : annotation.read('painterClassName').stringValue;
 
     return generatePainterClass(
       className: className,

@@ -1,6 +1,5 @@
 import 'package:svg_painter/src/generation/oval_generator.dart';
-import 'package:svg_painter/src/painting_model/paint_command.dart';
-import 'package:svg_painter/src/painting_model/styles/painting_style.dart';
+import 'package:svg_painter/src/painting_model/_painting_model.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -10,7 +9,7 @@ void main() {
     test('should generate drawOval when oval is provided', () {
       // Arrange
       const OvalGenerator generator = OvalGenerator();
-      const DrawOval command = DrawOval(cx: 50.0, cy: 50.0, rx: 30.0, ry: 20.0, style: fillRed);
+      const DrawOval command = DrawOval(cx: 50.0, cy: 60.0, rx: 30.0, ry: 20.0, style: fillRed);
       final StringBuffer buffer = StringBuffer();
 
       // Act
@@ -21,7 +20,7 @@ void main() {
       expect(
         output,
         contains(
-          'canvas.drawOval(Rect.fromCenter(center: const Offset(50.0, 50.0), width: 60.0, height: 40.0), paint)',
+          'canvas.drawOval(Rect.fromCenter(center: const Offset(50.0, 60.0), width: 60.0, height: 40.0), paint)',
         ),
       );
     });

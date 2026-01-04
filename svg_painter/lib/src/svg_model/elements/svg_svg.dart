@@ -44,6 +44,9 @@ base class SvgSvg extends SvgContainerElement {
 
   /// The CSS rules defined for this SVG (or empty for non-root SVGs).
   final SvgStyleSheet styleSheet;
+
+  @override
+  String toString() => 'SvgSvg(children: ${children.length}, id: $id)';
 }
 
 /// Represents the root <svg> element.
@@ -70,4 +73,7 @@ final class SvgRoot extends SvgSvg {
     super.transform,
     super.pathLength,
   });
+
+  @override
+  String toString() => 'SvgRoot(children: ${children.length}, id: $id)';
 }

@@ -34,4 +34,7 @@ final class SvgRadialGradient extends SvgGradient {
 
   /// The radius of the focal circle for the gradient.
   final SvgLengthPercentage fr;
+
+  @override
+  String toString() => 'SvgRadialGradient(stops: ${stops.length}, id: $id)';
 }

@@ -7,4 +7,7 @@ final class SvgPercentage extends SvgLengthPercentage with SvgBaseValue {
 
   /// The percentage value (0-100).
   final double value;
+
+  @override
+  String toString() => '$value%';
 }

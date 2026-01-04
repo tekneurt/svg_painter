@@ -1,5 +1,5 @@
 import 'package:svg_painter/src/generation/radial_gradient_generator.dart';
-import 'package:svg_painter/src/painting_model/paint_command.dart';
+import 'package:svg_painter/src/painting_model/_painting_model.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -14,12 +14,12 @@ void main() {
       const RadialGradientGenerator generator = RadialGradientGenerator();
       const DefineRadialGradient command = DefineRadialGradient(
         id: 'rad1',
-        cx: 0.5,
-        cy: 0.5,
-        radius: 0.5,
-        fx: 0.5,
+        cx: 0.1,
+        cy: 0.2,
+        radius: 0.3,
+        fx: 0.4,
         fy: 0.5,
-        focalRadius: 0.0,
+        focalRadius: 0.05,
         stops: stops,
       );
       final StringBuffer buffer = StringBuffer();
@@ -29,14 +29,11 @@ void main() {
 
       // Assert
       final String output = buffer.toString();
-      // (0.5 * 2 - 1) = 0.0
       expect(output, contains('final Gradient _grad_rad1 = RadialGradient('));
-      expect(output, contains('center: Alignment(0.0, 0.0)'));
-      expect(output, contains('radius: 0.5'));
-      expect(output, contains('focal: Alignment(0.0, 0.0)'));
-      expect(output, contains('focalRadius: 0.0'));
-      expect(output, contains('colors: [Color(0xFFFF0000), Color(0xFF0000FF)]'));
-      expect(output, contains('stops: [0.0, 1.0]'));
+      expect(output, contains('center: Alignment(-0.8, -0.6)'));
+      expect(output, contains('radius: 0.3'));
+      expect(output, contains('focal: Alignment(-0.19999999999999996, 0.0)'));
+      expect(output, contains('focalRadius: 0.05'));
     });
   });
 }

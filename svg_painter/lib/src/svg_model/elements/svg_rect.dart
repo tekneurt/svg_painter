@@ -42,6 +42,9 @@ final class SvgRect extends SvgBasicShape {
   /// For rounded rectangles, the x-axis radius of the ellipse used to round off the corners of the rectangle.
   final SvgLengthPercentageAuto rx;
 
-  /// For rounded rectangles, the y-axis radius of the ellipse used to round off the corners of the rectangle.
+  /// The y-axis radius of the rectangle's corners.
   final SvgLengthPercentageAuto ry;
+
+  @override
+  String toString() => 'SvgRect(x: $x, y: $y, w: $width, h: $height, rx: $rx, ry: $ry, id: $id)';
 }

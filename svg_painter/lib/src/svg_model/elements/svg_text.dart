@@ -30,6 +30,9 @@ final class SvgText extends SvgGraphicsElement {
   /// The y-axis coordinate of the starting point of the text.
   final SvgLengthPercentage y;
 
-  /// The text content.
+  /// The text content to draw.
   final String text;
+
+  @override
+  String toString() => 'SvgText(x: $x, y: $y, text: $text, id: $id)';
 }

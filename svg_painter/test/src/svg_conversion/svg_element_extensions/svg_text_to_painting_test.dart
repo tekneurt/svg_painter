@@ -7,19 +7,12 @@ import 'package:svg_painter/src/svg_model/svg_value.dart';
 import 'package:test/test.dart';
 
 void main() {
-  const SvgPaintingContext context = SvgPaintingContext(
-    viewBoxWidth: 100,
-    viewBoxHeight: 100,
-  );
+  const SvgPaintingContext context = SvgPaintingContext(viewBoxWidth: 100, viewBoxHeight: 100);
 
   group('SvgTextToPaintCommands', () {
     test('should return Success with DrawText when valid SvgText is provided', () {
       // Arrange
-      const SvgText text = SvgText(
-        x: SvgLength(10.0),
-        y: SvgLength(20.0),
-        text: 'Hello',
-      );
+      const SvgText text = SvgText(x: SvgLength(10.0), y: SvgLength(20.0), text: 'Hello');
 
       // Act
       final Result<List<PaintCommand>> result = text.toPaintCommands(context);

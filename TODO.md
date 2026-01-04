@@ -42,7 +42,20 @@
 - [x] **SVG to Painting Extensions**: Add unit tests for `svg_element_extensions` (e.g., `svg_path_to_draw_path`, `svg_line_to_draw_line`) to verify mapping from SVG model to Painting commands.
 - [x] **Value Resolution Logic**: Add comprehensive tests for `svg_length_to_double` covering all SVG units and `svg_transform_parser` edge cases.
 - [x] **String Parsing Extensions**: Add unit tests for `xml_conversion/string_extensions` (e.g., `to_svg_length`, `to_svg_stroke_linecap`).
-- [x] **Generator Infrastructure**: Add basic unit tests for `svg_painter_generator.dart` logic where feasible.
+- [ ] **Generator Infrastructure**: Add basic unit tests for `svg_painter_generator.dart` logic where feasible.
+
+#### Coverage Finalization - Part 2 (Low-hanging fruit)
+- [ ] **Equality Audit**: Audit all classes for unused `operator ==` and `hashCode` overrides. Remove them if they are not used for logic (e.g., in Sets or Map keys) to adhere to YAGNI. List any exceptions.
+- [x] **Painting Model Coverage**: Add unit tests for `toString` for all classes in `lib/src/painting_model/` (commands and styles).
+- [x] **SVG Model Coverage**: Add unit tests for `toString` and data integrity for `lib/src/svg_model/` classes (elements, attributes, values).
+- [ ] **Path Operation Coverage**: Verify data integrity for all `PathOperation` subclasses.
+- [ ] **Constant & Config Regression Tests**: Add regression tests for critical constants and mappings (e.g., `svgColorNameMap`, unit conversion factors, enum-to-string mappings) to prevent accidental modification.
+- [ ] **Test Quality Audit**: Systematically audit **ALL** unit tests to ensure:
+    1.  **Distinct Values**: Properties (x/y, width/height) use unique values to detect swapped variable bugs.
+    2.  **Asymmetric Context**: Test contexts use asymmetric dimensions (e.g., 100x200) to detect swapped scaling factors.
+    3.  **AAA Pattern**: All tests strictly follow the Arrange-Act-Assert structure with comments.
+
+- [ ] **Test Value Audit**: Audit all unit tests to ensure distinct values are used for different properties (e.g., x != y, width != height) to prevent swapped property bugs from going undetected.
 
 - [ ] **Coverage Analysis & Finalization**: Analyze the final coverage report, identify remaining gaps, and implement necessary tests to reach a high confidence level (aiming for >90% branch coverage on core logic).
 

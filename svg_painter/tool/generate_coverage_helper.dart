@@ -28,17 +28,13 @@ void main() async {
   buffer.writeln();
   buffer.writeln("import 'package:test/test.dart';");
 
-  final List<File> files = libDir
-      .listSync(recursive: true)
-      .whereType<File>()
-      .where((File file) {
-        final String path = file.path;
-        return path.endsWith('.dart') &&
-            !path.contains('.g.dart') &&
-            !path.contains('.freezed.dart') &&
-            !_isPartOf(file);
-      })
-      .toList();
+  final List<File> files = libDir.listSync(recursive: true).whereType<File>().where((File file) {
+    final String path = file.path;
+    return path.endsWith('.dart') &&
+        !path.contains('.g.dart') &&
+        !path.contains('.freezed.dart') &&
+        !_isPartOf(file);
+  }).toList();
 
   // Sort files for consistent output
   files.sort((File a, File b) => a.path.compareTo(b.path));

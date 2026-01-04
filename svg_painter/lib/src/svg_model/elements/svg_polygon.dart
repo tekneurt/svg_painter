@@ -22,6 +22,9 @@ final class SvgPolygon extends SvgBasicShape {
     super.id,
   });
 
-  /// The points that make up the polygon.
+  /// The points that define the polygon.
   final SvgPointList points;
+
+  @override
+  String toString() => 'SvgPolygon(pts: ${points.points.length}, id: $id)';
 }

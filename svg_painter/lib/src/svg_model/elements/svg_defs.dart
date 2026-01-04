@@ -9,4 +9,7 @@ final class SvgDefs extends SvgDefinitionElement with SvgParent {
 
   @override
   final List<SvgElement> children;
+
+  @override
+  String toString() => 'SvgDefs(children: ${children.length}, id: $id)';
 }

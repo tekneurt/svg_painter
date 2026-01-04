@@ -22,4 +22,7 @@ final class SvgPath extends SvgGraphicsElement {
 
   /// The path data.
   final String d;
+
+  @override
+  String toString() => 'SvgPath(d: $d, id: $id)';
 }

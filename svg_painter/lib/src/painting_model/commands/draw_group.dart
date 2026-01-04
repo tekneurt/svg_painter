@@ -13,4 +13,8 @@ final class DrawGroup extends PaintCommand {
 
   /// The opacity to apply to the group as a whole (layering).
   final double groupOpacity;
+
+  @override
+  String toString() =>
+      'DrawGroup(cmds: ${commands.length}, transform: $transform, opacity: $groupOpacity)';
 }

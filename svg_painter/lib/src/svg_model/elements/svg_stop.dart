@@ -10,6 +10,9 @@ sealed class SvgGradient extends SvgDefinitionElement {
 
   /// The transformation applied to the gradient.
   final String? gradientTransform;
+
+  @override
+  String toString() => 'SvgGradient(stops: ${stops.length}, id: $id)';
 }
 
 /// Represents a <stop> element within a gradient.
@@ -30,4 +33,7 @@ final class SvgStop extends SvgDefinitionElement {
 
   /// The opacity of the stop (0.0 to 1.0).
   final SvgLengthPercentage stopOpacity;
+
+  @override
+  String toString() => 'SvgStop(offset: $offset, color: $stopColor, id: $id)';
 }

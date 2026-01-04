@@ -25,4 +25,7 @@ final class DrawText extends PaintCommand {
 
   /// The transform to apply.
   final String? transform;
+
+  @override
+  String toString() => 'DrawText(x: $x, y: $y, text: $text, style: $style, transform: $transform)';
 }

@@ -32,4 +32,7 @@ final class SvgCircle extends SvgBasicShape {
 
   /// The radius of the circle.
   final SvgLengthPercentage r;
+
+  @override
+  String toString() => 'SvgCircle(cx: $cx, cy: $cy, r: $r, id: $id)';
 }

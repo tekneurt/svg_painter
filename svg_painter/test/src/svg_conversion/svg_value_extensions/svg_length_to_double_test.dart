@@ -86,7 +86,10 @@ void main() {
 
       test('should return value relative to viewport width when unit is vw', () {
         // Arrange
-        const SvgPaintingContext context = SvgPaintingContext(viewBoxWidth: 200, viewBoxHeight: 100);
+        const SvgPaintingContext context = SvgPaintingContext(
+          viewBoxWidth: 200,
+          viewBoxHeight: 100,
+        );
         const SvgLength length = SvgLength(10.0, SvgLengthUnit.vw);
 
         // Act
@@ -98,7 +101,10 @@ void main() {
 
       test('should return value relative to viewport height when unit is vh', () {
         // Arrange
-        const SvgPaintingContext context = SvgPaintingContext(viewBoxWidth: 200, viewBoxHeight: 100);
+        const SvgPaintingContext context = SvgPaintingContext(
+          viewBoxWidth: 200,
+          viewBoxHeight: 100,
+        );
         const SvgLength length = SvgLength(10.0, SvgLengthUnit.vh);
 
         // Act
@@ -110,7 +116,10 @@ void main() {
 
       test('should return value relative to smaller viewport dimension when unit is vmin', () {
         // Arrange
-        const SvgPaintingContext context = SvgPaintingContext(viewBoxWidth: 200, viewBoxHeight: 100);
+        const SvgPaintingContext context = SvgPaintingContext(
+          viewBoxWidth: 200,
+          viewBoxHeight: 100,
+        );
         const SvgLength length = SvgLength(10.0, SvgLengthUnit.vmin);
 
         // Act
@@ -122,7 +131,10 @@ void main() {
 
       test('should return value relative to larger viewport dimension when unit is vmax', () {
         // Arrange
-        const SvgPaintingContext context = SvgPaintingContext(viewBoxWidth: 200, viewBoxHeight: 100);
+        const SvgPaintingContext context = SvgPaintingContext(
+          viewBoxWidth: 200,
+          viewBoxHeight: 100,
+        );
         const SvgLength length = SvgLength(10.0, SvgLengthUnit.vmax);
 
         // Act

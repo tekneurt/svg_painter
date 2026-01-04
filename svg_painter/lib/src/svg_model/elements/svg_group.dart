@@ -19,4 +19,7 @@ final class SvgGroup extends SvgContainerElement {
     super.transform,
     super.pathLength,
   });
+
+  @override
+  String toString() => 'SvgGroup(children: ${children.length}, id: $id)';
 }
