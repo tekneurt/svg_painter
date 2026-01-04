@@ -28,9 +28,6 @@ sealed class SvgElement {
 
   /// The unique identifier of the element.
   final String? id;
-
-  @override
-  String toString() => 'SvgElement(id: $id)';
 }
 
 /// Mixin for SVG elements that contain child elements.
@@ -93,10 +90,6 @@ sealed class SvgGraphicsElement extends SvgElement {
 
   /// The total length of the path in user units.
   final SvgLength? pathLength;
-
-  @override
-  String toString() =>
-      'SvgGraphicsElement(id: $id, fill: $fill, stroke: $stroke, transform: $transform)';
 }
 
 /// Base class for basic shape elements (<circle>, <rect>, etc.).
@@ -156,9 +149,6 @@ sealed class SvgMetadataElement extends SvgElement {
 
   /// The text content of the metadata element.
   final String content;
-
-  @override
-  String toString() => 'SvgMetadataElement(id: $id)';
 }
 
 /// Represents a <title> element.
