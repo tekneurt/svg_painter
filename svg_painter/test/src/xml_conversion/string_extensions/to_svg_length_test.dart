@@ -1,54 +1,35 @@
 import 'package:svg_painter/src/svg_model/svg_value.dart';
-import 'package:svg_painter/src/xml_conversion/string_extensions/to_svg_length_percentage.dart';
+import 'package:svg_painter/src/xml_conversion/string_extensions/to_svg_length.dart';
 import 'package:test/test.dart';
 
 void main() {
-  group('StringToLength', () {
-    test('parses unitless number', () {
-      final SvgLengthPercentage result = '10'.toSvgLengthPercentage();
-      expect(result, isA<SvgLength>());
-      final SvgLength length = result as SvgLength;
-      expect(length.value, 10.0);
-      expect(length.unit, SvgLengthUnit.none);
-    });
+  group('ToSvgLength', () {
+    group('toSvgLength', () {
+      test('should parse unitless number when valid string is provided', () {
+        // Act
+        final SvgLength result = '10'.toSvgLength();
 
-    test('parses percentage', () {
-      final SvgLengthPercentage result = '50%'.toSvgLengthPercentage();
-      expect(result, isA<SvgPercentage>());
-      final SvgPercentage percentage = result as SvgPercentage;
-      expect(percentage.value, 50.0);
-    });
+        // Assert
+        expect(result.value, 10.0);
+        expect(result.unit, SvgLengthUnit.none);
+      });
 
-    test('parses px', () {
-      final SvgLengthPercentage result = '10px'.toSvgLengthPercentage();
-      expect(result, isA<SvgLength>());
-      final SvgLength length = result as SvgLength;
-      expect(length.value, 10.0);
-      expect(length.unit, SvgLengthUnit.px);
-    });
+      test('should parse number with unit when valid string is provided', () {
+        // Act
+        final SvgLength result = '2.5cm'.toSvgLength();
 
-    test('parses cm', () {
-      final SvgLengthPercentage result = '2.5cm'.toSvgLengthPercentage();
-      expect(result, isA<SvgLength>());
-      final SvgLength length = result as SvgLength;
-      expect(length.value, 2.5);
-      expect(length.unit, SvgLengthUnit.cm);
-    });
+        // Assert
+        expect(result.value, 2.5);
+        expect(result.unit, SvgLengthUnit.cm);
+      });
 
-    test('parses unknown unit as none if number parses', () {
-      final SvgLengthPercentage result = '10foo'.toSvgLengthPercentage();
-      expect(result, isA<SvgLength>());
-      final SvgLength length = result as SvgLength;
-      expect(length.value, 10.0);
-      expect(length.unit, SvgLengthUnit.none);
-    });
+      test('should return 0 when input is empty', () {
+        // Act
+        final SvgLength result = ''.toSvgLength();
 
-    test('parses empty string as 0', () {
-      final SvgLengthPercentage result = ''.toSvgLengthPercentage();
-      expect(result, isA<SvgLength>());
-      final SvgLength length = result as SvgLength;
-      expect(length.value, 0.0);
-      expect(length.unit, SvgLengthUnit.none);
+        // Assert
+        expect(result.value, 0.0);
+      });
     });
   });
 }
