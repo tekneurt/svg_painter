@@ -56,12 +56,11 @@
     [x] **AAA Pattern**: All tests strictly follow the Arrange-Act-Assert structure with comments.
 
 - [ ] **Coverage Analysis & Finalization**: Analyze the final coverage report, identify remaining gaps, and implement necessary tests to reach a high confidence level (aiming for >90% branch coverage on core logic).
-    [x] **Missing Test File Audit**: Identify all source files in `lib/src` that lack a corresponding test file in `test/src`.
-    [x] **Result Tests**: Add comprehensive tests for `lib/src/base/result.dart`.
-    [ ] **String Extensions Tests**: Add tests for `lib/src/xml_model/extensions/string_extensions.dart`.
-    [ ] **Attribute Value Tests**: Add tests for `lib/src/xml_conversion/xml_attribute_name_extensions/to_default_value.dart`.
-    [ ] **SVG Model toString Tests**: Add missing `toString` tests for `lib/src/svg_model`.
-    - [ ] **Generation Tests**:
+    [x] **String Extensions Tests**: Add tests for `lib/src/xml_model/extensions/string_extensions.dart`.
+    [x] **Attribute Value Tests**: Add tests for `lib/src/xml_conversion/xml_attribute_name_extensions/to_default_value.dart`.
+    [x] **SVG Model toString Tests**: Add missing `toString` tests for `lib/src/svg_model`.
+    [ ] Files without (any) test
+      - [ ] **Generation Tests**:
         - [ ] `lib/src/generation/command_generator.dart`
         - [ ] `lib/src/generation/generation_extensions.dart`
     - [ ] **Painting Model Tests**:
@@ -85,9 +84,10 @@
         - [ ] `lib/src/xml_conversion/xml_element_extensions/to_svg_value.dart`
         - [ ] `lib/src/xml_conversion/xml_element_extensions/to_xml_attribute_value.dart`
     - [ ] **XML Model Tests**:
+        [x] `lib/src/xml_model/extensions/string_extensions.dart`
         - [ ] `lib/src/xml_model/xml_attribute_name.dart`
         - [ ] `lib/src/xml_model/xml_element_name.dart`
-    - [ ] **Final Coverage Check**: Verify high coverage (>90%).
+    [ ] **Final Coverage Check**: Verify high coverage (>90%).
 
 ### Phase 2: Dynamic Properties & Customizable Widget (Heart of Value Prop)
 *The core differentiator: creating plug-and-play components.*
