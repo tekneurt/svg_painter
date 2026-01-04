@@ -10,6 +10,7 @@ void main() {
     };
 
     test('from should return correct enum for all valid strings', () {
+      // Arrange & Act & Assert
       expectedMapping.forEach((String key, SvgStrokeLinecap value) {
         expect(
           SvgStrokeLinecap.from(key),
@@ -20,6 +21,7 @@ void main() {
     });
 
     test('from should handle case insensitivity? (Current implementation is strict)', () {
+      // Arrange & Act & Assert
       // The current implementation uses direct string comparison in the loop, so it IS strict case sensitive
       // unless .toLowerCase() is called before passing to .from().
       // However, the extension `toSvgStrokeLinecap` does the lowercasing.
@@ -32,11 +34,15 @@ void main() {
     });
 
     test('should return null for invalid strings', () {
+      // Arrange & Act & Assert
       expect(SvgStrokeLinecap.from('foo'), isNull);
     });
 
     test('should verify all enum values are covered in test', () {
+      // Arrange
       final Set<SvgStrokeLinecap> mappedValues = expectedMapping.values.toSet();
+
+      // Act & Assert
       for (final SvgStrokeLinecap cap in SvgStrokeLinecap.values) {
         expect(
           mappedValues.contains(cap),

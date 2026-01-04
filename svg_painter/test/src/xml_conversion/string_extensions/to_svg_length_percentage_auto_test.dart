@@ -6,7 +6,7 @@ void main() {
   group('ToSvgLengthPercentageAuto', () {
     group('toSvgLengthPercentageAuto', () {
       test('should return SvgAuto when auto is provided', () {
-        // Act
+        // Arrange & Act
         final SvgLengthPercentageAuto result = 'auto'.toSvgLengthPercentageAuto();
 
         // Assert
@@ -14,7 +14,7 @@ void main() {
       });
 
       test('should return SvgLength when number is provided', () {
-        // Act
+        // Arrange & Act
         final SvgLengthPercentageAuto result = '10'.toSvgLengthPercentageAuto();
 
         // Assert
@@ -23,7 +23,7 @@ void main() {
       });
 
       test('should return SvgPercentage when percentage is provided', () {
-        // Act
+        // Arrange & Act
         final SvgLengthPercentageAuto result = '50%'.toSvgLengthPercentageAuto();
 
         // Assert

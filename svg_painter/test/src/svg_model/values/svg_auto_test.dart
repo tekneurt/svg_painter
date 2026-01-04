@@ -4,6 +4,7 @@ import 'package:test/test.dart';
 void main() {
   group('SvgAuto', () {
     test('should return "auto" when toString() is called', () {
+      // Arrange & Act & Assert
       expect(const SvgAuto().toString(), 'auto');
     });
   });

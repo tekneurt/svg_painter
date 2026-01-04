@@ -98,6 +98,7 @@ import 'package:svg_painter/src/xml_model/xml_element_name.dart';
 
 void main() {
   test('coverage helper', () {
+    // Arrange & Act & Assert
     expect(true, isTrue);
   });
 }

@@ -22,7 +22,10 @@ void main() {
     });
 
     test('GradientStop should return correct string representation', () {
+      // Arrange
       const GradientStop stop = GradientStop(0.5, 0xFFFF0000);
+
+      // Act & Assert
       expect(stop.toString(), 'GradientStop(offset: 0.5, color: 4294901760)');
     });
   });

@@ -4,42 +4,42 @@ import 'package:test/test.dart';
 void main() {
   group('SvgColor', () {
     test('SvgNoneColor should return "none"', () {
-      // Act
+      // Arrange & Act
       final String result = const SvgNoneColor().toString();
       // Assert
       expect(result, 'none');
     });
 
     test('SvgCurrentColor should return "currentColor"', () {
-      // Act
+      // Arrange & Act
       final String result = const SvgCurrentColor().toString();
       // Assert
       expect(result, 'currentColor');
     });
 
     test('SvgNamedColor should return correct string', () {
-      // Act
+      // Arrange & Act
       final String result = const SvgNamedColor(SvgColorName.red).toString();
       // Assert
       expect(result, 'SvgNamedColor(red)');
     });
 
     test('SvgRgbColor should return correct string', () {
-      // Act
+      // Arrange & Act
       final String result = const SvgRgbColor(255, 255, 0, 0).toString();
       // Assert
       expect(result, 'SvgRgbColor(255, 255, 0, 0)');
     });
 
     test('SvgHslColor should return correct string', () {
-      // Act
+      // Arrange & Act
       final String result = const SvgHslColor(1.0, 0.0, 100.0, 50.0).toString();
       // Assert
       expect(result, 'SvgHslColor(1.0, 0.0, 100.0%, 50.0%)');
     });
 
     test('SvgPaintReference should return correct string', () {
-      // Act
+      // Arrange & Act
       final String result = const SvgPaintReference('grad1').toString();
       // Assert
       expect(result, 'SvgPaintReference(grad1, fallback: null)');
@@ -48,14 +48,14 @@ void main() {
 
   group('SvgColorName', () {
     test('fromName should return correct enum for valid names', () {
-      // Act & Assert
+      // Arrange & Act & Assert
       expect(SvgColorName.fromName('red'), SvgColorName.red);
       expect(SvgColorName.fromName('BLUE'), SvgColorName.blue);
       expect(SvgColorName.fromName('Transparent'), SvgColorName.transparent);
     });
 
     test('fromName should return null for invalid names', () {
-      // Act & Assert
+      // Arrange & Act & Assert
       expect(SvgColorName.fromName('blacky'), isNull);
     });
   });

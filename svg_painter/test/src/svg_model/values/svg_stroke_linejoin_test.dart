@@ -12,6 +12,7 @@ void main() {
     };
 
     test('from should return correct enum for all valid strings', () {
+      // Arrange & Act & Assert
       expectedMapping.forEach((String key, SvgStrokeLinejoin value) {
         expect(
           SvgStrokeLinejoin.from(key),
@@ -22,11 +23,15 @@ void main() {
     });
 
     test('should return null for invalid strings', () {
+      // Arrange & Act & Assert
       expect(SvgStrokeLinejoin.from('foo'), isNull);
     });
 
     test('should verify all enum values are covered in test', () {
+      // Arrange
       final Set<SvgStrokeLinejoin> mappedValues = expectedMapping.values.toSet();
+
+      // Act & Assert
       for (final SvgStrokeLinejoin join in SvgStrokeLinejoin.values) {
         expect(
           mappedValues.contains(join),

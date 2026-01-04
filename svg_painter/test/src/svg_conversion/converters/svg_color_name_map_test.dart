@@ -157,11 +157,13 @@ void main() {
     };
 
     test('should contain exactly the expected number of colors', () {
+      // Arrange & Act & Assert
       expect(svgColorNameMap.length, equals(expectedColors.length));
       expect(SvgColorName.values.length, equals(expectedColors.length));
     });
 
     test('should match all expected ARGB values', () {
+      // Arrange & Act & Assert
       expectedColors.forEach((SvgColorName name, int expectedValue) {
         expect(
           svgColorNameMap[name],

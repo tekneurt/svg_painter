@@ -22,6 +22,7 @@ void main() {
     });
 
     test('PathOperation subclasses should return correct string representations', () {
+      // Arrange & Act & Assert
       expect(const MoveTo(1.0, 2.0).toString(), 'MoveTo(1.0, 2.0)');
       expect(const LineTo(3.0, 4.0).toString(), 'LineTo(3.0, 4.0)');
       expect(

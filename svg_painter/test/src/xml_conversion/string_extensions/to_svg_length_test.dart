@@ -6,7 +6,7 @@ void main() {
   group('ToSvgLength', () {
     group('toSvgLength', () {
       test('should parse unitless number when valid string is provided', () {
-        // Act
+        // Arrange & Act
         final SvgLength result = '10'.toSvgLength();
 
         // Assert
@@ -15,7 +15,7 @@ void main() {
       });
 
       test('should parse number with unit when valid string is provided', () {
-        // Act
+        // Arrange & Act
         final SvgLength result = '2.5cm'.toSvgLength();
 
         // Assert
@@ -24,7 +24,7 @@ void main() {
       });
 
       test('should return 0 when input is empty', () {
-        // Act
+        // Arrange & Act
         final SvgLength result = ''.toSvgLength();
 
         // Assert

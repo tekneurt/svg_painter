@@ -21,6 +21,7 @@ void main() {
 
     group('toSvgLengthUnit', () {
       test('should return correct unit for all supported suffixes', () {
+        // Arrange & Act & Assert
         expectedMapping.forEach((String suffix, SvgLengthUnit expectedUnit) {
           expect(
             suffix.toSvgLengthUnit(),
@@ -31,14 +32,18 @@ void main() {
       });
 
       test('should return SvgLengthUnit.none for unknown suffixes', () {
+        // Arrange & Act & Assert
         expect('foo'.toSvgLengthUnit(), SvgLengthUnit.none);
         expect('  '.toSvgLengthUnit(), SvgLengthUnit.none);
       });
 
       test('should verify all enum values are covered in test', () {
+        // Arrange
         // We expect all enum values to be in our mapping.
         // SvgLengthUnit.none is mapped to '' (and default).
         final Set<SvgLengthUnit> mappedUnits = expectedMapping.values.toSet();
+
+        // Act & Assert
         for (final SvgLengthUnit unit in SvgLengthUnit.values) {
           expect(
             mappedUnits.contains(unit),

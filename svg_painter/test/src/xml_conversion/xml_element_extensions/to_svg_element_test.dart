@@ -8,11 +8,14 @@ import 'package:xml/xml.dart';
 void main() {
   group('ElementToSvg', () {
     test('converts <circle> with lengths correctly', () {
+      // Arrange
       final XmlDocument document = XmlDocument.parse('<circle cx="50" cy="50" r="50" />');
       final XmlElement element = document.rootElement;
 
+      // Act
       final Result<SvgElement> result = element.toSvgElement();
 
+      // Assert
       expect(result, isA<Success<SvgElement>>());
 
       final SvgElement svgElement = (result as Success<SvgElement>).value;
@@ -24,11 +27,14 @@ void main() {
     });
 
     test('converts <circle> with percentages correctly', () {
+      // Arrange
       final XmlDocument document = XmlDocument.parse('<circle cx="50%" cy="0" r="0" />');
       final XmlElement element = document.rootElement;
 
+      // Act
       final Result<SvgElement> result = element.toSvgElement();
 
+      // Assert
       expect(result, isA<Success<SvgElement>>());
       final SvgCircle circle = (result as Success<SvgElement>).value as SvgCircle;
 
@@ -37,11 +43,14 @@ void main() {
     });
 
     test('converts <circle> with missing attributes to defaults', () {
+      // Arrange
       final XmlDocument document = XmlDocument.parse('<circle />');
       final XmlElement element = document.rootElement;
 
+      // Act
       final Result<SvgElement> result = element.toSvgElement();
 
+      // Assert
       expect(result, isA<Success<SvgElement>>());
       final SvgCircle circle = (result as Success<SvgElement>).value as SvgCircle;
       expect(circle.cx, isA<SvgLength>());
@@ -49,11 +58,14 @@ void main() {
     });
 
     test('returns Failure for unsupported element', () {
+      // Arrange
       final XmlDocument document = XmlDocument.parse('<unknown />');
       final XmlElement element = document.rootElement;
 
+      // Act
       final Result<SvgElement> result = element.toSvgElement();
 
+      // Assert
       expect(result, isA<Failure<SvgElement>>());
       expect((result as Failure<SvgElement>).message, contains('Unsupported'));
     });

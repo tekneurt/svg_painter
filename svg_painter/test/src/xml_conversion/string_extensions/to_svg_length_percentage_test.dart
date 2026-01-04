@@ -6,7 +6,7 @@ void main() {
   group('ToSvgLengthPercentage', () {
     group('toSvgLengthPercentage', () {
       test('should parse unitless number when valid string is provided', () {
-        // Act
+        // Arrange & Act
         final SvgLengthPercentage result = '10'.toSvgLengthPercentage();
 
         // Assert
@@ -17,7 +17,7 @@ void main() {
       });
 
       test('should parse percentage when valid string is provided', () {
-        // Act
+        // Arrange & Act
         final SvgLengthPercentage result = '50%'.toSvgLengthPercentage();
 
         // Assert
@@ -27,7 +27,7 @@ void main() {
       });
 
       test('should parse pixels when valid string is provided', () {
-        // Act
+        // Arrange & Act
         final SvgLengthPercentage result = '10px'.toSvgLengthPercentage();
 
         // Assert
@@ -38,7 +38,7 @@ void main() {
       });
 
       test('should parse centimeters when valid string is provided', () {
-        // Act
+        // Arrange & Act
         final SvgLengthPercentage result = '2.5cm'.toSvgLengthPercentage();
 
         // Assert
@@ -49,7 +49,7 @@ void main() {
       });
 
       test('should parse unknown unit as none when number parses', () {
-        // Act
+        // Arrange & Act
         final SvgLengthPercentage result = '10foo'.toSvgLengthPercentage();
 
         // Assert
@@ -60,7 +60,7 @@ void main() {
       });
 
       test('should parse empty string as 0', () {
-        // Act
+        // Arrange & Act
         final SvgLengthPercentage result = ''.toSvgLengthPercentage();
 
         // Assert
