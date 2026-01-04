@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
+import 'package:meta/meta.dart';
 import 'package:source_gen/source_gen.dart';
 import 'package:svg_painter_annotation/svg_painter_annotation.dart';
 import 'package:xml/xml.dart';
@@ -105,6 +106,27 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
       (List<PaintCommand> value) => value,
     );
 
+    final String className =
+        annotation.read('painterClassName').isNull
+            ? r'_$' + (element.name ?? '')
+            : annotation.read('painterClassName').stringValue;
+
+    return generatePainterClass(
+      className: className,
+      viewBoxWidth: viewBoxWidth,
+      viewBoxHeight: viewBoxHeight,
+      commands: commands,
+    );
+  }
+
+  /// Generates the full CustomPainter class code.
+  @visibleForTesting
+  String generatePainterClass({
+    required String className,
+    required double viewBoxWidth,
+    required double viewBoxHeight,
+    required List<PaintCommand> commands,
+  }) {
     final StringBuffer buffer = StringBuffer();
 
     // Header to ignore lints in generated code
@@ -114,10 +136,6 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
       '// ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package',
     );
     buffer.writeln();
-
-    final String className = annotation.read('painterClassName').isNull
-        ? r'_$' + (element.name ?? '')
-        : annotation.read('painterClassName').stringValue;
 
     buffer.writeln('class $className extends CustomPainter {');
     buffer.writeln('  const $className({this.fit = BoxFit.contain});');
