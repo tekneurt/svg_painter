@@ -46,10 +46,12 @@ jobs:
           dart pub get -C svg_painter
 
       - name: Run svg_painter tests with coverage
-        run: dart test --coverage=coverage -C svg_painter
+        working-directory: svg_painter
+        run: dart test --coverage=coverage
 
       - name: Run svg_painter_annotation tests
-        run: dart test -C svg_painter_annotation
+        working-directory: svg_painter_annotation
+        run: dart test
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4
@@ -77,4 +79,5 @@ jobs:
           flutter pub get -C svg_painter_tests
 
       - name: Run golden tests
-        run: flutter test -C svg_painter_tests
+        working-directory: svg_painter_tests
+        run: flutter test
