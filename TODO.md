@@ -103,7 +103,7 @@
 - [x] **License**: Add MIT LICENSE file to the repository.
 - [ ] **Branching Strategy**: Set up GitHub Flow with branch protection rules.
 - [x] **CI/CD Pipeline**: Create GitHub Actions workflow for automated testing on push/PR.
-- [ ] **Code Coverage Reporting**: Integrate Codecov/Coveralls with CI and add coverage badge.
+- [x] **Code Coverage Reporting**: Integrate Codecov/Coveralls with CI and add coverage badge.
 - [ ] **DCM Integration**: Add DCM analysis to CI pipeline (after obtaining OSS license).
 - [ ] **CHANGELOG.md**: Create changelog following Keep a Changelog format.
 - [ ] **pubspec.yaml Metadata**: Add `repository`, `homepage`, and `issue_tracker` fields.

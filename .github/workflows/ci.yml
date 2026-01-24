@@ -45,11 +45,18 @@ jobs:
           dart pub get -C svg_painter_fixtures
           dart pub get -C svg_painter
 
-      - name: Run svg_painter tests
-        run: dart test -C svg_painter
+      - name: Run svg_painter tests with coverage
+        run: dart test --coverage=coverage -C svg_painter
 
       - name: Run svg_painter_annotation tests
         run: dart test -C svg_painter_annotation
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          files: svg_painter/coverage/lcov.info
+          fail_ci_if_error: false
+          token: ${{ secrets.CODECOV_TOKEN }}
 
   test-flutter:
     name: Flutter Golden Tests
