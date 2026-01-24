@@ -1,0 +1,73 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  analyze:
+    name: Analyze
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.38.5"
+          channel: "stable"
+
+      - name: Install dependencies
+        run: |
+          dart pub get -C svg_painter_annotation
+          dart pub get -C svg_painter_fixtures
+          dart pub get -C svg_painter
+          flutter pub get -C svg_painter_tests
+          flutter pub get -C example
+
+      - name: Analyze
+        run: dart analyze --fatal-infos
+
+  test-dart:
+    name: Dart Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dart-lang/setup-dart@v1
+        with:
+          sdk: "3.10.4"
+
+      - name: Install dependencies
+        run: |
+          dart pub get -C svg_painter_annotation
+          dart pub get -C svg_painter_fixtures
+          dart pub get -C svg_painter
+
+      - name: Run svg_painter tests
+        run: dart test -C svg_painter
+
+      - name: Run svg_painter_annotation tests
+        run: dart test -C svg_painter_annotation
+
+  test-flutter:
+    name: Flutter Golden Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.38.5"
+          channel: "stable"
+
+      - name: Install dependencies
+        run: |
+          dart pub get -C svg_painter_annotation
+          dart pub get -C svg_painter_fixtures
+          dart pub get -C svg_painter
+          flutter pub get -C svg_painter_tests
+
+      - name: Run golden tests
+        run: flutter test -C svg_painter_tests

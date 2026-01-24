@@ -102,7 +102,7 @@
 #### Repository & Release Infrastructure
 - [x] **License**: Add MIT LICENSE file to the repository.
 - [ ] **Branching Strategy**: Set up GitHub Flow with branch protection rules.
-- [ ] **CI/CD Pipeline**: Create GitHub Actions workflow for automated testing on push/PR.
+- [x] **CI/CD Pipeline**: Create GitHub Actions workflow for automated testing on push/PR.
 - [ ] **Code Coverage Reporting**: Integrate Codecov/Coveralls with CI and add coverage badge.
 - [ ] **DCM Integration**: Add DCM analysis to CI pipeline (after obtaining OSS license).
 - [ ] **CHANGELOG.md**: Create changelog following Keep a Changelog format.
