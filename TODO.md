@@ -99,6 +99,17 @@
 ### Phase 2: Dynamic Properties & Customizable Widget (Heart of Value Prop)
 *The core differentiator: creating plug-and-play components.*
 
+#### Repository & Release Infrastructure
+- [x] **License**: Add MIT LICENSE file to the repository.
+- [ ] **Branching Strategy**: Set up GitHub Flow with branch protection rules.
+- [ ] **CI/CD Pipeline**: Create GitHub Actions workflow for automated testing on push/PR.
+- [ ] **Code Coverage Reporting**: Integrate Codecov/Coveralls with CI and add coverage badge.
+- [ ] **DCM Integration**: Add DCM analysis to CI pipeline (after obtaining OSS license).
+- [ ] **CHANGELOG.md**: Create changelog following Keep a Changelog format.
+- [ ] **pubspec.yaml Metadata**: Add `repository`, `homepage`, and `issue_tracker` fields.
+- [ ] **README Badges**: Add build status, coverage, and pub.dev version badges.
+
+#### Core Features
 - [ ] **Property Mapping Strategy**: Define the rule set for exposing properties (e.g., `id="circle1"` -> `circle1Fill`). Implement `IdentifierSanitizer`.
 - [ ] **Dynamic Fill/Stroke Colors**: Generate `final Color? [id]Fill` and `final Color? [id]Stroke` fields.
 - [ ] **Daphnia Widget Generation**:
