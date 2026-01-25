@@ -112,7 +112,7 @@
 #### Release Preparation
 - [x] **pubspec.yaml Metadata**: Add `repository`, `homepage`, and `issue_tracker` fields.
 - [x] **pubspec.yaml Version**: Ensure version is set to 0.1.0.
-- [ ] **CHANGELOG.md**: Create changelog following Keep a Changelog format.
+- [x] **CHANGELOG.md**: Create changelog following Keep a Changelog format.
 - [ ] **README.md Review**: Ensure README is comprehensive and pub.dev friendly (installation, usage, examples).
 - [ ] **README Badges**: Add build status, coverage, and pub.dev version badges.
 - [ ] **Example Verification**: Verify example project works and demonstrates key features.
@@ -120,6 +120,7 @@
 #### Publishing
 - [ ] **Dry Run**: Run `dart pub publish --dry-run` and fix any issues.
 - [ ] **Initial pub.dev Publishing**: Publish 0.1.0 to pub.dev.
+- [ ] **Verified Publisher**: Register domain (tekneurt.dev), verify on pub.dev, transfer package to publisher.
 
 ### Phase 3: Dynamic Properties & Customizable Widget (0.2.0)
 *The core differentiator: creating plug-and-play components.*
