@@ -67,13 +67,29 @@ TargetPlatform get currentPlatform => switch (Platform.operatingSystem) {
   _ => throw UnsupportedError('Unknown platform: ${Platform.operatingSystem}'),
 };
 
+/// Converts a [TargetPlatform] to a snake_case file suffix.
+///
+/// Uses snake_case for file system compatibility (case-insensitive systems).
+/// Examples: `macOS` → `mac_os`, `iOS` → `i_os`, `linux` → `linux`
+String platformToFileSuffix(TargetPlatform platform) {
+  return switch (platform) {
+    TargetPlatform.macOS => 'mac_os',
+    TargetPlatform.iOS => 'i_os',
+    TargetPlatform.linux => 'linux',
+    TargetPlatform.windows => 'windows',
+    TargetPlatform.android => 'android',
+    TargetPlatform.fuchsia => 'fuchsia',
+  };
+}
+
 /// Returns the golden filename based on platform-specific requirements.
 ///
-/// If [platforms] contains the current platform, returns `name.{platform}.png`.
+/// If [platforms] contains the current platform, returns `name.{platform}.png`
+/// with the platform in snake_case (e.g., `name.mac_os.png`).
 /// Otherwise returns `name.png`.
 String goldenFileName(String name, Set<TargetPlatform>? platforms) {
   if (platforms?.contains(currentPlatform) ?? false) {
-    return '$name.${currentPlatform.name}.png';
+    return '$name.${platformToFileSuffix(currentPlatform)}.png';
   }
   return '$name.png';
 }
