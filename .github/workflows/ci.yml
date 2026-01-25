@@ -9,7 +9,7 @@ on:
 jobs:
   analyze:
     name: Analyze
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
 
@@ -20,18 +20,30 @@ jobs:
 
       - name: Install dependencies
         run: |
-          dart pub get -C svg_painter_annotation
-          dart pub get -C svg_painter_fixtures
-          dart pub get -C svg_painter
-          flutter pub get -C svg_painter_tests
-          flutter pub get -C example
+          cd svg_painter_annotation && dart pub get && cd ..
+          cd svg_painter_fixtures && dart pub get && cd ..
+          cd svg_painter && dart pub get && cd ..
+          cd svg_painter_tests && flutter pub get && cd ..
+          cd example && flutter pub get && cd ..
 
-      - name: Analyze
-        run: dart analyze --fatal-infos
+      - name: Analyze svg_painter_annotation
+        run: dart analyze --fatal-infos svg_painter_annotation
+
+      - name: Analyze svg_painter_fixtures
+        run: dart analyze --fatal-infos svg_painter_fixtures
+
+      - name: Analyze svg_painter
+        run: dart analyze --fatal-infos svg_painter
+
+      - name: Analyze svg_painter_tests
+        run: flutter analyze --fatal-infos svg_painter_tests
+
+      - name: Analyze example
+        run: flutter analyze --fatal-infos example
 
   test-dart:
     name: Dart Tests
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
 
@@ -41,9 +53,9 @@ jobs:
 
       - name: Install dependencies
         run: |
-          dart pub get -C svg_painter_annotation
-          dart pub get -C svg_painter_fixtures
-          dart pub get -C svg_painter
+          cd svg_painter_annotation && dart pub get && cd ..
+          cd svg_painter_fixtures && dart pub get && cd ..
+          cd svg_painter && dart pub get && cd ..
 
       - name: Run svg_painter tests with coverage
         working-directory: svg_painter
@@ -62,21 +74,18 @@ jobs:
 
   test-flutter:
     name: Flutter Golden Tests
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
+    container:
+      image: ghcr.io/cirruslabs/flutter:3.38.5
     steps:
       - uses: actions/checkout@v4
 
-      - uses: subosito/flutter-action@v2
-        with:
-          flutter-version: "3.38.5"
-          channel: "stable"
-
       - name: Install dependencies
         run: |
-          dart pub get -C svg_painter_annotation
-          dart pub get -C svg_painter_fixtures
-          dart pub get -C svg_painter
-          flutter pub get -C svg_painter_tests
+          cd svg_painter_annotation && dart pub get && cd ..
+          cd svg_painter_fixtures && dart pub get && cd ..
+          cd svg_painter && dart pub get && cd ..
+          cd svg_painter_tests && flutter pub get && cd ..
 
       - name: Run golden tests
         working-directory: svg_painter_tests

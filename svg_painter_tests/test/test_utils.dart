@@ -5,6 +5,28 @@ import 'package:flutter_test/flutter_test.dart';
 
 enum SvgTestType { mdn, w3c, various }
 
+/// Returns the current host platform as a [TargetPlatform].
+TargetPlatform get currentPlatform => switch (Platform.operatingSystem) {
+  'macos' => TargetPlatform.macOS,
+  'linux' => TargetPlatform.linux,
+  'windows' => TargetPlatform.windows,
+  'android' => TargetPlatform.android,
+  'ios' => TargetPlatform.iOS,
+  'fuchsia' => TargetPlatform.fuchsia,
+  _ => throw UnsupportedError('Unknown platform: ${Platform.operatingSystem}'),
+};
+
+/// Returns the golden filename based on platform-specific requirements.
+///
+/// If [platforms] contains the current platform, returns `name.{platform}.png`.
+/// Otherwise returns `name.png`.
+String goldenFileName(String name, Set<TargetPlatform>? platforms) {
+  if (platforms?.contains(currentPlatform) == true) {
+    return '$name.${currentPlatform.name}.png';
+  }
+  return '$name.png';
+}
+
 Future<void> loadTestFonts() async {
   final Map<String, String> families = <String, String>{
     'Roboto': '../svg_painter/assets/fonts/roboto',
@@ -106,12 +128,18 @@ Future<void> testSvgPainterNative({
 }
 
 /// Runs both sized and native tests for a painter.
+///
+/// If [platforms] is specified, tests running on those platforms will use
+/// platform-specific golden files (e.g., `name.macOS.png`). This is useful
+/// when rendering differs slightly between platforms (e.g., anti-aliasing
+/// on gradients or text rendering).
 Future<void> testDualResolutionPainter({
   required WidgetTester tester,
   required CustomPainter painter,
   required String name,
   required SvgTestType type,
   String? folder,
+  Set<TargetPlatform>? platforms,
 }) async {
   final String goldenPath = switch (type) {
     .mdn || .w3c => '$folder/goldens',
@@ -121,7 +149,7 @@ Future<void> testDualResolutionPainter({
   await testSvgPainter(
     tester: tester,
     painter: painter,
-    goldenName: '$name.png',
+    goldenName: goldenFileName(name, platforms),
     goldenPath: goldenPath,
     size: const Size(200, 200),
   );
@@ -129,7 +157,7 @@ Future<void> testDualResolutionPainter({
   await testSvgPainterNative(
     tester: tester,
     painter: painter,
-    goldenName: '${name}_native.png',
+    goldenName: goldenFileName('${name}_native', platforms),
     goldenPath: goldenPath,
   );
 }

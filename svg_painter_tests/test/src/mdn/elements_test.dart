@@ -44,13 +44,13 @@ void main() {
   });
 
   group('MDN Elements', () {
-    for (final ({CustomPainter painter, String name}) fixture in _fixtures) {
+    for (final fixture in _fixtures) {
       testWidgets(fixture.name, (WidgetTester tester) async {
         await testDualResolutionPainter(
           tester: tester,
           painter: fixture.painter,
           name: fixture.name,
-          type: .mdn,
+          type: SvgTestType.mdn,
           folder: 'elements',
         );
       });

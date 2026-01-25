@@ -104,10 +104,13 @@
 - [ ] **Branching Strategy**: Set up GitHub Flow with branch protection rules.
 - [x] **CI/CD Pipeline**: Create GitHub Actions workflow for automated testing on push/PR.
 - [x] **Code Coverage Reporting**: Integrate Codecov/Coveralls with CI and add coverage badge.
-- [ ] **DCM Integration**: Add DCM analysis to CI pipeline (after obtaining OSS license).
+    - [ ] *(Manual, post-merge)*: Set up Codecov account at codecov.io, add repo, and add `CODECOV_TOKEN` to GitHub Secrets.
+- [ ] **DCM Integration**: Add DCM analysis to CI pipeline.
+    - [ ] *(Manual)*: Waiting for OSS license approval from dcm.dev.
 - [ ] **CHANGELOG.md**: Create changelog following Keep a Changelog format.
 - [ ] **pubspec.yaml Metadata**: Add `repository`, `homepage`, and `issue_tracker` fields.
 - [ ] **README Badges**: Add build status, coverage, and pub.dev version badges.
+- [x] **Platform-Aware Golden Tests**: Implement platform-specific golden file support for tests with unavoidable rendering differences between macOS and Linux.
 
 #### Core Features
 - [ ] **Property Mapping Strategy**: Define the rule set for exposing properties (e.g., `id="circle1"` -> `circle1Fill`). Implement `IdentifierSanitizer`.

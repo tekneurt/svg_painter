@@ -52,9 +52,10 @@ final List<({CustomPainter painter, String name})> _fixtures =
       (painter: const Fy1Painter(), name: 'fy_1_painter'),
       (painter: const Fy2Painter(), name: 'fy_2_painter'),
       (painter: const HeightPainter(), name: 'height_painter'),
-        (painter: const OpacityPainter(), name: 'opacity_painter'),
-        (painter: const PathLengthPainter(), name: 'path_length_painter'),
-        (painter: const PointsExamplePainter(), name: 'points_example_painter'),      (painter: const PointsPolygonPainter(), name: 'points_polygon_painter'),
+      (painter: const OpacityPainter(), name: 'opacity_painter'),
+      (painter: const PathLengthPainter(), name: 'path_length_painter'),
+      (painter: const PointsExamplePainter(), name: 'points_example_painter'),
+      (painter: const PointsPolygonPainter(), name: 'points_polygon_painter'),
       (painter: const PointsPolylinePainter(), name: 'points_polyline_painter'),
       (painter: const RPainter(), name: 'r_painter'),
       (painter: const RxPainter(), name: 'rx_painter'),
@@ -97,13 +98,13 @@ void main() {
   });
 
   group('MDN Attributes', () {
-    for (final ({CustomPainter painter, String name}) fixture in _fixtures) {
+    for (final fixture in _fixtures) {
       testWidgets(fixture.name, (WidgetTester tester) async {
         await testDualResolutionPainter(
           tester: tester,
           painter: fixture.painter,
           name: fixture.name,
-          type: .mdn,
+          type: SvgTestType.mdn,
           folder: 'attributes',
         );
       });
