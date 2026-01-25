@@ -101,7 +101,7 @@
 
 #### Repository & Release Infrastructure
 - [x] **License**: Add MIT LICENSE file to the repository.
-- [ ] **Branching Strategy**: Set up GitHub Flow with branch protection rules.
+- [x] **Branching Strategy**: Set up GitHub Flow with branch protection rules.
 - [x] **CI/CD Pipeline**: Create GitHub Actions workflow for automated testing on push/PR.
 - [x] **Code Coverage Reporting**: Integrate Codecov/Coveralls with CI and add coverage badge.
     - [ ] *(Manual, post-merge)*: Set up Codecov account at codecov.io, add repo, and add `CODECOV_TOKEN` to GitHub Secrets.
