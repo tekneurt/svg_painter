@@ -1,0 +1,92 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  analyze:
+    name: Analyze
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.38.5"
+          channel: "stable"
+
+      - name: Install dependencies
+        run: |
+          cd svg_painter_annotation && dart pub get && cd ..
+          cd svg_painter_fixtures && dart pub get && cd ..
+          cd svg_painter && dart pub get && cd ..
+          cd svg_painter_tests && flutter pub get && cd ..
+          cd example && flutter pub get && cd ..
+
+      - name: Analyze svg_painter_annotation
+        run: dart analyze --fatal-infos svg_painter_annotation
+
+      - name: Analyze svg_painter_fixtures
+        run: dart analyze --fatal-infos svg_painter_fixtures
+
+      - name: Analyze svg_painter
+        run: dart analyze --fatal-infos svg_painter
+
+      - name: Analyze svg_painter_tests
+        run: flutter analyze --fatal-infos svg_painter_tests
+
+      - name: Analyze example
+        run: flutter analyze --fatal-infos example
+
+  test-dart:
+    name: Dart Tests
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dart-lang/setup-dart@v1
+        with:
+          sdk: "3.10.4"
+
+      - name: Install dependencies
+        run: |
+          cd svg_painter_annotation && dart pub get && cd ..
+          cd svg_painter_fixtures && dart pub get && cd ..
+          cd svg_painter && dart pub get && cd ..
+
+      - name: Run svg_painter tests with coverage
+        working-directory: svg_painter
+        run: dart test --coverage=coverage
+
+      - name: Run svg_painter_annotation tests
+        working-directory: svg_painter_annotation
+        run: dart test
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          files: svg_painter/coverage/lcov.info
+          fail_ci_if_error: false
+          token: ${{ secrets.CODECOV_TOKEN }}
+
+  test-flutter:
+    name: Flutter Golden Tests
+    runs-on: ubuntu-24.04
+    container:
+      image: ghcr.io/cirruslabs/flutter:3.38.5
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          cd svg_painter_annotation && dart pub get && cd ..
+          cd svg_painter_fixtures && dart pub get && cd ..
+          cd svg_painter && dart pub get && cd ..
+          cd svg_painter_tests && flutter pub get && cd ..
+
+      - name: Run golden tests
+        working-directory: svg_painter_tests
+        run: flutter test

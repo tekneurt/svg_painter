@@ -29,8 +29,9 @@ void main() {
           tester: tester,
           painter: fixture.painter,
           name: fixture.name,
-          type: .w3c,
+          type: SvgTestType.w3c,
           folder: 'shapes',
+          tests: defaultGoldenTests,
         );
       });
     }

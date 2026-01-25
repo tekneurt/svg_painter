@@ -7,11 +7,12 @@ void main() {
   testWidgets('IoPainter loads from file and generates correct output', (
     WidgetTester tester,
   ) async {
-      await testDualResolutionPainter(
-        tester: tester,
-        painter: const IoPainter(),
-        name: 'io_painter',
-        type: .various,
-      );
+    await testDualResolutionPainter(
+      tester: tester,
+      painter: const IoPainter(),
+      name: 'io_painter',
+      type: SvgTestType.various,
+      tests: defaultGoldenTests,
+    );
   });
 }

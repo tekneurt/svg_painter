@@ -1,0 +1,72 @@
+name: Generate Golden Files
+
+# This workflow generates golden test images in the CI environment.
+# Use this when golden tests fail due to architecture differences between
+# your local machine (e.g., ARM Mac) and CI (x86 Linux).
+#
+# The generated images are uploaded as artifacts for download.
+# After downloading, review and commit them to the repository.
+
+on:
+  workflow_dispatch:
+    inputs:
+      test_pattern:
+        description: 'Test name pattern (regex). Examples: "cy_painter", "fy_.*_painter", ".*" for all'
+        required: true
+        default: '.*'
+      test_file:
+        description: 'Specific test file path (optional). Example: test/src/mdn/attributes_test.dart'
+        required: false
+        default: ''
+
+jobs:
+  generate-goldens:
+    name: Generate Golden Files
+    runs-on: ubuntu-24.04
+    container:
+      image: ghcr.io/cirruslabs/flutter:3.38.5
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          cd svg_painter_annotation && dart pub get && cd ..
+          cd svg_painter_fixtures && dart pub get && cd ..
+          cd svg_painter && dart pub get && cd ..
+          cd svg_painter_tests && flutter pub get && cd ..
+
+      - name: Generate golden files
+        working-directory: svg_painter_tests
+        run: |
+          if [ -n "${{ github.event.inputs.test_file }}" ]; then
+            flutter test --update-goldens --name='${{ github.event.inputs.test_pattern }}' '${{ github.event.inputs.test_file }}'
+          else
+            flutter test --update-goldens --name='${{ github.event.inputs.test_pattern }}'
+          fi
+
+      - name: List generated/updated golden files
+        working-directory: svg_painter_tests
+        run: |
+          echo "=== Generated golden files ==="
+          find test -name "*.png" -type f | head -100
+          echo ""
+          echo "=== Git status ==="
+          git status --short || true
+
+      - name: Upload golden files
+        uses: actions/upload-artifact@v4
+        with:
+          name: golden-files
+          path: |
+            svg_painter_tests/test/**/goldens/*.png
+          retention-days: 7
+
+      - name: Upload failure diffs (if any)
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: failure-diffs
+          path: |
+            svg_painter_tests/test/**/failures/*.png
+          retention-days: 7
+          if-no-files-found: ignore
