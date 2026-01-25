@@ -61,6 +61,12 @@ jobs:
         working-directory: svg_painter
         run: dart test --coverage=coverage
 
+      - name: Convert coverage to lcov format
+        working-directory: svg_painter
+        run: |
+          dart pub global activate coverage
+          dart pub global run coverage:format_coverage --lcov --in=coverage --out=coverage/lcov.info --report-on=lib
+
       - name: Run svg_painter_annotation tests
         working-directory: svg_painter_annotation
         run: dart test

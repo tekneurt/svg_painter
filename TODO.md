@@ -104,7 +104,7 @@
 - [x] **Branching Strategy**: Set up GitHub Flow with branch protection rules.
 - [x] **CI/CD Pipeline**: Create GitHub Actions workflow for automated testing on push/PR.
 - [x] **Code Coverage Reporting**: Integrate Codecov/Coveralls with CI and add coverage badge.
-    - [ ] *(Manual, post-merge)*: Set up Codecov account at codecov.io, add repo, and add `CODECOV_TOKEN` to GitHub Secrets.
+    - [x] *(Manual, post-merge)*: Set up Codecov account at codecov.io, add repo, and add `CODECOV_TOKEN` to GitHub Secrets.
 - [ ] **DCM Integration**: Add DCM analysis to CI pipeline.
     - [ ] *(Manual)*: Waiting for OSS license approval from dcm.dev.
 - [ ] **CHANGELOG.md**: Create changelog following Keep a Changelog format.
