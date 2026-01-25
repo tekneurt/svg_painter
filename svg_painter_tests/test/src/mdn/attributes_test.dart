@@ -98,7 +98,7 @@ void main() {
   });
 
   group('MDN Attributes', () {
-    for (final fixture in _fixtures) {
+    for (final ({CustomPainter painter, String name}) fixture in _fixtures) {
       testWidgets(fixture.name, (WidgetTester tester) async {
         await testDualResolutionPainter(
           tester: tester,

@@ -21,7 +21,7 @@ TargetPlatform get currentPlatform => switch (Platform.operatingSystem) {
 /// If [platforms] contains the current platform, returns `name.{platform}.png`.
 /// Otherwise returns `name.png`.
 String goldenFileName(String name, Set<TargetPlatform>? platforms) {
-  if (platforms?.contains(currentPlatform) == true) {
+  if (platforms?.contains(currentPlatform) ?? false) {
     return '$name.${currentPlatform.name}.png';
   }
   return '$name.png';
