@@ -168,3 +168,6 @@ app.*.symbols
 .python-version
 .gclient_previous_custom_vars
 .gclient_previous_sync_commits
+
+# Flutter golden test failure artifacts (svg_painter_tests only)
+svg_painter_tests/test/**/failures/

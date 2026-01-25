@@ -118,15 +118,33 @@ When tests fail in CI due to architecture differences, use the **Generate Golden
 # CI fails with: "cy_painter_viewBox.png: 1px diff detected"
 
 # 1. Trigger workflow with test_pattern: "cy_painter"
-# 2. Download golden-files.zip
-# 3. Extract and copy:
+# 2. Download golden-files.zip and extract
 unzip golden-files.zip
+
+# 3. Copy ONLY the failing golden (not all files!)
 cp test/src/mdn/attributes/goldens/cy_painter_viewBox.png \
    svg_painter_tests/test/src/mdn/attributes/goldens/
 
-# 4. Commit
-git add svg_painter_tests/test/src/mdn/attributes/goldens/cy_painter_viewBox.png
-git commit -m "Update cy_painter_viewBox golden from CI"
+# 4. Add platform override in attributes_test.dart:
+#    // cy_painter: 1px radial gradient anti-aliasing diff on viewBox test (macOS)
+#    (painter: const CyPainter(), name: 'cy_painter', tests: <GoldenTestType, Set<TargetPlatform>?>{
+#      GoldenTestType.fixed: null,
+#      GoldenTestType.viewBox: <TargetPlatform>{TargetPlatform.macOS},
+#    }),
+
+# 5. Generate macOS golden locally
+cd svg_painter_tests
+flutter test --update-goldens --name="cy_painter"
+# Creates: cy_painter_viewBox.mac_os.png
+
+# 6. Verify all tests pass locally
+flutter test
+
+# 7. Commit everything
+git add test/src/mdn/attributes/goldens/cy_painter_viewBox.png
+git add test/src/mdn/attributes/goldens/cy_painter_viewBox.mac_os.png
+git add test/src/mdn/attributes_test.dart
+git commit -m "Add platform-specific golden for cy_painter"
 git push
 ```
 
@@ -165,14 +183,25 @@ When a test has platform rendering differences, specify which test types need pl
 
 ### Adding a Platform Override
 
-When CI fails due to platform rendering differences:
+When CI fails due to platform rendering differences (e.g., 1-10px anti-aliasing diffs):
 
-1. **Identify the test and variant** from the CI error:
+1. **Identify the failing test and variant** from the CI error:
    ```
    Golden "attributes/goldens/cy_painter_viewBox.png": 1px diff detected
    ```
 
-2. **Update the test configuration** with a comment explaining the difference:
+2. **Generate the CI golden first** using the GitHub workflow:
+   - Go to **Actions** → **Generate Golden Files**
+   - Enter the test pattern (e.g., `cy_painter`)
+   - Download the artifact and extract
+
+3. **Replace only the failing golden file(s)** with the CI-generated version:
+   ```bash
+   cp downloaded/test/src/mdn/attributes/goldens/cy_painter_viewBox.png \
+      test/src/mdn/attributes/goldens/cy_painter_viewBox.png
+   ```
+
+4. **Add the platform override** to the test configuration with a comment:
    ```dart
    // cy_painter: 1px radial gradient anti-aliasing diff on viewBox test (macOS)
    (painter: const CyPainter(), name: 'cy_painter', tests: <GoldenTestType, Set<TargetPlatform>?>{
@@ -181,15 +210,18 @@ When CI fails due to platform rendering differences:
    }),
    ```
 
-3. **Generate the macOS golden** locally:
+5. **Generate the macOS golden** locally:
    ```bash
    flutter test --update-goldens --name="cy_painter"
    ```
-   This creates `cy_painter_viewBox.mac_os.png`
+   This creates `cy_painter_viewBox.mac_os.png` (the override protects the CI golden)
 
-4. **Generate the CI golden** via GitHub workflow (or keep existing if it was correct)
+6. **Verify both pass locally**:
+   ```bash
+   flutter test --name="cy_painter"
+   ```
 
-5. **Commit both goldens**
+7. **Commit everything**: CI golden, macOS golden, and test config changes
 
 ## Golden File Naming Convention
 
@@ -239,7 +271,17 @@ test/
 
 ### Local tests pass but CI fails
 
-Your local Docker may render differently than GitHub CI due to emulation. Use the **Generate Golden Files** workflow to get exact CI-rendered goldens.
+Your local machine renders differently than CI. Follow the complete workflow in "Adding a Platform Override":
+1. Get CI golden via workflow **first**
+2. Add platform override
+3. Generate macOS golden locally
+4. Commit all three changes together
+
+**Common mistake**: Running `--update-goldens` locally without the platform override will overwrite the CI golden with a macOS-rendered version, causing CI to fail again.
+
+### CI passes but local tests fail
+
+You have CI goldens but missing macOS overrides. Add the platform override to the test configuration, then run `flutter test --update-goldens` to generate the `.mac_os.png` file.
 
 ### "Golden file not found"
 
