@@ -113,8 +113,8 @@
 - [x] **pubspec.yaml Metadata**: Add `repository`, `homepage`, and `issue_tracker` fields.
 - [x] **pubspec.yaml Version**: Ensure version is set to 0.1.0.
 - [x] **CHANGELOG.md**: Create changelog following Keep a Changelog format.
-- [ ] **README.md Review**: Ensure README is comprehensive and pub.dev friendly (installation, usage, examples).
-- [ ] **README Badges**: Add build status, coverage, and pub.dev version badges.
+- [x] **README.md Review**: Ensure README is comprehensive and pub.dev friendly (installation, usage, examples).
+- [x] **README Badges**: Add build status, coverage, and pub.dev version badges.
 - [ ] **Example Verification**: Verify example project works and demonstrates key features.
 
 #### Publishing

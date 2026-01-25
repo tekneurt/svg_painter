@@ -1,5 +1,9 @@
 # svg_painter
 
+[![CI](https://github.com/tekneurt/svg_painter/actions/workflows/ci.yml/badge.svg)](https://github.com/tekneurt/svg_painter/actions/workflows/ci.yml)
+[![codecov](https://codecov.io/gh/tekneurt/svg_painter/branch/master/graph/badge.svg)](https://codecov.io/gh/tekneurt/svg_painter)
+[![pub package](https://img.shields.io/pub/v/svg_painter.svg)](https://pub.dev/packages/svg_painter)
+
 The code generator for the `svg_painter` library. This package is responsible for parsing SVG files and generating the corresponding Flutter `CustomPainter` code.
 
 ## Usage
