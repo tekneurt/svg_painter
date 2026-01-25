@@ -9,11 +9,13 @@ void main() {
   });
 
   testWidgets('W3C SVG2 Opacity (nested)', (WidgetTester tester) async {
-          await testDualResolutionPainter(
-            tester: tester,
-            painter: const OpacityPainter(),
-            name: 'opacity_painter',
-            type: .w3c,
-            folder: 'render',
-          );  });
+    await testDualResolutionPainter(
+      tester: tester,
+      painter: const OpacityPainter(),
+      name: 'opacity_painter',
+      type: SvgTestType.w3c,
+      folder: 'render',
+      tests: defaultGoldenTests,
+    );
+  });
 }

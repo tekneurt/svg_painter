@@ -5,6 +5,57 @@ import 'package:flutter_test/flutter_test.dart';
 
 enum SvgTestType { mdn, w3c, various }
 
+/// The type of golden test to run.
+///
+/// - [fixed]: Fixed 200x200 size test (golden: `name_fixed.png`)
+/// - [viewBox]: ViewBox-sized test matching SVG's natural dimensions (golden: `name_viewBox.png`)
+enum GoldenTestType { fixed, viewBox }
+
+/// Default golden tests configuration: run both fixed and viewBox tests
+/// with no platform-specific overrides.
+///
+/// The map controls test execution and platform-specific golden file selection:
+/// - **Key presence** determines if the test runs
+/// - **Value of null** means no platform override (use base golden file)
+/// - **Value with platforms** means those platforms use `name.{platform}.png`
+///
+/// ## Usage Examples
+///
+/// ```dart
+/// // Standard: run both tests, no platform overrides
+/// tests: defaultGoldenTests,
+///
+/// // Only viewBox test needs macOS-specific golden (e.g., 1px anti-aliasing diff)
+/// tests: <GoldenTestType, Set<TargetPlatform>?>{
+///   GoldenTestType.fixed: null,
+///   GoldenTestType.viewBox: <TargetPlatform>{TargetPlatform.macOS},
+/// },
+///
+/// // Both tests need macOS-specific goldens (e.g., text rendering differences)
+/// tests: <GoldenTestType, Set<TargetPlatform>?>{
+///   GoldenTestType.fixed: <TargetPlatform>{TargetPlatform.macOS},
+///   GoldenTestType.viewBox: <TargetPlatform>{TargetPlatform.macOS},
+/// },
+///
+/// // Skip viewBox test entirely
+/// tests: <GoldenTestType, Set<TargetPlatform>?>{
+///   GoldenTestType.fixed: null,
+/// },
+/// ```
+///
+/// ## Adding Platform Overrides
+///
+/// When CI fails due to platform rendering differences:
+/// 1. Identify which test variant failed (fixed or viewBox)
+/// 2. Add the platform to that test type's override set
+/// 3. Add a comment documenting the pixel difference (e.g., "1px gradient diff")
+/// 4. Generate platform-specific golden: `flutter test --update-goldens`
+/// 5. Generate CI golden via Docker: `docker run ... flutter test --update-goldens`
+const Map<GoldenTestType, Set<TargetPlatform>?> defaultGoldenTests = <GoldenTestType, Set<TargetPlatform>?>{
+  GoldenTestType.fixed: null,
+  GoldenTestType.viewBox: null,
+};
+
 /// Returns the current host platform as a [TargetPlatform].
 TargetPlatform get currentPlatform => switch (Platform.operatingSystem) {
   'macos' => TargetPlatform.macOS,
@@ -127,37 +178,44 @@ Future<void> testSvgPainterNative({
   tester.view.resetPhysicalSize();
 }
 
-/// Runs both sized and native tests for a painter.
+/// Runs golden tests for a painter based on the [tests] configuration.
 ///
-/// If [platforms] is specified, tests running on those platforms will use
-/// platform-specific golden files (e.g., `name.macOS.png`). This is useful
-/// when rendering differs slightly between platforms (e.g., anti-aliasing
-/// on gradients or text rendering).
+/// The [tests] map determines which tests run and their platform overrides:
+/// - Key presence means the test will run
+/// - Value of null means no platform-specific golden needed
+/// - Value with platforms means those platforms use platform-specific goldens
+///
+/// Use [defaultGoldenTests] for the common case of running both tests with
+/// no platform overrides.
 Future<void> testDualResolutionPainter({
   required WidgetTester tester,
   required CustomPainter painter,
   required String name,
   required SvgTestType type,
+  required Map<GoldenTestType, Set<TargetPlatform>?> tests,
   String? folder,
-  Set<TargetPlatform>? platforms,
 }) async {
   final String goldenPath = switch (type) {
     .mdn || .w3c => '$folder/goldens',
     .various => 'goldens',
   };
 
-  await testSvgPainter(
-    tester: tester,
-    painter: painter,
-    goldenName: goldenFileName(name, platforms),
-    goldenPath: goldenPath,
-    size: const Size(200, 200),
-  );
+  if (tests.containsKey(GoldenTestType.fixed)) {
+    await testSvgPainter(
+      tester: tester,
+      painter: painter,
+      goldenName: goldenFileName('${name}_fixed', tests[GoldenTestType.fixed]),
+      goldenPath: goldenPath,
+      size: const Size(200, 200),
+    );
+  }
 
-  await testSvgPainterNative(
-    tester: tester,
-    painter: painter,
-    goldenName: goldenFileName('${name}_native', platforms),
-    goldenPath: goldenPath,
-  );
+  if (tests.containsKey(GoldenTestType.viewBox)) {
+    await testSvgPainterNative(
+      tester: tester,
+      painter: painter,
+      goldenName: goldenFileName('${name}_viewBox', tests[GoldenTestType.viewBox]),
+      goldenPath: goldenPath,
+    );
+  }
 }
