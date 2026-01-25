@@ -121,7 +121,7 @@
 - [x] **Dry Run**: Run `dart pub publish --dry-run` and fix any issues.
 - [x] **Publish svg_painter_annotation 0.1.0**: Publish annotation package first.
 - [x] **Update svg_painter dependency**: Change `svg_painter_annotation: ^0.0.1-alpha.1` to `^0.1.0`.
-- [ ] **Publish svg_painter 0.1.0**: Publish main package to pub.dev.
+- [x] **Publish svg_painter 0.1.0**: Publish main package to pub.dev.
 - [ ] **Verified Publisher**: Register domain (tekneurt.dev), verify on pub.dev, transfer package to publisher.
 
 ### Phase 3: Dynamic Properties & Customizable Widget (0.2.0)
