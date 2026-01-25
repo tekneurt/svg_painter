@@ -96,23 +96,34 @@
     - [x] **Final Coverage Check**: Verify high coverage (>90%).
 
 
-### Phase 2: Dynamic Properties & Customizable Widget (Heart of Value Prop)
-*The core differentiator: creating plug-and-play components.*
+### Phase 2: Repository & Release Infrastructure (0.1.0)
+*Setting up CI/CD, publishing pipeline, and releasing initial version.*
 
-#### Repository & Release Infrastructure
+#### CI/CD & Quality
 - [x] **License**: Add MIT LICENSE file to the repository.
 - [x] **Branching Strategy**: Set up GitHub Flow with branch protection rules.
 - [x] **CI/CD Pipeline**: Create GitHub Actions workflow for automated testing on push/PR.
 - [x] **Code Coverage Reporting**: Integrate Codecov/Coveralls with CI and add coverage badge.
     - [x] *(Manual, post-merge)*: Set up Codecov account at codecov.io, add repo, and add `CODECOV_TOKEN` to GitHub Secrets.
+- [x] **Platform-Aware Golden Tests**: Implement platform-specific golden file support for tests with unavoidable rendering differences between macOS and Linux.
 - [ ] **DCM Integration**: Add DCM analysis to CI pipeline.
     - [ ] *(Manual)*: Waiting for OSS license approval from dcm.dev.
-- [ ] **CHANGELOG.md**: Create changelog following Keep a Changelog format.
-- [ ] **pubspec.yaml Metadata**: Add `repository`, `homepage`, and `issue_tracker` fields.
-- [ ] **README Badges**: Add build status, coverage, and pub.dev version badges.
-- [x] **Platform-Aware Golden Tests**: Implement platform-specific golden file support for tests with unavoidable rendering differences between macOS and Linux.
 
-#### Core Features
+#### Release Preparation
+- [ ] **pubspec.yaml Metadata**: Add `repository`, `homepage`, and `issue_tracker` fields.
+- [ ] **pubspec.yaml Version**: Ensure version is set to 0.1.0.
+- [ ] **CHANGELOG.md**: Create changelog following Keep a Changelog format.
+- [ ] **README.md Review**: Ensure README is comprehensive and pub.dev friendly (installation, usage, examples).
+- [ ] **README Badges**: Add build status, coverage, and pub.dev version badges.
+- [ ] **Example Verification**: Verify example project works and demonstrates key features.
+
+#### Publishing
+- [ ] **Dry Run**: Run `dart pub publish --dry-run` and fix any issues.
+- [ ] **Initial pub.dev Publishing**: Publish 0.1.0 to pub.dev.
+
+### Phase 3: Dynamic Properties & Customizable Widget (0.2.0)
+*The core differentiator: creating plug-and-play components.*
+
 - [ ] **Property Mapping Strategy**: Define the rule set for exposing properties (e.g., `id="circle1"` -> `circle1Fill`). Implement `IdentifierSanitizer`.
 - [ ] **Dynamic Fill/Stroke Colors**: Generate `final Color? [id]Fill` and `final Color? [id]Stroke` fields.
 - [ ] **Daphnia Widget Generation**:
@@ -121,8 +132,8 @@
     - [ ] Implement `BoxFit` and `Alignment` support in the generated Widget.
 - [ ] **"CurrentColor" Support**: Map `currentColor` to a primary `color` property on the Widget (matching Flutter's `Icon` behavior).
 
-### Phase 3: Essential Elements & MVP Release (0.1.0)
-*Reaching standard compatibility and publishing the first stable version.*
+### Phase 4: Essential Elements (0.3.0)
+*Reaching standard compatibility with essential SVG elements.*
 
 - [ ] **Structural Elements**: `<symbol>`, `<tspan>`, `<defs>`.
 - [ ] **Referencing & External Assets**: `<image>`, `<use>`.
@@ -133,14 +144,13 @@
 - [ ] **Release Preparation**:
     - [ ] **Documentation**: Write comprehensive READMEs and full API documentation.
     - [ ] **Validation**: Add comprehensive tests for all `BoxFit` values.
-    - [ ] **CI/CD**: Setup GitHub Actions for automated testing and linting.
-    - [ ] **Publishing**: Perform dry runs and publish 0.1.0 to pub.dev.
+    - [ ] **Publishing**: Publish 0.3.0 to pub.dev.
 
 ---
 
 ## Post-MVP Roadmap
 
-### Phase 4: Recommended "Wise-to-Have" Features (0.2.0)
+### Phase 5: Recommended "Wise-to-Have" Features (0.4.0)
 - [ ] **Advanced Pathing**: `<marker>` support and `context-fill`/`context-stroke` keywords.
 - [ ] **Text along Curves**: `<textPath>` implementation.
 - [ ] **Containers**: `<switch>` for conditional rendering.
@@ -148,12 +158,12 @@
 - [ ] **Patterns**: `<pattern>` for repeating fills.
 - [ ] **Gradients (Polish)**: `objectBoundingBox` and `spreadMethod`.
 
-### Phase 5: Advanced Units & Path Syntax (0.3.0)
+### Phase 6: Advanced Units & Path Syntax (0.5.0)
 - [ ] **SVG 2 Path Syntax**: Robust tokenizer for compact arc syntax (concatenated flags).
 - [ ] **Relative Units**: Support for `em`, `ex`, and other CSS relative units.
 - [x] **Result Ergonomics**: Add ergonomic extensions (e.g., `combine()`) to simplify list folding and result aggregation in `Result`.
 
-### Phase 6: Niche & Future Roadmap (1.0.0+)
+### Phase 7: Niche & Future Roadmap (1.0.0+)
 - [ ] **SMIL Animation**: `<animate>`, `<animateMotion>`, etc.
 - [ ] **Complex Filter Primitives**: Lighting, turbulence, displacement maps, color matrices.
 - [ ] **Interactive Elements**: Event handling (taps, hovers) for SVG shapes.
