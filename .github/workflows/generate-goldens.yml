@@ -44,21 +44,30 @@ jobs:
             flutter test --update-goldens --name='${{ github.event.inputs.test_pattern }}'
           fi
 
-      - name: List generated/updated golden files
+      - name: Collect modified golden files
         working-directory: svg_painter_tests
         run: |
-          echo "=== Generated golden files ==="
-          find test -name "*.png" -type f | head -100
+          echo "=== Modified golden files ==="
+          mkdir -p ../modified-goldens
+          # Copy only files that were actually modified/created
+          git status --porcelain test/**/goldens/*.png | while read status file; do
+            if [ -f "$file" ]; then
+              # Preserve directory structure
+              mkdir -p "../modified-goldens/$(dirname "$file")"
+              cp "$file" "../modified-goldens/$file"
+              echo "  $file"
+            fi
+          done
+          # Count files
+          count=$(find ../modified-goldens -name "*.png" 2>/dev/null | wc -l)
           echo ""
-          echo "=== Git status ==="
-          git status --short || true
+          echo "Total modified golden files: $count"
 
       - name: Upload golden files
         uses: actions/upload-artifact@v4
         with:
           name: golden-files
-          path: |
-            svg_painter_tests/test/**/goldens/*.png
+          path: modified-goldens/
           retention-days: 7
 
       - name: Upload failure diffs (if any)

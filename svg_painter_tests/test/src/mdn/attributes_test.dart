@@ -44,12 +44,20 @@ final List<({CustomPainter painter, String name, Map<GoldenTestType, Set<TargetP
     <({CustomPainter painter, String name, Map<GoldenTestType, Set<TargetPlatform>?> tests})>[
   (painter: const CxPainter(), name: 'cx_painter', tests: defaultGoldenTests),
   (painter: const CxRadialGradientPainter(), name: 'cx_radial_gradient_painter', tests: defaultGoldenTests),
-  (painter: const CyPainter(), name: 'cy_painter', tests: defaultGoldenTests),
+  // cy_painter: 1px radial gradient anti-aliasing diff on viewBox test (macOS)
+  (painter: const CyPainter(), name: 'cy_painter', tests: <GoldenTestType, Set<TargetPlatform>?>{
+    GoldenTestType.fixed: null,
+    GoldenTestType.viewBox: <TargetPlatform>{TargetPlatform.macOS},
+  }),
   (painter: const CyRadialGradientPainter(), name: 'cy_radial_gradient_painter', tests: defaultGoldenTests),
   (painter: const FillOpacityPainter(), name: 'fill_opacity_painter', tests: defaultGoldenTests),
   (painter: const FillPainter(), name: 'fill_painter', tests: defaultGoldenTests),
   (painter: const FxPainter(), name: 'fx_painter', tests: defaultGoldenTests),
-  (painter: const Fy1Painter(), name: 'fy_1_painter', tests: defaultGoldenTests),
+  // fy_1_painter: 1px gradient anti-aliasing diff on viewBox test (macOS)
+  (painter: const Fy1Painter(), name: 'fy_1_painter', tests: <GoldenTestType, Set<TargetPlatform>?>{
+    GoldenTestType.fixed: null,
+    GoldenTestType.viewBox: <TargetPlatform>{TargetPlatform.macOS},
+  }),
   // fy_2_painter: ~823px text anti-aliasing diff on both tests (macOS)
   (painter: const Fy2Painter(), name: 'fy_2_painter', tests: <GoldenTestType, Set<TargetPlatform>?>{
     GoldenTestType.fixed: <TargetPlatform>{TargetPlatform.macOS},
@@ -61,7 +69,11 @@ final List<({CustomPainter painter, String name, Map<GoldenTestType, Set<TargetP
   (painter: const PointsExamplePainter(), name: 'points_example_painter', tests: defaultGoldenTests),
   (painter: const PointsPolygonPainter(), name: 'points_polygon_painter', tests: defaultGoldenTests),
   (painter: const PointsPolylinePainter(), name: 'points_polyline_painter', tests: defaultGoldenTests),
-  (painter: const RPainter(), name: 'r_painter', tests: defaultGoldenTests),
+  // r_painter: 1px circle anti-aliasing diff on fixed test (macOS)
+  (painter: const RPainter(), name: 'r_painter', tests: <GoldenTestType, Set<TargetPlatform>?>{
+    GoldenTestType.fixed: <TargetPlatform>{TargetPlatform.macOS},
+    GoldenTestType.viewBox: null,
+  }),
   (painter: const RxPainter(), name: 'rx_painter', tests: defaultGoldenTests),
   (painter: const RyPainter(), name: 'ry_painter', tests: defaultGoldenTests),
   (painter: const StrokeLinecapPainter(), name: 'stroke_linecap_painter', tests: defaultGoldenTests),
