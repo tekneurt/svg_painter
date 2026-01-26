@@ -2,7 +2,7 @@ import '../../svg_model/_svg_model.dart';
 import '../svg_value_extensions/svg_auto_to_double.dart';
 import 'svg_painting_context.dart';
 
-/// Resolves the horizontal and vertical radii for elements like <rect> and <ellipse>.
+/// Resolves the horizontal and vertical radii for elements like `<rect>` and `<ellipse>`.
 ///
 /// Follows SVG rules:
 /// 1. If both are 'auto', both are 0.

@@ -1,6 +1,6 @@
 part of '../svg_element.dart';
 
-/// Represents a <rect> element in SVG.
+/// Represents a `<rect>` element in SVG.
 ///
 /// See: https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Element/rect
 @immutable

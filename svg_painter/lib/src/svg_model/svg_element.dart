@@ -92,7 +92,7 @@ sealed class SvgGraphicsElement extends SvgElement {
   final SvgLength? pathLength;
 }
 
-/// Base class for basic shape elements (<circle>, <rect>, etc.).
+/// Base class for basic shape elements (`<circle>`, `<rect>`, etc.).
 @immutable
 sealed class SvgBasicShape extends SvgGraphicsElement {
   const SvgBasicShape({
@@ -112,7 +112,7 @@ sealed class SvgBasicShape extends SvgGraphicsElement {
   });
 }
 
-/// Base class for container elements (<svg>, <g>).
+/// Base class for container elements (`<svg>`, `<g>`).
 @immutable
 sealed class SvgContainerElement extends SvgGraphicsElement with SvgParent {
   const SvgContainerElement({
@@ -136,13 +136,13 @@ sealed class SvgContainerElement extends SvgGraphicsElement with SvgParent {
   final List<SvgElement> children;
 }
 
-/// Base class for non-rendering definition elements (<defs>, gradients).
+/// Base class for non-rendering definition elements (`<defs>`, gradients).
 @immutable
 sealed class SvgDefinitionElement extends SvgElement {
   const SvgDefinitionElement({super.id});
 }
 
-/// Represents a metadata element (<title>, <desc>).
+/// Represents a metadata element (`<title>`, `<desc>`).
 @immutable
 sealed class SvgMetadataElement extends SvgElement {
   const SvgMetadataElement({required this.content, super.id});
@@ -151,7 +151,7 @@ sealed class SvgMetadataElement extends SvgElement {
   final String content;
 }
 
-/// Represents a <title> element.
+/// Represents a `<title>` element.
 @immutable
 final class SvgTitle extends SvgMetadataElement {
   const SvgTitle({required super.content, super.id});
@@ -160,7 +160,7 @@ final class SvgTitle extends SvgMetadataElement {
   String toString() => 'SvgTitle(content: $content, id: $id)';
 }
 
-/// Represents a <desc> element.
+/// Represents a `<desc>` element.
 @immutable
 final class SvgDesc extends SvgMetadataElement {
   const SvgDesc({required super.content, super.id});

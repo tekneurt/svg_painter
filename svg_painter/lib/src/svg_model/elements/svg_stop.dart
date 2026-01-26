@@ -1,6 +1,6 @@
 part of '../svg_element.dart';
 
-/// Base class for gradient elements (<linearGradient>, <radialGradient>).
+/// Base class for gradient elements (`<linearGradient>`, `<radialGradient>`).
 @immutable
 sealed class SvgGradient extends SvgDefinitionElement {
   const SvgGradient({required this.stops, super.id, this.gradientTransform});
@@ -15,7 +15,7 @@ sealed class SvgGradient extends SvgDefinitionElement {
   String toString() => 'SvgGradient(stops: ${stops.length}, id: $id)';
 }
 
-/// Represents a <stop> element within a gradient.
+/// Represents a `<stop>` element within a gradient.
 @immutable
 final class SvgStop extends SvgDefinitionElement {
   const SvgStop({

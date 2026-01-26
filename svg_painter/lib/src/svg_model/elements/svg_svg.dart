@@ -1,6 +1,6 @@
 part of '../svg_element.dart';
 
-/// Represents an <svg> element (generic container).
+/// Represents an `<svg>` element (generic container).
 ///
 /// See: https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Element/svg
 base class SvgSvg extends SvgContainerElement {
@@ -49,7 +49,7 @@ base class SvgSvg extends SvgContainerElement {
   String toString() => 'SvgSvg(children: ${children.length}, id: $id)';
 }
 
-/// Represents the root <svg> element.
+/// Represents the root `<svg>` element.
 final class SvgRoot extends SvgSvg {
   const SvgRoot({
     required super.children,

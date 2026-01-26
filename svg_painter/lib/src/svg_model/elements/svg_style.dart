@@ -1,6 +1,6 @@
 part of '../svg_element.dart';
 
-/// Represents a <style> element in SVG.
+/// Represents a `<style>` element in SVG.
 ///
 /// This element is primarily used for parsing and its content is
 /// collected into the [SvgStyleSheet] of the [SvgRoot].

@@ -1,1 +1,7 @@
 include: ../analysis_options.yaml
+
+analyzer:
+  exclude:
+    # Example folder contains generated Flutter code (CustomPainter, Canvas, etc.)
+    # but svg_painter is a pure Dart package, so analysis would fail.
+    - example/**

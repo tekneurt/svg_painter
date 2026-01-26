@@ -1,36 +1,36 @@
 /// Enumeration of standard XML element tag names used in SVG.
 enum XmlElementName {
-  /// The root <svg> element.
+  /// The root `<svg>` element.
   svg('svg'),
 
-  /// The <circle> element.
+  /// The `<circle>` element.
   circle('circle'),
 
-  /// The <ellipse> element.
+  /// The `<ellipse>` element.
   ellipse('ellipse'),
 
-  /// The <rect> element.
+  /// The `<rect>` element.
   rect('rect'),
 
-  /// The <line> element.
+  /// The `<line>` element.
   line('line'),
 
-  /// The <path> element.
+  /// The `<path>` element.
   path('path'),
 
-  /// The <polyline> element.
+  /// The `<polyline>` element.
   polyline('polyline'),
 
-  /// The <polygon> element.
+  /// The `<polygon>` element.
   polygon('polygon'),
 
-  /// The <defs> element.
+  /// The `<defs>` element.
   defs('defs'),
 
-  /// The <g> element.
+  /// The `<g>` element.
   g('g'),
 
-  /// The <use> element.
+  /// The `<use>` element.
   use('use'),
   radialGradient('radialGradient'),
   linearGradient('linearGradient'),
