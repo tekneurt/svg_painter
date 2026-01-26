@@ -1,26 +1,10 @@
-// ignore_for_file: unused_element, uri_has_not_been_generated
-
 import 'package:svg_painter_annotation/svg_painter_annotation.dart';
 
 part 'example.g.dart';
 
-/// Example: Generate a CustomPainter from an SVG file.
+/// Example: Generate a CustomPainter from inline SVG code.
 ///
-/// 1. Annotate a private class with `@SvgPainter.file()`:
-@SvgPainter.file('assets/icons/my_icon.svg')
-class _MyIconPainter {}
-
-/// 2. Run `dart run build_runner build`
-///
-/// 3. Use the generated painter in a Flutter app:
-/// ```dart
-/// CustomPaint(
-///   size: const Size(48, 48),
-///   painter: MyIconPainter(),
-/// )
-/// ```
-
-/// Example: Generate from inline SVG code.
+/// 1. Annotate a class with `@SvgPainter.code()`:
 @SvgPainter.code('''
 <svg viewBox="0 0 100 100">
   <circle cx="50" cy="50" r="40" fill="blue"/>
@@ -28,16 +12,18 @@ class _MyIconPainter {}
 ''')
 class _CirclePainter {}
 
-/// The generated `CirclePainter` can be used like any CustomPainter:
+/// 2. Run `dart run build_runner build`
 ///
+/// 3. Use the generated painter in a Flutter app:
 /// ```dart
-/// class MyWidget extends StatelessWidget {
-///   @override
-///   Widget build(BuildContext context) {
-///     return CustomPaint(
-///       size: const Size(100, 100),
-///       painter: CirclePainter(),
-///     );
-///   }
-/// }
+/// CustomPaint(
+///   size: const Size(100, 100),
+///   painter: CirclePainter(),
+/// )
+/// ```
+
+/// You can also use `@SvgPainter.file()` for SVG files:
+/// ```dart
+/// @SvgPainter.file('assets/icons/star.svg')
+/// class _StarPainter {}
 /// ```
