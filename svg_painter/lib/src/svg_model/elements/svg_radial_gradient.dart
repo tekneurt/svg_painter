@@ -1,6 +1,6 @@
 part of '../svg_element.dart';
 
-/// Represents a <radialGradient> element in SVG.
+/// Represents a `<radialGradient>` element in SVG.
 ///
 /// See: https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Element/radialGradient
 @immutable

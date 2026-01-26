@@ -1,6 +1,6 @@
 part of '../svg_element.dart';
 
-/// Represents an SVG <path> element.
+/// Represents an SVG `<path>` element.
 @immutable
 final class SvgPath extends SvgGraphicsElement {
   const SvgPath({

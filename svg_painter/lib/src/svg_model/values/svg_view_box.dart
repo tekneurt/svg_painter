@@ -1,6 +1,6 @@
 part of '../svg_value.dart';
 
-/// Represents the viewBox attribute of an <svg> element.
+/// Represents the viewBox attribute of an `<svg>` element.
 @immutable
 final class SvgViewBox extends SvgValue {
   const SvgViewBox(this.minX, this.minY, this.width, this.height);

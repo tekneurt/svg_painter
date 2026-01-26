@@ -1,6 +1,6 @@
 import 'package:meta/meta.dart';
 
-/// Represents a set of CSS rules parsed from a <style> element.
+/// Represents a set of CSS rules parsed from a `<style>` element.
 @immutable
 final class SvgStyleSheet {
   const SvgStyleSheet(this.rules);

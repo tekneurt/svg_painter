@@ -1,6 +1,6 @@
 import '../svg_model/_svg_model.dart';
 
-/// Parser for <style> element content in SVG.
+/// Parser for `<style>` element content in SVG.
 class SvgStyleParser {
   /// Parses CSS content into an [SvgStyleSheet].
   ///

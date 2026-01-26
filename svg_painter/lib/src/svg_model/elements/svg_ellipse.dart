@@ -1,6 +1,6 @@
 part of '../svg_element.dart';
 
-/// Represents an <ellipse> element in SVG.
+/// Represents an `<ellipse>` element in SVG.
 ///
 /// See: https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Element/ellipse
 @immutable

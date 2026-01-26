@@ -1,6 +1,5 @@
-// ignore_for_file: unused_element
+// ignore_for_file: unused_element, uri_has_not_been_generated
 
-import 'package:flutter/material.dart';
 import 'package:svg_painter_annotation/svg_painter_annotation.dart';
 
 part 'example.g.dart';
@@ -13,7 +12,7 @@ class _MyIconPainter {}
 
 /// 2. Run `dart run build_runner build`
 ///
-/// 3. Use the generated painter:
+/// 3. Use the generated painter in a Flutter app:
 /// ```dart
 /// CustomPaint(
 ///   size: const Size(48, 48),
