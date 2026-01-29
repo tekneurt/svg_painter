@@ -14,7 +14,7 @@ void main() {
       );
 
       // Act
-      final String result = style.toString();
+      final String _ = style.toString();
 
       // Assert
       expect(

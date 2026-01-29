@@ -1,6 +1,8 @@
 import '../painting_model/_painting_model.dart';
 import 'command_generator.dart';
 
+import 'palette_analyzer.dart';
+
 /// Generator for [DrawGroup] commands.
 class GroupGenerator extends ShapeGenerator<DrawGroup> {
   const GroupGenerator();
@@ -10,6 +12,9 @@ class GroupGenerator extends ShapeGenerator<DrawGroup> {
     DrawGroup command,
     StringBuffer buffer, {
     Map<Type, CommandGenerator<PaintCommand>>? generators,
+    PaletteResult? palette,
+    Set<String>? activeFillProperties,
+    Set<String>? activeStrokeProperties,
   }) {
     if (generators == null) {
       // This should ideally not happen if properly wired.
@@ -30,7 +35,14 @@ class GroupGenerator extends ShapeGenerator<DrawGroup> {
         // Find generator for child type
         final CommandGenerator<PaintCommand>? generator = generators[child.runtimeType];
         if (generator != null) {
-          generator.generate(child, buffer, generators: generators);
+          generator.generate(
+            child,
+            buffer,
+            generators: generators,
+            palette: palette,
+            activeFillProperties: activeFillProperties,
+            activeStrokeProperties: activeStrokeProperties,
+          );
         } else {
           throw StateError('No generator found for command type ${child.runtimeType}');
         }

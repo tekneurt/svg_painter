@@ -7,7 +7,8 @@ final class DrawPath extends PaintCommand {
   /// The operations that define the path.
   final List<PathOperation> operations;
 
-  /// The style to paint with.
+  /// The visual style of the path.
+  @override
   final PaintingStyle style;
 
   /// The transformation to apply to the canvas before drawing.

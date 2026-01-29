@@ -148,13 +148,13 @@ PaintingStyle resolvePaint(
       fill != null ||
       cssFill != null ||
       resolvedRules.containsKey('fill') ||
-      inlineStyle?.contains('fill:') == true;
+      (inlineStyle?.contains('fill:') ?? false);
 
   final bool isStrokeExplicit =
       stroke != null ||
       cssStroke != null ||
       resolvedRules.containsKey('stroke') ||
-      inlineStyle?.contains('stroke:') == true;
+      (inlineStyle?.contains('stroke:') ?? false);
 
   // 4. Resolve element opacity (group opacity)
   final double selfOpacity = (cssOpacity ?? opacity)?.resolve(context, .unit) ?? 1.0;

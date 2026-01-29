@@ -8,6 +8,7 @@ final class DrawPolygon extends PaintCommand {
   final List<double> points;
 
   /// The visual style of the polygon.
+  @override
   final PaintingStyle style;
 
   final String? transform;

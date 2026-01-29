@@ -22,6 +22,7 @@ final class DrawText extends PaintCommand {
   final String text;
 
   /// The visual style (font, fill, etc.) for the text.
+  @override
   final PaintingStyle style;
 
   /// The transform to apply.

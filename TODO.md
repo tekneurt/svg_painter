@@ -128,13 +128,13 @@
 *The core differentiator: creating plug-and-play components.*
 
 - [x] **Property Mapping Strategy**: Define the rule set for exposing properties (e.g., `id="circle1"` -> `circle1Fill`). Implement `SvgIdFormatter`.
-- [ ] **Dynamic Fill/Stroke Colors**:
+- [x] **Dynamic Fill/Stroke Colors**:
     - [x] **ID-Based Exposure**:
         - [x] Generate `final Color? [id]Fill` fields for explicit SVG fills.
         - [x] Generate `final Color? [id]Stroke` fields for explicit SVG strokes.
         - [x] Use named colors (e.g., `Colors.red`) in generated code when available instead of hex notation.
             - [x] Reverse-map ANY ARGB value to a matching Flutter `Colors` constant (e.g., `0xFFFFC107` -> `Colors.amber`) for readability.
-    - [ ] **Index-Based Exposure**: Generate `final Color? fill1`, `fill2`, etc. for elements without IDs, allowing control without modifying the SVG.
+    - [x] **Index-Based Exposure**: Generate `final Color? fill1`, `fill2`, etc. for elements without IDs, allowing control without modifying the SVG.
 - [ ] **Property Renaming Configuration**: Allow developers to map generated property names to semantic ones (e.g., map `fill1` to `backgroundFill` or `fillBottom`) via the annotation.
 - [ ] **Dynamic Style Inheritance**: Support runtime property overrides for inherited styles (e.g., overriding a group's `fill` should affect all children inheriting from it).
 - [ ] **Daphnia Widget Generation**:
@@ -166,6 +166,7 @@
     - `material` (default): Use Flutter's `Colors.red`, `Colors.amber.shade200`.
     - `svg`: Use SVG constants like `Color(0xFFFF0000)` but potentially aliased to a generated `SvgColors` class for readability.
     - `hex`: Strict `Color(0xAARRGGBB)` usage.
+- [ ] **Token-Based Global Coloring**: Allow a single property to control all occurrences of a specific color across the entire SVG, including both solid fills/strokes AND individual gradient stops (e.g., changing `red` to `yellow` globally).
 - [ ] **Advanced Pathing**: `<marker>` support and `context-fill`/`context-stroke` keywords.
 - [ ] **Text along Curves**: `<textPath>` implementation.
 - [ ] **Containers**: `<switch>` for conditional rendering.

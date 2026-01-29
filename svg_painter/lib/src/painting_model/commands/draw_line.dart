@@ -19,6 +19,7 @@ final class DrawLine extends PaintCommand {
   final double y2;
 
   /// The visual style of the line.
+  @override
   final PaintingStyle style;
 
   final String? transform;

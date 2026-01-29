@@ -33,7 +33,7 @@ void main() {
       );
 
       // Act
-      final String result = style.toString();
+      style.toString();
 
       // Assert
       expect(
@@ -68,7 +68,7 @@ void main() {
       const PaintingFillStyle fill = PaintingFillStyle(colorArgb: 0xFFFF0000, opacity: 0.8);
 
       // Act
-      final String result = fill.toString();
+      fill.toString();
 
       // Assert
       expect(

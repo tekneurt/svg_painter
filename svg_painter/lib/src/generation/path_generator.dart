@@ -1,6 +1,8 @@
 import '../painting_model/_painting_model.dart';
 import 'command_generator.dart';
 
+import 'palette_analyzer.dart';
+
 /// Generator for [DrawPath] commands.
 class PathGenerator extends ShapeGenerator<DrawPath> {
   const PathGenerator();
@@ -10,6 +12,9 @@ class PathGenerator extends ShapeGenerator<DrawPath> {
     DrawPath command,
     StringBuffer buffer, {
     Map<Type, CommandGenerator<PaintCommand>>? generators,
+    PaletteResult? palette,
+    Set<String>? activeFillProperties,
+    Set<String>? activeStrokeProperties,
   }) {
     wrapWithTransform(buffer, command.transform, () {
       buffer.writeln('      // Path');
@@ -36,20 +41,29 @@ class PathGenerator extends ShapeGenerator<DrawPath> {
         }
       }
 
-      generatePaintingCode(buffer, command, command.style, 'path.getBounds()', (
-        String paintVar, {
-        String? dashArray,
-        String? pathLength,
-      }) {
-        if (dashArray != null) {
-          final String plArg = (pathLength != null && pathLength.isNotEmpty)
-              ? ', pathLength: $pathLength'
-              : '';
-          buffer.writeln('        canvas.drawPath(_dashPath(path, $dashArray$plArg), $paintVar);');
-        } else {
-          buffer.writeln('        canvas.drawPath(path, $paintVar);');
-        }
-      });
+      generatePaintingCode(
+        buffer,
+        command,
+        command.style,
+        'path.getBounds()',
+        (
+          String paintVar, {
+          String? dashArray,
+          String? pathLength,
+        }) {
+          if (dashArray != null) {
+            final String plArg = (pathLength != null && pathLength.isNotEmpty)
+                ? ', pathLength: $pathLength'
+                : '';
+            buffer.writeln('        canvas.drawPath(_dashPath(path, $dashArray$plArg), $paintVar);');
+          } else {
+            buffer.writeln('        canvas.drawPath(path, $paintVar);');
+          }
+        },
+        palette: palette,
+        activeFillProperties: activeFillProperties,
+        activeStrokeProperties: activeStrokeProperties,
+      );
 
       buffer.writeln('      }');
     });

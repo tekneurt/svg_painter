@@ -1,6 +1,7 @@
 import '../painting_model/_painting_model.dart';
 import 'flutter_color_map.dart';
 import 'generation_extensions.dart';
+import 'palette_analyzer.dart';
 import 'svg_id_formatter.dart';
 
 /// Base class for all command-specific code generators.
@@ -12,6 +13,9 @@ abstract class CommandGenerator<T extends PaintCommand> {
     T command,
     StringBuffer buffer, {
     Map<Type, CommandGenerator<PaintCommand>>? generators,
+    PaletteResult? palette,
+    Set<String>? activeFillProperties,
+    Set<String>? activeStrokeProperties,
   });
 }
 
@@ -25,8 +29,11 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
     T command,
     PaintingStyle style,
     String boundsRect,
-    void Function(String paintVar, {String? dashArray, String? pathLength}) drawCall,
-  ) {
+    void Function(String paintVar, {String? dashArray, String? pathLength}) drawCall, {
+    PaletteResult? palette,
+    Set<String>? activeFillProperties,
+    Set<String>? activeStrokeProperties,
+  }) {
     // 1. Fill
     final PaintingFillStyle? fill = style.fill;
     if (fill != null) {
@@ -34,10 +41,19 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
       buffer.writeln('        final Paint paint = Paint();');
 
       final String? id = command.id;
-      if (id != null && fill.isExplicit) {
-        final String propName = '${SvgIdFormatter.format(id)}Fill';
+      final String? propName = id != null ? '${SvgIdFormatter.format(id)}Fill' : null;
+      final String? assignedFill = palette?.fillAssignments[command];
+
+      if (propName != null && fill.isExplicit && activeFillProperties!.contains(propName)) {
         // TODO(Gemini): Support both single color and gradient overrides.
         buffer.writeln('        final Color? localFill = $propName;');
+        buffer.writeln('        if (localFill == null) {');
+        _generateOriginalFill(buffer, fill, boundsRect, indent: '          ');
+        buffer.writeln('        } else {');
+        buffer.writeln('          paint.color = localFill;');
+        buffer.writeln('        }');
+      } else if (assignedFill != null && activeFillProperties!.contains(assignedFill)) {
+        buffer.writeln('        final Color? localFill = $assignedFill;');
         buffer.writeln('        if (localFill == null) {');
         _generateOriginalFill(buffer, fill, boundsRect, indent: '          ');
         buffer.writeln('        } else {');
@@ -59,10 +75,19 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
       buffer.writeln('        final Paint paint = Paint();');
 
       final String? id = command.id;
-      if (id != null && stroke.isExplicit) {
-        final String propName = '${SvgIdFormatter.format(id)}Stroke';
+      final String? propName = id != null ? '${SvgIdFormatter.format(id)}Stroke' : null;
+      final String? assignedStroke = palette?.strokeAssignments[command];
+
+      if (propName != null && stroke.isExplicit && activeStrokeProperties!.contains(propName)) {
         // TODO(Gemini): Support both single color and gradient overrides.
         buffer.writeln('        final Color? localStroke = $propName;');
+        buffer.writeln('        if (localStroke == null) {');
+        _generateOriginalStroke(buffer, stroke, boundsRect, indent: '          ');
+        buffer.writeln('        } else {');
+        buffer.writeln('          paint.color = localStroke;');
+        buffer.writeln('        }');
+      } else if (assignedStroke != null && activeStrokeProperties!.contains(assignedStroke)) {
+        buffer.writeln('        final Color? localStroke = $assignedStroke;');
         buffer.writeln('        if (localStroke == null) {');
         _generateOriginalStroke(buffer, stroke, boundsRect, indent: '          ');
         buffer.writeln('        } else {');
@@ -99,9 +124,7 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
     required String indent,
   }) {
     if (stroke.shaderId != null) {
-      buffer.writeln(
-        '$indent paint.shader = _grad_${stroke.shaderId}.createShader($boundsRect);',
-      );
+      buffer.writeln('$indent paint.shader = _grad_${stroke.shaderId}.createShader($boundsRect);');
       if (stroke.opacity < 1.0) {
         buffer.writeln('$indent paint.color = paint.color.withOpacity(${stroke.opacity});');
       }

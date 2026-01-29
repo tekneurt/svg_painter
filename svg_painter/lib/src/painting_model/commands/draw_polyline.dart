@@ -8,6 +8,7 @@ final class DrawPolyline extends PaintCommand {
   final List<double> points;
 
   /// The visual style of the polyline.
+  @override
   final PaintingStyle style;
 
   final String? transform;

@@ -1,4 +1,5 @@
 import 'package:svg_painter/src/svg_painter_generator.dart';
+import 'package:svg_painter_annotation/svg_painter_annotation.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -17,6 +18,7 @@ void main() {
       final String output = generator.generateFromSvg(
         elementName: 'MyPainter',
         svgContent: svg,
+        exposureMode: SvgExposureMode.id,
       );
 
       // Assert
@@ -51,6 +53,7 @@ void main() {
       final String output = generator.generateFromSvg(
         elementName: 'SanitizedPainter',
         svgContent: svg,
+        exposureMode: SvgExposureMode.id,
       );
 
       // Assert
@@ -71,6 +74,7 @@ void main() {
       final String output = generator.generateFromSvg(
         elementName: 'CamelPainter',
         svgContent: svg,
+        exposureMode: SvgExposureMode.id,
       );
 
       // Assert
@@ -107,6 +111,7 @@ void main() {
       final String output = generator.generateFromSvg(
         elementName: 'StrokePainter',
         svgContent: svg,
+        exposureMode: SvgExposureMode.id,
       );
 
       // Assert
@@ -132,6 +137,7 @@ void main() {
       final String output = generator.generateFromSvg(
         elementName: 'ShadedPainter',
         svgContent: svg,
+        exposureMode: SvgExposureMode.id,
       );
 
       // Assert

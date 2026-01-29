@@ -1,6 +1,8 @@
 import '../painting_model/_painting_model.dart';
 import 'command_generator.dart';
 
+import 'palette_analyzer.dart';
+
 /// Generator for [DrawText] commands.
 class TextGenerator extends ShapeGenerator<DrawText> {
   const TextGenerator();
@@ -10,6 +12,9 @@ class TextGenerator extends ShapeGenerator<DrawText> {
     DrawText command,
     StringBuffer buffer, {
     Map<Type, CommandGenerator<PaintCommand>>? generators,
+    PaletteResult? palette,
+    Set<String>? activeFillProperties,
+    Set<String>? activeStrokeProperties,
   }) {
     wrapWithTransform(buffer, command.transform, () {
       buffer.writeln('      {');

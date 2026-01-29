@@ -26,6 +26,7 @@ final class DrawOval extends PaintCommand {
   final double ry;
 
   /// The visual style of the oval.
+  @override
   final PaintingStyle style;
 
   /// The transformation string.

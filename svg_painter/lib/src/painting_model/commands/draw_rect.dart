@@ -27,6 +27,7 @@ final class DrawRect extends PaintCommand {
   final double ry;
 
   /// The visual style of the rectangle.
+  @override
   final PaintingStyle style;
 
   final String? transform;

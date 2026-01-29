@@ -1,4 +1,4 @@
-import 'package:svg_painter/src/generation/command_generator.dart';
+import 'package:svg_painter/src/generation/_generation.dart';
 import 'package:svg_painter/src/painting_model/paint_command.dart';
 import 'package:svg_painter/src/painting_model/styles/painting_style.dart';
 import 'package:test/test.dart';
@@ -12,6 +12,9 @@ class TestShapeGenerator extends ShapeGenerator<DrawCircle> {
     DrawCircle command,
     StringBuffer buffer, {
     Map<Type, CommandGenerator<PaintCommand>>? generators,
+    PaletteResult? palette,
+    Set<String>? activeFillProperties,
+    Set<String>? activeStrokeProperties,
   }) {
     wrapWithTransform(buffer, command.transform, () {
       generatePaintingCode(
@@ -30,6 +33,9 @@ class TestShapeGenerator extends ShapeGenerator<DrawCircle> {
             );
           }
         },
+        palette: palette,
+        activeFillProperties: activeFillProperties,
+        activeStrokeProperties: activeStrokeProperties,
       );
     });
   }

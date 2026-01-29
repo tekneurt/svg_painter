@@ -59,10 +59,15 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
         ? null
         : annotation.read('painterClassName').stringValue;
 
+    final SvgExposureMode exposureMode = annotation.read('exposureMode').isNull
+        ? SvgExposureMode.none
+        : SvgExposureMode.values[annotation.read('exposureMode').objectValue.getField('index')!.toIntValue()!];
+
     return generateFromSvg(
       elementName: element.name ?? 'Unknown',
       svgContent: svgContent,
       painterClassName: painterClassName,
+      exposureMode: exposureMode,
     );
   }
 
@@ -72,6 +77,7 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
     required String elementName,
     required String svgContent,
     String? painterClassName,
+    SvgExposureMode exposureMode = SvgExposureMode.none,
   }) {
     final Result<XmlDocument> parseResult = svgContent.toXmlDocument();
 
@@ -133,6 +139,7 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
       viewBoxWidth: viewBoxWidth,
       viewBoxHeight: viewBoxHeight,
       commands: commands,
+      exposureMode: exposureMode,
     );
   }
 
@@ -143,6 +150,7 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
     required double viewBoxWidth,
     required double viewBoxHeight,
     required List<PaintCommand> commands,
+    SvgExposureMode exposureMode = SvgExposureMode.none,
   }) {
     final StringBuffer buffer = StringBuffer();
 
@@ -154,21 +162,49 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
     );
     buffer.writeln();
 
-    buffer.writeln('class $className extends CustomPainter {');
     final Set<String> fillIds = <String>{};
     final Set<String> strokeIds = <String>{};
-    _collectIds(commands, fillIds, strokeIds);
-    
+    if (exposureMode == SvgExposureMode.id || exposureMode == SvgExposureMode.mixed) {
+      _collectIds(commands, fillIds, strokeIds);
+    }
+
+    PaletteResult? palette;
+    if (exposureMode == SvgExposureMode.indexed || exposureMode == SvgExposureMode.mixed) {
+      palette = const PaletteAnalyzer().analyze(commands);
+    }
+
     final List<String> sortedFillIds = fillIds.toList()..sort();
     final List<String> sortedStrokeIds = strokeIds.toList()..sort();
+    final List<String>? sortedFillIndexed = palette?.fillAssignments.values.toSet().toList()?..sort();
+    final List<String>? sortedStrokeIndexed = palette?.strokeAssignments.values.toSet().toList()?..sort();
 
+    final Set<String> activeFillProperties = <String>{
+      ...sortedFillIds.map((String id) => '${SvgIdFormatter.format(id)}Fill'),
+      if (sortedFillIndexed != null) ...sortedFillIndexed,
+    };
+    final Set<String> activeStrokeProperties = <String>{
+      ...sortedStrokeIds.map((String id) => '${SvgIdFormatter.format(id)}Stroke'),
+      if (sortedStrokeIndexed != null) ...sortedStrokeIndexed,
+    };
+
+    buffer.writeln('class $className extends CustomPainter {');
     buffer.writeln('  const $className({');
     buffer.writeln('    this.fit = BoxFit.contain,');
     for (final String id in sortedFillIds) {
       buffer.writeln('    this.${SvgIdFormatter.format(id)}Fill,');
     }
+    if (sortedFillIndexed != null) {
+      for (final String name in sortedFillIndexed) {
+        buffer.writeln('    this.$name,');
+      }
+    }
     for (final String id in sortedStrokeIds) {
       buffer.writeln('    this.${SvgIdFormatter.format(id)}Stroke,');
+    }
+    if (sortedStrokeIndexed != null) {
+      for (final String name in sortedStrokeIndexed) {
+        buffer.writeln('    this.$name,');
+      }
     }
     buffer.writeln('  });');
     buffer.writeln();
@@ -176,8 +212,18 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
     for (final String id in sortedFillIds) {
       buffer.writeln('  final Color? ${SvgIdFormatter.format(id)}Fill;');
     }
+    if (sortedFillIndexed != null) {
+      for (final String name in sortedFillIndexed) {
+        buffer.writeln('  final Color? $name;');
+      }
+    }
     for (final String id in sortedStrokeIds) {
       buffer.writeln('  final Color? ${SvgIdFormatter.format(id)}Stroke;');
+    }
+    if (sortedStrokeIndexed != null) {
+      for (final String name in sortedStrokeIndexed) {
+        buffer.writeln('  final Color? $name;');
+      }
     }
     buffer.writeln();
     buffer.writeln('  Size get viewBox => const Size($viewBoxWidth, $viewBoxHeight);');
@@ -203,14 +249,28 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
     // 1st pass: Gradient definitions
     for (final PaintCommand command in commands) {
       if (command is DefineGradient) {
-        _generators[command.runtimeType]?.generate(command, buffer, generators: _generators);
+        _generators[command.runtimeType]?.generate(
+          command,
+          buffer,
+          generators: _generators,
+          palette: palette,
+          activeFillProperties: activeFillProperties,
+          activeStrokeProperties: activeStrokeProperties,
+        );
       }
     }
 
     // 2nd pass: Drawing commands
     for (final PaintCommand command in commands) {
       if (command is! DefineGradient) {
-        _generators[command.runtimeType]?.generate(command, buffer, generators: _generators);
+        _generators[command.runtimeType]?.generate(
+          command,
+          buffer,
+          generators: _generators,
+          palette: palette,
+          activeFillProperties: activeFillProperties,
+          activeStrokeProperties: activeStrokeProperties,
+        );
       }
     }
 
@@ -256,9 +316,19 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
       final String prop = '${SvgIdFormatter.format(id)}Fill';
       buffer.writeln('      if ($prop != oldDelegate.$prop) return true;');
     }
+    if (sortedFillIndexed != null) {
+      for (final String name in sortedFillIndexed) {
+        buffer.writeln('      if ($name != oldDelegate.$name) return true;');
+      }
+    }
     for (final String id in sortedStrokeIds) {
       final String prop = '${SvgIdFormatter.format(id)}Stroke';
       buffer.writeln('      if ($prop != oldDelegate.$prop) return true;');
+    }
+    if (sortedStrokeIndexed != null) {
+      for (final String name in sortedStrokeIndexed) {
+        buffer.writeln('      if ($name != oldDelegate.$name) return true;');
+      }
     }
     buffer.writeln('      return false;');
     buffer.writeln('    } else {');
@@ -314,10 +384,10 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
     for (final PaintCommand command in commands) {
       if (command is! DefineGradient && command.id != null) {
         final PaintingStyle? style = command.style;
-        if (style?.fill?.isExplicit == true) {
+        if (style?.fill?.isExplicit ?? false) {
           fillIds.add(command.id!);
         }
-        if (style?.stroke?.isExplicit == true) {
+        if (style?.stroke?.isExplicit ?? false) {
           strokeIds.add(command.id!);
         }
       }

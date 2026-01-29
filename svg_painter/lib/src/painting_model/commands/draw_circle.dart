@@ -22,6 +22,7 @@ final class DrawCircle extends PaintCommand {
   final double radius;
 
   /// The visual style of the circle.
+  @override
   final PaintingStyle style;
 
   /// The transformation string.
