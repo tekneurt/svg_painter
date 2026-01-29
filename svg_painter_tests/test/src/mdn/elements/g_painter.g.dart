@@ -75,6 +75,10 @@ class _$GPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant _$GPainter oldDelegate) {
-    return fit != oldDelegate.fit;
+    if (fit == oldDelegate.fit) {
+      return false;
+    } else {
+      return true;
+    }
   }
 }

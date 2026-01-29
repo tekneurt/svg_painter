@@ -45,13 +45,6 @@ class _$ViewBox2Painter extends CustomPainter {
         paint.style = PaintingStyle.fill;
         canvas.drawRect(Rect.fromLTWH(0.0, 0.0, 10.0, 10.0), paint);
       }
-      {
-        final Paint paint = Paint();
-        paint.color = const Color(0x00000000);
-        paint.style = PaintingStyle.stroke;
-        paint.strokeWidth = 1.0;
-        canvas.drawRect(Rect.fromLTWH(0.0, 0.0, 10.0, 10.0), paint);
-      }
     }
     {
       {
@@ -60,19 +53,16 @@ class _$ViewBox2Painter extends CustomPainter {
         paint.style = PaintingStyle.fill;
         canvas.drawCircle(const Offset(5.0, 5.0), 4.0, paint);
       }
-      {
-        final Paint paint = Paint();
-        paint.color = const Color(0x00000000);
-        paint.style = PaintingStyle.stroke;
-        paint.strokeWidth = 1.0;
-        canvas.drawCircle(const Offset(5.0, 5.0), 4.0, paint);
-      }
     }
     canvas.restore();
   }
 
   @override
   bool shouldRepaint(covariant _$ViewBox2Painter oldDelegate) {
-    return fit != oldDelegate.fit;
+    if (fit == oldDelegate.fit) {
+      return false;
+    } else {
+      return true;
+    }
   }
 }

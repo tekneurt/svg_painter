@@ -15,7 +15,7 @@ class LineGenerator extends ShapeGenerator<DrawLine> {
       final String p2 = 'const Offset(${command.x2}, ${command.y2})';
       final String bounds = 'Rect.fromPoints($p1, $p2)';
 
-      generatePaintingCode(buffer, command.style, bounds, (
+      generatePaintingCode(buffer, command, command.style, bounds, (
         String p, {
         String? dashArray,
         String? pathLength,

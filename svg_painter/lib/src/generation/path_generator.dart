@@ -36,7 +36,7 @@ class PathGenerator extends ShapeGenerator<DrawPath> {
         }
       }
 
-      generatePaintingCode(buffer, command.style, 'path.getBounds()', (
+      generatePaintingCode(buffer, command, command.style, 'path.getBounds()', (
         String paintVar, {
         String? dashArray,
         String? pathLength,

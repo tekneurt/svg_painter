@@ -88,6 +88,10 @@ class _$Y1LinePainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant _$Y1LinePainter oldDelegate) {
-    return fit != oldDelegate.fit;
+    if (fit == oldDelegate.fit) {
+      return false;
+    } else {
+      return true;
+    }
   }
 }

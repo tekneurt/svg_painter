@@ -17,6 +17,7 @@ extension SvgPathToPaintCommands on SvgPath {
     final PaintingStyle paint = resolvePaint(
       context,
       tagName: 'path',
+      id: id,
       fill: fill,
       fillOpacity: fillOpacity,
       stroke: stroke,
@@ -35,6 +36,7 @@ extension SvgPathToPaintCommands on SvgPath {
         DrawPath(
           operations: operations,
           style: paint,
+          id: id,
           transform: SvgTransformParser.scaleTransform(
             transform,
             context.parentSx,

@@ -17,11 +17,11 @@ class GroupGenerator extends ShapeGenerator<DrawGroup> {
     }
 
     wrapWithTransform(buffer, command.transform, () {
-      if (command.groupOpacity < 1.0) {
+      if (command.opacity < 1.0) {
         buffer.writeln('      canvas.saveLayer(');
         buffer.writeln('        null,');
         buffer.writeln(
-          '        Paint()..color = Color.fromRGBO(255, 255, 255, ${command.groupOpacity}),',
+          '        Paint()..color = Color.fromRGBO(255, 255, 255, ${command.opacity}),',
         );
         buffer.writeln('      );');
       }
@@ -36,7 +36,7 @@ class GroupGenerator extends ShapeGenerator<DrawGroup> {
         }
       }
 
-      if (command.groupOpacity < 1.0) {
+      if (command.opacity < 1.0) {
         buffer.writeln('      canvas.restore();');
       }
     });

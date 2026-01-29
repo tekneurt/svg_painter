@@ -112,6 +112,10 @@ class _$X1ExamplesPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant _$X1ExamplesPainter oldDelegate) {
-    return fit != oldDelegate.fit;
+    if (fit == oldDelegate.fit) {
+      return false;
+    } else {
+      return true;
+    }
   }
 }

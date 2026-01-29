@@ -71,20 +71,6 @@ class _$ExampleEllipse01Painter extends CustomPainter {
           paint,
         );
       }
-      {
-        final Paint paint = Paint();
-        paint.color = const Color(0x00000000);
-        paint.style = PaintingStyle.stroke;
-        paint.strokeWidth = 0.37795275590551175;
-        canvas.drawOval(
-          Rect.fromCenter(
-            center: const Offset(0.0, 0.0),
-            width: 188.9763779527559,
-            height: 75.59055118110236,
-          ),
-          paint,
-        );
-      }
     }
     canvas.restore();
     canvas.save();
@@ -110,6 +96,10 @@ class _$ExampleEllipse01Painter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant _$ExampleEllipse01Painter oldDelegate) {
-    return fit != oldDelegate.fit;
+    if (fit == oldDelegate.fit) {
+      return false;
+    } else {
+      return true;
+    }
   }
 }

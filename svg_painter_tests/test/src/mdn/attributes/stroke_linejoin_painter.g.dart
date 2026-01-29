@@ -216,13 +216,6 @@ class _$StrokeLinejoinPainter extends CustomPainter {
           paint.style = PaintingStyle.fill;
           canvas.drawCircle(const Offset(1.0, 5.0), 0.1, paint);
         }
-        {
-          final Paint paint = Paint();
-          paint.color = const Color(0x00000000);
-          paint.style = PaintingStyle.stroke;
-          paint.strokeWidth = 1.0;
-          canvas.drawCircle(const Offset(1.0, 5.0), 0.1, paint);
-        }
       }
       {
         {
@@ -231,26 +224,12 @@ class _$StrokeLinejoinPainter extends CustomPainter {
           paint.style = PaintingStyle.fill;
           canvas.drawCircle(const Offset(3.0, 2.0), 0.1, paint);
         }
-        {
-          final Paint paint = Paint();
-          paint.color = const Color(0x00000000);
-          paint.style = PaintingStyle.stroke;
-          paint.strokeWidth = 1.0;
-          canvas.drawCircle(const Offset(3.0, 2.0), 0.1, paint);
-        }
       }
       {
         {
           final Paint paint = Paint();
           paint.color = const Color(0xFFFFC0CB);
           paint.style = PaintingStyle.fill;
-          canvas.drawCircle(const Offset(5.0, 5.5), 0.1, paint);
-        }
-        {
-          final Paint paint = Paint();
-          paint.color = const Color(0x00000000);
-          paint.style = PaintingStyle.stroke;
-          paint.strokeWidth = 1.0;
           canvas.drawCircle(const Offset(5.0, 5.5), 0.1, paint);
         }
       }
@@ -291,13 +270,6 @@ class _$StrokeLinejoinPainter extends CustomPainter {
           paint.style = PaintingStyle.fill;
           canvas.drawCircle(const Offset(7.0, 5.0), 0.1, paint);
         }
-        {
-          final Paint paint = Paint();
-          paint.color = const Color(0x00000000);
-          paint.style = PaintingStyle.stroke;
-          paint.strokeWidth = 1.0;
-          canvas.drawCircle(const Offset(7.0, 5.0), 0.1, paint);
-        }
       }
       {
         {
@@ -306,26 +278,12 @@ class _$StrokeLinejoinPainter extends CustomPainter {
           paint.style = PaintingStyle.fill;
           canvas.drawCircle(const Offset(9.0, 2.0), 0.1, paint);
         }
-        {
-          final Paint paint = Paint();
-          paint.color = const Color(0x00000000);
-          paint.style = PaintingStyle.stroke;
-          paint.strokeWidth = 1.0;
-          canvas.drawCircle(const Offset(9.0, 2.0), 0.1, paint);
-        }
       }
       {
         {
           final Paint paint = Paint();
           paint.color = const Color(0xFFFFC0CB);
           paint.style = PaintingStyle.fill;
-          canvas.drawCircle(const Offset(11.0, 5.5), 0.1, paint);
-        }
-        {
-          final Paint paint = Paint();
-          paint.color = const Color(0x00000000);
-          paint.style = PaintingStyle.stroke;
-          paint.strokeWidth = 1.0;
           canvas.drawCircle(const Offset(11.0, 5.5), 0.1, paint);
         }
       }
@@ -366,13 +324,6 @@ class _$StrokeLinejoinPainter extends CustomPainter {
           paint.style = PaintingStyle.fill;
           canvas.drawCircle(const Offset(13.0, 5.0), 0.1, paint);
         }
-        {
-          final Paint paint = Paint();
-          paint.color = const Color(0x00000000);
-          paint.style = PaintingStyle.stroke;
-          paint.strokeWidth = 1.0;
-          canvas.drawCircle(const Offset(13.0, 5.0), 0.1, paint);
-        }
       }
       {
         {
@@ -381,26 +332,12 @@ class _$StrokeLinejoinPainter extends CustomPainter {
           paint.style = PaintingStyle.fill;
           canvas.drawCircle(const Offset(15.0, 2.0), 0.1, paint);
         }
-        {
-          final Paint paint = Paint();
-          paint.color = const Color(0x00000000);
-          paint.style = PaintingStyle.stroke;
-          paint.strokeWidth = 1.0;
-          canvas.drawCircle(const Offset(15.0, 2.0), 0.1, paint);
-        }
       }
       {
         {
           final Paint paint = Paint();
           paint.color = const Color(0xFFFFC0CB);
           paint.style = PaintingStyle.fill;
-          canvas.drawCircle(const Offset(17.0, 5.5), 0.1, paint);
-        }
-        {
-          final Paint paint = Paint();
-          paint.color = const Color(0x00000000);
-          paint.style = PaintingStyle.stroke;
-          paint.strokeWidth = 1.0;
           canvas.drawCircle(const Offset(17.0, 5.5), 0.1, paint);
         }
       }
@@ -441,13 +378,6 @@ class _$StrokeLinejoinPainter extends CustomPainter {
           paint.style = PaintingStyle.fill;
           canvas.drawCircle(const Offset(3.0, 11.0), 0.1, paint);
         }
-        {
-          final Paint paint = Paint();
-          paint.color = const Color(0x00000000);
-          paint.style = PaintingStyle.stroke;
-          paint.strokeWidth = 1.0;
-          canvas.drawCircle(const Offset(3.0, 11.0), 0.1, paint);
-        }
       }
       {
         {
@@ -456,26 +386,12 @@ class _$StrokeLinejoinPainter extends CustomPainter {
           paint.style = PaintingStyle.fill;
           canvas.drawCircle(const Offset(5.0, 8.0), 0.1, paint);
         }
-        {
-          final Paint paint = Paint();
-          paint.color = const Color(0x00000000);
-          paint.style = PaintingStyle.stroke;
-          paint.strokeWidth = 1.0;
-          canvas.drawCircle(const Offset(5.0, 8.0), 0.1, paint);
-        }
       }
       {
         {
           final Paint paint = Paint();
           paint.color = const Color(0xFFFFC0CB);
           paint.style = PaintingStyle.fill;
-          canvas.drawCircle(const Offset(7.0, 11.5), 0.1, paint);
-        }
-        {
-          final Paint paint = Paint();
-          paint.color = const Color(0x00000000);
-          paint.style = PaintingStyle.stroke;
-          paint.strokeWidth = 1.0;
           canvas.drawCircle(const Offset(7.0, 11.5), 0.1, paint);
         }
       }
@@ -516,13 +432,6 @@ class _$StrokeLinejoinPainter extends CustomPainter {
           paint.style = PaintingStyle.fill;
           canvas.drawCircle(const Offset(9.0, 11.0), 0.1, paint);
         }
-        {
-          final Paint paint = Paint();
-          paint.color = const Color(0x00000000);
-          paint.style = PaintingStyle.stroke;
-          paint.strokeWidth = 1.0;
-          canvas.drawCircle(const Offset(9.0, 11.0), 0.1, paint);
-        }
       }
       {
         {
@@ -531,26 +440,12 @@ class _$StrokeLinejoinPainter extends CustomPainter {
           paint.style = PaintingStyle.fill;
           canvas.drawCircle(const Offset(11.0, 8.0), 0.1, paint);
         }
-        {
-          final Paint paint = Paint();
-          paint.color = const Color(0x00000000);
-          paint.style = PaintingStyle.stroke;
-          paint.strokeWidth = 1.0;
-          canvas.drawCircle(const Offset(11.0, 8.0), 0.1, paint);
-        }
       }
       {
         {
           final Paint paint = Paint();
           paint.color = const Color(0xFFFFC0CB);
           paint.style = PaintingStyle.fill;
-          canvas.drawCircle(const Offset(13.0, 11.5), 0.1, paint);
-        }
-        {
-          final Paint paint = Paint();
-          paint.color = const Color(0x00000000);
-          paint.style = PaintingStyle.stroke;
-          paint.strokeWidth = 1.0;
           canvas.drawCircle(const Offset(13.0, 11.5), 0.1, paint);
         }
       }
@@ -560,7 +455,11 @@ class _$StrokeLinejoinPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant _$StrokeLinejoinPainter oldDelegate) {
-    return fit != oldDelegate.fit;
+    if (fit == oldDelegate.fit) {
+      return false;
+    } else {
+      return true;
+    }
   }
 }
 
@@ -660,13 +559,6 @@ class _$StrokeLinejoinArcsPainter extends CustomPainter {
           paint.style = PaintingStyle.fill;
           canvas.drawCircle(const Offset(1.0, 5.0), 0.05, paint);
         }
-        {
-          final Paint paint = Paint();
-          paint.color = const Color(0x00000000);
-          paint.style = PaintingStyle.stroke;
-          paint.strokeWidth = 1.0;
-          canvas.drawCircle(const Offset(1.0, 5.0), 0.05, paint);
-        }
       }
       {
         {
@@ -675,26 +567,12 @@ class _$StrokeLinejoinArcsPainter extends CustomPainter {
           paint.style = PaintingStyle.fill;
           canvas.drawCircle(const Offset(3.0, 2.0), 0.05, paint);
         }
-        {
-          final Paint paint = Paint();
-          paint.color = const Color(0x00000000);
-          paint.style = PaintingStyle.stroke;
-          paint.strokeWidth = 1.0;
-          canvas.drawCircle(const Offset(3.0, 2.0), 0.05, paint);
-        }
       }
       {
         {
           final Paint paint = Paint();
           paint.color = const Color(0xFFFFC0CB);
           paint.style = PaintingStyle.fill;
-          canvas.drawCircle(const Offset(5.0, 5.0), 0.05, paint);
-        }
-        {
-          final Paint paint = Paint();
-          paint.color = const Color(0x00000000);
-          paint.style = PaintingStyle.stroke;
-          paint.strokeWidth = 1.0;
           canvas.drawCircle(const Offset(5.0, 5.0), 0.05, paint);
         }
       }
@@ -704,7 +582,11 @@ class _$StrokeLinejoinArcsPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant _$StrokeLinejoinArcsPainter oldDelegate) {
-    return fit != oldDelegate.fit;
+    if (fit == oldDelegate.fit) {
+      return false;
+    } else {
+      return true;
+    }
   }
 }
 
@@ -781,13 +663,6 @@ class _$StrokeLinejoinBevelPainter extends CustomPainter {
           paint.style = PaintingStyle.fill;
           canvas.drawCircle(const Offset(1.0, 5.0), 0.05, paint);
         }
-        {
-          final Paint paint = Paint();
-          paint.color = const Color(0x00000000);
-          paint.style = PaintingStyle.stroke;
-          paint.strokeWidth = 1.0;
-          canvas.drawCircle(const Offset(1.0, 5.0), 0.05, paint);
-        }
       }
       {
         {
@@ -796,26 +671,12 @@ class _$StrokeLinejoinBevelPainter extends CustomPainter {
           paint.style = PaintingStyle.fill;
           canvas.drawCircle(const Offset(3.0, 2.0), 0.05, paint);
         }
-        {
-          final Paint paint = Paint();
-          paint.color = const Color(0x00000000);
-          paint.style = PaintingStyle.stroke;
-          paint.strokeWidth = 1.0;
-          canvas.drawCircle(const Offset(3.0, 2.0), 0.05, paint);
-        }
       }
       {
         {
           final Paint paint = Paint();
           paint.color = const Color(0xFFFFC0CB);
           paint.style = PaintingStyle.fill;
-          canvas.drawCircle(const Offset(5.0, 5.0), 0.05, paint);
-        }
-        {
-          final Paint paint = Paint();
-          paint.color = const Color(0x00000000);
-          paint.style = PaintingStyle.stroke;
-          paint.strokeWidth = 1.0;
           canvas.drawCircle(const Offset(5.0, 5.0), 0.05, paint);
         }
       }
@@ -825,7 +686,11 @@ class _$StrokeLinejoinBevelPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant _$StrokeLinejoinBevelPainter oldDelegate) {
-    return fit != oldDelegate.fit;
+    if (fit == oldDelegate.fit) {
+      return false;
+    } else {
+      return true;
+    }
   }
 }
 
@@ -939,13 +804,6 @@ class _$StrokeLinejoinMiterPainter extends CustomPainter {
           paint.style = PaintingStyle.fill;
           canvas.drawCircle(const Offset(1.0, 6.0), 0.05, paint);
         }
-        {
-          final Paint paint = Paint();
-          paint.color = const Color(0x00000000);
-          paint.style = PaintingStyle.stroke;
-          paint.strokeWidth = 1.0;
-          canvas.drawCircle(const Offset(1.0, 6.0), 0.05, paint);
-        }
       }
       {
         {
@@ -954,26 +812,12 @@ class _$StrokeLinejoinMiterPainter extends CustomPainter {
           paint.style = PaintingStyle.fill;
           canvas.drawCircle(const Offset(3.0, 3.0), 0.05, paint);
         }
-        {
-          final Paint paint = Paint();
-          paint.color = const Color(0x00000000);
-          paint.style = PaintingStyle.stroke;
-          paint.strokeWidth = 1.0;
-          canvas.drawCircle(const Offset(3.0, 3.0), 0.05, paint);
-        }
       }
       {
         {
           final Paint paint = Paint();
           paint.color = const Color(0xFFFFC0CB);
           paint.style = PaintingStyle.fill;
-          canvas.drawCircle(const Offset(5.0, 6.0), 0.05, paint);
-        }
-        {
-          final Paint paint = Paint();
-          paint.color = const Color(0x00000000);
-          paint.style = PaintingStyle.stroke;
-          paint.strokeWidth = 1.0;
           canvas.drawCircle(const Offset(5.0, 6.0), 0.05, paint);
         }
       }
@@ -1000,13 +844,6 @@ class _$StrokeLinejoinMiterPainter extends CustomPainter {
           paint.style = PaintingStyle.fill;
           canvas.drawCircle(const Offset(7.0, 6.0), 0.05, paint);
         }
-        {
-          final Paint paint = Paint();
-          paint.color = const Color(0x00000000);
-          paint.style = PaintingStyle.stroke;
-          paint.strokeWidth = 1.0;
-          canvas.drawCircle(const Offset(7.0, 6.0), 0.05, paint);
-        }
       }
       {
         {
@@ -1015,26 +852,12 @@ class _$StrokeLinejoinMiterPainter extends CustomPainter {
           paint.style = PaintingStyle.fill;
           canvas.drawCircle(const Offset(7.75, 3.0), 0.05, paint);
         }
-        {
-          final Paint paint = Paint();
-          paint.color = const Color(0x00000000);
-          paint.style = PaintingStyle.stroke;
-          paint.strokeWidth = 1.0;
-          canvas.drawCircle(const Offset(7.75, 3.0), 0.05, paint);
-        }
       }
       {
         {
           final Paint paint = Paint();
           paint.color = const Color(0xFFFFC0CB);
           paint.style = PaintingStyle.fill;
-          canvas.drawCircle(const Offset(8.5, 6.0), 0.05, paint);
-        }
-        {
-          final Paint paint = Paint();
-          paint.color = const Color(0x00000000);
-          paint.style = PaintingStyle.stroke;
-          paint.strokeWidth = 1.0;
           canvas.drawCircle(const Offset(8.5, 6.0), 0.05, paint);
         }
       }
@@ -1070,7 +893,11 @@ class _$StrokeLinejoinMiterPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant _$StrokeLinejoinMiterPainter oldDelegate) {
-    return fit != oldDelegate.fit;
+    if (fit == oldDelegate.fit) {
+      return false;
+    } else {
+      return true;
+    }
   }
 }
 
@@ -1184,13 +1011,6 @@ class _$StrokeLinejoinMiterClipPainter extends CustomPainter {
           paint.style = PaintingStyle.fill;
           canvas.drawCircle(const Offset(1.0, 6.0), 0.05, paint);
         }
-        {
-          final Paint paint = Paint();
-          paint.color = const Color(0x00000000);
-          paint.style = PaintingStyle.stroke;
-          paint.strokeWidth = 1.0;
-          canvas.drawCircle(const Offset(1.0, 6.0), 0.05, paint);
-        }
       }
       {
         {
@@ -1199,26 +1019,12 @@ class _$StrokeLinejoinMiterClipPainter extends CustomPainter {
           paint.style = PaintingStyle.fill;
           canvas.drawCircle(const Offset(3.0, 3.0), 0.05, paint);
         }
-        {
-          final Paint paint = Paint();
-          paint.color = const Color(0x00000000);
-          paint.style = PaintingStyle.stroke;
-          paint.strokeWidth = 1.0;
-          canvas.drawCircle(const Offset(3.0, 3.0), 0.05, paint);
-        }
       }
       {
         {
           final Paint paint = Paint();
           paint.color = const Color(0xFFFFC0CB);
           paint.style = PaintingStyle.fill;
-          canvas.drawCircle(const Offset(5.0, 6.0), 0.05, paint);
-        }
-        {
-          final Paint paint = Paint();
-          paint.color = const Color(0x00000000);
-          paint.style = PaintingStyle.stroke;
-          paint.strokeWidth = 1.0;
           canvas.drawCircle(const Offset(5.0, 6.0), 0.05, paint);
         }
       }
@@ -1245,13 +1051,6 @@ class _$StrokeLinejoinMiterClipPainter extends CustomPainter {
           paint.style = PaintingStyle.fill;
           canvas.drawCircle(const Offset(7.0, 6.0), 0.05, paint);
         }
-        {
-          final Paint paint = Paint();
-          paint.color = const Color(0x00000000);
-          paint.style = PaintingStyle.stroke;
-          paint.strokeWidth = 1.0;
-          canvas.drawCircle(const Offset(7.0, 6.0), 0.05, paint);
-        }
       }
       {
         {
@@ -1260,26 +1059,12 @@ class _$StrokeLinejoinMiterClipPainter extends CustomPainter {
           paint.style = PaintingStyle.fill;
           canvas.drawCircle(const Offset(7.75, 3.0), 0.05, paint);
         }
-        {
-          final Paint paint = Paint();
-          paint.color = const Color(0x00000000);
-          paint.style = PaintingStyle.stroke;
-          paint.strokeWidth = 1.0;
-          canvas.drawCircle(const Offset(7.75, 3.0), 0.05, paint);
-        }
       }
       {
         {
           final Paint paint = Paint();
           paint.color = const Color(0xFFFFC0CB);
           paint.style = PaintingStyle.fill;
-          canvas.drawCircle(const Offset(8.5, 6.0), 0.05, paint);
-        }
-        {
-          final Paint paint = Paint();
-          paint.color = const Color(0x00000000);
-          paint.style = PaintingStyle.stroke;
-          paint.strokeWidth = 1.0;
           canvas.drawCircle(const Offset(8.5, 6.0), 0.05, paint);
         }
       }
@@ -1315,7 +1100,11 @@ class _$StrokeLinejoinMiterClipPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant _$StrokeLinejoinMiterClipPainter oldDelegate) {
-    return fit != oldDelegate.fit;
+    if (fit == oldDelegate.fit) {
+      return false;
+    } else {
+      return true;
+    }
   }
 }
 
@@ -1392,13 +1181,6 @@ class _$StrokeLinejoinRoundPainter extends CustomPainter {
           paint.style = PaintingStyle.fill;
           canvas.drawCircle(const Offset(1.0, 5.0), 0.05, paint);
         }
-        {
-          final Paint paint = Paint();
-          paint.color = const Color(0x00000000);
-          paint.style = PaintingStyle.stroke;
-          paint.strokeWidth = 1.0;
-          canvas.drawCircle(const Offset(1.0, 5.0), 0.05, paint);
-        }
       }
       {
         {
@@ -1407,26 +1189,12 @@ class _$StrokeLinejoinRoundPainter extends CustomPainter {
           paint.style = PaintingStyle.fill;
           canvas.drawCircle(const Offset(3.0, 2.0), 0.05, paint);
         }
-        {
-          final Paint paint = Paint();
-          paint.color = const Color(0x00000000);
-          paint.style = PaintingStyle.stroke;
-          paint.strokeWidth = 1.0;
-          canvas.drawCircle(const Offset(3.0, 2.0), 0.05, paint);
-        }
       }
       {
         {
           final Paint paint = Paint();
           paint.color = const Color(0xFFFFC0CB);
           paint.style = PaintingStyle.fill;
-          canvas.drawCircle(const Offset(5.0, 5.0), 0.05, paint);
-        }
-        {
-          final Paint paint = Paint();
-          paint.color = const Color(0x00000000);
-          paint.style = PaintingStyle.stroke;
-          paint.strokeWidth = 1.0;
           canvas.drawCircle(const Offset(5.0, 5.0), 0.05, paint);
         }
       }
@@ -1436,6 +1204,10 @@ class _$StrokeLinejoinRoundPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant _$StrokeLinejoinRoundPainter oldDelegate) {
-    return fit != oldDelegate.fit;
+    if (fit == oldDelegate.fit) {
+      return false;
+    } else {
+      return true;
+    }
   }
 }

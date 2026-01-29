@@ -245,12 +245,13 @@ extension _SvgGroupToPaintCommands on SvgGroup {
       return <PaintCommand>[
         DrawGroup(
           commands: childCommands,
+          id: id,
           transform: SvgTransformParser.scaleTransform(
             transform,
             context.parentSx,
             context.parentSy,
           ),
-          groupOpacity: groupOpacity,
+          opacity: groupOpacity,
         ),
       ];
     });

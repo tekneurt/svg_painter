@@ -18,7 +18,7 @@ class RectGenerator extends ShapeGenerator<DrawRect> {
           : r;
       final String drawMethod = command.rx > 0 || command.ry > 0 ? 'drawRRect' : 'drawRect';
 
-      generatePaintingCode(buffer, command.style, r, (
+      generatePaintingCode(buffer, command, command.style, r, (
         String p, {
         String? dashArray,
         String? pathLength,

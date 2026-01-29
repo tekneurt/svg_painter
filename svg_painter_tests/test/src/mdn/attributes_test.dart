@@ -9,6 +9,7 @@ import 'attributes/fill_painter.dart';
 import 'attributes/fx_painter.dart';
 import 'attributes/fy_painter.dart';
 import 'attributes/height_painter.dart';
+import 'attributes/id_painter.dart';
 import 'attributes/opacity_painter.dart';
 import 'attributes/path_length_painter.dart';
 import 'attributes/points_example_painter.dart';
@@ -64,6 +65,7 @@ final List<({CustomPainter painter, String name, Map<GoldenTestType, Set<TargetP
     GoldenTestType.viewBox: <TargetPlatform>{TargetPlatform.macOS},
   }),
   (painter: const HeightPainter(), name: 'height_painter', tests: defaultGoldenTests),
+  (painter: const IdPainter(), name: 'id_painter', tests: defaultGoldenTests),
   (painter: const OpacityPainter(), name: 'opacity_painter', tests: defaultGoldenTests),
   (painter: const PathLengthPainter(), name: 'path_length_painter', tests: defaultGoldenTests),
   (painter: const PointsExamplePainter(), name: 'points_example_painter', tests: defaultGoldenTests),

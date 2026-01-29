@@ -69,26 +69,12 @@ class _$RPainter extends CustomPainter {
         paint.style = PaintingStyle.fill;
         canvas.drawCircle(const Offset(150.0, 50.0), 25.0, paint);
       }
-      {
-        final Paint paint = Paint();
-        paint.color = const Color(0x00000000);
-        paint.style = PaintingStyle.stroke;
-        paint.strokeWidth = 1.0;
-        canvas.drawCircle(const Offset(150.0, 50.0), 25.0, paint);
-      }
     }
     {
       {
         final Paint paint = Paint();
         paint.color = const Color(0xFF000000);
         paint.style = PaintingStyle.fill;
-        canvas.drawCircle(const Offset(250.0, 50.0), 50.0, paint);
-      }
-      {
-        final Paint paint = Paint();
-        paint.color = const Color(0x00000000);
-        paint.style = PaintingStyle.stroke;
-        paint.strokeWidth = 1.0;
         canvas.drawCircle(const Offset(250.0, 50.0), 50.0, paint);
       }
     }
@@ -101,13 +87,6 @@ class _$RPainter extends CustomPainter {
         paint.style = PaintingStyle.fill;
         canvas.drawRect(Rect.fromLTWH(20.0, 120.0, 60.0, 60.0), paint);
       }
-      {
-        final Paint paint = Paint();
-        paint.color = const Color(0x00000000);
-        paint.style = PaintingStyle.stroke;
-        paint.strokeWidth = 1.0;
-        canvas.drawRect(Rect.fromLTWH(20.0, 120.0, 60.0, 60.0), paint);
-      }
     }
     {
       {
@@ -116,13 +95,6 @@ class _$RPainter extends CustomPainter {
           Rect.fromLTWH(120.0, 120.0, 60.0, 60.0),
         );
         paint.style = PaintingStyle.fill;
-        canvas.drawRect(Rect.fromLTWH(120.0, 120.0, 60.0, 60.0), paint);
-      }
-      {
-        final Paint paint = Paint();
-        paint.color = const Color(0x00000000);
-        paint.style = PaintingStyle.stroke;
-        paint.strokeWidth = 1.0;
         canvas.drawRect(Rect.fromLTWH(120.0, 120.0, 60.0, 60.0), paint);
       }
     }
@@ -135,19 +107,16 @@ class _$RPainter extends CustomPainter {
         paint.style = PaintingStyle.fill;
         canvas.drawRect(Rect.fromLTWH(220.0, 120.0, 60.0, 60.0), paint);
       }
-      {
-        final Paint paint = Paint();
-        paint.color = const Color(0x00000000);
-        paint.style = PaintingStyle.stroke;
-        paint.strokeWidth = 1.0;
-        canvas.drawRect(Rect.fromLTWH(220.0, 120.0, 60.0, 60.0), paint);
-      }
     }
     canvas.restore();
   }
 
   @override
   bool shouldRepaint(covariant _$RPainter oldDelegate) {
-    return fit != oldDelegate.fit;
+    if (fit == oldDelegate.fit) {
+      return false;
+    } else {
+      return true;
+    }
   }
 }

@@ -143,6 +143,10 @@ class _$MdnTextExamplePainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant _$MdnTextExamplePainter oldDelegate) {
-    return fit != oldDelegate.fit;
+    if (fit == oldDelegate.fit) {
+      return false;
+    } else {
+      return true;
+    }
   }
 }

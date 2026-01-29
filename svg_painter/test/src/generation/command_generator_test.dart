@@ -16,6 +16,7 @@ class TestShapeGenerator extends ShapeGenerator<DrawCircle> {
     wrapWithTransform(buffer, command.transform, () {
       generatePaintingCode(
         buffer,
+        command,
         command.style,
         'Rect.fromLTWH(${command.cx - command.radius}, ${command.cy - command.radius}, ${command.radius * 2}, ${command.radius * 2})',
         (String paintVar, {String? dashArray, String? pathLength}) {

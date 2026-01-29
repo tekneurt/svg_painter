@@ -155,9 +155,21 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
     buffer.writeln();
 
     buffer.writeln('class $className extends CustomPainter {');
-    buffer.writeln('  const $className({this.fit = BoxFit.contain});');
+    final Set<String> ids = <String>{};
+    _collectIds(commands, ids);
+    final List<String> sortedIds = ids.toList()..sort();
+
+    buffer.writeln('  const $className({');
+    buffer.writeln('    this.fit = BoxFit.contain,');
+    for (final String id in sortedIds) {
+      buffer.writeln('    this.${SvgIdFormatter.format(id)}Fill,');
+    }
+    buffer.writeln('  });');
     buffer.writeln();
     buffer.writeln('  final BoxFit fit;');
+    for (final String id in sortedIds) {
+      buffer.writeln('  final Color? ${SvgIdFormatter.format(id)}Fill;');
+    }
     buffer.writeln();
     buffer.writeln('  Size get viewBox => const Size($viewBoxWidth, $viewBoxHeight);');
     buffer.writeln();
@@ -230,7 +242,15 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
 
     buffer.writeln('  @override');
     buffer.writeln('  bool shouldRepaint(covariant $className oldDelegate) {');
-    buffer.writeln('    return fit != oldDelegate.fit;');
+    buffer.writeln('    if (fit == oldDelegate.fit) {');
+    for (final String id in sortedIds) {
+      final String prop = '${SvgIdFormatter.format(id)}Fill';
+      buffer.writeln('      if ($prop != oldDelegate.$prop) return true;');
+    }
+    buffer.writeln('      return false;');
+    buffer.writeln('    } else {');
+    buffer.writeln('      return true;');
+    buffer.writeln('    }');
     buffer.writeln('  }');
     buffer.writeln('}');
 
@@ -271,6 +291,20 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
       }
     }
     return false;
+  }
+
+  void _collectIds(List<PaintCommand> commands, Set<String> ids) {
+    for (final PaintCommand command in commands) {
+      if (command is! DefineGradient && command.id != null) {
+        final PaintingStyle? style = command.style;
+        if (style?.fill?.isExplicit == true) {
+          ids.add(command.id!);
+        }
+      }
+      if (command is DrawGroup) {
+        _collectIds(command.commands, ids);
+      }
+    }
   }
 
   @visibleForTesting

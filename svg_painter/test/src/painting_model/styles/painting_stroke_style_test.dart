@@ -18,8 +18,8 @@ void main() {
 
       // Assert
       expect(
-        result,
-        'PaintingStrokeStyle(color: 4278190080, shader: null, width: 2.0, opacity: 0.8, cap: PaintingStrokeCap.round, join: PaintingStrokeJoin.bevel)',
+        style.toString(),
+        'PaintingStrokeStyle(color: 4278190080, shader: null, width: 2.0, opacity: 0.8, cap: PaintingStrokeCap.round, join: PaintingStrokeJoin.bevel, explicit: true)',
       );
     });
   });

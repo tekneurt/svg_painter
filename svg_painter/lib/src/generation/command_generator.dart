@@ -1,5 +1,6 @@
 import '../painting_model/_painting_model.dart';
 import 'generation_extensions.dart';
+import 'svg_id_formatter.dart';
 
 /// Base class for all command-specific code generators.
 abstract class CommandGenerator<T extends PaintCommand> {
@@ -20,6 +21,7 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
   /// Helper to generate painting logic (Fill and Stroke) for a shape.
   void generatePaintingCode(
     StringBuffer buffer,
+    T command,
     PaintingStyle style,
     String boundsRect,
     void Function(String paintVar, {String? dashArray, String? pathLength}) drawCall,
@@ -29,25 +31,28 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
     if (fill != null) {
       buffer.writeln('      {');
       buffer.writeln('        final Paint paint = Paint();');
-      if (fill.shaderId != null) {
-        buffer.writeln('        paint.shader = _grad_${fill.shaderId}.createShader($boundsRect);');
-        if (fill.opacity < 1.0) {
-          buffer.writeln('        paint.color = paint.color.withOpacity(${fill.opacity});');
-        }
-      } else if (fill.colorArgb != null) {
-        final double finalOpacity = ((fill.colorArgb! >> 24) & 0xFF) / 255.0 * fill.opacity;
-        final int colorWithoutAlpha = fill.colorArgb! & 0x00FFFFFF;
-        final String colorHex = colorWithoutAlpha.toRadixString(16).toUpperCase().padLeft(6, '0');
-        buffer.writeln(
-          '        paint.color = const Color(0x${(finalOpacity * 255).round().toRadixString(16).toUpperCase().padLeft(2, '0')}$colorHex);',
-        );
+
+      final String? id = command.id;
+      if (id != null && fill.isExplicit) {
+        final String propName = '${SvgIdFormatter.format(id)}Fill';
+        // TODO(Gemini): Support both single color and gradient overrides.
+        buffer.writeln('        final Color? localFill = $propName;');
+        buffer.writeln('        if (localFill == null) {');
+        _generateOriginalFill(buffer, fill, boundsRect, indent: '          ');
+        buffer.writeln('        } else {');
+        buffer.writeln('          paint.color = localFill;');
+        buffer.writeln('        }');
+      } else {
+        _generateOriginalFill(buffer, fill, boundsRect, indent: '        ');
       }
+
       buffer.writeln('        paint.style = PaintingStyle.fill;');
       drawCall('paint');
       buffer.writeln('      }');
     }
 
     // 2. Stroke
+    // TODO(Gemini): Add stroke override support later.
     final PaintingStrokeStyle? stroke = style.stroke;
     if (stroke != null) {
       buffer.writeln('      {');
@@ -85,6 +90,27 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
         drawCall('paint');
       }
       buffer.writeln('      }');
+    }
+  }
+
+  void _generateOriginalFill(
+    StringBuffer buffer,
+    PaintingFillStyle fill,
+    String boundsRect, {
+    required String indent,
+  }) {
+    if (fill.shaderId != null) {
+      buffer.writeln('$indent paint.shader = _grad_${fill.shaderId}.createShader($boundsRect);');
+      if (fill.opacity < 1.0) {
+        buffer.writeln('$indent paint.color = paint.color.withOpacity(${fill.opacity});');
+      }
+    } else if (fill.colorArgb != null) {
+      final double finalOpacity = ((fill.colorArgb! >> 24) & 0xFF) / 255.0 * fill.opacity;
+      final int colorWithoutAlpha = fill.colorArgb! & 0x00FFFFFF;
+      final String colorHex = colorWithoutAlpha.toRadixString(16).toUpperCase().padLeft(6, '0');
+      buffer.writeln(
+        '$indent paint.color = const Color(0x${(finalOpacity * 255).round().toRadixString(16).toUpperCase().padLeft(2, '0')}$colorHex);',
+      );
     }
   }
 

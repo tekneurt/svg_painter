@@ -8,6 +8,7 @@ final class DrawCircle extends PaintCommand {
     required this.cy,
     required this.radius,
     required this.style,
+    super.id,
     this.transform,
   });
 

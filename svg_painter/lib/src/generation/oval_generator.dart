@@ -13,7 +13,7 @@ class OvalGenerator extends ShapeGenerator<DrawOval> {
     wrapWithTransform(buffer, command.transform, () {
       final String bounds =
           'Rect.fromCenter(center: const Offset(${command.cx}, ${command.cy}), width: ${command.rx * 2}, height: ${command.ry * 2})';
-      generatePaintingCode(buffer, command.style, bounds, (
+      generatePaintingCode(buffer, command, command.style, bounds, (
         String p, {
         String? dashArray,
         String? pathLength,

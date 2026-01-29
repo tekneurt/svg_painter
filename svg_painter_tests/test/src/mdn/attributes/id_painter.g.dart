@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'radial_gradient_painter.dart';
+part of 'id_painter.dart';
 
 // **************************************************************************
 // SvgPainterGenerator
@@ -10,18 +10,19 @@ part of 'radial_gradient_painter.dart';
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
 
-class _$RadialGradientPainter extends CustomPainter {
-  const _$RadialGradientPainter({this.fit = BoxFit.contain});
+class _$IdPainter extends CustomPainter {
+  const _$IdPainter({this.fit = BoxFit.contain, this.smallRectFill});
 
   final BoxFit fit;
+  final Color? smallRectFill;
 
-  Size get viewBox => const Size(100.0, 100.0);
+  Size get viewBox => const Size(120.0, 120.0);
 
   @override
   void paint(Canvas canvas, Size size) {
     final FittedSizes fittedSizes = applyBoxFit(
       fit,
-      const Size(100.0, 100.0),
+      const Size(120.0, 120.0),
       size,
     );
     final Size sourceSize = fittedSizes.source;
@@ -36,32 +37,35 @@ class _$RadialGradientPainter extends CustomPainter {
       destRect.width / sourceSize.width,
       destRect.height / sourceSize.height,
     );
-    canvas.clipRect(Rect.fromLTWH(0, 0, 100.0, 100.0));
+    canvas.clipRect(Rect.fromLTWH(0, 0, 120.0, 120.0));
 
-    final Gradient _grad_myGradient = RadialGradient(
-      center: Alignment(0.0, 0.0),
-      radius: 0.5,
-      focal: Alignment(0.0, 0.0),
-      focalRadius: 0.0,
-      colors: [Color(0xFFFFD700), Color(0xFFFF0000)],
-      stops: [0.1, 0.95],
-    );
     {
       {
         final Paint paint = Paint();
-        paint.shader = _grad_myGradient.createShader(
-          Rect.fromCircle(center: const Offset(50.0, 50.0), radius: 50.0),
-        );
+        final Color? localFill = smallRectFill;
+        if (localFill == null) {
+          paint.color = const Color(0xFF00CC00);
+        } else {
+          paint.color = localFill;
+        }
         paint.style = PaintingStyle.fill;
-        canvas.drawCircle(const Offset(50.0, 50.0), 50.0, paint);
+        canvas.drawRect(Rect.fromLTWH(10.0, 10.0, 100.0, 100.0), paint);
+      }
+      {
+        final Paint paint = Paint();
+        paint.color = const Color(0xFF000066);
+        paint.style = PaintingStyle.stroke;
+        paint.strokeWidth = 1.0;
+        canvas.drawRect(Rect.fromLTWH(10.0, 10.0, 100.0, 100.0), paint);
       }
     }
     canvas.restore();
   }
 
   @override
-  bool shouldRepaint(covariant _$RadialGradientPainter oldDelegate) {
+  bool shouldRepaint(covariant _$IdPainter oldDelegate) {
     if (fit == oldDelegate.fit) {
+      if (smallRectFill != oldDelegate.smallRectFill) return true;
       return false;
     } else {
       return true;

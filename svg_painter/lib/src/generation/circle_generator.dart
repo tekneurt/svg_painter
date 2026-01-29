@@ -13,7 +13,7 @@ class CircleGenerator extends ShapeGenerator<DrawCircle> {
     wrapWithTransform(buffer, command.transform, () {
       final String bounds =
           'Rect.fromCircle(center: const Offset(${command.cx}, ${command.cy}), radius: ${command.radius})';
-      generatePaintingCode(buffer, command.style, bounds, (
+      generatePaintingCode(buffer, command, command.style, bounds, (
         String p, {
         String? dashArray,
         String? pathLength,

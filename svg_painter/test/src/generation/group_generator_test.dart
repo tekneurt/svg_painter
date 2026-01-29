@@ -39,7 +39,7 @@ void main() {
     test('should generate saveLayer when groupOpacity is less than 1.0', () {
       // Arrange
       const GroupGenerator generator = GroupGenerator();
-      const DrawGroup command = DrawGroup(commands: <PaintCommand>[], groupOpacity: 0.5);
+      const DrawGroup command = DrawGroup(commands: <PaintCommand>[], opacity: 0.5);
       final StringBuffer buffer = StringBuffer();
 
       // Act

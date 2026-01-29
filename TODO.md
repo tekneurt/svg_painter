@@ -127,8 +127,14 @@
 ### Phase 3: Dynamic Properties & Customizable Widget (0.2.0)
 *The core differentiator: creating plug-and-play components.*
 
-- [ ] **Property Mapping Strategy**: Define the rule set for exposing properties (e.g., `id="circle1"` -> `circle1Fill`). Implement `IdentifierSanitizer`.
-- [ ] **Dynamic Fill/Stroke Colors**: Generate `final Color? [id]Fill` and `final Color? [id]Stroke` fields.
+- [x] **Property Mapping Strategy**: Define the rule set for exposing properties (e.g., `id="circle1"` -> `circle1Fill`). Implement `SvgIdFormatter`.
+- [ ] **Dynamic Fill/Stroke Colors**:
+    - [ ] **ID-Based Exposure**:
+        - [x] Generate `final Color? [id]Fill` fields for explicit SVG fills.
+        - [ ] Generate `final Color? [id]Stroke` fields for explicit SVG strokes.
+    - [ ] **Index-Based Exposure**: Generate `final Color? fill1`, `fill2`, etc. for elements without IDs, allowing control without modifying the SVG.
+- [ ] **Property Renaming Configuration**: Allow developers to map generated property names to semantic ones (e.g., map `fill1` to `backgroundFill` or `fillBottom`) via the annotation.
+- [ ] **Dynamic Style Inheritance**: Support runtime property overrides for inherited styles (e.g., overriding a group's `fill` should affect all children inheriting from it).
 - [ ] **Daphnia Widget Generation**:
     - [ ] Generate a convenience `StatelessWidget` (e.g., `MyIcon`) that wraps the `CustomPainter`.
     - [ ] Expose all "Dynamic Properties" as constructor arguments in the generated Widget.

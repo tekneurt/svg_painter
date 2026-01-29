@@ -18,6 +18,7 @@ extension SvgEllipseToPaintCommands on SvgEllipse {
     final PaintingStyle paint = resolvePaint(
       context,
       tagName: 'ellipse',
+      id: id,
       fill: fill,
       fillOpacity: fillOpacity,
       stroke: stroke,
@@ -44,6 +45,7 @@ extension SvgEllipseToPaintCommands on SvgEllipse {
         rx: finalRx,
         ry: finalRy,
         style: paint,
+        id: id,
         transform: SvgTransformParser.scaleTransform(transform, context.parentSx, context.parentSy),
       ),
     ]);

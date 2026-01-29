@@ -40,7 +40,7 @@ class PolyGenerator extends ShapeGenerator<PaintCommand> {
         sb.write('const Offset(${pts[i]}, ${pts[i + 1]})');
       }
       buffer.writeln('        path.addPolygon([$sb], $closed);');
-      generatePaintingCode(buffer, style, 'path.getBounds()', (
+      generatePaintingCode(buffer, command, style, 'path.getBounds()', (
         String p, {
         String? dashArray,
         String? pathLength,

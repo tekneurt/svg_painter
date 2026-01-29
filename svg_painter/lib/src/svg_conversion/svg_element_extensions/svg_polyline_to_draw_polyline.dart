@@ -29,6 +29,7 @@ extension SvgPolylineToPaintCommands on SvgPolyline {
     final PaintingStyle paint = resolvePaint(
       context,
       tagName: 'polyline',
+      id: id,
       fill: fill,
       fillOpacity: fillOpacity,
       stroke: stroke,
@@ -46,6 +47,7 @@ extension SvgPolylineToPaintCommands on SvgPolyline {
       DrawPolyline(
         points: resolvedPoints,
         style: paint,
+        id: id,
         transform: SvgTransformParser.scaleTransform(transform, context.parentSx, context.parentSy),
       ),
     ]);

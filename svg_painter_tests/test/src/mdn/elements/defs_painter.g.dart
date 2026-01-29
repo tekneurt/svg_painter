@@ -54,19 +54,16 @@ class _$DefsPainter extends CustomPainter {
         paint.style = PaintingStyle.fill;
         canvas.drawCircle(const Offset(5.0, 5.0), 5.0, paint);
       }
-      {
-        final Paint paint = Paint();
-        paint.color = const Color(0x00000000);
-        paint.style = PaintingStyle.stroke;
-        paint.strokeWidth = 1.0;
-        canvas.drawCircle(const Offset(5.0, 5.0), 5.0, paint);
-      }
     }
     canvas.restore();
   }
 
   @override
   bool shouldRepaint(covariant _$DefsPainter oldDelegate) {
-    return fit != oldDelegate.fit;
+    if (fit == oldDelegate.fit) {
+      return false;
+    } else {
+      return true;
+    }
   }
 }

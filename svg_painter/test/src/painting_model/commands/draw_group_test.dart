@@ -9,7 +9,7 @@ void main() {
       const DrawGroup command = DrawGroup(
         commands: <PaintCommand>[DrawCircle(cx: 1.0, cy: 2.0, radius: 5.0, style: PaintingStyle())],
         transform: 'translate(10, 11)',
-        groupOpacity: 0.5,
+        opacity: 0.5,
       );
 
       // Act

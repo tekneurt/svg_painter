@@ -11,7 +11,7 @@ void main() {
       final String result = style.toString();
 
       // Assert
-      expect(result, 'PaintingFillStyle(color: 4278190080, shader: null, opacity: 0.5)');
+      expect(result, 'PaintingFillStyle(color: 4278190080, shader: null, opacity: 0.5, explicit: true)');
     });
   });
 }

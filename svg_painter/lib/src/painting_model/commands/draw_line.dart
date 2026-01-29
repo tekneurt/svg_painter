@@ -9,6 +9,7 @@ final class DrawLine extends PaintCommand {
     required this.x2,
     required this.y2,
     required this.style,
+    super.id,
     this.transform,
   });
 

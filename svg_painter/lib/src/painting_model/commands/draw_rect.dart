@@ -11,6 +11,7 @@ final class DrawRect extends PaintCommand {
     required this.rx,
     required this.ry,
     required this.style,
+    super.id,
     this.transform,
   });
 

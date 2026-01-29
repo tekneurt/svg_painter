@@ -4,10 +4,11 @@ part of '../paint_command.dart';
 @immutable
 final class DrawText extends PaintCommand {
   const DrawText({
+    required this.text,
     required this.x,
     required this.y,
-    required this.text,
     required this.style,
+    super.id,
     this.transform,
   });
 

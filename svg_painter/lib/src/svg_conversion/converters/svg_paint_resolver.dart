@@ -8,6 +8,7 @@ import 'svg_painting_context.dart';
 PaintingStyle resolvePaint(
   SvgPaintingContext context, {
   String? tagName,
+  String? id,
   SvgColor? fill,
   SvgLengthPercentage? fillOpacity,
   SvgStrokeAttributes? stroke,
@@ -23,7 +24,7 @@ PaintingStyle resolvePaint(
   // 1. Resolve CSS properties
   final Map<String, String> resolvedRules = <String, String>{};
 
-  // Priority: Tag selector < Class selector < Inline style
+  // Priority: Tag selector < Class selector < ID selector < Inline style
 
   // a. Tag selector rules
   if (tagName != null) {
@@ -44,7 +45,15 @@ PaintingStyle resolvePaint(
     }
   }
 
-  // c. Inline style (overrides classes and tags)
+  // c. ID selector rules
+  if (id != null) {
+    final Map<String, String>? rules = context.styleSheet.rules['#$id'];
+    if (rules != null) {
+      resolvedRules.addAll(rules);
+    }
+  }
+
+  // d. Inline style (overrides everything else)
   if (inlineStyle != null) {
     final List<String> declarations = inlineStyle.split(';');
     for (final String decl in declarations) {
@@ -134,6 +143,19 @@ PaintingStyle resolvePaint(
     cssPathLength = resolvedRules['pathLength']!.toSvgLength();
   }
 
+  // Determine if fill/stroke are explicit (not just inherited)
+  final bool isFillExplicit =
+      fill != null ||
+      cssFill != null ||
+      resolvedRules.containsKey('fill') ||
+      inlineStyle?.contains('fill:') == true;
+
+  final bool isStrokeExplicit =
+      stroke != null ||
+      cssStroke != null ||
+      resolvedRules.containsKey('stroke') ||
+      inlineStyle?.contains('stroke:') == true;
+
   // 4. Resolve element opacity (group opacity)
   final double selfOpacity = (cssOpacity ?? opacity)?.resolve(context, .unit) ?? 1.0;
   final double elementOpacity = selfOpacity * context.parentOpacity;
@@ -160,6 +182,7 @@ PaintingStyle resolvePaint(
       colorArgb: fillColorArgb,
       shaderId: fillShaderId,
       opacity: finalFillOpacity,
+      isExplicit: isFillExplicit,
     );
   }
 
@@ -213,6 +236,7 @@ PaintingStyle resolvePaint(
       join: resolvedJoin.toStrokeJoin(),
       dashArray: finalDashArray,
       pathLength: finalPathLength,
+      isExplicit: isStrokeExplicit,
     );
   }
 

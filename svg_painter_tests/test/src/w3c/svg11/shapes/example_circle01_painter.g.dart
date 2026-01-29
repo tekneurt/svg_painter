@@ -83,6 +83,10 @@ class _$ExampleCircle01Painter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant _$ExampleCircle01Painter oldDelegate) {
-    return fit != oldDelegate.fit;
+    if (fit == oldDelegate.fit) {
+      return false;
+    } else {
+      return true;
+    }
   }
 }
