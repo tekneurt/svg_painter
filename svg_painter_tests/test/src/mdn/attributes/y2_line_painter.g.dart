@@ -41,7 +41,7 @@ class _$Y2LinePainter extends CustomPainter {
     {
       {
         final Paint paint = Paint();
-        paint.color = const Color(0xFF000000);
+        paint.color = Colors.black;
         paint.style = PaintingStyle.fill;
         canvas.drawLine(const Offset(1.0, 5.0), const Offset(9.0, 1.0), paint);
       }
@@ -56,7 +56,7 @@ class _$Y2LinePainter extends CustomPainter {
     {
       {
         final Paint paint = Paint();
-        paint.color = const Color(0xFF000000);
+        paint.color = Colors.black;
         paint.style = PaintingStyle.fill;
         canvas.drawLine(const Offset(1.0, 5.0), const Offset(9.0, 5.0), paint);
       }
@@ -71,7 +71,7 @@ class _$Y2LinePainter extends CustomPainter {
     {
       {
         final Paint paint = Paint();
-        paint.color = const Color(0xFF000000);
+        paint.color = Colors.black;
         paint.style = PaintingStyle.fill;
         canvas.drawLine(const Offset(1.0, 5.0), const Offset(9.0, 9.0), paint);
       }

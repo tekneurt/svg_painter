@@ -41,13 +41,13 @@ class _$Y2LinearGradientPainter extends CustomPainter {
     final Gradient _grad_g0 = LinearGradient(
       begin: Alignment(-1.0, -1.0),
       end: Alignment(1.0, -1.0),
-      colors: [Color(0xFF000000), Color(0xFFFF0000), Color(0xFF000000)],
+      colors: [Colors.black, const Color(0xFFFF0000), Colors.black],
       stops: [0.05, 0.5, 0.95],
     );
     final Gradient _grad_g1 = LinearGradient(
       begin: Alignment(-1.0, -1.0),
       end: Alignment(1.0, 1.0),
-      colors: [Color(0xFF000000), Color(0xFFFF0000), Color(0xFF000000)],
+      colors: [Colors.black, const Color(0xFFFF0000), Colors.black],
       stops: [0.05, 0.5, 0.95],
     );
     {

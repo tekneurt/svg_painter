@@ -43,7 +43,7 @@ class _$RadialGradientPainter extends CustomPainter {
       radius: 0.5,
       focal: Alignment(0.0, 0.0),
       focalRadius: 0.0,
-      colors: [Color(0xFFFFD700), Color(0xFFFF0000)],
+      colors: [const Color(0xFFFFD700), const Color(0xFFFF0000)],
       stops: [0.1, 0.95],
     );
     {

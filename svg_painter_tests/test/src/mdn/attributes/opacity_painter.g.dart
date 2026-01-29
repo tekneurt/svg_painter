@@ -41,7 +41,7 @@ class _$OpacityPainter extends CustomPainter {
     final Gradient _grad_gradient = LinearGradient(
       begin: Alignment(-1.0, -1.0),
       end: Alignment(-1.0, 1.0),
-      colors: [Color(0xFF87CEEB), Color(0xFF2E8B57)],
+      colors: [const Color(0xFF87CEEB), const Color(0xFF2E8B57)],
       stops: [0.0, 1.0],
     );
     {
@@ -57,7 +57,7 @@ class _$OpacityPainter extends CustomPainter {
     {
       {
         final Paint paint = Paint();
-        paint.color = const Color(0xFF000000);
+        paint.color = Colors.black;
         paint.style = PaintingStyle.fill;
         canvas.drawCircle(const Offset(50.0, 50.0), 40.0, paint);
       }

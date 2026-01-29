@@ -41,13 +41,13 @@ class _$StrokeLinecapPainter extends CustomPainter {
     {
       {
         final Paint paint = Paint();
-        paint.color = const Color(0xFF000000);
+        paint.color = Colors.black;
         paint.style = PaintingStyle.fill;
         canvas.drawLine(const Offset(1.0, 1.0), const Offset(5.0, 1.0), paint);
       }
       {
         final Paint paint = Paint();
-        paint.color = const Color(0xFF000000);
+        paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.0;
         canvas.drawLine(const Offset(1.0, 1.0), const Offset(5.0, 1.0), paint);
@@ -56,13 +56,13 @@ class _$StrokeLinecapPainter extends CustomPainter {
     {
       {
         final Paint paint = Paint();
-        paint.color = const Color(0xFF000000);
+        paint.color = Colors.black;
         paint.style = PaintingStyle.fill;
         canvas.drawLine(const Offset(1.0, 3.0), const Offset(5.0, 3.0), paint);
       }
       {
         final Paint paint = Paint();
-        paint.color = const Color(0xFF000000);
+        paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.0;
         paint.strokeCap = StrokeCap.round;
@@ -72,13 +72,13 @@ class _$StrokeLinecapPainter extends CustomPainter {
     {
       {
         final Paint paint = Paint();
-        paint.color = const Color(0xFF000000);
+        paint.color = Colors.black;
         paint.style = PaintingStyle.fill;
         canvas.drawLine(const Offset(1.0, 5.0), const Offset(5.0, 5.0), paint);
       }
       {
         final Paint paint = Paint();
-        paint.color = const Color(0xFF000000);
+        paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.0;
         paint.strokeCap = StrokeCap.square;
@@ -97,7 +97,7 @@ class _$StrokeLinecapPainter extends CustomPainter {
         path.lineTo(5.0, 5.0);
         {
           final Paint paint = Paint();
-          paint.color = const Color(0xFF000000);
+          paint.color = Colors.black;
           paint.style = PaintingStyle.fill;
           canvas.drawPath(path, paint);
         }
@@ -163,13 +163,13 @@ class _$StrokeLinecapButtPainter extends CustomPainter {
         path.lineTo(5.0, 1.0);
         {
           final Paint paint = Paint();
-          paint.color = const Color(0xFF000000);
+          paint.color = Colors.black;
           paint.style = PaintingStyle.fill;
           canvas.drawPath(path, paint);
         }
         {
           final Paint paint = Paint();
-          paint.color = const Color(0xFF000000);
+          paint.color = Colors.black;
           paint.style = PaintingStyle.stroke;
           paint.strokeWidth = 1.0;
           canvas.drawPath(path, paint);
@@ -184,13 +184,13 @@ class _$StrokeLinecapButtPainter extends CustomPainter {
         path.lineTo(3.0, 3.0);
         {
           final Paint paint = Paint();
-          paint.color = const Color(0xFF000000);
+          paint.color = Colors.black;
           paint.style = PaintingStyle.fill;
           canvas.drawPath(path, paint);
         }
         {
           final Paint paint = Paint();
-          paint.color = const Color(0xFF000000);
+          paint.color = Colors.black;
           paint.style = PaintingStyle.stroke;
           paint.strokeWidth = 1.0;
           canvas.drawPath(path, paint);
@@ -205,7 +205,7 @@ class _$StrokeLinecapButtPainter extends CustomPainter {
         path.lineTo(5.0, 1.0);
         {
           final Paint paint = Paint();
-          paint.color = const Color(0xFF000000);
+          paint.color = Colors.black;
           paint.style = PaintingStyle.fill;
           canvas.drawPath(path, paint);
         }
@@ -295,13 +295,13 @@ class _$StrokeLinecapRoundPainter extends CustomPainter {
         path.lineTo(5.0, 1.0);
         {
           final Paint paint = Paint();
-          paint.color = const Color(0xFF000000);
+          paint.color = Colors.black;
           paint.style = PaintingStyle.fill;
           canvas.drawPath(path, paint);
         }
         {
           final Paint paint = Paint();
-          paint.color = const Color(0xFF000000);
+          paint.color = Colors.black;
           paint.style = PaintingStyle.stroke;
           paint.strokeWidth = 1.0;
           paint.strokeCap = StrokeCap.round;
@@ -317,13 +317,13 @@ class _$StrokeLinecapRoundPainter extends CustomPainter {
         path.lineTo(3.0, 3.0);
         {
           final Paint paint = Paint();
-          paint.color = const Color(0xFF000000);
+          paint.color = Colors.black;
           paint.style = PaintingStyle.fill;
           canvas.drawPath(path, paint);
         }
         {
           final Paint paint = Paint();
-          paint.color = const Color(0xFF000000);
+          paint.color = Colors.black;
           paint.style = PaintingStyle.stroke;
           paint.strokeWidth = 1.0;
           paint.strokeCap = StrokeCap.round;
@@ -339,7 +339,7 @@ class _$StrokeLinecapRoundPainter extends CustomPainter {
         path.lineTo(5.0, 1.0);
         {
           final Paint paint = Paint();
-          paint.color = const Color(0xFF000000);
+          paint.color = Colors.black;
           paint.style = PaintingStyle.fill;
           canvas.drawPath(path, paint);
         }
@@ -429,13 +429,13 @@ class _$StrokeLinecapSquarePainter extends CustomPainter {
         path.lineTo(5.0, 1.0);
         {
           final Paint paint = Paint();
-          paint.color = const Color(0xFF000000);
+          paint.color = Colors.black;
           paint.style = PaintingStyle.fill;
           canvas.drawPath(path, paint);
         }
         {
           final Paint paint = Paint();
-          paint.color = const Color(0xFF000000);
+          paint.color = Colors.black;
           paint.style = PaintingStyle.stroke;
           paint.strokeWidth = 1.0;
           paint.strokeCap = StrokeCap.square;
@@ -451,13 +451,13 @@ class _$StrokeLinecapSquarePainter extends CustomPainter {
         path.lineTo(3.0, 3.0);
         {
           final Paint paint = Paint();
-          paint.color = const Color(0xFF000000);
+          paint.color = Colors.black;
           paint.style = PaintingStyle.fill;
           canvas.drawPath(path, paint);
         }
         {
           final Paint paint = Paint();
-          paint.color = const Color(0xFF000000);
+          paint.color = Colors.black;
           paint.style = PaintingStyle.stroke;
           paint.strokeWidth = 1.0;
           paint.strokeCap = StrokeCap.square;
@@ -473,7 +473,7 @@ class _$StrokeLinecapSquarePainter extends CustomPainter {
         path.lineTo(5.0, 1.0);
         {
           final Paint paint = Paint();
-          paint.color = const Color(0xFF000000);
+          paint.color = Colors.black;
           paint.style = PaintingStyle.fill;
           canvas.drawPath(path, paint);
         }

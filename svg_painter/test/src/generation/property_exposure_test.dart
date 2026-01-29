@@ -118,5 +118,24 @@ void main() {
       expect(output, contains('} else {'));
       expect(output, contains('paint.color = localStroke;'));
     });
+
+    test('should use named Flutter colors (including shades) when a match exists', () {
+      // Arrange
+      // 0xFFFFAB91 matches Colors.deepOrange.shade200
+      const String svg = '''
+<svg viewBox="0 0 100 100">
+  <circle id="orangeCircle" cx="50" cy="50" r="40" fill="#FFAB91" />
+</svg>
+''';
+
+      // Act
+      final String output = generator.generateFromSvg(
+        elementName: 'ShadedPainter',
+        svgContent: svg,
+      );
+
+      // Assert
+      expect(output, contains('paint.color = Colors.deepOrange.shade200;'));
+    });
   });
 }

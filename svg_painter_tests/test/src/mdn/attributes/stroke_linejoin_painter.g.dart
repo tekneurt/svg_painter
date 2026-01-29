@@ -59,7 +59,7 @@ class _$StrokeLinejoinPainter extends CustomPainter {
         );
         {
           final Paint paint = Paint();
-          paint.color = const Color(0xFF000000);
+          paint.color = Colors.black;
           paint.style = PaintingStyle.stroke;
           paint.strokeWidth = 1.0;
           canvas.drawPath(path, paint);
@@ -87,7 +87,7 @@ class _$StrokeLinejoinPainter extends CustomPainter {
         );
         {
           final Paint paint = Paint();
-          paint.color = const Color(0xFF000000);
+          paint.color = Colors.black;
           paint.style = PaintingStyle.stroke;
           paint.strokeWidth = 1.0;
           paint.strokeJoin = StrokeJoin.round;
@@ -116,7 +116,7 @@ class _$StrokeLinejoinPainter extends CustomPainter {
         );
         {
           final Paint paint = Paint();
-          paint.color = const Color(0xFF000000);
+          paint.color = Colors.black;
           paint.style = PaintingStyle.stroke;
           paint.strokeWidth = 1.0;
           paint.strokeJoin = StrokeJoin.bevel;
@@ -145,7 +145,7 @@ class _$StrokeLinejoinPainter extends CustomPainter {
         );
         {
           final Paint paint = Paint();
-          paint.color = const Color(0xFF000000);
+          paint.color = Colors.black;
           paint.style = PaintingStyle.stroke;
           paint.strokeWidth = 1.0;
           canvas.drawPath(path, paint);
@@ -173,7 +173,7 @@ class _$StrokeLinejoinPainter extends CustomPainter {
         );
         {
           final Paint paint = Paint();
-          paint.color = const Color(0xFF000000);
+          paint.color = Colors.black;
           paint.style = PaintingStyle.stroke;
           paint.strokeWidth = 1.0;
           canvas.drawPath(path, paint);
@@ -516,7 +516,7 @@ class _$StrokeLinejoinArcsPainter extends CustomPainter {
         );
         {
           final Paint paint = Paint();
-          paint.color = const Color(0xFF000000);
+          paint.color = Colors.black;
           paint.style = PaintingStyle.stroke;
           paint.strokeWidth = 1.0;
           canvas.drawPath(path, paint);
@@ -631,7 +631,7 @@ class _$StrokeLinejoinBevelPainter extends CustomPainter {
         path.lineTo(5.0, 5.0);
         {
           final Paint paint = Paint();
-          paint.color = const Color(0xFF000000);
+          paint.color = Colors.black;
           paint.style = PaintingStyle.stroke;
           paint.strokeWidth = 1.0;
           paint.strokeJoin = StrokeJoin.bevel;
@@ -735,7 +735,7 @@ class _$StrokeLinejoinMiterPainter extends CustomPainter {
         path.lineTo(5.0, 6.0);
         {
           final Paint paint = Paint();
-          paint.color = const Color(0xFF000000);
+          paint.color = Colors.black;
           paint.style = PaintingStyle.stroke;
           paint.strokeWidth = 1.0;
           canvas.drawPath(path, paint);
@@ -751,7 +751,7 @@ class _$StrokeLinejoinMiterPainter extends CustomPainter {
         path.lineTo(8.5, 6.0);
         {
           final Paint paint = Paint();
-          paint.color = const Color(0xFF000000);
+          paint.color = Colors.black;
           paint.style = PaintingStyle.stroke;
           paint.strokeWidth = 1.0;
           canvas.drawPath(path, paint);
@@ -766,7 +766,7 @@ class _$StrokeLinejoinMiterPainter extends CustomPainter {
         path.lineTo(10.0, 1.0);
         {
           final Paint paint = Paint();
-          paint.color = const Color(0xFF000000);
+          paint.color = Colors.black;
           paint.style = PaintingStyle.fill;
           canvas.drawPath(path, paint);
         }
@@ -942,7 +942,7 @@ class _$StrokeLinejoinMiterClipPainter extends CustomPainter {
         path.lineTo(5.0, 6.0);
         {
           final Paint paint = Paint();
-          paint.color = const Color(0xFF000000);
+          paint.color = Colors.black;
           paint.style = PaintingStyle.stroke;
           paint.strokeWidth = 1.0;
           canvas.drawPath(path, paint);
@@ -958,7 +958,7 @@ class _$StrokeLinejoinMiterClipPainter extends CustomPainter {
         path.lineTo(8.5, 6.0);
         {
           final Paint paint = Paint();
-          paint.color = const Color(0xFF000000);
+          paint.color = Colors.black;
           paint.style = PaintingStyle.stroke;
           paint.strokeWidth = 1.0;
           canvas.drawPath(path, paint);
@@ -973,7 +973,7 @@ class _$StrokeLinejoinMiterClipPainter extends CustomPainter {
         path.lineTo(10.0, 1.0);
         {
           final Paint paint = Paint();
-          paint.color = const Color(0xFF000000);
+          paint.color = Colors.black;
           paint.style = PaintingStyle.fill;
           canvas.drawPath(path, paint);
         }
@@ -1149,7 +1149,7 @@ class _$StrokeLinejoinRoundPainter extends CustomPainter {
         path.lineTo(5.0, 5.0);
         {
           final Paint paint = Paint();
-          paint.color = const Color(0xFF000000);
+          paint.color = Colors.black;
           paint.style = PaintingStyle.stroke;
           paint.strokeWidth = 1.0;
           paint.strokeJoin = StrokeJoin.round;

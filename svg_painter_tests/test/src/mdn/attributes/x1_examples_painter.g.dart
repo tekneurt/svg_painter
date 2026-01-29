@@ -41,7 +41,7 @@ class _$X1ExamplesPainter extends CustomPainter {
     {
       {
         final Paint paint = Paint();
-        paint.color = const Color(0xFF000000);
+        paint.color = Colors.black;
         paint.style = PaintingStyle.fill;
         canvas.drawLine(
           const Offset(2.0, 5.0),
@@ -64,7 +64,7 @@ class _$X1ExamplesPainter extends CustomPainter {
     {
       {
         final Paint paint = Paint();
-        paint.color = const Color(0xFF000000);
+        paint.color = Colors.black;
         paint.style = PaintingStyle.fill;
         canvas.drawLine(
           const Offset(12.0, 5.0),
@@ -87,7 +87,7 @@ class _$X1ExamplesPainter extends CustomPainter {
     {
       {
         final Paint paint = Paint();
-        paint.color = const Color(0xFF000000);
+        paint.color = Colors.black;
         paint.style = PaintingStyle.fill;
         canvas.drawLine(
           const Offset(22.0, 5.0),

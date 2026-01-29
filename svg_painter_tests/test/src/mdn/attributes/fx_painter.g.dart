@@ -43,7 +43,7 @@ class _$FxPainter extends CustomPainter {
       radius: 0.5,
       focal: Alignment(-0.30000000000000004, -0.30000000000000004),
       focalRadius: 0.05,
-      colors: [Color(0xFFFFFFFF), Color(0xFF8FBC8F)],
+      colors: [Colors.white, const Color(0xFF8FBC8F)],
       stops: [0.0, 1.0],
     );
     final Gradient _grad_gradient2 = RadialGradient(
@@ -51,7 +51,7 @@ class _$FxPainter extends CustomPainter {
       radius: 0.5,
       focal: Alignment(0.5, -0.30000000000000004),
       focalRadius: 0.05,
-      colors: [Color(0xFFFFFFFF), Color(0xFF8FBC8F)],
+      colors: [Colors.white, const Color(0xFF8FBC8F)],
       stops: [0.0, 1.0],
     );
     {

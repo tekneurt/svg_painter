@@ -132,7 +132,8 @@
     - [x] **ID-Based Exposure**:
         - [x] Generate `final Color? [id]Fill` fields for explicit SVG fills.
         - [x] Generate `final Color? [id]Stroke` fields for explicit SVG strokes.
-        - [ ] Use named colors (e.g., `Colors.red`) in generated code when available instead of hex notation.
+        - [x] Use named colors (e.g., `Colors.red`) in generated code when available instead of hex notation.
+            - [x] Reverse-map ANY ARGB value to a matching Flutter `Colors` constant (e.g., `0xFFFFC107` -> `Colors.amber`) for readability.
     - [ ] **Index-Based Exposure**: Generate `final Color? fill1`, `fill2`, etc. for elements without IDs, allowing control without modifying the SVG.
 - [ ] **Property Renaming Configuration**: Allow developers to map generated property names to semantic ones (e.g., map `fill1` to `backgroundFill` or `fillBottom`) via the annotation.
 - [ ] **Dynamic Style Inheritance**: Support runtime property overrides for inherited styles (e.g., overriding a group's `fill` should affect all children inheriting from it).
@@ -161,6 +162,10 @@
 ## Post-MVP Roadmap
 
 ### Phase 5: Recommended "Wise-to-Have" Features (0.4.0)
+- [ ] **Configurable Color Generation**: Add `colorMapping` option to `@SvgPainter`.
+    - `material` (default): Use Flutter's `Colors.red`, `Colors.amber.shade200`.
+    - `svg`: Use SVG constants like `Color(0xFFFF0000)` but potentially aliased to a generated `SvgColors` class for readability.
+    - `hex`: Strict `Color(0xAARRGGBB)` usage.
 - [ ] **Advanced Pathing**: `<marker>` support and `context-fill`/`context-stroke` keywords.
 - [ ] **Text along Curves**: `<textPath>` implementation.
 - [ ] **Containers**: `<switch>` for conditional rendering.

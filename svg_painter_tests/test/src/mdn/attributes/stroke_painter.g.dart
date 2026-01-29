@@ -41,7 +41,7 @@ class _$StrokePainter extends CustomPainter {
     final Gradient _grad_myGradient = LinearGradient(
       begin: Alignment(-1.0, -1.0),
       end: Alignment(1.0, -1.0),
-      colors: [Color(0xFF008000), Color(0xFFFFFFFF)],
+      colors: [const Color(0xFF008000), Colors.white],
       stops: [0.0, 1.0],
     );
     {

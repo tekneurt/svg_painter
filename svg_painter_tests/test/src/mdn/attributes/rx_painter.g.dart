@@ -41,7 +41,7 @@ class _$RxPainter extends CustomPainter {
     {
       {
         final Paint paint = Paint();
-        paint.color = const Color(0xFF000000);
+        paint.color = Colors.black;
         paint.style = PaintingStyle.fill;
         canvas.drawOval(
           Rect.fromCenter(
@@ -56,7 +56,7 @@ class _$RxPainter extends CustomPainter {
     {
       {
         final Paint paint = Paint();
-        paint.color = const Color(0xFF000000);
+        paint.color = Colors.black;
         paint.style = PaintingStyle.fill;
         canvas.drawOval(
           Rect.fromCenter(
@@ -71,7 +71,7 @@ class _$RxPainter extends CustomPainter {
     {
       {
         final Paint paint = Paint();
-        paint.color = const Color(0xFF000000);
+        paint.color = Colors.black;
         paint.style = PaintingStyle.fill;
         canvas.drawRRect(
           RRect.fromRectAndRadius(
@@ -85,7 +85,7 @@ class _$RxPainter extends CustomPainter {
     {
       {
         final Paint paint = Paint();
-        paint.color = const Color(0xFF000000);
+        paint.color = Colors.black;
         paint.style = PaintingStyle.fill;
         canvas.drawRRect(
           RRect.fromRectAndRadius(
@@ -99,7 +99,7 @@ class _$RxPainter extends CustomPainter {
     {
       {
         final Paint paint = Paint();
-        paint.color = const Color(0xFF000000);
+        paint.color = Colors.black;
         paint.style = PaintingStyle.fill;
         canvas.drawRRect(
           RRect.fromRectAndRadius(

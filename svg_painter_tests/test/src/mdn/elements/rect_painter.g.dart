@@ -41,7 +41,7 @@ class _$RectPainter extends CustomPainter {
     {
       {
         final Paint paint = Paint();
-        paint.color = const Color(0xFF000000);
+        paint.color = Colors.black;
         paint.style = PaintingStyle.fill;
         canvas.drawRect(Rect.fromLTWH(0.0, 0.0, 100.0, 100.0), paint);
       }
@@ -49,7 +49,7 @@ class _$RectPainter extends CustomPainter {
     {
       {
         final Paint paint = Paint();
-        paint.color = const Color(0xFF000000);
+        paint.color = Colors.black;
         paint.style = PaintingStyle.fill;
         canvas.drawRRect(
           RRect.fromRectAndRadius(

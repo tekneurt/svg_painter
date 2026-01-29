@@ -47,7 +47,7 @@ class _$WidthPainter extends CustomPainter {
       }
       {
         final Paint paint = Paint();
-        paint.color = const Color(0xFF000000);
+        paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 5.0;
         canvas.drawRect(Rect.fromLTWH(0.0, 100.0, 60.0, 90.0), paint);
@@ -62,7 +62,7 @@ class _$WidthPainter extends CustomPainter {
       }
       {
         final Paint paint = Paint();
-        paint.color = const Color(0xFF000000);
+        paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 5.0;
         canvas.drawRect(Rect.fromLTWH(0.0, 200.0, 100.0, 90.0), paint);

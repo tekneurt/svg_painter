@@ -50,7 +50,7 @@ class _$PointsExamplePainter extends CustomPainter {
         ], false);
         {
           final Paint paint = Paint();
-          paint.color = const Color(0xFF000000);
+          paint.color = Colors.black;
           paint.style = PaintingStyle.stroke;
           paint.strokeWidth = 1.0;
           canvas.drawPath(path, paint);
@@ -70,7 +70,7 @@ class _$PointsExamplePainter extends CustomPainter {
       ], true);
       {
         final Paint paint = Paint();
-        paint.color = const Color(0xFF000000);
+        paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.0;
         canvas.drawPath(path, paint);

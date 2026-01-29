@@ -41,7 +41,7 @@ class _$ViewBox2Painter extends CustomPainter {
     {
       {
         final Paint paint = Paint();
-        paint.color = const Color(0xFF000000);
+        paint.color = Colors.black;
         paint.style = PaintingStyle.fill;
         canvas.drawRect(Rect.fromLTWH(0.0, 0.0, 10.0, 10.0), paint);
       }
@@ -49,7 +49,7 @@ class _$ViewBox2Painter extends CustomPainter {
     {
       {
         final Paint paint = Paint();
-        paint.color = const Color(0xFFFFFFFF);
+        paint.color = Colors.white;
         paint.style = PaintingStyle.fill;
         canvas.drawCircle(const Offset(5.0, 5.0), 4.0, paint);
       }

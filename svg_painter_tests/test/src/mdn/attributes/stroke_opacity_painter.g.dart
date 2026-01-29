@@ -41,7 +41,7 @@ class _$StrokeOpacityPainter extends CustomPainter {
     {
       {
         final Paint paint = Paint();
-        paint.color = const Color(0xFF000000);
+        paint.color = Colors.black;
         paint.style = PaintingStyle.fill;
         canvas.drawCircle(const Offset(5.0, 5.0), 4.0, paint);
       }
@@ -56,7 +56,7 @@ class _$StrokeOpacityPainter extends CustomPainter {
     {
       {
         final Paint paint = Paint();
-        paint.color = const Color(0xFF000000);
+        paint.color = Colors.black;
         paint.style = PaintingStyle.fill;
         canvas.drawCircle(const Offset(15.0, 5.0), 4.0, paint);
       }
@@ -71,7 +71,7 @@ class _$StrokeOpacityPainter extends CustomPainter {
     {
       {
         final Paint paint = Paint();
-        paint.color = const Color(0xFF000000);
+        paint.color = Colors.black;
         paint.style = PaintingStyle.fill;
         canvas.drawCircle(const Offset(25.0, 5.0), 4.0, paint);
       }
@@ -86,7 +86,7 @@ class _$StrokeOpacityPainter extends CustomPainter {
     {
       {
         final Paint paint = Paint();
-        paint.color = const Color(0xFF000000);
+        paint.color = Colors.black;
         paint.style = PaintingStyle.fill;
         canvas.drawCircle(const Offset(35.0, 5.0), 4.0, paint);
       }

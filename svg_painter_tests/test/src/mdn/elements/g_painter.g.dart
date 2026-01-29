@@ -42,7 +42,7 @@ class _$GPainter extends CustomPainter {
       {
         {
           final Paint paint = Paint();
-          paint.color = const Color(0xFFFFFFFF);
+          paint.color = Colors.white;
           paint.style = PaintingStyle.fill;
           canvas.drawCircle(const Offset(40.0, 40.0), 25.0, paint);
         }
@@ -57,7 +57,7 @@ class _$GPainter extends CustomPainter {
       {
         {
           final Paint paint = Paint();
-          paint.color = const Color(0xFFFFFFFF);
+          paint.color = Colors.white;
           paint.style = PaintingStyle.fill;
           canvas.drawCircle(const Offset(60.0, 60.0), 25.0, paint);
         }

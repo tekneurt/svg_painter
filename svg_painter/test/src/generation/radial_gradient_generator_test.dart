@@ -34,6 +34,7 @@ void main() {
       expect(output, contains('radius: 0.3'));
       expect(output, contains('focal: Alignment(-0.19999999999999996, 0.0)'));
       expect(output, contains('focalRadius: 0.05'));
+      expect(output, contains('colors: [const Color(0xFFFF0000), const Color(0xFF0000FF)]'));
     });
   });
 }

@@ -43,7 +43,7 @@ class _$FillPainter extends CustomPainter {
       radius: 0.5,
       focal: Alignment(0.0, 0.0),
       focalRadius: 0.0,
-      colors: [Color(0xFFFFC0CB), Color(0xFF000000)],
+      colors: [const Color(0xFFFFC0CB), Colors.black],
       stops: [0.0, 1.0],
     );
     {

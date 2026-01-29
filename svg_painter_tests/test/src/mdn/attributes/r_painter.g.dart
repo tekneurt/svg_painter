@@ -43,7 +43,7 @@ class _$RPainter extends CustomPainter {
       radius: 0.0,
       focal: Alignment(0.0, 0.0),
       focalRadius: 0.0,
-      colors: [Color(0xFFFFFFFF), Color(0xFF000000)],
+      colors: [Colors.white, Colors.black],
       stops: [0.0, 1.0],
     );
     final Gradient _grad_myGradient050 = RadialGradient(
@@ -51,7 +51,7 @@ class _$RPainter extends CustomPainter {
       radius: 0.5,
       focal: Alignment(0.0, 0.0),
       focalRadius: 0.0,
-      colors: [Color(0xFFFFFFFF), Color(0xFF000000)],
+      colors: [Colors.white, Colors.black],
       stops: [0.0, 1.0],
     );
     final Gradient _grad_myGradient100 = RadialGradient(
@@ -59,13 +59,13 @@ class _$RPainter extends CustomPainter {
       radius: 1.0,
       focal: Alignment(0.0, 0.0),
       focalRadius: 0.0,
-      colors: [Color(0xFFFFFFFF), Color(0xFF000000)],
+      colors: [Colors.white, Colors.black],
       stops: [0.0, 1.0],
     );
     {
       {
         final Paint paint = Paint();
-        paint.color = const Color(0xFF000000);
+        paint.color = Colors.black;
         paint.style = PaintingStyle.fill;
         canvas.drawCircle(const Offset(150.0, 50.0), 25.0, paint);
       }
@@ -73,7 +73,7 @@ class _$RPainter extends CustomPainter {
     {
       {
         final Paint paint = Paint();
-        paint.color = const Color(0xFF000000);
+        paint.color = Colors.black;
         paint.style = PaintingStyle.fill;
         canvas.drawCircle(const Offset(250.0, 50.0), 50.0, paint);
       }

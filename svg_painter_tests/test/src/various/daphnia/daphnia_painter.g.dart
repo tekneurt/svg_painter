@@ -107,7 +107,7 @@ class _$DaphniaPainter extends CustomPainter {
         path.close();
         {
           final Paint paint = Paint();
-          paint.color = const Color(0xFFFFFFFF);
+          paint.color = Colors.white;
           paint.style = PaintingStyle.fill;
           canvas.drawPath(path, paint);
         }

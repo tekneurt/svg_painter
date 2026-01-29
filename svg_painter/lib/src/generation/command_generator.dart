@@ -1,4 +1,5 @@
 import '../painting_model/_painting_model.dart';
+import 'flutter_color_map.dart';
 import 'generation_extensions.dart';
 import 'svg_id_formatter.dart';
 
@@ -106,11 +107,10 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
       }
     } else if (stroke.colorArgb != null) {
       final double finalOpacity = ((stroke.colorArgb! >> 24) & 0xFF) / 255.0 * stroke.opacity;
-      final int colorWithoutAlpha = stroke.colorArgb! & 0x00FFFFFF;
-      final String colorHex = colorWithoutAlpha.toRadixString(16).toUpperCase().padLeft(6, '0');
-      buffer.writeln(
-        '$indent paint.color = const Color(0x${(finalOpacity * 255).round().toRadixString(16).toUpperCase().padLeft(2, '0')}$colorHex);',
-      );
+      final int alpha = (finalOpacity * 255).round().clamp(0, 255);
+      final int colorWithOpacity = (stroke.colorArgb! & 0x00FFFFFF) | (alpha << 24);
+      final String colorCode = FlutterColorMap.getColorCode(colorWithOpacity);
+      buffer.writeln('$indent paint.color = $colorCode;');
     }
   }
 
@@ -127,11 +127,10 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
       }
     } else if (fill.colorArgb != null) {
       final double finalOpacity = ((fill.colorArgb! >> 24) & 0xFF) / 255.0 * fill.opacity;
-      final int colorWithoutAlpha = fill.colorArgb! & 0x00FFFFFF;
-      final String colorHex = colorWithoutAlpha.toRadixString(16).toUpperCase().padLeft(6, '0');
-      buffer.writeln(
-        '$indent paint.color = const Color(0x${(finalOpacity * 255).round().toRadixString(16).toUpperCase().padLeft(2, '0')}$colorHex);',
-      );
+      final int alpha = (finalOpacity * 255).round().clamp(0, 255);
+      final int colorWithOpacity = (fill.colorArgb! & 0x00FFFFFF) | (alpha << 24);
+      final String colorCode = FlutterColorMap.getColorCode(colorWithOpacity);
+      buffer.writeln('$indent paint.color = $colorCode;');
     }
   }
 

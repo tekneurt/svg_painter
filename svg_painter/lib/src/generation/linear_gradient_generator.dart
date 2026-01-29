@@ -1,5 +1,6 @@
 import '../painting_model/_painting_model.dart';
 import 'command_generator.dart';
+import 'flutter_color_map.dart';
 
 class LinearGradientGenerator extends CommandGenerator<DefineLinearGradient> {
   const LinearGradientGenerator();
@@ -11,7 +12,7 @@ class LinearGradientGenerator extends CommandGenerator<DefineLinearGradient> {
     Map<Type, CommandGenerator<PaintCommand>>? generators,
   }) {
     final String colors =
-        '[${command.stops.map((GradientStop s) => 'Color(0x${s.colorArgb.toRadixString(16).toUpperCase()})').join(', ')}]';
+        '[${command.stops.map((GradientStop s) => FlutterColorMap.getColorCode(s.colorArgb)).join(', ')}]';
     final String stops =
         '[${command.stops.map((GradientStop s) => s.offset.toString()).join(', ')}]';
     final String transform = command.transform == 'rotate(90)'

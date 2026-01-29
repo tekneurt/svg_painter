@@ -41,7 +41,7 @@ class _$DefsPainter extends CustomPainter {
     final Gradient _grad_myGradient = LinearGradient(
       begin: Alignment(-1.0, -1.0),
       end: Alignment(1.0, -1.0),
-      colors: [Color(0xFFFFD700), Color(0xFFFF0000)],
+      colors: [const Color(0xFFFFD700), const Color(0xFFFF0000)],
       stops: [0.2, 0.9],
       transform: const GradientRotation(3.141592653589793 / 2),
     );

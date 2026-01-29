@@ -1,5 +1,6 @@
 export 'circle_generator.dart';
 export 'command_generator.dart';
+export 'flutter_color_map.dart';
 export 'generation_extensions.dart';
 export 'group_generator.dart';
 export 'svg_id_formatter.dart';
