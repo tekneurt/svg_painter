@@ -52,25 +52,23 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
     }
 
     // 2. Stroke
-    // TODO(Gemini): Add stroke override support later.
     final PaintingStrokeStyle? stroke = style.stroke;
     if (stroke != null) {
       buffer.writeln('      {');
       buffer.writeln('        final Paint paint = Paint();');
-      if (stroke.shaderId != null) {
-        buffer.writeln(
-          '        paint.shader = _grad_${stroke.shaderId}.createShader($boundsRect);',
-        );
-        if (stroke.opacity < 1.0) {
-          buffer.writeln('        paint.color = paint.color.withOpacity(${stroke.opacity});');
-        }
-      } else if (stroke.colorArgb != null) {
-        final double finalOpacity = ((stroke.colorArgb! >> 24) & 0xFF) / 255.0 * stroke.opacity;
-        final int colorWithoutAlpha = stroke.colorArgb! & 0x00FFFFFF;
-        final String colorHex = colorWithoutAlpha.toRadixString(16).toUpperCase().padLeft(6, '0');
-        buffer.writeln(
-          '        paint.color = const Color(0x${(finalOpacity * 255).round().toRadixString(16).toUpperCase().padLeft(2, '0')}$colorHex);',
-        );
+
+      final String? id = command.id;
+      if (id != null && stroke.isExplicit) {
+        final String propName = '${SvgIdFormatter.format(id)}Stroke';
+        // TODO(Gemini): Support both single color and gradient overrides.
+        buffer.writeln('        final Color? localStroke = $propName;');
+        buffer.writeln('        if (localStroke == null) {');
+        _generateOriginalStroke(buffer, stroke, boundsRect, indent: '          ');
+        buffer.writeln('        } else {');
+        buffer.writeln('          paint.color = localStroke;');
+        buffer.writeln('        }');
+      } else {
+        _generateOriginalStroke(buffer, stroke, boundsRect, indent: '        ');
       }
 
       buffer.writeln('        paint.style = PaintingStyle.stroke;');
@@ -90,6 +88,29 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
         drawCall('paint');
       }
       buffer.writeln('      }');
+    }
+  }
+
+  void _generateOriginalStroke(
+    StringBuffer buffer,
+    PaintingStrokeStyle stroke,
+    String boundsRect, {
+    required String indent,
+  }) {
+    if (stroke.shaderId != null) {
+      buffer.writeln(
+        '$indent paint.shader = _grad_${stroke.shaderId}.createShader($boundsRect);',
+      );
+      if (stroke.opacity < 1.0) {
+        buffer.writeln('$indent paint.color = paint.color.withOpacity(${stroke.opacity});');
+      }
+    } else if (stroke.colorArgb != null) {
+      final double finalOpacity = ((stroke.colorArgb! >> 24) & 0xFF) / 255.0 * stroke.opacity;
+      final int colorWithoutAlpha = stroke.colorArgb! & 0x00FFFFFF;
+      final String colorHex = colorWithoutAlpha.toRadixString(16).toUpperCase().padLeft(6, '0');
+      buffer.writeln(
+        '$indent paint.color = const Color(0x${(finalOpacity * 255).round().toRadixString(16).toUpperCase().padLeft(2, '0')}$colorHex);',
+      );
     }
   }
 

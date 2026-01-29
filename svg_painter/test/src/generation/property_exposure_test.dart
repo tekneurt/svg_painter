@@ -94,5 +94,29 @@ void main() {
       // Assert
       expect(output, isNot(contains('implicitCircleFill')));
     });
+
+    test('should generate a nullable Color property for elements with an explicit stroke', () {
+      // Arrange
+      const String svg = '''
+<svg viewBox="0 0 100 100">
+  <rect id="strokedRect" x="10" y="10" width="80" height="80" stroke="blue" />
+</svg>
+''';
+
+      // Act
+      final String output = generator.generateFromSvg(
+        elementName: 'StrokePainter',
+        svgContent: svg,
+      );
+
+      // Assert
+      expect(output, contains('final Color? strokedRectStroke;'));
+      expect(output, contains('this.strokedRectStroke,'));
+      expect(output, contains('final Color? localStroke = strokedRectStroke;'));
+      expect(output, contains('if (localStroke == null) {'));
+      expect(output, contains('paint.color = const Color(0xFF0000FF);'));
+      expect(output, contains('} else {'));
+      expect(output, contains('paint.color = localStroke;'));
+    });
   });
 }

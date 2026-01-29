@@ -11,9 +11,10 @@ part of 'use_element_painter.dart';
 // ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
 
 class _$UseElementPainter extends CustomPainter {
-  const _$UseElementPainter({this.fit = BoxFit.contain});
+  const _$UseElementPainter({this.fit = BoxFit.contain, this.myCircleStroke});
 
   final BoxFit fit;
+  final Color? myCircleStroke;
 
   Size get viewBox => const Size(30.0, 10.0);
 
@@ -47,7 +48,12 @@ class _$UseElementPainter extends CustomPainter {
       }
       {
         final Paint paint = Paint();
-        paint.color = const Color(0xFF0000FF);
+        final Color? localStroke = myCircleStroke;
+        if (localStroke == null) {
+          paint.color = const Color(0xFF0000FF);
+        } else {
+          paint.color = localStroke;
+        }
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.0;
         canvas.drawCircle(const Offset(5.0, 5.0), 4.0, paint);
@@ -62,7 +68,12 @@ class _$UseElementPainter extends CustomPainter {
       }
       {
         final Paint paint = Paint();
-        paint.color = const Color(0xFF0000FF);
+        final Color? localStroke = myCircleStroke;
+        if (localStroke == null) {
+          paint.color = const Color(0xFF0000FF);
+        } else {
+          paint.color = localStroke;
+        }
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.0;
         canvas.drawCircle(const Offset(15.0, 5.0), 4.0, paint);
@@ -77,7 +88,12 @@ class _$UseElementPainter extends CustomPainter {
       }
       {
         final Paint paint = Paint();
-        paint.color = const Color(0xFF0000FF);
+        final Color? localStroke = myCircleStroke;
+        if (localStroke == null) {
+          paint.color = const Color(0xFF0000FF);
+        } else {
+          paint.color = localStroke;
+        }
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.0;
         canvas.drawCircle(const Offset(25.0, 5.0), 4.0, paint);
@@ -89,6 +105,7 @@ class _$UseElementPainter extends CustomPainter {
   @override
   bool shouldRepaint(covariant _$UseElementPainter oldDelegate) {
     if (fit == oldDelegate.fit) {
+      if (myCircleStroke != oldDelegate.myCircleStroke) return true;
       return false;
     } else {
       return true;

@@ -11,10 +11,15 @@ part of 'id_painter.dart';
 // ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
 
 class _$IdPainter extends CustomPainter {
-  const _$IdPainter({this.fit = BoxFit.contain, this.smallRectFill});
+  const _$IdPainter({
+    this.fit = BoxFit.contain,
+    this.smallRectFill,
+    this.smallRectStroke,
+  });
 
   final BoxFit fit;
   final Color? smallRectFill;
+  final Color? smallRectStroke;
 
   Size get viewBox => const Size(120.0, 120.0);
 
@@ -53,7 +58,12 @@ class _$IdPainter extends CustomPainter {
       }
       {
         final Paint paint = Paint();
-        paint.color = const Color(0xFF000066);
+        final Color? localStroke = smallRectStroke;
+        if (localStroke == null) {
+          paint.color = const Color(0xFF000066);
+        } else {
+          paint.color = localStroke;
+        }
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.0;
         canvas.drawRect(Rect.fromLTWH(10.0, 10.0, 100.0, 100.0), paint);
@@ -66,6 +76,7 @@ class _$IdPainter extends CustomPainter {
   bool shouldRepaint(covariant _$IdPainter oldDelegate) {
     if (fit == oldDelegate.fit) {
       if (smallRectFill != oldDelegate.smallRectFill) return true;
+      if (smallRectStroke != oldDelegate.smallRectStroke) return true;
       return false;
     } else {
       return true;

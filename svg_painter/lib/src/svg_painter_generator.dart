@@ -155,20 +155,29 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
     buffer.writeln();
 
     buffer.writeln('class $className extends CustomPainter {');
-    final Set<String> ids = <String>{};
-    _collectIds(commands, ids);
-    final List<String> sortedIds = ids.toList()..sort();
+    final Set<String> fillIds = <String>{};
+    final Set<String> strokeIds = <String>{};
+    _collectIds(commands, fillIds, strokeIds);
+    
+    final List<String> sortedFillIds = fillIds.toList()..sort();
+    final List<String> sortedStrokeIds = strokeIds.toList()..sort();
 
     buffer.writeln('  const $className({');
     buffer.writeln('    this.fit = BoxFit.contain,');
-    for (final String id in sortedIds) {
+    for (final String id in sortedFillIds) {
       buffer.writeln('    this.${SvgIdFormatter.format(id)}Fill,');
+    }
+    for (final String id in sortedStrokeIds) {
+      buffer.writeln('    this.${SvgIdFormatter.format(id)}Stroke,');
     }
     buffer.writeln('  });');
     buffer.writeln();
     buffer.writeln('  final BoxFit fit;');
-    for (final String id in sortedIds) {
+    for (final String id in sortedFillIds) {
       buffer.writeln('  final Color? ${SvgIdFormatter.format(id)}Fill;');
+    }
+    for (final String id in sortedStrokeIds) {
+      buffer.writeln('  final Color? ${SvgIdFormatter.format(id)}Stroke;');
     }
     buffer.writeln();
     buffer.writeln('  Size get viewBox => const Size($viewBoxWidth, $viewBoxHeight);');
@@ -243,8 +252,12 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
     buffer.writeln('  @override');
     buffer.writeln('  bool shouldRepaint(covariant $className oldDelegate) {');
     buffer.writeln('    if (fit == oldDelegate.fit) {');
-    for (final String id in sortedIds) {
+    for (final String id in sortedFillIds) {
       final String prop = '${SvgIdFormatter.format(id)}Fill';
+      buffer.writeln('      if ($prop != oldDelegate.$prop) return true;');
+    }
+    for (final String id in sortedStrokeIds) {
+      final String prop = '${SvgIdFormatter.format(id)}Stroke';
       buffer.writeln('      if ($prop != oldDelegate.$prop) return true;');
     }
     buffer.writeln('      return false;');
@@ -293,16 +306,23 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
     return false;
   }
 
-  void _collectIds(List<PaintCommand> commands, Set<String> ids) {
+  void _collectIds(
+    List<PaintCommand> commands,
+    Set<String> fillIds,
+    Set<String> strokeIds,
+  ) {
     for (final PaintCommand command in commands) {
       if (command is! DefineGradient && command.id != null) {
         final PaintingStyle? style = command.style;
         if (style?.fill?.isExplicit == true) {
-          ids.add(command.id!);
+          fillIds.add(command.id!);
+        }
+        if (style?.stroke?.isExplicit == true) {
+          strokeIds.add(command.id!);
         }
       }
       if (command is DrawGroup) {
-        _collectIds(command.commands, ids);
+        _collectIds(command.commands, fillIds, strokeIds);
       }
     }
   }

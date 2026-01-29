@@ -129,9 +129,10 @@
 
 - [x] **Property Mapping Strategy**: Define the rule set for exposing properties (e.g., `id="circle1"` -> `circle1Fill`). Implement `SvgIdFormatter`.
 - [ ] **Dynamic Fill/Stroke Colors**:
-    - [ ] **ID-Based Exposure**:
+    - [x] **ID-Based Exposure**:
         - [x] Generate `final Color? [id]Fill` fields for explicit SVG fills.
-        - [ ] Generate `final Color? [id]Stroke` fields for explicit SVG strokes.
+        - [x] Generate `final Color? [id]Stroke` fields for explicit SVG strokes.
+        - [ ] Use named colors (e.g., `Colors.red`) in generated code when available instead of hex notation.
     - [ ] **Index-Based Exposure**: Generate `final Color? fill1`, `fill2`, etc. for elements without IDs, allowing control without modifying the SVG.
 - [ ] **Property Renaming Configuration**: Allow developers to map generated property names to semantic ones (e.g., map `fill1` to `backgroundFill` or `fillBottom`) via the annotation.
 - [ ] **Dynamic Style Inheritance**: Support runtime property overrides for inherited styles (e.g., overriding a group's `fill` should affect all children inheriting from it).
