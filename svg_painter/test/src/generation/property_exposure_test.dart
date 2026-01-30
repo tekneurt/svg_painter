@@ -32,8 +32,7 @@ void main() {
       expect(output, contains('paint.color = localFill;'));
       // Check shouldRepaint
       expect(output, contains(r'bool shouldRepaint(covariant _$MyPainter oldDelegate) {'));
-      expect(output, contains('if (fit == oldDelegate.fit) {'));
-      expect(output, contains('if (myCircleFill != oldDelegate.myCircleFill) return true;'));
+      expect(output, contains('if (fit == oldDelegate.fit && myCircleFill == oldDelegate.myCircleFill) {'));
       expect(output, contains('return false;'));
       expect(output, contains('} else {'));
       expect(output, contains('return true;'));

@@ -30,7 +30,9 @@ class LineGenerator extends ShapeGenerator<DrawLine> {
           String? dashArray,
           String? pathLength,
         }) {
-          if (dashArray != null) {
+          if (dashArray == null) {
+            buffer.writeln('      canvas.drawLine($p1, $p2, $p);');
+          } else {
             final String plArg = (pathLength != null && pathLength.isNotEmpty)
                 ? ', pathLength: $pathLength'
                 : '';
@@ -40,8 +42,6 @@ class LineGenerator extends ShapeGenerator<DrawLine> {
             buffer.writeln('        path.lineTo(${command.x2}, ${command.y2});');
             buffer.writeln('        canvas.drawPath(_dashPath(path, $dashArray$plArg), $p);');
             buffer.writeln('      }');
-          } else {
-            buffer.writeln('      canvas.drawLine($p1, $p2, $p);');
           }
         },
         palette: palette,

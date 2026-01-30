@@ -119,12 +119,12 @@ class PathDataParser {
             final double y = isRelative ? lastY + params[i++] : params[i++];
 
             double x1, y1;
-            if (lastControlX != null && lastControlY != null) {
-              x1 = 2 * lastX - lastControlX!;
-              y1 = 2 * lastY - lastControlY!;
-            } else {
+            if (lastControlX == null || lastControlY == null) {
               x1 = lastX;
               y1 = lastY;
+            } else {
+              x1 = 2 * lastX - lastControlX!;
+              y1 = 2 * lastY - lastControlY!;
             }
 
             operations.add(
@@ -171,12 +171,12 @@ class PathDataParser {
             final double y = isRelative ? lastY + params[i++] : params[i++];
 
             double x1, y1;
-            if (lastControlX != null && lastControlY != null) {
-              x1 = 2 * lastX - lastControlX!;
-              y1 = 2 * lastY - lastControlY!;
-            } else {
+            if (lastControlX == null || lastControlY == null) {
               x1 = lastX;
               y1 = lastY;
+            } else {
+              x1 = 2 * lastX - lastControlX!;
+              y1 = 2 * lastY - lastControlY!;
             }
 
             operations.add(
@@ -238,25 +238,29 @@ class PathDataParser {
     }
 
     for (final Match match in matches) {
-      if (match.group(1) != null) {
+      if (match.group(1) == null) {
+        final String? param = match.group(2);
+        if (param == null) {
+          // Separator or whitespace
+        } else {
+          params.add(double.parse(param));
+        }
+      } else {
         // New command
         flushCommand();
-        if (errorMessage != null) {
+        if (errorMessage == null) {
+          currentCommand = match.group(1);
+        } else {
           return Failure<List<PathOperation>>(errorMessage!);
         }
-        currentCommand = match.group(1);
-      } else if (match.group(2) != null) {
-        // Parameter
-        params.add(double.parse(match.group(2)!));
       }
-      // Ignore separators (match.group(0) where both are null)
     }
     flushCommand();
 
-    if (errorMessage != null) {
+    if (errorMessage == null) {
+      return Success<List<PathOperation>>(operations);
+    } else {
       return Failure<List<PathOperation>>(errorMessage!);
     }
-
-    return Success<List<PathOperation>>(operations);
   }
 }

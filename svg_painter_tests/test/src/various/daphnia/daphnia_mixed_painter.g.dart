@@ -649,10 +649,10 @@ class _$DaphniaMixedPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant _$DaphniaMixedPainter oldDelegate) {
-    if (fit == oldDelegate.fit) {
-      if (fill1 != oldDelegate.fill1) return true;
-      if (fill2 != oldDelegate.fill2) return true;
-      if (fill3 != oldDelegate.fill3) return true;
+    if (fit == oldDelegate.fit &&
+        fill1 == oldDelegate.fill1 &&
+        fill2 == oldDelegate.fill2 &&
+        fill3 == oldDelegate.fill3) {
       return false;
     } else {
       return true;

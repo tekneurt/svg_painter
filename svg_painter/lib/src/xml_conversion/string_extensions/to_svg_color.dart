@@ -12,7 +12,9 @@ extension ToSvgColor on String {
 
     // url(#id) - Case sensitive ID
     final String? urlId = trimmed.extractUrlId();
-    if (urlId != null) {
+    if (urlId == null) {
+      // Not a reference
+    } else {
       return SvgPaintReference(urlId);
     }
 
@@ -28,7 +30,9 @@ extension ToSvgColor on String {
 
     // Named colors
     final SvgColorName? name = SvgColorName.fromName(normalized);
-    if (name != null) {
+    if (name == null) {
+      // Not a named color
+    } else {
       return SvgNamedColor(name);
     }
 
@@ -104,14 +108,18 @@ extension ToSvgColor on String {
 
     if (hex.length == 6) {
       final int? val = int.tryParse(hex, radix: 16);
-      if (val != null) {
+      if (val == null) {
+        return null;
+      } else {
         return SvgRgbColor.fromArgb(0xFF000000 | val);
       }
     }
 
     if (hex.length == 8) {
       final int? val = int.tryParse(hex, radix: 16);
-      if (val != null) {
+      if (val == null) {
+        return null;
+      } else {
         // SVG hex 8-digit is RRGGBBAA, but SvgColor.fromArgb expects AARRGGBB
         final int rr = (val >> 24) & 0xFF;
         final int gg = (val >> 16) & 0xFF;

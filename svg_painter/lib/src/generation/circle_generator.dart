@@ -28,7 +28,11 @@ class CircleGenerator extends ShapeGenerator<DrawCircle> {
           String? dashArray,
           String? pathLength,
         }) {
-          if (dashArray != null) {
+          if (dashArray == null) {
+            buffer.writeln(
+              '      canvas.drawCircle(const Offset(${command.cx}, ${command.cy}), ${command.radius}, $p);',
+            );
+          } else {
             final String plArg = (pathLength != null && pathLength.isNotEmpty)
                 ? ', pathLength: $pathLength'
                 : '';
@@ -36,10 +40,6 @@ class CircleGenerator extends ShapeGenerator<DrawCircle> {
             buffer.writeln('        final Path path = Path()..addOval($bounds);');
             buffer.writeln('        canvas.drawPath(_dashPath(path, $dashArray$plArg), $p);');
             buffer.writeln('      }');
-          } else {
-            buffer.writeln(
-              '      canvas.drawCircle(const Offset(${command.cx}, ${command.cy}), ${command.radius}, $p);',
-            );
           }
         },
         palette: palette,

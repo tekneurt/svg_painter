@@ -23,7 +23,9 @@ class TextGenerator extends ShapeGenerator<DrawText> {
       buffer.writeln('          style: TextStyle(');
 
       final PaintingFillStyle? fill = command.style.fill;
-      if (fill != null && fill.colorArgb != null) {
+      if (fill == null || fill.colorArgb == null) {
+        // No fill or no color
+      } else {
         final double finalOpacity = ((fill.colorArgb! >> 24) & 0xFF) / 255.0 * fill.opacity;
         final int colorWithoutAlpha = fill.colorArgb! & 0x00FFFFFF;
         final String colorHex = colorWithoutAlpha.toRadixString(16).toUpperCase().padLeft(6, '0');

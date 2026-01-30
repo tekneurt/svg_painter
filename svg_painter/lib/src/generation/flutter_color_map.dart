@@ -241,12 +241,12 @@ class FlutterColorMap {
   /// Falls back to `const Color(0x...)` if no named match is found.
   static String getColorCode(int colorArgb) {
     final String? name = _valueToName[colorArgb];
-    if (name != null) {
+    if (name == null) {
+      // Standard hex representation
+      final String hex = colorArgb.toRadixString(16).toUpperCase().padLeft(8, '0');
+      return 'const Color(0x$hex)';
+    } else {
       return name;
     }
-
-    // Standard hex representation
-    final String hex = colorArgb.toRadixString(16).toUpperCase().padLeft(8, '0');
-    return 'const Color(0x$hex)';
   }
 }

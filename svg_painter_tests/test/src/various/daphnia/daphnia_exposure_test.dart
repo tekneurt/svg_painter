@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:svg_painter_fixtures/svg_painter_fixtures.dart';
 import '../../../test_utils.dart';
-import 'daphnia_id_painter.dart';
 import 'daphnia_indexed_painter.dart';
 import 'daphnia_mixed_painter.dart';
 
@@ -12,15 +10,10 @@ void main() {
   });
 
   group('Daphnia Exposure Modes', () {
-    test('ID mode should NOT expose properties (no IDs on shapes)', () {
-      const DaphniaIdPainter painter = DaphniaIdPainter();
-      // Verify instantiation works. No properties to test.
-    });
-
     testWidgets('Indexed mode should match original SVG by default', (WidgetTester tester) async {
       // No overrides. Should match daphnia.svg visual.
       const DaphniaIndexedPainter painter = DaphniaIndexedPainter();
-      
+
       await testSvgPainter(
         tester: tester,
         painter: painter,
@@ -38,7 +31,7 @@ void main() {
         fill2: Colors.blue,
         fill3: Colors.red,
       );
-      
+
       await testSvgPainter(
         tester: tester,
         painter: painter,
@@ -54,7 +47,7 @@ void main() {
         fill2: Colors.blue,
         fill3: Colors.red,
       );
-      
+
       await testSvgPainter(
         tester: tester,
         painter: painter,

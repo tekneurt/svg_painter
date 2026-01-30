@@ -51,13 +51,13 @@ class PathGenerator extends ShapeGenerator<DrawPath> {
           String? dashArray,
           String? pathLength,
         }) {
-          if (dashArray != null) {
+          if (dashArray == null) {
+            buffer.writeln('        canvas.drawPath(path, $paintVar);');
+          } else {
             final String plArg = (pathLength != null && pathLength.isNotEmpty)
                 ? ', pathLength: $pathLength'
                 : '';
             buffer.writeln('        canvas.drawPath(_dashPath(path, $dashArray$plArg), $paintVar);');
-          } else {
-            buffer.writeln('        canvas.drawPath(path, $paintVar);');
           }
         },
         palette: palette,

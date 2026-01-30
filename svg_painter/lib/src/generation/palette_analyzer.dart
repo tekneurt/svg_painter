@@ -80,12 +80,17 @@ class PaletteAnalyzer {
 
     // Sort groups by frequency (descending), then by key (for stability).
     final List<MapEntry<_StyleKey, List<PaintCommand>>> sortedEntries = groups.entries.toList()
-      ..sort((MapEntry<_StyleKey, List<PaintCommand>> a, MapEntry<_StyleKey, List<PaintCommand>> b) {
+      ..sort((
+        MapEntry<_StyleKey, List<PaintCommand>> a,
+        MapEntry<_StyleKey, List<PaintCommand>> b,
+      ) {
         final int countCompare = b.value.length.compareTo(a.value.length);
-        if (countCompare != 0) {
+
+        if (countCompare == 0) {
+          return a.key.compareTo(b.key);
+        } else {
           return countCompare;
         }
-        return a.key.compareTo(b.key);
       });
 
     // If there is only one group, name it simply 'fill' or 'stroke'.

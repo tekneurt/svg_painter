@@ -4,7 +4,9 @@ extension SvgElementToDefinitions on SvgElement {
   /// recursively collects all elements with IDs into a map.
   void collectDefinitions(Map<String, SvgElement> map) {
     final SvgElement self = this;
-    if (self.id != null) {
+    if (self.id == null) {
+      // No ID
+    } else {
       map[self.id!] = self;
     }
 

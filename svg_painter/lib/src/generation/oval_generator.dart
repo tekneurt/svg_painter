@@ -28,7 +28,9 @@ class OvalGenerator extends ShapeGenerator<DrawOval> {
           String? dashArray,
           String? pathLength,
         }) {
-          if (dashArray != null) {
+          if (dashArray == null) {
+            buffer.writeln('      canvas.drawOval($bounds, $p);');
+          } else {
             final String plArg = (pathLength != null && pathLength.isNotEmpty)
                 ? ', pathLength: $pathLength'
                 : '';
@@ -36,8 +38,6 @@ class OvalGenerator extends ShapeGenerator<DrawOval> {
             buffer.writeln('        final Path path = Path()..addOval($bounds);');
             buffer.writeln('        canvas.drawPath(_dashPath(path, $dashArray$plArg), $p);');
             buffer.writeln('      }');
-          } else {
-            buffer.writeln('      canvas.drawOval($bounds, $p);');
           }
         },
         palette: palette,

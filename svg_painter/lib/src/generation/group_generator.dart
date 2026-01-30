@@ -22,7 +22,9 @@ class GroupGenerator extends ShapeGenerator<DrawGroup> {
     }
 
     wrapWithTransform(buffer, command.transform, () {
-      if (command.opacity < 1.0) {
+      if (command.opacity == 1.0) {
+        // Full opacity, no layer needed
+      } else {
         buffer.writeln('      canvas.saveLayer(');
         buffer.writeln('        null,');
         buffer.writeln(
@@ -34,7 +36,9 @@ class GroupGenerator extends ShapeGenerator<DrawGroup> {
       for (final PaintCommand child in command.commands) {
         // Find generator for child type
         final CommandGenerator<PaintCommand>? generator = generators[child.runtimeType];
-        if (generator != null) {
+        if (generator == null) {
+          throw StateError('No generator found for command type ${child.runtimeType}');
+        } else {
           generator.generate(
             child,
             buffer,
@@ -43,12 +47,12 @@ class GroupGenerator extends ShapeGenerator<DrawGroup> {
             activeFillProperties: activeFillProperties,
             activeStrokeProperties: activeStrokeProperties,
           );
-        } else {
-          throw StateError('No generator found for command type ${child.runtimeType}');
         }
       }
 
-      if (command.opacity < 1.0) {
+      if (command.opacity == 1.0) {
+        // No restore needed
+      } else {
         buffer.writeln('      canvas.restore();');
       }
     });

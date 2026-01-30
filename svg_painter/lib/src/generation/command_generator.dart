@@ -36,15 +36,17 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
   }) {
     // 1. Fill
     final PaintingFillStyle? fill = style.fill;
-    if (fill != null) {
+    if (fill == null) {
+      // No fill
+    } else {
       buffer.writeln('      {');
       buffer.writeln('        final Paint paint = Paint();');
 
       final String? id = command.id;
-      final String? propName = id != null ? '${SvgIdFormatter.format(id)}Fill' : null;
+      final String? propName = id == null ? null : '${SvgIdFormatter.format(id)}Fill';
       final String? assignedFill = palette?.fillAssignments[command];
 
-      if (propName != null && fill.isExplicit && activeFillProperties!.contains(propName)) {
+      if (propName != null && fill.isExplicit && (activeFillProperties?.contains(propName) ?? false)) {
         // TODO(Gemini): Support both single color and gradient overrides.
         buffer.writeln('        final Color? localFill = $propName;');
         buffer.writeln('        if (localFill == null) {');
@@ -52,7 +54,7 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
         buffer.writeln('        } else {');
         buffer.writeln('          paint.color = localFill;');
         buffer.writeln('        }');
-      } else if (assignedFill != null && activeFillProperties!.contains(assignedFill)) {
+      } else if (assignedFill != null && (activeFillProperties?.contains(assignedFill) ?? false)) {
         buffer.writeln('        final Color? localFill = $assignedFill;');
         buffer.writeln('        if (localFill == null) {');
         _generateOriginalFill(buffer, fill, boundsRect, indent: '          ');
@@ -70,15 +72,17 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
 
     // 2. Stroke
     final PaintingStrokeStyle? stroke = style.stroke;
-    if (stroke != null) {
+    if (stroke == null) {
+      // No stroke
+    } else {
       buffer.writeln('      {');
       buffer.writeln('        final Paint paint = Paint();');
 
       final String? id = command.id;
-      final String? propName = id != null ? '${SvgIdFormatter.format(id)}Stroke' : null;
+      final String? propName = id == null ? null : '${SvgIdFormatter.format(id)}Stroke';
       final String? assignedStroke = palette?.strokeAssignments[command];
 
-      if (propName != null && stroke.isExplicit && activeStrokeProperties!.contains(propName)) {
+      if (propName != null && stroke.isExplicit && (activeStrokeProperties?.contains(propName) ?? false)) {
         // TODO(Gemini): Support both single color and gradient overrides.
         buffer.writeln('        final Color? localStroke = $propName;');
         buffer.writeln('        if (localStroke == null) {');
@@ -86,7 +90,7 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
         buffer.writeln('        } else {');
         buffer.writeln('          paint.color = localStroke;');
         buffer.writeln('        }');
-      } else if (assignedStroke != null && activeStrokeProperties!.contains(assignedStroke)) {
+      } else if (assignedStroke != null && (activeStrokeProperties?.contains(assignedStroke) ?? false)) {
         buffer.writeln('        final Color? localStroke = $assignedStroke;');
         buffer.writeln('        if (localStroke == null) {');
         _generateOriginalStroke(buffer, stroke, boundsRect, indent: '          ');
@@ -99,19 +103,23 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
 
       buffer.writeln('        paint.style = PaintingStyle.stroke;');
       buffer.writeln('        paint.strokeWidth = ${stroke.width};');
-      if (stroke.cap != PaintingStrokeCap.butt) {
+      if (stroke.cap == PaintingStrokeCap.butt) {
+        // Default cap
+      } else {
         buffer.writeln('        paint.strokeCap = ${stroke.cap.toFlutterString()};');
       }
-      if (stroke.join != PaintingStrokeJoin.miter) {
+      if (stroke.join == PaintingStrokeJoin.miter) {
+        // Default join
+      } else {
         buffer.writeln('        paint.strokeJoin = ${stroke.join.toFlutterString()};');
       }
 
-      if (stroke.dashArray != null) {
+      if (stroke.dashArray == null) {
+        drawCall('paint');
+      } else {
         buffer.writeln('        final List<double> dashArray = [${stroke.dashArray!.join(', ')}];');
         final String? pl = stroke.pathLength?.toString();
         drawCall('paint', dashArray: 'dashArray', pathLength: pl);
-      } else {
-        drawCall('paint');
       }
       buffer.writeln('      }');
     }
@@ -123,17 +131,25 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
     String boundsRect, {
     required String indent,
   }) {
-    if (stroke.shaderId != null) {
-      buffer.writeln('$indent paint.shader = _grad_${stroke.shaderId}.createShader($boundsRect);');
-      if (stroke.opacity < 1.0) {
+    if (stroke.shaderId == null) {
+      if (stroke.colorArgb == null) {
+        // No color or shader
+      } else {
+        final double finalOpacity = ((stroke.colorArgb! >> 24) & 0xFF) / 255.0 * stroke.opacity;
+        final int alpha = (finalOpacity * 255).round().clamp(0, 255);
+        final int colorWithOpacity = (stroke.colorArgb! & 0x00FFFFFF) | (alpha << 24);
+        final String colorCode = FlutterColorMap.getColorCode(colorWithOpacity);
+        buffer.writeln('$indent paint.color = $colorCode;');
+      }
+    } else {
+      buffer.writeln(
+        '$indent paint.shader = _grad_${stroke.shaderId}.createShader($boundsRect);',
+      );
+      if (stroke.opacity == 1.0) {
+        // Full opacity
+      } else {
         buffer.writeln('$indent paint.color = paint.color.withOpacity(${stroke.opacity});');
       }
-    } else if (stroke.colorArgb != null) {
-      final double finalOpacity = ((stroke.colorArgb! >> 24) & 0xFF) / 255.0 * stroke.opacity;
-      final int alpha = (finalOpacity * 255).round().clamp(0, 255);
-      final int colorWithOpacity = (stroke.colorArgb! & 0x00FFFFFF) | (alpha << 24);
-      final String colorCode = FlutterColorMap.getColorCode(colorWithOpacity);
-      buffer.writeln('$indent paint.color = $colorCode;');
     }
   }
 
@@ -143,17 +159,24 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
     String boundsRect, {
     required String indent,
   }) {
-    if (fill.shaderId != null) {
+    if (fill.shaderId == null) {
+      if (fill.colorArgb == null) {
+        // No color or shader
+      } else {
+        final double finalOpacity = ((fill.colorArgb! >> 24) & 0xFF) / 255.0 * fill.opacity;
+        final int alpha = (finalOpacity * 255).round().clamp(0, 255);
+        final int colorWithOpacity = (fill.colorArgb! & 0x00FFFFFF) | (alpha << 24);
+        final String colorCode = FlutterColorMap.getColorCode(colorWithOpacity);
+        buffer.writeln('$indent paint.color = $colorCode;');
+      }
+    } else {
       buffer.writeln('$indent paint.shader = _grad_${fill.shaderId}.createShader($boundsRect);');
-      if (fill.opacity < 1.0) {
+      if (fill.opacity == 1.0) {
+        // Full opacity
+      }
+      else {
         buffer.writeln('$indent paint.color = paint.color.withOpacity(${fill.opacity});');
       }
-    } else if (fill.colorArgb != null) {
-      final double finalOpacity = ((fill.colorArgb! >> 24) & 0xFF) / 255.0 * fill.opacity;
-      final int alpha = (finalOpacity * 255).round().clamp(0, 255);
-      final int colorWithOpacity = (fill.colorArgb! & 0x00FFFFFF) | (alpha << 24);
-      final String colorCode = FlutterColorMap.getColorCode(colorWithOpacity);
-      buffer.writeln('$indent paint.color = $colorCode;');
     }
   }
 

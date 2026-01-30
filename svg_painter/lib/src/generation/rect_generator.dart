@@ -33,7 +33,9 @@ class RectGenerator extends ShapeGenerator<DrawRect> {
           String? dashArray,
           String? pathLength,
         }) {
-          if (dashArray != null) {
+          if (dashArray == null) {
+            buffer.writeln('      canvas.$drawMethod($rectCode, $p);');
+          } else {
             final String plArg = (pathLength != null && pathLength.isNotEmpty)
                 ? ', pathLength: $pathLength'
                 : '';
@@ -46,8 +48,6 @@ class RectGenerator extends ShapeGenerator<DrawRect> {
             }
             buffer.writeln('        canvas.drawPath(_dashPath(path, $dashArray$plArg), $p);');
             buffer.writeln('      }');
-          } else {
-            buffer.writeln('      canvas.$drawMethod($rectCode, $p);');
           }
         },
         palette: palette,

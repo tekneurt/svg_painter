@@ -27,34 +27,48 @@ PaintingStyle resolvePaint(
   // Priority: Tag selector < Class selector < ID selector < Inline style
 
   // a. Tag selector rules
-  if (tagName != null) {
+  if (tagName == null) {
+    // No tag name
+  } else {
     final Map<String, String>? rules = context.styleSheet.rules[tagName];
-    if (rules != null) {
+    if (rules == null) {
+      // No rules for this tag
+    } else {
       resolvedRules.addAll(rules);
     }
   }
 
   // b. Class selector rules
-  if (cssClass != null) {
+  if (cssClass == null) {
+    // No class
+  } else {
     final List<String> classes = cssClass.split(RegExp(r'\s+'));
     for (final String className in classes) {
       final Map<String, String>? rules = context.styleSheet.rules[className];
-      if (rules != null) {
+      if (rules == null) {
+        // No rules for this class
+      } else {
         resolvedRules.addAll(rules);
       }
     }
   }
 
   // c. ID selector rules
-  if (id != null) {
+  if (id == null) {
+    // No ID
+  } else {
     final Map<String, String>? rules = context.styleSheet.rules['#$id'];
-    if (rules != null) {
+    if (rules == null) {
+      // No rules for this ID
+    } else {
       resolvedRules.addAll(rules);
     }
   }
 
   // d. Inline style (overrides everything else)
-  if (inlineStyle != null) {
+  if (inlineStyle == null) {
+    // No inline style
+  } else {
     final List<String> declarations = inlineStyle.split(';');
     for (final String decl in declarations) {
       final String trimmedDecl = decl.trim();
@@ -206,7 +220,9 @@ PaintingStyle resolvePaint(
     final SvgPointList? sda =
         cssStrokeDasharray ?? stroke?.dashArray ?? context.inheritedStrokeDasharray;
     List<double>? finalDashArray;
-    if (sda != null && sda.points.isNotEmpty) {
+    if (sda == null || sda.points.isEmpty) {
+      // No dash array
+    } else {
       finalDashArray = sda.points.map((double d) => context.scaleNormalized(d)).toList();
     }
 
@@ -244,7 +260,7 @@ PaintingStyle resolvePaint(
     context,
     .vertical,
   );
-  final double? finalFontSize = rawFontSize != null ? context.scaleVertical(rawFontSize) : null;
+  final double? finalFontSize = rawFontSize == null ? null : context.scaleVertical(rawFontSize);
 
   final String? finalFontWeight = cssFontWeight ?? fontWeight ?? context.inheritedFontWeight;
   final String? finalFontStyle = cssFontStyle ?? fontStyle ?? context.inheritedFontStyle;

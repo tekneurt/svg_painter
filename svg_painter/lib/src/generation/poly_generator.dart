@@ -55,13 +55,13 @@ class PolyGenerator extends ShapeGenerator<PaintCommand> {
           String? dashArray,
           String? pathLength,
         }) {
-          if (dashArray != null) {
+          if (dashArray == null) {
+            buffer.writeln('        canvas.drawPath(path, $p);');
+          } else {
             final String plArg = (pathLength != null && pathLength.isNotEmpty)
                 ? ', pathLength: $pathLength'
                 : '';
             buffer.writeln('        canvas.drawPath(_dashPath(path, $dashArray$plArg), $p);');
-          } else {
-            buffer.writeln('        canvas.drawPath(path, $p);');
           }
         },
         palette: palette,

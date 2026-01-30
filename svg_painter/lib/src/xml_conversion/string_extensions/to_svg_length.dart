@@ -14,17 +14,19 @@ extension ToSvgLength on String {
     final RegExp unitRegex = RegExp(r'^(-?\d*\.?\d*)([a-zA-Z%]*)$');
     final Match? match = unitRegex.firstMatch(trimmed);
 
-    if (match != null) {
+    if (match == null) {
+      return const SvgLength(0.0);
+    } else {
       final String numberPart = match.group(1)!;
       final String unitSuffix = match.group(2)!;
 
       final double? parsedNumber = double.tryParse(numberPart);
-      if (parsedNumber != null) {
+      if (parsedNumber == null) {
+        return const SvgLength(0.0);
+      } else {
         final SvgLengthUnit unit = unitSuffix.toSvgLengthUnit();
         return SvgLength(parsedNumber, unit);
       }
     }
-
-    return const SvgLength(0.0);
   }
 }
