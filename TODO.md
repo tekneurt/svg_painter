@@ -142,11 +142,11 @@
             - [x] Reverse-map ANY ARGB value to a matching Flutter `Colors` constant (e.g., `0xFFFFC107` -> `Colors.amber`) for readability.
     - [x] **Index-Based Exposure**: Generate `final Color? fill1`, `fill2`, etc. for elements without IDs, allowing control without modifying the SVG.
 - [x] **Property Renaming Configuration**: Allow developers to map generated property names to semantic ones (e.g., map `fill1` to `backgroundFill` or `fillBottom`) via the annotation.
-- [ ] **Feature Documentation & Examples**:
-    - [ ] Document `SvgExposureMode` (None, ID, Indexed, Mixed) with visual examples.
-    - [ ] Document `propertyMapping` renaming using the Flag Recoloring (German -> Dutch) scenario.
-    - [ ] Document **Dynamic Style Inheritance** using the W3C group inheritance example.
-    - [ ] Update README.md with a "Customizing your SVG" section.
+- [x] **Feature Documentation & Examples**:
+    - [x] Document `SvgExposureMode` (None, ID, Indexed, Mixed) with visual examples.
+    - [x] Document `propertyMapping` renaming using the Flag Recoloring (German -> Dutch) scenario.
+    - [x] Document **Dynamic Style Inheritance** using the W3C group inheritance example.
+    - [x] Update README.md with a "Customizing your SVG" section.
 - [x] **Dynamic Style Inheritance**: Support runtime property overrides for inherited styles (e.g., overriding a group's `fill` should affect all children inheriting from it).
 - [ ] **Daphnia Widget Generation**:
     - [ ] Generate a convenience `StatelessWidget` (e.g., `MyIcon`) that wraps the `CustomPainter`.
