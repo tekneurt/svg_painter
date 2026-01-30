@@ -14,8 +14,8 @@ abstract class CommandGenerator<T extends PaintCommand> {
     StringBuffer buffer, {
     Map<Type, CommandGenerator<PaintCommand>>? generators,
     PaletteResult? palette,
-    Set<String>? activeFillProperties,
-    Set<String>? activeStrokeProperties,
+    Map<String, String>? activeFillProperties,
+    Map<String, String>? activeStrokeProperties,
   });
 }
 
@@ -31,8 +31,8 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
     String boundsRect,
     void Function(String paintVar, {String? dashArray, String? pathLength}) drawCall, {
     PaletteResult? palette,
-    Set<String>? activeFillProperties,
-    Set<String>? activeStrokeProperties,
+    Map<String, String>? activeFillProperties,
+    Map<String, String>? activeStrokeProperties,
   }) {
     // 1. Fill
     final PaintingFillStyle? fill = style.fill;
@@ -46,16 +46,21 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
       final String? propName = id == null ? null : '${SvgIdFormatter.format(id)}Fill';
       final String? assignedFill = palette?.fillAssignments[command];
 
-      if (propName != null && fill.isExplicit && (activeFillProperties?.contains(propName) ?? false)) {
+      String? activeProperty;
+      if (propName != null &&
+          fill.isExplicit &&
+          activeFillProperties != null &&
+          activeFillProperties.containsKey(propName)) {
+        activeProperty = activeFillProperties[propName];
+      } else if (assignedFill != null &&
+          activeFillProperties != null &&
+          activeFillProperties.containsKey(assignedFill)) {
+        activeProperty = activeFillProperties[assignedFill];
+      }
+
+      if (activeProperty != null) {
         // TODO(Gemini): Support both single color and gradient overrides.
-        buffer.writeln('        final Color? localFill = $propName;');
-        buffer.writeln('        if (localFill == null) {');
-        _generateOriginalFill(buffer, fill, boundsRect, indent: '          ');
-        buffer.writeln('        } else {');
-        buffer.writeln('          paint.color = localFill;');
-        buffer.writeln('        }');
-      } else if (assignedFill != null && (activeFillProperties?.contains(assignedFill) ?? false)) {
-        buffer.writeln('        final Color? localFill = $assignedFill;');
+        buffer.writeln('        final Color? localFill = $activeProperty;');
         buffer.writeln('        if (localFill == null) {');
         _generateOriginalFill(buffer, fill, boundsRect, indent: '          ');
         buffer.writeln('        } else {');
@@ -82,16 +87,21 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
       final String? propName = id == null ? null : '${SvgIdFormatter.format(id)}Stroke';
       final String? assignedStroke = palette?.strokeAssignments[command];
 
-      if (propName != null && stroke.isExplicit && (activeStrokeProperties?.contains(propName) ?? false)) {
+      String? activeProperty;
+      if (propName != null &&
+          stroke.isExplicit &&
+          activeStrokeProperties != null &&
+          activeStrokeProperties.containsKey(propName)) {
+        activeProperty = activeStrokeProperties[propName];
+      } else if (assignedStroke != null &&
+          activeStrokeProperties != null &&
+          activeStrokeProperties.containsKey(assignedStroke)) {
+        activeProperty = activeStrokeProperties[assignedStroke];
+      }
+
+      if (activeProperty != null) {
         // TODO(Gemini): Support both single color and gradient overrides.
-        buffer.writeln('        final Color? localStroke = $propName;');
-        buffer.writeln('        if (localStroke == null) {');
-        _generateOriginalStroke(buffer, stroke, boundsRect, indent: '          ');
-        buffer.writeln('        } else {');
-        buffer.writeln('          paint.color = localStroke;');
-        buffer.writeln('        }');
-      } else if (assignedStroke != null && (activeStrokeProperties?.contains(assignedStroke) ?? false)) {
-        buffer.writeln('        final Color? localStroke = $assignedStroke;');
+        buffer.writeln('        final Color? localStroke = $activeProperty;');
         buffer.writeln('        if (localStroke == null) {');
         _generateOriginalStroke(buffer, stroke, boundsRect, indent: '          ');
         buffer.writeln('        } else {');

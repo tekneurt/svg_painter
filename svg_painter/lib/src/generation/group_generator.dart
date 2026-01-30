@@ -13,8 +13,8 @@ class GroupGenerator extends ShapeGenerator<DrawGroup> {
     StringBuffer buffer, {
     Map<Type, CommandGenerator<PaintCommand>>? generators,
     PaletteResult? palette,
-    Set<String>? activeFillProperties,
-    Set<String>? activeStrokeProperties,
+    Map<String, String>? activeFillProperties,
+    Map<String, String>? activeStrokeProperties,
   }) {
     if (generators == null) {
       // This should ideally not happen if properly wired.

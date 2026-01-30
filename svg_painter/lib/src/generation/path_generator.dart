@@ -13,8 +13,8 @@ class PathGenerator extends ShapeGenerator<DrawPath> {
     StringBuffer buffer, {
     Map<Type, CommandGenerator<PaintCommand>>? generators,
     PaletteResult? palette,
-    Set<String>? activeFillProperties,
-    Set<String>? activeStrokeProperties,
+    Map<String, String>? activeFillProperties,
+    Map<String, String>? activeStrokeProperties,
   }) {
     wrapWithTransform(buffer, command.transform, () {
       buffer.writeln('      // Path');

@@ -94,6 +94,12 @@
         [x] **Base SVG Element toString Tests**: Ensure base `toString()` methods in `lib/src/svg_model/svg_element.dart` are fully covered.
         [x] **Default Value Exception Audit**: Systematically test all `UnsupportedError` paths in `to_default_value.dart`.
     - [x] **Final Coverage Check**: Verify high coverage (>90%).
+    - [ ] **Improve Coverage for Low-Coverage Files**:
+        - [ ] `oval_generator.dart` (Dash path logic)
+        - [ ] `rect_generator.dart` (Dash path logic)
+        - [ ] `svg_paint_resolver.dart` (Edge cases)
+        - [ ] `svg_to_painting.dart` (Edge cases)
+        - [ ] `to_svg_element.dart` (Missing element types)
 
 
 ### Phase 2: Repository & Release Infrastructure (0.1.0)
@@ -135,7 +141,11 @@
         - [x] Use named colors (e.g., `Colors.red`) in generated code when available instead of hex notation.
             - [x] Reverse-map ANY ARGB value to a matching Flutter `Colors` constant (e.g., `0xFFFFC107` -> `Colors.amber`) for readability.
     - [x] **Index-Based Exposure**: Generate `final Color? fill1`, `fill2`, etc. for elements without IDs, allowing control without modifying the SVG.
-- [ ] **Property Renaming Configuration**: Allow developers to map generated property names to semantic ones (e.g., map `fill1` to `backgroundFill` or `fillBottom`) via the annotation.
+- [x] **Property Renaming Configuration**: Allow developers to map generated property names to semantic ones (e.g., map `fill1` to `backgroundFill` or `fillBottom`) via the annotation.
+- [ ] **Feature Documentation & Examples**:
+    - [ ] Document `SvgExposureMode` (None, ID, Indexed, Mixed) with visual examples.
+    - [ ] Document `propertyMapping` renaming using the Flag Recoloring (German -> Dutch) scenario.
+    - [ ] Update README.md with a "Customizing your SVG" section.
 - [ ] **Dynamic Style Inheritance**: Support runtime property overrides for inherited styles (e.g., overriding a group's `fill` should affect all children inheriting from it).
 - [ ] **Daphnia Widget Generation**:
     - [ ] Generate a convenience `StatelessWidget` (e.g., `MyIcon`) that wraps the `CustomPainter`.

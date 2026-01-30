@@ -302,6 +302,10 @@ void main() {
         final MockConstantReader mockExposureMode = MockConstantReader();
         when(mockAnnotation.read('exposureMode')).thenReturn(mockExposureMode);
         when(mockExposureMode.isNull).thenReturn(true);
+
+        final MockConstantReader mockPropertyMapping = MockConstantReader();
+        when(mockAnnotation.read('propertyMapping')).thenReturn(mockPropertyMapping);
+        when(mockPropertyMapping.isNull).thenReturn(true);
       });
 
       test('should throw InvalidGenerationSourceError when loadSvgContent fails', () async {

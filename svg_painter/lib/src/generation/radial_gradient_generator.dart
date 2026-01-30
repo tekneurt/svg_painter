@@ -13,8 +13,8 @@ class RadialGradientGenerator extends CommandGenerator<DefineRadialGradient> {
     StringBuffer buffer, {
     Map<Type, CommandGenerator<PaintCommand>>? generators,
     PaletteResult? palette,
-    Set<String>? activeFillProperties,
-    Set<String>? activeStrokeProperties,
+    Map<String, String>? activeFillProperties,
+    Map<String, String>? activeStrokeProperties,
   }) {
     final String colors =
         '[${command.stops.map((GradientStop s) => FlutterColorMap.getColorCode(s.colorArgb)).join(', ')}]';

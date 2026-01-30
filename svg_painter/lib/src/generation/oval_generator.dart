@@ -12,8 +12,8 @@ class OvalGenerator extends ShapeGenerator<DrawOval> {
     StringBuffer buffer, {
     Map<Type, CommandGenerator<PaintCommand>>? generators,
     PaletteResult? palette,
-    Set<String>? activeFillProperties,
-    Set<String>? activeStrokeProperties,
+    Map<String, String>? activeFillProperties,
+    Map<String, String>? activeStrokeProperties,
   }) {
     wrapWithTransform(buffer, command.transform, () {
       final String bounds =

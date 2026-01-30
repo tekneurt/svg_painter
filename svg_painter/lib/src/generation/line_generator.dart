@@ -12,8 +12,8 @@ class LineGenerator extends ShapeGenerator<DrawLine> {
     StringBuffer buffer, {
     Map<Type, CommandGenerator<PaintCommand>>? generators,
     PaletteResult? palette,
-    Set<String>? activeFillProperties,
-    Set<String>? activeStrokeProperties,
+    Map<String, String>? activeFillProperties,
+    Map<String, String>? activeStrokeProperties,
   }) {
     wrapWithTransform(buffer, command.transform, () {
       final String p1 = 'const Offset(${command.x1}, ${command.y1})';

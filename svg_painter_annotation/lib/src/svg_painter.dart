@@ -20,7 +20,11 @@ enum SvgExposureMode {
 /// Annotation to mark a class for SVG code generation.
 @immutable
 sealed class SvgPainter {
-  const SvgPainter({this.painterClassName, this.exposureMode = SvgExposureMode.none});
+  const SvgPainter({
+    this.painterClassName,
+    this.exposureMode = SvgExposureMode.none,
+    this.propertyMapping = const <String, String>{},
+  });
 
   /// Creates an annotation from a file path.
   ///
@@ -30,6 +34,7 @@ sealed class SvgPainter {
     String path, {
     String? painterClassName,
     SvgExposureMode exposureMode,
+    Map<String, String> propertyMapping,
   }) = SvgFilePainter;
 
   /// Creates an annotation from raw SVG code.
@@ -39,6 +44,7 @@ sealed class SvgPainter {
     String code, {
     String? painterClassName,
     SvgExposureMode exposureMode,
+    Map<String, String> propertyMapping,
   }) = SvgCodePainter;
 
   /// The name of the generated CustomPainter class.
@@ -47,6 +53,11 @@ sealed class SvgPainter {
 
   /// The mode for exposing dynamic properties in the generated class.
   final SvgExposureMode exposureMode;
+
+  /// A map to rename generated properties.
+  /// Keys are the default generated names (e.g., 'fill1', 'myRectFill'),
+  /// and values are the desired names (e.g., 'background', 'logoColor').
+  final Map<String, String> propertyMapping;
 }
 
 /// Annotation for SVG files.
@@ -56,6 +67,7 @@ final class SvgFilePainter extends SvgPainter {
     this.path, {
     super.painterClassName,
     super.exposureMode = SvgExposureMode.none,
+    super.propertyMapping = const <String, String>{},
   });
 
   /// The path to the SVG file.
@@ -69,6 +81,7 @@ final class SvgCodePainter extends SvgPainter {
     this.code, {
     super.painterClassName,
     super.exposureMode = SvgExposureMode.none,
+    super.propertyMapping = const <String, String>{},
   });
 
   /// The SVG code content.
