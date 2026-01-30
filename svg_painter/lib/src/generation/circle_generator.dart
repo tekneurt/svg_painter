@@ -14,6 +14,8 @@ class CircleGenerator extends ShapeGenerator<DrawCircle> {
     PaletteResult? palette,
     Map<String, String>? activeFillProperties,
     Map<String, String>? activeStrokeProperties,
+    List<InheritedProperty>? inheritedFills,
+    List<InheritedProperty>? inheritedStrokes,
   }) {
     wrapWithTransform(buffer, command.transform, () {
       final String bounds =
@@ -45,6 +47,8 @@ class CircleGenerator extends ShapeGenerator<DrawCircle> {
         palette: palette,
         activeFillProperties: activeFillProperties,
         activeStrokeProperties: activeStrokeProperties,
+        inheritedFills: inheritedFills,
+        inheritedStrokes: inheritedStrokes,
       );
     });
   }

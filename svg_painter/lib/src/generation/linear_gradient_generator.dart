@@ -15,7 +15,11 @@ class LinearGradientGenerator extends CommandGenerator<DefineLinearGradient> {
     PaletteResult? palette,
     Map<String, String>? activeFillProperties,
     Map<String, String>? activeStrokeProperties,
+    List<InheritedProperty>? inheritedFills,
+    List<InheritedProperty>? inheritedStrokes,
   }) {
+    if (command.stops.isEmpty) return;
+    // ...
     final String colors =
         '[${command.stops.map((GradientStop s) => FlutterColorMap.getColorCode(s.colorArgb)).join(', ')}]';
     final String stops =

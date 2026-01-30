@@ -4,6 +4,12 @@ import 'generation_extensions.dart';
 import 'palette_analyzer.dart';
 import 'svg_id_formatter.dart';
 
+class InheritedProperty {
+  const InheritedProperty(this.propertyName, this.value);
+  final String propertyName;
+  final int value;
+}
+
 /// Base class for all command-specific code generators.
 abstract class CommandGenerator<T extends PaintCommand> {
   const CommandGenerator();
@@ -16,6 +22,8 @@ abstract class CommandGenerator<T extends PaintCommand> {
     PaletteResult? palette,
     Map<String, String>? activeFillProperties,
     Map<String, String>? activeStrokeProperties,
+    List<InheritedProperty>? inheritedFills,
+    List<InheritedProperty>? inheritedStrokes,
   });
 }
 
@@ -33,6 +41,8 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
     PaletteResult? palette,
     Map<String, String>? activeFillProperties,
     Map<String, String>? activeStrokeProperties,
+    List<InheritedProperty>? inheritedFills,
+    List<InheritedProperty>? inheritedStrokes,
   }) {
     // 1. Fill
     final PaintingFillStyle? fill = style.fill;
@@ -67,7 +77,26 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
         buffer.writeln('          paint.color = localFill;');
         buffer.writeln('        }');
       } else {
-        _generateOriginalFill(buffer, fill, boundsRect, indent: '        ');
+        String? inheritedOverride;
+        if (fill.isExplicit == false && inheritedFills != null) {
+          for (final InheritedProperty prop in inheritedFills.reversed) {
+            if (prop.value == fill.colorArgb) {
+              inheritedOverride = prop.propertyName;
+              break;
+            }
+          }
+        }
+
+        if (inheritedOverride != null) {
+          buffer.writeln('        final Color? inheritedFill = $inheritedOverride;');
+          buffer.writeln('        if (inheritedFill == null) {');
+          _generateOriginalFill(buffer, fill, boundsRect, indent: '          ');
+          buffer.writeln('        } else {');
+          buffer.writeln('          paint.color = inheritedFill;');
+          buffer.writeln('        }');
+        } else {
+          _generateOriginalFill(buffer, fill, boundsRect, indent: '        ');
+        }
       }
 
       buffer.writeln('        paint.style = PaintingStyle.fill;');
@@ -108,7 +137,26 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
         buffer.writeln('          paint.color = localStroke;');
         buffer.writeln('        }');
       } else {
-        _generateOriginalStroke(buffer, stroke, boundsRect, indent: '        ');
+        String? inheritedOverride;
+        if (stroke.isExplicit == false && inheritedStrokes != null) {
+          for (final InheritedProperty prop in inheritedStrokes.reversed) {
+            if (prop.value == stroke.colorArgb) {
+              inheritedOverride = prop.propertyName;
+              break;
+            }
+          }
+        }
+
+        if (inheritedOverride != null) {
+          buffer.writeln('        final Color? inheritedStroke = $inheritedOverride;');
+          buffer.writeln('        if (inheritedStroke == null) {');
+          _generateOriginalStroke(buffer, stroke, boundsRect, indent: '          ');
+          buffer.writeln('        } else {');
+          buffer.writeln('          paint.color = inheritedStroke;');
+          buffer.writeln('        }');
+        } else {
+          _generateOriginalStroke(buffer, stroke, boundsRect, indent: '        ');
+        }
       }
 
       buffer.writeln('        paint.style = PaintingStyle.stroke;');

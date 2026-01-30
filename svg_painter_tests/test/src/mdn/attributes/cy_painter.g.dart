@@ -60,10 +60,12 @@ class _$CyPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.fill;
         canvas.drawOval(
-          Rect.fromCenter(
-            center: const Offset(50.0, 150.0),
-            width: 50.0,
-            height: 90.0,
+          Rect.fromOval(
+            Rect.fromCenter(
+              center: const Offset(50.0, 150.0),
+              width: 50.0,
+              height: 90.0,
+            ),
           ),
           paint,
         );

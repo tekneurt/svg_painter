@@ -2,6 +2,7 @@ import '../painting_model/_painting_model.dart';
 import 'command_generator.dart';
 
 import 'palette_analyzer.dart';
+import 'svg_id_formatter.dart';
 
 /// Generator for [DrawGroup] commands.
 class GroupGenerator extends ShapeGenerator<DrawGroup> {
@@ -15,6 +16,8 @@ class GroupGenerator extends ShapeGenerator<DrawGroup> {
     PaletteResult? palette,
     Map<String, String>? activeFillProperties,
     Map<String, String>? activeStrokeProperties,
+    List<InheritedProperty>? inheritedFills,
+    List<InheritedProperty>? inheritedStrokes,
   }) {
     if (generators == null) {
       // This should ideally not happen if properly wired.
@@ -33,6 +36,37 @@ class GroupGenerator extends ShapeGenerator<DrawGroup> {
         buffer.writeln('      );');
       }
 
+      // Prepare inherited properties for children
+      final List<InheritedProperty> nextInheritedFills =
+          inheritedFills != null ? List<InheritedProperty>.of(inheritedFills) : <InheritedProperty>[];
+      final List<InheritedProperty> nextInheritedStrokes =
+          inheritedStrokes != null ? List<InheritedProperty>.of(inheritedStrokes) : <InheritedProperty>[];
+
+      final String? id = command.id;
+      final PaintingStyle style = command.style;
+
+      // Check Fill inheritance
+      if (id != null && (style.fill?.isExplicit ?? false)) {
+        final String propName = '${SvgIdFormatter.format(id)}Fill';
+        if (activeFillProperties != null && activeFillProperties.containsKey(propName)) {
+          final String mappedName = activeFillProperties[propName]!;
+          if (style.fill!.colorArgb != null) {
+            nextInheritedFills.add(InheritedProperty(mappedName, style.fill!.colorArgb!));
+          }
+        }
+      }
+
+      // Check Stroke inheritance
+      if (id != null && (style.stroke?.isExplicit ?? false)) {
+        final String propName = '${SvgIdFormatter.format(id)}Stroke';
+        if (activeStrokeProperties != null && activeStrokeProperties.containsKey(propName)) {
+          final String mappedName = activeStrokeProperties[propName]!;
+          if (style.stroke!.colorArgb != null) {
+            nextInheritedStrokes.add(InheritedProperty(mappedName, style.stroke!.colorArgb!));
+          }
+        }
+      }
+
       for (final PaintCommand child in command.commands) {
         // Find generator for child type
         final CommandGenerator<PaintCommand>? generator = generators[child.runtimeType];
@@ -46,6 +80,8 @@ class GroupGenerator extends ShapeGenerator<DrawGroup> {
             palette: palette,
             activeFillProperties: activeFillProperties,
             activeStrokeProperties: activeStrokeProperties,
+            inheritedFills: nextInheritedFills,
+            inheritedStrokes: nextInheritedStrokes,
           );
         }
       }

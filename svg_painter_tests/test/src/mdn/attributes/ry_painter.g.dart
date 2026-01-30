@@ -44,10 +44,12 @@ class _$RyPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.fill;
         canvas.drawOval(
-          Rect.fromCenter(
-            center: const Offset(150.0, 50.0),
-            width: 50.0,
-            height: 50.0,
+          Rect.fromOval(
+            Rect.fromCenter(
+              center: const Offset(150.0, 50.0),
+              width: 50.0,
+              height: 50.0,
+            ),
           ),
           paint,
         );
@@ -59,10 +61,12 @@ class _$RyPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.fill;
         canvas.drawOval(
-          Rect.fromCenter(
-            center: const Offset(250.0, 50.0),
-            width: 50.0,
-            height: 100.0,
+          Rect.fromOval(
+            Rect.fromCenter(
+              center: const Offset(250.0, 50.0),
+              width: 50.0,
+              height: 100.0,
+            ),
           ),
           paint,
         );
@@ -76,7 +80,7 @@ class _$RyPainter extends CustomPainter {
         canvas.drawRRect(
           RRect.fromRectAndRadius(
             Rect.fromLTWH(20.0, 120.0, 60.0, 60.0),
-            Radius.elliptical(15.0, 0.0),
+            const Radius.elliptical(15.0, 0.0),
           ),
           paint,
         );
@@ -90,7 +94,7 @@ class _$RyPainter extends CustomPainter {
         canvas.drawRRect(
           RRect.fromRectAndRadius(
             Rect.fromLTWH(120.0, 120.0, 60.0, 60.0),
-            Radius.elliptical(15.0, 15.0),
+            const Radius.elliptical(15.0, 15.0),
           ),
           paint,
         );
@@ -104,7 +108,7 @@ class _$RyPainter extends CustomPainter {
         canvas.drawRRect(
           RRect.fromRectAndRadius(
             Rect.fromLTWH(220.0, 120.0, 60.0, 60.0),
-            Radius.elliptical(15.0, 30.0),
+            const Radius.elliptical(15.0, 30.0),
           ),
           paint,
         );

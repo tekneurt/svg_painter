@@ -15,6 +15,8 @@ class TestShapeGenerator extends ShapeGenerator<DrawCircle> {
     PaletteResult? palette,
     Map<String, String>? activeFillProperties,
     Map<String, String>? activeStrokeProperties,
+    List<InheritedProperty>? inheritedFills,
+    List<InheritedProperty>? inheritedStrokes,
   }) {
     wrapWithTransform(buffer, command.transform, () {
       generatePaintingCode(
@@ -36,6 +38,8 @@ class TestShapeGenerator extends ShapeGenerator<DrawCircle> {
         palette: palette,
         activeFillProperties: activeFillProperties,
         activeStrokeProperties: activeStrokeProperties,
+        inheritedFills: inheritedFills,
+        inheritedStrokes: inheritedStrokes,
       );
     });
   }

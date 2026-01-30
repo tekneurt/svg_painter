@@ -14,6 +14,8 @@ class PolyGenerator extends ShapeGenerator<PaintCommand> {
     PaletteResult? palette,
     Map<String, String>? activeFillProperties,
     Map<String, String>? activeStrokeProperties,
+    List<InheritedProperty>? inheritedFills,
+    List<InheritedProperty>? inheritedStrokes,
   }) {
     final List<double> pts;
     final bool closed;
@@ -67,6 +69,8 @@ class PolyGenerator extends ShapeGenerator<PaintCommand> {
         palette: palette,
         activeFillProperties: activeFillProperties,
         activeStrokeProperties: activeStrokeProperties,
+        inheritedFills: inheritedFills,
+        inheritedStrokes: inheritedStrokes,
       );
       buffer.writeln('      }');
     });

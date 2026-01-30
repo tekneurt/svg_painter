@@ -68,7 +68,7 @@ class _$ExampleRect02Painter extends CustomPainter {
               151.1811023622047,
               75.59055118110236,
             ),
-            Radius.elliptical(18.89763779527559, 18.89763779527559),
+            const Radius.elliptical(18.89763779527559, 18.89763779527559),
           ),
           paint,
         );
@@ -86,7 +86,7 @@ class _$ExampleRect02Painter extends CustomPainter {
         canvas.drawRRect(
           RRect.fromRectAndRadius(
             Rect.fromLTWH(0.0, 0.0, 151.1811023622047, 75.59055118110236),
-            Radius.elliptical(18.89763779527559, 18.89763779527559),
+            const Radius.elliptical(18.89763779527559, 18.89763779527559),
           ),
           paint,
         );

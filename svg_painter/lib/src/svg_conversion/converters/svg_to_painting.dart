@@ -1,5 +1,6 @@
 import '../../base/_base.dart';
 import '../../painting_model/paint_command.dart';
+import '../../painting_model/styles/painting_style.dart';
 import '../../svg_model/_svg_model.dart';
 import '../svg_element_extensions/svg_circle_to_draw_circle.dart';
 import '../svg_element_extensions/svg_ellipse_to_draw_oval.dart';
@@ -15,6 +16,7 @@ import '../svg_value_extensions/svg_auto_to_double.dart';
 import '../svg_value_extensions/svg_length_percentage_to_double.dart';
 import '../svg_value_extensions/svg_length_to_double.dart';
 import 'svg_definition_collector.dart';
+import 'svg_paint_resolver.dart';
 import 'svg_painting_context.dart';
 
 /// Extension to convert [SvgElement] to [PaintCommand]s.
@@ -233,11 +235,28 @@ extension _SvgGroupToPaintCommands on SvgGroup {
     final double childParentOpacity = useSaveLayer ? 1.0 : combinedOpacity;
 
     // Create a new context for children if we need to reset opacity for layering.
-    // If not layering, we technically don't need a new context if opacity is same,
-    // but context.derive is cheap.
     final SvgPaintingContext childContext = useSaveLayer
         ? context.derive(parentOpacity: childParentOpacity)
-        : context; // If flattening, context already has combinedOpacity.
+        : context;
+
+    final PaintingStyle style = resolvePaint(
+      context,
+      id: id,
+      tagName: 'g',
+      fill: fill,
+      fillOpacity: fillOpacity,
+      stroke: stroke,
+      opacity: opacity,
+      // Group doesn't usually render text directly but might define font props.
+      // resolvePaint handles font props if passed, but they are inherited by context.
+      // We pass them here just to capture explicit style on the group itself.
+      fontSize: fontSize,
+      fontWeight: fontWeight,
+      fontStyle: fontStyle,
+      fontFamily: fontFamily,
+      cssClass: cssClass,
+      inlineStyle: inlineStyle,
+    );
 
     return children.map((SvgElement child) => child.toPaintCommands(childContext)).combine().map((
       List<PaintCommand> childCommands,
@@ -245,6 +264,7 @@ extension _SvgGroupToPaintCommands on SvgGroup {
       return <PaintCommand>[
         DrawGroup(
           commands: childCommands,
+          style: style,
           id: id,
           transform: SvgTransformParser.scaleTransform(
             transform,

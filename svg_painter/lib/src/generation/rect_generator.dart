@@ -14,20 +14,23 @@ class RectGenerator extends ShapeGenerator<DrawRect> {
     PaletteResult? palette,
     Map<String, String>? activeFillProperties,
     Map<String, String>? activeStrokeProperties,
+    List<InheritedProperty>? inheritedFills,
+    List<InheritedProperty>? inheritedStrokes,
   }) {
     wrapWithTransform(buffer, command.transform, () {
       final String r =
           'Rect.fromLTWH(${command.x}, ${command.y}, ${command.width}, ${command.height})';
-      final String rectCode = command.rx > 0 || command.ry > 0
-          ? 'RRect.fromRectAndRadius($r, Radius.elliptical(${command.rx}, ${command.ry}))'
+      final String drawMethod =
+          (command.rx > 0 || command.ry > 0) ? 'drawRRect' : 'drawRect';
+      final String rectCode = (command.rx > 0 || command.ry > 0)
+          ? 'RRect.fromRectAndRadius($r, const Radius.elliptical(${command.rx}, ${command.ry}))'
           : r;
-      final String drawMethod = command.rx > 0 || command.ry > 0 ? 'drawRRect' : 'drawRect';
 
       generatePaintingCode(
         buffer,
         command,
         command.style,
-        r,
+        (command.rx > 0 || command.ry > 0) ? '$r' : rectCode, // Bounds is always the Rect
         (
           String p, {
           String? dashArray,
@@ -53,6 +56,8 @@ class RectGenerator extends ShapeGenerator<DrawRect> {
         palette: palette,
         activeFillProperties: activeFillProperties,
         activeStrokeProperties: activeStrokeProperties,
+        inheritedFills: inheritedFills,
+        inheritedStrokes: inheritedStrokes,
       );
     });
   }

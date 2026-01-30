@@ -15,6 +15,8 @@ class TextGenerator extends ShapeGenerator<DrawText> {
     PaletteResult? palette,
     Map<String, String>? activeFillProperties,
     Map<String, String>? activeStrokeProperties,
+    List<InheritedProperty>? inheritedFills,
+    List<InheritedProperty>? inheritedStrokes,
   }) {
     wrapWithTransform(buffer, command.transform, () {
       buffer.writeln('      {');

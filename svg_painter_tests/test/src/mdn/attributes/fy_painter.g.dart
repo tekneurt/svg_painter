@@ -147,7 +147,7 @@ class _$Fy2Painter extends CustomPainter {
               166.66666666666669,
               166.66666666666669,
             ),
-            Radius.elliptical(25.0, 25.0),
+            const Radius.elliptical(25.0, 25.0),
           ),
           paint,
         );
@@ -165,7 +165,7 @@ class _$Fy2Painter extends CustomPainter {
               166.66666666666669,
               166.66666666666669,
             ),
-            Radius.elliptical(25.0, 25.0),
+            const Radius.elliptical(25.0, 25.0),
           ),
           paint,
         );

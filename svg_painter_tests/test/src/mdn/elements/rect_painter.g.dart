@@ -54,7 +54,7 @@ class _$RectPainter extends CustomPainter {
         canvas.drawRRect(
           RRect.fromRectAndRadius(
             Rect.fromLTWH(120.0, 0.0, 100.0, 100.0),
-            Radius.elliptical(15.0, 15.0),
+            const Radius.elliptical(15.0, 15.0),
           ),
           paint,
         );

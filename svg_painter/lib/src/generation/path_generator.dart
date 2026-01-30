@@ -15,6 +15,8 @@ class PathGenerator extends ShapeGenerator<DrawPath> {
     PaletteResult? palette,
     Map<String, String>? activeFillProperties,
     Map<String, String>? activeStrokeProperties,
+    List<InheritedProperty>? inheritedFills,
+    List<InheritedProperty>? inheritedStrokes,
   }) {
     wrapWithTransform(buffer, command.transform, () {
       buffer.writeln('      // Path');
@@ -63,6 +65,8 @@ class PathGenerator extends ShapeGenerator<DrawPath> {
         palette: palette,
         activeFillProperties: activeFillProperties,
         activeStrokeProperties: activeStrokeProperties,
+        inheritedFills: inheritedFills,
+        inheritedStrokes: inheritedStrokes,
       );
 
       buffer.writeln('      }');

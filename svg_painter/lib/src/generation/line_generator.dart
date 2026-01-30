@@ -14,12 +14,14 @@ class LineGenerator extends ShapeGenerator<DrawLine> {
     PaletteResult? palette,
     Map<String, String>? activeFillProperties,
     Map<String, String>? activeStrokeProperties,
+    List<InheritedProperty>? inheritedFills,
+    List<InheritedProperty>? inheritedStrokes,
   }) {
     wrapWithTransform(buffer, command.transform, () {
       final String p1 = 'const Offset(${command.x1}, ${command.y1})';
       final String p2 = 'const Offset(${command.x2}, ${command.y2})';
-      final String bounds = 'Rect.fromPoints($p1, $p2)';
-
+      final String bounds =
+          'Rect.fromPoints($p1, $p2)'; // Not exact bounds but acceptable for gradient
       generatePaintingCode(
         buffer,
         command,
@@ -47,6 +49,8 @@ class LineGenerator extends ShapeGenerator<DrawLine> {
         palette: palette,
         activeFillProperties: activeFillProperties,
         activeStrokeProperties: activeStrokeProperties,
+        inheritedFills: inheritedFills,
+        inheritedStrokes: inheritedStrokes,
       );
     });
   }
