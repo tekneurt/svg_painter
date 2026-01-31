@@ -503,8 +503,8 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
   bool _hasDashes(List<PaintCommand> commands) {
     for (final PaintCommand command in commands) {
       if (command is DrawCommand) {
-        final PaintingStyle? style = command.style;
-        final List<double>? dashArray = style?.stroke?.dashArray;
+        final PaintingStyle style = command.style;
+        final List<double>? dashArray = style.stroke?.dashArray;
 
         if (dashArray != null) {
           return true;
@@ -523,8 +523,8 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
   bool _hasCurrentColor(List<PaintCommand> commands) {
     for (final PaintCommand command in commands) {
       if (command is DrawCommand) {
-        final PaintingStyle? style = command.style;
-        if ((style?.fill?.isCurrentColor ?? false) || (style?.stroke?.isCurrentColor ?? false)) {
+        final PaintingStyle style = command.style;
+        if ((style.fill?.isCurrentColor ?? false) || (style.stroke?.isCurrentColor ?? false)) {
           return true;
         }
       }
@@ -541,11 +541,11 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
   void _collectIds(List<PaintCommand> commands, Set<String> fillIds, Set<String> strokeIds) {
     for (final PaintCommand command in commands) {
       if (command is DrawCommand && command.id != null) {
-        final PaintingStyle? style = command.style;
-        if (style?.fill?.isExplicit ?? false) {
+        final PaintingStyle style = command.style;
+        if (style.fill?.isExplicit ?? false) {
           fillIds.add(command.id!);
         }
-        if (style?.stroke?.isExplicit ?? false) {
+        if (style.stroke?.isExplicit ?? false) {
           strokeIds.add(command.id!);
         }
       }
