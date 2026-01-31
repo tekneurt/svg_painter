@@ -137,6 +137,73 @@ void main() {
         expect(output, contains('canvas.drawPath(_dashPath('));
         expect(output, contains('pathLength: 100.0'));
       });
+
+      test('should use active property for fill if mapped', () {
+        // Arrange
+        const PaintingStyle style = PaintingStyle(fill: PaintingFillStyle(colorArgb: 0xFFFF0000));
+        const DrawCircle command = DrawCircle(cx: 10, cy: 20, radius: 5, style: style, id: 'c1');
+        final StringBuffer buffer = StringBuffer();
+
+        // Act
+        generator.generate(
+          command,
+          buffer,
+          activeFillProperties: <String, String>{'c1Fill': 'myCustomFill'},
+        );
+
+        // Assert
+        final String output = buffer.toString();
+        expect(output, contains('final Color? localFill = myCustomFill;'));
+        expect(output, contains('if (localFill == null) {'));
+        expect(output, contains('paint.color = localFill;'));
+      });
+
+      test('should use inherited property for fill if implicit match found', () {
+        // Arrange
+        const int color = 0xFFFF0000;
+        const PaintingStyle style = PaintingStyle(
+          fill: PaintingFillStyle(colorArgb: color, isExplicit: false),
+        );
+        const DrawCircle command = DrawCircle(cx: 10, cy: 20, radius: 5, style: style);
+        final StringBuffer buffer = StringBuffer();
+
+        // Act
+        generator.generate(
+          command,
+          buffer,
+          inheritedFills: <InheritedProperty>[const InheritedProperty('groupFill', color)],
+        );
+
+        // Assert
+        final String output = buffer.toString();
+        expect(output, contains('final Color? inheritedFill = groupFill;'));
+        expect(output, contains('if (inheritedFill == null) {'));
+        expect(output, contains('paint.color = inheritedFill;'));
+      });
+
+      test('should use original color if inherited property does not match', () {
+        // Arrange
+        const int color = 0xFFFF0000;
+        const PaintingStyle style = PaintingStyle(
+          fill: PaintingFillStyle(colorArgb: color, isExplicit: false),
+        );
+        const DrawCircle command = DrawCircle(cx: 10, cy: 20, radius: 5, style: style);
+        final StringBuffer buffer = StringBuffer();
+
+        // Act
+        generator.generate(
+          command,
+          buffer,
+          inheritedFills: <InheritedProperty>[
+            const InheritedProperty('groupFill', 0xFF0000FF), // Different color
+          ],
+        );
+
+        // Assert
+        final String output = buffer.toString();
+        expect(output, isNot(contains('final Color? inheritedFill = groupFill;')));
+        expect(output, contains('paint.color = const Color(0xFFFF0000);'));
+      });
     });
 
     group('wrapWithTransform', () {

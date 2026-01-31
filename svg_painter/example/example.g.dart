@@ -19,23 +19,13 @@ class _$_CirclePainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final FittedSizes fittedSizes = applyBoxFit(
-      fit,
-      const Size(100.0, 100.0),
-      size,
-    );
+    final FittedSizes fittedSizes = applyBoxFit(fit, const Size(100.0, 100.0), size);
     final Size sourceSize = fittedSizes.source;
-    final Rect destRect = Alignment.center.inscribe(
-      fittedSizes.destination,
-      Offset.zero & size,
-    );
+    final Rect destRect = Alignment.center.inscribe(fittedSizes.destination, Offset.zero & size);
 
     canvas.save();
     canvas.translate(destRect.left, destRect.top);
-    canvas.scale(
-      destRect.width / sourceSize.width,
-      destRect.height / sourceSize.height,
-    );
+    canvas.scale(destRect.width / sourceSize.width, destRect.height / sourceSize.height);
     canvas.clipRect(Rect.fromLTWH(0, 0, 100.0, 100.0));
 
     {

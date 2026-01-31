@@ -27,11 +27,7 @@ class LineGenerator extends ShapeGenerator<DrawLine> {
         command,
         command.style,
         bounds,
-        (
-          String p, {
-          String? dashArray,
-          String? pathLength,
-        }) {
+        (String p, {String? dashArray, String? pathLength}) {
           if (dashArray == null) {
             buffer.writeln('      canvas.drawLine($p1, $p2, $p);');
           } else {

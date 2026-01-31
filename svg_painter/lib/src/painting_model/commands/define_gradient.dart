@@ -15,8 +15,7 @@ final class GradientStop {
 /// Base class for commands that define a gradient.
 @immutable
 sealed class DefineGradient extends DefineCommand {
-  const DefineGradient({required String id, required this.stops, this.transform})
-    : super(id: id);
+  const DefineGradient({required String id, required this.stops, this.transform}) : super(id: id);
 
   /// The list of color stops for the gradient.
   final List<GradientStop> stops;

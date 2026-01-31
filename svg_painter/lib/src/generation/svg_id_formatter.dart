@@ -2,13 +2,69 @@
 class SvgIdFormatter {
   /// Reserved words in Dart that cannot be used as identifier names.
   static const Set<String> _reservedWords = <String>{
-    'abstract', 'as', 'assert', 'async', 'await', 'break', 'case', 'catch', 'class',
-    'const', 'continue', 'covariant', 'default', 'deferred', 'do', 'dynamic', 'else',
-    'enum', 'export', 'extends', 'extension', 'external', 'factory', 'false', 'final',
-    'finally', 'for', 'get', 'hide', 'if', 'implements', 'import', 'in', 'interface',
-    'is', 'late', 'library', 'mixin', 'new', 'null', 'on', 'operator', 'part', 'patch',
-    'required', 'rethrow', 'return', 'set', 'show', 'static', 'super', 'switch', 'sync',
-    'this', 'throw', 'true', 'try', 'typedef', 'var', 'void', 'while', 'with', 'yield',
+    'abstract',
+    'as',
+    'assert',
+    'async',
+    'await',
+    'break',
+    'case',
+    'catch',
+    'class',
+    'const',
+    'continue',
+    'covariant',
+    'default',
+    'deferred',
+    'do',
+    'dynamic',
+    'else',
+    'enum',
+    'export',
+    'extends',
+    'extension',
+    'external',
+    'factory',
+    'false',
+    'final',
+    'finally',
+    'for',
+    'get',
+    'hide',
+    'if',
+    'implements',
+    'import',
+    'in',
+    'interface',
+    'is',
+    'late',
+    'library',
+    'mixin',
+    'new',
+    'null',
+    'on',
+    'operator',
+    'part',
+    'patch',
+    'required',
+    'rethrow',
+    'return',
+    'set',
+    'show',
+    'static',
+    'super',
+    'switch',
+    'sync',
+    'this',
+    'throw',
+    'true',
+    'try',
+    'typedef',
+    'var',
+    'void',
+    'while',
+    'with',
+    'yield',
   };
 
   /// Formats an SVG [id] into a valid `lowerCamelCase` Dart identifier.
@@ -25,7 +81,10 @@ class SvgIdFormatter {
     }
 
     // 2. Split into words and convert to lowerCamelCase
-    final List<String> words = clean.split(RegExp(r'[\s_-]+')).where((String w) => w.isNotEmpty).toList();
+    final List<String> words = clean
+        .split(RegExp(r'[\s_-]+'))
+        .where((String w) => w.isNotEmpty)
+        .toList();
 
     if (words.isEmpty) {
       return 'identifier';

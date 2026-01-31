@@ -51,8 +51,7 @@ extension ToSvgValue on XmlElement {
         .strokeOpacity ||
         .stopOpacity ||
         .fontSize ||
-        .strokeWidth =>
-          attributeValue.toSvgLengthPercentage(),
+        .strokeWidth => attributeValue.toSvgLengthPercentage(),
         .rx || .ry || .width || .height => attributeValue.toSvgLengthPercentageAuto(),
         .pathLength => attributeValue.toSvgLength(),
         .points || .strokeDasharray => attributeValue.toSvgPointList(),
@@ -69,8 +68,7 @@ extension ToSvgValue on XmlElement {
         .gradientTransform ||
         .fontWeight ||
         .fontStyle ||
-        .fontFamily =>
-          null, // These are strings or special types handled elsewhere
+        .fontFamily => null, // These are strings or special types handled elsewhere
       };
 
       if (parsedValue == null) {

@@ -28,4 +28,3 @@ final class DrawGroup extends DrawCommand {
   String toString() =>
       'DrawGroup(cmds: ${commands.length}, style: $style, transform: $transform, opacity: $opacity)';
 }
-  

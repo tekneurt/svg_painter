@@ -20,8 +20,7 @@ class RectGenerator extends ShapeGenerator<DrawRect> {
     wrapWithTransform(buffer, command.transform, () {
       final String r =
           'Rect.fromLTWH(${command.x}, ${command.y}, ${command.width}, ${command.height})';
-      final String drawMethod =
-          (command.rx > 0 || command.ry > 0) ? 'drawRRect' : 'drawRect';
+      final String drawMethod = (command.rx > 0 || command.ry > 0) ? 'drawRRect' : 'drawRect';
       final String rectCode = (command.rx > 0 || command.ry > 0)
           ? 'RRect.fromRectAndRadius($r, const Radius.elliptical(${command.rx}, ${command.ry}))'
           : r;
@@ -31,11 +30,7 @@ class RectGenerator extends ShapeGenerator<DrawRect> {
         command,
         command.style,
         (command.rx > 0 || command.ry > 0) ? r : rectCode, // Bounds is always the Rect
-        (
-          String p, {
-          String? dashArray,
-          String? pathLength,
-        }) {
+        (String p, {String? dashArray, String? pathLength}) {
           if (dashArray == null) {
             buffer.writeln('      canvas.$drawMethod($rectCode, $p);');
           } else {

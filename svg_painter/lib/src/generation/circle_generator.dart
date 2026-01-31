@@ -25,11 +25,7 @@ class CircleGenerator extends ShapeGenerator<DrawCircle> {
         command,
         command.style,
         bounds,
-        (
-          String p, {
-          String? dashArray,
-          String? pathLength,
-        }) {
+        (String p, {String? dashArray, String? pathLength}) {
           if (dashArray == null) {
             buffer.writeln(
               '      canvas.drawCircle(const Offset(${command.cx}, ${command.cy}), ${command.radius}, $p);',

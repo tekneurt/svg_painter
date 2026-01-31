@@ -179,8 +179,14 @@ void main() {
     test('invalid element combinations should throw UnsupportedError', () {
       // Arrange & Act & Assert
       // x/y with circle
-      expect(() => XmlAttributeName.x.toDefaultValue(XmlElementName.circle), throwsUnsupportedError);
-      expect(() => XmlAttributeName.y.toDefaultValue(XmlElementName.circle), throwsUnsupportedError);
+      expect(
+        () => XmlAttributeName.x.toDefaultValue(XmlElementName.circle),
+        throwsUnsupportedError,
+      );
+      expect(
+        () => XmlAttributeName.y.toDefaultValue(XmlElementName.circle),
+        throwsUnsupportedError,
+      );
       // x1/y1/y2 with rect
       expect(() => XmlAttributeName.x1.toDefaultValue(XmlElementName.rect), throwsUnsupportedError);
       expect(() => XmlAttributeName.y1.toDefaultValue(XmlElementName.rect), throwsUnsupportedError);
@@ -196,12 +202,27 @@ void main() {
       expect(() => XmlAttributeName.rx.toDefaultValue(XmlElementName.path), throwsUnsupportedError);
       expect(() => XmlAttributeName.ry.toDefaultValue(XmlElementName.path), throwsUnsupportedError);
       // width/height with path
-      expect(() => XmlAttributeName.width.toDefaultValue(XmlElementName.path), throwsUnsupportedError);
-      expect(() => XmlAttributeName.height.toDefaultValue(XmlElementName.path), throwsUnsupportedError);
+      expect(
+        () => XmlAttributeName.width.toDefaultValue(XmlElementName.path),
+        throwsUnsupportedError,
+      );
+      expect(
+        () => XmlAttributeName.height.toDefaultValue(XmlElementName.path),
+        throwsUnsupportedError,
+      );
       // fx/fy/fr with linearGradient
-      expect(() => XmlAttributeName.fx.toDefaultValue(XmlElementName.linearGradient), throwsUnsupportedError);
-      expect(() => XmlAttributeName.fy.toDefaultValue(XmlElementName.linearGradient), throwsUnsupportedError);
-      expect(() => XmlAttributeName.fr.toDefaultValue(XmlElementName.linearGradient), throwsUnsupportedError);
+      expect(
+        () => XmlAttributeName.fx.toDefaultValue(XmlElementName.linearGradient),
+        throwsUnsupportedError,
+      );
+      expect(
+        () => XmlAttributeName.fy.toDefaultValue(XmlElementName.linearGradient),
+        throwsUnsupportedError,
+      );
+      expect(
+        () => XmlAttributeName.fr.toDefaultValue(XmlElementName.linearGradient),
+        throwsUnsupportedError,
+      );
     });
   });
 }

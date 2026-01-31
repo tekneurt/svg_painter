@@ -25,11 +25,7 @@ class OvalGenerator extends ShapeGenerator<DrawOval> {
         command,
         command.style,
         bounds,
-        (
-          String p, {
-          String? dashArray,
-          String? pathLength,
-        }) {
+        (String p, {String? dashArray, String? pathLength}) {
           if (dashArray == null) {
             buffer.writeln('      canvas.drawOval($bounds, $p);');
           } else {

@@ -48,11 +48,7 @@ class PathGenerator extends ShapeGenerator<DrawPath> {
         command,
         command.style,
         'path.getBounds()',
-        (
-          String paintVar, {
-          String? dashArray,
-          String? pathLength,
-        }) {
+        (String paintVar, {String? dashArray, String? pathLength}) {
           if (dashArray == null) {
             buffer.writeln('        canvas.drawPath(path, $paintVar);');
           } else {
@@ -62,7 +58,9 @@ class PathGenerator extends ShapeGenerator<DrawPath> {
             } else {
               plArg = ', pathLength: $pathLength';
             }
-            buffer.writeln('        canvas.drawPath(_dashPath(path, $dashArray$plArg), $paintVar);');
+            buffer.writeln(
+              '        canvas.drawPath(_dashPath(path, $dashArray$plArg), $paintVar);',
+            );
           }
         },
         palette: palette,

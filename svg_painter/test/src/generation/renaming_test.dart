@@ -26,13 +26,13 @@ void main() {
       // Should contain renamed property
       expect(output, contains('final Color? backgroundFill;'));
       expect(output, contains('this.backgroundFill,'));
-      
+
       // Should NOT contain original property
       expect(output, isNot(contains('myCircleFill;')));
-      
+
       // Verify usage in paint
       expect(output, contains('final Color? localFill = backgroundFill;'));
-      
+
       // Verify usage in shouldRepaint
       expect(output, contains('&& backgroundFill == oldDelegate.backgroundFill'));
     });
@@ -51,19 +51,16 @@ void main() {
         elementName: 'RenamedIndexPainter',
         svgContent: svg,
         exposureMode: SvgExposureMode.indexed,
-        propertyMapping: <String, String>{
-          'fill1': 'primaryColor',
-          'fill2': 'secondaryColor',
-        },
+        propertyMapping: <String, String>{'fill1': 'primaryColor', 'fill2': 'secondaryColor'},
       );
 
       // Assert
       expect(output, contains('final Color? primaryColor;'));
       expect(output, contains('final Color? secondaryColor;'));
-      
+
       expect(output, isNot(contains('fill1;')));
       expect(output, isNot(contains('fill2;')));
-      
+
       // Verify usage (fill1 mapped to primaryColor)
       expect(output, contains('final Color? localFill = primaryColor;'));
       expect(output, contains('final Color? localFill = secondaryColor;'));

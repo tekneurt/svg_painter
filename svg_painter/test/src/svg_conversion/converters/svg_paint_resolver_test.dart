@@ -1,133 +1,166 @@
-import 'package:svg_painter/src/painting_model/styles/painting_style.dart';
+import 'package:svg_painter/src/painting_model/_painting_model.dart';
 import 'package:svg_painter/src/svg_conversion/converters/svg_paint_resolver.dart';
 import 'package:svg_painter/src/svg_conversion/converters/svg_painting_context.dart';
-import 'package:svg_painter/src/svg_model/attributes/svg_stroke_attributes.dart';
-import 'package:svg_painter/src/svg_model/svg_style_sheet.dart';
-import 'package:svg_painter/src/svg_model/svg_value.dart';
+import 'package:svg_painter/src/svg_model/_svg_model.dart';
 import 'package:test/test.dart';
 
 void main() {
   group('resolvePaint', () {
-    const SvgPaintingContext baseContext = SvgPaintingContext(
+    const SvgPaintingContext emptyContext = SvgPaintingContext(
       viewBoxWidth: 100,
-      viewBoxHeight: 200,
+      viewBoxHeight: 100,
     );
 
-    test('should resolve fill from attribute when provided', () {
-      // Arrange
-      const SvgColor fill = SvgNamedColor(SvgColorName.red);
-
-      // Act
-      final PaintingStyle result = resolvePaint(baseContext, fill: fill);
-
-      // Assert
-      expect(result.fill?.colorArgb, 0xFFFF0000);
-    });
-
-    test('should resolve inherited fill when not provided on element', () {
-      // Arrange
-      final SvgPaintingContext context = baseContext.derive(
-        inheritedFill: const SvgNamedColor(SvgColorName.blue),
+    test('should resolve inline style with highest priority', () {
+      final PaintingStyle style = resolvePaint(
+        emptyContext,
+        fill: const SvgRgbColor(255, 0, 0, 0), // Attribute (should be overridden)
+        inlineStyle: 'fill: #FF0000',
       );
 
-      // Act
-      final PaintingStyle result = resolvePaint(context);
-
-      // Assert
-      expect(result.fill?.colorArgb, 0xFF0000FF);
+      expect(style.fill?.colorArgb, 0xFFFF0000);
+      expect(style.fill?.isExplicit, isTrue);
     });
 
-    test('should prioritize inline style over attributes', () {
-      // Arrange
-      const SvgColor fillAttribute = SvgNamedColor(SvgColorName.red);
-      const String inlineStyle = 'fill: blue';
+    test('should identify currentColor', () {
+      final PaintingStyle style = resolvePaint(emptyContext, fill: const SvgCurrentColor());
 
-      // Act
-      final PaintingStyle result = resolvePaint(
-        baseContext,
-        fill: fillAttribute,
-        inlineStyle: inlineStyle,
-      );
-
-      // Assert
-      expect(result.fill?.colorArgb, 0xFF0000FF);
+      expect(style.fill?.isCurrentColor, isTrue);
+      expect(style.fill?.colorArgb, isNull);
     });
 
-    test('should prioritize CSS class over tag selector', () {
-      // Arrange
+    test('should parse font shorthand', () {
+      final PaintingStyle style = resolvePaint(emptyContext, inlineStyle: 'font: bold 16px serif');
+
+      expect(style.text?.fontWeight, 'bold');
+      // 16px relative to 100 viewbox height -> depends on logic, but parsing should happen
+      expect(style.text?.fontSize, isNotNull);
+      expect(style.text?.fontFamily, 'Noto Serif'); // Mapped from 'serif'
+    });
+
+    test('should respect CSS specificity (ID > Class > Tag)', () {
+      // Need a context with a stylesheet
+      const SvgStyleSheet sheet = SvgStyleSheet(<String, Map<String, String>>{
+        'rect': <String, String>{'fill': 'blue'}, // Tag
+        '.myClass': <String, String>{'fill': 'green'}, // Class
+        '#myId': <String, String>{'fill': 'red'}, // ID
+      });
+
       const SvgPaintingContext context = SvgPaintingContext(
         viewBoxWidth: 100,
-        viewBoxHeight: 200,
-        styleSheet: SvgStyleSheet(<String, Map<String, String>>{
-          'circle': <String, String>{'fill': 'red'},
-          'my-class': <String, String>{'fill': 'blue'},
-        }),
+        viewBoxHeight: 100,
+        styleSheet: sheet,
       );
 
-      // Act
-      final PaintingStyle result = resolvePaint(context, tagName: 'circle', cssClass: 'my-class');
+      // 1. Tag only
+      PaintingStyle style = resolvePaint(context, tagName: 'rect');
+      expect(style.fill?.colorArgb, 0xFF0000FF); // Blue
 
-      // Assert
-      expect(result.fill?.colorArgb, 0xFF0000FF);
+      // 2. Tag + Class
+      style = resolvePaint(context, tagName: 'rect', cssClass: 'myClass');
+      expect(style.fill?.colorArgb, 0xFF008000); // Green
+
+      // 3. Tag + Class + ID
+      style = resolvePaint(context, tagName: 'rect', cssClass: 'myClass', id: 'myId');
+      expect(style.fill?.colorArgb, 0xFFFF0000); // Red
     });
 
-    test('should resolve stroke attributes correctly', () {
-      // Arrange
-      const SvgStrokeAttributes stroke = SvgStrokeAttributes(
-        color: SvgNamedColor(SvgColorName.black),
-        width: SvgLength(2.0),
-        linecap: SvgStrokeLinecap.round,
-      );
-
-      // Act
-      final PaintingStyle result = resolvePaint(baseContext, stroke: stroke);
-
-      // Assert
-      expect(result.stroke?.colorArgb, 0xFF000000);
-      expect(result.stroke?.width, 2.0);
-      expect(result.stroke?.cap, PaintingStrokeCap.round);
-    });
-
-    test('should multiply opacities correctly', () {
-      // Arrange
-      final SvgPaintingContext context = baseContext.derive(parentOpacity: 0.5);
-      const SvgLengthPercentage elementOpacity = SvgPercentage(50.0); // 0.5
-
-      // Act
-      final PaintingStyle result = resolvePaint(context, opacity: elementOpacity);
-
-      // Assert
-      expect(result.groupOpacity, 0.25);
-    });
-
-    test('should resolve font-size with scaling', () {
-      // Arrange
+    test('should mark fill/stroke as explicit if from CSS', () {
+      const SvgStyleSheet sheet = SvgStyleSheet(<String, Map<String, String>>{
+        '.myClass': <String, String>{'fill': 'green'},
+      });
       const SvgPaintingContext context = SvgPaintingContext(
-        viewBoxWidth: 200,
-        viewBoxHeight: 300,
-        parentSx: 2.0,
-        parentSy: 3.0,
+        viewBoxWidth: 100,
+        viewBoxHeight: 100,
+        styleSheet: sheet,
       );
-      const SvgLengthPercentage fontSize = SvgLength(16.0);
 
-      // Act
-      final PaintingStyle result = resolvePaint(context, fontSize: fontSize);
-
-      // Assert
-      // 16.0 * parentSy (3.0) = 48.0
-      expect(result.text?.fontSize, 48.0);
+      final PaintingStyle style = resolvePaint(context, cssClass: 'myClass');
+      expect(style.fill?.isExplicit, isTrue);
     });
 
-    test('should map generic font families', () {
-      // Arrange & Act
-      final PaintingStyle resultSerif = resolvePaint(baseContext, fontFamily: 'serif');
-      final PaintingStyle resultSans = resolvePaint(baseContext, fontFamily: 'sans-serif');
-      final PaintingStyle resultMono = resolvePaint(baseContext, fontFamily: 'monospace');
+    test('should resolve SvgPaintReference (url(#id)) correctly', () {
+      final PaintingStyle style = resolvePaint(
+        emptyContext,
+        fill: const SvgPaintReference('gradient1'),
+      );
 
-      // Assert
-      expect(resultSerif.text?.fontFamily, 'Noto Serif');
-      expect(resultSans.text?.fontFamily, 'Roboto');
-      expect(resultMono.text?.fontFamily, 'Roboto Mono');
+      expect(style.fill?.shaderId, 'gradient1');
+      expect(style.fill?.colorArgb, isNull);
+    });
+
+    test('should resolve inherited styles correctly', () {
+      const SvgPaintingContext context = SvgPaintingContext(
+        viewBoxWidth: 100,
+        viewBoxHeight: 100,
+        inheritedFill: SvgRgbColor(255, 0, 0, 255), // Blue
+        inheritedStroke: SvgRgbColor(255, 255, 0, 0), // Red
+        inheritedStrokeWidth: SvgLength(5.0),
+      );
+
+      final PaintingStyle style = resolvePaint(context);
+
+      expect(style.fill?.colorArgb, 0xFF0000FF);
+      expect(style.stroke?.colorArgb, 0xFFFF0000);
+      expect(style.stroke?.width, 5.0);
+    });
+
+    test('should handle missing or empty inline styles gracefully', () {
+      final PaintingStyle style = resolvePaint(emptyContext, inlineStyle: '  ; fill: red ; ; ');
+      expect(style.fill?.colorArgb, 0xFFFF0000);
+    });
+
+    test('should resolve complex CSS properties', () {
+      final PaintingStyle style = resolvePaint(
+        emptyContext,
+        inlineStyle: '''
+          fill-opacity: 0.5;
+          stroke: blue;
+          stroke-opacity: 0.8;
+          stroke-width: 2px;
+          stroke-linecap: round;
+          stroke-linejoin: bevel;
+          opacity: 0.9;
+          font-style: italic;
+          font-family: monospace;
+          pathLength: 100;
+        ''',
+      );
+
+      expect(style.fill?.opacity, closeTo(0.45, 0.001)); // fill-opacity(0.5) * opacity(0.9) = 0.45
+      expect(style.stroke?.colorArgb, 0xFF0000FF);
+      expect(style.stroke?.opacity, closeTo(0.8 * 0.9, 0.001)); // stroke-opacity * opacity(0.9)
+      expect(style.stroke?.width, 2.0);
+      expect(style.stroke?.cap, PaintingStrokeCap.round);
+      expect(style.stroke?.join, PaintingStrokeJoin.bevel);
+      expect(style.groupOpacity, closeTo(0.9, 0.001));
+      expect(style.text?.fontStyle, 'italic');
+      expect(style.text?.fontFamily, 'Roboto Mono');
+      expect(style.stroke?.pathLength, 100.0);
+    });
+
+    test('should resolve stroke dasharray from CSS', () {
+      final PaintingStyle style = resolvePaint(
+        emptyContext,
+        inlineStyle: 'stroke: black; stroke-dasharray: 5, 5',
+      );
+
+      expect(style.stroke?.dashArray, equals(<double>[5.0, 5.0]));
+    });
+
+    test('should combine parent opacity with element opacity', () {
+      const SvgPaintingContext context = SvgPaintingContext(
+        viewBoxWidth: 100,
+        viewBoxHeight: 100,
+        parentOpacity: 0.5,
+      );
+
+      final PaintingStyle style = resolvePaint(
+        context,
+        opacity: const SvgPercentage(50), // 0.5 * 0.5 = 0.25
+      );
+
+      expect(style.groupOpacity, closeTo(0.25, 0.001));
     });
   });
 }

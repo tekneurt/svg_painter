@@ -208,9 +208,7 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
         buffer.writeln('$indent paint.color = $colorCode;');
       }
     } else {
-      buffer.writeln(
-        '$indent paint.shader = _grad_${stroke.shaderId}.createShader($boundsRect);',
-      );
+      buffer.writeln('$indent paint.shader = _grad_${stroke.shaderId}.createShader($boundsRect);');
       if (stroke.opacity == 1.0) {
         // Full opacity
       } else {
@@ -247,8 +245,7 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
       buffer.writeln('$indent paint.shader = _grad_${fill.shaderId}.createShader($boundsRect);');
       if (fill.opacity == 1.0) {
         // Full opacity
-      }
-      else {
+      } else {
         buffer.writeln('$indent paint.color = paint.color.withOpacity(${fill.opacity});');
       }
     }

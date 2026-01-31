@@ -37,10 +37,12 @@ class GroupGenerator extends ShapeGenerator<DrawGroup> {
       }
 
       // Prepare inherited properties for children
-      final List<InheritedProperty> nextInheritedFills =
-          inheritedFills != null ? List<InheritedProperty>.of(inheritedFills) : <InheritedProperty>[];
-      final List<InheritedProperty> nextInheritedStrokes =
-          inheritedStrokes != null ? List<InheritedProperty>.of(inheritedStrokes) : <InheritedProperty>[];
+      final List<InheritedProperty> nextInheritedFills = inheritedFills != null
+          ? List<InheritedProperty>.of(inheritedFills)
+          : <InheritedProperty>[];
+      final List<InheritedProperty> nextInheritedStrokes = inheritedStrokes != null
+          ? List<InheritedProperty>.of(inheritedStrokes)
+          : <InheritedProperty>[];
 
       final String? id = command.id;
       final PaintingStyle style = command.style;

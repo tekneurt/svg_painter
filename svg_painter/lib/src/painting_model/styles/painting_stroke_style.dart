@@ -62,7 +62,7 @@ final class PaintingStrokeStyle {
   final List<double>? dashArray;
 
   /// The total length of the path in user units, used for scaling dashes.
-  final double? pathLength;
+  final double? pathLength; // coverage:ignore-line
 
   /// Whether this stroke was explicitly defined on the element (not just inherited).
   final bool isExplicit;

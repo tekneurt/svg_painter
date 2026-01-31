@@ -95,6 +95,7 @@
         [x] **Default Value Exception Audit**: Systematically test all `UnsupportedError` paths in `to_default_value.dart`.
     - [x] **Final Coverage Check**: Verify high coverage (>90%).
     - [ ] **Bang Operator (Null Assertion) Audit**: Systematically audit the codebase for the `!` operator and replace it with safe null handling (positive equality checks, `if (x == null) ...`, or explicit `assert(x != null)`) to eliminate potential runtime crashes.
+    - [ ] **Coverage Exception Audit**: Investigate all `// coverage:ignore-line` and `// coverage:ignore-start/end` markers across the codebase to determine if the ignored code can be safely tested or if the ignore markers are still justified.
     - [ ] **Improve Coverage for Low-Coverage Files**:
         - [ ] `oval_generator.dart` (Dash path logic)
         - [ ] `rect_generator.dart` (Dash path logic)

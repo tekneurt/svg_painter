@@ -51,11 +51,14 @@ void main() {
       // stroke1 should be black (most frequent), stroke2 yellow.
       expect(output, contains('final Color? stroke1;'));
       expect(output, contains('final Color? stroke2;'));
-      
+
       // Verify stroke1 maps to black (0xFF000000)
       expect(output, contains('final Color? localStroke = stroke1;'));
-      expect(output, contains('paint.color = Colors.black;')); // inside the localStroke == null block
-      
+      expect(
+        output,
+        contains('paint.color = Colors.black;'),
+      ); // inside the localStroke == null block
+
       // Verify stroke2 maps to yellow (0xFFFF00)
       expect(output, contains('final Color? localStroke = stroke2;'));
       expect(output, contains('paint.color = const Color(0xFFFFFF00);'));

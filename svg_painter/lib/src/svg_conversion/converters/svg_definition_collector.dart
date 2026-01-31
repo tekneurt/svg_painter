@@ -7,6 +7,7 @@ extension SvgElementToDefinitions on SvgElement {
     if (self.id == null) {
       // No ID
     } else {
+      // print('Collecting definition: ${self.id}');
       map[self.id!] = self;
     }
 

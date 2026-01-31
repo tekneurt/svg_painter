@@ -52,11 +52,7 @@ class PolyGenerator extends ShapeGenerator<PaintCommand> {
         command,
         style,
         'path.getBounds()',
-        (
-          String p, {
-          String? dashArray,
-          String? pathLength,
-        }) {
+        (String p, {String? dashArray, String? pathLength}) {
           if (dashArray == null) {
             buffer.writeln('        canvas.drawPath(path, $p);');
           } else {
