@@ -10,6 +10,29 @@ part of 'daphnia_painter.dart';
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
 
+class DaphniaPainterWidget extends StatelessWidget {
+  const DaphniaPainterWidget({
+    super.key,
+    this.width,
+    this.height,
+    this.fit = BoxFit.contain,
+    this.alignment = Alignment.center,
+  });
+
+  final double? width;
+  final double? height;
+  final BoxFit fit;
+  final AlignmentGeometry alignment;
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomPaint(
+      size: Size(width ?? 48.0, height ?? 48.0),
+      painter: _$DaphniaPainter(fit: fit),
+    );
+  }
+}
+
 class _$DaphniaPainter extends CustomPainter {
   const _$DaphniaPainter({this.fit = BoxFit.contain});
 

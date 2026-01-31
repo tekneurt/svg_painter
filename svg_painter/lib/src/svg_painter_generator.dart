@@ -195,81 +195,96 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
 
     final List<String> sortedFillIds = fillIds.toList()..sort();
     final List<String> sortedStrokeIds = strokeIds.toList()..sort();
-        final List<String>? sortedFillIndexed = palette?.fillAssignments.values.toSet().toList()
-          ?..sort();
-        final List<String>? sortedStrokeIndexed = palette?.strokeAssignments.values.toSet().toList()
-          ?..sort();
-    
-            String resolveName(String defaultName) => propertyMapping[defaultName] ?? defaultName;
-        
-            final Map<String, String> activeFillProperties = <String, String>{};
-            for (final String id in sortedFillIds) {
-              final String original = '${SvgIdFormatter.format(id)}Fill';
-              activeFillProperties[original] = resolveName(original);
-            }
-            if (sortedFillIndexed != null) {
-              for (final String name in sortedFillIndexed) {
-                activeFillProperties[name] = resolveName(name);
-              }
-            }
-        
-            final Map<String, String> activeStrokeProperties = <String, String>{};
-            for (final String id in sortedStrokeIds) {
-              final String original = '${SvgIdFormatter.format(id)}Stroke';
-              activeStrokeProperties[original] = resolveName(original);
-            }
-            if (sortedStrokeIndexed != null) {
-              for (final String name in sortedStrokeIndexed) {
-                activeStrokeProperties[name] = resolveName(name);
-              }
-            }
-                buffer.writeln('class $className extends CustomPainter {');
-        buffer.writeln('  const $className({');
-        buffer.writeln('    this.fit = BoxFit.contain,');
-        for (final String id in sortedFillIds) {
-          buffer.writeln('    this.${resolveName('${SvgIdFormatter.format(id)}Fill')},');
-        }
-        if (sortedFillIndexed == null) {
-          // No indexed fills
-        } else {
-          for (final String name in sortedFillIndexed) {
-            buffer.writeln('    this.${resolveName(name)},');
-          }
-        }
-        for (final String id in sortedStrokeIds) {
-          buffer.writeln('    this.${resolveName('${SvgIdFormatter.format(id)}Stroke')},');
-        }
-        if (sortedStrokeIndexed == null) {
-          // No indexed strokes
-        } else {
-          for (final String name in sortedStrokeIndexed) {
-            buffer.writeln('    this.${resolveName(name)},');
-          }
-        }
-        buffer.writeln('  });');
-        buffer.writeln();
-        buffer.writeln('  final BoxFit fit;');
-        for (final String id in sortedFillIds) {
-          buffer.writeln('  final Color? ${resolveName('${SvgIdFormatter.format(id)}Fill')};');
-        }
-        if (sortedFillIndexed == null) {
-          // No indexed fills
-        } else {
-          for (final String name in sortedFillIndexed) {
-            buffer.writeln('  final Color? ${resolveName(name)};');
-          }
-        }
-        for (final String id in sortedStrokeIds) {
-          buffer.writeln('  final Color? ${resolveName('${SvgIdFormatter.format(id)}Stroke')};');
-        }
-        if (sortedStrokeIndexed == null) {
-          // No indexed strokes
-        } else {
-          for (final String name in sortedStrokeIndexed) {
-            buffer.writeln('  final Color? ${resolveName(name)};');
-          }
-        }
-    
+    final List<String>? sortedFillIndexed = palette?.fillAssignments.values.toSet().toList()
+      ?..sort();
+    final List<String>? sortedStrokeIndexed = palette?.strokeAssignments.values.toSet().toList()
+      ?..sort();
+
+    String resolveName(String defaultName) => propertyMapping[defaultName] ?? defaultName;
+
+    final Map<String, String> activeFillProperties = <String, String>{};
+    for (final String id in sortedFillIds) {
+      final String original = '${SvgIdFormatter.format(id)}Fill';
+      activeFillProperties[original] = resolveName(original);
+    }
+    if (sortedFillIndexed != null) {
+      for (final String name in sortedFillIndexed) {
+        activeFillProperties[name] = resolveName(name);
+      }
+    }
+
+    final Map<String, String> activeStrokeProperties = <String, String>{};
+    for (final String id in sortedStrokeIds) {
+      final String original = '${SvgIdFormatter.format(id)}Stroke';
+      activeStrokeProperties[original] = resolveName(original);
+    }
+    if (sortedStrokeIndexed != null) {
+      for (final String name in sortedStrokeIndexed) {
+        activeStrokeProperties[name] = resolveName(name);
+      }
+    }
+
+    // Generate the convenience Widget
+    final String publicName = className.startsWith(r'_$') ? className.substring(2) : className;
+    final String widgetClassName = '${publicName}Widget';
+
+    generateWidgetClass(
+      buffer: buffer,
+      widgetClassName: widgetClassName,
+      painterClassName: className,
+      activeFillProperties: activeFillProperties,
+      activeStrokeProperties: activeStrokeProperties,
+      viewBoxWidth: viewBoxWidth,
+      viewBoxHeight: viewBoxHeight,
+    );
+    buffer.writeln();
+
+    buffer.writeln('class $className extends CustomPainter {');
+    buffer.writeln('  const $className({');
+    buffer.writeln('    this.fit = BoxFit.contain,');
+    for (final String id in sortedFillIds) {
+      buffer.writeln('    this.${resolveName('${SvgIdFormatter.format(id)}Fill')},');
+    }
+    if (sortedFillIndexed == null) {
+      // No indexed fills
+    } else {
+      for (final String name in sortedFillIndexed) {
+        buffer.writeln('    this.${resolveName(name)},');
+      }
+    }
+    for (final String id in sortedStrokeIds) {
+      buffer.writeln('    this.${resolveName('${SvgIdFormatter.format(id)}Stroke')},');
+    }
+    if (sortedStrokeIndexed == null) {
+      // No indexed strokes
+    } else {
+      for (final String name in sortedStrokeIndexed) {
+        buffer.writeln('    this.${resolveName(name)},');
+      }
+    }
+    buffer.writeln('  });');
+    buffer.writeln();
+    buffer.writeln('  final BoxFit fit;');
+    for (final String id in sortedFillIds) {
+      buffer.writeln('  final Color? ${resolveName('${SvgIdFormatter.format(id)}Fill')};');
+    }
+    if (sortedFillIndexed == null) {
+      // No indexed fills
+    } else {
+      for (final String name in sortedFillIndexed) {
+        buffer.writeln('  final Color? ${resolveName(name)};');
+      }
+    }
+    for (final String id in sortedStrokeIds) {
+      buffer.writeln('  final Color? ${resolveName('${SvgIdFormatter.format(id)}Stroke')};');
+    }
+    if (sortedStrokeIndexed == null) {
+      // No indexed strokes
+    } else {
+      for (final String name in sortedStrokeIndexed) {
+        buffer.writeln('  final Color? ${resolveName(name)};');
+      }
+    }
     buffer.writeln();
     buffer.writeln('  Size get viewBox => const Size($viewBoxWidth, $viewBoxHeight);');
     buffer.writeln();
@@ -391,6 +406,57 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
     buffer.writeln('}');
 
     return buffer.toString();
+  }
+
+  void generateWidgetClass({
+    required StringBuffer buffer,
+    required String widgetClassName,
+    required String painterClassName,
+    required Map<String, String> activeFillProperties,
+    required Map<String, String> activeStrokeProperties,
+    required double viewBoxWidth,
+    required double viewBoxHeight,
+  }) {
+    buffer.writeln('class $widgetClassName extends StatelessWidget {');
+    buffer.writeln('  const $widgetClassName({');
+    buffer.writeln('    super.key,');
+    buffer.writeln('    this.width,');
+    buffer.writeln('    this.height,');
+    buffer.writeln('    this.fit = BoxFit.contain,');
+    buffer.writeln('    this.alignment = Alignment.center,');
+    
+    // Constructor params for properties
+    final Set<String> allProps = <String>{...activeFillProperties.values, ...activeStrokeProperties.values};
+    for (final String prop in allProps) {
+      buffer.writeln('    this.$prop,');
+    }
+    
+    buffer.writeln('  });');
+    buffer.writeln();
+    buffer.writeln('  final double? width;');
+    buffer.writeln('  final double? height;');
+    buffer.writeln('  final BoxFit fit;');
+    buffer.writeln('  final AlignmentGeometry alignment;');
+    
+    // Fields for properties
+    for (final String prop in allProps) {
+      buffer.writeln('  final Color? $prop;');
+    }
+    
+    buffer.writeln();
+    buffer.writeln('  @override');
+    buffer.writeln('  Widget build(BuildContext context) {');
+    buffer.writeln('    return CustomPaint(');
+    buffer.writeln('      size: Size(width ?? $viewBoxWidth, height ?? $viewBoxHeight),');
+    buffer.writeln('      painter: $painterClassName(');
+    buffer.writeln('        fit: fit,');
+    for (final String prop in allProps) {
+      buffer.writeln('        $prop: $prop,');
+    }
+    buffer.writeln('      ),');
+    buffer.writeln('    );');
+    buffer.writeln('  }');
+    buffer.writeln('}');
   }
 
   bool _hasDashes(List<PaintCommand> commands) {

@@ -10,6 +10,29 @@ part of 'stroke_painter.dart';
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
 
+class StrokePainterWidget extends StatelessWidget {
+  const StrokePainterWidget({
+    super.key,
+    this.width,
+    this.height,
+    this.fit = BoxFit.contain,
+    this.alignment = Alignment.center,
+  });
+
+  final double? width;
+  final double? height;
+  final BoxFit fit;
+  final AlignmentGeometry alignment;
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomPaint(
+      size: Size(width ?? 20.0, height ?? 10.0),
+      painter: _$StrokePainter(fit: fit),
+    );
+  }
+}
+
 class _$StrokePainter extends CustomPainter {
   const _$StrokePainter({this.fit = BoxFit.contain});
 

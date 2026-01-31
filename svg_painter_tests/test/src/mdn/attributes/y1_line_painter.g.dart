@@ -10,6 +10,29 @@ part of 'y1_line_painter.dart';
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
 
+class Y1LinePainterWidget extends StatelessWidget {
+  const Y1LinePainterWidget({
+    super.key,
+    this.width,
+    this.height,
+    this.fit = BoxFit.contain,
+    this.alignment = Alignment.center,
+  });
+
+  final double? width;
+  final double? height;
+  final BoxFit fit;
+  final AlignmentGeometry alignment;
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomPaint(
+      size: Size(width ?? 10.0, height ?? 10.0),
+      painter: _$Y1LinePainter(fit: fit),
+    );
+  }
+}
+
 class _$Y1LinePainter extends CustomPainter {
   const _$Y1LinePainter({this.fit = BoxFit.contain});
 

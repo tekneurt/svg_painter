@@ -10,6 +10,29 @@ part of 'stroke_linecap_painter.dart';
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
 
+class StrokeLinecapPainterWidget extends StatelessWidget {
+  const StrokeLinecapPainterWidget({
+    super.key,
+    this.width,
+    this.height,
+    this.fit = BoxFit.contain,
+    this.alignment = Alignment.center,
+  });
+
+  final double? width;
+  final double? height;
+  final BoxFit fit;
+  final AlignmentGeometry alignment;
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomPaint(
+      size: Size(width ?? 6.0, height ?? 6.0),
+      painter: _$StrokeLinecapPainter(fit: fit),
+    );
+  }
+}
+
 class _$StrokeLinecapPainter extends CustomPainter {
   const _$StrokeLinecapPainter({this.fit = BoxFit.contain});
 
@@ -126,6 +149,29 @@ class _$StrokeLinecapPainter extends CustomPainter {
 // coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
+
+class StrokeLinecapButtPainterWidget extends StatelessWidget {
+  const StrokeLinecapButtPainterWidget({
+    super.key,
+    this.width,
+    this.height,
+    this.fit = BoxFit.contain,
+    this.alignment = Alignment.center,
+  });
+
+  final double? width;
+  final double? height;
+  final BoxFit fit;
+  final AlignmentGeometry alignment;
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomPaint(
+      size: Size(width ?? 6.0, height ?? 4.0),
+      painter: _$StrokeLinecapButtPainter(fit: fit),
+    );
+  }
+}
 
 class _$StrokeLinecapButtPainter extends CustomPainter {
   const _$StrokeLinecapButtPainter({this.fit = BoxFit.contain});
@@ -258,6 +304,29 @@ class _$StrokeLinecapButtPainter extends CustomPainter {
 // coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
+
+class StrokeLinecapRoundPainterWidget extends StatelessWidget {
+  const StrokeLinecapRoundPainterWidget({
+    super.key,
+    this.width,
+    this.height,
+    this.fit = BoxFit.contain,
+    this.alignment = Alignment.center,
+  });
+
+  final double? width;
+  final double? height;
+  final BoxFit fit;
+  final AlignmentGeometry alignment;
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomPaint(
+      size: Size(width ?? 6.0, height ?? 4.0),
+      painter: _$StrokeLinecapRoundPainter(fit: fit),
+    );
+  }
+}
 
 class _$StrokeLinecapRoundPainter extends CustomPainter {
   const _$StrokeLinecapRoundPainter({this.fit = BoxFit.contain});
@@ -392,6 +461,29 @@ class _$StrokeLinecapRoundPainter extends CustomPainter {
 // coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
+
+class StrokeLinecapSquarePainterWidget extends StatelessWidget {
+  const StrokeLinecapSquarePainterWidget({
+    super.key,
+    this.width,
+    this.height,
+    this.fit = BoxFit.contain,
+    this.alignment = Alignment.center,
+  });
+
+  final double? width;
+  final double? height;
+  final BoxFit fit;
+  final AlignmentGeometry alignment;
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomPaint(
+      size: Size(width ?? 6.0, height ?? 4.0),
+      painter: _$StrokeLinecapSquarePainter(fit: fit),
+    );
+  }
+}
 
 class _$StrokeLinecapSquarePainter extends CustomPainter {
   const _$StrokeLinecapSquarePainter({this.fit = BoxFit.contain});

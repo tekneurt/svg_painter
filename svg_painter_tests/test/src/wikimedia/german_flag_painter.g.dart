@@ -10,6 +10,40 @@ part of 'german_flag_painter.dart';
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
 
+class GermanFlagPainterWidget extends StatelessWidget {
+  const GermanFlagPainterWidget({
+    super.key,
+    this.width,
+    this.height,
+    this.fit = BoxFit.contain,
+    this.alignment = Alignment.center,
+    this.topColor,
+    this.middleColor,
+    this.bottomColor,
+  });
+
+  final double? width;
+  final double? height;
+  final BoxFit fit;
+  final AlignmentGeometry alignment;
+  final Color? topColor;
+  final Color? middleColor;
+  final Color? bottomColor;
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomPaint(
+      size: Size(width ?? 1000.0, height ?? 600.0),
+      painter: _$GermanFlagPainter(
+        fit: fit,
+        topColor: topColor,
+        middleColor: middleColor,
+        bottomColor: bottomColor,
+      ),
+    );
+  }
+}
+
 class _$GermanFlagPainter extends CustomPainter {
   const _$GermanFlagPainter({
     this.fit = BoxFit.contain,

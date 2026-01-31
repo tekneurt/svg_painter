@@ -10,6 +10,29 @@ part of 'y2_linear_gradient_painter.dart';
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
 
+class Y2LinearGradientPainterWidget extends StatelessWidget {
+  const Y2LinearGradientPainterWidget({
+    super.key,
+    this.width,
+    this.height,
+    this.fit = BoxFit.contain,
+    this.alignment = Alignment.center,
+  });
+
+  final double? width;
+  final double? height;
+  final BoxFit fit;
+  final AlignmentGeometry alignment;
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomPaint(
+      size: Size(width ?? 20.0, height ?? 10.0),
+      painter: _$Y2LinearGradientPainter(fit: fit),
+    );
+  }
+}
+
 class _$Y2LinearGradientPainter extends CustomPainter {
   const _$Y2LinearGradientPainter({this.fit = BoxFit.contain});
 

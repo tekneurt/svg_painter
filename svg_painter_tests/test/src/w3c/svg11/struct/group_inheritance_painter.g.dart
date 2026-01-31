@@ -10,6 +10,37 @@ part of 'group_inheritance_painter.dart';
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
 
+class GroupInheritancePainterWidget extends StatelessWidget {
+  const GroupInheritancePainterWidget({
+    super.key,
+    this.width,
+    this.height,
+    this.fit = BoxFit.contain,
+    this.alignment = Alignment.center,
+    this.group1Fill,
+    this.group2Fill,
+  });
+
+  final double? width;
+  final double? height;
+  final BoxFit fit;
+  final AlignmentGeometry alignment;
+  final Color? group1Fill;
+  final Color? group2Fill;
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomPaint(
+      size: Size(width ?? 188.9763779527559, height ?? 188.9763779527559),
+      painter: _$GroupInheritancePainter(
+        fit: fit,
+        group1Fill: group1Fill,
+        group2Fill: group2Fill,
+      ),
+    );
+  }
+}
+
 class _$GroupInheritancePainter extends CustomPainter {
   const _$GroupInheritancePainter({
     this.fit = BoxFit.contain,

@@ -10,6 +10,40 @@ part of 'french_flag_painter.dart';
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
 
+class FrenchFlagPainterWidget extends StatelessWidget {
+  const FrenchFlagPainterWidget({
+    super.key,
+    this.width,
+    this.height,
+    this.fit = BoxFit.contain,
+    this.alignment = Alignment.center,
+    this.leftColor,
+    this.rightColor,
+    this.middleColor,
+  });
+
+  final double? width;
+  final double? height;
+  final BoxFit fit;
+  final AlignmentGeometry alignment;
+  final Color? leftColor;
+  final Color? rightColor;
+  final Color? middleColor;
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomPaint(
+      size: Size(width ?? 900.0, height ?? 600.0),
+      painter: _$FrenchFlagPainter(
+        fit: fit,
+        leftColor: leftColor,
+        rightColor: rightColor,
+        middleColor: middleColor,
+      ),
+    );
+  }
+}
+
 class _$FrenchFlagPainter extends CustomPainter {
   const _$FrenchFlagPainter({
     this.fit = BoxFit.contain,

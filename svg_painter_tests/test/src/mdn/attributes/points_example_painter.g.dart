@@ -10,6 +10,29 @@ part of 'points_example_painter.dart';
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
 
+class PointsExamplePainterWidget extends StatelessWidget {
+  const PointsExamplePainterWidget({
+    super.key,
+    this.width,
+    this.height,
+    this.fit = BoxFit.contain,
+    this.alignment = Alignment.center,
+  });
+
+  final double? width;
+  final double? height;
+  final BoxFit fit;
+  final AlignmentGeometry alignment;
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomPaint(
+      size: Size(width ?? 220.0, height ?? 120.0),
+      painter: _$PointsExamplePainter(fit: fit),
+    );
+  }
+}
+
 class _$PointsExamplePainter extends CustomPainter {
   const _$PointsExamplePainter({this.fit = BoxFit.contain});
 

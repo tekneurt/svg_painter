@@ -10,6 +10,29 @@ part of 'fy_painter.dart';
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
 
+class Fy1PainterWidget extends StatelessWidget {
+  const Fy1PainterWidget({
+    super.key,
+    this.width,
+    this.height,
+    this.fit = BoxFit.contain,
+    this.alignment = Alignment.center,
+  });
+
+  final double? width;
+  final double? height;
+  final BoxFit fit;
+  final AlignmentGeometry alignment;
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomPaint(
+      size: Size(width ?? 480.0, height ?? 200.0),
+      painter: _$Fy1Painter(fit: fit),
+    );
+  }
+}
+
 class _$Fy1Painter extends CustomPainter {
   const _$Fy1Painter({this.fit = BoxFit.contain});
 
@@ -90,6 +113,29 @@ class _$Fy1Painter extends CustomPainter {
 // coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
+
+class Fy2PainterWidget extends StatelessWidget {
+  const Fy2PainterWidget({
+    super.key,
+    this.width,
+    this.height,
+    this.fit = BoxFit.contain,
+    this.alignment = Alignment.center,
+  });
+
+  final double? width;
+  final double? height;
+  final BoxFit fit;
+  final AlignmentGeometry alignment;
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomPaint(
+      size: Size(width ?? 200.0, height ?? 200.0),
+      painter: _$Fy2Painter(fit: fit),
+    );
+  }
+}
 
 class _$Fy2Painter extends CustomPainter {
   const _$Fy2Painter({this.fit = BoxFit.contain});

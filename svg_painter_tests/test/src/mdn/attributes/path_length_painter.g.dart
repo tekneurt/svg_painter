@@ -10,6 +10,29 @@ part of 'path_length_painter.dart';
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
 
+class PathLengthPainterWidget extends StatelessWidget {
+  const PathLengthPainterWidget({
+    super.key,
+    this.width,
+    this.height,
+    this.fit = BoxFit.contain,
+    this.alignment = Alignment.center,
+  });
+
+  final double? width;
+  final double? height;
+  final BoxFit fit;
+  final AlignmentGeometry alignment;
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomPaint(
+      size: Size(width ?? 100.0, height ?? 60.0),
+      painter: _$PathLengthPainter(fit: fit),
+    );
+  }
+}
+
 class _$PathLengthPainter extends CustomPainter {
   const _$PathLengthPainter({this.fit = BoxFit.contain});
 

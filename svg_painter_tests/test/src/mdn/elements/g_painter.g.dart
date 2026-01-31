@@ -10,6 +10,29 @@ part of 'g_painter.dart';
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
 
+class GPainterWidget extends StatelessWidget {
+  const GPainterWidget({
+    super.key,
+    this.width,
+    this.height,
+    this.fit = BoxFit.contain,
+    this.alignment = Alignment.center,
+  });
+
+  final double? width;
+  final double? height;
+  final BoxFit fit;
+  final AlignmentGeometry alignment;
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomPaint(
+      size: Size(width ?? 100.0, height ?? 100.0),
+      painter: _$GPainter(fit: fit),
+    );
+  }
+}
+
 class _$GPainter extends CustomPainter {
   const _$GPainter({this.fit = BoxFit.contain});
 

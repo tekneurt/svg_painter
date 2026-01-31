@@ -10,6 +10,29 @@ part of 'view_box_1_painter.dart';
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
 
+class ViewBox1PainterWidget extends StatelessWidget {
+  const ViewBox1PainterWidget({
+    super.key,
+    this.width,
+    this.height,
+    this.fit = BoxFit.contain,
+    this.alignment = Alignment.center,
+  });
+
+  final double? width;
+  final double? height;
+  final BoxFit fit;
+  final AlignmentGeometry alignment;
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomPaint(
+      size: Size(width ?? 100.0, height ?? 100.0),
+      painter: _$ViewBox1Painter(fit: fit),
+    );
+  }
+}
+
 class _$ViewBox1Painter extends CustomPainter {
   const _$ViewBox1Painter({this.fit = BoxFit.contain});
 

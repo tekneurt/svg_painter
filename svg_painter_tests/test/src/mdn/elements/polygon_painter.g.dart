@@ -10,6 +10,29 @@ part of 'polygon_painter.dart';
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
 
+class PolygonPainterWidget extends StatelessWidget {
+  const PolygonPainterWidget({
+    super.key,
+    this.width,
+    this.height,
+    this.fit = BoxFit.contain,
+    this.alignment = Alignment.center,
+  });
+
+  final double? width;
+  final double? height;
+  final BoxFit fit;
+  final AlignmentGeometry alignment;
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomPaint(
+      size: Size(width ?? 200.0, height ?? 100.0),
+      painter: _$PolygonPainter(fit: fit),
+    );
+  }
+}
+
 class _$PolygonPainter extends CustomPainter {
   const _$PolygonPainter({this.fit = BoxFit.contain});
 

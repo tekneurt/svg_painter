@@ -10,6 +10,29 @@ part of 'stroke_linejoin_painter.dart';
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
 
+class StrokeLinejoinPainterWidget extends StatelessWidget {
+  const StrokeLinejoinPainterWidget({
+    super.key,
+    this.width,
+    this.height,
+    this.fit = BoxFit.contain,
+    this.alignment = Alignment.center,
+  });
+
+  final double? width;
+  final double? height;
+  final BoxFit fit;
+  final AlignmentGeometry alignment;
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomPaint(
+      size: Size(width ?? 18.0, height ?? 12.0),
+      painter: _$StrokeLinejoinPainter(fit: fit),
+    );
+  }
+}
+
 class _$StrokeLinejoinPainter extends CustomPainter {
   const _$StrokeLinejoinPainter({this.fit = BoxFit.contain});
 
@@ -467,6 +490,29 @@ class _$StrokeLinejoinPainter extends CustomPainter {
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
 
+class StrokeLinejoinArcsPainterWidget extends StatelessWidget {
+  const StrokeLinejoinArcsPainterWidget({
+    super.key,
+    this.width,
+    this.height,
+    this.fit = BoxFit.contain,
+    this.alignment = Alignment.center,
+  });
+
+  final double? width;
+  final double? height;
+  final BoxFit fit;
+  final AlignmentGeometry alignment;
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomPaint(
+      size: Size(width ?? 6.0, height ?? 6.0),
+      painter: _$StrokeLinejoinArcsPainter(fit: fit),
+    );
+  }
+}
+
 class _$StrokeLinejoinArcsPainter extends CustomPainter {
   const _$StrokeLinejoinArcsPainter({this.fit = BoxFit.contain});
 
@@ -594,6 +640,29 @@ class _$StrokeLinejoinArcsPainter extends CustomPainter {
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
 
+class StrokeLinejoinBevelPainterWidget extends StatelessWidget {
+  const StrokeLinejoinBevelPainterWidget({
+    super.key,
+    this.width,
+    this.height,
+    this.fit = BoxFit.contain,
+    this.alignment = Alignment.center,
+  });
+
+  final double? width;
+  final double? height;
+  final BoxFit fit;
+  final AlignmentGeometry alignment;
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomPaint(
+      size: Size(width ?? 6.0, height ?? 6.0),
+      painter: _$StrokeLinejoinBevelPainter(fit: fit),
+    );
+  }
+}
+
 class _$StrokeLinejoinBevelPainter extends CustomPainter {
   const _$StrokeLinejoinBevelPainter({this.fit = BoxFit.contain});
 
@@ -697,6 +766,29 @@ class _$StrokeLinejoinBevelPainter extends CustomPainter {
 // coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
+
+class StrokeLinejoinMiterPainterWidget extends StatelessWidget {
+  const StrokeLinejoinMiterPainterWidget({
+    super.key,
+    this.width,
+    this.height,
+    this.fit = BoxFit.contain,
+    this.alignment = Alignment.center,
+  });
+
+  final double? width;
+  final double? height;
+  final BoxFit fit;
+  final AlignmentGeometry alignment;
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomPaint(
+      size: Size(width ?? 10.0, height ?? 7.0),
+      painter: _$StrokeLinejoinMiterPainter(fit: fit),
+    );
+  }
+}
 
 class _$StrokeLinejoinMiterPainter extends CustomPainter {
   const _$StrokeLinejoinMiterPainter({this.fit = BoxFit.contain});
@@ -905,6 +997,29 @@ class _$StrokeLinejoinMiterPainter extends CustomPainter {
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
 
+class StrokeLinejoinMiterClipPainterWidget extends StatelessWidget {
+  const StrokeLinejoinMiterClipPainterWidget({
+    super.key,
+    this.width,
+    this.height,
+    this.fit = BoxFit.contain,
+    this.alignment = Alignment.center,
+  });
+
+  final double? width;
+  final double? height;
+  final BoxFit fit;
+  final AlignmentGeometry alignment;
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomPaint(
+      size: Size(width ?? 10.0, height ?? 7.0),
+      painter: _$StrokeLinejoinMiterClipPainter(fit: fit),
+    );
+  }
+}
+
 class _$StrokeLinejoinMiterClipPainter extends CustomPainter {
   const _$StrokeLinejoinMiterClipPainter({this.fit = BoxFit.contain});
 
@@ -1111,6 +1226,29 @@ class _$StrokeLinejoinMiterClipPainter extends CustomPainter {
 // coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
+
+class StrokeLinejoinRoundPainterWidget extends StatelessWidget {
+  const StrokeLinejoinRoundPainterWidget({
+    super.key,
+    this.width,
+    this.height,
+    this.fit = BoxFit.contain,
+    this.alignment = Alignment.center,
+  });
+
+  final double? width;
+  final double? height;
+  final BoxFit fit;
+  final AlignmentGeometry alignment;
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomPaint(
+      size: Size(width ?? 6.0, height ?? 6.0),
+      painter: _$StrokeLinejoinRoundPainter(fit: fit),
+    );
+  }
+}
 
 class _$StrokeLinejoinRoundPainter extends CustomPainter {
   const _$StrokeLinejoinRoundPainter({this.fit = BoxFit.contain});

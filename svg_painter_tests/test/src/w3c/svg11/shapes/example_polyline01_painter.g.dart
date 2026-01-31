@@ -10,6 +10,29 @@ part of 'example_polyline01_painter.dart';
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
 
+class ExamplePolyline01PainterWidget extends StatelessWidget {
+  const ExamplePolyline01PainterWidget({
+    super.key,
+    this.width,
+    this.height,
+    this.fit = BoxFit.contain,
+    this.alignment = Alignment.center,
+  });
+
+  final double? width;
+  final double? height;
+  final BoxFit fit;
+  final AlignmentGeometry alignment;
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomPaint(
+      size: Size(width ?? 453.54330708661416, height ?? 151.1811023622047),
+      painter: _$ExamplePolyline01Painter(fit: fit),
+    );
+  }
+}
+
 class _$ExamplePolyline01Painter extends CustomPainter {
   const _$ExamplePolyline01Painter({this.fit = BoxFit.contain});
 

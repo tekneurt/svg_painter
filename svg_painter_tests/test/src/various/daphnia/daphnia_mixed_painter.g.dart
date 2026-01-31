@@ -10,6 +10,40 @@ part of 'daphnia_mixed_painter.dart';
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
 
+class DaphniaMixedPainterWidget extends StatelessWidget {
+  const DaphniaMixedPainterWidget({
+    super.key,
+    this.width,
+    this.height,
+    this.fit = BoxFit.contain,
+    this.alignment = Alignment.center,
+    this.fill1,
+    this.fill2,
+    this.fill3,
+  });
+
+  final double? width;
+  final double? height;
+  final BoxFit fit;
+  final AlignmentGeometry alignment;
+  final Color? fill1;
+  final Color? fill2;
+  final Color? fill3;
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomPaint(
+      size: Size(width ?? 48.0, height ?? 48.0),
+      painter: _$DaphniaMixedPainter(
+        fit: fit,
+        fill1: fill1,
+        fill2: fill2,
+        fill3: fill3,
+      ),
+    );
+  }
+}
+
 class _$DaphniaMixedPainter extends CustomPainter {
   const _$DaphniaMixedPainter({
     this.fit = BoxFit.contain,

@@ -148,10 +148,10 @@
     - [x] Document **Dynamic Style Inheritance** using the W3C group inheritance example.
     - [x] Update README.md with a "Customizing your SVG" section.
 - [x] **Dynamic Style Inheritance**: Support runtime property overrides for inherited styles (e.g., overriding a group's `fill` should affect all children inheriting from it).
-- [ ] **Daphnia Widget Generation**:
-    - [ ] Generate a convenience `StatelessWidget` (e.g., `MyIcon`) that wraps the `CustomPainter`.
-    - [ ] Expose all "Dynamic Properties" as constructor arguments in the generated Widget.
-    - [ ] Implement `BoxFit` and `Alignment` support in the generated Widget.
+- [x] **Daphnia Widget Generation**:
+    - [x] Generate a convenience `StatelessWidget` (e.g., `MyIcon`) that wraps the `CustomPainter`.
+    - [x] Expose all "Dynamic Properties" as constructor arguments in the generated Widget.
+    - [x] Implement `BoxFit` and `Alignment` support in the generated Widget.
 - [ ] **"CurrentColor" Support**: Map `currentColor` to a primary `color` property on the Widget (matching Flutter's `Icon` behavior).
 
 ### Phase 4: Essential Elements (0.3.0)

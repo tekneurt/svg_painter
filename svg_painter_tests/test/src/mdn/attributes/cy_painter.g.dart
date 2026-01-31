@@ -10,6 +10,29 @@ part of 'cy_painter.dart';
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
 
+class CyPainterWidget extends StatelessWidget {
+  const CyPainterWidget({
+    super.key,
+    this.width,
+    this.height,
+    this.fit = BoxFit.contain,
+    this.alignment = Alignment.center,
+  });
+
+  final double? width;
+  final double? height;
+  final BoxFit fit;
+  final AlignmentGeometry alignment;
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomPaint(
+      size: Size(width ?? 100.0, height ?? 300.0),
+      painter: _$CyPainter(fit: fit),
+    );
+  }
+}
+
 class _$CyPainter extends CustomPainter {
   const _$CyPainter({this.fit = BoxFit.contain});
 
@@ -97,6 +120,29 @@ class _$CyPainter extends CustomPainter {
 // coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
+
+class CyRadialGradientPainterWidget extends StatelessWidget {
+  const CyRadialGradientPainterWidget({
+    super.key,
+    this.width,
+    this.height,
+    this.fit = BoxFit.contain,
+    this.alignment = Alignment.center,
+  });
+
+  final double? width;
+  final double? height;
+  final BoxFit fit;
+  final AlignmentGeometry alignment;
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomPaint(
+      size: Size(width ?? 34.0, height ?? 10.0),
+      painter: _$CyRadialGradientPainter(fit: fit),
+    );
+  }
+}
 
 class _$CyRadialGradientPainter extends CustomPainter {
   const _$CyRadialGradientPainter({this.fit = BoxFit.contain});

@@ -10,6 +10,29 @@ part of 'example_ellipse01_painter.dart';
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
 
+class ExampleEllipse01PainterWidget extends StatelessWidget {
+  const ExampleEllipse01PainterWidget({
+    super.key,
+    this.width,
+    this.height,
+    this.fit = BoxFit.contain,
+    this.alignment = Alignment.center,
+  });
+
+  final double? width;
+  final double? height;
+  final BoxFit fit;
+  final AlignmentGeometry alignment;
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomPaint(
+      size: Size(width ?? 453.54330708661416, height ?? 151.1811023622047),
+      painter: _$ExampleEllipse01Painter(fit: fit),
+    );
+  }
+}
+
 class _$ExampleEllipse01Painter extends CustomPainter {
   const _$ExampleEllipse01Painter({this.fit = BoxFit.contain});
 

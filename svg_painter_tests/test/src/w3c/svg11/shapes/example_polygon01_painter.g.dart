@@ -10,6 +10,29 @@ part of 'example_polygon01_painter.dart';
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
 
+class ExamplePolygon01PainterWidget extends StatelessWidget {
+  const ExamplePolygon01PainterWidget({
+    super.key,
+    this.width,
+    this.height,
+    this.fit = BoxFit.contain,
+    this.alignment = Alignment.center,
+  });
+
+  final double? width;
+  final double? height;
+  final BoxFit fit;
+  final AlignmentGeometry alignment;
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomPaint(
+      size: Size(width ?? 453.54330708661416, height ?? 151.1811023622047),
+      painter: _$ExamplePolygon01Painter(fit: fit),
+    );
+  }
+}
+
 class _$ExamplePolygon01Painter extends CustomPainter {
   const _$ExamplePolygon01Painter({this.fit = BoxFit.contain});
 
