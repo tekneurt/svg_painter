@@ -152,7 +152,7 @@
     - [x] Generate a convenience `StatelessWidget` (e.g., `MyIcon`) that wraps the `CustomPainter`.
     - [x] Expose all "Dynamic Properties" as constructor arguments in the generated Widget.
     - [x] Implement `BoxFit` and `Alignment` support in the generated Widget.
-- [ ] **"CurrentColor" Support**: Map `currentColor` to a primary `color` property on the Widget (matching Flutter's `Icon` behavior).
+- [x] **"CurrentColor" Support**: Map `currentColor` to a primary `color` property on the Widget (matching Flutter's `Icon` behavior).
 
 ### Phase 4: Essential Elements (0.3.0)
 *Reaching standard compatibility with essential SVG elements.*

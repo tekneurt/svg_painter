@@ -224,6 +224,8 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
       }
     }
 
+    final bool hasCurrentColor = _hasCurrentColor(commands);
+
     // Generate the convenience Widget
     final String publicName = className.startsWith(r'_$') ? className.substring(2) : className;
     final String widgetClassName = '${publicName}Widget';
@@ -236,12 +238,16 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
       activeStrokeProperties: activeStrokeProperties,
       viewBoxWidth: viewBoxWidth,
       viewBoxHeight: viewBoxHeight,
+      hasCurrentColor: hasCurrentColor,
     );
     buffer.writeln();
 
     buffer.writeln('class $className extends CustomPainter {');
     buffer.writeln('  const $className({');
     buffer.writeln('    this.fit = BoxFit.contain,');
+    if (hasCurrentColor) {
+      buffer.writeln('    this.color,');
+    }
     for (final String id in sortedFillIds) {
       buffer.writeln('    this.${resolveName('${SvgIdFormatter.format(id)}Fill')},');
     }
@@ -265,6 +271,9 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
     buffer.writeln('  });');
     buffer.writeln();
     buffer.writeln('  final BoxFit fit;');
+    if (hasCurrentColor) {
+      buffer.writeln('  final Color? color;');
+    }
     for (final String id in sortedFillIds) {
       buffer.writeln('  final Color? ${resolveName('${SvgIdFormatter.format(id)}Fill')};');
     }
@@ -372,6 +381,9 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
     buffer.writeln('  @override');
     buffer.writeln('  bool shouldRepaint(covariant $className oldDelegate) {');
     buffer.write('    if (fit == oldDelegate.fit');
+    if (hasCurrentColor) {
+      buffer.write(' && color == oldDelegate.color');
+    }
 
     for (final String id in sortedFillIds) {
       final String prop = resolveName('${SvgIdFormatter.format(id)}Fill');
@@ -416,6 +428,7 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
     required Map<String, String> activeStrokeProperties,
     required double viewBoxWidth,
     required double viewBoxHeight,
+    required bool hasCurrentColor,
   }) {
     buffer.writeln('class $widgetClassName extends StatelessWidget {');
     buffer.writeln('  const $widgetClassName({');
@@ -424,6 +437,9 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
     buffer.writeln('    this.height,');
     buffer.writeln('    this.fit = BoxFit.contain,');
     buffer.writeln('    this.alignment = Alignment.center,');
+    if (hasCurrentColor) {
+      buffer.writeln('    this.color,');
+    }
     
     // Constructor params for properties
     final Set<String> allProps = <String>{...activeFillProperties.values, ...activeStrokeProperties.values};
@@ -437,6 +453,9 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
     buffer.writeln('  final double? height;');
     buffer.writeln('  final BoxFit fit;');
     buffer.writeln('  final AlignmentGeometry alignment;');
+    if (hasCurrentColor) {
+      buffer.writeln('  final Color? color;');
+    }
     
     // Fields for properties
     for (final String prop in allProps) {
@@ -450,6 +469,9 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
     buffer.writeln('      size: Size(width ?? $viewBoxWidth, height ?? $viewBoxHeight),');
     buffer.writeln('      painter: $painterClassName(');
     buffer.writeln('        fit: fit,');
+    if (hasCurrentColor) {
+      buffer.writeln('        color: color ?? IconTheme.of(context).color,');
+    }
     for (final String prop in allProps) {
       buffer.writeln('        $prop: $prop,');
     }
@@ -474,6 +496,22 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
         if (!_hasDashes(command.commands)) {
           // No dashes in group
         } else {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  bool _hasCurrentColor(List<PaintCommand> commands) {
+    for (final PaintCommand command in commands) {
+      final PaintingStyle? style = command.style;
+      if ((style?.fill?.isCurrentColor ?? false) || (style?.stroke?.isCurrentColor ?? false)) {
+        return true;
+      }
+
+      if (command is DrawGroup) {
+        if (_hasCurrentColor(command.commands)) {
           return true;
         }
       }

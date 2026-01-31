@@ -37,6 +37,7 @@ final class PaintingStrokeStyle {
     this.dashArray,
     this.pathLength,
     this.isExplicit = true,
+    this.isCurrentColor = false,
   });
 
   /// The ARGB integer for the stroke color.
@@ -66,7 +67,10 @@ final class PaintingStrokeStyle {
   /// Whether this stroke was explicitly defined on the element (not just inherited).
   final bool isExplicit;
 
+  /// Whether this stroke uses the 'currentColor' keyword.
+  final bool isCurrentColor;
+
   @override
   String toString() =>
-      'PaintingStrokeStyle(color: $colorArgb, shader: $shaderId, width: $width, opacity: $opacity, cap: $cap, join: $join, explicit: $isExplicit)';
+      'PaintingStrokeStyle(color: $colorArgb, shader: $shaderId, width: $width, opacity: $opacity, cap: $cap, join: $join, explicit: $isExplicit, currentColor: $isCurrentColor)';
 }

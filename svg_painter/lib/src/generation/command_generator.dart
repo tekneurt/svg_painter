@@ -189,7 +189,15 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
     String boundsRect, {
     required String indent,
   }) {
-    if (stroke.shaderId == null) {
+    if (stroke.isCurrentColor) {
+      if (stroke.opacity == 1.0) {
+        buffer.writeln('$indent paint.color = color ?? const Color(0xFF000000);');
+      } else {
+        buffer.writeln(
+          '$indent paint.color = (color ?? const Color(0xFF000000)).withOpacity(${stroke.opacity});',
+        );
+      }
+    } else if (stroke.shaderId == null) {
       if (stroke.colorArgb == null) {
         // No color or shader
       } else {
@@ -217,7 +225,15 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
     String boundsRect, {
     required String indent,
   }) {
-    if (fill.shaderId == null) {
+    if (fill.isCurrentColor) {
+      if (fill.opacity == 1.0) {
+        buffer.writeln('$indent paint.color = color ?? const Color(0xFF000000);');
+      } else {
+        buffer.writeln(
+          '$indent paint.color = (color ?? const Color(0xFF000000)).withOpacity(${fill.opacity});',
+        );
+      }
+    } else if (fill.shaderId == null) {
       if (fill.colorArgb == null) {
         // No color or shader
       } else {

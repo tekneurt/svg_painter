@@ -181,8 +181,12 @@ PaintingStyle resolvePaint(
   if (hasFill) {
     int? fillColorArgb;
     String? fillShaderId;
+    final bool isCurrentColor = fillPaint is SvgCurrentColor;
+
     if (fillPaint is SvgPaintReference) {
       fillShaderId = fillPaint.id;
+    } else if (isCurrentColor) {
+      // CurrentColor doesn't have a static ARGB value
     } else {
       fillColorArgb = fillPaint.toFillArgb();
     }
@@ -197,6 +201,7 @@ PaintingStyle resolvePaint(
       shaderId: fillShaderId,
       opacity: finalFillOpacity,
       isExplicit: isFillExplicit,
+      isCurrentColor: isCurrentColor,
     );
   }
 
@@ -206,8 +211,12 @@ PaintingStyle resolvePaint(
   if (hasStroke) {
     int? strokeColorArgb;
     String? strokeShaderId;
+    final bool isCurrentColor = strokePaint is SvgCurrentColor;
+
     if (strokePaint is SvgPaintReference) {
       strokeShaderId = strokePaint.id;
+    } else if (isCurrentColor) {
+      // CurrentColor doesn't have a static ARGB value
     } else {
       strokeColorArgb = strokePaint.toStrokeArgb();
     }
@@ -253,6 +262,7 @@ PaintingStyle resolvePaint(
       dashArray: finalDashArray,
       pathLength: finalPathLength,
       isExplicit: isStrokeExplicit,
+      isCurrentColor: isCurrentColor,
     );
   }
 
