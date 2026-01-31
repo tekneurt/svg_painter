@@ -68,17 +68,9 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
         activeProperty = activeFillProperties[assignedFill];
       }
 
-      if (activeProperty != null) {
-        // TODO(Gemini): Support both single color and gradient overrides.
-        buffer.writeln('        final Color? localFill = $activeProperty;');
-        buffer.writeln('        if (localFill == null) {');
-        _generateOriginalFill(buffer, fill, boundsRect, indent: '          ');
-        buffer.writeln('        } else {');
-        buffer.writeln('          paint.color = localFill;');
-        buffer.writeln('        }');
-      } else {
+      if (activeProperty == null) {
         String? inheritedOverride;
-        if (fill.isExplicit == false && inheritedFills != null) {
+        if (!fill.isExplicit && inheritedFills != null) {
           for (final InheritedProperty prop in inheritedFills.reversed) {
             if (prop.value == fill.colorArgb) {
               inheritedOverride = prop.propertyName;
@@ -87,16 +79,24 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
           }
         }
 
-        if (inheritedOverride != null) {
+        if (inheritedOverride == null) {
+          _generateOriginalFill(buffer, fill, boundsRect, indent: '        ');
+        } else {
           buffer.writeln('        final Color? inheritedFill = $inheritedOverride;');
           buffer.writeln('        if (inheritedFill == null) {');
           _generateOriginalFill(buffer, fill, boundsRect, indent: '          ');
           buffer.writeln('        } else {');
           buffer.writeln('          paint.color = inheritedFill;');
           buffer.writeln('        }');
-        } else {
-          _generateOriginalFill(buffer, fill, boundsRect, indent: '        ');
         }
+      } else {
+        // TODO(Gemini): Support both single color and gradient overrides.
+        buffer.writeln('        final Color? localFill = $activeProperty;');
+        buffer.writeln('        if (localFill == null) {');
+        _generateOriginalFill(buffer, fill, boundsRect, indent: '          ');
+        buffer.writeln('        } else {');
+        buffer.writeln('          paint.color = localFill;');
+        buffer.writeln('        }');
       }
 
       buffer.writeln('        paint.style = PaintingStyle.fill;');
@@ -128,17 +128,9 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
         activeProperty = activeStrokeProperties[assignedStroke];
       }
 
-      if (activeProperty != null) {
-        // TODO(Gemini): Support both single color and gradient overrides.
-        buffer.writeln('        final Color? localStroke = $activeProperty;');
-        buffer.writeln('        if (localStroke == null) {');
-        _generateOriginalStroke(buffer, stroke, boundsRect, indent: '          ');
-        buffer.writeln('        } else {');
-        buffer.writeln('          paint.color = localStroke;');
-        buffer.writeln('        }');
-      } else {
+      if (activeProperty == null) {
         String? inheritedOverride;
-        if (stroke.isExplicit == false && inheritedStrokes != null) {
+        if (!stroke.isExplicit && inheritedStrokes != null) {
           for (final InheritedProperty prop in inheritedStrokes.reversed) {
             if (prop.value == stroke.colorArgb) {
               inheritedOverride = prop.propertyName;
@@ -147,16 +139,24 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
           }
         }
 
-        if (inheritedOverride != null) {
+        if (inheritedOverride == null) {
+          _generateOriginalStroke(buffer, stroke, boundsRect, indent: '        ');
+        } else {
           buffer.writeln('        final Color? inheritedStroke = $inheritedOverride;');
           buffer.writeln('        if (inheritedStroke == null) {');
           _generateOriginalStroke(buffer, stroke, boundsRect, indent: '          ');
           buffer.writeln('        } else {');
           buffer.writeln('          paint.color = inheritedStroke;');
           buffer.writeln('        }');
-        } else {
-          _generateOriginalStroke(buffer, stroke, boundsRect, indent: '        ');
         }
+      } else {
+        // TODO(Gemini): Support both single color and gradient overrides.
+        buffer.writeln('        final Color? localStroke = $activeProperty;');
+        buffer.writeln('        if (localStroke == null) {');
+        _generateOriginalStroke(buffer, stroke, boundsRect, indent: '          ');
+        buffer.writeln('        } else {');
+        buffer.writeln('          paint.color = localStroke;');
+        buffer.writeln('        }');
       }
 
       buffer.writeln('        paint.style = PaintingStyle.stroke;');

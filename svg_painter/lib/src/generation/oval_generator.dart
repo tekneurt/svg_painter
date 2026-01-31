@@ -19,7 +19,7 @@ class OvalGenerator extends ShapeGenerator<DrawOval> {
   }) {
     wrapWithTransform(buffer, command.transform, () {
       final String bounds =
-          'Rect.fromOval(Rect.fromCenter(center: const Offset(${command.cx}, ${command.cy}), width: ${command.rx * 2}, height: ${command.ry * 2}))';
+          'Rect.fromCenter(center: const Offset(${command.cx}, ${command.cy}), width: ${command.rx * 2}, height: ${command.ry * 2})';
       generatePaintingCode(
         buffer,
         command,
@@ -33,9 +33,12 @@ class OvalGenerator extends ShapeGenerator<DrawOval> {
           if (dashArray == null) {
             buffer.writeln('      canvas.drawOval($bounds, $p);');
           } else {
-            final String plArg = (pathLength != null && pathLength.isNotEmpty)
-                ? ', pathLength: $pathLength'
-                : '';
+            final String plArg;
+            if (pathLength?.isEmpty ?? true) {
+              plArg = '';
+            } else {
+              plArg = ', pathLength: $pathLength';
+            }
             buffer.writeln('      {');
             buffer.writeln('        final Path path = Path()..addOval($bounds);');
             buffer.writeln('        canvas.drawPath(_dashPath(path, $dashArray$plArg), $p);');

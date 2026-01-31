@@ -7,7 +7,7 @@ part 'german_flag_painter.g.dart';
 @SvgCodePainter(
   wikimediaFlagOfGermany,
   exposureMode: SvgExposureMode.indexed,
-  propertyMapping: {
+  propertyMapping: <String, String>{
     'fill1': 'topColor',
     'fill2': 'middleColor',
     'fill3': 'bottomColor',

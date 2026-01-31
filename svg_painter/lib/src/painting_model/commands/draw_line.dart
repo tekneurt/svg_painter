@@ -2,7 +2,7 @@ part of '../paint_command.dart';
 
 /// A command to draw a line segment.
 @immutable
-final class DrawLine extends PaintCommand {
+final class DrawLine extends DrawCommand {
   const DrawLine({
     required this.x1,
     required this.y1,

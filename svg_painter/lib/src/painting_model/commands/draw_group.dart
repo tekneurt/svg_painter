@@ -2,7 +2,7 @@ part of '../paint_command.dart';
 
 /// Command to draw a group of commands, potentially with a transform.
 @immutable
-final class DrawGroup extends PaintCommand {
+final class DrawGroup extends DrawCommand {
   const DrawGroup({
     required this.commands,
     this.style = const PaintingStyle(),

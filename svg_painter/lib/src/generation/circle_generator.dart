@@ -35,9 +35,12 @@ class CircleGenerator extends ShapeGenerator<DrawCircle> {
               '      canvas.drawCircle(const Offset(${command.cx}, ${command.cy}), ${command.radius}, $p);',
             );
           } else {
-            final String plArg = (pathLength != null && pathLength.isNotEmpty)
-                ? ', pathLength: $pathLength'
-                : '';
+            final String plArg;
+            if (pathLength?.isEmpty ?? true) {
+              plArg = '';
+            } else {
+              plArg = ', pathLength: $pathLength';
+            }
             buffer.writeln('      {');
             buffer.writeln('        final Path path = Path()..addOval($bounds);');
             buffer.writeln('        canvas.drawPath(_dashPath(path, $dashArray$plArg), $p);');

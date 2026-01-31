@@ -83,12 +83,10 @@ class _$CxPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.fill;
         canvas.drawOval(
-          Rect.fromOval(
-            Rect.fromCenter(
-              center: const Offset(150.0, 50.0),
-              width: 90.0,
-              height: 50.0,
-            ),
+          Rect.fromCenter(
+            center: const Offset(150.0, 50.0),
+            width: 90.0,
+            height: 50.0,
           ),
           paint,
         );

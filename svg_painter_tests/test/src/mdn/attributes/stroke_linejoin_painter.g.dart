@@ -961,9 +961,12 @@ class _$StrokeLinejoinMiterPainter extends CustomPainter {
     if (dashArray.isEmpty) return source;
     final Path dest = Path();
     for (final metric in source.computeMetrics()) {
-      final double scale = (pathLength != null && pathLength > 0)
-          ? (metric.length / pathLength)
-          : 1.0;
+      final double scale;
+      if (pathLength == null || pathLength <= 0) {
+        scale = 1.0;
+      } else {
+        scale = metric.length / pathLength;
+      }
       double distance = 0.0;
       int index = 0;
       bool draw = true;
@@ -1191,9 +1194,12 @@ class _$StrokeLinejoinMiterClipPainter extends CustomPainter {
     if (dashArray.isEmpty) return source;
     final Path dest = Path();
     for (final metric in source.computeMetrics()) {
-      final double scale = (pathLength != null && pathLength > 0)
-          ? (metric.length / pathLength)
-          : 1.0;
+      final double scale;
+      if (pathLength == null || pathLength <= 0) {
+        scale = 1.0;
+      } else {
+        scale = metric.length / pathLength;
+      }
       double distance = 0.0;
       int index = 0;
       bool draw = true;

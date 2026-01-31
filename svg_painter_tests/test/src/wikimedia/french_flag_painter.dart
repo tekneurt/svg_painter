@@ -7,10 +7,10 @@ part 'french_flag_painter.g.dart';
 @SvgCodePainter(
   wikimediaFlagOfFrance,
   exposureMode: SvgExposureMode.indexed,
-  propertyMapping: {
+  propertyMapping: <String, String>{
     'fill1': 'leftColor',
-    'fill3': 'middleColor',
     'fill2': 'rightColor',
+    'fill3': 'middleColor',
   },
 )
 class FrenchFlagPainter extends _$FrenchFlagPainter {

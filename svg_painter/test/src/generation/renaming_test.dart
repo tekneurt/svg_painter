@@ -19,7 +19,7 @@ void main() {
         elementName: 'RenamedIdPainter',
         svgContent: svg,
         exposureMode: SvgExposureMode.id,
-        propertyMapping: {'myCircleFill': 'backgroundFill'},
+        propertyMapping: <String, String>{'myCircleFill': 'backgroundFill'},
       );
 
       // Assert
@@ -51,7 +51,7 @@ void main() {
         elementName: 'RenamedIndexPainter',
         svgContent: svg,
         exposureMode: SvgExposureMode.indexed,
-        propertyMapping: {
+        propertyMapping: <String, String>{
           'fill1': 'primaryColor',
           'fill2': 'secondaryColor',
         },
@@ -83,7 +83,7 @@ void main() {
         elementName: 'PartialRenamingPainter',
         svgContent: svg,
         exposureMode: SvgExposureMode.indexed,
-        propertyMapping: {
+        propertyMapping: <String, String>{
           'fill1': 'primaryColor',
           // fill2 not renamed
         },

@@ -2,7 +2,7 @@ part of '../paint_command.dart';
 
 /// Command to draw text at a specific location.
 @immutable
-final class DrawText extends PaintCommand {
+final class DrawText extends DrawCommand {
   const DrawText({
     required this.text,
     required this.x,

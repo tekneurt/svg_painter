@@ -1,7 +1,7 @@
 part of '../paint_command.dart';
 
 /// Command to draw a path.
-final class DrawPath extends PaintCommand {
+final class DrawPath extends DrawCommand {
   const DrawPath({required this.operations, required this.style, super.id, this.transform});
 
   /// The operations that define the path.

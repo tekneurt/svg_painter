@@ -24,9 +24,13 @@ class PathDataParser {
     String? errorMessage;
 
     void flushCommand() {
-      if (currentCommand == null || errorMessage != null) {
+      if (currentCommand == null) {
+        // Nothing to process
         return;
       }
+
+      // Caller guarantees errorMessage is null
+      assert(errorMessage == null);
 
       final bool isRelative = currentCommand!.toLowerCase() == currentCommand;
 

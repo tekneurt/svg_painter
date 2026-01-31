@@ -24,7 +24,6 @@ void main() {
       tester: tester,
       painter: painter,
       goldenName: 'current_color_red.png',
-      size: const Size(100, 100),
     );
   });
 

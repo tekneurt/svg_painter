@@ -7,9 +7,10 @@ part 'widget_generation_test.g.dart';
 
 @SvgCodePainter(
   mdnCircleExample,
-  exposureMode: SvgExposureMode.none, // Start simple
 )
-class CircleWidgetTest extends _$CircleWidgetTest {}
+class CircleWidgetTest extends _$CircleWidgetTest {
+  const CircleWidgetTest({super.fit});
+}
 
 // We expect a class named `CircleWidgetTestWidget` (or similar naming convention?)
 // If the painter is `CircleWidgetTest`, the widget should probably be `CircleWidgetTestWidget`.
@@ -17,6 +18,10 @@ class CircleWidgetTest extends _$CircleWidgetTest {}
 // For now, let's assume it generates `CircleWidgetTestWidget`.
 
 void main() {
+  test('CircleWidgetTest should be reachable', () {
+    expect(const CircleWidgetTest(), isNotNull);
+  });
+
   testWidgets('Should generate a StatelessWidget wrapper', (WidgetTester tester) async {
     await tester.pumpWidget(
       const MaterialApp(

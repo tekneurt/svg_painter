@@ -2,7 +2,7 @@ part of '../paint_command.dart';
 
 /// A command to draw an oval (ellipse).
 @immutable
-final class DrawOval extends PaintCommand {
+final class DrawOval extends DrawCommand {
   const DrawOval({
     required this.cx,
     required this.cy,

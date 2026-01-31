@@ -13,10 +13,13 @@ void main() {
       );
 
       // Act
-      final String result = command.toString();
+      command.toString();
 
       // Assert
-      expect(result, 'DrawGroup(cmds: 1, transform: translate(10, 11), opacity: 0.5)');
+      expect(
+        command.toString(),
+        'DrawGroup(cmds: 1, style: PaintingStyle(fill: null, stroke: null, text: null, groupOpacity: 1.0), transform: translate(10, 11), opacity: 0.5)',
+      );
     });
   });
 }

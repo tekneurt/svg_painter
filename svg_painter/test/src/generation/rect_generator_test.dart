@@ -50,7 +50,7 @@ void main() {
       expect(
         output,
         contains(
-          'canvas.drawRRect(RRect.fromRectAndRadius(Rect.fromLTWH(10.0, 20.0, 100.0, 50.0), Radius.elliptical(5.0, 8.0)), paint)',
+          'canvas.drawRRect(RRect.fromRectAndRadius(Rect.fromLTWH(10.0, 20.0, 100.0, 50.0), const Radius.elliptical(5.0, 8.0)), paint)',
         ),
       );
     });

@@ -25,13 +25,13 @@ class TestShapeGenerator extends ShapeGenerator<DrawCircle> {
         command.style,
         'Rect.fromLTWH(${command.cx - command.radius}, ${command.cy - command.radius}, ${command.radius * 2}, ${command.radius * 2})',
         (String paintVar, {String? dashArray, String? pathLength}) {
-          if (dashArray != null) {
+          if (dashArray == null) {
             buffer.writeln(
-              '        canvas.drawPath(_dashPath(Path()..addOval(Rect.fromCircle(center: const Offset(${command.cx}, ${command.cy}), radius: ${command.radius})), $dashArray, pathLength: $pathLength), $paintVar);',
+              '        canvas.drawCircle(const Offset(${command.cx}, ${command.cy}), ${command.radius}, $paintVar);',
             );
           } else {
             buffer.writeln(
-              '        canvas.drawCircle(const Offset(${command.cx}, ${command.cy}), ${command.radius}, $paintVar);',
+              '        canvas.drawPath(_dashPath(Path()..addOval(Rect.fromCircle(center: const Offset(${command.cx}, ${command.cy}), radius: ${command.radius})), $dashArray, pathLength: $pathLength), $paintVar);',
             );
           }
         },

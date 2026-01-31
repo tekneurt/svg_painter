@@ -41,30 +41,36 @@ class PaletteAnalyzer {
     for (final PaintCommand command in commands) {
       if (command is DrawGroup) {
         _collectGroups(command.commands, fillGroups, strokeGroups);
-        continue;
       }
 
-      // We only group elements that DO NOT have an ID.
-      // Elements with IDs are handled by ID-based exposure.
-      if (command.id != null) {
-        continue;
-      }
+      if (command.id == null) {
+        switch (command) {
+          case DrawGroup():
+            // Groups are currently not indexed for their own styles
+            break;
+          case DrawCommand():
+            final PaintingStyle style = command.style;
 
-      final PaintingStyle? style = command.style;
-      if (style == null) {
-        continue;
-      }
+            // Group Fills
+            final PaintingFillStyle? fill = style.fill;
+            if (fill == null) {
+              // No fill
+            } else if (fill.isExplicit) {
+              final _StyleKey key = _StyleKey.fromFill(fill);
+              fillGroups.putIfAbsent(key, () => <PaintCommand>[]).add(command);
+            }
 
-      // Group Fills
-      if (style.fill != null && (style.fill!.isExplicit)) {
-        final _StyleKey key = _StyleKey.fromFill(style.fill!);
-        fillGroups.putIfAbsent(key, () => <PaintCommand>[]).add(command);
-      }
-
-      // Group Strokes
-      if (style.stroke != null && (style.stroke!.isExplicit)) {
-        final _StyleKey key = _StyleKey.fromStroke(style.stroke!);
-        strokeGroups.putIfAbsent(key, () => <PaintCommand>[]).add(command);
+            // Group Strokes
+            final PaintingStrokeStyle? stroke = style.stroke;
+            if (stroke == null) {
+              // No stroke
+            } else if (stroke.isExplicit) {
+              final _StyleKey key = _StyleKey.fromStroke(stroke);
+              strokeGroups.putIfAbsent(key, () => <PaintCommand>[]).add(command);
+            }
+          case DefineCommand():
+            break;
+        }
       }
     }
   }
@@ -140,9 +146,10 @@ class _StyleKey implements Comparable<_StyleKey> {
   @override
   int compareTo(_StyleKey other) {
     // Stability sorting: arbitrary but consistent.
-    if (colorArgb != other.colorArgb) {
+    if (colorArgb == other.colorArgb) {
+      return (shaderId ?? '').compareTo(other.shaderId ?? '');
+    } else {
       return (colorArgb ?? 0).compareTo(other.colorArgb ?? 0);
     }
-    return (shaderId ?? '').compareTo(other.shaderId ?? '');
   }
 }

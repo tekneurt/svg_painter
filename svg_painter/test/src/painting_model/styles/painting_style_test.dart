@@ -38,7 +38,7 @@ void main() {
       // Assert
       expect(
         style.toString(),
-        'PaintingStyle(fill: PaintingFillStyle(color: 4294901760, shader: null, opacity: 1.0, explicit: true), stroke: null, text: null, groupOpacity: 0.8)',
+        'PaintingStyle(fill: PaintingFillStyle(color: 4294901760, shader: null, opacity: 1.0, explicit: true, currentColor: false), stroke: null, text: null, groupOpacity: 0.8)',
       );
     });
   });
@@ -73,7 +73,7 @@ void main() {
       // Assert
       expect(
         fill.toString(),
-        'PaintingFillStyle(color: 4294901760, shader: null, opacity: 0.8, explicit: true)',
+        'PaintingFillStyle(color: 4294901760, shader: null, opacity: 0.8, explicit: true, currentColor: false)',
       );
     });
   });

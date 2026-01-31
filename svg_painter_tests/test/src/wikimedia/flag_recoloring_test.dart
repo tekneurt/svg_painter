@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:svg_painter_fixtures/svg_painter_fixtures.dart';
 import '../../test_utils.dart';
 import 'french_flag_painter.dart';
 import 'german_flag_painter.dart';

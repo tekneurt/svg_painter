@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:analyzer/dart/constant/value.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
 import 'package:meta/meta.dart';
@@ -68,12 +69,16 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
               .toIntValue()!];
 
     final Map<String, String> propertyMapping = <String, String>{};
-    if (!annotation.read('propertyMapping').isNull) {
-      final Map<dynamic, dynamic> map = annotation.read('propertyMapping').mapValue;
-      for (final MapEntry<dynamic, dynamic> entry in map.entries) {
+    if (annotation.read('propertyMapping').isNull) {
+      // No mapping provided
+    } else {
+      final Map<DartObject?, DartObject?> map = annotation.read('propertyMapping').mapValue;
+      for (final MapEntry<DartObject?, DartObject?> entry in map.entries) {
         final String? key = entry.key?.toStringValue();
         final String? value = entry.value?.toStringValue();
-        if (key != null && value != null) {
+        if (key == null || value == null) {
+          // Invalid mapping entry
+        } else {
           propertyMapping[key] = value;
         }
       }
@@ -315,31 +320,39 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
     buffer.writeln('    canvas.clipRect(Rect.fromLTWH(0, 0, $viewBoxWidth, $viewBoxHeight));');
     buffer.writeln();
 
-    // 1st pass: Gradient definitions
+    // 1st pass: Gradient definitions (DefineCommand)
     for (final PaintCommand command in commands) {
-      if (command is DefineGradient) {
-        _generators[command.runtimeType]?.generate(
-          command,
-          buffer,
-          generators: _generators,
-          palette: palette,
-          activeFillProperties: activeFillProperties,
-          activeStrokeProperties: activeStrokeProperties,
-        );
+      switch (command) {
+        case DefineCommand():
+          _generators[command.runtimeType]?.generate(
+            command,
+            buffer,
+            generators: _generators,
+            palette: palette,
+            activeFillProperties: activeFillProperties,
+            activeStrokeProperties: activeStrokeProperties,
+          );
+        case DrawCommand():
+          // Drawing commands are handled in the second pass
+          break;
       }
     }
 
-    // 2nd pass: Drawing commands
+    // 2nd pass: Drawing commands (DrawCommand)
     for (final PaintCommand command in commands) {
-      if (command is! DefineGradient) {
-        _generators[command.runtimeType]?.generate(
-          command,
-          buffer,
-          generators: _generators,
-          palette: palette,
-          activeFillProperties: activeFillProperties,
-          activeStrokeProperties: activeStrokeProperties,
-        );
+      switch (command) {
+        case DrawCommand():
+          _generators[command.runtimeType]?.generate(
+            command,
+            buffer,
+            generators: _generators,
+            palette: palette,
+            activeFillProperties: activeFillProperties,
+            activeStrokeProperties: activeStrokeProperties,
+          );
+        case DefineCommand():
+          // Definition commands are handled in the first pass
+          break;
       }
     }
 
@@ -354,9 +367,12 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
       buffer.writeln('    if (dashArray.isEmpty) return source;');
       buffer.writeln('    final Path dest = Path();');
       buffer.writeln('    for (final metric in source.computeMetrics()) {');
-      buffer.writeln(
-        '      final double scale = (pathLength != null && pathLength > 0) ? (metric.length / pathLength) : 1.0;',
-      );
+      buffer.writeln('      final double scale;');
+      buffer.writeln('      if (pathLength == null || pathLength <= 0) {');
+      buffer.writeln('        scale = 1.0;');
+      buffer.writeln('      } else {');
+      buffer.writeln('        scale = metric.length / pathLength;');
+      buffer.writeln('      }');
       buffer.writeln('      double distance = 0.0;');
       buffer.writeln('      int index = 0;');
       buffer.writeln('      bool draw = true;');
@@ -440,13 +456,16 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
     if (hasCurrentColor) {
       buffer.writeln('    this.color,');
     }
-    
+
     // Constructor params for properties
-    final Set<String> allProps = <String>{...activeFillProperties.values, ...activeStrokeProperties.values};
+    final Set<String> allProps = <String>{
+      ...activeFillProperties.values,
+      ...activeStrokeProperties.values,
+    };
     for (final String prop in allProps) {
       buffer.writeln('    this.$prop,');
     }
-    
+
     buffer.writeln('  });');
     buffer.writeln();
     buffer.writeln('  final double? width;');
@@ -456,12 +475,12 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
     if (hasCurrentColor) {
       buffer.writeln('  final Color? color;');
     }
-    
+
     // Fields for properties
     for (final String prop in allProps) {
       buffer.writeln('  final Color? $prop;');
     }
-    
+
     buffer.writeln();
     buffer.writeln('  @override');
     buffer.writeln('  Widget build(BuildContext context) {');
@@ -483,19 +502,17 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
 
   bool _hasDashes(List<PaintCommand> commands) {
     for (final PaintCommand command in commands) {
-      final PaintingStyle? style = command.style;
-      final List<double>? dashArray = style?.stroke?.dashArray;
+      if (command is DrawCommand) {
+        final PaintingStyle? style = command.style;
+        final List<double>? dashArray = style?.stroke?.dashArray;
 
-      if (dashArray == null) {
-        // No dashes on this element
-      } else {
-        return true;
+        if (dashArray != null) {
+          return true;
+        }
       }
 
       if (command is DrawGroup) {
-        if (!_hasDashes(command.commands)) {
-          // No dashes in group
-        } else {
+        if (_hasDashes(command.commands)) {
           return true;
         }
       }
@@ -505,9 +522,11 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
 
   bool _hasCurrentColor(List<PaintCommand> commands) {
     for (final PaintCommand command in commands) {
-      final PaintingStyle? style = command.style;
-      if ((style?.fill?.isCurrentColor ?? false) || (style?.stroke?.isCurrentColor ?? false)) {
-        return true;
+      if (command is DrawCommand) {
+        final PaintingStyle? style = command.style;
+        if ((style?.fill?.isCurrentColor ?? false) || (style?.stroke?.isCurrentColor ?? false)) {
+          return true;
+        }
       }
 
       if (command is DrawGroup) {
@@ -521,7 +540,7 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
 
   void _collectIds(List<PaintCommand> commands, Set<String> fillIds, Set<String> strokeIds) {
     for (final PaintCommand command in commands) {
-      if (command is! DefineGradient && command.id != null) {
+      if (command is DrawCommand && command.id != null) {
         final PaintingStyle? style = command.style;
         if (style?.fill?.isExplicit ?? false) {
           fillIds.add(command.id!);

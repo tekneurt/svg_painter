@@ -2,7 +2,7 @@ part of '../paint_command.dart';
 
 /// A command to draw a circle.
 @immutable
-final class DrawCircle extends PaintCommand {
+final class DrawCircle extends DrawCommand {
   const DrawCircle({
     required this.cx,
     required this.cy,

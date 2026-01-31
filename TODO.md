@@ -94,12 +94,22 @@
         [x] **Base SVG Element toString Tests**: Ensure base `toString()` methods in `lib/src/svg_model/svg_element.dart` are fully covered.
         [x] **Default Value Exception Audit**: Systematically test all `UnsupportedError` paths in `to_default_value.dart`.
     - [x] **Final Coverage Check**: Verify high coverage (>90%).
+    - [ ] **Bang Operator (Null Assertion) Audit**: Systematically audit the codebase for the `!` operator and replace it with safe null handling (positive equality checks, `if (x == null) ...`, or explicit `assert(x != null)`) to eliminate potential runtime crashes.
     - [ ] **Improve Coverage for Low-Coverage Files**:
         - [ ] `oval_generator.dart` (Dash path logic)
         - [ ] `rect_generator.dart` (Dash path logic)
         - [ ] `svg_paint_resolver.dart` (Edge cases)
         - [ ] `svg_to_painting.dart` (Edge cases)
         - [ ] `to_svg_element.dart` (Missing element types)
+    - [ ] **Strict Attribute Typing**: Refactor `PaintCommand` properties like `pathLength`, `opacity`, etc., from nullable primitives (`double?`) to non-nullable types or strict objects (e.g. `SvgValue`) to eliminate ambiguous null checks and align with SVG spec (e.g., `pathLength` must be > 0 or it's ignored).
+    - [ ] **SVG Spec Compliance Audit**: Systematically review all parsing logic (points, paths, transforms, colors) against the SVG 1.1/2.0 "Error Processing" rules.
+        - Ensure partial parsing stops correctly on invalid tokens.
+        - Verify odd-length lists are handled (truncated or errored) as per spec for each attribute type.
+        - Ensure invalid values (e.g. negative radius) result in spec-compliant behavior (ignore element vs ignore attribute).
+    - [ ] **Strong Typing of Painting Model**: Audit all styles and commands to replace `String?` with dedicated Enums or value objects.
+        - `PaintingTextStyle`: Refactor `fontWeight` (Enum/Number), `fontStyle` (Enum), and potentially `fontFamily`.
+        - `PaintCommand`: Refactor `transform` string to a structured `List<TransformOperation>` or `Matrix4`.
+        - Ensure all "magic strings" from the SVG spec are internalized into typed models before they reach the generators.
 
 
 ### Phase 2: Repository & Release Infrastructure (0.1.0)

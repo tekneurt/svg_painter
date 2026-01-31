@@ -67,12 +67,10 @@ class _$EllipsePainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.fill;
         canvas.drawOval(
-          Rect.fromOval(
-            Rect.fromCenter(
-              center: const Offset(100.0, 50.0),
-              width: 200.0,
-              height: 100.0,
-            ),
+          Rect.fromCenter(
+            center: const Offset(100.0, 50.0),
+            width: 200.0,
+            height: 100.0,
           ),
           paint,
         );

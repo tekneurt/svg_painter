@@ -86,12 +86,10 @@ class _$ExampleEllipse01Painter extends CustomPainter {
         paint.color = const Color(0xFFFF0000);
         paint.style = PaintingStyle.fill;
         canvas.drawOval(
-          Rect.fromOval(
-            Rect.fromCenter(
-              center: const Offset(0.0, 0.0),
-              width: 188.9763779527559,
-              height: 75.59055118110236,
-            ),
+          Rect.fromCenter(
+            center: const Offset(0.0, 0.0),
+            width: 188.9763779527559,
+            height: 75.59055118110236,
           ),
           paint,
         );
@@ -107,12 +105,10 @@ class _$ExampleEllipse01Painter extends CustomPainter {
       paint.style = PaintingStyle.stroke;
       paint.strokeWidth = 7.559055118110235;
       canvas.drawOval(
-        Rect.fromOval(
-          Rect.fromCenter(
-            center: const Offset(0.0, 0.0),
-            width: 188.9763779527559,
-            height: 75.59055118110236,
-          ),
+        Rect.fromCenter(
+          center: const Offset(0.0, 0.0),
+          width: 188.9763779527559,
+          height: 75.59055118110236,
         ),
         paint,
       );

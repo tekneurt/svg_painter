@@ -30,7 +30,7 @@ class RectGenerator extends ShapeGenerator<DrawRect> {
         buffer,
         command,
         command.style,
-        (command.rx > 0 || command.ry > 0) ? '$r' : rectCode, // Bounds is always the Rect
+        (command.rx > 0 || command.ry > 0) ? r : rectCode, // Bounds is always the Rect
         (
           String p, {
           String? dashArray,
@@ -39,9 +39,12 @@ class RectGenerator extends ShapeGenerator<DrawRect> {
           if (dashArray == null) {
             buffer.writeln('      canvas.$drawMethod($rectCode, $p);');
           } else {
-            final String plArg = (pathLength != null && pathLength.isNotEmpty)
-                ? ', pathLength: $pathLength'
-                : '';
+            final String plArg;
+            if (pathLength?.isEmpty ?? true) {
+              plArg = '';
+            } else {
+              plArg = ', pathLength: $pathLength';
+            }
             buffer.writeln('      {');
             buffer.writeln('        final Path path = Path();');
             if (command.rx > 0 || command.ry > 0) {

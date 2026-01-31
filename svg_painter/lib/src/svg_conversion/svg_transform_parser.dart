@@ -59,7 +59,7 @@ class SvgTransformParser {
           // We are in scaled space.
           // e -> e * sx (if x translation)
           // f -> f * sy (if y translation)
-          // The other parameters a, b, c, d might depend on aspect ratio if sx != sy?
+          // The other parameters a, b, c, d might depend on aspect ratio if sx is not equal to sy?
           // For now, let's assume sx == sy or just scale translation.
           // Strictly:
           // [ a c e ]
