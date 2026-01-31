@@ -19,6 +19,12 @@ dependencies:
   svg_painter_annotation: ^0.2.0
   xml: ^6.5.0
 
+# TODO(Gemini): Remove this override after publishing svg_painter_annotation 0.2.0.
+# This override is required to support local development and CI until the package is published.
+dependency_overrides:
+  svg_painter_annotation:
+    path: ../svg_painter_annotation
+
 dev_dependencies:
   build_runner: ^2.4.8
   build_test: ^3.5.4
