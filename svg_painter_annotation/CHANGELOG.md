@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.0] - 2026-01-31
+
+### Added
+
+- Added `propertyMapping` to `@SvgPainter` to allow renaming of generated properties (e.g. mapping `fill1` to `backgroundFill`).
+- Added `exposureMode` to `@SvgPainter` to control how dynamic properties are exposed (`none`, `id`, `indexed`, `mixed`).
+
 ## [0.1.1] - 2026-01-26
 
 ### Fixed
