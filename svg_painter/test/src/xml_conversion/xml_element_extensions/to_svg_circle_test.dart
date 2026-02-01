@@ -10,7 +10,7 @@ void main() {
     test('should convert <circle> with attributes when valid XML is provided', () {
       // Arrange
       final XmlDocument document = XmlDocument.parse(
-        '<circle cx="10" cy="20" r="5" fill="red" stroke="blue" stroke-width="2.5" />',
+        '<circle cx="11" cy="22" r="33" fill="red" stroke="blue" stroke-width="2.5" />',
       );
       final XmlElement element = document.rootElement;
 
@@ -18,14 +18,20 @@ void main() {
       final Result<SvgElement> result = element.toSvgCircle();
 
       // Assert
-      expect(result, isA<Success<SvgElement>>());
-      final SvgCircle circle = (result as Success<SvgElement>).value as SvgCircle;
-      expect((circle.cx as SvgLength).value, 10.0);
-      expect((circle.cy as SvgLength).value, 20.0);
-      expect((circle.r as SvgLength).value, 5.0);
-      expect(circle.fill, isA<SvgNamedColor>());
-      expect(circle.stroke?.color, isA<SvgNamedColor>());
-      expect((circle.stroke!.width! as SvgLength).value, 2.5);
+      expect(
+        result,
+        isA<Success<SvgElement>>().having(
+          (Success<SvgElement> s) => s.value,
+          'value',
+          isA<SvgCircle>()
+              .having((SvgCircle c) => (c.cx as SvgLength).value, 'cx', 11.0)
+              .having((SvgCircle c) => (c.cy as SvgLength).value, 'cy', 22.0)
+              .having((SvgCircle c) => (c.r as SvgLength).value, 'r', 33.0)
+              .having((SvgCircle c) => c.fill, 'fill', isA<SvgNamedColor>())
+              .having((SvgCircle c) => c.stroke?.color, 'stroke color', isA<SvgNamedColor>())
+              .having((SvgCircle c) => (c.stroke?.width as SvgLength?)?.value, 'stroke width', 2.5),
+        ),
+      );
     });
 
     test('should return Success with default values when no attributes are provided', () {
@@ -37,11 +43,17 @@ void main() {
       final Result<SvgElement> result = element.toSvgCircle();
 
       // Assert
-      expect(result, isA<Success<SvgElement>>());
-      final SvgCircle circle = (result as Success<SvgElement>).value as SvgCircle;
-      expect((circle.cx as SvgLength).value, 0.0);
-      expect((circle.cy as SvgLength).value, 0.0);
-      expect((circle.r as SvgLength).value, 0.0);
+      expect(
+        result,
+        isA<Success<SvgElement>>().having(
+          (Success<SvgElement> s) => s.value,
+          'value',
+          isA<SvgCircle>()
+              .having((SvgCircle c) => (c.cx as SvgLength).value, 'cx', 0.0)
+              .having((SvgCircle c) => (c.cy as SvgLength).value, 'cy', 0.0)
+              .having((SvgCircle c) => (c.r as SvgLength).value, 'r', 0.0),
+        ),
+      );
     });
   });
 }

@@ -10,7 +10,7 @@ void main() {
     test('should convert <line> with coordinates when valid XML is provided', () {
       // Arrange
       final XmlDocument document = XmlDocument.parse(
-        '<line x1="10" y1="20" x2="100" y2="200" stroke="black" />',
+        '<line x1="11" y1="22" x2="111" y2="222" stroke="black" />',
       );
       final XmlElement element = document.rootElement;
 
@@ -18,12 +18,18 @@ void main() {
       final Result<SvgElement> result = element.toSvgLine();
 
       // Assert
-      expect(result, isA<Success<SvgElement>>());
-      final SvgLine line = (result as Success<SvgElement>).value as SvgLine;
-      expect((line.x1 as SvgLength).value, 10.0);
-      expect((line.y1 as SvgLength).value, 20.0);
-      expect((line.x2 as SvgLength).value, 100.0);
-      expect((line.y2 as SvgLength).value, 200.0);
+      expect(
+        result,
+        isA<Success<SvgElement>>().having(
+          (Success<SvgElement> s) => s.value,
+          'value',
+          isA<SvgLine>()
+              .having((SvgLine l) => (l.x1 as SvgLength).value, 'x1', 11.0)
+              .having((SvgLine l) => (l.y1 as SvgLength).value, 'y1', 22.0)
+              .having((SvgLine l) => (l.x2 as SvgLength).value, 'x2', 111.0)
+              .having((SvgLine l) => (l.y2 as SvgLength).value, 'y2', 222.0),
+        ),
+      );
     });
   });
 }

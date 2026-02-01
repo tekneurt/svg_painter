@@ -9,18 +9,24 @@ void main() {
   group('ToSvgUse', () {
     test('should return Success with SvgUse when valid attributes are provided', () {
       // Arrange
-      final XmlDocument document = XmlDocument.parse('<use href="#icon1" x="10" y="20" />');
+      final XmlDocument document = XmlDocument.parse('<use href="#icon1" x="11" y="22" />');
       final XmlElement element = document.rootElement;
 
       // Act
       final Result<SvgUse> result = element.toSvgUse();
 
       // Assert
-      expect(result, isA<Success<SvgUse>>());
-      final SvgUse use = (result as Success<SvgUse>).value;
-      expect(use.href, '#icon1');
-      expect((use.x as SvgLength).value, 10.0);
-      expect((use.y as SvgLength).value, 20.0);
+      expect(
+        result,
+        isA<Success<SvgUse>>().having(
+          (Success<SvgUse> s) => s.value,
+          'value',
+          isA<SvgUse>()
+              .having((SvgUse u) => u.href, 'href', '#icon1')
+              .having((SvgUse u) => (u.x as SvgLength).value, 'x', 11.0)
+              .having((SvgUse u) => (u.y as SvgLength).value, 'y', 22.0),
+        ),
+      );
     });
 
     test('should return Failure when href attribute is missing', () {
@@ -32,8 +38,14 @@ void main() {
       final Result<SvgUse> result = element.toSvgUse();
 
       // Assert
-      expect(result, isA<Failure<SvgUse>>());
-      expect((result as Failure<SvgUse>).message, contains('must have an href attribute'));
+      expect(
+        result,
+        isA<Failure<SvgUse>>().having(
+          (Failure<SvgUse> f) => f.message,
+          'message',
+          contains('must have an href attribute'),
+        ),
+      );
     });
   });
 }

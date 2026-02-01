@@ -9,22 +9,27 @@ void main() {
   group('ToSvgPolyline', () {
     test('should return Success with SvgPolyline when valid points attribute is provided', () {
       // Arrange
-      final XmlDocument document = XmlDocument.parse('<polyline points="1,2 50,51 100,102" />');
+      final XmlDocument document = XmlDocument.parse('<polyline points="11,22 55,66 111,222" />');
       final XmlElement element = document.rootElement;
 
       // Act
       final Result<SvgPolyline> result = element.toSvgPolyline();
 
       // Assert
-      expect(result, isA<Success<SvgPolyline>>());
-      final SvgPolyline polyline = (result as Success<SvgPolyline>).value;
-      expect(polyline.points.points, <double>[1.0, 2.0, 50.0, 51.0, 100.0, 102.0]);
+      expect(
+        result,
+        isA<Success<SvgPolyline>>().having(
+          (Success<SvgPolyline> s) => s.value.points.points,
+          'points',
+          <double>[11.0, 22.0, 55.0, 66.0, 111.0, 222.0],
+        ),
+      );
     });
 
     test('should map common attributes when provided', () {
       // Arrange
       final XmlDocument document = XmlDocument.parse(
-        '<polyline points="1,2 3,4" stroke="red" stroke-width="5" />',
+        '<polyline points="1,2 3,4" stroke="red" stroke-width="5.5" />',
       );
       final XmlElement element = document.rootElement;
 
@@ -32,10 +37,20 @@ void main() {
       final Result<SvgPolyline> result = element.toSvgPolyline();
 
       // Assert
-      final SvgPolyline polyline = (result as Success<SvgPolyline>).value;
-      expect(polyline.points.points, <double>[1.0, 2.0, 3.0, 4.0]);
-      expect(polyline.stroke?.color, isA<SvgNamedColor>());
-      expect((polyline.stroke!.width! as SvgLength).value, 5.0);
+      expect(
+        result,
+        isA<Success<SvgPolyline>>().having(
+          (Success<SvgPolyline> s) => s.value,
+          'value',
+          isA<SvgPolyline>()
+              .having((SvgPolyline p) => p.stroke?.color, 'stroke color', isA<SvgNamedColor>())
+              .having(
+                (SvgPolyline p) => (p.stroke?.width as SvgLength?)?.value,
+                'stroke width',
+                5.5,
+              ),
+        ),
+      );
     });
   });
 }

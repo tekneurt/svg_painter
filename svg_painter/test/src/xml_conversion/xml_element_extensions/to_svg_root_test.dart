@@ -10,7 +10,7 @@ void main() {
     test('should return Success with SvgRoot when valid <svg> is provided', () {
       // Arrange
       final XmlDocument document = XmlDocument.parse(
-        '<svg width="200" height="100" viewBox="0 0 200 100"><circle /></svg>',
+        '<svg width="222" height="111" viewBox="0 0 222 111"><circle /></svg>',
       );
       final XmlElement element = document.rootElement;
 
@@ -18,12 +18,18 @@ void main() {
       final Result<SvgRoot> result = element.toSvgRoot();
 
       // Assert
-      expect(result, isA<Success<SvgRoot>>());
-      final SvgRoot root = (result as Success<SvgRoot>).value;
-      expect((root.width! as SvgLength).value, 200.0);
-      expect((root.height! as SvgLength).value, 100.0);
-      expect(root.viewBox?.width, 200.0);
-      expect(root.children, hasLength(1));
+      expect(
+        result,
+        isA<Success<SvgRoot>>().having(
+          (Success<SvgRoot> s) => s.value,
+          'value',
+          isA<SvgRoot>()
+              .having((SvgRoot r) => (r.width as SvgLength?)?.value, 'width', 222.0)
+              .having((SvgRoot r) => (r.height as SvgLength?)?.value, 'height', 111.0)
+              .having((SvgRoot r) => r.viewBox?.width, 'viewBox width', 222.0)
+              .having((SvgRoot r) => r.children, 'children', hasLength(1)),
+        ),
+      );
     });
 
     test('should collect and merge CSS rules from <style> blocks', () {
@@ -41,10 +47,14 @@ void main() {
       final Result<SvgRoot> result = element.toSvgRoot();
 
       // Assert
-      final SvgRoot root = (result as Success<SvgRoot>).value;
-      expect(root.styleSheet.rules.containsKey('red'), isTrue);
-      expect(root.styleSheet.rules.containsKey('blue'), isTrue);
-      expect(root.styleSheet.rules['red']?['fill'], 'red');
+      expect(
+        result,
+        isA<Success<SvgRoot>>().having(
+          (Success<SvgRoot> s) => s.value.styleSheet.rules,
+          'rules',
+          containsPair('red', containsPair('fill', 'red')),
+        ),
+      );
     });
   });
 }

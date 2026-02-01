@@ -19,8 +19,7 @@ void main() {
       );
 
       // Assert
-      expect(result, isA<SvgLength>());
-      expect((result as SvgLength).value, 10.0);
+      expect(result, isA<SvgLength>().having((SvgLength l) => l.value, 'value', 10.0));
     });
 
     test('toSvgValue should return default value when absent', () {
@@ -92,8 +91,10 @@ void main() {
       );
 
       // Assert
-      expect(result, isA<SvgNonNegativeNumber>());
-      expect((result as SvgNonNegativeNumber).value, 100.0);
+      expect(
+        result,
+        isA<SvgNonNegativeNumber>().having((SvgNonNegativeNumber n) => n.value, 'value', 100.0),
+      );
     });
 
     test('toSvgValueOrNull should throw UnsupportedError on type mismatch', () {
@@ -142,8 +143,10 @@ void main() {
       final SvgNumber? result = element.toPathLength();
 
       // Assert
-      expect(result, isA<SvgNonNegativeNumber>());
-      expect(result?.value, 100.0);
+      expect(
+        result,
+        isA<SvgNonNegativeNumber>().having((SvgNonNegativeNumber n) => n.value, 'value', 100.0),
+      );
     });
 
     test('toPathLength should return null for negative pathLength', () {
