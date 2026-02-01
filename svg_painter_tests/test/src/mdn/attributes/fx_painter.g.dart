@@ -10,6 +10,29 @@ part of 'fx_painter.dart';
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
 
+class FxPainterWidget extends StatelessWidget {
+  const FxPainterWidget({
+    super.key,
+    this.width,
+    this.height,
+    this.fit = BoxFit.contain,
+    this.alignment = Alignment.center,
+  });
+
+  final double? width;
+  final double? height;
+  final BoxFit fit;
+  final AlignmentGeometry alignment;
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomPaint(
+      size: Size(width ?? 480.0, height ?? 200.0),
+      painter: _$FxPainter(fit: fit),
+    );
+  }
+}
+
 class _$FxPainter extends CustomPainter {
   const _$FxPainter({this.fit = BoxFit.contain});
 
@@ -43,7 +66,7 @@ class _$FxPainter extends CustomPainter {
       radius: 0.5,
       focal: Alignment(-0.30000000000000004, -0.30000000000000004),
       focalRadius: 0.05,
-      colors: [Color(0xFFFFFFFF), Color(0xFF8FBC8F)],
+      colors: [Colors.white, const Color(0xFF8FBC8F)],
       stops: [0.0, 1.0],
     );
     final Gradient _grad_gradient2 = RadialGradient(
@@ -51,7 +74,7 @@ class _$FxPainter extends CustomPainter {
       radius: 0.5,
       focal: Alignment(0.5, -0.30000000000000004),
       focalRadius: 0.05,
-      colors: [Color(0xFFFFFFFF), Color(0xFF8FBC8F)],
+      colors: [Colors.white, const Color(0xFF8FBC8F)],
       stops: [0.0, 1.0],
     );
     {
@@ -61,13 +84,6 @@ class _$FxPainter extends CustomPainter {
           Rect.fromCircle(center: const Offset(100.0, 100.0), radius: 100.0),
         );
         paint.style = PaintingStyle.fill;
-        canvas.drawCircle(const Offset(100.0, 100.0), 100.0, paint);
-      }
-      {
-        final Paint paint = Paint();
-        paint.color = const Color(0x00000000);
-        paint.style = PaintingStyle.stroke;
-        paint.strokeWidth = 1.0;
         canvas.drawCircle(const Offset(100.0, 100.0), 100.0, paint);
       }
     }
@@ -80,19 +96,16 @@ class _$FxPainter extends CustomPainter {
         paint.style = PaintingStyle.fill;
         canvas.drawCircle(const Offset(340.0, 100.0), 100.0, paint);
       }
-      {
-        final Paint paint = Paint();
-        paint.color = const Color(0x00000000);
-        paint.style = PaintingStyle.stroke;
-        paint.strokeWidth = 1.0;
-        canvas.drawCircle(const Offset(340.0, 100.0), 100.0, paint);
-      }
     }
     canvas.restore();
   }
 
   @override
   bool shouldRepaint(covariant _$FxPainter oldDelegate) {
-    return fit != oldDelegate.fit;
+    if (fit == oldDelegate.fit) {
+      return false;
+    } else {
+      return true;
+    }
   }
 }

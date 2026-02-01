@@ -29,6 +29,7 @@ extension SvgPolygonToPaintCommands on SvgPolygon {
     final PaintingStyle paint = resolvePaint(
       context,
       tagName: 'polygon',
+      id: id,
       fill: fill,
       fillOpacity: fillOpacity,
       stroke: stroke,
@@ -46,6 +47,7 @@ extension SvgPolygonToPaintCommands on SvgPolygon {
       DrawPolygon(
         points: resolvedPoints,
         style: paint,
+        id: id,
         transform: SvgTransformParser.scaleTransform(transform, context.parentSx, context.parentSy),
       ),
     ]);

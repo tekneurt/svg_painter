@@ -17,6 +17,7 @@ extension SvgTextToPaintCommands on SvgText {
     final PaintingStyle paint = resolvePaint(
       context,
       tagName: 'text',
+      id: id,
       fill: fill,
       fillOpacity: fillOpacity,
       stroke: stroke,
@@ -39,6 +40,7 @@ extension SvgTextToPaintCommands on SvgText {
         y: finalY,
         text: text,
         style: paint,
+        id: id,
         transform: SvgTransformParser.scaleTransform(transform, context.parentSx, context.parentSy),
       ),
     ]);

@@ -10,6 +10,29 @@ part of 'path_length_painter.dart';
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
 
+class PathLengthPainterWidget extends StatelessWidget {
+  const PathLengthPainterWidget({
+    super.key,
+    this.width,
+    this.height,
+    this.fit = BoxFit.contain,
+    this.alignment = Alignment.center,
+  });
+
+  final double? width;
+  final double? height;
+  final BoxFit fit;
+  final AlignmentGeometry alignment;
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomPaint(
+      size: Size(width ?? 100.0, height ?? 60.0),
+      painter: _$PathLengthPainter(fit: fit),
+    );
+  }
+}
+
 class _$PathLengthPainter extends CustomPainter {
   const _$PathLengthPainter({this.fit = BoxFit.contain});
 
@@ -46,7 +69,7 @@ class _$PathLengthPainter extends CustomPainter {
         path.lineTo(100.0, 10.0);
         {
           final Paint paint = Paint();
-          paint.color = const Color(0xFF000000);
+          paint.color = Colors.black;
           paint.style = PaintingStyle.stroke;
           paint.strokeWidth = 2.0;
           final List<double> dashArray = [10.0];
@@ -62,7 +85,7 @@ class _$PathLengthPainter extends CustomPainter {
         path.lineTo(100.0, 20.0);
         {
           final Paint paint = Paint();
-          paint.color = const Color(0xFF000000);
+          paint.color = Colors.black;
           paint.style = PaintingStyle.stroke;
           paint.strokeWidth = 2.0;
           final List<double> dashArray = [10.0];
@@ -78,7 +101,7 @@ class _$PathLengthPainter extends CustomPainter {
         path.lineTo(100.0, 30.0);
         {
           final Paint paint = Paint();
-          paint.color = const Color(0xFF000000);
+          paint.color = Colors.black;
           paint.style = PaintingStyle.stroke;
           paint.strokeWidth = 2.0;
           final List<double> dashArray = [10.0];
@@ -94,7 +117,7 @@ class _$PathLengthPainter extends CustomPainter {
         path.lineTo(100.0, 40.0);
         {
           final Paint paint = Paint();
-          paint.color = const Color(0xFF000000);
+          paint.color = Colors.black;
           paint.style = PaintingStyle.stroke;
           paint.strokeWidth = 2.0;
           final List<double> dashArray = [10.0];
@@ -110,7 +133,7 @@ class _$PathLengthPainter extends CustomPainter {
         path.lineTo(100.0, 50.0);
         {
           final Paint paint = Paint();
-          paint.color = const Color(0xFF000000);
+          paint.color = Colors.black;
           paint.style = PaintingStyle.stroke;
           paint.strokeWidth = 2.0;
           final List<double> dashArray = [10.0];
@@ -125,9 +148,12 @@ class _$PathLengthPainter extends CustomPainter {
     if (dashArray.isEmpty) return source;
     final Path dest = Path();
     for (final metric in source.computeMetrics()) {
-      final double scale = (pathLength != null && pathLength > 0)
-          ? (metric.length / pathLength)
-          : 1.0;
+      final double scale;
+      if (pathLength == null || pathLength <= 0) {
+        scale = 1.0;
+      } else {
+        scale = metric.length / pathLength;
+      }
       double distance = 0.0;
       int index = 0;
       bool draw = true;
@@ -149,6 +175,10 @@ class _$PathLengthPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant _$PathLengthPainter oldDelegate) {
-    return fit != oldDelegate.fit;
+    if (fit == oldDelegate.fit) {
+      return false;
+    } else {
+      return true;
+    }
   }
 }

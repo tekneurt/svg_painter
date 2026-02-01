@@ -10,6 +10,29 @@ part of 'example_line01_painter.dart';
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
 
+class ExampleLine01PainterWidget extends StatelessWidget {
+  const ExampleLine01PainterWidget({
+    super.key,
+    this.width,
+    this.height,
+    this.fit = BoxFit.contain,
+    this.alignment = Alignment.center,
+  });
+
+  final double? width;
+  final double? height;
+  final BoxFit fit;
+  final AlignmentGeometry alignment;
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomPaint(
+      size: Size(width ?? 453.54330708661416, height ?? 151.1811023622047),
+      painter: _$ExampleLine01Painter(fit: fit),
+    );
+  }
+}
+
 class _$ExampleLine01Painter extends CustomPainter {
   const _$ExampleLine01Painter({this.fit = BoxFit.contain});
 
@@ -59,7 +82,7 @@ class _$ExampleLine01Painter extends CustomPainter {
       {
         {
           final Paint paint = Paint();
-          paint.color = const Color(0xFF000000);
+          paint.color = Colors.black;
           paint.style = PaintingStyle.fill;
           canvas.drawLine(
             const Offset(37.79527559055118, 113.38582677165354),
@@ -82,7 +105,7 @@ class _$ExampleLine01Painter extends CustomPainter {
       {
         {
           final Paint paint = Paint();
-          paint.color = const Color(0xFF000000);
+          paint.color = Colors.black;
           paint.style = PaintingStyle.fill;
           canvas.drawLine(
             const Offset(113.38582677165354, 113.38582677165354),
@@ -105,7 +128,7 @@ class _$ExampleLine01Painter extends CustomPainter {
       {
         {
           final Paint paint = Paint();
-          paint.color = const Color(0xFF000000);
+          paint.color = Colors.black;
           paint.style = PaintingStyle.fill;
           canvas.drawLine(
             const Offset(188.9763779527559, 113.38582677165354),
@@ -128,7 +151,7 @@ class _$ExampleLine01Painter extends CustomPainter {
       {
         {
           final Paint paint = Paint();
-          paint.color = const Color(0xFF000000);
+          paint.color = Colors.black;
           paint.style = PaintingStyle.fill;
           canvas.drawLine(
             const Offset(264.56692913385825, 113.38582677165354),
@@ -151,7 +174,7 @@ class _$ExampleLine01Painter extends CustomPainter {
       {
         {
           final Paint paint = Paint();
-          paint.color = const Color(0xFF000000);
+          paint.color = Colors.black;
           paint.style = PaintingStyle.fill;
           canvas.drawLine(
             const Offset(340.15748031496065, 113.38582677165354),
@@ -177,6 +200,10 @@ class _$ExampleLine01Painter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant _$ExampleLine01Painter oldDelegate) {
-    return fit != oldDelegate.fit;
+    if (fit == oldDelegate.fit) {
+      return false;
+    } else {
+      return true;
+    }
   }
 }

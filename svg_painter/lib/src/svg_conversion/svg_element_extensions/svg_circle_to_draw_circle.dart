@@ -17,6 +17,7 @@ extension SvgCircleToPaintCommands on SvgCircle {
     final PaintingStyle paint = resolvePaint(
       context,
       tagName: 'circle',
+      id: id,
       fill: fill,
       fillOpacity: fillOpacity,
       stroke: stroke,
@@ -40,6 +41,7 @@ extension SvgCircleToPaintCommands on SvgCircle {
         cy: finalCy,
         radius: finalR,
         style: paint,
+        id: id,
         transform: SvgTransformParser.scaleTransform(transform, context.parentSx, context.parentSy),
       ),
     ]);

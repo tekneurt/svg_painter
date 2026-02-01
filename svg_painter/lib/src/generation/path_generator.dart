@@ -1,6 +1,8 @@
 import '../painting_model/_painting_model.dart';
 import 'command_generator.dart';
 
+import 'palette_analyzer.dart';
+
 /// Generator for [DrawPath] commands.
 class PathGenerator extends ShapeGenerator<DrawPath> {
   const PathGenerator();
@@ -10,6 +12,11 @@ class PathGenerator extends ShapeGenerator<DrawPath> {
     DrawPath command,
     StringBuffer buffer, {
     Map<Type, CommandGenerator<PaintCommand>>? generators,
+    PaletteResult? palette,
+    Map<String, String>? activeFillProperties,
+    Map<String, String>? activeStrokeProperties,
+    List<InheritedProperty>? inheritedFills,
+    List<InheritedProperty>? inheritedStrokes,
   }) {
     wrapWithTransform(buffer, command.transform, () {
       buffer.writeln('      // Path');
@@ -36,20 +43,32 @@ class PathGenerator extends ShapeGenerator<DrawPath> {
         }
       }
 
-      generatePaintingCode(buffer, command.style, 'path.getBounds()', (
-        String paintVar, {
-        String? dashArray,
-        String? pathLength,
-      }) {
-        if (dashArray != null) {
-          final String plArg = (pathLength != null && pathLength.isNotEmpty)
-              ? ', pathLength: $pathLength'
-              : '';
-          buffer.writeln('        canvas.drawPath(_dashPath(path, $dashArray$plArg), $paintVar);');
-        } else {
-          buffer.writeln('        canvas.drawPath(path, $paintVar);');
-        }
-      });
+      generatePaintingCode(
+        buffer,
+        command,
+        command.style,
+        'path.getBounds()',
+        (String paintVar, {String? dashArray, String? pathLength}) {
+          if (dashArray == null) {
+            buffer.writeln('        canvas.drawPath(path, $paintVar);');
+          } else {
+            final String plArg;
+            if (pathLength?.isEmpty ?? true) {
+              plArg = '';
+            } else {
+              plArg = ', pathLength: $pathLength';
+            }
+            buffer.writeln(
+              '        canvas.drawPath(_dashPath(path, $dashArray$plArg), $paintVar);',
+            );
+          }
+        },
+        palette: palette,
+        activeFillProperties: activeFillProperties,
+        activeStrokeProperties: activeStrokeProperties,
+        inheritedFills: inheritedFills,
+        inheritedStrokes: inheritedStrokes,
+      );
 
       buffer.writeln('      }');
     });

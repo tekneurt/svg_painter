@@ -1,13 +1,14 @@
 part of '../paint_command.dart';
 
 /// Command to draw a path.
-final class DrawPath extends PaintCommand {
-  const DrawPath({required this.operations, required this.style, this.transform});
+final class DrawPath extends DrawCommand {
+  const DrawPath({required this.operations, required this.style, super.id, this.transform});
 
   /// The operations that define the path.
   final List<PathOperation> operations;
 
-  /// The style to paint with.
+  /// The visual style of the path.
+  @override
   final PaintingStyle style;
 
   /// The transformation to apply to the canvas before drawing.

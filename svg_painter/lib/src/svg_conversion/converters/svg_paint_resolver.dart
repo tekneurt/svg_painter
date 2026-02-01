@@ -8,6 +8,7 @@ import 'svg_painting_context.dart';
 PaintingStyle resolvePaint(
   SvgPaintingContext context, {
   String? tagName,
+  String? id,
   SvgColor? fill,
   SvgLengthPercentage? fillOpacity,
   SvgStrokeAttributes? stroke,
@@ -23,29 +24,51 @@ PaintingStyle resolvePaint(
   // 1. Resolve CSS properties
   final Map<String, String> resolvedRules = <String, String>{};
 
-  // Priority: Tag selector < Class selector < Inline style
+  // Priority: Tag selector < Class selector < ID selector < Inline style
 
   // a. Tag selector rules
-  if (tagName != null) {
+  if (tagName == null) {
+    // No tag name
+  } else {
     final Map<String, String>? rules = context.styleSheet.rules[tagName];
-    if (rules != null) {
+    if (rules == null) {
+      // No rules for this tag
+    } else {
       resolvedRules.addAll(rules);
     }
   }
 
   // b. Class selector rules
-  if (cssClass != null) {
+  if (cssClass == null) {
+    // No class
+  } else {
     final List<String> classes = cssClass.split(RegExp(r'\s+'));
     for (final String className in classes) {
-      final Map<String, String>? rules = context.styleSheet.rules[className];
-      if (rules != null) {
+      final Map<String, String>? rules = context.styleSheet.rules['.$className'];
+      if (rules == null) {
+        // No rules for this class
+      } else {
         resolvedRules.addAll(rules);
       }
     }
   }
 
-  // c. Inline style (overrides classes and tags)
-  if (inlineStyle != null) {
+  // c. ID selector rules
+  if (id == null) {
+    // No ID
+  } else {
+    final Map<String, String>? rules = context.styleSheet.rules['#$id'];
+    if (rules == null) {
+      // No rules for this ID
+    } else {
+      resolvedRules.addAll(rules);
+    }
+  }
+
+  // d. Inline style (overrides everything else)
+  if (inlineStyle == null) {
+    // No inline style
+  } else {
     final List<String> declarations = inlineStyle.split(';');
     for (final String decl in declarations) {
       final String trimmedDecl = decl.trim();
@@ -134,6 +157,19 @@ PaintingStyle resolvePaint(
     cssPathLength = resolvedRules['pathLength']!.toSvgLength();
   }
 
+  // Determine if fill/stroke are explicit (not just inherited)
+  final bool isFillExplicit =
+      fill != null ||
+      cssFill != null ||
+      resolvedRules.containsKey('fill') ||
+      (inlineStyle?.contains('fill:') ?? false);
+
+  final bool isStrokeExplicit =
+      stroke != null ||
+      cssStroke != null ||
+      resolvedRules.containsKey('stroke') ||
+      (inlineStyle?.contains('stroke:') ?? false);
+
   // 4. Resolve element opacity (group opacity)
   final double selfOpacity = (cssOpacity ?? opacity)?.resolve(context, .unit) ?? 1.0;
   final double elementOpacity = selfOpacity * context.parentOpacity;
@@ -145,8 +181,12 @@ PaintingStyle resolvePaint(
   if (hasFill) {
     int? fillColorArgb;
     String? fillShaderId;
+    final bool isCurrentColor = fillPaint is SvgCurrentColor;
+
     if (fillPaint is SvgPaintReference) {
       fillShaderId = fillPaint.id;
+    } else if (isCurrentColor) {
+      // CurrentColor doesn't have a static ARGB value
     } else {
       fillColorArgb = fillPaint.toFillArgb();
     }
@@ -160,6 +200,8 @@ PaintingStyle resolvePaint(
       colorArgb: fillColorArgb,
       shaderId: fillShaderId,
       opacity: finalFillOpacity,
+      isExplicit: isFillExplicit,
+      isCurrentColor: isCurrentColor,
     );
   }
 
@@ -169,8 +211,12 @@ PaintingStyle resolvePaint(
   if (hasStroke) {
     int? strokeColorArgb;
     String? strokeShaderId;
+    final bool isCurrentColor = strokePaint is SvgCurrentColor;
+
     if (strokePaint is SvgPaintReference) {
       strokeShaderId = strokePaint.id;
+    } else if (isCurrentColor) {
+      // CurrentColor doesn't have a static ARGB value
     } else {
       strokeColorArgb = strokePaint.toStrokeArgb();
     }
@@ -183,7 +229,9 @@ PaintingStyle resolvePaint(
     final SvgPointList? sda =
         cssStrokeDasharray ?? stroke?.dashArray ?? context.inheritedStrokeDasharray;
     List<double>? finalDashArray;
-    if (sda != null && sda.points.isNotEmpty) {
+    if (sda == null || sda.points.isEmpty) {
+      // No dash array
+    } else {
       finalDashArray = sda.points.map((double d) => context.scaleNormalized(d)).toList();
     }
 
@@ -213,6 +261,8 @@ PaintingStyle resolvePaint(
       join: resolvedJoin.toStrokeJoin(),
       dashArray: finalDashArray,
       pathLength: finalPathLength,
+      isExplicit: isStrokeExplicit,
+      isCurrentColor: isCurrentColor,
     );
   }
 
@@ -220,7 +270,7 @@ PaintingStyle resolvePaint(
     context,
     .vertical,
   );
-  final double? finalFontSize = rawFontSize != null ? context.scaleVertical(rawFontSize) : null;
+  final double? finalFontSize = rawFontSize == null ? null : context.scaleVertical(rawFontSize);
 
   final String? finalFontWeight = cssFontWeight ?? fontWeight ?? context.inheritedFontWeight;
   final String? finalFontStyle = cssFontStyle ?? fontStyle ?? context.inheritedFontStyle;

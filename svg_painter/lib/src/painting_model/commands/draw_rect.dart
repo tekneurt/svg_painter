@@ -2,7 +2,7 @@ part of '../paint_command.dart';
 
 /// A command to draw a rectangle (optionally rounded).
 @immutable
-final class DrawRect extends PaintCommand {
+final class DrawRect extends DrawCommand {
   const DrawRect({
     required this.x,
     required this.y,
@@ -11,6 +11,7 @@ final class DrawRect extends PaintCommand {
     required this.rx,
     required this.ry,
     required this.style,
+    super.id,
     this.transform,
   });
 
@@ -26,6 +27,7 @@ final class DrawRect extends PaintCommand {
   final double ry;
 
   /// The visual style of the rectangle.
+  @override
   final PaintingStyle style;
 
   final String? transform;

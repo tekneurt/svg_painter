@@ -9,15 +9,18 @@ import 'package:svg_painter/src/base/result.dart';
 import 'package:svg_painter/src/generation/_generation.dart';
 import 'package:svg_painter/src/generation/circle_generator.dart';
 import 'package:svg_painter/src/generation/command_generator.dart';
+import 'package:svg_painter/src/generation/flutter_color_map.dart';
 import 'package:svg_painter/src/generation/generation_extensions.dart';
 import 'package:svg_painter/src/generation/group_generator.dart';
 import 'package:svg_painter/src/generation/line_generator.dart';
 import 'package:svg_painter/src/generation/linear_gradient_generator.dart';
 import 'package:svg_painter/src/generation/oval_generator.dart';
+import 'package:svg_painter/src/generation/palette_analyzer.dart';
 import 'package:svg_painter/src/generation/path_generator.dart';
 import 'package:svg_painter/src/generation/poly_generator.dart';
 import 'package:svg_painter/src/generation/radial_gradient_generator.dart';
 import 'package:svg_painter/src/generation/rect_generator.dart';
+import 'package:svg_painter/src/generation/svg_id_formatter.dart';
 import 'package:svg_painter/src/generation/text_generator.dart';
 import 'package:svg_painter/src/painting_model/_painting_model.dart';
 import 'package:svg_painter/src/painting_model/paint_command.dart';
@@ -98,7 +101,6 @@ import 'package:svg_painter/src/xml_model/xml_element_name.dart';
 
 void main() {
   test('coverage helper', () {
-    // Arrange & Act & Assert
     expect(true, isTrue);
   });
 }

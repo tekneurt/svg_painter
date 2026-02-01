@@ -41,7 +41,7 @@ class _$CirclePainter extends CustomPainter {
     {
       {
         final Paint paint = Paint();
-        paint.color = const Color(0xFF000000);
+        paint.color = Colors.black;
         paint.style = PaintingStyle.fill;
         canvas.drawCircle(const Offset(50.0, 50.0), 50.0, paint);
       }
@@ -51,6 +51,10 @@ class _$CirclePainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant _$CirclePainter oldDelegate) {
-    return fit != oldDelegate.fit;
+    if (fit == oldDelegate.fit) {
+      return false;
+    } else {
+      return true;
+    }
   }
 }

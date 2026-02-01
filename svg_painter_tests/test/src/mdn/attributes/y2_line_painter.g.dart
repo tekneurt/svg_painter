@@ -10,6 +10,29 @@ part of 'y2_line_painter.dart';
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
 
+class Y2LinePainterWidget extends StatelessWidget {
+  const Y2LinePainterWidget({
+    super.key,
+    this.width,
+    this.height,
+    this.fit = BoxFit.contain,
+    this.alignment = Alignment.center,
+  });
+
+  final double? width;
+  final double? height;
+  final BoxFit fit;
+  final AlignmentGeometry alignment;
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomPaint(
+      size: Size(width ?? 10.0, height ?? 10.0),
+      painter: _$Y2LinePainter(fit: fit),
+    );
+  }
+}
+
 class _$Y2LinePainter extends CustomPainter {
   const _$Y2LinePainter({this.fit = BoxFit.contain});
 
@@ -41,7 +64,7 @@ class _$Y2LinePainter extends CustomPainter {
     {
       {
         final Paint paint = Paint();
-        paint.color = const Color(0xFF000000);
+        paint.color = Colors.black;
         paint.style = PaintingStyle.fill;
         canvas.drawLine(const Offset(1.0, 5.0), const Offset(9.0, 1.0), paint);
       }
@@ -56,7 +79,7 @@ class _$Y2LinePainter extends CustomPainter {
     {
       {
         final Paint paint = Paint();
-        paint.color = const Color(0xFF000000);
+        paint.color = Colors.black;
         paint.style = PaintingStyle.fill;
         canvas.drawLine(const Offset(1.0, 5.0), const Offset(9.0, 5.0), paint);
       }
@@ -71,7 +94,7 @@ class _$Y2LinePainter extends CustomPainter {
     {
       {
         final Paint paint = Paint();
-        paint.color = const Color(0xFF000000);
+        paint.color = Colors.black;
         paint.style = PaintingStyle.fill;
         canvas.drawLine(const Offset(1.0, 5.0), const Offset(9.0, 9.0), paint);
       }
@@ -88,6 +111,10 @@ class _$Y2LinePainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant _$Y2LinePainter oldDelegate) {
-    return fit != oldDelegate.fit;
+    if (fit == oldDelegate.fit) {
+      return false;
+    } else {
+      return true;
+    }
   }
 }

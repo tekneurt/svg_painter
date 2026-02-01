@@ -10,6 +10,29 @@ part of 'svg_painter.dart';
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
 
+class Svg1PainterWidget extends StatelessWidget {
+  const Svg1PainterWidget({
+    super.key,
+    this.width,
+    this.height,
+    this.fit = BoxFit.contain,
+    this.alignment = Alignment.center,
+  });
+
+  final double? width;
+  final double? height;
+  final BoxFit fit;
+  final AlignmentGeometry alignment;
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomPaint(
+      size: Size(width ?? 300.0, height ?? 100.0),
+      painter: _$Svg1Painter(fit: fit),
+    );
+  }
+}
+
 class _$Svg1Painter extends CustomPainter {
   const _$Svg1Painter({this.fit = BoxFit.contain});
 
@@ -88,13 +111,40 @@ class _$Svg1Painter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant _$Svg1Painter oldDelegate) {
-    return fit != oldDelegate.fit;
+    if (fit == oldDelegate.fit) {
+      return false;
+    } else {
+      return true;
+    }
   }
 }
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
+
+class Svg2PainterWidget extends StatelessWidget {
+  const Svg2PainterWidget({
+    super.key,
+    this.width,
+    this.height,
+    this.fit = BoxFit.contain,
+    this.alignment = Alignment.center,
+  });
+
+  final double? width;
+  final double? height;
+  final BoxFit fit;
+  final AlignmentGeometry alignment;
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomPaint(
+      size: Size(width ?? 60.0, height ?? 60.0),
+      painter: _$Svg2Painter(fit: fit),
+    );
+  }
+}
 
 class _$Svg2Painter extends CustomPainter {
   const _$Svg2Painter({this.fit = BoxFit.contain});
@@ -131,13 +181,6 @@ class _$Svg2Painter extends CustomPainter {
         paint.style = PaintingStyle.fill;
         canvas.drawRect(Rect.fromLTWH(0.0, 0.0, 18.0, 18.0), paint);
       }
-      {
-        final Paint paint = Paint();
-        paint.color = const Color(0x00000000);
-        paint.style = PaintingStyle.stroke;
-        paint.strokeWidth = 0.08999999999999998;
-        canvas.drawRect(Rect.fromLTWH(0.0, 0.0, 18.0, 18.0), paint);
-      }
     }
     {
       {
@@ -146,26 +189,12 @@ class _$Svg2Painter extends CustomPainter {
         paint.style = PaintingStyle.fill;
         canvas.drawRect(Rect.fromLTWH(9.0, 9.0, 18.0, 18.0), paint);
       }
-      {
-        final Paint paint = Paint();
-        paint.color = const Color(0x00000000);
-        paint.style = PaintingStyle.stroke;
-        paint.strokeWidth = 0.08999999999999998;
-        canvas.drawRect(Rect.fromLTWH(9.0, 9.0, 18.0, 18.0), paint);
-      }
     }
     {
       {
         final Paint paint = Paint();
         paint.color = const Color(0xBF808000);
         paint.style = PaintingStyle.fill;
-        canvas.drawRect(Rect.fromLTWH(18.0, 18.0, 18.0, 18.0), paint);
-      }
-      {
-        final Paint paint = Paint();
-        paint.color = const Color(0x00000000);
-        paint.style = PaintingStyle.stroke;
-        paint.strokeWidth = 0.08999999999999998;
         canvas.drawRect(Rect.fromLTWH(18.0, 18.0, 18.0, 18.0), paint);
       }
     }
@@ -183,6 +212,10 @@ class _$Svg2Painter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant _$Svg2Painter oldDelegate) {
-    return fit != oldDelegate.fit;
+    if (fit == oldDelegate.fit) {
+      return false;
+    } else {
+      return true;
+    }
   }
 }

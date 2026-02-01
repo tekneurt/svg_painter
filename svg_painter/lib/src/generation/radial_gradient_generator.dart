@@ -1,5 +1,8 @@
 import '../painting_model/_painting_model.dart';
 import 'command_generator.dart';
+import 'flutter_color_map.dart';
+
+import 'palette_analyzer.dart';
 
 class RadialGradientGenerator extends CommandGenerator<DefineRadialGradient> {
   const RadialGradientGenerator();
@@ -9,9 +12,14 @@ class RadialGradientGenerator extends CommandGenerator<DefineRadialGradient> {
     DefineRadialGradient command,
     StringBuffer buffer, {
     Map<Type, CommandGenerator<PaintCommand>>? generators,
+    PaletteResult? palette,
+    Map<String, String>? activeFillProperties,
+    Map<String, String>? activeStrokeProperties,
+    List<InheritedProperty>? inheritedFills,
+    List<InheritedProperty>? inheritedStrokes,
   }) {
     final String colors =
-        '[${command.stops.map((GradientStop s) => 'Color(0x${s.colorArgb.toRadixString(16).toUpperCase()})').join(', ')}]';
+        '[${command.stops.map((GradientStop s) => FlutterColorMap.getColorCode(s.colorArgb)).join(', ')}]';
     final String stops =
         '[${command.stops.map((GradientStop s) => s.offset.toString()).join(', ')}]';
     final String transform = command.transform == 'rotate(90)'

@@ -13,6 +13,7 @@ extension SvgLineToPaintCommands on SvgLine {
     final PaintingStyle paint = resolvePaint(
       context,
       tagName: 'line',
+      id: id,
       fill: fill,
       fillOpacity: fillOpacity,
       stroke: stroke,
@@ -38,6 +39,7 @@ extension SvgLineToPaintCommands on SvgLine {
         x2: finalX2,
         y2: finalY2,
         style: paint,
+        id: id,
         transform: SvgTransformParser.scaleTransform(transform, context.parentSx, context.parentSy),
       ),
     ]);

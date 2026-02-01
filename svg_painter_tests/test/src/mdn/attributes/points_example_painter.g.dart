@@ -10,6 +10,29 @@ part of 'points_example_painter.dart';
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
 
+class PointsExamplePainterWidget extends StatelessWidget {
+  const PointsExamplePainterWidget({
+    super.key,
+    this.width,
+    this.height,
+    this.fit = BoxFit.contain,
+    this.alignment = Alignment.center,
+  });
+
+  final double? width;
+  final double? height;
+  final BoxFit fit;
+  final AlignmentGeometry alignment;
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomPaint(
+      size: Size(width ?? 220.0, height ?? 120.0),
+      painter: _$PointsExamplePainter(fit: fit),
+    );
+  }
+}
+
 class _$PointsExamplePainter extends CustomPainter {
   const _$PointsExamplePainter({this.fit = BoxFit.contain});
 
@@ -50,7 +73,7 @@ class _$PointsExamplePainter extends CustomPainter {
         ], false);
         {
           final Paint paint = Paint();
-          paint.color = const Color(0xFF000000);
+          paint.color = Colors.black;
           paint.style = PaintingStyle.stroke;
           paint.strokeWidth = 1.0;
           canvas.drawPath(path, paint);
@@ -70,7 +93,7 @@ class _$PointsExamplePainter extends CustomPainter {
       ], true);
       {
         final Paint paint = Paint();
-        paint.color = const Color(0xFF000000);
+        paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.0;
         canvas.drawPath(path, paint);
@@ -82,6 +105,10 @@ class _$PointsExamplePainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant _$PointsExamplePainter oldDelegate) {
-    return fit != oldDelegate.fit;
+    if (fit == oldDelegate.fit) {
+      return false;
+    } else {
+      return true;
+    }
   }
 }

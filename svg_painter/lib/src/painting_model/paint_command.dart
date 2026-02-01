@@ -17,5 +17,23 @@ part 'commands/define_linear_gradient.dart';
 /// A command that represents a painting operation on a canvas.
 @immutable
 sealed class PaintCommand {
-  const PaintCommand();
+  const PaintCommand({this.id});
+
+  /// The unique identifier of the source SVG element, if any.
+  final String? id;
+}
+
+/// Base class for commands that produce visual output (shapes, text, groups).
+@immutable
+sealed class DrawCommand extends PaintCommand {
+  const DrawCommand({super.id});
+
+  /// The visual style of this command.
+  PaintingStyle get style;
+}
+
+/// Base class for commands that define resources (gradients, etc.).
+@immutable
+sealed class DefineCommand extends PaintCommand {
+  const DefineCommand({super.id});
 }

@@ -10,6 +10,29 @@ part of 'stroke_painter.dart';
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
 
+class StrokePainterWidget extends StatelessWidget {
+  const StrokePainterWidget({
+    super.key,
+    this.width,
+    this.height,
+    this.fit = BoxFit.contain,
+    this.alignment = Alignment.center,
+  });
+
+  final double? width;
+  final double? height;
+  final BoxFit fit;
+  final AlignmentGeometry alignment;
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomPaint(
+      size: Size(width ?? 20.0, height ?? 10.0),
+      painter: _$StrokePainter(fit: fit),
+    );
+  }
+}
+
 class _$StrokePainter extends CustomPainter {
   const _$StrokePainter({this.fit = BoxFit.contain});
 
@@ -41,7 +64,7 @@ class _$StrokePainter extends CustomPainter {
     final Gradient _grad_myGradient = LinearGradient(
       begin: Alignment(-1.0, -1.0),
       end: Alignment(1.0, -1.0),
-      colors: [Color(0xFF008000), Color(0xFFFFFFFF)],
+      colors: [const Color(0xFF008000), Colors.white],
       stops: [0.0, 1.0],
     );
     {
@@ -69,6 +92,10 @@ class _$StrokePainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant _$StrokePainter oldDelegate) {
-    return fit != oldDelegate.fit;
+    if (fit == oldDelegate.fit) {
+      return false;
+    } else {
+      return true;
+    }
   }
 }

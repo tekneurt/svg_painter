@@ -10,6 +10,29 @@ part of 'io_painter.dart';
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
 
+class IoPainterWidget extends StatelessWidget {
+  const IoPainterWidget({
+    super.key,
+    this.width,
+    this.height,
+    this.fit = BoxFit.contain,
+    this.alignment = Alignment.center,
+  });
+
+  final double? width;
+  final double? height;
+  final BoxFit fit;
+  final AlignmentGeometry alignment;
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomPaint(
+      size: Size(width ?? 100.0, height ?? 100.0),
+      painter: _$IoPainter(fit: fit),
+    );
+  }
+}
+
 class _$IoPainter extends CustomPainter {
   const _$IoPainter({this.fit = BoxFit.contain});
 
@@ -41,15 +64,8 @@ class _$IoPainter extends CustomPainter {
     {
       {
         final Paint paint = Paint();
-        paint.color = const Color(0xFF000000);
+        paint.color = Colors.black;
         paint.style = PaintingStyle.fill;
-        canvas.drawCircle(const Offset(50.0, 50.0), 50.0, paint);
-      }
-      {
-        final Paint paint = Paint();
-        paint.color = const Color(0x00000000);
-        paint.style = PaintingStyle.stroke;
-        paint.strokeWidth = 1.0;
         canvas.drawCircle(const Offset(50.0, 50.0), 50.0, paint);
       }
     }
@@ -58,6 +74,10 @@ class _$IoPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant _$IoPainter oldDelegate) {
-    return fit != oldDelegate.fit;
+    if (fit == oldDelegate.fit) {
+      return false;
+    } else {
+      return true;
+    }
   }
 }

@@ -10,14 +10,14 @@ extension SvgRadialGradientToPaintCommand on SvgRadialGradient {
     return Success<DefineRadialGradient>(
       DefineRadialGradient(
         id: id!,
-        cx: cx.resolve(context, .horizontal),
-        cy: cy.resolve(context, .vertical),
-        radius: r.resolve(context, .normalized),
-        fx: fx.resolve(context, .horizontal),
-        fy: fy.resolve(context, .vertical),
-        focalRadius: fr.resolve(context, .normalized),
+        cx: cx.resolve(context, .unit),
+        cy: cy.resolve(context, .unit),
+        radius: r.resolve(context, .unit),
+        fx: fx.resolve(context, .unit),
+        fy: fy.resolve(context, .unit),
+        focalRadius: fr.resolve(context, .unit),
         stops: stops.map((SvgStop stop) {
-          final double offset = stop.offset.resolve(context, .normalized);
+          final double offset = stop.offset.resolve(context, .unit);
           final int baseColor = stop.stopColor.toFillArgb();
           final double opacity = stop.stopOpacity.resolve(context, .unit);
           final int alpha = (((baseColor >> 24) & 0xFF) * opacity).round().clamp(0, 255);
@@ -36,12 +36,12 @@ extension SvgLinearGradientToPaintCommand on SvgLinearGradient {
     return Success<DefineLinearGradient>(
       DefineLinearGradient(
         id: id!,
-        x1: x1.resolve(context, .horizontal),
-        y1: y1.resolve(context, .vertical),
-        x2: x2.resolve(context, .horizontal),
-        y2: y2.resolve(context, .vertical),
+        x1: x1.resolve(context, .unit),
+        y1: y1.resolve(context, .unit),
+        x2: x2.resolve(context, .unit),
+        y2: y2.resolve(context, .unit),
         stops: stops.map((SvgStop stop) {
-          final double offset = stop.offset.resolve(context, .normalized);
+          final double offset = stop.offset.resolve(context, .unit);
           final int baseColor = stop.stopColor.toFillArgb();
           final double opacity = stop.stopOpacity.resolve(context, .unit);
           final int alpha = (((baseColor >> 24) & 0xFF) * opacity).round().clamp(0, 255);

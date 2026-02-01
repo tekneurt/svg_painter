@@ -10,6 +10,29 @@ part of 'y1_examples_painter.dart';
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
 
+class Y1ExamplesPainterWidget extends StatelessWidget {
+  const Y1ExamplesPainterWidget({
+    super.key,
+    this.width,
+    this.height,
+    this.fit = BoxFit.contain,
+    this.alignment = Alignment.center,
+  });
+
+  final double? width;
+  final double? height;
+  final BoxFit fit;
+  final AlignmentGeometry alignment;
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomPaint(
+      size: Size(width ?? 25.0, height ?? 25.0),
+      painter: _$Y1ExamplesPainter(fit: fit),
+    );
+  }
+}
+
 class _$Y1ExamplesPainter extends CustomPainter {
   const _$Y1ExamplesPainter({this.fit = BoxFit.contain});
 
@@ -41,7 +64,7 @@ class _$Y1ExamplesPainter extends CustomPainter {
     {
       {
         final Paint paint = Paint();
-        paint.color = const Color(0xFF000000);
+        paint.color = Colors.black;
         paint.style = PaintingStyle.fill;
         canvas.drawLine(
           const Offset(2.0, 0.0),
@@ -64,7 +87,7 @@ class _$Y1ExamplesPainter extends CustomPainter {
     {
       {
         final Paint paint = Paint();
-        paint.color = const Color(0xFF000000);
+        paint.color = Colors.black;
         paint.style = PaintingStyle.fill;
         canvas.drawLine(
           const Offset(2.0, 10.0),
@@ -87,7 +110,7 @@ class _$Y1ExamplesPainter extends CustomPainter {
     {
       {
         final Paint paint = Paint();
-        paint.color = const Color(0xFF000000);
+        paint.color = Colors.black;
         paint.style = PaintingStyle.fill;
         canvas.drawLine(
           const Offset(2.0, 20.0),
@@ -112,6 +135,10 @@ class _$Y1ExamplesPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant _$Y1ExamplesPainter oldDelegate) {
-    return fit != oldDelegate.fit;
+    if (fit == oldDelegate.fit) {
+      return false;
+    } else {
+      return true;
+    }
   }
 }

@@ -10,6 +10,29 @@ part of 'example_rect02_painter.dart';
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
 
+class ExampleRect02PainterWidget extends StatelessWidget {
+  const ExampleRect02PainterWidget({
+    super.key,
+    this.width,
+    this.height,
+    this.fit = BoxFit.contain,
+    this.alignment = Alignment.center,
+  });
+
+  final double? width;
+  final double? height;
+  final BoxFit fit;
+  final AlignmentGeometry alignment;
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomPaint(
+      size: Size(width ?? 453.54330708661416, height ?? 151.1811023622047),
+      painter: _$ExampleRect02Painter(fit: fit),
+    );
+  }
+}
+
 class _$ExampleRect02Painter extends CustomPainter {
   const _$ExampleRect02Painter({this.fit = BoxFit.contain});
 
@@ -68,25 +91,7 @@ class _$ExampleRect02Painter extends CustomPainter {
               151.1811023622047,
               75.59055118110236,
             ),
-            Radius.elliptical(18.89763779527559, 18.89763779527559),
-          ),
-          paint,
-        );
-      }
-      {
-        final Paint paint = Paint();
-        paint.color = const Color(0x00000000);
-        paint.style = PaintingStyle.stroke;
-        paint.strokeWidth = 0.37795275590551175;
-        canvas.drawRRect(
-          RRect.fromRectAndRadius(
-            Rect.fromLTWH(
-              37.79527559055118,
-              37.79527559055118,
-              151.1811023622047,
-              75.59055118110236,
-            ),
-            Radius.elliptical(18.89763779527559, 18.89763779527559),
+            const Radius.elliptical(18.89763779527559, 18.89763779527559),
           ),
           paint,
         );
@@ -104,7 +109,7 @@ class _$ExampleRect02Painter extends CustomPainter {
         canvas.drawRRect(
           RRect.fromRectAndRadius(
             Rect.fromLTWH(0.0, 0.0, 151.1811023622047, 75.59055118110236),
-            Radius.elliptical(18.89763779527559, 18.89763779527559),
+            const Radius.elliptical(18.89763779527559, 18.89763779527559),
           ),
           paint,
         );
@@ -116,6 +121,10 @@ class _$ExampleRect02Painter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant _$ExampleRect02Painter oldDelegate) {
-    return fit != oldDelegate.fit;
+    if (fit == oldDelegate.fit) {
+      return false;
+    } else {
+      return true;
+    }
   }
 }

@@ -10,6 +10,29 @@ part of 'cx_painter.dart';
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
 
+class CxPainterWidget extends StatelessWidget {
+  const CxPainterWidget({
+    super.key,
+    this.width,
+    this.height,
+    this.fit = BoxFit.contain,
+    this.alignment = Alignment.center,
+  });
+
+  final double? width;
+  final double? height;
+  final BoxFit fit;
+  final AlignmentGeometry alignment;
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomPaint(
+      size: Size(width ?? 300.0, height ?? 100.0),
+      painter: _$CxPainter(fit: fit),
+    );
+  }
+}
+
 class _$CxPainter extends CustomPainter {
   const _$CxPainter({this.fit = BoxFit.contain});
 
@@ -43,43 +66,22 @@ class _$CxPainter extends CustomPainter {
       radius: 0.5,
       focal: Alignment(-0.5, 0.0),
       focalRadius: 0.0,
-      colors: [Color(0xFFFFFFFF), Color(0xFF000000)],
+      colors: [Colors.white, Colors.black],
       stops: [0.0, 1.0],
     );
     {
       {
         final Paint paint = Paint();
-        paint.color = const Color(0xFF000000);
+        paint.color = Colors.black;
         paint.style = PaintingStyle.fill;
-        canvas.drawCircle(const Offset(50.0, 50.0), 45.0, paint);
-      }
-      {
-        final Paint paint = Paint();
-        paint.color = const Color(0x00000000);
-        paint.style = PaintingStyle.stroke;
-        paint.strokeWidth = 1.0;
         canvas.drawCircle(const Offset(50.0, 50.0), 45.0, paint);
       }
     }
     {
       {
         final Paint paint = Paint();
-        paint.color = const Color(0xFF000000);
+        paint.color = Colors.black;
         paint.style = PaintingStyle.fill;
-        canvas.drawOval(
-          Rect.fromCenter(
-            center: const Offset(150.0, 50.0),
-            width: 90.0,
-            height: 50.0,
-          ),
-          paint,
-        );
-      }
-      {
-        final Paint paint = Paint();
-        paint.color = const Color(0x00000000);
-        paint.style = PaintingStyle.stroke;
-        paint.strokeWidth = 1.0;
         canvas.drawOval(
           Rect.fromCenter(
             center: const Offset(150.0, 50.0),
@@ -99,26 +101,46 @@ class _$CxPainter extends CustomPainter {
         paint.style = PaintingStyle.fill;
         canvas.drawRect(Rect.fromLTWH(205.0, 5.0, 90.0, 90.0), paint);
       }
-      {
-        final Paint paint = Paint();
-        paint.color = const Color(0x00000000);
-        paint.style = PaintingStyle.stroke;
-        paint.strokeWidth = 1.0;
-        canvas.drawRect(Rect.fromLTWH(205.0, 5.0, 90.0, 90.0), paint);
-      }
     }
     canvas.restore();
   }
 
   @override
   bool shouldRepaint(covariant _$CxPainter oldDelegate) {
-    return fit != oldDelegate.fit;
+    if (fit == oldDelegate.fit) {
+      return false;
+    } else {
+      return true;
+    }
   }
 }
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
+
+class CxRadialGradientPainterWidget extends StatelessWidget {
+  const CxRadialGradientPainterWidget({
+    super.key,
+    this.width,
+    this.height,
+    this.fit = BoxFit.contain,
+    this.alignment = Alignment.center,
+  });
+
+  final double? width;
+  final double? height;
+  final BoxFit fit;
+  final AlignmentGeometry alignment;
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomPaint(
+      size: Size(width ?? 34.0, height ?? 10.0),
+      painter: _$CxRadialGradientPainter(fit: fit),
+    );
+  }
+}
 
 class _$CxRadialGradientPainter extends CustomPainter {
   const _$CxRadialGradientPainter({this.fit = BoxFit.contain});
@@ -153,7 +175,7 @@ class _$CxRadialGradientPainter extends CustomPainter {
       radius: 0.5,
       focal: Alignment(-1.0, 0.0),
       focalRadius: 0.0,
-      colors: [Color(0xFFFFD700), Color(0xFF008000), Color(0xFFFFFFFF)],
+      colors: [const Color(0xFFFFD700), const Color(0xFF008000), Colors.white],
       stops: [0.0, 0.5, 1.0],
     );
     final Gradient _grad_myGradient050 = RadialGradient(
@@ -161,7 +183,7 @@ class _$CxRadialGradientPainter extends CustomPainter {
       radius: 0.5,
       focal: Alignment(0.0, 0.0),
       focalRadius: 0.0,
-      colors: [Color(0xFFFFD700), Color(0xFF008000), Color(0xFFFFFFFF)],
+      colors: [const Color(0xFFFFD700), const Color(0xFF008000), Colors.white],
       stops: [0.0, 0.5, 1.0],
     );
     final Gradient _grad_myGradient100 = RadialGradient(
@@ -169,7 +191,7 @@ class _$CxRadialGradientPainter extends CustomPainter {
       radius: 0.5,
       focal: Alignment(1.0, 0.0),
       focalRadius: 0.0,
-      colors: [Color(0xFFFFD700), Color(0xFF008000), Color(0xFFFFFFFF)],
+      colors: [const Color(0xFFFFD700), const Color(0xFF008000), Colors.white],
       stops: [0.0, 0.5, 1.0],
     );
     {
@@ -183,7 +205,7 @@ class _$CxRadialGradientPainter extends CustomPainter {
       }
       {
         final Paint paint = Paint();
-        paint.color = const Color(0xFF000000);
+        paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.0;
         canvas.drawRect(Rect.fromLTWH(1.0, 1.0, 8.0, 8.0), paint);
@@ -200,7 +222,7 @@ class _$CxRadialGradientPainter extends CustomPainter {
       }
       {
         final Paint paint = Paint();
-        paint.color = const Color(0xFF000000);
+        paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.0;
         canvas.drawRect(Rect.fromLTWH(13.0, 1.0, 8.0, 8.0), paint);
@@ -217,7 +239,7 @@ class _$CxRadialGradientPainter extends CustomPainter {
       }
       {
         final Paint paint = Paint();
-        paint.color = const Color(0xFF000000);
+        paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.0;
         canvas.drawRect(Rect.fromLTWH(25.0, 1.0, 8.0, 8.0), paint);
@@ -228,6 +250,10 @@ class _$CxRadialGradientPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant _$CxRadialGradientPainter oldDelegate) {
-    return fit != oldDelegate.fit;
+    if (fit == oldDelegate.fit) {
+      return false;
+    } else {
+      return true;
+    }
   }
 }

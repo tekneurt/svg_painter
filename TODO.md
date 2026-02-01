@@ -94,6 +94,23 @@
         [x] **Base SVG Element toString Tests**: Ensure base `toString()` methods in `lib/src/svg_model/svg_element.dart` are fully covered.
         [x] **Default Value Exception Audit**: Systematically test all `UnsupportedError` paths in `to_default_value.dart`.
     - [x] **Final Coverage Check**: Verify high coverage (>90%).
+    - [ ] **Bang Operator (Null Assertion) Audit**: Systematically audit the codebase for the `!` operator and replace it with safe null handling (positive equality checks, `if (x == null) ...`, or explicit `assert(x != null)`) to eliminate potential runtime crashes.
+    - [ ] **Coverage Exception Audit**: Investigate all `// coverage:ignore-line` and `// coverage:ignore-start/end` markers across the codebase to determine if the ignored code can be safely tested or if the ignore markers are still justified.
+    - [ ] **Improve Coverage for Low-Coverage Files**:
+        - [ ] `oval_generator.dart` (Dash path logic)
+        - [ ] `rect_generator.dart` (Dash path logic)
+        - [ ] `svg_paint_resolver.dart` (Edge cases)
+        - [ ] `svg_to_painting.dart` (Edge cases)
+        - [ ] `to_svg_element.dart` (Missing element types)
+    - [ ] **Strict Attribute Typing**: Refactor `PaintCommand` properties like `pathLength`, `opacity`, etc., from nullable primitives (`double?`) to non-nullable types or strict objects (e.g. `SvgValue`) to eliminate ambiguous null checks and align with SVG spec (e.g., `pathLength` must be > 0 or it's ignored).
+    - [ ] **SVG Spec Compliance Audit**: Systematically review all parsing logic (points, paths, transforms, colors) against the SVG 1.1/2.0 "Error Processing" rules.
+        - Ensure partial parsing stops correctly on invalid tokens.
+        - Verify odd-length lists are handled (truncated or errored) as per spec for each attribute type.
+        - Ensure invalid values (e.g. negative radius) result in spec-compliant behavior (ignore element vs ignore attribute).
+    - [ ] **Strong Typing of Painting Model**: Audit all styles and commands to replace `String?` with dedicated Enums or value objects.
+        - `PaintingTextStyle`: Refactor `fontWeight` (Enum/Number), `fontStyle` (Enum), and potentially `fontFamily`.
+        - `PaintCommand`: Refactor `transform` string to a structured `List<TransformOperation>` or `Matrix4`.
+        - Ensure all "magic strings" from the SVG spec are internalized into typed models before they reach the generators.
 
 
 ### Phase 2: Repository & Release Infrastructure (0.1.0)
@@ -127,13 +144,26 @@
 ### Phase 3: Dynamic Properties & Customizable Widget (0.2.0)
 *The core differentiator: creating plug-and-play components.*
 
-- [ ] **Property Mapping Strategy**: Define the rule set for exposing properties (e.g., `id="circle1"` -> `circle1Fill`). Implement `IdentifierSanitizer`.
-- [ ] **Dynamic Fill/Stroke Colors**: Generate `final Color? [id]Fill` and `final Color? [id]Stroke` fields.
-- [ ] **Daphnia Widget Generation**:
-    - [ ] Generate a convenience `StatelessWidget` (e.g., `MyIcon`) that wraps the `CustomPainter`.
-    - [ ] Expose all "Dynamic Properties" as constructor arguments in the generated Widget.
-    - [ ] Implement `BoxFit` and `Alignment` support in the generated Widget.
-- [ ] **"CurrentColor" Support**: Map `currentColor` to a primary `color` property on the Widget (matching Flutter's `Icon` behavior).
+- [x] **Property Mapping Strategy**: Define the rule set for exposing properties (e.g., `id="circle1"` -> `circle1Fill`). Implement `SvgIdFormatter`.
+- [x] **Dynamic Fill/Stroke Colors**:
+    - [x] **ID-Based Exposure**:
+        - [x] Generate `final Color? [id]Fill` fields for explicit SVG fills.
+        - [x] Generate `final Color? [id]Stroke` fields for explicit SVG strokes.
+        - [x] Use named colors (e.g., `Colors.red`) in generated code when available instead of hex notation.
+            - [x] Reverse-map ANY ARGB value to a matching Flutter `Colors` constant (e.g., `0xFFFFC107` -> `Colors.amber`) for readability.
+    - [x] **Index-Based Exposure**: Generate `final Color? fill1`, `fill2`, etc. for elements without IDs, allowing control without modifying the SVG.
+- [x] **Property Renaming Configuration**: Allow developers to map generated property names to semantic ones (e.g., map `fill1` to `backgroundFill` or `fillBottom`) via the annotation.
+- [x] **Feature Documentation & Examples**:
+    - [x] Document `SvgExposureMode` (None, ID, Indexed, Mixed) with visual examples.
+    - [x] Document `propertyMapping` renaming using the Flag Recoloring (German -> Dutch) scenario.
+    - [x] Document **Dynamic Style Inheritance** using the W3C group inheritance example.
+    - [x] Update README.md with a "Customizing your SVG" section.
+- [x] **Dynamic Style Inheritance**: Support runtime property overrides for inherited styles (e.g., overriding a group's `fill` should affect all children inheriting from it).
+- [x] **Daphnia Widget Generation**:
+    - [x] Generate a convenience `StatelessWidget` (e.g., `MyIcon`) that wraps the `CustomPainter`.
+    - [x] Expose all "Dynamic Properties" as constructor arguments in the generated Widget.
+    - [x] Implement `BoxFit` and `Alignment` support in the generated Widget.
+- [x] **"CurrentColor" Support**: Map `currentColor` to a primary `color` property on the Widget (matching Flutter's `Icon` behavior).
 
 ### Phase 4: Essential Elements (0.3.0)
 *Reaching standard compatibility with essential SVG elements.*
@@ -154,6 +184,11 @@
 ## Post-MVP Roadmap
 
 ### Phase 5: Recommended "Wise-to-Have" Features (0.4.0)
+- [ ] **Configurable Color Generation**: Add `colorMapping` option to `@SvgPainter`.
+    - `material` (default): Use Flutter's `Colors.red`, `Colors.amber.shade200`.
+    - `svg`: Use SVG constants like `Color(0xFFFF0000)` but potentially aliased to a generated `SvgColors` class for readability.
+    - `hex`: Strict `Color(0xAARRGGBB)` usage.
+- [ ] **Token-Based Global Coloring**: Allow a single property to control all occurrences of a specific color across the entire SVG, including both solid fills/strokes AND individual gradient stops (e.g., changing `red` to `yellow` globally).
 - [ ] **Advanced Pathing**: `<marker>` support and `context-fill`/`context-stroke` keywords.
 - [ ] **Text along Curves**: `<textPath>` implementation.
 - [ ] **Containers**: `<switch>` for conditional rendering.

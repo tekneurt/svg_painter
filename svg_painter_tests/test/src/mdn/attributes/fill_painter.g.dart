@@ -10,6 +10,29 @@ part of 'fill_painter.dart';
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
 
+class FillPainterWidget extends StatelessWidget {
+  const FillPainterWidget({
+    super.key,
+    this.width,
+    this.height,
+    this.fit = BoxFit.contain,
+    this.alignment = Alignment.center,
+  });
+
+  final double? width;
+  final double? height;
+  final BoxFit fit;
+  final AlignmentGeometry alignment;
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomPaint(
+      size: Size(width ?? 300.0, height ?? 100.0),
+      painter: _$FillPainter(fit: fit),
+    );
+  }
+}
+
 class _$FillPainter extends CustomPainter {
   const _$FillPainter({this.fit = BoxFit.contain});
 
@@ -43,7 +66,7 @@ class _$FillPainter extends CustomPainter {
       radius: 0.5,
       focal: Alignment(0.0, 0.0),
       focalRadius: 0.0,
-      colors: [Color(0xFFFFC0CB), Color(0xFF000000)],
+      colors: [const Color(0xFFFFC0CB), Colors.black],
       stops: [0.0, 1.0],
     );
     {
@@ -51,13 +74,6 @@ class _$FillPainter extends CustomPainter {
         final Paint paint = Paint();
         paint.color = const Color(0xFFFFC0CB);
         paint.style = PaintingStyle.fill;
-        canvas.drawCircle(const Offset(50.0, 50.0), 40.0, paint);
-      }
-      {
-        final Paint paint = Paint();
-        paint.color = const Color(0x00000000);
-        paint.style = PaintingStyle.stroke;
-        paint.strokeWidth = 1.0;
         canvas.drawCircle(const Offset(50.0, 50.0), 40.0, paint);
       }
     }
@@ -70,19 +86,16 @@ class _$FillPainter extends CustomPainter {
         paint.style = PaintingStyle.fill;
         canvas.drawCircle(const Offset(150.0, 50.0), 40.0, paint);
       }
-      {
-        final Paint paint = Paint();
-        paint.color = const Color(0x00000000);
-        paint.style = PaintingStyle.stroke;
-        paint.strokeWidth = 1.0;
-        canvas.drawCircle(const Offset(150.0, 50.0), 40.0, paint);
-      }
     }
     canvas.restore();
   }
 
   @override
   bool shouldRepaint(covariant _$FillPainter oldDelegate) {
-    return fit != oldDelegate.fit;
+    if (fit == oldDelegate.fit) {
+      return false;
+    } else {
+      return true;
+    }
   }
 }

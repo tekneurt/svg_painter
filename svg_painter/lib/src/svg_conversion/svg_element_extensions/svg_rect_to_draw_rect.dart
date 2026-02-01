@@ -27,6 +27,7 @@ extension SvgRectToPaintCommands on SvgRect {
     final PaintingStyle paint = resolvePaint(
       context,
       tagName: 'rect',
+      id: id,
       fill: fill,
       fillOpacity: fillOpacity,
       stroke: stroke,
@@ -57,6 +58,7 @@ extension SvgRectToPaintCommands on SvgRect {
         rx: finalRx,
         ry: finalRy,
         style: paint,
+        id: id,
         transform: SvgTransformParser.scaleTransform(transform, context.parentSx, context.parentSy),
       ),
     ]);

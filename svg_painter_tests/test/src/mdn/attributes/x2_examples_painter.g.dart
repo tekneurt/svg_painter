@@ -10,6 +10,29 @@ part of 'x2_examples_painter.dart';
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
 
+class X2ExamplesPainterWidget extends StatelessWidget {
+  const X2ExamplesPainterWidget({
+    super.key,
+    this.width,
+    this.height,
+    this.fit = BoxFit.contain,
+    this.alignment = Alignment.center,
+  });
+
+  final double? width;
+  final double? height;
+  final BoxFit fit;
+  final AlignmentGeometry alignment;
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomPaint(
+      size: Size(width ?? 25.0, height ?? 25.0),
+      painter: _$X2ExamplesPainter(fit: fit),
+    );
+  }
+}
+
 class _$X2ExamplesPainter extends CustomPainter {
   const _$X2ExamplesPainter({this.fit = BoxFit.contain});
 
@@ -41,7 +64,7 @@ class _$X2ExamplesPainter extends CustomPainter {
     {
       {
         final Paint paint = Paint();
-        paint.color = const Color(0xFF000000);
+        paint.color = Colors.black;
         paint.style = PaintingStyle.fill;
         canvas.drawLine(const Offset(2.0, 5.0), const Offset(2.0, 20.0), paint);
       }
@@ -56,7 +79,7 @@ class _$X2ExamplesPainter extends CustomPainter {
     {
       {
         final Paint paint = Paint();
-        paint.color = const Color(0xFF000000);
+        paint.color = Colors.black;
         paint.style = PaintingStyle.fill;
         canvas.drawLine(
           const Offset(2.0, 5.0),
@@ -79,7 +102,7 @@ class _$X2ExamplesPainter extends CustomPainter {
     {
       {
         final Paint paint = Paint();
-        paint.color = const Color(0xFF000000);
+        paint.color = Colors.black;
         paint.style = PaintingStyle.fill;
         canvas.drawLine(
           const Offset(2.0, 5.0),
@@ -104,6 +127,10 @@ class _$X2ExamplesPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant _$X2ExamplesPainter oldDelegate) {
-    return fit != oldDelegate.fit;
+    if (fit == oldDelegate.fit) {
+      return false;
+    } else {
+      return true;
+    }
   }
 }

@@ -1,6 +1,8 @@
 import '../painting_model/_painting_model.dart';
 import 'command_generator.dart';
 
+import 'palette_analyzer.dart';
+
 /// Generator for [DrawText] commands.
 class TextGenerator extends ShapeGenerator<DrawText> {
   const TextGenerator();
@@ -10,6 +12,11 @@ class TextGenerator extends ShapeGenerator<DrawText> {
     DrawText command,
     StringBuffer buffer, {
     Map<Type, CommandGenerator<PaintCommand>>? generators,
+    PaletteResult? palette,
+    Map<String, String>? activeFillProperties,
+    Map<String, String>? activeStrokeProperties,
+    List<InheritedProperty>? inheritedFills,
+    List<InheritedProperty>? inheritedStrokes,
   }) {
     wrapWithTransform(buffer, command.transform, () {
       buffer.writeln('      {');
@@ -18,7 +25,9 @@ class TextGenerator extends ShapeGenerator<DrawText> {
       buffer.writeln('          style: TextStyle(');
 
       final PaintingFillStyle? fill = command.style.fill;
-      if (fill != null && fill.colorArgb != null) {
+      if (fill == null || fill.colorArgb == null) {
+        // No fill or no color
+      } else {
         final double finalOpacity = ((fill.colorArgb! >> 24) & 0xFF) / 255.0 * fill.opacity;
         final int colorWithoutAlpha = fill.colorArgb! & 0x00FFFFFF;
         final String colorHex = colorWithoutAlpha.toRadixString(16).toUpperCase().padLeft(6, '0');

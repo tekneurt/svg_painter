@@ -11,6 +11,7 @@ import 'package:svg_painter/src/base/result.dart';
 import 'package:svg_painter/src/painting_model/paint_command.dart';
 import 'package:svg_painter/src/painting_model/styles/painting_style.dart';
 import 'package:svg_painter/src/svg_painter_generator.dart';
+import 'package:svg_painter_annotation/svg_painter_annotation.dart';
 import 'package:test/test.dart';
 
 import 'svg_painter_generator_test.mocks.dart';
@@ -86,6 +87,122 @@ void main() {
         // Assert
         expect(output, contains('Path _dashPath(Path source'));
       });
+
+      test('should handle SvgExposureMode.id and collect ids recursively', () {
+        // Arrange
+        const List<PaintCommand> commands = <PaintCommand>[
+          DrawGroup(
+            commands: <PaintCommand>[
+              DrawCircle(
+                cx: 10,
+                cy: 10,
+                radius: 5,
+                style: PaintingStyle(fill: PaintingFillStyle(colorArgb: 0)),
+                id: 'my-id',
+              ),
+            ],
+          ),
+        ];
+
+        // Act
+        final String output = generator.generatePainterClass(
+          className: 'IdExposurePainter',
+          viewBoxWidth: 100,
+          viewBoxHeight: 100,
+          commands: commands,
+          exposureMode: SvgExposureMode.id,
+        );
+
+        // Assert
+        expect(output, contains('final Color? myIdFill;'));
+        expect(output, contains('this.myIdFill,'));
+      });
+
+      test('should handle SvgExposureMode.indexed', () {
+        // Arrange
+        const List<PaintCommand> commands = <PaintCommand>[
+          DrawCircle(
+            cx: 10,
+            cy: 10,
+            radius: 5,
+            style: PaintingStyle(fill: PaintingFillStyle(colorArgb: 0xFFFF0000)),
+          ),
+          DrawCircle(
+            cx: 20,
+            cy: 20,
+            radius: 5,
+            style: PaintingStyle(fill: PaintingFillStyle(colorArgb: 0xFF00FF00)),
+          ),
+        ];
+
+        // Act
+        final String output = generator.generatePainterClass(
+          className: 'IndexedExposurePainter',
+          viewBoxWidth: 100,
+          viewBoxHeight: 100,
+          commands: commands,
+          exposureMode: SvgExposureMode.indexed,
+        );
+
+        // Assert
+        expect(output, contains('final Color? fill1;'));
+        expect(output, contains('final Color? fill2;'));
+      });
+
+      test('should respect propertyMapping', () {
+        // Arrange
+        const List<PaintCommand> commands = <PaintCommand>[
+          DrawCircle(
+            cx: 10,
+            cy: 10,
+            radius: 5,
+            style: PaintingStyle(fill: PaintingFillStyle(colorArgb: 0)),
+            id: 'c1',
+          ),
+        ];
+
+        // Act
+        final String output = generator.generatePainterClass(
+          className: 'MappedPainter',
+          viewBoxWidth: 100,
+          viewBoxHeight: 100,
+          commands: commands,
+          exposureMode: SvgExposureMode.id,
+          propertyMapping: <String, String>{'c1Fill': 'customColor'},
+        );
+
+        // Assert
+        expect(output, contains('final Color? customColor;'));
+        expect(output, isNot(contains('final Color? c1Fill;')));
+      });
+
+      test('should include currentColor color property if present in commands', () {
+        // Arrange
+        const List<PaintCommand> commands = <PaintCommand>[
+          DrawGroup(
+            commands: <PaintCommand>[
+              DrawCircle(
+                cx: 0,
+                cy: 0,
+                radius: 5,
+                style: PaintingStyle(fill: PaintingFillStyle(isCurrentColor: true)),
+              ),
+            ],
+          ),
+        ];
+
+        // Act
+        final String output = generator.generatePainterClass(
+          className: 'CurrentColorPainter',
+          viewBoxWidth: 100,
+          viewBoxHeight: 100,
+          commands: commands,
+        );
+
+        // Assert
+        expect(output, contains('final Color? color;'));
+        expect(output, contains('color: color ?? IconTheme.of(context).color,'));
+      });
     });
 
     group('generateFromSvg', () {
@@ -103,7 +220,7 @@ void main() {
 
         test('should fall back to viewBox when width/height are missing', () {
           // Arrange
-          const String svg = '<svg viewBox="0 0 50 60"><circle r="10" /></svg>';
+          const String svg = '<svg viewBox="10 20 50 60"><circle r="10" /></svg>';
 
           // Act
           final String output = generator.generateFromSvg(elementName: 'Test', svgContent: svg);
@@ -298,6 +415,14 @@ void main() {
         final MockConstantReader mockClassName = MockConstantReader();
         when(mockAnnotation.read('painterClassName')).thenReturn(mockClassName);
         when(mockClassName.isNull).thenReturn(true);
+
+        final MockConstantReader mockExposureMode = MockConstantReader();
+        when(mockAnnotation.read('exposureMode')).thenReturn(mockExposureMode);
+        when(mockExposureMode.isNull).thenReturn(true);
+
+        final MockConstantReader mockPropertyMapping = MockConstantReader();
+        when(mockAnnotation.read('propertyMapping')).thenReturn(mockPropertyMapping);
+        when(mockPropertyMapping.isNull).thenReturn(true);
       });
 
       test('should throw InvalidGenerationSourceError when loadSvgContent fails', () async {
@@ -336,13 +461,32 @@ void main() {
         expect(result, contains(r'class _$TestPainter extends CustomPainter'));
       });
 
-      test('should respect painterClassName when provided', () async {
+      test('should respect exposureMode and propertyMapping from annotation', () async {
         // Arrange
-        mockableGenerator.mockLoadResult = const Success<String>('<svg />');
-        final MockConstantReader mockClassName = MockConstantReader();
-        when(mockAnnotation.read('painterClassName')).thenReturn(mockClassName);
-        when(mockClassName.isNull).thenReturn(false);
-        when(mockClassName.stringValue).thenReturn('CustomPainterName');
+        mockableGenerator.mockLoadResult = const Success<String>(
+          '<svg><circle id="c1" r="10" fill="red" /></svg>',
+        );
+
+        final MockConstantReader mockExposureMode = MockConstantReader();
+        when(mockAnnotation.read('exposureMode')).thenReturn(mockExposureMode);
+        when(mockExposureMode.isNull).thenReturn(false);
+
+        final MockDartObject mockExposureObject = MockDartObject();
+        final MockDartObject mockIndexObject = MockDartObject();
+        when(mockExposureMode.objectValue).thenReturn(mockExposureObject);
+        when(mockExposureObject.getField('index')).thenReturn(mockIndexObject);
+        when(mockIndexObject.toIntValue()).thenReturn(SvgExposureMode.id.index);
+
+        final MockConstantReader mockPropertyMapping = MockConstantReader();
+        when(mockAnnotation.read('propertyMapping')).thenReturn(mockPropertyMapping);
+        when(mockPropertyMapping.isNull).thenReturn(false);
+
+        final MockDartObject mockKey = MockDartObject();
+        final MockDartObject mockVal = MockDartObject();
+        when(mockKey.toStringValue()).thenReturn('c1Fill');
+        when(mockVal.toStringValue()).thenReturn('myColor');
+
+        when(mockPropertyMapping.mapValue).thenReturn(<DartObject?, DartObject?>{mockKey: mockVal});
 
         // Act
         final String result = await mockableGenerator.generateForAnnotatedElement(
@@ -352,7 +496,7 @@ void main() {
         );
 
         // Assert
-        expect(result, contains('class CustomPainterName extends CustomPainter'));
+        expect(result, contains('final Color? myColor;'));
       });
     });
   });

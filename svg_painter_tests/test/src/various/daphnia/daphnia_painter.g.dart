@@ -10,6 +10,29 @@ part of 'daphnia_painter.dart';
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
 
+class DaphniaPainterWidget extends StatelessWidget {
+  const DaphniaPainterWidget({
+    super.key,
+    this.width,
+    this.height,
+    this.fit = BoxFit.contain,
+    this.alignment = Alignment.center,
+  });
+
+  final double? width;
+  final double? height;
+  final BoxFit fit;
+  final AlignmentGeometry alignment;
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomPaint(
+      size: Size(width ?? 48.0, height ?? 48.0),
+      painter: _$DaphniaPainter(fit: fit),
+    );
+  }
+}
+
 class _$DaphniaPainter extends CustomPainter {
   const _$DaphniaPainter({this.fit = BoxFit.contain});
 
@@ -107,15 +130,8 @@ class _$DaphniaPainter extends CustomPainter {
         path.close();
         {
           final Paint paint = Paint();
-          paint.color = const Color(0xFFFFFFFF);
+          paint.color = Colors.white;
           paint.style = PaintingStyle.fill;
-          canvas.drawPath(path, paint);
-        }
-        {
-          final Paint paint = Paint();
-          paint.color = const Color(0x00000000);
-          paint.style = PaintingStyle.stroke;
-          paint.strokeWidth = 1.0;
           canvas.drawPath(path, paint);
         }
       }
@@ -333,13 +349,6 @@ class _$DaphniaPainter extends CustomPainter {
           paint.style = PaintingStyle.fill;
           canvas.drawPath(path, paint);
         }
-        {
-          final Paint paint = Paint();
-          paint.color = const Color(0x00000000);
-          paint.style = PaintingStyle.stroke;
-          paint.strokeWidth = 1.0;
-          canvas.drawPath(path, paint);
-        }
       }
     }
     {
@@ -347,13 +356,6 @@ class _$DaphniaPainter extends CustomPainter {
         final Paint paint = Paint();
         paint.color = const Color(0xFF2B2727);
         paint.style = PaintingStyle.fill;
-        canvas.drawCircle(const Offset(23.06, 11.97), 1.35, paint);
-      }
-      {
-        final Paint paint = Paint();
-        paint.color = const Color(0x00000000);
-        paint.style = PaintingStyle.stroke;
-        paint.strokeWidth = 1.0;
         canvas.drawCircle(const Offset(23.06, 11.97), 1.35, paint);
       }
     }
@@ -389,13 +391,6 @@ class _$DaphniaPainter extends CustomPainter {
           final Paint paint = Paint();
           paint.color = const Color(0xFF2B2727);
           paint.style = PaintingStyle.fill;
-          canvas.drawPath(path, paint);
-        }
-        {
-          final Paint paint = Paint();
-          paint.color = const Color(0x00000000);
-          paint.style = PaintingStyle.stroke;
-          paint.strokeWidth = 1.0;
           canvas.drawPath(path, paint);
         }
       }
@@ -493,13 +488,6 @@ class _$DaphniaPainter extends CustomPainter {
           paint.style = PaintingStyle.fill;
           canvas.drawPath(path, paint);
         }
-        {
-          final Paint paint = Paint();
-          paint.color = const Color(0x00000000);
-          paint.style = PaintingStyle.stroke;
-          paint.strokeWidth = 1.0;
-          canvas.drawPath(path, paint);
-        }
       }
     }
     {
@@ -542,13 +530,6 @@ class _$DaphniaPainter extends CustomPainter {
           final Paint paint = Paint();
           paint.color = const Color(0xFF2B2727);
           paint.style = PaintingStyle.fill;
-          canvas.drawPath(path, paint);
-        }
-        {
-          final Paint paint = Paint();
-          paint.color = const Color(0x00000000);
-          paint.style = PaintingStyle.stroke;
-          paint.strokeWidth = 1.0;
           canvas.drawPath(path, paint);
         }
       }
@@ -602,13 +583,6 @@ class _$DaphniaPainter extends CustomPainter {
           paint.style = PaintingStyle.fill;
           canvas.drawPath(path, paint);
         }
-        {
-          final Paint paint = Paint();
-          paint.color = const Color(0x00000000);
-          paint.style = PaintingStyle.stroke;
-          paint.strokeWidth = 1.0;
-          canvas.drawPath(path, paint);
-        }
       }
     }
     {
@@ -616,13 +590,6 @@ class _$DaphniaPainter extends CustomPainter {
         final Paint paint = Paint();
         paint.color = const Color(0xFFEF7B51);
         paint.style = PaintingStyle.fill;
-        canvas.drawCircle(const Offset(32.23, 16.87), 1.74, paint);
-      }
-      {
-        final Paint paint = Paint();
-        paint.color = const Color(0x00000000);
-        paint.style = PaintingStyle.stroke;
-        paint.strokeWidth = 1.0;
         canvas.drawCircle(const Offset(32.23, 16.87), 1.74, paint);
       }
     }
@@ -633,26 +600,12 @@ class _$DaphniaPainter extends CustomPainter {
         paint.style = PaintingStyle.fill;
         canvas.drawCircle(const Offset(34.2, 21.98), 2.02, paint);
       }
-      {
-        final Paint paint = Paint();
-        paint.color = const Color(0x00000000);
-        paint.style = PaintingStyle.stroke;
-        paint.strokeWidth = 1.0;
-        canvas.drawCircle(const Offset(34.2, 21.98), 2.02, paint);
-      }
     }
     {
       {
         final Paint paint = Paint();
         paint.color = const Color(0xFFEF7B51);
         paint.style = PaintingStyle.fill;
-        canvas.drawCircle(const Offset(34.4, 27.78), 2.22, paint);
-      }
-      {
-        final Paint paint = Paint();
-        paint.color = const Color(0x00000000);
-        paint.style = PaintingStyle.stroke;
-        paint.strokeWidth = 1.0;
         canvas.drawCircle(const Offset(34.4, 27.78), 2.22, paint);
       }
     }
@@ -661,6 +614,10 @@ class _$DaphniaPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant _$DaphniaPainter oldDelegate) {
-    return fit != oldDelegate.fit;
+    if (fit == oldDelegate.fit) {
+      return false;
+    } else {
+      return true;
+    }
   }
 }

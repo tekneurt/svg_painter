@@ -10,6 +10,29 @@ part of 'height_painter.dart';
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
 
+class HeightPainterWidget extends StatelessWidget {
+  const HeightPainterWidget({
+    super.key,
+    this.width,
+    this.height,
+    this.fit = BoxFit.contain,
+    this.alignment = Alignment.center,
+  });
+
+  final double? width;
+  final double? height;
+  final BoxFit fit;
+  final AlignmentGeometry alignment;
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomPaint(
+      size: Size(width ?? 300.0, height ?? 100.0),
+      painter: _$HeightPainter(fit: fit),
+    );
+  }
+}
+
 class _$HeightPainter extends CustomPainter {
   const _$HeightPainter({this.fit = BoxFit.contain});
 
@@ -41,30 +64,16 @@ class _$HeightPainter extends CustomPainter {
     {
       {
         final Paint paint = Paint();
-        paint.color = const Color(0xFF000000);
+        paint.color = Colors.black;
         paint.style = PaintingStyle.fill;
-        canvas.drawRect(Rect.fromLTWH(100.0, 0.0, 90.0, 60.0), paint);
-      }
-      {
-        final Paint paint = Paint();
-        paint.color = const Color(0x00000000);
-        paint.style = PaintingStyle.stroke;
-        paint.strokeWidth = 1.0;
         canvas.drawRect(Rect.fromLTWH(100.0, 0.0, 90.0, 60.0), paint);
       }
     }
     {
       {
         final Paint paint = Paint();
-        paint.color = const Color(0xFF000000);
+        paint.color = Colors.black;
         paint.style = PaintingStyle.fill;
-        canvas.drawRect(Rect.fromLTWH(200.0, 0.0, 90.0, 100.0), paint);
-      }
-      {
-        final Paint paint = Paint();
-        paint.color = const Color(0x00000000);
-        paint.style = PaintingStyle.stroke;
-        paint.strokeWidth = 1.0;
         canvas.drawRect(Rect.fromLTWH(200.0, 0.0, 90.0, 100.0), paint);
       }
     }
@@ -73,6 +82,10 @@ class _$HeightPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant _$HeightPainter oldDelegate) {
-    return fit != oldDelegate.fit;
+    if (fit == oldDelegate.fit) {
+      return false;
+    } else {
+      return true;
+    }
   }
 }

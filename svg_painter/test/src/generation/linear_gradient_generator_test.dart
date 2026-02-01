@@ -30,7 +30,7 @@ void main() {
       expect(output, contains('final Gradient _grad_grad1 = LinearGradient('));
       expect(output, contains('begin: Alignment(-0.8, -0.6)'));
       expect(output, contains('end: Alignment(-0.4, -0.19999999999999996)'));
-      expect(output, contains('colors: [Color(0xFFFF0000), Color(0xFF0000FF)]'));
+      expect(output, contains('colors: [const Color(0xFFFF0000), const Color(0xFF0000FF)]'));
       expect(output, contains('stops: [0.0, 1.0]'));
     });
   });

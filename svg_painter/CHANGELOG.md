@@ -5,6 +5,30 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.0] - 2026-01-31
+
+### Added
+
+#### Dynamic Properties
+- **ID-Based Exposure**: Automatically generates fields for elements with IDs (e.g. `final Color? myCircleFill`).
+- **Indexed Exposure**: Generates fields for elements without IDs using index-based naming (e.g. `final Color? fill1`) when enabled via `exposureMode: SvgExposureMode.indexed`.
+- **Property Mapping**: Allows renaming of exposed properties via `propertyMapping` in the annotation (e.g. `{'fill1': 'primaryColor'}`).
+- **Dynamic Style Inheritance**: Overriding a group's property (e.g. `g1Fill`) now correctly propagates to all inheriting children.
+
+#### Widget Generation
+- Generates a `StatelessWidget` wrapper (e.g. `MyIconWidget`) for easier consumption.
+- Exposes all dynamic properties as constructor parameters.
+- Supports `BoxFit`, `Alignment`, and `width`/`height` sizing.
+
+#### CurrentColor Support
+- Maps SVG `currentColor` keyword to a primary `color` property on the generated Widget/Painter.
+- Defaults to `IconTheme.of(context).color` in the generated Widget.
+
+### Changed
+
+- **Refactoring**: Significant code cleanup and refactoring for better maintainability and type safety.
+- **Dependency**: Updated `svg_painter_annotation` to `^0.2.0`.
+
 ## [0.1.1] - 2026-01-26
 
 ### Fixed

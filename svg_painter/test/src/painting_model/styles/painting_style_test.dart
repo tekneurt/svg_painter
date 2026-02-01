@@ -33,12 +33,12 @@ void main() {
       );
 
       // Act
-      final String result = style.toString();
+      style.toString();
 
       // Assert
       expect(
-        result,
-        'PaintingStyle(fill: PaintingFillStyle(color: 4294901760, shader: null, opacity: 1.0), stroke: null, text: null, groupOpacity: 0.8)',
+        style.toString(),
+        'PaintingStyle(fill: PaintingFillStyle(color: 4294901760, shader: null, opacity: 1.0, explicit: true, currentColor: false), stroke: null, text: null, groupOpacity: 0.8)',
       );
     });
   });
@@ -68,10 +68,13 @@ void main() {
       const PaintingFillStyle fill = PaintingFillStyle(colorArgb: 0xFFFF0000, opacity: 0.8);
 
       // Act
-      final String result = fill.toString();
+      fill.toString();
 
       // Assert
-      expect(result, 'PaintingFillStyle(color: 4294901760, shader: null, opacity: 0.8)');
+      expect(
+        fill.toString(),
+        'PaintingFillStyle(color: 4294901760, shader: null, opacity: 0.8, explicit: true, currentColor: false)',
+      );
     });
   });
 

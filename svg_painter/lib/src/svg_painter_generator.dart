@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:analyzer/dart/constant/value.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
 import 'package:meta/meta.dart';
@@ -59,10 +60,36 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
         ? null
         : annotation.read('painterClassName').stringValue;
 
+    final SvgExposureMode exposureMode = annotation.read('exposureMode').isNull
+        ? SvgExposureMode.none
+        : SvgExposureMode.values[annotation
+              .read('exposureMode')
+              .objectValue
+              .getField('index')!
+              .toIntValue()!];
+
+    final Map<String, String> propertyMapping = <String, String>{};
+    if (annotation.read('propertyMapping').isNull) {
+      // No mapping provided
+    } else {
+      final Map<DartObject?, DartObject?> map = annotation.read('propertyMapping').mapValue;
+      for (final MapEntry<DartObject?, DartObject?> entry in map.entries) {
+        final String? key = entry.key?.toStringValue();
+        final String? value = entry.value?.toStringValue();
+        if (key == null || value == null) {
+          // Invalid mapping entry
+        } else {
+          propertyMapping[key] = value;
+        }
+      }
+    }
+
     return generateFromSvg(
       elementName: element.name ?? 'Unknown',
       svgContent: svgContent,
       painterClassName: painterClassName,
+      exposureMode: exposureMode,
+      propertyMapping: propertyMapping,
     );
   }
 
@@ -72,6 +99,8 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
     required String elementName,
     required String svgContent,
     String? painterClassName,
+    SvgExposureMode exposureMode = SvgExposureMode.none,
+    Map<String, String> propertyMapping = const <String, String>{},
   }) {
     final Result<XmlDocument> parseResult = svgContent.toXmlDocument();
 
@@ -133,6 +162,8 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
       viewBoxWidth: viewBoxWidth,
       viewBoxHeight: viewBoxHeight,
       commands: commands,
+      exposureMode: exposureMode,
+      propertyMapping: propertyMapping,
     );
   }
 
@@ -143,6 +174,8 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
     required double viewBoxWidth,
     required double viewBoxHeight,
     required List<PaintCommand> commands,
+    SvgExposureMode exposureMode = SvgExposureMode.none,
+    Map<String, String> propertyMapping = const <String, String>{},
   }) {
     final StringBuffer buffer = StringBuffer();
 
@@ -154,10 +187,118 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
     );
     buffer.writeln();
 
+    final Set<String> fillIds = <String>{};
+    final Set<String> strokeIds = <String>{};
+    if (exposureMode == SvgExposureMode.id || exposureMode == SvgExposureMode.mixed) {
+      _collectIds(commands, fillIds, strokeIds);
+    }
+
+    PaletteResult? palette;
+    if (exposureMode == SvgExposureMode.indexed || exposureMode == SvgExposureMode.mixed) {
+      palette = const PaletteAnalyzer().analyze(commands);
+    }
+
+    final List<String> sortedFillIds = fillIds.toList()..sort();
+    final List<String> sortedStrokeIds = strokeIds.toList()..sort();
+    final List<String>? sortedFillIndexed = palette?.fillAssignments.values.toSet().toList()
+      ?..sort();
+    final List<String>? sortedStrokeIndexed = palette?.strokeAssignments.values.toSet().toList()
+      ?..sort();
+
+    String resolveName(String defaultName) => propertyMapping[defaultName] ?? defaultName;
+
+    final Map<String, String> activeFillProperties = <String, String>{};
+    for (final String id in sortedFillIds) {
+      final String original = '${SvgIdFormatter.format(id)}Fill';
+      activeFillProperties[original] = resolveName(original);
+    }
+    if (sortedFillIndexed != null) {
+      for (final String name in sortedFillIndexed) {
+        activeFillProperties[name] = resolveName(name);
+      }
+    }
+
+    final Map<String, String> activeStrokeProperties = <String, String>{};
+    for (final String id in sortedStrokeIds) {
+      final String original = '${SvgIdFormatter.format(id)}Stroke';
+      activeStrokeProperties[original] = resolveName(original);
+    }
+    if (sortedStrokeIndexed != null) {
+      for (final String name in sortedStrokeIndexed) {
+        activeStrokeProperties[name] = resolveName(name);
+      }
+    }
+
+    final bool hasCurrentColor = _hasCurrentColor(commands);
+
+    // Generate the convenience Widget
+    final String publicName = className.startsWith(r'_$') ? className.substring(2) : className;
+    final String widgetClassName = '${publicName}Widget';
+
+    generateWidgetClass(
+      buffer: buffer,
+      widgetClassName: widgetClassName,
+      painterClassName: className,
+      activeFillProperties: activeFillProperties,
+      activeStrokeProperties: activeStrokeProperties,
+      viewBoxWidth: viewBoxWidth,
+      viewBoxHeight: viewBoxHeight,
+      hasCurrentColor: hasCurrentColor,
+    );
+    buffer.writeln();
+
     buffer.writeln('class $className extends CustomPainter {');
-    buffer.writeln('  const $className({this.fit = BoxFit.contain});');
+    buffer.writeln('  const $className({');
+    buffer.writeln('    this.fit = BoxFit.contain,');
+    if (hasCurrentColor) {
+      buffer.writeln('    this.color,');
+    }
+    for (final String id in sortedFillIds) {
+      buffer.writeln('    this.${resolveName('${SvgIdFormatter.format(id)}Fill')},');
+    }
+    if (sortedFillIndexed == null) {
+      // No indexed fills
+    } else {
+      for (final String name in sortedFillIndexed) {
+        buffer.writeln('    this.${resolveName(name)},');
+      }
+    }
+    for (final String id in sortedStrokeIds) {
+      buffer.writeln('    this.${resolveName('${SvgIdFormatter.format(id)}Stroke')},');
+    }
+    if (sortedStrokeIndexed == null) {
+      // No indexed strokes
+    } else {
+      for (final String name in sortedStrokeIndexed) {
+        buffer.writeln('    this.${resolveName(name)},');
+      }
+    }
+    buffer.writeln('  });');
     buffer.writeln();
     buffer.writeln('  final BoxFit fit;');
+    if (hasCurrentColor) {
+      buffer.writeln('  final Color? color;');
+    }
+    for (final String id in sortedFillIds) {
+      buffer.writeln('  final Color? ${resolveName('${SvgIdFormatter.format(id)}Fill')};');
+    }
+    if (sortedFillIndexed == null) {
+      // No indexed fills
+    } else {
+      for (final String name in sortedFillIndexed) {
+        buffer.writeln('  final Color? ${resolveName(name)};');
+      }
+    }
+    for (final String id in sortedStrokeIds) {
+      buffer.writeln('  final Color? ${resolveName('${SvgIdFormatter.format(id)}Stroke')};');
+    }
+    if (sortedStrokeIndexed == null) {
+      // No indexed strokes
+    } else {
+      for (final String name in sortedStrokeIndexed) {
+        buffer.writeln('  final Color? ${resolveName(name)};');
+      }
+    }
     buffer.writeln();
     buffer.writeln('  Size get viewBox => const Size($viewBoxWidth, $viewBoxHeight);');
     buffer.writeln();
@@ -179,17 +320,39 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
     buffer.writeln('    canvas.clipRect(Rect.fromLTWH(0, 0, $viewBoxWidth, $viewBoxHeight));');
     buffer.writeln();
 
-    // 1st pass: Gradient definitions
+    // 1st pass: Gradient definitions (DefineCommand)
     for (final PaintCommand command in commands) {
-      if (command is DefineGradient) {
-        _generators[command.runtimeType]?.generate(command, buffer, generators: _generators);
+      switch (command) {
+        case DefineCommand():
+          _generators[command.runtimeType]?.generate(
+            command,
+            buffer,
+            generators: _generators,
+            palette: palette,
+            activeFillProperties: activeFillProperties,
+            activeStrokeProperties: activeStrokeProperties,
+          );
+        case DrawCommand():
+          // Drawing commands are handled in the second pass
+          break;
       }
     }
 
-    // 2nd pass: Drawing commands
+    // 2nd pass: Drawing commands (DrawCommand)
     for (final PaintCommand command in commands) {
-      if (command is! DefineGradient) {
-        _generators[command.runtimeType]?.generate(command, buffer, generators: _generators);
+      switch (command) {
+        case DrawCommand():
+          _generators[command.runtimeType]?.generate(
+            command,
+            buffer,
+            generators: _generators,
+            palette: palette,
+            activeFillProperties: activeFillProperties,
+            activeStrokeProperties: activeStrokeProperties,
+          );
+        case DefineCommand():
+          // Definition commands are handled in the first pass
+          break;
       }
     }
 
@@ -204,9 +367,12 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
       buffer.writeln('    if (dashArray.isEmpty) return source;');
       buffer.writeln('    final Path dest = Path();');
       buffer.writeln('    for (final metric in source.computeMetrics()) {');
-      buffer.writeln(
-        '      final double scale = (pathLength != null && pathLength > 0) ? (metric.length / pathLength) : 1.0;',
-      );
+      buffer.writeln('      final double scale;');
+      buffer.writeln('      if (pathLength == null || pathLength <= 0) {');
+      buffer.writeln('        scale = 1.0;');
+      buffer.writeln('      } else {');
+      buffer.writeln('        scale = metric.length / pathLength;');
+      buffer.writeln('      }');
       buffer.writeln('      double distance = 0.0;');
       buffer.writeln('      int index = 0;');
       buffer.writeln('      bool draw = true;');
@@ -230,38 +396,119 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
 
     buffer.writeln('  @override');
     buffer.writeln('  bool shouldRepaint(covariant $className oldDelegate) {');
-    buffer.writeln('    return fit != oldDelegate.fit;');
+    buffer.write('    if (fit == oldDelegate.fit');
+    if (hasCurrentColor) {
+      buffer.write(' && color == oldDelegate.color');
+    }
+
+    for (final String id in sortedFillIds) {
+      final String prop = resolveName('${SvgIdFormatter.format(id)}Fill');
+      buffer.write(' && $prop == oldDelegate.$prop');
+    }
+    if (sortedFillIndexed == null) {
+      // No indexed fills
+    } else {
+      for (final String name in sortedFillIndexed) {
+        final String prop = resolveName(name);
+        buffer.write(' && $prop == oldDelegate.$prop');
+      }
+    }
+    for (final String id in sortedStrokeIds) {
+      final String prop = resolveName('${SvgIdFormatter.format(id)}Stroke');
+      buffer.write(' && $prop == oldDelegate.$prop');
+    }
+    if (sortedStrokeIndexed == null) {
+      // No indexed strokes
+    } else {
+      for (final String name in sortedStrokeIndexed) {
+        final String prop = resolveName(name);
+        buffer.write(' && $prop == oldDelegate.$prop');
+      }
+    }
+    buffer.writeln(') {');
+    buffer.writeln('      return false;');
+    buffer.writeln('    } else {');
+    buffer.writeln('      return true;');
+    buffer.writeln('    }');
     buffer.writeln('  }');
     buffer.writeln('}');
 
     return buffer.toString();
   }
 
+  void generateWidgetClass({
+    required StringBuffer buffer,
+    required String widgetClassName,
+    required String painterClassName,
+    required Map<String, String> activeFillProperties,
+    required Map<String, String> activeStrokeProperties,
+    required double viewBoxWidth,
+    required double viewBoxHeight,
+    required bool hasCurrentColor,
+  }) {
+    buffer.writeln('class $widgetClassName extends StatelessWidget {');
+    buffer.writeln('  const $widgetClassName({');
+    buffer.writeln('    super.key,');
+    buffer.writeln('    this.width,');
+    buffer.writeln('    this.height,');
+    buffer.writeln('    this.fit = BoxFit.contain,');
+    buffer.writeln('    this.alignment = Alignment.center,');
+    if (hasCurrentColor) {
+      buffer.writeln('    this.color,');
+    }
+
+    // Constructor params for properties
+    final Set<String> allProps = <String>{
+      ...activeFillProperties.values,
+      ...activeStrokeProperties.values,
+    };
+    for (final String prop in allProps) {
+      buffer.writeln('    this.$prop,');
+    }
+
+    buffer.writeln('  });');
+    buffer.writeln();
+    buffer.writeln('  final double? width;');
+    buffer.writeln('  final double? height;');
+    buffer.writeln('  final BoxFit fit;');
+    buffer.writeln('  final AlignmentGeometry alignment;');
+    if (hasCurrentColor) {
+      buffer.writeln('  final Color? color;');
+    }
+
+    // Fields for properties
+    for (final String prop in allProps) {
+      buffer.writeln('  final Color? $prop;');
+    }
+
+    buffer.writeln();
+    buffer.writeln('  @override');
+    buffer.writeln('  Widget build(BuildContext context) {');
+    buffer.writeln('    return CustomPaint(');
+    buffer.writeln('      size: Size(width ?? $viewBoxWidth, height ?? $viewBoxHeight),');
+    buffer.writeln('      painter: $painterClassName(');
+    buffer.writeln('        fit: fit,');
+    if (hasCurrentColor) {
+      buffer.writeln('        color: color ?? IconTheme.of(context).color,');
+    }
+    for (final String prop in allProps) {
+      buffer.writeln('        $prop: $prop,');
+    }
+    buffer.writeln('      ),');
+    buffer.writeln('    );');
+    buffer.writeln('  }');
+    buffer.writeln('}');
+  }
+
   bool _hasDashes(List<PaintCommand> commands) {
     for (final PaintCommand command in commands) {
-      if (command is DrawCircle && command.style.stroke?.dashArray != null) {
-        return true;
-      }
-      if (command is DrawOval && command.style.stroke?.dashArray != null) {
-        return true;
-      }
-      if (command is DrawRect && command.style.stroke?.dashArray != null) {
-        return true;
-      }
-      if (command is DrawText && command.style.stroke?.dashArray != null) {
-        return true;
-      }
-      if (command is DrawPath && command.style.stroke?.dashArray != null) {
-        return true;
-      }
-      if (command is DrawLine && command.style.stroke?.dashArray != null) {
-        return true;
-      }
-      if (command is DrawPolyline && command.style.stroke?.dashArray != null) {
-        return true;
-      }
-      if (command is DrawPolygon && command.style.stroke?.dashArray != null) {
-        return true;
+      if (command is DrawCommand) {
+        final PaintingStyle style = command.style;
+        final List<double>? dashArray = style.stroke?.dashArray;
+
+        if (dashArray != null) {
+          return true;
+        }
       }
 
       if (command is DrawGroup) {
@@ -271,6 +518,41 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
       }
     }
     return false;
+  }
+
+  bool _hasCurrentColor(List<PaintCommand> commands) {
+    for (final PaintCommand command in commands) {
+      if (command is DrawCommand) {
+        final PaintingStyle style = command.style;
+        if ((style.fill?.isCurrentColor ?? false) || (style.stroke?.isCurrentColor ?? false)) {
+          return true;
+        }
+      }
+
+      if (command is DrawGroup) {
+        if (_hasCurrentColor(command.commands)) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  void _collectIds(List<PaintCommand> commands, Set<String> fillIds, Set<String> strokeIds) {
+    for (final PaintCommand command in commands) {
+      if (command is DrawCommand && command.id != null) {
+        final PaintingStyle style = command.style;
+        if (style.fill?.isExplicit ?? false) {
+          fillIds.add(command.id!);
+        }
+        if (style.stroke?.isExplicit ?? false) {
+          strokeIds.add(command.id!);
+        }
+      }
+      if (command is DrawGroup) {
+        _collectIds(command.commands, fillIds, strokeIds);
+      }
+    }
   }
 
   @visibleForTesting

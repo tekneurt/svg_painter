@@ -10,6 +10,29 @@ part of 'linear_gradient_painter.dart';
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
 
+class LinearGradientPainterWidget extends StatelessWidget {
+  const LinearGradientPainterWidget({
+    super.key,
+    this.width,
+    this.height,
+    this.fit = BoxFit.contain,
+    this.alignment = Alignment.center,
+  });
+
+  final double? width;
+  final double? height;
+  final BoxFit fit;
+  final AlignmentGeometry alignment;
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomPaint(
+      size: Size(width ?? 100.0, height ?? 100.0),
+      painter: _$LinearGradientPainter(fit: fit),
+    );
+  }
+}
+
 class _$LinearGradientPainter extends CustomPainter {
   const _$LinearGradientPainter({this.fit = BoxFit.contain});
 
@@ -41,7 +64,7 @@ class _$LinearGradientPainter extends CustomPainter {
     final Gradient _grad_myGradient = LinearGradient(
       begin: Alignment(-1.0, -1.0),
       end: Alignment(1.0, -1.0),
-      colors: [Color(0xFFFFD700), Color(0xFFFF0000)],
+      colors: [const Color(0xFFFFD700), const Color(0xFFFF0000)],
       stops: [0.05, 0.95],
       transform: const GradientRotation(3.141592653589793 / 2),
     );
@@ -54,19 +77,16 @@ class _$LinearGradientPainter extends CustomPainter {
         paint.style = PaintingStyle.fill;
         canvas.drawCircle(const Offset(50.0, 50.0), 50.0, paint);
       }
-      {
-        final Paint paint = Paint();
-        paint.color = const Color(0x00000000);
-        paint.style = PaintingStyle.stroke;
-        paint.strokeWidth = 1.0;
-        canvas.drawCircle(const Offset(50.0, 50.0), 50.0, paint);
-      }
     }
     canvas.restore();
   }
 
   @override
   bool shouldRepaint(covariant _$LinearGradientPainter oldDelegate) {
-    return fit != oldDelegate.fit;
+    if (fit == oldDelegate.fit) {
+      return false;
+    } else {
+      return true;
+    }
   }
 }

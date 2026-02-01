@@ -10,6 +10,29 @@ part of 'line_painter.dart';
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
 
+class LinePainterWidget extends StatelessWidget {
+  const LinePainterWidget({
+    super.key,
+    this.width,
+    this.height,
+    this.fit = BoxFit.contain,
+    this.alignment = Alignment.center,
+  });
+
+  final double? width;
+  final double? height;
+  final BoxFit fit;
+  final AlignmentGeometry alignment;
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomPaint(
+      size: Size(width ?? 100.0, height ?? 100.0),
+      painter: _$LinePainter(fit: fit),
+    );
+  }
+}
+
 class _$LinePainter extends CustomPainter {
   const _$LinePainter({this.fit = BoxFit.contain});
 
@@ -41,7 +64,7 @@ class _$LinePainter extends CustomPainter {
     {
       {
         final Paint paint = Paint();
-        paint.color = const Color(0xFF000000);
+        paint.color = Colors.black;
         paint.style = PaintingStyle.fill;
         canvas.drawLine(
           const Offset(0.0, 80.0),
@@ -51,7 +74,7 @@ class _$LinePainter extends CustomPainter {
       }
       {
         final Paint paint = Paint();
-        paint.color = const Color(0xFF000000);
+        paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.0;
         canvas.drawLine(
@@ -66,6 +89,10 @@ class _$LinePainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant _$LinePainter oldDelegate) {
-    return fit != oldDelegate.fit;
+    if (fit == oldDelegate.fit) {
+      return false;
+    } else {
+      return true;
+    }
   }
 }

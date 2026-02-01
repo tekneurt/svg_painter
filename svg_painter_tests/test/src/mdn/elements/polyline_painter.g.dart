@@ -10,6 +10,29 @@ part of 'polyline_painter.dart';
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
 
+class PolylinePainterWidget extends StatelessWidget {
+  const PolylinePainterWidget({
+    super.key,
+    this.width,
+    this.height,
+    this.fit = BoxFit.contain,
+    this.alignment = Alignment.center,
+  });
+
+  final double? width;
+  final double? height;
+  final BoxFit fit;
+  final AlignmentGeometry alignment;
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomPaint(
+      size: Size(width ?? 200.0, height ?? 100.0),
+      painter: _$PolylinePainter(fit: fit),
+    );
+  }
+}
+
 class _$PolylinePainter extends CustomPainter {
   const _$PolylinePainter({this.fit = BoxFit.contain});
 
@@ -49,15 +72,8 @@ class _$PolylinePainter extends CustomPainter {
         ], false);
         {
           final Paint paint = Paint();
-          paint.color = const Color(0xFF000000);
+          paint.color = Colors.black;
           paint.style = PaintingStyle.fill;
-          canvas.drawPath(path, paint);
-        }
-        {
-          final Paint paint = Paint();
-          paint.color = const Color(0x00000000);
-          paint.style = PaintingStyle.stroke;
-          paint.strokeWidth = 1.0;
           canvas.drawPath(path, paint);
         }
       }
@@ -73,7 +89,7 @@ class _$PolylinePainter extends CustomPainter {
         ], false);
         {
           final Paint paint = Paint();
-          paint.color = const Color(0xFF000000);
+          paint.color = Colors.black;
           paint.style = PaintingStyle.stroke;
           paint.strokeWidth = 1.0;
           canvas.drawPath(path, paint);
@@ -85,6 +101,10 @@ class _$PolylinePainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant _$PolylinePainter oldDelegate) {
-    return fit != oldDelegate.fit;
+    if (fit == oldDelegate.fit) {
+      return false;
+    } else {
+      return true;
+    }
   }
 }

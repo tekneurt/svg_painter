@@ -10,6 +10,29 @@ part of 'r_painter.dart';
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
 
+class RPainterWidget extends StatelessWidget {
+  const RPainterWidget({
+    super.key,
+    this.width,
+    this.height,
+    this.fit = BoxFit.contain,
+    this.alignment = Alignment.center,
+  });
+
+  final double? width;
+  final double? height;
+  final BoxFit fit;
+  final AlignmentGeometry alignment;
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomPaint(
+      size: Size(width ?? 300.0, height ?? 200.0),
+      painter: _$RPainter(fit: fit),
+    );
+  }
+}
+
 class _$RPainter extends CustomPainter {
   const _$RPainter({this.fit = BoxFit.contain});
 
@@ -43,7 +66,7 @@ class _$RPainter extends CustomPainter {
       radius: 0.0,
       focal: Alignment(0.0, 0.0),
       focalRadius: 0.0,
-      colors: [Color(0xFFFFFFFF), Color(0xFF000000)],
+      colors: [Colors.white, Colors.black],
       stops: [0.0, 1.0],
     );
     final Gradient _grad_myGradient050 = RadialGradient(
@@ -51,7 +74,7 @@ class _$RPainter extends CustomPainter {
       radius: 0.5,
       focal: Alignment(0.0, 0.0),
       focalRadius: 0.0,
-      colors: [Color(0xFFFFFFFF), Color(0xFF000000)],
+      colors: [Colors.white, Colors.black],
       stops: [0.0, 1.0],
     );
     final Gradient _grad_myGradient100 = RadialGradient(
@@ -59,36 +82,22 @@ class _$RPainter extends CustomPainter {
       radius: 1.0,
       focal: Alignment(0.0, 0.0),
       focalRadius: 0.0,
-      colors: [Color(0xFFFFFFFF), Color(0xFF000000)],
+      colors: [Colors.white, Colors.black],
       stops: [0.0, 1.0],
     );
     {
       {
         final Paint paint = Paint();
-        paint.color = const Color(0xFF000000);
+        paint.color = Colors.black;
         paint.style = PaintingStyle.fill;
-        canvas.drawCircle(const Offset(150.0, 50.0), 25.0, paint);
-      }
-      {
-        final Paint paint = Paint();
-        paint.color = const Color(0x00000000);
-        paint.style = PaintingStyle.stroke;
-        paint.strokeWidth = 1.0;
         canvas.drawCircle(const Offset(150.0, 50.0), 25.0, paint);
       }
     }
     {
       {
         final Paint paint = Paint();
-        paint.color = const Color(0xFF000000);
+        paint.color = Colors.black;
         paint.style = PaintingStyle.fill;
-        canvas.drawCircle(const Offset(250.0, 50.0), 50.0, paint);
-      }
-      {
-        final Paint paint = Paint();
-        paint.color = const Color(0x00000000);
-        paint.style = PaintingStyle.stroke;
-        paint.strokeWidth = 1.0;
         canvas.drawCircle(const Offset(250.0, 50.0), 50.0, paint);
       }
     }
@@ -101,13 +110,6 @@ class _$RPainter extends CustomPainter {
         paint.style = PaintingStyle.fill;
         canvas.drawRect(Rect.fromLTWH(20.0, 120.0, 60.0, 60.0), paint);
       }
-      {
-        final Paint paint = Paint();
-        paint.color = const Color(0x00000000);
-        paint.style = PaintingStyle.stroke;
-        paint.strokeWidth = 1.0;
-        canvas.drawRect(Rect.fromLTWH(20.0, 120.0, 60.0, 60.0), paint);
-      }
     }
     {
       {
@@ -116,13 +118,6 @@ class _$RPainter extends CustomPainter {
           Rect.fromLTWH(120.0, 120.0, 60.0, 60.0),
         );
         paint.style = PaintingStyle.fill;
-        canvas.drawRect(Rect.fromLTWH(120.0, 120.0, 60.0, 60.0), paint);
-      }
-      {
-        final Paint paint = Paint();
-        paint.color = const Color(0x00000000);
-        paint.style = PaintingStyle.stroke;
-        paint.strokeWidth = 1.0;
         canvas.drawRect(Rect.fromLTWH(120.0, 120.0, 60.0, 60.0), paint);
       }
     }
@@ -135,19 +130,16 @@ class _$RPainter extends CustomPainter {
         paint.style = PaintingStyle.fill;
         canvas.drawRect(Rect.fromLTWH(220.0, 120.0, 60.0, 60.0), paint);
       }
-      {
-        final Paint paint = Paint();
-        paint.color = const Color(0x00000000);
-        paint.style = PaintingStyle.stroke;
-        paint.strokeWidth = 1.0;
-        canvas.drawRect(Rect.fromLTWH(220.0, 120.0, 60.0, 60.0), paint);
-      }
     }
     canvas.restore();
   }
 
   @override
   bool shouldRepaint(covariant _$RPainter oldDelegate) {
-    return fit != oldDelegate.fit;
+    if (fit == oldDelegate.fit) {
+      return false;
+    } else {
+      return true;
+    }
   }
 }

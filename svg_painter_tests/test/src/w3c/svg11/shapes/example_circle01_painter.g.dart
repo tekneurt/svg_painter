@@ -10,6 +10,29 @@ part of 'example_circle01_painter.dart';
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
 
+class ExampleCircle01PainterWidget extends StatelessWidget {
+  const ExampleCircle01PainterWidget({
+    super.key,
+    this.width,
+    this.height,
+    this.fit = BoxFit.contain,
+    this.alignment = Alignment.center,
+  });
+
+  final double? width;
+  final double? height;
+  final BoxFit fit;
+  final AlignmentGeometry alignment;
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomPaint(
+      size: Size(width ?? 453.54330708661416, height ?? 151.1811023622047),
+      painter: _$ExampleCircle01Painter(fit: fit),
+    );
+  }
+}
+
 class _$ExampleCircle01Painter extends CustomPainter {
   const _$ExampleCircle01Painter({this.fit = BoxFit.contain});
 
@@ -83,6 +106,10 @@ class _$ExampleCircle01Painter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant _$ExampleCircle01Painter oldDelegate) {
-    return fit != oldDelegate.fit;
+    if (fit == oldDelegate.fit) {
+      return false;
+    } else {
+      return true;
+    }
   }
 }

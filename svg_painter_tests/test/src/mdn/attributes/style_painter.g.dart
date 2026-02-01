@@ -10,6 +10,29 @@ part of 'style_painter.dart';
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
 
+class StylePainterWidget extends StatelessWidget {
+  const StylePainterWidget({
+    super.key,
+    this.width,
+    this.height,
+    this.fit = BoxFit.contain,
+    this.alignment = Alignment.center,
+  });
+
+  final double? width;
+  final double? height;
+  final BoxFit fit;
+  final AlignmentGeometry alignment;
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomPaint(
+      size: Size(width ?? 100.0, height ?? 60.0),
+      painter: _$StylePainter(fit: fit),
+    );
+  }
+}
+
 class _$StylePainter extends CustomPainter {
   const _$StylePainter({this.fit = BoxFit.contain});
 
@@ -58,6 +81,10 @@ class _$StylePainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant _$StylePainter oldDelegate) {
-    return fit != oldDelegate.fit;
+    if (fit == oldDelegate.fit) {
+      return false;
+    } else {
+      return true;
+    }
   }
 }

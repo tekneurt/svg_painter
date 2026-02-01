@@ -10,6 +10,29 @@ part of 'rect_painter.dart';
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
 
+class RectPainterWidget extends StatelessWidget {
+  const RectPainterWidget({
+    super.key,
+    this.width,
+    this.height,
+    this.fit = BoxFit.contain,
+    this.alignment = Alignment.center,
+  });
+
+  final double? width;
+  final double? height;
+  final BoxFit fit;
+  final AlignmentGeometry alignment;
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomPaint(
+      size: Size(width ?? 220.0, height ?? 100.0),
+      painter: _$RectPainter(fit: fit),
+    );
+  }
+}
+
 class _$RectPainter extends CustomPainter {
   const _$RectPainter({this.fit = BoxFit.contain});
 
@@ -41,40 +64,20 @@ class _$RectPainter extends CustomPainter {
     {
       {
         final Paint paint = Paint();
-        paint.color = const Color(0xFF000000);
+        paint.color = Colors.black;
         paint.style = PaintingStyle.fill;
-        canvas.drawRect(Rect.fromLTWH(0.0, 0.0, 100.0, 100.0), paint);
-      }
-      {
-        final Paint paint = Paint();
-        paint.color = const Color(0x00000000);
-        paint.style = PaintingStyle.stroke;
-        paint.strokeWidth = 1.0;
         canvas.drawRect(Rect.fromLTWH(0.0, 0.0, 100.0, 100.0), paint);
       }
     }
     {
       {
         final Paint paint = Paint();
-        paint.color = const Color(0xFF000000);
+        paint.color = Colors.black;
         paint.style = PaintingStyle.fill;
         canvas.drawRRect(
           RRect.fromRectAndRadius(
             Rect.fromLTWH(120.0, 0.0, 100.0, 100.0),
-            Radius.elliptical(15.0, 15.0),
-          ),
-          paint,
-        );
-      }
-      {
-        final Paint paint = Paint();
-        paint.color = const Color(0x00000000);
-        paint.style = PaintingStyle.stroke;
-        paint.strokeWidth = 1.0;
-        canvas.drawRRect(
-          RRect.fromRectAndRadius(
-            Rect.fromLTWH(120.0, 0.0, 100.0, 100.0),
-            Radius.elliptical(15.0, 15.0),
+            const Radius.elliptical(15.0, 15.0),
           ),
           paint,
         );
@@ -85,6 +88,10 @@ class _$RectPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant _$RectPainter oldDelegate) {
-    return fit != oldDelegate.fit;
+    if (fit == oldDelegate.fit) {
+      return false;
+    } else {
+      return true;
+    }
   }
 }

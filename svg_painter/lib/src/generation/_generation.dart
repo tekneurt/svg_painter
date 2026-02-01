@@ -1,12 +1,15 @@
 export 'circle_generator.dart';
 export 'command_generator.dart';
+export 'flutter_color_map.dart';
 export 'generation_extensions.dart';
 export 'group_generator.dart';
 export 'line_generator.dart';
 export 'linear_gradient_generator.dart';
 export 'oval_generator.dart';
+export 'palette_analyzer.dart';
 export 'path_generator.dart';
 export 'poly_generator.dart';
 export 'radial_gradient_generator.dart';
 export 'rect_generator.dart';
+export 'svg_id_formatter.dart';
 export 'text_generator.dart';

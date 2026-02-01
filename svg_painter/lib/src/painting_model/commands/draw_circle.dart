@@ -2,12 +2,13 @@ part of '../paint_command.dart';
 
 /// A command to draw a circle.
 @immutable
-final class DrawCircle extends PaintCommand {
+final class DrawCircle extends DrawCommand {
   const DrawCircle({
     required this.cx,
     required this.cy,
     required this.radius,
     required this.style,
+    super.id,
     this.transform,
   });
 
@@ -21,6 +22,7 @@ final class DrawCircle extends PaintCommand {
   final double radius;
 
   /// The visual style of the circle.
+  @override
   final PaintingStyle style;
 
   /// The transformation string.

@@ -10,6 +10,29 @@ part of 'example_rect01_painter.dart';
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
 
+class ExampleRect01PainterWidget extends StatelessWidget {
+  const ExampleRect01PainterWidget({
+    super.key,
+    this.width,
+    this.height,
+    this.fit = BoxFit.contain,
+    this.alignment = Alignment.center,
+  });
+
+  final double? width;
+  final double? height;
+  final BoxFit fit;
+  final AlignmentGeometry alignment;
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomPaint(
+      size: Size(width ?? 453.54330708661416, height ?? 151.1811023622047),
+      painter: _$ExampleRect01Painter(fit: fit),
+    );
+  }
+}
+
 class _$ExampleRect01Painter extends CustomPainter {
   const _$ExampleRect01Painter({this.fit = BoxFit.contain});
 
@@ -91,6 +114,10 @@ class _$ExampleRect01Painter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant _$ExampleRect01Painter oldDelegate) {
-    return fit != oldDelegate.fit;
+    if (fit == oldDelegate.fit) {
+      return false;
+    } else {
+      return true;
+    }
   }
 }

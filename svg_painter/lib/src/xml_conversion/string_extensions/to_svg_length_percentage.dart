@@ -14,7 +14,9 @@ extension ToSvgLengthPercentage on String {
     if (trimmed.endsWith('%')) {
       final String numberPart = trimmed.substring(0, trimmed.length - 1);
       final double? parsed = double.tryParse(numberPart);
-      if (parsed != null) {
+      if (parsed == null) {
+        // Failed to parse percentage number
+      } else {
         return SvgPercentage(parsed);
       }
     }
@@ -23,12 +25,16 @@ extension ToSvgLengthPercentage on String {
     final RegExp unitRegex = RegExp(r'^(-?\d*\.?\d*)([a-zA-Z%]*)$');
     final Match? match = unitRegex.firstMatch(trimmed);
 
-    if (match != null) {
+    if (match == null) {
+      // No match
+    } else {
       final String numberPart = match.group(1)!;
       final String unitSuffix = match.group(2)!;
 
       final double? parsedNumber = double.tryParse(numberPart);
-      if (parsedNumber != null) {
+      if (parsedNumber == null) {
+        // Failed to parse number
+      } else {
         final SvgLengthUnit unit = unitSuffix.toSvgLengthUnit(); // Use new extension
         return SvgLength(parsedNumber, unit);
       }

@@ -2,12 +2,13 @@ part of '../paint_command.dart';
 
 /// Command to draw text at a specific location.
 @immutable
-final class DrawText extends PaintCommand {
+final class DrawText extends DrawCommand {
   const DrawText({
+    required this.text,
     required this.x,
     required this.y,
-    required this.text,
     required this.style,
+    super.id,
     this.transform,
   });
 
@@ -21,6 +22,7 @@ final class DrawText extends PaintCommand {
   final String text;
 
   /// The visual style (font, fill, etc.) for the text.
+  @override
   final PaintingStyle style;
 
   /// The transform to apply.
