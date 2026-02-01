@@ -26,7 +26,6 @@ extension ToSvgPath on XmlElement {
         d: d,
         pathLength: pathLength,
         fill: common.fill,
-        fillOpacity: common.fillOpacity,
         stroke: common.stroke,
         opacity: common.opacity,
         cssClass: common.cssClass,

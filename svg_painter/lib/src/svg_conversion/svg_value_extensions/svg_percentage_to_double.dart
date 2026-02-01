@@ -1,3 +1,4 @@
+import '../../base/_base.dart';
 import '../../svg_model/_svg_model.dart';
 import '../converters/svg_painting_context.dart';
 
@@ -6,25 +7,10 @@ extension SvgPercentageToDouble on SvgPercentage {
   double resolve(SvgPaintingContext context, SvgOrientation orientation) {
     final double percentage = value / 100.0;
     return switch (orientation) {
-      .horizontal => percentage * context.viewBoxWidth,
-      .vertical => percentage * context.viewBoxHeight,
-      .normalized => percentage * context.viewBoxNormalizedDiagonal,
-      .unit => percentage,
+      SvgOrientation.horizontal => percentage * context.viewBoxWidth,
+      SvgOrientation.vertical => percentage * context.viewBoxHeight,
+      SvgOrientation.normalized => percentage * context.viewBoxNormalizedDiagonal,
+      SvgOrientation.unit => percentage,
     };
   }
-}
-
-/// Orientation for resolving percentages.
-enum SvgOrientation {
-  /// Horizontal orientation (resolved against width).
-  horizontal,
-
-  /// Vertical orientation (resolved against height).
-  vertical,
-
-  /// Normalized orientation (resolved against diagonal).
-  normalized,
-
-  /// Unit orientation (100% = 1.0). Used for opacity.
-  unit,
 }

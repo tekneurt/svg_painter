@@ -23,7 +23,6 @@ extension ToSvgPolygon on XmlElement {
         points: points,
         pathLength: pathLength,
         fill: common.fill,
-        fillOpacity: common.fillOpacity,
         stroke: common.stroke,
         opacity: common.opacity,
         cssClass: common.cssClass,

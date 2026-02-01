@@ -3,14 +3,13 @@ import '../../painting_model/_painting_model.dart';
 import '../../svg_model/_svg_model.dart';
 import '../converters/_converters.dart';
 import '../svg_transform_parser.dart';
-import '../svg_value_extensions/svg_length_percentage_to_double.dart';
-import '../svg_value_extensions/svg_percentage_to_double.dart';
+import '../svg_value_extensions/_svg_value_extensions.dart';
 
 /// Extension to convert [SvgCircle] to [PaintCommand]s.
 extension SvgCircleToPaintCommands on SvgCircle {
   /// Converts this [SvgCircle] to a list of [PaintCommand]s.
   Result<List<PaintCommand>> toPaintCommands(SvgPaintingContext context) {
-    if (r.resolve(context, SvgOrientation.normalized) <= 0) {
+    if (r.resolve(context, .normalized) <= 0) {
       return const Success<List<PaintCommand>>(<PaintCommand>[]);
     }
 
@@ -20,20 +19,15 @@ extension SvgCircleToPaintCommands on SvgCircle {
       id: id,
       pathLength: pathLength,
       fill: fill,
-      fillOpacity: fillOpacity,
       stroke: stroke,
       opacity: opacity,
-      fontSize: fontSize,
-      fontWeight: fontWeight,
-      fontStyle: fontStyle,
-      fontFamily: fontFamily,
       cssClass: cssClass,
       inlineStyle: inlineStyle,
     );
 
-    final double finalCx = context.transformX(cx.toPosition(context, SvgOrientation.horizontal));
-    final double finalCy = context.transformY(cy.toPosition(context, SvgOrientation.vertical));
-    final double finalR = context.scaleNormalized(r.resolve(context, SvgOrientation.normalized));
+    final double finalCx = context.transformX(cx.toPosition(context, .horizontal));
+    final double finalCy = context.transformY(cy.toPosition(context, .vertical));
+    final double finalR = context.scaleNormalized(r.resolve(context, .normalized));
 
     return Success<List<PaintCommand>>(<PaintCommand>[
       DrawCircle(

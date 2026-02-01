@@ -21,8 +21,8 @@ extension ToSvgGroup on XmlElement {
       (List<SvgElement> childElements) => SvgGroup(
         children: childElements,
         fill: common.fill,
-        fillOpacity: common.fillOpacity,
         stroke: common.stroke,
+        font: common.font,
         opacity: common.opacity,
         cssClass: common.cssClass,
         inlineStyle: common.inlineStyle,

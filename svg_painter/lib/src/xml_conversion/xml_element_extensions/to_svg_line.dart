@@ -41,7 +41,6 @@ extension ToSvgLine on XmlElement {
         y2: y2,
         pathLength: pathLength,
         fill: common.fill,
-        fillOpacity: common.fillOpacity,
         stroke: common.stroke,
         opacity: common.opacity,
         cssClass: common.cssClass,

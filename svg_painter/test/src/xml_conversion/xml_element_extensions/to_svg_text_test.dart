@@ -46,10 +46,10 @@ void main() {
           (Success<SvgText> s) => s.value,
           'value',
           isA<SvgText>()
-              .having((SvgText t) => (t.fontSize as SvgLength?)?.value, 'font-size', 16.5)
-              .having((SvgText t) => t.fontFamily, 'font-family', 'Roboto')
-              .having((SvgText t) => t.fontWeight, 'font-weight', 'bold')
-              .having((SvgText t) => t.fontStyle, 'font-style', 'italic'),
+              .having((SvgText t) => (t.font?.size as SvgLength?)?.value, 'font-size', 16.5)
+              .having((SvgText t) => t.font?.family, 'font-family', 'Roboto')
+              .having((SvgText t) => t.font?.weight, 'font-weight', 'bold')
+              .having((SvgText t) => t.font?.style, 'font-style', 'italic'),
         ),
       );
     });

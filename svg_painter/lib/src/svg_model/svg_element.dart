@@ -1,11 +1,14 @@
 import 'package:meta/meta.dart';
 
+import 'attributes/svg_fill_attributes.dart';
+import 'attributes/svg_font_attributes.dart';
 import 'attributes/svg_stroke_attributes.dart';
 import 'svg_style_sheet.dart';
 import 'svg_value.dart';
 
 // Base
 part 'elements/base/svg_definition_element.dart';
+part 'elements/base/svg_font_stylable.dart';
 part 'elements/base/svg_geometry.dart';
 part 'elements/base/svg_graphics_element.dart';
 part 'elements/base/svg_metadata_element.dart';

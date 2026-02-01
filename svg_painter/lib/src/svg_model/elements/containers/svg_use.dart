@@ -4,7 +4,7 @@ part of '../../svg_element.dart';
 ///
 /// See: https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Element/use
 @immutable
-final class SvgUse extends SvgGraphicsElement {
+final class SvgUse extends SvgGraphicsElement with SvgFontStylable {
   const SvgUse({
     required this.href,
     required this.x,
@@ -13,13 +13,9 @@ final class SvgUse extends SvgGraphicsElement {
     required this.height,
     super.id,
     super.fill,
-    super.fillOpacity,
     super.stroke,
+    this.font,
     super.opacity,
-    super.fontSize,
-    super.fontWeight,
-    super.fontStyle,
-    super.fontFamily,
     super.cssClass,
     super.inlineStyle,
     super.transform,
@@ -39,6 +35,9 @@ final class SvgUse extends SvgGraphicsElement {
 
   /// The height of the referenced element.
   final SvgLengthPercentageAuto? height;
+
+  @override
+  final SvgFontAttributes? font;
 
   @override
   String toString() => 'SvgUse(href: $href, id: $id)';

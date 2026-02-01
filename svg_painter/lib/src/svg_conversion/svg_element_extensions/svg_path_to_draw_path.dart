@@ -20,13 +20,8 @@ extension SvgPathToPaintCommands on SvgPath {
       id: id,
       pathLength: pathLength,
       fill: fill,
-      fillOpacity: fillOpacity,
       stroke: stroke,
       opacity: opacity,
-      fontSize: fontSize,
-      fontWeight: fontWeight,
-      fontStyle: fontStyle,
-      fontFamily: fontFamily,
       cssClass: cssClass,
       inlineStyle: inlineStyle,
     );

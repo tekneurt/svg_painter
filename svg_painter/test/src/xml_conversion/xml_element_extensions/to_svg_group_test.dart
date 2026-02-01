@@ -43,7 +43,7 @@ void main() {
           (Success<SvgGroup> s) => s.value,
           'value',
           isA<SvgGroup>()
-              .having((SvgGroup g) => g.fill, 'fill', isA<SvgNamedColor>())
+              .having((SvgGroup g) => g.fill?.color, 'fill', isA<SvgNamedColor>())
               .having((SvgGroup g) => (g.opacity as SvgLength?)?.value, 'opacity', 0.45),
         ),
       );

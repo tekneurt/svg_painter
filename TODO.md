@@ -157,8 +157,12 @@
         - [x] Comprehensive audit of structural data models.
     - [ ] **SVG Model Layer (`lib/src/svg_model`)**:
         - [x] **Mixin Refactoring**: Implement attribute grouping via mixins to ensure type safety (e.g., `mixin SvgGeometry`).
+        - [x] **Attribute Grouping**: Group related presentation attributes into semantic components (Fill, Stroke, Font).
+        - [ ] **Attributes Harmonization**: Rename attributes, properties, and mixins to follow a consistent "SVG-Truthful" naming convention:
+            - `SvgFontAttributes` ➔ Property: `fontAttributes`, Mixin: `SvgFontAttributable`
+            - `SvgFillAttributes` ➔ Property: `fillAttributes`, Mixin: `SvgFillAttributable`
+            - `SvgStrokeAttributes` ➔ Property: `strokeAttributes`, Mixin: `SvgStrokeAttributable`
         - [ ] **Structured Transforms**: Define `SvgTransformOperation` model and refactor `SvgGraphicsElement.transform` from `String?` to `List<SvgTransformOperation>?`.
-        - [ ] **Strongly Typed Text Styles**: Define `SvgFontWeight` and `SvgFontStyle` enums and refactor `SvgGraphicsElement`.
         - [x] Comprehensive audit of structural data models.
     - [ ] **XML Conversion Layer (`lib/src/xml_conversion`)**:
         - [x] Hardened `toXmlDocument` with standardized error handling and justified coverage ignore.
@@ -167,6 +171,7 @@
         - [ ] Refine `<style>` element discovery scope.
         - [ ] Comprehensive audit of structural parsing logic.
     - [ ] **SVG Conversion Layer (`lib/src/svg_conversion`)**:
+        - [ ] **Length Extension Consolidation**: Rename `svg_resolution_extensions.dart` to `svg_length_extensions.dart` and merge all length/percentage conversion logic into it for better semantics and clarity.
         - [ ] Verify data integrity and inheritance resolution.
         - [ ] Comprehensive audit of conversion logic.
     - [ ] **Painting Model Layer (`lib/src/painting_model`)**:
@@ -198,7 +203,7 @@
     - Ensure invalid values (e.g. negative radius) result in spec-compliant behavior (ignore element vs ignore attribute).
 
     - [ ] **Strong Typing of Painting Model**: Audit all styles and commands to replace `String?` with dedicated Enums or value objects.
-    - [ ] **Lock Multi-line Formatting**: Consistently add trailing commas to all collection literals and parameter lists to ensure stable multi-line formatting by `dart format`.
+    - [ ] **Standardized Formatting & Style Audit**: Perform a project-wide pass to add trailing commas to all collection literals and parameter lists to ensure stable multi-line formatting.
 ### Phase 4: Essential Elements (0.3.0)
 *Reaching standard compatibility with essential SVG elements.*
 

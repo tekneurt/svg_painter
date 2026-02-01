@@ -2,18 +2,14 @@ part of '../../svg_element.dart';
 
 /// Base class for container elements (`<svg>`, `<g>`).
 @immutable
-sealed class SvgContainerElement extends SvgGraphicsElement with SvgParent {
+sealed class SvgContainerElement extends SvgGraphicsElement with SvgParent, SvgFontStylable {
   const SvgContainerElement({
     required this.children,
     super.id,
     super.fill,
-    super.fillOpacity,
     super.stroke,
+    this.font,
     super.opacity,
-    super.fontSize,
-    super.fontWeight,
-    super.fontStyle,
-    super.fontFamily,
     super.cssClass,
     super.inlineStyle,
     super.transform,
@@ -21,4 +17,7 @@ sealed class SvgContainerElement extends SvgGraphicsElement with SvgParent {
 
   @override
   final List<SvgElement> children;
+
+  @override
+  final SvgFontAttributes? font;
 }

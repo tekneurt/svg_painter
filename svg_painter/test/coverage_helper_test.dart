@@ -5,7 +5,9 @@
 import 'package:test/test.dart';
 import 'package:svg_painter/builder.dart';
 import 'package:svg_painter/src/base/_base.dart';
+import 'package:svg_painter/src/base/error_messages.dart';
 import 'package:svg_painter/src/base/result.dart';
+import 'package:svg_painter/src/base/svg_orientation.dart';
 import 'package:svg_painter/src/generation/_generation.dart';
 import 'package:svg_painter/src/generation/circle_generator.dart';
 import 'package:svg_painter/src/generation/command_generator.dart';
@@ -46,12 +48,13 @@ import 'package:svg_painter/src/svg_conversion/svg_element_extensions/svg_rect_t
 import 'package:svg_painter/src/svg_conversion/svg_element_extensions/svg_text_to_painting.dart';
 import 'package:svg_painter/src/svg_conversion/svg_transform_parser.dart';
 import 'package:svg_painter/src/svg_conversion/svg_value_extensions/_svg_value_extensions.dart';
-import 'package:svg_painter/src/svg_conversion/svg_value_extensions/svg_auto_to_double.dart';
 import 'package:svg_painter/src/svg_conversion/svg_value_extensions/svg_color_to_int.dart';
-import 'package:svg_painter/src/svg_conversion/svg_value_extensions/svg_length_percentage_to_double.dart';
 import 'package:svg_painter/src/svg_conversion/svg_value_extensions/svg_length_to_double.dart';
 import 'package:svg_painter/src/svg_conversion/svg_value_extensions/svg_percentage_to_double.dart';
+import 'package:svg_painter/src/svg_conversion/svg_value_extensions/svg_resolution_extensions.dart';
 import 'package:svg_painter/src/svg_model/_svg_model.dart';
+import 'package:svg_painter/src/svg_model/attributes/svg_fill_attributes.dart';
+import 'package:svg_painter/src/svg_model/attributes/svg_font_attributes.dart';
 import 'package:svg_painter/src/svg_model/attributes/svg_stroke_attributes.dart';
 import 'package:svg_painter/src/svg_model/svg_element.dart';
 import 'package:svg_painter/src/svg_model/svg_style_sheet.dart';
@@ -64,6 +67,7 @@ import 'package:svg_painter/src/xml_conversion/string_extensions/to_svg_length.d
 import 'package:svg_painter/src/xml_conversion/string_extensions/to_svg_length_percentage.dart';
 import 'package:svg_painter/src/xml_conversion/string_extensions/to_svg_length_percentage_auto.dart';
 import 'package:svg_painter/src/xml_conversion/string_extensions/to_svg_length_unit.dart';
+import 'package:svg_painter/src/xml_conversion/string_extensions/to_svg_number.dart';
 import 'package:svg_painter/src/xml_conversion/string_extensions/to_svg_point_list.dart';
 import 'package:svg_painter/src/xml_conversion/string_extensions/to_svg_stroke_linecap.dart';
 import 'package:svg_painter/src/xml_conversion/string_extensions/to_svg_stroke_linejoin.dart';
@@ -98,6 +102,7 @@ import 'package:svg_painter/src/xml_model/extensions/_extensions.dart';
 import 'package:svg_painter/src/xml_model/extensions/string_extensions.dart';
 import 'package:svg_painter/src/xml_model/xml_attribute_name.dart';
 import 'package:svg_painter/src/xml_model/xml_element_name.dart';
+import 'package:svg_painter/svg_painter.dart';
 
 void main() {
   test('coverage helper', () {

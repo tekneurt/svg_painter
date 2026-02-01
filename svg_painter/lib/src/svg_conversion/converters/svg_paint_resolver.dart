@@ -10,14 +10,10 @@ PaintingStyle resolvePaint(
   String? tagName,
   String? id,
   SvgNumber? pathLength,
-  SvgColor? fill,
-  SvgLengthPercentage? fillOpacity,
+  SvgFillAttributes? fill,
   SvgStrokeAttributes? stroke,
+  SvgFontAttributes? font,
   SvgLengthPercentage? opacity,
-  SvgLengthPercentage? fontSize,
-  String? fontWeight,
-  String? fontStyle,
-  String? fontFamily,
   String? cssClass,
   String? inlineStyle,
 }) {
@@ -159,13 +155,13 @@ PaintingStyle resolvePaint(
 
   // Determine if fill/stroke are explicit (not just inherited)
   final bool isFillExplicit =
-      fill != null ||
+      fill?.color != null ||
       cssFill != null ||
       resolvedRules.containsKey('fill') ||
       (inlineStyle?.contains('fill:') ?? false);
 
   final bool isStrokeExplicit =
-      stroke != null ||
+      stroke?.color != null ||
       cssStroke != null ||
       resolvedRules.containsKey('stroke') ||
       (inlineStyle?.contains('stroke:') ?? false);
@@ -175,7 +171,7 @@ PaintingStyle resolvePaint(
   final double elementOpacity = selfOpacity * context.parentOpacity;
 
   // 5. Resolve final values using priority: Inline Style/CSS > Presentation Attribute > Inherited
-  final SvgColor? fillPaint = cssFill ?? fill ?? context.inheritedFill;
+  final SvgColor? fillPaint = cssFill ?? fill?.color ?? context.inheritedFill;
   final bool hasFill = fillPaint is! SvgNoneColor;
   PaintingFillStyle? fillStyle;
   if (hasFill) {
@@ -193,7 +189,10 @@ PaintingStyle resolvePaint(
 
     final double finalFillOpacity =
         elementOpacity *
-        ((cssFillOpacity ?? fillOpacity ?? context.inheritedFillOpacity)?.resolve(context, .unit) ??
+        ((cssFillOpacity ?? fill?.opacity ?? context.inheritedFillOpacity)?.resolve(
+              context,
+              .unit,
+            ) ??
             1.0);
 
     fillStyle = PaintingFillStyle(
@@ -265,15 +264,15 @@ PaintingStyle resolvePaint(
     );
   }
 
-  final double? rawFontSize = (cssFontSize ?? fontSize ?? context.inheritedFontSize)?.resolve(
+  final double? rawFontSize = (cssFontSize ?? font?.size ?? context.inheritedFontSize)?.resolve(
     context,
     .vertical,
   );
   final double? finalFontSize = rawFontSize == null ? null : context.scaleVertical(rawFontSize);
 
-  final String? finalFontWeight = cssFontWeight ?? fontWeight ?? context.inheritedFontWeight;
-  final String? finalFontStyle = cssFontStyle ?? fontStyle ?? context.inheritedFontStyle;
-  final String? rawFontFamily = cssFontFamily ?? fontFamily ?? context.inheritedFontFamily;
+  final String? finalFontWeight = cssFontWeight ?? font?.weight ?? context.inheritedFontWeight;
+  final String? finalFontStyle = cssFontStyle ?? font?.style ?? context.inheritedFontStyle;
+  final String? rawFontFamily = cssFontFamily ?? font?.family ?? context.inheritedFontFamily;
 
   // Map generic font families to bundled font files for Flutter rendering.
   final String? finalFontFamily = switch (rawFontFamily) {

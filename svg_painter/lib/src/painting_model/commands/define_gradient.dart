@@ -3,13 +3,19 @@ part of '../paint_command.dart';
 /// A command to define a gradient stop.
 @immutable
 final class GradientStop {
-  const GradientStop(this.offset, this.colorArgb);
+  const GradientStop({required this.offset, required this.colorArgb, this.opacity = 1.0});
 
+  /// The location of the stop (0.0 to 1.0).
   final double offset;
+
+  /// The color of the stop.
   final int colorArgb;
 
+  /// The opacity of the stop (0.0 to 1.0).
+  final double opacity;
+
   @override
-  String toString() => 'GradientStop(offset: $offset, color: $colorArgb)';
+  String toString() => 'GradientStop(offset: $offset, color: $colorArgb, opacity: $opacity)';
 }
 
 /// Base class for commands that define a gradient.

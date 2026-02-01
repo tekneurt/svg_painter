@@ -14,7 +14,7 @@ void main() {
     test('should resolve inline style with highest priority', () {
       final PaintingStyle style = resolvePaint(
         emptyContext,
-        fill: const SvgRgbColor(255, 0, 0, 0), // Attribute (should be overridden)
+        fill: const SvgFillAttributes(color: SvgRgbColor(255, 0, 0, 0)),
         inlineStyle: 'fill: #FF0000',
       );
 
@@ -23,7 +23,10 @@ void main() {
     });
 
     test('should identify currentColor', () {
-      final PaintingStyle style = resolvePaint(emptyContext, fill: const SvgCurrentColor());
+      final PaintingStyle style = resolvePaint(
+        emptyContext,
+        fill: const SvgFillAttributes(color: SvgCurrentColor()),
+      );
 
       expect(style.fill?.isCurrentColor, isTrue);
       expect(style.fill?.colorArgb, isNull);
@@ -82,7 +85,7 @@ void main() {
     test('should resolve SvgPaintReference (url(#id)) correctly', () {
       final PaintingStyle style = resolvePaint(
         emptyContext,
-        fill: const SvgPaintReference('gradient1'),
+        fill: const SvgFillAttributes(color: SvgPaintReference('gradient1')),
       );
 
       expect(style.fill?.shaderId, 'gradient1');
@@ -94,6 +97,7 @@ void main() {
         viewBoxWidth: 100,
         viewBoxHeight: 100,
         inheritedFill: SvgRgbColor(255, 0, 0, 255), // Blue
+        inheritedFillOpacity: SvgPercentage(100),
         inheritedStroke: SvgRgbColor(255, 255, 0, 0), // Red
         inheritedStrokeWidth: SvgLength(5.0),
       );

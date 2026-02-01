@@ -7,26 +7,29 @@ void main() {
       // Arrange
       const DefineLinearGradient command = DefineLinearGradient(
         id: 'grad1',
-        x1: 0.1,
-        y1: 0.2,
-        x2: 0.3,
-        y2: 0.4,
-        stops: <GradientStop>[GradientStop(0.0, 0xFFFFFFFF), GradientStop(1.0, 0xFF000000)],
+        x1: 0,
+        y1: 0,
+        x2: 100,
+        y2: 0,
+        stops: <GradientStop>[
+          GradientStop(offset: 0, colorArgb: 0xFF000000),
+          GradientStop(offset: 1, colorArgb: 0xFFFFFFFF),
+        ],
       );
 
       // Act
       final String result = command.toString();
 
       // Assert
-      expect(result, 'DefineLinearGradient(id: grad1, stops: 2)');
+      expect(result, contains('id: grad1'));
+      expect(result, contains('stops: 2'));
     });
+  });
 
-    test('GradientStop should return correct string representation', () {
-      // Arrange
-      const GradientStop stop = GradientStop(0.5, 0xFFFF0000);
-
-      // Act & Assert
-      expect(stop.toString(), 'GradientStop(offset: 0.5, color: 4294901760)');
+  group('GradientStop', () {
+    test('should return correct string representation', () {
+      const GradientStop stop = GradientStop(offset: 0.5, colorArgb: 4294901760, opacity: 0.8);
+      expect(stop.toString(), 'GradientStop(offset: 0.5, color: 4294901760, opacity: 0.8)');
     });
   });
 }

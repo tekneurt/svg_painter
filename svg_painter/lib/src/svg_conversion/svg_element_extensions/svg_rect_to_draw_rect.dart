@@ -3,9 +3,7 @@ import '../../painting_model/_painting_model.dart';
 import '../../svg_model/_svg_model.dart';
 import '../converters/_converters.dart';
 import '../svg_transform_parser.dart';
-import '../svg_value_extensions/svg_auto_to_double.dart';
-import '../svg_value_extensions/svg_length_percentage_to_double.dart';
-import '../svg_value_extensions/svg_percentage_to_double.dart';
+import '../svg_value_extensions/_svg_value_extensions.dart';
 
 /// Extension to convert [SvgRect] to [PaintCommand]s.
 extension SvgRectToPaintCommands on SvgRect {
@@ -30,13 +28,8 @@ extension SvgRectToPaintCommands on SvgRect {
       id: id,
       pathLength: pathLength,
       fill: fill,
-      fillOpacity: fillOpacity,
       stroke: stroke,
       opacity: opacity,
-      fontSize: fontSize,
-      fontWeight: fontWeight,
-      fontStyle: fontStyle,
-      fontFamily: fontFamily,
       cssClass: cssClass,
       inlineStyle: inlineStyle,
     );
