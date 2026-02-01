@@ -151,25 +151,30 @@
 *Crucial cleanup to ensure Phase 4 features (symbols, clipping) are built on a solid type-safe base.*
 
 - [x] **Standardize Error Handling**: Establish centralized `untreatableErrorPrefix` and comment convention for defensive catch-all blocks.
-- [ ] **XML Model Hardening (`lib/src/xml_model`)**:
-    - [x] Exhaustive Enum regression tests for `XmlAttributeName` and `XmlElementName`.
-    - [x] Comprehensive audit of structural data models.
-- [ ] **XML Conversion Hardening (`lib/src/xml_conversion`)**:
-    - [x] Hardened `toXmlDocument` with standardized error handling and justified coverage ignore.
-    - [ ] Implement lenient child parsing (skip unknown tags instead of failing).
-    - [ ] Add namespace awareness to tag identification.
-    - [ ] Refine `<style>` element discovery scope.
-    - [ ] Comprehensive audit of structural parsing logic.
-- [ ] **SVG Model Hardening (`lib/src/svg_model`)**:
-    - [ ] Comprehensive audit of structural data models.
-- [ ] **SVG Conversion Hardening (`lib/src/svg_conversion`)**:
-    - [ ] Verify data integrity and inheritance resolution.
-    - [ ] Comprehensive audit of conversion logic.
-- [ ] **Painting Model Hardening (`lib/src/painting_model`)**:
-    - [ ] Comprehensive audit of command and style models.
-- [ ] **Generation Hardening (`lib/src/generation`)**:
-    - [ ] Finalize code emission patterns and property safety.
-    - [ ] Comprehensive audit of code generation logic.
+- [ ] **Pipeline Layer Hardening**: Systematic audit and quality improvement of each processing layer.
+    - [ ] **XML Model Layer (`lib/src/xml_model`)**:
+        - [x] Exhaustive Enum regression tests for `XmlAttributeName` and `XmlElementName`.
+        - [x] Comprehensive audit of structural data models.
+    - [ ] **SVG Model Layer (`lib/src/svg_model`)**:
+        - [ ] **Structured Transforms**: Define `SvgTransformOperation` model and refactor `SvgGraphicsElement.transform` from `String?` to `List<SvgTransformOperation>?`.
+        - [ ] **Strongly Typed Text Styles**: Define `SvgFontWeight` and `SvgFontStyle` enums and refactor `SvgGraphicsElement`.
+        - [x] Comprehensive audit of structural data models.
+    - [ ] **XML Conversion Layer (`lib/src/xml_conversion`)**:
+        - [x] Hardened `toXmlDocument` with standardized error handling and justified coverage ignore.
+        - [ ] Implement lenient child parsing (skip unknown tags instead of failing).
+        - [ ] Add namespace awareness to tag identification.
+        - [ ] Refine `<style>` element discovery scope.
+        - [ ] Comprehensive audit of structural parsing logic.
+    - [ ] **SVG Conversion Layer (`lib/src/svg_conversion`)**:
+        - [ ] Verify data integrity and inheritance resolution.
+        - [ ] Comprehensive audit of conversion logic.
+    - [ ] **Painting Model Layer (`lib/src/painting_model`)**:
+        - [ ] **Strict Attribute Typing**: Refactor `PaintCommand` properties (`pathLength`, `opacity`) from nullable primitives to non-nullable types or strict objects.
+        - [ ] **Strongly Typed Commands**: Refactor `transform` string to structured `List<TransformOperation>` or `Matrix4`.
+        - [ ] Comprehensive audit of command and style models.
+    - [ ] **Generation Layer (`lib/src/generation`)**:
+        - [ ] Finalize code emission patterns and property safety.
+        - [ ] Comprehensive audit of code generation logic.
 - [ ] **Bang Operator (!) Audit**: Systematically audit the codebase for the `!` operator and replace it with safe null handling (positive equality checks, `if (x == null) ...`, or explicit `assert(x != null)`) to eliminate potential runtime crashes.
 - [ ] **Coverage Exception Audit**: Investigate all `// coverage:ignore-line` and `// coverage:ignore-start/end` markers across the codebase to determine if the ignored code can be safely tested or if the ignore markers are still justified.
 - [ ] **Hardening Coverage for 0.2.0 files**: Improve coverage for the following files to reach >95% patch coverage:
@@ -186,15 +191,10 @@
     - [ ] `svg_paint_resolver.dart` (Edge cases)
     - [ ] `svg_to_painting.dart` (Edge cases)
     - [ ] `to_svg_element.dart` (Missing element types)
-- [ ] **Strict Attribute Typing**: Refactor `PaintCommand` properties like `pathLength`, `opacity`, etc., from nullable primitives (`double?`) to non-nullable types or strict objects (e.g. `SvgValue`) to eliminate ambiguous null checks and align with SVG spec (e.g., `pathLength` must be > 0 or it's ignored).
 - [ ] **SVG Spec Compliance Audit**: Systematically review all parsing logic (points, paths, transforms, colors) against the SVG 1.1/2.0 "Error Processing" rules.
     - Ensure partial parsing stops correctly on invalid tokens.
     - Verify odd-length lists are handled (truncated or errored) as per spec for each attribute type.
     - Ensure invalid values (e.g. negative radius) result in spec-compliant behavior (ignore element vs ignore attribute).
-- [ ] **Strong Typing of Painting Model**: Audit all styles and commands to replace `String?` with dedicated Enums or value objects.
-    - `PaintingTextStyle`: Refactor `fontWeight` (Enum/Number), `fontStyle` (Enum), and potentially `fontFamily`.
-    - `PaintCommand`: Refactor `transform` string to a structured `List<TransformOperation>` or `Matrix4`.
-    - Ensure all "magic strings" from the SVG spec are internalized into typed models before they reach the generators.
 
 ### Phase 4: Essential Elements (0.3.0)
 *Reaching standard compatibility with essential SVG elements.*
