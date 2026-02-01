@@ -171,7 +171,7 @@
         - [ ] Refine `<style>` element discovery scope.
         - [ ] Comprehensive audit of structural parsing logic.
     - [ ] **SVG Conversion Layer (`lib/src/svg_conversion`)**:
-        - [ ] **Length Extension Consolidation**: Rename `svg_resolution_extensions.dart` to `svg_length_extensions.dart` and merge all length/percentage conversion logic into it for better semantics and clarity.
+        - [x] **Length Extension Consolidation**: Rename `svg_resolution_extensions.dart` to `svg_length_extensions.dart` and merge all length/percentage conversion logic into it for better semantics and clarity.
         - [ ] Verify data integrity and inheritance resolution.
         - [ ] Comprehensive audit of conversion logic.
     - [ ] **Painting Model Layer (`lib/src/painting_model`)**:

@@ -49,9 +49,7 @@ import 'package:svg_painter/src/svg_conversion/svg_element_extensions/svg_text_t
 import 'package:svg_painter/src/svg_conversion/svg_transform_parser.dart';
 import 'package:svg_painter/src/svg_conversion/svg_value_extensions/_svg_value_extensions.dart';
 import 'package:svg_painter/src/svg_conversion/svg_value_extensions/svg_color_to_int.dart';
-import 'package:svg_painter/src/svg_conversion/svg_value_extensions/svg_length_to_double.dart';
-import 'package:svg_painter/src/svg_conversion/svg_value_extensions/svg_percentage_to_double.dart';
-import 'package:svg_painter/src/svg_conversion/svg_value_extensions/svg_resolution_extensions.dart';
+import 'package:svg_painter/src/svg_conversion/svg_value_extensions/svg_length_extensions.dart';
 import 'package:svg_painter/src/svg_model/_svg_model.dart';
 import 'package:svg_painter/src/svg_model/attributes/svg_fill_attributes.dart';
 import 'package:svg_painter/src/svg_model/attributes/svg_font_attributes.dart';
