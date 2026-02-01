@@ -94,32 +94,6 @@
         [x] **Base SVG Element toString Tests**: Ensure base `toString()` methods in `lib/src/svg_model/svg_element.dart` are fully covered.
         [x] **Default Value Exception Audit**: Systematically test all `UnsupportedError` paths in `to_default_value.dart`.
     - [x] **Final Coverage Check**: Verify high coverage (>90%).
-    - [ ] **Bang Operator (Null Assertion) Audit**: Systematically audit the codebase for the `!` operator and replace it with safe null handling (positive equality checks, `if (x == null) ...`, or explicit `assert(x != null)`) to eliminate potential runtime crashes.
-    - [ ] **Coverage Exception Audit**: Investigate all `// coverage:ignore-line` and `// coverage:ignore-start/end` markers across the codebase to determine if the ignored code can be safely tested or if the ignore markers are still justified.
-    - [ ] **Hardening Coverage for 0.2.0 files**: Improve coverage for the following files to reach >95% patch coverage:
-        - `command_generator.dart` (Current: ~87%)
-        - `to_svg_value.dart` (Current: ~79%)
-        - `palette_analyzer.dart` (Current: ~94%)
-        - `circle_generator.dart` (Current: ~81%)
-        - `line_generator.dart` (Current: ~84%)
-        - `path_generator.dart` (Current: ~75%)
-        - `svg_painter_generator.dart` (Current: ~98%)
-    - [ ] **Improve Coverage for Low-Coverage Files**:
-        - [ ] `oval_generator.dart` (Dash path logic)
-        - [ ] `rect_generator.dart` (Dash path logic)
-        - [ ] `svg_paint_resolver.dart` (Edge cases)
-        - [ ] `svg_to_painting.dart` (Edge cases)
-        - [ ] `to_svg_element.dart` (Missing element types)
-    - [ ] **Strict Attribute Typing**: Refactor `PaintCommand` properties like `pathLength`, `opacity`, etc., from nullable primitives (`double?`) to non-nullable types or strict objects (e.g. `SvgValue`) to eliminate ambiguous null checks and align with SVG spec (e.g., `pathLength` must be > 0 or it's ignored).
-    - [ ] **SVG Spec Compliance Audit**: Systematically review all parsing logic (points, paths, transforms, colors) against the SVG 1.1/2.0 "Error Processing" rules.
-        - Ensure partial parsing stops correctly on invalid tokens.
-        - Verify odd-length lists are handled (truncated or errored) as per spec for each attribute type.
-        - Ensure invalid values (e.g. negative radius) result in spec-compliant behavior (ignore element vs ignore attribute).
-    - [ ] **Strong Typing of Painting Model**: Audit all styles and commands to replace `String?` with dedicated Enums or value objects.
-        - `PaintingTextStyle`: Refactor `fontWeight` (Enum/Number), `fontStyle` (Enum), and potentially `fontFamily`.
-        - `PaintCommand`: Refactor `transform` string to a structured `List<TransformOperation>` or `Matrix4`.
-        - Ensure all "magic strings" from the SVG spec are internalized into typed models before they reach the generators.
-
 
 ### Phase 2: Repository & Release Infrastructure (0.1.0)
 *Setting up CI/CD, publishing pipeline, and releasing initial version.*
@@ -172,6 +146,43 @@
     - [x] Expose all "Dynamic Properties" as constructor arguments in the generated Widget.
     - [x] Implement `BoxFit` and `Alignment` support in the generated Widget.
 - [x] **"CurrentColor" Support**: Map `currentColor` to a primary `color` property on the Widget (matching Flutter's `Icon` behavior).
+
+### Phase 3.5: Foundation Hardening & Structural Refactoring (Preparation for 0.3.0)
+*Crucial cleanup to ensure Phase 4 features (symbols, clipping) are built on a solid type-safe base.*
+
+- [ ] **Pipeline Layer Hardening**: Systematic audit and quality improvement of each processing layer.
+    - [ ] **XML Layer (`xml_model`, `xml_conversion`)**:
+        - [x] Exhaustive Enum regression tests for `XmlAttributeName` and `XmlElementName`.
+        - [ ] Comprehensive audit of structural parsing logic.
+    - [ ] **SVG Layer (`svg_model`, `svg_conversion`)**:
+        - [ ] Verify data integrity and inheritance resolution.
+    - [ ] **Painting Layer (`painting_model`, `generation`)**:
+        - [ ] Finalize code emission patterns and property safety.
+- [ ] **Bang Operator (!) Audit**: Systematically audit the codebase for the `!` operator and replace it with safe null handling (positive equality checks, `if (x == null) ...`, or explicit `assert(x != null)`) to eliminate potential runtime crashes.
+- [ ] **Coverage Exception Audit**: Investigate all `// coverage:ignore-line` and `// coverage:ignore-start/end` markers across the codebase to determine if the ignored code can be safely tested or if the ignore markers are still justified.
+- [ ] **Hardening Coverage for 0.2.0 files**: Improve coverage for the following files to reach >95% patch coverage:
+    - `command_generator.dart`
+    - `to_svg_value.dart`
+    - `palette_analyzer.dart`
+    - `circle_generator.dart`
+    - `line_generator.dart`
+    - `path_generator.dart`
+    - `svg_painter_generator.dart`
+- [ ] **Improve Coverage for Low-Coverage Files**:
+    - [ ] `oval_generator.dart` (Dash path logic)
+    - [ ] `rect_generator.dart` (Dash path logic)
+    - [ ] `svg_paint_resolver.dart` (Edge cases)
+    - [ ] `svg_to_painting.dart` (Edge cases)
+    - [ ] `to_svg_element.dart` (Missing element types)
+- [ ] **Strict Attribute Typing**: Refactor `PaintCommand` properties like `pathLength`, `opacity`, etc., from nullable primitives (`double?`) to non-nullable types or strict objects (e.g. `SvgValue`) to eliminate ambiguous null checks and align with SVG spec (e.g., `pathLength` must be > 0 or it's ignored).
+- [ ] **SVG Spec Compliance Audit**: Systematically review all parsing logic (points, paths, transforms, colors) against the SVG 1.1/2.0 "Error Processing" rules.
+    - Ensure partial parsing stops correctly on invalid tokens.
+    - Verify odd-length lists are handled (truncated or errored) as per spec for each attribute type.
+    - Ensure invalid values (e.g. negative radius) result in spec-compliant behavior (ignore element vs ignore attribute).
+- [ ] **Strong Typing of Painting Model**: Audit all styles and commands to replace `String?` with dedicated Enums or value objects.
+    - `PaintingTextStyle`: Refactor `fontWeight` (Enum/Number), `fontStyle` (Enum), and potentially `fontFamily`.
+    - `PaintCommand`: Refactor `transform` string to a structured `List<TransformOperation>` or `Matrix4`.
+    - Ensure all "magic strings" from the SVG spec are internalized into typed models before they reach the generators.
 
 ### Phase 4: Essential Elements (0.3.0)
 *Reaching standard compatibility with essential SVG elements.*

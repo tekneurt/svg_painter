@@ -3,12 +3,31 @@ import 'package:test/test.dart';
 
 void main() {
   group('XmlElementName', () {
-    test('should have correct string values', () {
+    test('should map every enum value to the correct SVG tag string', () {
       // Arrange & Act & Assert
-      expect(XmlElementName.svg.tagName, 'svg');
-      expect(XmlElementName.circle.tagName, 'circle');
-      expect(XmlElementName.radialGradient.tagName, 'radialGradient');
-      expect(XmlElementName.g.tagName, 'g');
+      for (final XmlElementName value in XmlElementName.values) {
+        final String expected = switch (value) {
+          XmlElementName.svg => 'svg',
+          XmlElementName.circle => 'circle',
+          XmlElementName.ellipse => 'ellipse',
+          XmlElementName.rect => 'rect',
+          XmlElementName.line => 'line',
+          XmlElementName.path => 'path',
+          XmlElementName.polyline => 'polyline',
+          XmlElementName.polygon => 'polygon',
+          XmlElementName.defs => 'defs',
+          XmlElementName.g => 'g',
+          XmlElementName.use => 'use',
+          XmlElementName.radialGradient => 'radialGradient',
+          XmlElementName.linearGradient => 'linearGradient',
+          XmlElementName.stop => 'stop',
+          XmlElementName.style => 'style',
+          XmlElementName.text => 'text',
+          XmlElementName.title => 'title',
+          XmlElementName.desc => 'desc',
+        };
+        expect(value.tagName, expected, reason: 'Enum $value should map to "$expected"');
+      }
     });
 
     test('from should return correct enum for valid tag names', () {
