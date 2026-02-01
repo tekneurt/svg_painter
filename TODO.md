@@ -96,6 +96,14 @@
     - [x] **Final Coverage Check**: Verify high coverage (>90%).
     - [ ] **Bang Operator (Null Assertion) Audit**: Systematically audit the codebase for the `!` operator and replace it with safe null handling (positive equality checks, `if (x == null) ...`, or explicit `assert(x != null)`) to eliminate potential runtime crashes.
     - [ ] **Coverage Exception Audit**: Investigate all `// coverage:ignore-line` and `// coverage:ignore-start/end` markers across the codebase to determine if the ignored code can be safely tested or if the ignore markers are still justified.
+    - [ ] **Hardening Coverage for 0.2.0 files**: Improve coverage for the following files to reach >95% patch coverage:
+        - `command_generator.dart` (Current: ~87%)
+        - `to_svg_value.dart` (Current: ~79%)
+        - `palette_analyzer.dart` (Current: ~94%)
+        - `circle_generator.dart` (Current: ~81%)
+        - `line_generator.dart` (Current: ~84%)
+        - `path_generator.dart` (Current: ~75%)
+        - `svg_painter_generator.dart` (Current: ~98%)
     - [ ] **Improve Coverage for Low-Coverage Files**:
         - [ ] `oval_generator.dart` (Dash path logic)
         - [ ] `rect_generator.dart` (Dash path logic)
