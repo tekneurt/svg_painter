@@ -1,10 +1,9 @@
-part of '../svg_element.dart';
+part of '../../svg_element.dart';
 
-/// Represents an SVG `<path>` element.
+/// Base class for basic shape elements (`<circle>`, `<rect>`, etc.).
 @immutable
-final class SvgPath extends SvgGraphicsElement with SvgGeometry {
-  const SvgPath({
-    required this.d,
+sealed class SvgBasicShape extends SvgGraphicsElement with SvgGeometry {
+  const SvgBasicShape({
     this.pathLength,
     super.fill,
     super.fillOpacity,
@@ -20,12 +19,6 @@ final class SvgPath extends SvgGraphicsElement with SvgGeometry {
     super.id,
   });
 
-  /// The path data.
-  final String d;
-
   @override
   final SvgNumber? pathLength;
-
-  @override
-  String toString() => 'SvgPath(d: $d, id: $id)';
 }

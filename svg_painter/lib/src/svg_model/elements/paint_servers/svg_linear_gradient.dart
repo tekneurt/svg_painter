@@ -1,4 +1,4 @@
-part of '../svg_element.dart';
+part of '../../svg_element.dart';
 
 /// Represents a `<linearGradient>` element in SVG.
 ///

@@ -1,4 +1,4 @@
-part of '../svg_element.dart';
+part of '../../svg_element.dart';
 
 /// Represents an `<svg>` element (generic container).
 ///

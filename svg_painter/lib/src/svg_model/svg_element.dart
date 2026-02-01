@@ -4,22 +4,45 @@ import 'attributes/svg_stroke_attributes.dart';
 import 'svg_style_sheet.dart';
 import 'svg_value.dart';
 
-part 'elements/svg_circle.dart';
-part 'elements/svg_defs.dart';
-part 'elements/svg_ellipse.dart';
-part 'elements/svg_group.dart';
-part 'elements/svg_line.dart';
-part 'elements/svg_path.dart';
-part 'elements/svg_rect.dart';
-part 'elements/svg_stop.dart';
-part 'elements/svg_style.dart';
-part 'elements/svg_radial_gradient.dart';
-part 'elements/svg_linear_gradient.dart';
-part 'elements/svg_polyline.dart';
-part 'elements/svg_polygon.dart';
-part 'elements/svg_svg.dart';
-part 'elements/svg_text.dart';
-part 'elements/svg_use.dart';
+// Base
+part 'elements/base/svg_definition_element.dart';
+part 'elements/base/svg_geometry.dart';
+part 'elements/base/svg_graphics_element.dart';
+part 'elements/base/svg_metadata_element.dart';
+part 'elements/base/svg_parent.dart';
+
+// Containers
+part 'elements/containers/svg_container_element.dart';
+part 'elements/containers/svg_defs.dart';
+part 'elements/containers/svg_group.dart';
+part 'elements/containers/svg_svg.dart';
+part 'elements/containers/svg_use.dart';
+
+// Geometry
+part 'elements/geometry/svg_basic_shape.dart';
+part 'elements/geometry/svg_circle.dart';
+part 'elements/geometry/svg_ellipse.dart';
+part 'elements/geometry/svg_line.dart';
+part 'elements/geometry/svg_path.dart';
+part 'elements/geometry/svg_polygon.dart';
+part 'elements/geometry/svg_polyline.dart';
+part 'elements/geometry/svg_rect.dart';
+
+// Metadata
+part 'elements/metadata/svg_desc.dart';
+part 'elements/metadata/svg_title.dart';
+
+// Paint Servers
+part 'elements/paint_servers/svg_gradient.dart';
+part 'elements/paint_servers/svg_linear_gradient.dart';
+part 'elements/paint_servers/svg_radial_gradient.dart';
+part 'elements/paint_servers/svg_stop.dart';
+
+// Style
+part 'elements/style/svg_style.dart';
+
+// Text
+part 'elements/text/svg_text.dart';
 
 /// The base class for all SVG elements in the domain model.
 @immutable
@@ -28,148 +51,4 @@ sealed class SvgElement {
 
   /// The unique identifier of the element.
   final String? id;
-}
-
-/// Mixin for SVG elements that contain child elements.
-mixin SvgParent {
-  /// The child elements contained within this element.
-  List<SvgElement> get children;
-}
-
-/// Base class for SVG graphics elements (elements that can be rendered).
-@immutable
-sealed class SvgGraphicsElement extends SvgElement {
-  const SvgGraphicsElement({
-    super.id,
-    this.fill,
-    this.fillOpacity,
-    this.stroke,
-    this.opacity,
-    this.fontSize,
-    this.fontWeight,
-    this.fontStyle,
-    this.fontFamily,
-    this.cssClass,
-    this.inlineStyle,
-    this.transform,
-  });
-
-  /// The fill color of the element.
-  final SvgColor? fill;
-
-  /// The opacity of the fill.
-  final SvgLengthPercentage? fillOpacity;
-
-  /// The grouped stroke attributes of the element.
-  final SvgStrokeAttributes? stroke;
-
-  /// The transparency of the element.
-  final SvgLengthPercentage? opacity;
-
-  /// The size of the font.
-  final SvgLengthPercentage? fontSize;
-
-  /// The weight of the font.
-  final String? fontWeight;
-
-  /// The style of the font.
-  final String? fontStyle;
-
-  /// The family of the font.
-  final String? fontFamily;
-
-  /// The CSS class(es) of the element.
-  final String? cssClass;
-
-  /// Inline CSS style rules for the element.
-  final String? inlineStyle;
-
-  /// The transform applied to the element.
-  final String? transform;
-}
-
-/// Mixin for elements that define a geometry path (and thus support pathLength).
-mixin SvgGeometry on SvgGraphicsElement {
-  /// The total length of the path in user units (non-negative).
-  /// If null, the natural length of the path is used.
-  SvgNumber? get pathLength;
-}
-
-/// Base class for basic shape elements (`<circle>`, `<rect>`, etc.).
-@immutable
-sealed class SvgBasicShape extends SvgGraphicsElement with SvgGeometry {
-  const SvgBasicShape({
-    this.pathLength,
-    super.fill,
-    super.fillOpacity,
-    super.stroke,
-    super.opacity,
-    super.fontSize,
-    super.fontWeight,
-    super.fontStyle,
-    super.fontFamily,
-    super.cssClass,
-    super.inlineStyle,
-    super.transform,
-    super.id,
-  });
-
-  @override
-  final SvgNumber? pathLength;
-}
-
-/// Base class for container elements (`<svg>`, `<g>`).
-@immutable
-sealed class SvgContainerElement extends SvgGraphicsElement with SvgParent {
-  const SvgContainerElement({
-    required this.children,
-    super.id,
-    super.fill,
-    super.fillOpacity,
-    super.stroke,
-    super.opacity,
-    super.fontSize,
-    super.fontWeight,
-    super.fontStyle,
-    super.fontFamily,
-    super.cssClass,
-    super.inlineStyle,
-    super.transform,
-  });
-
-  @override
-  final List<SvgElement> children;
-}
-
-/// Base class for non-rendering definition elements (`<defs>`, gradients).
-@immutable
-sealed class SvgDefinitionElement extends SvgElement {
-  const SvgDefinitionElement({super.id});
-}
-
-/// Represents a metadata element (`<title>`, `<desc>`).
-@immutable
-sealed class SvgMetadataElement extends SvgElement {
-  const SvgMetadataElement({required this.content, super.id});
-
-  /// The text content of the metadata element.
-  final String content;
-}
-
-/// Represents a `<title>` element.
-@immutable
-final class SvgTitle extends SvgMetadataElement {
-  const SvgTitle({required super.content, super.id});
-
-  @override
-  String toString() => 'SvgTitle(content: $content, id: $id)';
-}
-
-/// Represents a `<desc>` element.
-@immutable
-final class SvgDesc extends SvgMetadataElement {
-  const SvgDesc({required super.content, super.id});
-
-  @override
-  String toString() => 'SvgDesc(content: $content, id: $id)';
 }

@@ -1,4 +1,4 @@
-part of '../svg_element.dart';
+part of '../../svg_element.dart';
 
 /// Represents a `<line>` element in SVG.
 ///

@@ -1,4 +1,4 @@
-part of '../svg_element.dart';
+part of '../../svg_element.dart';
 
 /// Represents an `<ellipse>` element in SVG.
 ///
