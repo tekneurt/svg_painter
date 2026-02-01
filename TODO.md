@@ -150,14 +150,26 @@
 ### Phase 3.5: Foundation Hardening & Structural Refactoring (Preparation for 0.3.0)
 *Crucial cleanup to ensure Phase 4 features (symbols, clipping) are built on a solid type-safe base.*
 
-- [ ] **Pipeline Layer Hardening**: Systematic audit and quality improvement of each processing layer.
-    - [ ] **XML Layer (`xml_model`, `xml_conversion`)**:
-        - [x] Exhaustive Enum regression tests for `XmlAttributeName` and `XmlElementName`.
-        - [ ] Comprehensive audit of structural parsing logic.
-    - [ ] **SVG Layer (`svg_model`, `svg_conversion`)**:
-        - [ ] Verify data integrity and inheritance resolution.
-    - [ ] **Painting Layer (`painting_model`, `generation`)**:
-        - [ ] Finalize code emission patterns and property safety.
+- [x] **Standardize Error Handling**: Establish centralized `untreatableErrorPrefix` and comment convention for defensive catch-all blocks.
+- [ ] **XML Model Hardening (`lib/src/xml_model`)**:
+    - [x] Exhaustive Enum regression tests for `XmlAttributeName` and `XmlElementName`.
+    - [x] Comprehensive audit of structural data models.
+- [ ] **XML Conversion Hardening (`lib/src/xml_conversion`)**:
+    - [x] Hardened `toXmlDocument` with standardized error handling and justified coverage ignore.
+    - [ ] Implement lenient child parsing (skip unknown tags instead of failing).
+    - [ ] Add namespace awareness to tag identification.
+    - [ ] Refine `<style>` element discovery scope.
+    - [ ] Comprehensive audit of structural parsing logic.
+- [ ] **SVG Model Hardening (`lib/src/svg_model`)**:
+    - [ ] Comprehensive audit of structural data models.
+- [ ] **SVG Conversion Hardening (`lib/src/svg_conversion`)**:
+    - [ ] Verify data integrity and inheritance resolution.
+    - [ ] Comprehensive audit of conversion logic.
+- [ ] **Painting Model Hardening (`lib/src/painting_model`)**:
+    - [ ] Comprehensive audit of command and style models.
+- [ ] **Generation Hardening (`lib/src/generation`)**:
+    - [ ] Finalize code emission patterns and property safety.
+    - [ ] Comprehensive audit of code generation logic.
 - [ ] **Bang Operator (!) Audit**: Systematically audit the codebase for the `!` operator and replace it with safe null handling (positive equality checks, `if (x == null) ...`, or explicit `assert(x != null)`) to eliminate potential runtime crashes.
 - [ ] **Coverage Exception Audit**: Investigate all `// coverage:ignore-line` and `// coverage:ignore-start/end` markers across the codebase to determine if the ignored code can be safely tested or if the ignore markers are still justified.
 - [ ] **Hardening Coverage for 0.2.0 files**: Improve coverage for the following files to reach >95% patch coverage:
