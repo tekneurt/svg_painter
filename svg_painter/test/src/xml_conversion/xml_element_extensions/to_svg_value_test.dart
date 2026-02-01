@@ -38,6 +38,18 @@ void main() {
       expect(result, const SvgLength(0.0));
     });
 
+    test('toSvgValue should throw UnsupportedError when default value type mismatches', () {
+      // Arrange
+      final XmlDocument document = XmlDocument.parse('<rect />');
+      final XmlElement element = document.rootElement;
+
+      // Act & Assert
+      expect(
+        () => element.toSvgValue<SvgColor>(XmlElementName.rect, XmlAttributeName.x),
+        throwsUnsupportedError,
+      );
+    });
+
     test('toSvgValueOrNull should return null when absent', () {
       // Arrange
       final XmlDocument document = XmlDocument.parse('<rect />');
@@ -78,6 +90,29 @@ void main() {
         () => element.toSvgValueOrNull<SvgColor>(XmlElementName.rect, XmlAttributeName.x),
         throwsUnsupportedError,
       );
+    });
+
+    test('toSvgValueOrNull should handle all attribute types in switch', () {
+      // This test is to ensure coverage of the switch statement branches
+      final Map<XmlAttributeName, String> tests = <XmlAttributeName, String>{
+        XmlAttributeName.x: '10',
+        XmlAttributeName.width: '100',
+        XmlAttributeName.pathLength: '50',
+        XmlAttributeName.points: '0,0 10,10',
+        XmlAttributeName.fill: 'red',
+        XmlAttributeName.strokeLinecap: 'round',
+        XmlAttributeName.strokeLinejoin: 'bevel',
+      };
+
+      for (final MapEntry<XmlAttributeName, String> entry in tests.entries) {
+        final XmlDocument document = XmlDocument.parse('<rect ${entry.key.name}="${entry.value}" />');
+        final XmlElement element = document.rootElement;
+        final SvgBaseValue? result = element.toSvgValueOrNull<SvgBaseValue>(
+          XmlElementName.rect,
+          entry.key,
+        );
+        expect(result, isNotNull, reason: 'Failed for ${entry.key}');
+      }
     });
   });
 }

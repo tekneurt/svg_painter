@@ -158,6 +158,54 @@ void main() {
         expect(output, contains('paint.color = localFill;'));
       });
 
+      test('should use active property via assignedFill from palette', () {
+        // Arrange
+        const PaintingStyle style = PaintingStyle(fill: PaintingFillStyle(colorArgb: 0xFFFF1122));
+        const DrawCircle command = DrawCircle(cx: 10, cy: 20, radius: 5, style: style);
+        const PaletteResult palette = PaletteResult(
+          <PaintCommand, String>{command: 'fill1'},
+          <PaintCommand, String>{},
+        );
+        final StringBuffer buffer = StringBuffer();
+
+        // Act
+        generator.generate(
+          command,
+          buffer,
+          palette: palette,
+          activeFillProperties: <String, String>{'fill1': 'customFill1'},
+        );
+
+        // Assert
+        final String output = buffer.toString();
+        expect(output, contains('final Color? localFill = customFill1;'));
+      });
+
+      test('should use active property via assignedStroke from palette', () {
+        // Arrange
+        const PaintingStyle style = PaintingStyle(
+          stroke: PaintingStrokeStyle(colorArgb: 0xFF334455),
+        );
+        const DrawCircle command = DrawCircle(cx: 10, cy: 20, radius: 5, style: style);
+        const PaletteResult palette = PaletteResult(
+          <PaintCommand, String>{},
+          <PaintCommand, String>{command: 'stroke1'},
+        );
+        final StringBuffer buffer = StringBuffer();
+
+        // Act
+        generator.generate(
+          command,
+          buffer,
+          palette: palette,
+          activeStrokeProperties: <String, String>{'stroke1': 'customStroke1'},
+        );
+
+        // Assert
+        final String output = buffer.toString();
+        expect(output, contains('final Color? localStroke = customStroke1;'));
+      });
+
       test('should use inherited property for fill if implicit match found', () {
         // Arrange
         const int color = 0xFFFF0000;
@@ -204,9 +252,155 @@ void main() {
         expect(output, isNot(contains('final Color? inheritedFill = groupFill;')));
         expect(output, contains('paint.color = const Color(0xFFFF0000);'));
       });
+
+      test('should handle currentColor with opacity in fill', () {
+        // Arrange
+        const PaintingStyle style = PaintingStyle(
+          fill: PaintingFillStyle(isCurrentColor: true, opacity: 0.7),
+        );
+        const DrawCircle command = DrawCircle(cx: 10, cy: 20, radius: 5, style: style);
+        final StringBuffer buffer = StringBuffer();
+
+        // Act
+        generator.generate(command, buffer);
+
+        // Assert
+        final String output = buffer.toString();
+        expect(
+          output,
+          contains('paint.color = (color ?? const Color(0xFF000000)).withOpacity(0.7);'),
+        );
+      });
+
+      test('should handle currentColor with opacity in stroke', () {
+        // Arrange
+        const PaintingStyle style = PaintingStyle(
+          stroke: PaintingStrokeStyle(isCurrentColor: true, opacity: 0.4),
+        );
+        const DrawCircle command = DrawCircle(cx: 10, cy: 20, radius: 5, style: style);
+        final StringBuffer buffer = StringBuffer();
+
+        // Act
+        generator.generate(command, buffer);
+
+        // Assert
+        final String output = buffer.toString();
+        expect(
+          output,
+          contains('paint.color = (color ?? const Color(0xFF000000)).withOpacity(0.4);'),
+        );
+      });
+
+      test('should handle null colorArgb and null shaderId in fill (edge case)', () {
+        // Arrange
+        const PaintingStyle style = PaintingStyle(fill: PaintingFillStyle());
+        const DrawCircle command = DrawCircle(cx: 10, cy: 20, radius: 5, style: style);
+        final StringBuffer buffer = StringBuffer();
+
+        // Act
+        generator.generate(command, buffer);
+
+        // Assert
+        final String output = buffer.toString();
+        expect(output, isNot(contains('paint.color =')));
+        expect(output, isNot(contains('paint.shader =')));
+      });
+
+      test('should handle null colorArgb and null shaderId in stroke (edge case)', () {
+        // Arrange
+        const PaintingStyle style = PaintingStyle(stroke: PaintingStrokeStyle());
+        const DrawCircle command = DrawCircle(cx: 10, cy: 20, radius: 5, style: style);
+        final StringBuffer buffer = StringBuffer();
+
+        // Act
+        generator.generate(command, buffer);
+
+        // Assert
+        final String output = buffer.toString();
+        expect(output, isNot(contains('paint.color =')));
+        expect(output, isNot(contains('paint.shader =')));
+      });
+
+      test('should handle shader with full opacity in fill', () {
+        // Arrange
+        const PaintingStyle style = PaintingStyle(
+          fill: PaintingFillStyle(shaderId: 's1'),
+        );
+        const DrawCircle command = DrawCircle(cx: 10, cy: 20, radius: 5, style: style);
+        final StringBuffer buffer = StringBuffer();
+
+        // Act
+        generator.generate(command, buffer);
+
+        // Assert
+        final String output = buffer.toString();
+        expect(output, contains('paint.shader = _grad_s1.createShader'));
+        expect(output, isNot(contains('withOpacity')));
+      });
+
+      test('should handle shader with full opacity in stroke', () {
+        // Arrange
+        const PaintingStyle style = PaintingStyle(
+          stroke: PaintingStrokeStyle(shaderId: 's2'),
+        );
+        const DrawCircle command = DrawCircle(cx: 10, cy: 20, radius: 5, style: style);
+        final StringBuffer buffer = StringBuffer();
+
+        // Act
+        generator.generate(command, buffer);
+
+        // Assert
+        final String output = buffer.toString();
+        expect(output, contains('paint.shader = _grad_s2.createShader'));
+        expect(output, isNot(contains('withOpacity')));
+      });
     });
 
     group('wrapWithTransform', () {
+      test('should do nothing if transform is null', () {
+        // Arrange
+        const DrawCircle command = DrawCircle(cx: 0, cy: 0, radius: 5, style: PaintingStyle());
+        final StringBuffer buffer = StringBuffer();
+
+        // Act
+        generator.generate(command, buffer);
+
+        // Assert
+        final String output = buffer.toString();
+        expect(output, isNot(contains('canvas.save();')));
+        expect(output, contains('{'));
+      });
+
+      test('should do nothing if transform is empty string', () {
+        // Arrange
+        const DrawCircle command =
+            DrawCircle(cx: 0, cy: 0, radius: 5, style: PaintingStyle(), transform: '   ');
+        final StringBuffer buffer = StringBuffer();
+
+        // Act
+        generator.generate(command, buffer);
+
+        // Assert
+        final String output = buffer.toString();
+        expect(output, isNot(contains('canvas.save();')));
+        expect(output, contains('{'));
+      });
+
+      test('should skip unknown or invalid transform functions', () {
+        // Arrange
+        const DrawCircle command =
+            DrawCircle(cx: 0, cy: 0, radius: 5, style: PaintingStyle(), transform: 'unknown(1, 2)');
+        final StringBuffer buffer = StringBuffer();
+
+        // Act
+        generator.generate(command, buffer);
+
+        // Assert
+        final String output = buffer.toString();
+        expect(output, contains('{'));
+        expect(output, isNot(contains('canvas.save();')));
+      });
+
       test('should wrap with translate when provided', () {
         // Arrange
         const DrawCircle command = DrawCircle(
@@ -228,7 +422,26 @@ void main() {
         expect(output, contains('canvas.restore();'));
       });
 
-      test('should wrap with scale when provided', () {
+      test('should wrap with scale when provided with one parameter', () {
+        // Arrange
+        const DrawCircle command = DrawCircle(
+          cx: 0,
+          cy: 0,
+          radius: 5,
+          style: PaintingStyle(),
+          transform: 'scale(2.5)',
+        );
+        final StringBuffer buffer = StringBuffer();
+
+        // Act
+        generator.generate(command, buffer);
+
+        // Assert
+        final String output = buffer.toString();
+        expect(output, contains('canvas.scale(2.5, 2.5);'));
+      });
+
+      test('should wrap with scale when provided with two parameters', () {
         // Arrange
         const DrawCircle command = DrawCircle(
           cx: 0,
