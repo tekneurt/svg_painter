@@ -6,9 +6,9 @@ final class SvgGroup extends SvgContainerElement {
   const SvgGroup({
     required super.children,
     super.id,
-    super.fill,
-    super.stroke,
-    super.font,
+    super.fillAttributes,
+    super.strokeAttributes,
+    super.fontAttributes,
     super.opacity,
     super.cssClass,
     super.inlineStyle,

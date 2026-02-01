@@ -59,8 +59,12 @@ void main() {
           'value',
           isA<SvgPath>()
               .having((SvgPath p) => p.id, 'id', 'path1')
-              .having((SvgPath p) => p.fill?.color, 'fill', isA<SvgNamedColor>())
-              .having((SvgPath p) => p.stroke?.color, 'stroke color', isA<SvgNamedColor>())
+              .having((SvgPath p) => p.fillAttributes?.color, 'fill', isA<SvgNamedColor>())
+              .having(
+                (SvgPath p) => p.strokeAttributes?.color,
+                'stroke color',
+                isA<SvgNamedColor>(),
+              )
               .having((SvgPath p) => (p.opacity as SvgPercentage?)?.value, 'opacity', 45.0),
         ),
       );

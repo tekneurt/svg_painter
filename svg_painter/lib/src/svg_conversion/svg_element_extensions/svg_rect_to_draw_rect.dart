@@ -9,8 +9,8 @@ import '../svg_value_extensions/_svg_value_extensions.dart';
 extension SvgRectToPaintCommands on SvgRect {
   /// Converts this [SvgRect] to a list of [PaintCommand]s.
   Result<List<PaintCommand>> toPaintCommands(SvgPaintingContext context) {
-    final double wVal = width.resolveOrNull(context, SvgOrientation.horizontal) ?? 0.0;
-    final double hVal = height.resolveOrNull(context, SvgOrientation.vertical) ?? 0.0;
+    final double wVal = width.resolveOrNull(context, .horizontal) ?? 0.0;
+    final double hVal = height.resolveOrNull(context, .vertical) ?? 0.0;
 
     if (wVal <= 0 || hVal <= 0) {
       return const Success<List<PaintCommand>>(<PaintCommand>[]);
@@ -27,16 +27,16 @@ extension SvgRectToPaintCommands on SvgRect {
       tagName: 'rect',
       id: id,
       pathLength: pathLength,
-      fill: fill,
-      stroke: stroke,
+      fillAttributes: fillAttributes,
+      strokeAttributes: strokeAttributes,
       opacity: opacity,
       cssClass: cssClass,
       inlineStyle: inlineStyle,
     );
 
     // Apply transformation
-    final double finalX = context.transformX(x.toPosition(context, SvgOrientation.horizontal));
-    final double finalY = context.transformY(y.toPosition(context, SvgOrientation.vertical));
+    final double finalX = context.transformX(x.toPosition(context, .horizontal));
+    final double finalY = context.transformY(y.toPosition(context, .vertical));
     final double finalWidth = context.scaleHorizontal(wVal);
     final double finalHeight = context.scaleVertical(hVal);
     final double finalRx = context.scaleHorizontal(clampedRx);

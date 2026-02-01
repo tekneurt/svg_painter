@@ -1,3 +1,4 @@
+import '../../base/_base.dart';
 import '../../painting_model/_painting_model.dart';
 import '../../svg_model/_svg_model.dart';
 import '../../xml_conversion/_xml_conversion.dart';
@@ -10,9 +11,9 @@ PaintingStyle resolvePaint(
   String? tagName,
   String? id,
   SvgNumber? pathLength,
-  SvgFillAttributes? fill,
-  SvgStrokeAttributes? stroke,
-  SvgFontAttributes? font,
+  SvgFillAttributes? fillAttributes,
+  SvgStrokeAttributes? strokeAttributes,
+  SvgFontAttributes? fontAttributes,
   SvgLengthPercentage? opacity,
   String? cssClass,
   String? inlineStyle,
@@ -155,23 +156,23 @@ PaintingStyle resolvePaint(
 
   // Determine if fill/stroke are explicit (not just inherited)
   final bool isFillExplicit =
-      fill?.color != null ||
+      fillAttributes?.color != null ||
       cssFill != null ||
       resolvedRules.containsKey('fill') ||
       (inlineStyle?.contains('fill:') ?? false);
 
   final bool isStrokeExplicit =
-      stroke?.color != null ||
+      strokeAttributes?.color != null ||
       cssStroke != null ||
       resolvedRules.containsKey('stroke') ||
       (inlineStyle?.contains('stroke:') ?? false);
 
   // 4. Resolve element opacity (group opacity)
-  final double selfOpacity = (cssOpacity ?? opacity)?.resolve(context, .unit) ?? 1.0;
+  final double selfOpacity = (cssOpacity ?? opacity)?.resolve(context, SvgOrientation.unit) ?? 1.0;
   final double elementOpacity = selfOpacity * context.parentOpacity;
 
   // 5. Resolve final values using priority: Inline Style/CSS > Presentation Attribute > Inherited
-  final SvgColor? fillPaint = cssFill ?? fill?.color ?? context.inheritedFill;
+  final SvgColor? fillPaint = cssFill ?? fillAttributes?.color ?? context.inheritedFill;
   final bool hasFill = fillPaint is! SvgNoneColor;
   PaintingFillStyle? fillStyle;
   if (hasFill) {
@@ -189,9 +190,9 @@ PaintingStyle resolvePaint(
 
     final double finalFillOpacity =
         elementOpacity *
-        ((cssFillOpacity ?? fill?.opacity ?? context.inheritedFillOpacity)?.resolve(
+        ((cssFillOpacity ?? fillAttributes?.opacity ?? context.inheritedFillOpacity)?.resolve(
               context,
-              .unit,
+              SvgOrientation.unit,
             ) ??
             1.0);
 
@@ -204,7 +205,7 @@ PaintingStyle resolvePaint(
     );
   }
 
-  final SvgColor? strokePaint = cssStroke ?? stroke?.color ?? context.inheritedStroke;
+  final SvgColor? strokePaint = cssStroke ?? strokeAttributes?.color ?? context.inheritedStroke;
   final bool hasStroke = strokePaint != null && strokePaint is! SvgNoneColor;
   PaintingStrokeStyle? strokeStyle;
   if (hasStroke) {
@@ -220,13 +221,14 @@ PaintingStyle resolvePaint(
       strokeColorArgb = strokePaint.toStrokeArgb();
     }
 
-    final SvgLengthPercentage? sw = cssStrokeWidth ?? stroke?.width ?? context.inheritedStrokeWidth;
+    final SvgLengthPercentage? sw =
+        cssStrokeWidth ?? strokeAttributes?.width ?? context.inheritedStrokeWidth;
     final double finalStrokeWidth = context.scaleNormalized(
-      sw?.resolve(context, .normalized) ?? 1.0,
+      sw?.resolve(context, SvgOrientation.normalized) ?? 1.0,
     );
 
     final SvgPointList? sda =
-        cssStrokeDasharray ?? stroke?.dashArray ?? context.inheritedStrokeDasharray;
+        cssStrokeDasharray ?? strokeAttributes?.dashArray ?? context.inheritedStrokeDasharray;
     List<double>? finalDashArray;
     if (sda == null || sda.points.isEmpty) {
       // No dash array
@@ -237,16 +239,22 @@ PaintingStyle resolvePaint(
     final double? finalPathLength = (cssPathLength ?? pathLength)?.value;
 
     final SvgStrokeLinecap resolvedCap =
-        cssStrokeLinecap ?? stroke?.linecap ?? context.inheritedStrokeLinecap ?? .butt;
+        cssStrokeLinecap ??
+        strokeAttributes?.linecap ??
+        context.inheritedStrokeLinecap ??
+        SvgStrokeLinecap.butt;
 
     final SvgStrokeLinejoin resolvedJoin =
-        cssStrokeLinejoin ?? stroke?.linejoin ?? context.inheritedStrokeLinejoin ?? .miter;
+        cssStrokeLinejoin ??
+        strokeAttributes?.linejoin ??
+        context.inheritedStrokeLinejoin ??
+        SvgStrokeLinejoin.miter;
 
     final double finalStrokeOpacity =
         elementOpacity *
-        ((cssStrokeOpacity ?? stroke?.opacity ?? context.inheritedStrokeOpacity)?.resolve(
+        ((cssStrokeOpacity ?? strokeAttributes?.opacity ?? context.inheritedStrokeOpacity)?.resolve(
               context,
-              .unit,
+              SvgOrientation.unit,
             ) ??
             1.0);
 
@@ -264,15 +272,16 @@ PaintingStyle resolvePaint(
     );
   }
 
-  final double? rawFontSize = (cssFontSize ?? font?.size ?? context.inheritedFontSize)?.resolve(
-    context,
-    .vertical,
-  );
+  final double? rawFontSize = (cssFontSize ?? fontAttributes?.size ?? context.inheritedFontSize)
+      ?.resolve(context, SvgOrientation.vertical);
   final double? finalFontSize = rawFontSize == null ? null : context.scaleVertical(rawFontSize);
 
-  final String? finalFontWeight = cssFontWeight ?? font?.weight ?? context.inheritedFontWeight;
-  final String? finalFontStyle = cssFontStyle ?? font?.style ?? context.inheritedFontStyle;
-  final String? rawFontFamily = cssFontFamily ?? font?.family ?? context.inheritedFontFamily;
+  final String? finalFontWeight =
+      cssFontWeight ?? fontAttributes?.weight ?? context.inheritedFontWeight;
+  final String? finalFontStyle =
+      cssFontStyle ?? fontAttributes?.style ?? context.inheritedFontStyle;
+  final String? rawFontFamily =
+      cssFontFamily ?? fontAttributes?.family ?? context.inheritedFontFamily;
 
   // Map generic font families to bundled font files for Flutter rendering.
   final String? finalFontFamily = switch (rawFontFamily) {
@@ -300,9 +309,9 @@ PaintingStyle resolvePaint(
 extension on SvgStrokeLinecap {
   PaintingStrokeCap toStrokeCap() {
     return switch (this) {
-      .butt => .butt,
-      .round => .round,
-      .square => .square,
+      SvgStrokeLinecap.butt => PaintingStrokeCap.butt,
+      SvgStrokeLinecap.round => PaintingStrokeCap.round,
+      SvgStrokeLinecap.square => PaintingStrokeCap.square,
     };
   }
 }
@@ -310,11 +319,11 @@ extension on SvgStrokeLinecap {
 extension on SvgStrokeLinejoin {
   PaintingStrokeJoin toStrokeJoin() {
     return switch (this) {
-      .miter => .miter,
-      .round => .round,
-      .bevel => .bevel,
-      .miterClip => .miter,
-      .arcs => .miter,
+      SvgStrokeLinejoin.miter => PaintingStrokeJoin.miter,
+      SvgStrokeLinejoin.round => PaintingStrokeJoin.round,
+      SvgStrokeLinejoin.bevel => PaintingStrokeJoin.bevel,
+      SvgStrokeLinejoin.miterClip => PaintingStrokeJoin.miter,
+      SvgStrokeLinejoin.arcs => PaintingStrokeJoin.miter,
     };
   }
 }

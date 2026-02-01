@@ -20,9 +20,9 @@ extension ToSvgGroup on XmlElement {
     return childrenResult.map(
       (List<SvgElement> childElements) => SvgGroup(
         children: childElements,
-        fill: common.fill,
-        stroke: common.stroke,
-        font: common.font,
+        fillAttributes: common.fillAttributes,
+        strokeAttributes: common.strokeAttributes,
+        fontAttributes: common.fontAttributes,
         opacity: common.opacity,
         cssClass: common.cssClass,
         inlineStyle: common.inlineStyle,

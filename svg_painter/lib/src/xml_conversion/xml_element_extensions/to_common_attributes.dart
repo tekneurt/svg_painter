@@ -7,9 +7,9 @@ import '_xml_element_extensions.dart';
 /// Resolved common attributes for a graphics element.
 typedef CommonAttributes = ({
   String? id,
-  SvgFillAttributes fill,
-  SvgStrokeAttributes stroke,
-  SvgFontAttributes font,
+  SvgFillAttributes fillAttributes,
+  SvgStrokeAttributes strokeAttributes,
+  SvgFontAttributes fontAttributes,
   SvgLengthPercentage? opacity,
   String? cssClass,
   String? inlineStyle,
@@ -21,11 +21,11 @@ extension ToCommonAttributes on XmlElement {
   CommonAttributes toCommonAttributes(XmlElementName elementName) {
     return (
       id: toXmlAttributeValue(XmlAttributeName.id),
-      fill: SvgFillAttributes(
+      fillAttributes: SvgFillAttributes(
         color: toSvgValueOrNull<SvgColor>(elementName, XmlAttributeName.fill),
         opacity: toSvgValueOrNull<SvgLengthPercentage>(elementName, XmlAttributeName.fillOpacity),
       ),
-      stroke: SvgStrokeAttributes(
+      strokeAttributes: SvgStrokeAttributes(
         color: toSvgValueOrNull<SvgColor>(elementName, XmlAttributeName.stroke),
         opacity: toSvgValueOrNull<SvgLengthPercentage>(elementName, XmlAttributeName.strokeOpacity),
         width: toSvgValueOrNull<SvgLengthPercentage>(elementName, XmlAttributeName.strokeWidth),
@@ -33,7 +33,7 @@ extension ToCommonAttributes on XmlElement {
         linecap: toSvgValueOrNull<SvgStrokeLinecap>(elementName, XmlAttributeName.strokeLinecap),
         linejoin: toSvgValueOrNull<SvgStrokeLinejoin>(elementName, XmlAttributeName.strokeLinejoin),
       ),
-      font: SvgFontAttributes(
+      fontAttributes: SvgFontAttributes(
         size: toSvgValueOrNull<SvgLengthPercentage>(elementName, XmlAttributeName.fontSize),
         weight: toXmlAttributeValue(XmlAttributeName.fontWeight),
         style: toXmlAttributeValue(XmlAttributeName.fontStyle),

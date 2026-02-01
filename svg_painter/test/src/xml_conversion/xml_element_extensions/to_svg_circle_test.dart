@@ -27,9 +27,17 @@ void main() {
               .having((SvgCircle c) => (c.cx as SvgLength).value, 'cx', 11.0)
               .having((SvgCircle c) => (c.cy as SvgLength).value, 'cy', 22.0)
               .having((SvgCircle c) => (c.r as SvgLength).value, 'r', 33.0)
-              .having((SvgCircle c) => c.fill?.color, 'fill', isA<SvgNamedColor>())
-              .having((SvgCircle c) => c.stroke?.color, 'stroke color', isA<SvgNamedColor>())
-              .having((SvgCircle c) => (c.stroke?.width as SvgLength?)?.value, 'stroke width', 2.5),
+              .having((SvgCircle c) => c.fillAttributes?.color, 'fill', isA<SvgNamedColor>())
+              .having(
+                (SvgCircle c) => c.strokeAttributes?.color,
+                'stroke color',
+                isA<SvgNamedColor>(),
+              )
+              .having(
+                (SvgCircle c) => (c.strokeAttributes?.width as SvgLength?)?.value,
+                'stroke width',
+                2.5,
+              ),
         ),
       );
     });

@@ -30,7 +30,7 @@ void main() {
               .having((SvgRect r) => (r.height as SvgLength).value, 'height', 55.0)
               .having((SvgRect r) => (r.rx as SvgLength).value, 'rx', 6.0)
               .having((SvgRect r) => (r.ry as SvgLength).value, 'ry', 9.0)
-              .having((SvgRect r) => r.fill?.color, 'fill', isA<SvgNamedColor>()),
+              .having((SvgRect r) => r.fillAttributes?.color, 'fill', isA<SvgNamedColor>()),
         ),
       );
     });

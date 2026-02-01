@@ -6,8 +6,8 @@ final class SvgPath extends SvgGraphicsElement with SvgGeometry {
   const SvgPath({
     required this.d,
     this.pathLength,
-    super.fill,
-    super.stroke,
+    super.fillAttributes,
+    super.strokeAttributes,
     super.opacity,
     super.cssClass,
     super.inlineStyle,

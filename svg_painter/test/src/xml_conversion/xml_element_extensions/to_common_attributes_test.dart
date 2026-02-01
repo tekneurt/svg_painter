@@ -18,11 +18,11 @@ void main() {
 
       // Assert
       expect(attrs.id, 'c1');
-      expect(attrs.fill.color, isA<SvgNamedColor>());
-      expect(attrs.stroke.color, isA<SvgNamedColor>());
+      expect(attrs.fillAttributes.color, isA<SvgNamedColor>());
+      expect(attrs.strokeAttributes.color, isA<SvgNamedColor>());
       expect((attrs.opacity! as SvgLength).value, 0.5);
-      expect((attrs.font.size! as SvgLength).value, 12.0);
-      expect(attrs.font.family, 'Roboto');
+      expect((attrs.fontAttributes.size! as SvgLength).value, 12.0);
+      expect(attrs.fontAttributes.family, 'Roboto');
       expect(attrs.cssClass, 'cls1');
       expect(attrs.inlineStyle, 'fill: green');
       expect(attrs.transform, 'scale(2)');
@@ -38,9 +38,9 @@ void main() {
 
       // Assert
       expect(attrs.id, isNull);
-      expect(attrs.fill.color, isNull);
-      expect(attrs.stroke.color, isNull);
-      expect(attrs.font.size, isNull);
+      expect(attrs.fillAttributes.color, isNull);
+      expect(attrs.strokeAttributes.color, isNull);
+      expect(attrs.fontAttributes.size, isNull);
       expect(attrs.opacity, isNull);
     });
   });

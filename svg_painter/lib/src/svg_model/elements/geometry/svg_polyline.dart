@@ -8,8 +8,8 @@ final class SvgPolyline extends SvgBasicShape {
   const SvgPolyline({
     required this.points,
     super.pathLength,
-    super.fill,
-    super.stroke,
+    super.fillAttributes,
+    super.strokeAttributes,
     super.opacity,
     super.cssClass,
     super.inlineStyle,

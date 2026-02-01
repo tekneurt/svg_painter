@@ -4,14 +4,14 @@ part of '../../svg_element.dart';
 ///
 /// See: https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Element/text
 @immutable
-final class SvgText extends SvgGraphicsElement with SvgFontStylable {
+final class SvgText extends SvgGraphicsElement with SvgFontAttributable {
   const SvgText({
     required this.x,
     required this.y,
     required this.text,
-    super.fill,
-    super.stroke,
-    this.font,
+    super.fillAttributes,
+    super.strokeAttributes,
+    this.fontAttributes,
     super.opacity,
     super.cssClass,
     super.inlineStyle,
@@ -29,7 +29,7 @@ final class SvgText extends SvgGraphicsElement with SvgFontStylable {
   final String text;
 
   @override
-  final SvgFontAttributes? font;
+  final SvgFontAttributes? fontAttributes;
 
   @override
   String toString() => 'SvgText(x: $x, y: $y, text: $text, id: $id)';

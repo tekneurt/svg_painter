@@ -158,7 +158,7 @@
     - [ ] **SVG Model Layer (`lib/src/svg_model`)**:
         - [x] **Mixin Refactoring**: Implement attribute grouping via mixins to ensure type safety (e.g., `mixin SvgGeometry`).
         - [x] **Attribute Grouping**: Group related presentation attributes into semantic components (Fill, Stroke, Font).
-        - [ ] **Attributes Harmonization**: Rename attributes, properties, and mixins to follow a consistent "SVG-Truthful" naming convention:
+        - [x] **Attributes Harmonization**: Rename attributes, properties, and mixins to follow a consistent "SVG-Truthful" naming convention:
             - `SvgFontAttributes` ➔ Property: `fontAttributes`, Mixin: `SvgFontAttributable`
             - `SvgFillAttributes` ➔ Property: `fillAttributes`, Mixin: `SvgFillAttributable`
             - `SvgStrokeAttributes` ➔ Property: `strokeAttributes`, Mixin: `SvgStrokeAttributable`

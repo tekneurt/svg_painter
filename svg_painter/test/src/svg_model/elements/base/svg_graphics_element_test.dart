@@ -11,7 +11,7 @@ void main() {
         cx: SvgLength(12.3),
         cy: SvgLength(45.6),
         r: SvgLength(7.8),
-        fill: SvgFillAttributes(color: SvgNamedColor(SvgColorName.red)),
+        fillAttributes: SvgFillAttributes(color: SvgNamedColor(SvgColorName.red)),
         id: 'gfx1',
       );
 

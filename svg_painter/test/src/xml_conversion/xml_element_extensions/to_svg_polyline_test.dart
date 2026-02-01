@@ -43,9 +43,13 @@ void main() {
           (Success<SvgPolyline> s) => s.value,
           'value',
           isA<SvgPolyline>()
-              .having((SvgPolyline p) => p.stroke?.color, 'stroke color', isA<SvgNamedColor>())
               .having(
-                (SvgPolyline p) => (p.stroke?.width as SvgLength?)?.value,
+                (SvgPolyline p) => p.strokeAttributes?.color,
+                'stroke color',
+                isA<SvgNamedColor>(),
+              )
+              .having(
+                (SvgPolyline p) => (p.strokeAttributes?.width as SvgLength?)?.value,
                 'stroke width',
                 5.5,
               ),

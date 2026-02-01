@@ -5,8 +5,8 @@ part of '../../svg_element.dart';
 sealed class SvgBasicShape extends SvgGraphicsElement with SvgGeometry {
   const SvgBasicShape({
     this.pathLength,
-    super.fill,
-    super.stroke,
+    super.fillAttributes,
+    super.strokeAttributes,
     super.opacity,
     super.cssClass,
     super.inlineStyle,
