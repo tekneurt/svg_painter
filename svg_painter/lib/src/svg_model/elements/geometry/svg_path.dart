@@ -24,8 +24,15 @@ final class SvgPath extends SvgGraphicsElement with SvgGeometry {
   final String d;
 
   @override
-  final SvgNumber? pathLength;
+  final SvgNonNegativeNumber? pathLength;
 
   @override
-  String toString() => 'SvgPath(d: $d, id: $id)';
+  String toString() {
+    final List<String> parts = <String>[
+      'd: $d',
+      if (pathLength != null) 'pathLength: $pathLength',
+      if (id != null) 'id: $id',
+    ];
+    return 'SvgPath(${parts.join(', ')})';
+  }
 }

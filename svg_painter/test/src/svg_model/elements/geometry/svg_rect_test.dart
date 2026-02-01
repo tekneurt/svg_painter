@@ -4,15 +4,16 @@ import 'package:test/test.dart';
 
 void main() {
   group('SvgRect', () {
-    test('should return correct string representation when toString() is called', () {
+    test('should return correct string representation when all fields are provided', () {
       // Arrange
       const SvgRect rect = SvgRect(
-        x: SvgLength(10.0),
-        y: SvgLength(20.0),
-        width: SvgLength(100.0),
-        height: SvgLength(50.0),
-        rx: SvgLength(5.0),
-        ry: SvgLength(8.0),
+        x: SvgLength(11.0),
+        y: SvgLength(22.0),
+        width: SvgLength(111.0),
+        height: SvgLength(55.0),
+        rx: SvgLength(6.0),
+        ry: SvgLength(9.0),
+        pathLength: SvgNonNegativeNumber(700.0),
         id: 'r1',
       );
 
@@ -20,7 +21,28 @@ void main() {
       final String result = rect.toString();
 
       // Assert
-      expect(result, 'SvgRect(x: 10.0, y: 20.0, w: 100.0, h: 50.0, rx: 5.0, ry: 8.0, id: r1)');
+      expect(
+        result,
+        'SvgRect(x: 11.0, y: 22.0, w: 111.0, h: 55.0, rx: 6.0, ry: 9.0, pathLength: SvgNumber(700.0), id: r1)',
+      );
+    });
+
+    test('should return compact string representation when optional fields are null', () {
+      // Arrange
+      const SvgRect rect = SvgRect(
+        x: SvgLength(11.0),
+        y: SvgLength(22.0),
+        width: SvgLength(111.0),
+        height: SvgLength(55.0),
+        rx: SvgLength(6.0),
+        ry: SvgLength(9.0),
+      );
+
+      // Act
+      final String result = rect.toString();
+
+      // Assert
+      expect(result, 'SvgRect(x: 11.0, y: 22.0, w: 111.0, h: 55.0, rx: 6.0, ry: 9.0)');
     });
   });
 }

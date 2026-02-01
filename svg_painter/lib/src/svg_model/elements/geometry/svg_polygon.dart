@@ -26,5 +26,12 @@ final class SvgPolygon extends SvgBasicShape {
   final SvgPointList points;
 
   @override
-  String toString() => 'SvgPolygon(pts: ${points.points.length}, id: $id)';
+  String toString() {
+    final List<String> parts = <String>[
+      'pts: ${points.points.length}',
+      if (pathLength != null) 'pathLength: $pathLength',
+      if (id != null) 'id: $id',
+    ];
+    return 'SvgPolygon(${parts.join(', ')})';
+  }
 }

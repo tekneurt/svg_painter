@@ -38,5 +38,15 @@ final class SvgEllipse extends SvgBasicShape {
   final SvgLengthPercentageAuto ry;
 
   @override
-  String toString() => 'SvgEllipse(cx: $cx, cy: $cy, rx: $rx, ry: $ry, id: $id)';
+  String toString() {
+    final List<String> parts = <String>[
+      'cx: $cx',
+      'cy: $cy',
+      'rx: $rx',
+      'ry: $ry',
+      if (pathLength != null) 'pathLength: $pathLength',
+      if (id != null) 'id: $id',
+    ];
+    return 'SvgEllipse(${parts.join(', ')})';
+  }
 }

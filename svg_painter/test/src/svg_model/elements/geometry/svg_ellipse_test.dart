@@ -4,13 +4,14 @@ import 'package:test/test.dart';
 
 void main() {
   group('SvgEllipse', () {
-    test('should return correct string representation when toString() is called', () {
+    test('should return correct string representation when all fields are provided', () {
       // Arrange
       const SvgEllipse ellipse = SvgEllipse(
-        cx: SvgLength(50.0),
-        cy: SvgLength(60.0),
-        rx: SvgLength(30.0),
-        ry: SvgLength(20.0),
+        cx: SvgLength(111.0),
+        cy: SvgLength(55.0),
+        rx: SvgLength(44.0),
+        ry: SvgLength(22.0),
+        pathLength: SvgNonNegativeNumber(200.0),
         id: 'e1',
       );
 
@@ -18,7 +19,26 @@ void main() {
       final String result = ellipse.toString();
 
       // Assert
-      expect(result, 'SvgEllipse(cx: 50.0, cy: 60.0, rx: 30.0, ry: 20.0, id: e1)');
+      expect(
+        result,
+        'SvgEllipse(cx: 111.0, cy: 55.0, rx: 44.0, ry: 22.0, pathLength: SvgNumber(200.0), id: e1)',
+      );
+    });
+
+    test('should return compact string representation when optional fields are null', () {
+      // Arrange
+      const SvgEllipse ellipse = SvgEllipse(
+        cx: SvgLength(111.0),
+        cy: SvgLength(55.0),
+        rx: SvgLength(44.0),
+        ry: SvgLength(22.0),
+      );
+
+      // Act
+      final String result = ellipse.toString();
+
+      // Assert
+      expect(result, 'SvgEllipse(cx: 111.0, cy: 55.0, rx: 44.0, ry: 22.0)');
     });
   });
 }

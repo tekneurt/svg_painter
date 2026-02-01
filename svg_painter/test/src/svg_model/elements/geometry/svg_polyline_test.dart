@@ -4,18 +4,32 @@ import 'package:test/test.dart';
 
 void main() {
   group('SvgPolyline', () {
-    test('should return correct string representation when toString() is called', () {
+    test('should return correct string representation when all fields are provided', () {
       // Arrange
-      const SvgPolyline poly = SvgPolyline(
-        points: SvgPointList(<double>[10, 20, 30, 40]),
-        id: 'pl1',
+      const SvgPolyline polyline = SvgPolyline(
+        points: SvgPointList(<double>[11.0, 22.0, 55.0, 66.0]),
+        pathLength: SvgNonNegativeNumber(600.0),
+        id: 'pline1',
       );
 
       // Act
-      final String result = poly.toString();
+      final String result = polyline.toString();
 
       // Assert
-      expect(result, 'SvgPolyline(pts: 4, id: pl1)');
+      expect(result, 'SvgPolyline(pts: 4, pathLength: SvgNumber(600.0), id: pline1)');
+    });
+
+    test('should return compact string representation when optional fields are null', () {
+      // Arrange
+      const SvgPolyline polyline = SvgPolyline(
+        points: SvgPointList(<double>[11.0, 22.0, 55.0, 66.0]),
+      );
+
+      // Act
+      final String result = polyline.toString();
+
+      // Assert
+      expect(result, 'SvgPolyline(pts: 4)');
     });
   });
 }

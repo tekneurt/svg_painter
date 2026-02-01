@@ -38,5 +38,15 @@ final class SvgLine extends SvgBasicShape {
   final SvgLengthPercentage y2;
 
   @override
-  String toString() => 'SvgLine(x1: $x1, y1: $y1, x2: $x2, y2: $y2, id: $id)';
+  String toString() {
+    final List<String> parts = <String>[
+      'x1: $x1',
+      'y1: $y1',
+      'x2: $x2',
+      'y2: $y2',
+      if (pathLength != null) 'pathLength: $pathLength',
+      if (id != null) 'id: $id',
+    ];
+    return 'SvgLine(${parts.join(', ')})';
+  }
 }

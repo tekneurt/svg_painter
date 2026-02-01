@@ -28,5 +28,16 @@ final class SvgLinearGradient extends SvgGradient {
   final SvgLengthPercentage y2;
 
   @override
-  String toString() => 'SvgLinearGradient(stops: ${stops.length}, id: $id)';
+  String toString() {
+    final List<String> parts = <String>[
+      'x1: $x1',
+      'y1: $y1',
+      'x2: $x2',
+      'y2: $y2',
+      'stops: ${stops.length}',
+      if (gradientTransform != null) 'transform: $gradientTransform',
+      if (id != null) 'id: $id',
+    ];
+    return 'SvgLinearGradient(${parts.join(', ')})';
+  }
 }

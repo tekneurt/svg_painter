@@ -36,5 +36,18 @@ final class SvgRadialGradient extends SvgGradient {
   final SvgLengthPercentage fr;
 
   @override
-  String toString() => 'SvgRadialGradient(stops: ${stops.length}, id: $id)';
+  String toString() {
+    final List<String> parts = <String>[
+      'cx: $cx',
+      'cy: $cy',
+      'r: $r',
+      'fx: $fx',
+      'fy: $fy',
+      'fr: $fr',
+      'stops: ${stops.length}',
+      if (gradientTransform != null) 'transform: $gradientTransform',
+      if (id != null) 'id: $id',
+    ];
+    return 'SvgRadialGradient(${parts.join(', ')})';
+  }
 }

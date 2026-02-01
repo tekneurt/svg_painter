@@ -34,5 +34,14 @@ final class SvgCircle extends SvgBasicShape {
   final SvgLengthPercentage r;
 
   @override
-  String toString() => 'SvgCircle(cx: $cx, cy: $cy, r: $r, id: $id)';
+  String toString() {
+    final List<String> parts = <String>[
+      'cx: $cx',
+      'cy: $cy',
+      'r: $r',
+      if (pathLength != null) 'pathLength: $pathLength',
+      if (id != null) 'id: $id',
+    ];
+    return 'SvgCircle(${parts.join(', ')})';
+  }
 }

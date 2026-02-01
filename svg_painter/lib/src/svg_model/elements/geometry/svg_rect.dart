@@ -46,5 +46,17 @@ final class SvgRect extends SvgBasicShape {
   final SvgLengthPercentageAuto ry;
 
   @override
-  String toString() => 'SvgRect(x: $x, y: $y, w: $width, h: $height, rx: $rx, ry: $ry, id: $id)';
+  String toString() {
+    final List<String> parts = <String>[
+      'x: $x',
+      'y: $y',
+      'w: $width',
+      'h: $height',
+      'rx: $rx',
+      'ry: $ry',
+      if (pathLength != null) 'pathLength: $pathLength',
+      if (id != null) 'id: $id',
+    ];
+    return 'SvgRect(${parts.join(', ')})';
+  }
 }

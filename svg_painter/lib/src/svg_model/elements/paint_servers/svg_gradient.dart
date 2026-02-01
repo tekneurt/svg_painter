@@ -10,7 +10,4 @@ sealed class SvgGradient extends SvgDefinitionElement {
 
   /// The transformation applied to the gradient.
   final String? gradientTransform;
-
-  @override
-  String toString() => 'SvgGradient(stops: ${stops.length}, id: $id)';
 }
