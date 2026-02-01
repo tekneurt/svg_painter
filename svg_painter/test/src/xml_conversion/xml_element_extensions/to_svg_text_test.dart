@@ -51,9 +51,13 @@ void main() {
                 'font-size',
                 16.5,
               )
-              .having((SvgText t) => t.fontAttributes?.family, 'font-family', 'Roboto')
-              .having((SvgText t) => t.fontAttributes?.weight, 'font-weight', 'bold')
-              .having((SvgText t) => t.fontAttributes?.style, 'font-style', 'italic'),
+              .having((SvgText t) => t.fontAttributes?.family?.value, 'font-family', 'Roboto')
+              .having(
+                (SvgText t) => t.fontAttributes?.weight,
+                'font-weight',
+                isA<SvgFontWeightBold>(),
+              )
+              .having((SvgText t) => t.fontAttributes?.style, 'font-style', SvgFontStyle.italic),
         ),
       );
     });

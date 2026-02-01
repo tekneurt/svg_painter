@@ -22,7 +22,7 @@ void main() {
       expect(attrs.strokeAttributes.color, isA<SvgNamedColor>());
       expect((attrs.opacity! as SvgLength).value, 0.5);
       expect((attrs.fontAttributes.size! as SvgLength).value, 12.0);
-      expect(attrs.fontAttributes.family, 'Roboto');
+      expect(attrs.fontAttributes.family?.value, 'Roboto');
       expect(attrs.cssClass, 'cls1');
       expect(attrs.inlineStyle, 'fill: green');
       expect(attrs.transform, 'scale(2)');

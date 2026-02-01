@@ -11,13 +11,13 @@ class SvgFontAttributes {
   final SvgLengthPercentage? size;
 
   /// The weight of the font (mapped from `font-weight` attribute).
-  final String? weight;
+  final SvgFontWeight? weight;
 
   /// The style of the font (mapped from `font-style` attribute).
-  final String? style;
+  final SvgFontStyle? style;
 
   /// The family of the font (mapped from `font-family` attribute).
-  final String? family;
+  final SvgFontFamily? family;
 
   @override
   String toString() {

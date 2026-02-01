@@ -86,13 +86,13 @@ final class SvgPaintingContext {
   final SvgLengthPercentage? inheritedFontSize;
 
   /// Inherited font weight.
-  final String? inheritedFontWeight;
+  final SvgFontWeight? inheritedFontWeight;
 
   /// Inherited font style.
-  final String? inheritedFontStyle;
+  final SvgFontStyle? inheritedFontStyle;
 
   /// Inherited font family.
-  final String? inheritedFontFamily;
+  final SvgFontFamily? inheritedFontFamily;
 
   /// The CSS rules defined for the document.
   final SvgStyleSheet styleSheet;
@@ -131,9 +131,9 @@ final class SvgPaintingContext {
     SvgStrokeLinejoin? inheritedStrokeLinejoin,
     double? parentOpacity,
     SvgLengthPercentage? inheritedFontSize,
-    String? inheritedFontWeight,
-    String? inheritedFontStyle,
-    String? inheritedFontFamily,
+    SvgFontWeight? inheritedFontWeight,
+    SvgFontStyle? inheritedFontStyle,
+    SvgFontFamily? inheritedFontFamily,
   }) {
     return SvgPaintingContext(
       viewBoxWidth: viewBoxWidth ?? this.viewBoxWidth,

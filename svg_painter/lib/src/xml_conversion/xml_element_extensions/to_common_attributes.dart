@@ -35,9 +35,9 @@ extension ToCommonAttributes on XmlElement {
       ),
       fontAttributes: SvgFontAttributes(
         size: toSvgValueOrNull<SvgLengthPercentage>(elementName, XmlAttributeName.fontSize),
-        weight: toXmlAttributeValue(XmlAttributeName.fontWeight),
-        style: toXmlAttributeValue(XmlAttributeName.fontStyle),
-        family: toXmlAttributeValue(XmlAttributeName.fontFamily),
+        weight: toSvgValueOrNull<SvgFontWeight>(elementName, XmlAttributeName.fontWeight),
+        style: toSvgValueOrNull<SvgFontStyle>(elementName, XmlAttributeName.fontStyle),
+        family: toSvgValueOrNull<SvgFontFamily>(elementName, XmlAttributeName.fontFamily),
       ),
       opacity: toSvgValueOrNull<SvgLengthPercentage>(elementName, XmlAttributeName.opacity),
       cssClass: toXmlAttributeValue(XmlAttributeName.className),

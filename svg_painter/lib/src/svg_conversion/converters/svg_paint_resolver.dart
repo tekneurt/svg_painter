@@ -89,10 +89,10 @@ PaintingStyle resolvePaint(
   SvgStrokeLinecap? cssStrokeLinecap;
   SvgStrokeLinejoin? cssStrokeLinejoin;
   SvgLengthPercentage? cssOpacity;
-  String? cssFontWeight;
-  String? cssFontStyle;
+  SvgFontWeight? cssFontWeight;
+  SvgFontStyle? cssFontStyle;
   SvgLengthPercentage? cssFontSize;
-  String? cssFontFamily;
+  SvgFontFamily? cssFontFamily;
   SvgNumber? cssPathLength;
 
   if (resolvedRules.containsKey('font')) {
@@ -100,13 +100,13 @@ PaintingStyle resolvePaint(
     final List<String> parts = resolvedRules['font']!.split(RegExp(r'\s+'));
     for (final String part in parts) {
       if (part == 'italic') {
-        cssFontStyle = 'italic';
+        cssFontStyle = SvgFontStyle.italic;
       } else if (part == 'bold' || part == 'heavy') {
-        cssFontWeight = 'bold';
+        cssFontWeight = const SvgFontWeightBold();
       } else if (part.contains(RegExp(r'\d'))) {
         cssFontSize = part.toSvgLengthPercentage();
       } else if (part != 'normal') {
-        cssFontFamily ??= part;
+        cssFontFamily ??= part.toSvgFontFamily();
       }
     }
   }
@@ -139,16 +139,16 @@ PaintingStyle resolvePaint(
     cssOpacity = resolvedRules['opacity']!.toSvgLengthPercentage();
   }
   if (resolvedRules.containsKey('font-weight')) {
-    cssFontWeight = resolvedRules['font-weight'];
+    cssFontWeight = resolvedRules['font-weight']!.toSvgFontWeight();
   }
   if (resolvedRules.containsKey('font-style')) {
-    cssFontStyle = resolvedRules['font-style'];
+    cssFontStyle = resolvedRules['font-style']!.toSvgFontStyle();
   }
   if (resolvedRules.containsKey('font-size')) {
     cssFontSize = resolvedRules['font-size']!.toSvgLengthPercentage();
   }
   if (resolvedRules.containsKey('font-family')) {
-    cssFontFamily = resolvedRules['font-family'];
+    cssFontFamily = resolvedRules['font-family']!.toSvgFontFamily();
   }
   if (resolvedRules.containsKey('pathLength')) {
     cssPathLength = resolvedRules['pathLength']!.toSvgNonNegativeNumber();
@@ -276,12 +276,23 @@ PaintingStyle resolvePaint(
       ?.resolve(context, SvgOrientation.vertical);
   final double? finalFontSize = rawFontSize == null ? null : context.scaleVertical(rawFontSize);
 
-  final String? finalFontWeight =
+  final SvgFontWeight? weight =
       cssFontWeight ?? fontAttributes?.weight ?? context.inheritedFontWeight;
-  final String? finalFontStyle =
-      cssFontStyle ?? fontAttributes?.style ?? context.inheritedFontStyle;
-  final String? rawFontFamily =
+  final String? finalFontWeight = switch (weight) {
+    SvgFontWeightNormal() => 'normal',
+    SvgFontWeightBold() => 'bold',
+    SvgFontWeightBolder() => 'bold', // Simplified for now
+    SvgFontWeightLighter() => 'lighter',
+    SvgFontWeightNumeric(value: final double v) => v.toString(),
+    null => null,
+  };
+
+  final SvgFontStyle? style = cssFontStyle ?? fontAttributes?.style ?? context.inheritedFontStyle;
+  final String? finalFontStyle = style?.value;
+
+  final SvgFontFamily? family =
       cssFontFamily ?? fontAttributes?.family ?? context.inheritedFontFamily;
+  final String? rawFontFamily = family?.value;
 
   // Map generic font families to bundled font files for Flutter rendering.
   final String? finalFontFamily = switch (rawFontFamily) {

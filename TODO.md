@@ -163,6 +163,7 @@
             - `SvgFillAttributes` ➔ Property: `fillAttributes`, Mixin: `SvgFillAttributable`
             - `SvgStrokeAttributes` ➔ Property: `strokeAttributes`, Mixin: `SvgStrokeAttributable`
         - [ ] **Structured Transforms**: Define `SvgTransformOperation` model and refactor `SvgGraphicsElement.transform` from `String?` to `List<SvgTransformOperation>?`.
+        - [x] **Strongly Typed Text Styles**: Define SvgFontWeight, SvgFontStyle, and SvgFontFamily and refactor SvgFontAttributes.
         - [x] Comprehensive audit of structural data models.
     - [ ] **XML Conversion Layer (`lib/src/xml_conversion`)**:
         - [x] Hardened `toXmlDocument` with standardized error handling and justified coverage ignore.
@@ -172,7 +173,7 @@
         - [ ] Comprehensive audit of structural parsing logic.
     - [ ] **SVG Conversion Layer (`lib/src/svg_conversion`)**:
         - [x] **Length Extension Consolidation**: Rename `svg_resolution_extensions.dart` to `svg_length_extensions.dart` and merge all length/percentage conversion logic into it for better semantics and clarity.
-        - [ ] Verify data integrity and inheritance resolution.
+        - [ ] Verify data inheritance resolution and painting context propagation.
         - [ ] Comprehensive audit of conversion logic.
     - [ ] **Painting Model Layer (`lib/src/painting_model`)**:
         - [ ] **Strict Attribute Typing**: Refactor `PaintCommand` properties (`pathLength`, `opacity`) from nullable primitives to non-nullable types or strict objects.

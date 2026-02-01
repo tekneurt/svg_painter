@@ -58,6 +58,9 @@ extension ToSvgValue on XmlElement {
         .fill || .stroke || .stopColor => attributeValue.toSvgColor(),
         .strokeLinecap => attributeValue.toSvgStrokeLinecap(),
         .strokeLinejoin => attributeValue.toSvgStrokeLinejoin(),
+        .fontWeight => attributeValue.toSvgFontWeight(),
+        .fontStyle => attributeValue.toSvgFontStyle(),
+        .fontFamily => attributeValue.toSvgFontFamily(),
         .viewBox ||
         .id ||
         .d ||
@@ -65,10 +68,7 @@ extension ToSvgValue on XmlElement {
         .style ||
         .href ||
         .transform ||
-        .gradientTransform ||
-        .fontWeight ||
-        .fontStyle ||
-        .fontFamily => null, // These are strings or special types handled elsewhere
+        .gradientTransform => null, // These are strings or special types handled elsewhere
       };
 
       if (parsedValue == null) {

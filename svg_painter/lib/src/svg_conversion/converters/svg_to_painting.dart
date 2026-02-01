@@ -269,7 +269,6 @@ extension _SvgGroupToPaintCommands on SvgGroup {
       context,
       id: id,
       tagName: 'g',
-      pathLength: null,
       fillAttributes: fillAttributes,
       strokeAttributes: strokeAttributes,
       fontAttributes: fontAttributes,
