@@ -17,7 +17,6 @@ final class SvgGroup extends SvgContainerElement {
     super.cssClass,
     super.inlineStyle,
     super.transform,
-    super.pathLength,
   });
 
   @override

@@ -9,6 +9,7 @@ PaintingStyle resolvePaint(
   SvgPaintingContext context, {
   String? tagName,
   String? id,
+  double? pathLength,
   SvgColor? fill,
   SvgLengthPercentage? fillOpacity,
   SvgStrokeAttributes? stroke,
@@ -19,7 +20,6 @@ PaintingStyle resolvePaint(
   String? fontFamily,
   String? cssClass,
   String? inlineStyle,
-  SvgLength? pathLength,
 }) {
   // 1. Resolve CSS properties
   final Map<String, String> resolvedRules = <String, String>{};
@@ -96,7 +96,7 @@ PaintingStyle resolvePaint(
   String? cssFontStyle;
   SvgLengthPercentage? cssFontSize;
   String? cssFontFamily;
-  SvgLength? cssPathLength;
+  double? cssPathLength;
 
   if (resolvedRules.containsKey('font')) {
     // Basic font shorthand support: [style] [weight] size [family]
@@ -154,7 +154,10 @@ PaintingStyle resolvePaint(
     cssFontFamily = resolvedRules['font-family'];
   }
   if (resolvedRules.containsKey('pathLength')) {
-    cssPathLength = resolvedRules['pathLength']!.toSvgLength();
+    final double? parsed = double.tryParse(resolvedRules['pathLength']!);
+    if (parsed != null && parsed >= 0) {
+      cssPathLength = parsed;
+    }
   }
 
   // Determine if fill/stroke are explicit (not just inherited)
@@ -235,8 +238,7 @@ PaintingStyle resolvePaint(
       finalDashArray = sda.points.map((double d) => context.scaleNormalized(d)).toList();
     }
 
-    final SvgLength? pLength = cssPathLength ?? pathLength;
-    final double? finalPathLength = pLength?.value;
+    final double? finalPathLength = cssPathLength ?? pathLength;
 
     final SvgStrokeLinecap resolvedCap =
         cssStrokeLinecap ?? stroke?.linecap ?? context.inheritedStrokeLinecap ?? .butt;
@@ -256,11 +258,11 @@ PaintingStyle resolvePaint(
       colorArgb: strokeColorArgb,
       shaderId: strokeShaderId,
       width: finalStrokeWidth,
+      pathLength: finalPathLength,
       opacity: finalStrokeOpacity,
       cap: resolvedCap.toStrokeCap(),
       join: resolvedJoin.toStrokeJoin(),
       dashArray: finalDashArray,
-      pathLength: finalPathLength,
       isExplicit: isStrokeExplicit,
       isCurrentColor: isCurrentColor,
     );

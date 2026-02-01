@@ -39,6 +39,7 @@ extension ToSvgRect on XmlElement {
         height: height,
         rx: rx,
         ry: ry,
+        pathLength: toPathLength(),
         fill: common.fill,
         fillOpacity: common.fillOpacity,
         stroke: common.stroke,
@@ -46,7 +47,6 @@ extension ToSvgRect on XmlElement {
         cssClass: common.cssClass,
         inlineStyle: common.inlineStyle,
         transform: common.transform,
-        pathLength: common.pathLength,
         id: common.id,
       ),
     );

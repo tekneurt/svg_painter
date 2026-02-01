@@ -35,6 +35,7 @@ extension ToSvgEllipse on XmlElement {
         cy: cy,
         rx: rx,
         ry: ry,
+        pathLength: toPathLength(),
         fill: common.fill,
         fillOpacity: common.fillOpacity,
         stroke: common.stroke,
@@ -42,7 +43,6 @@ extension ToSvgEllipse on XmlElement {
         cssClass: common.cssClass,
         inlineStyle: common.inlineStyle,
         transform: common.transform,
-        pathLength: common.pathLength,
         id: common.id,
       ),
     );

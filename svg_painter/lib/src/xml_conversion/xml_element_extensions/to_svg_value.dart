@@ -53,7 +53,7 @@ extension ToSvgValue on XmlElement {
         .fontSize ||
         .strokeWidth => attributeValue.toSvgLengthPercentage(),
         .rx || .ry || .width || .height => attributeValue.toSvgLengthPercentageAuto(),
-        .pathLength => attributeValue.toSvgLength(),
+        .pathLength => null, // Handled explicitly by toPathLength()
         .points || .strokeDasharray => attributeValue.toSvgPointList(),
         .fill || .stroke || .stopColor => attributeValue.toSvgColor(),
         .strokeLinecap => attributeValue.toSvgStrokeLinecap(),
@@ -81,5 +81,22 @@ extension ToSvgValue on XmlElement {
         );
       }
     }
+  }
+
+  /// Parses the `pathLength` attribute as a non-negative double.
+  ///
+  /// Returns null if the attribute is missing, malformed, or negative.
+  double? toPathLength() {
+    final String? value = toXmlAttributeValue(XmlAttributeName.pathLength);
+    if (value == null) {
+      return null;
+    }
+
+    final double? parsed = double.tryParse(value);
+    if (parsed == null || parsed < 0) {
+      return null;
+    }
+
+    return parsed;
   }
 }

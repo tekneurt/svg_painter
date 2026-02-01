@@ -96,17 +96,26 @@ extension SvgElementToPaintCommands on SvgElement {
         : context;
 
     return switch (self) {
+      // Containers
       final SvgSvg container => container._toPaintCommands(childContext),
+      final SvgGroup group => group._toPaintCommands(childContext),
+
+      // Basic Shapes (Geometry)
       final SvgCircle circle => circle.toPaintCommands(context),
       final SvgEllipse ellipse => ellipse.toPaintCommands(context),
       final SvgRect rect => rect.toPaintCommands(context),
-      final SvgText text => text.toPaintCommands(context),
-      final SvgGroup group => group._toPaintCommands(childContext),
       final SvgLine line => line.toPaintCommands(context),
-      final SvgPath path => path.toPaintCommands(context),
       final SvgPolyline polyline => polyline.toPaintCommands(context),
       final SvgPolygon polygon => polygon.toPaintCommands(context),
+
+      // Other Geometry
+      final SvgPath path => path.toPaintCommands(context),
+
+      // Other Graphics
+      final SvgText text => text.toPaintCommands(context),
       final SvgUse use => use._toPaintCommands(childContext),
+
+      // Definitions
       final SvgDefs defs => defs._toPaintCommands(childContext),
       final SvgRadialGradient radialGradient =>
         radialGradient
@@ -116,9 +125,16 @@ extension SvgElementToPaintCommands on SvgElement {
         linearGradient
             .toPaintCommand(childContext)
             .map((DefineLinearGradient cmd) => <PaintCommand>[cmd]),
-      final SvgStop _ ||
-      final SvgStyle _ ||
-      final SvgMetadataElement _ => const Success<List<PaintCommand>>(<PaintCommand>[]),
+      final SvgStop _ => const Success<List<PaintCommand>>(<PaintCommand>[]),
+
+      // Non-rendering elements
+      final SvgMetadataElement _ ||
+      final SvgStyle _ => const Success<List<PaintCommand>>(<PaintCommand>[]),
+
+      // This is a safety fallback required by the analyzer because the SvgGeometry mixin
+      // creates a branch in the SvgElement hierarchy that the exhaustiveness checker
+      // cannot verify against concrete leaf classes alone.
+      final SvgGraphicsElement _ => const Success<List<PaintCommand>>(<PaintCommand>[]),
     };
   }
 }

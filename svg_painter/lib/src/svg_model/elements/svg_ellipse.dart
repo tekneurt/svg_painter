@@ -10,6 +10,7 @@ final class SvgEllipse extends SvgBasicShape {
     required this.cy,
     required this.rx,
     required this.ry,
+    super.pathLength,
     super.fill,
     super.fillOpacity,
     super.stroke,
@@ -21,7 +22,6 @@ final class SvgEllipse extends SvgBasicShape {
     super.cssClass,
     super.inlineStyle,
     super.transform,
-    super.pathLength,
     super.id,
   });
 

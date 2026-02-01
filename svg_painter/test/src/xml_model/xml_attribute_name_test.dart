@@ -21,6 +21,7 @@ void main() {
           XmlAttributeName.ry => 'ry',
           XmlAttributeName.width => 'width',
           XmlAttributeName.height => 'height',
+          XmlAttributeName.pathLength => 'pathLength',
           XmlAttributeName.transform => 'transform',
           XmlAttributeName.id => 'id',
           XmlAttributeName.href => 'href',
@@ -48,7 +49,6 @@ void main() {
           XmlAttributeName.fontStyle => 'font-style',
           XmlAttributeName.fontFamily => 'font-family',
           XmlAttributeName.viewBox => 'viewBox',
-          XmlAttributeName.pathLength => 'pathLength',
         };
         expect(value.name, expected, reason: 'Enum $value should map to "$expected"');
       }

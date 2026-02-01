@@ -74,7 +74,10 @@ void main() {
 
       // Assert
       final String output = buffer.toString();
-      expect(output, contains('canvas.drawPath(_dashPath(path, dashArray, pathLength: 100.0), paint);'));
+      expect(
+        output,
+        contains('canvas.drawPath(_dashPath(path, dashArray, pathLength: 100.0), paint);'),
+      );
     });
 
     test('should generate dashed path without pathLength when not provided', () {
@@ -82,10 +85,7 @@ void main() {
       const DrawPolygon command = DrawPolygon(
         points: <double>[0.0, 0.0, 10.0, 0.0, 10.0, 10.0],
         style: PaintingStyle(
-          stroke: PaintingStrokeStyle(
-            colorArgb: 0xFF000000,
-            dashArray: <double>[5.0, 5.0],
-          ),
+          stroke: PaintingStrokeStyle(colorArgb: 0xFF000000, dashArray: <double>[5.0, 5.0]),
         ),
       );
       final StringBuffer buffer = StringBuffer();
@@ -100,12 +100,7 @@ void main() {
 
     test('should return early when unsupported command type is provided', () {
       // Arrange
-      const DrawCircle command = DrawCircle(
-        cx: 0,
-        cy: 0,
-        radius: 5,
-        style: PaintingStyle(),
-      );
+      const DrawCircle command = DrawCircle(cx: 0, cy: 0, radius: 5, style: PaintingStyle());
       final StringBuffer buffer = StringBuffer();
 
       // Act

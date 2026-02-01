@@ -9,6 +9,7 @@ final class SvgCircle extends SvgBasicShape {
     required this.cx,
     required this.cy,
     required this.r,
+    super.pathLength,
     super.fill,
     super.fillOpacity,
     super.stroke,
@@ -20,7 +21,6 @@ final class SvgCircle extends SvgBasicShape {
     super.cssClass,
     super.inlineStyle,
     super.transform,
-    super.pathLength,
     super.id,
   });
 

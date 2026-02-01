@@ -52,7 +52,6 @@ sealed class SvgGraphicsElement extends SvgElement {
     this.cssClass,
     this.inlineStyle,
     this.transform,
-    this.pathLength,
   });
 
   /// The fill color of the element.
@@ -87,16 +86,20 @@ sealed class SvgGraphicsElement extends SvgElement {
 
   /// The transform applied to the element.
   final String? transform;
+}
 
-  /// The total length of the path in user units.
-  final SvgLength? pathLength;
+/// Mixin for elements that define a geometry path (and thus support pathLength).
+mixin SvgGeometry on SvgGraphicsElement {
+  /// The total length of the path in user units (non-negative).
+  /// If null, the natural length of the path is used.
+  double? get pathLength;
 }
 
 /// Base class for basic shape elements (`<circle>`, `<rect>`, etc.).
 @immutable
-sealed class SvgBasicShape extends SvgGraphicsElement {
+sealed class SvgBasicShape extends SvgGraphicsElement with SvgGeometry {
   const SvgBasicShape({
-    super.id,
+    this.pathLength,
     super.fill,
     super.fillOpacity,
     super.stroke,
@@ -108,8 +111,11 @@ sealed class SvgBasicShape extends SvgGraphicsElement {
     super.cssClass,
     super.inlineStyle,
     super.transform,
-    super.pathLength,
+    super.id,
   });
+
+  @override
+  final double? pathLength;
 }
 
 /// Base class for container elements (`<svg>`, `<g>`).
@@ -129,7 +135,6 @@ sealed class SvgContainerElement extends SvgGraphicsElement with SvgParent {
     super.cssClass,
     super.inlineStyle,
     super.transform,
-    super.pathLength,
   });
 
   @override

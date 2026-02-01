@@ -17,6 +17,7 @@ extension ToSvgPolygon on XmlElement {
     return Success<SvgPolygon>(
       SvgPolygon(
         points: points,
+        pathLength: toPathLength(),
         fill: common.fill,
         fillOpacity: common.fillOpacity,
         stroke: common.stroke,
@@ -24,7 +25,6 @@ extension ToSvgPolygon on XmlElement {
         cssClass: common.cssClass,
         inlineStyle: common.inlineStyle,
         transform: common.transform,
-        pathLength: common.pathLength,
         id: common.id,
       ),
     );

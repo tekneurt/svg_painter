@@ -31,11 +31,11 @@ final class PaintingStrokeStyle {
     this.colorArgb,
     this.shaderId,
     this.width = 1.0,
+    this.pathLength,
     this.opacity = 1.0,
     this.cap = PaintingStrokeCap.butt,
     this.join = PaintingStrokeJoin.miter,
     this.dashArray,
-    this.pathLength,
     this.isExplicit = true,
     this.isCurrentColor = false,
   });
@@ -49,6 +49,9 @@ final class PaintingStrokeStyle {
   /// The width of the stroke.
   final double width;
 
+  /// The total length of the path in user units, used for scaling dashes.
+  final double? pathLength;
+
   /// The opacity of the stroke (0.0 to 1.0).
   final double opacity;
 
@@ -60,9 +63,6 @@ final class PaintingStrokeStyle {
 
   /// The pattern of dashes and gaps used to stroke paths.
   final List<double>? dashArray;
-
-  /// The total length of the path in user units, used for scaling dashes.
-  final double? pathLength; // coverage:ignore-line
 
   /// Whether this stroke was explicitly defined on the element (not just inherited).
   final bool isExplicit;

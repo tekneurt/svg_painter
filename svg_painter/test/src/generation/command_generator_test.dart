@@ -162,10 +162,9 @@ void main() {
         // Arrange
         const PaintingStyle style = PaintingStyle(fill: PaintingFillStyle(colorArgb: 0xFFFF1122));
         const DrawCircle command = DrawCircle(cx: 10, cy: 20, radius: 5, style: style);
-        const PaletteResult palette = PaletteResult(
-          <PaintCommand, String>{command: 'fill1'},
-          <PaintCommand, String>{},
-        );
+        const PaletteResult palette = PaletteResult(<PaintCommand, String>{
+          command: 'fill1',
+        }, <PaintCommand, String>{});
         final StringBuffer buffer = StringBuffer();
 
         // Act
@@ -323,9 +322,7 @@ void main() {
 
       test('should handle shader with full opacity in fill', () {
         // Arrange
-        const PaintingStyle style = PaintingStyle(
-          fill: PaintingFillStyle(shaderId: 's1'),
-        );
+        const PaintingStyle style = PaintingStyle(fill: PaintingFillStyle(shaderId: 's1'));
         const DrawCircle command = DrawCircle(cx: 10, cy: 20, radius: 5, style: style);
         final StringBuffer buffer = StringBuffer();
 
@@ -340,9 +337,7 @@ void main() {
 
       test('should handle shader with full opacity in stroke', () {
         // Arrange
-        const PaintingStyle style = PaintingStyle(
-          stroke: PaintingStrokeStyle(shaderId: 's2'),
-        );
+        const PaintingStyle style = PaintingStyle(stroke: PaintingStrokeStyle(shaderId: 's2'));
         const DrawCircle command = DrawCircle(cx: 10, cy: 20, radius: 5, style: style);
         final StringBuffer buffer = StringBuffer();
 
@@ -373,8 +368,13 @@ void main() {
 
       test('should do nothing if transform is empty string', () {
         // Arrange
-        const DrawCircle command =
-            DrawCircle(cx: 0, cy: 0, radius: 5, style: PaintingStyle(), transform: '   ');
+        const DrawCircle command = DrawCircle(
+          cx: 0,
+          cy: 0,
+          radius: 5,
+          style: PaintingStyle(),
+          transform: '   ',
+        );
         final StringBuffer buffer = StringBuffer();
 
         // Act
@@ -388,8 +388,13 @@ void main() {
 
       test('should skip unknown or invalid transform functions', () {
         // Arrange
-        const DrawCircle command =
-            DrawCircle(cx: 0, cy: 0, radius: 5, style: PaintingStyle(), transform: 'unknown(1, 2)');
+        const DrawCircle command = DrawCircle(
+          cx: 0,
+          cy: 0,
+          radius: 5,
+          style: PaintingStyle(),
+          transform: 'unknown(1, 2)',
+        );
         final StringBuffer buffer = StringBuffer();
 
         // Act

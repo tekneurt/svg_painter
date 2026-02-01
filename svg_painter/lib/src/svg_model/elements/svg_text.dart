@@ -20,7 +20,6 @@ final class SvgText extends SvgGraphicsElement {
     super.cssClass,
     super.inlineStyle,
     super.transform,
-    super.pathLength,
     super.id,
   });
 

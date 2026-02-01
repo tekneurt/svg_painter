@@ -23,7 +23,6 @@ final class SvgUse extends SvgGraphicsElement {
     super.cssClass,
     super.inlineStyle,
     super.transform,
-    super.pathLength,
   });
 
   /// The URI reference to the element to be cloned.

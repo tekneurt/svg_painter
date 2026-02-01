@@ -27,6 +27,7 @@ extension ToSvgCircle on XmlElement {
         cx: cx,
         cy: cy,
         r: r,
+        pathLength: toPathLength(),
         fill: common.fill,
         fillOpacity: common.fillOpacity,
         stroke: common.stroke,
@@ -34,7 +35,6 @@ extension ToSvgCircle on XmlElement {
         cssClass: common.cssClass,
         inlineStyle: common.inlineStyle,
         transform: common.transform,
-        pathLength: common.pathLength,
         id: common.id,
       ),
     );

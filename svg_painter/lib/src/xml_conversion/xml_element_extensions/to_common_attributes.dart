@@ -18,7 +18,6 @@ typedef CommonAttributes = ({
   String? cssClass,
   String? inlineStyle,
   String? transform,
-  SvgLength? pathLength,
 });
 
 extension ToCommonAttributes on XmlElement {
@@ -44,7 +43,6 @@ extension ToCommonAttributes on XmlElement {
       cssClass: toXmlAttributeValue(XmlAttributeName.className),
       inlineStyle: toXmlAttributeValue(XmlAttributeName.style),
       transform: toXmlAttributeValue(XmlAttributeName.transform),
-      pathLength: toSvgValueOrNull<SvgLength>(elementName, XmlAttributeName.pathLength),
     );
   }
 }

@@ -12,6 +12,7 @@ final class SvgRect extends SvgBasicShape {
     required this.height,
     required this.rx,
     required this.ry,
+    super.pathLength,
     super.fill,
     super.fillOpacity,
     super.stroke,
@@ -23,7 +24,6 @@ final class SvgRect extends SvgBasicShape {
     super.cssClass,
     super.inlineStyle,
     super.transform,
-    super.pathLength,
     super.id,
   });
 

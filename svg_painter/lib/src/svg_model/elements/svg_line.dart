@@ -10,6 +10,7 @@ final class SvgLine extends SvgBasicShape {
     required this.y1,
     required this.x2,
     required this.y2,
+    super.pathLength,
     super.fill,
     super.fillOpacity,
     super.stroke,
@@ -21,7 +22,6 @@ final class SvgLine extends SvgBasicShape {
     super.cssClass,
     super.inlineStyle,
     super.transform,
-    super.pathLength,
     super.id,
   });
 

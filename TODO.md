@@ -156,6 +156,7 @@
         - [x] Exhaustive Enum regression tests for `XmlAttributeName` and `XmlElementName`.
         - [x] Comprehensive audit of structural data models.
     - [ ] **SVG Model Layer (`lib/src/svg_model`)**:
+        - [x] **Mixin Refactoring**: Implement attribute grouping via mixins to ensure type safety (e.g., `mixin SvgGeometry`).
         - [ ] **Structured Transforms**: Define `SvgTransformOperation` model and refactor `SvgGraphicsElement.transform` from `String?` to `List<SvgTransformOperation>?`.
         - [ ] **Strongly Typed Text Styles**: Define `SvgFontWeight` and `SvgFontStyle` enums and refactor `SvgGraphicsElement`.
         - [x] Comprehensive audit of structural data models.
@@ -196,6 +197,8 @@
     - Verify odd-length lists are handled (truncated or errored) as per spec for each attribute type.
     - Ensure invalid values (e.g. negative radius) result in spec-compliant behavior (ignore element vs ignore attribute).
 
+    - [ ] **Strong Typing of Painting Model**: Audit all styles and commands to replace `String?` with dedicated Enums or value objects.
+    - [ ] **Lock Multi-line Formatting**: Consistently add trailing commas to all collection literals and parameter lists to ensure stable multi-line formatting by `dart format`.
 ### Phase 4: Essential Elements (0.3.0)
 *Reaching standard compatibility with essential SVG elements.*
 
@@ -237,3 +240,6 @@
 - [ ] **Complex Filter Primitives**: Lighting, turbulence, displacement maps, color matrices.
 - [ ] **Interactive Elements**: Event handling (taps, hovers) for SVG shapes.
 - [ ] **Misc Attributes**: Rendering hints and CSS interpolation properties.
+- [ ] **Future Refactoring**:
+    - [ ] `mixin SvgViewBoxed`: Holds `viewBox` and `preserveAspectRatio` (applied to: `SvgSvg`, `SvgSymbol`, `SvgMarker`).
+    - [ ] `mixin SvgBounded`: Holds `x`, `y`, `width`, `height` (applied to: `SvgRect`, `SvgSvg`, `SvgUse`, `SvgImage`).

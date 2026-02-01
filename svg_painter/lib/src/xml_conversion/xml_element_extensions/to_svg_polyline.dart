@@ -17,6 +17,7 @@ extension ToSvgPolyline on XmlElement {
     return Success<SvgPolyline>(
       SvgPolyline(
         points: points,
+        pathLength: toPathLength(),
         fill: common.fill,
         fillOpacity: common.fillOpacity,
         stroke: common.stroke,
@@ -24,7 +25,6 @@ extension ToSvgPolyline on XmlElement {
         cssClass: common.cssClass,
         inlineStyle: common.inlineStyle,
         transform: common.transform,
-        pathLength: common.pathLength,
         id: common.id,
       ),
     );

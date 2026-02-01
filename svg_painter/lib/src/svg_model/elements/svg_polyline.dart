@@ -7,6 +7,7 @@ part of '../svg_element.dart';
 final class SvgPolyline extends SvgBasicShape {
   const SvgPolyline({
     required this.points,
+    super.pathLength,
     super.fill,
     super.fillOpacity,
     super.stroke,
@@ -18,7 +19,6 @@ final class SvgPolyline extends SvgBasicShape {
     super.cssClass,
     super.inlineStyle,
     super.transform,
-    super.pathLength,
     super.id,
   });
 

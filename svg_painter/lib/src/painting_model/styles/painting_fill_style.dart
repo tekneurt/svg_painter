@@ -15,7 +15,7 @@ final class PaintingFillStyle {
   final int? colorArgb;
 
   /// The ID of the shader (e.g., gradient) to use for filling.
-  final String? shaderId; // coverage:ignore-line
+  final String? shaderId;
 
   /// The opacity of the fill (0.0 to 1.0).
   final double opacity;

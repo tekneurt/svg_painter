@@ -80,6 +80,21 @@ void main() {
       expect(result, isNull);
     });
 
+    test('toSvgValueOrNull should return null for pathLength (handled by toPathLength)', () {
+      // Arrange
+      final XmlDocument document = XmlDocument.parse('<rect pathLength="100" />');
+      final XmlElement element = document.rootElement;
+
+      // Act
+      final SvgBaseValue? result = element.toSvgValueOrNull<SvgBaseValue>(
+        XmlElementName.rect,
+        XmlAttributeName.pathLength,
+      );
+
+      // Assert
+      expect(result, isNull);
+    });
+
     test('toSvgValueOrNull should throw UnsupportedError on type mismatch', () {
       // Arrange
       final XmlDocument document = XmlDocument.parse('<rect x="10" />');
@@ -97,7 +112,6 @@ void main() {
       final Map<XmlAttributeName, String> tests = <XmlAttributeName, String>{
         XmlAttributeName.x: '10',
         XmlAttributeName.width: '100',
-        XmlAttributeName.pathLength: '50',
         XmlAttributeName.points: '0,0 10,10',
         XmlAttributeName.fill: 'red',
         XmlAttributeName.strokeLinecap: 'round',
@@ -105,7 +119,9 @@ void main() {
       };
 
       for (final MapEntry<XmlAttributeName, String> entry in tests.entries) {
-        final XmlDocument document = XmlDocument.parse('<rect ${entry.key.name}="${entry.value}" />');
+        final XmlDocument document = XmlDocument.parse(
+          '<rect ${entry.key.name}="${entry.value}" />',
+        );
         final XmlElement element = document.rootElement;
         final SvgBaseValue? result = element.toSvgValueOrNull<SvgBaseValue>(
           XmlElementName.rect,
@@ -113,6 +129,30 @@ void main() {
         );
         expect(result, isNotNull, reason: 'Failed for ${entry.key}');
       }
+    });
+
+    test('toPathLength should return parsed double for valid pathLength', () {
+      // Arrange
+      final XmlDocument document = XmlDocument.parse('<path pathLength="100" />');
+      final XmlElement element = document.rootElement;
+
+      // Act
+      final double? result = element.toPathLength();
+
+      // Assert
+      expect(result, 100.0);
+    });
+
+    test('toPathLength should return null for negative pathLength', () {
+      // Arrange
+      final XmlDocument document = XmlDocument.parse('<path pathLength="-10" />');
+      final XmlElement element = document.rootElement;
+
+      // Act
+      final double? result = element.toPathLength();
+
+      // Assert
+      expect(result, isNull);
     });
   });
 }

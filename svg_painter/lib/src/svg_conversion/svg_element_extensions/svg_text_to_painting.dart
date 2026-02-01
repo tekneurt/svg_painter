@@ -21,7 +21,6 @@ extension SvgTextToPaintCommands on SvgText {
       fill: fill,
       fillOpacity: fillOpacity,
       stroke: stroke,
-      pathLength: pathLength,
       opacity: opacity,
       fontSize: fontSize,
       fontWeight: fontWeight,

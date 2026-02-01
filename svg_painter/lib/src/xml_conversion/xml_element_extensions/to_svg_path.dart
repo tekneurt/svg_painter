@@ -20,6 +20,7 @@ extension ToSvgPath on XmlElement {
     return Success<SvgPath>(
       SvgPath(
         d: d,
+        pathLength: toPathLength(),
         fill: common.fill,
         fillOpacity: common.fillOpacity,
         stroke: common.stroke,
@@ -27,7 +28,6 @@ extension ToSvgPath on XmlElement {
         cssClass: common.cssClass,
         inlineStyle: common.inlineStyle,
         transform: common.transform,
-        pathLength: common.pathLength,
         id: common.id,
       ),
     );

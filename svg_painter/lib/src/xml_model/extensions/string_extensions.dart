@@ -16,7 +16,9 @@ extension ToXml on String {
       return Failure<XmlDocument>('XML parsing failed: ${e.message}');
     } catch (e) {
       // Defensive catch-all for untreatable Errors (all expected Exceptions are handled explicitly).
-      return Failure<XmlDocument>('$untreatableErrorPrefix during XML parsing: $e'); // coverage:ignore-line
+      // coverage:ignore-start
+      return Failure<XmlDocument>('$untreatableErrorPrefix during XML parsing: $e');
+      // coverage:ignore-end
     }
   }
 }
