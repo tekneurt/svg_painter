@@ -2,6 +2,7 @@ import 'package:meta/meta.dart';
 
 part 'values/svg_auto.dart';
 part 'values/svg_length.dart';
+part 'values/svg_number.dart';
 part 'values/svg_percentage.dart';
 part 'values/svg_view_box.dart';
 part 'values/svg_color.dart';

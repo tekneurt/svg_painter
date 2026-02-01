@@ -9,7 +9,7 @@ PaintingStyle resolvePaint(
   SvgPaintingContext context, {
   String? tagName,
   String? id,
-  double? pathLength,
+  SvgNumber? pathLength,
   SvgColor? fill,
   SvgLengthPercentage? fillOpacity,
   SvgStrokeAttributes? stroke,
@@ -96,7 +96,7 @@ PaintingStyle resolvePaint(
   String? cssFontStyle;
   SvgLengthPercentage? cssFontSize;
   String? cssFontFamily;
-  double? cssPathLength;
+  SvgNumber? cssPathLength;
 
   if (resolvedRules.containsKey('font')) {
     // Basic font shorthand support: [style] [weight] size [family]
@@ -133,10 +133,10 @@ PaintingStyle resolvePaint(
     cssStrokeDasharray = resolvedRules['stroke-dasharray']!.toSvgPointList();
   }
   if (resolvedRules.containsKey('stroke-linecap')) {
-    cssStrokeLinecap = SvgStrokeLinecap.from(resolvedRules['stroke-linecap']!);
+    cssStrokeLinecap = resolvedRules['stroke-linecap']!.toSvgStrokeLinecap();
   }
   if (resolvedRules.containsKey('stroke-linejoin')) {
-    cssStrokeLinejoin = SvgStrokeLinejoin.from(resolvedRules['stroke-linejoin']!);
+    cssStrokeLinejoin = resolvedRules['stroke-linejoin']!.toSvgStrokeLinejoin();
   }
   if (resolvedRules.containsKey('opacity')) {
     cssOpacity = resolvedRules['opacity']!.toSvgLengthPercentage();
@@ -154,10 +154,7 @@ PaintingStyle resolvePaint(
     cssFontFamily = resolvedRules['font-family'];
   }
   if (resolvedRules.containsKey('pathLength')) {
-    final double? parsed = double.tryParse(resolvedRules['pathLength']!);
-    if (parsed != null && parsed >= 0) {
-      cssPathLength = parsed;
-    }
+    cssPathLength = resolvedRules['pathLength']!.toSvgNonNegativeNumber();
   }
 
   // Determine if fill/stroke are explicit (not just inherited)
@@ -238,7 +235,7 @@ PaintingStyle resolvePaint(
       finalDashArray = sda.points.map((double d) => context.scaleNormalized(d)).toList();
     }
 
-    final double? finalPathLength = cssPathLength ?? pathLength;
+    final double? finalPathLength = (cssPathLength ?? pathLength)?.value;
 
     final SvgStrokeLinecap resolvedCap =
         cssStrokeLinecap ?? stroke?.linecap ?? context.inheritedStrokeLinecap ?? .butt;

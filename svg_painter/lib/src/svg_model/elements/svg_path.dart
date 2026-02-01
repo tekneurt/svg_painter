@@ -24,7 +24,7 @@ final class SvgPath extends SvgGraphicsElement with SvgGeometry {
   final String d;
 
   @override
-  final double? pathLength;
+  final SvgNumber? pathLength;
 
   @override
   String toString() => 'SvgPath(d: $d, id: $id)';

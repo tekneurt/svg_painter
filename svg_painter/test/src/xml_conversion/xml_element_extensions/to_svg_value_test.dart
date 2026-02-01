@@ -80,7 +80,7 @@ void main() {
       expect(result, isNull);
     });
 
-    test('toSvgValueOrNull should return null for pathLength (handled by toPathLength)', () {
+    test('toSvgValueOrNull should return parsed SvgNonNegativeNumber for pathLength', () {
       // Arrange
       final XmlDocument document = XmlDocument.parse('<rect pathLength="100" />');
       final XmlElement element = document.rootElement;
@@ -92,7 +92,8 @@ void main() {
       );
 
       // Assert
-      expect(result, isNull);
+      expect(result, isA<SvgNonNegativeNumber>());
+      expect((result as SvgNonNegativeNumber).value, 100.0);
     });
 
     test('toSvgValueOrNull should throw UnsupportedError on type mismatch', () {
@@ -112,6 +113,7 @@ void main() {
       final Map<XmlAttributeName, String> tests = <XmlAttributeName, String>{
         XmlAttributeName.x: '10',
         XmlAttributeName.width: '100',
+        XmlAttributeName.pathLength: '50',
         XmlAttributeName.points: '0,0 10,10',
         XmlAttributeName.fill: 'red',
         XmlAttributeName.strokeLinecap: 'round',
@@ -131,16 +133,17 @@ void main() {
       }
     });
 
-    test('toPathLength should return parsed double for valid pathLength', () {
+    test('toPathLength should return SvgNumber for valid pathLength', () {
       // Arrange
       final XmlDocument document = XmlDocument.parse('<path pathLength="100" />');
       final XmlElement element = document.rootElement;
 
       // Act
-      final double? result = element.toPathLength();
+      final SvgNumber? result = element.toPathLength();
 
       // Assert
-      expect(result, 100.0);
+      expect(result, isA<SvgNonNegativeNumber>());
+      expect(result?.value, 100.0);
     });
 
     test('toPathLength should return null for negative pathLength', () {
@@ -149,7 +152,7 @@ void main() {
       final XmlElement element = document.rootElement;
 
       // Act
-      final double? result = element.toPathLength();
+      final SvgNumber? result = element.toPathLength();
 
       // Assert
       expect(result, isNull);

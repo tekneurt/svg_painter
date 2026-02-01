@@ -11,13 +11,17 @@ extension ToSvgPolyline on XmlElement {
     const XmlElementName elementName = XmlElementName.polyline;
 
     final SvgPointList points = toSvgValue<SvgPointList>(elementName, XmlAttributeName.points);
+    final SvgNonNegativeNumber? pathLength = toSvgValueOrNull<SvgNonNegativeNumber>(
+      elementName,
+      XmlAttributeName.pathLength,
+    );
 
     final CommonAttributes common = toCommonAttributes(elementName);
 
     return Success<SvgPolyline>(
       SvgPolyline(
         points: points,
-        pathLength: toPathLength(),
+        pathLength: pathLength,
         fill: common.fill,
         fillOpacity: common.fillOpacity,
         stroke: common.stroke,

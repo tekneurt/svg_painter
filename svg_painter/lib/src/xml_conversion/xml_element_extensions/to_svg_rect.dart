@@ -28,6 +28,10 @@ extension ToSvgRect on XmlElement {
       elementName,
       XmlAttributeName.ry,
     );
+    final SvgNonNegativeNumber? pathLength = toSvgValueOrNull<SvgNonNegativeNumber>(
+      elementName,
+      XmlAttributeName.pathLength,
+    );
 
     final CommonAttributes common = toCommonAttributes(elementName);
 
@@ -39,7 +43,7 @@ extension ToSvgRect on XmlElement {
         height: height,
         rx: rx,
         ry: ry,
-        pathLength: toPathLength(),
+        pathLength: pathLength,
         fill: common.fill,
         fillOpacity: common.fillOpacity,
         stroke: common.stroke,

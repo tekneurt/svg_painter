@@ -92,7 +92,7 @@ sealed class SvgGraphicsElement extends SvgElement {
 mixin SvgGeometry on SvgGraphicsElement {
   /// The total length of the path in user units (non-negative).
   /// If null, the natural length of the path is used.
-  double? get pathLength;
+  SvgNumber? get pathLength;
 }
 
 /// Base class for basic shape elements (`<circle>`, `<rect>`, etc.).
@@ -115,7 +115,7 @@ sealed class SvgBasicShape extends SvgGraphicsElement with SvgGeometry {
   });
 
   @override
-  final double? pathLength;
+  final SvgNumber? pathLength;
 }
 
 /// Base class for container elements (`<svg>`, `<g>`).
