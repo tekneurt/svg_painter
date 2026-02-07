@@ -56,5 +56,51 @@ void main() {
         ),
       );
     });
+
+    test('should NOT collect CSS rules from <style> blocks inside nested <svg> elements', () {
+      // Arrange
+      final XmlDocument document = XmlDocument.parse('''
+        <svg>
+          <style>.outer { fill: red; }</style>
+          <g>
+            <svg>
+              <style>.inner { fill: blue; }</style>
+            </svg>
+          </g>
+        </svg>
+      ''');
+      final XmlElement element = document.rootElement;
+
+      // Act
+      final Result<SvgRoot> result = element.toSvgRoot();
+
+      // Assert
+      expect(result, isA<Success<SvgRoot>>());
+      final SvgRoot root = (result as Success<SvgRoot>).value;
+      final Map<String, Map<String, String>> rules = root.styleSheet.rules;
+
+      expect(rules, contains('outer'));
+      expect(rules, isNot(contains('inner')));
+    });
+
+    test('should collect CSS rules from <style> blocks inside <defs>', () {
+      // Arrange
+      final XmlDocument document = XmlDocument.parse('''
+        <svg>
+          <defs>
+            <style>.def-style { fill: green; }</style>
+          </defs>
+        </svg>
+      ''');
+      final XmlElement element = document.rootElement;
+
+      // Act
+      final Result<SvgRoot> result = element.toSvgRoot();
+
+      // Assert
+      expect(result, isA<Success<SvgRoot>>());
+      final SvgRoot root = (result as Success<SvgRoot>).value;
+      expect(root.styleSheet.rules, contains('def-style'));
+    });
   });
 }

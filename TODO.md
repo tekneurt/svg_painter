@@ -169,7 +169,7 @@
         - [x] Hardened `toXmlDocument` with standardized error handling and justified coverage ignore.
         - [x] Implement lenient child parsing (skip unknown tags instead of failing).
         - [x] Add namespace awareness to tag identification.
-        - [ ] Refine `<style>` element discovery scope.
+        - [x] Refine `<style>` element discovery scope.
         - [ ] Comprehensive audit of structural parsing logic.
     - [ ] **SVG Conversion Layer (`lib/src/svg_conversion`)**:
         - [x] **Length Extension Consolidation**: Rename `svg_resolution_extensions.dart` to `svg_length_extensions.dart` and merge all length/percentage conversion logic into it for better semantics and clarity.
