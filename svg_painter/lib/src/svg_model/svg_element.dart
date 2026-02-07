@@ -12,6 +12,7 @@ part 'elements/base/svg_fill_attributable.dart';
 part 'elements/base/svg_font_attributable.dart';
 part 'elements/base/svg_geometry.dart';
 part 'elements/base/svg_graphics_element.dart';
+part 'elements/base/svg_ignored_element.dart';
 part 'elements/base/svg_metadata_element.dart';
 part 'elements/base/svg_parent.dart';
 part 'elements/base/svg_stroke_attributable.dart';

@@ -130,7 +130,9 @@ extension SvgElementToPaintCommands on SvgElement {
 
       // Non-rendering elements
       final SvgMetadataElement _ ||
-      final SvgStyle _ => const Success<List<PaintCommand>>(<PaintCommand>[]),
+      final SvgStyle _ ||
+      final SvgIgnoredElement _ =>
+        const Success<List<PaintCommand>>(<PaintCommand>[]),
 
       // Safety fallback
       _ => const Success<List<PaintCommand>>(<PaintCommand>[]),

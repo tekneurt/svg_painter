@@ -258,6 +258,7 @@ void main() {
             SvgTitle(content: 'Title'),
             SvgDesc(content: 'Desc'),
             SvgStyle(),
+            SvgIgnoredElement(),
           ],
         );
 

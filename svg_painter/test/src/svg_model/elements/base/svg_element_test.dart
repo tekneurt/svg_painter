@@ -19,5 +19,10 @@ void main() {
       // Assert
       expect(result, contains('id: base-element'));
     });
+
+    test('SvgIgnoredElement should return correct string representation', () {
+      const SvgIgnoredElement element = SvgIgnoredElement(id: 'ignore-me');
+      expect(element.toString(), 'SvgIgnoredElement(id: ignore-me)');
+    });
   });
 }

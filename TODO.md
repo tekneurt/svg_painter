@@ -168,7 +168,7 @@
     - [ ] **XML Conversion Layer (`lib/src/xml_conversion`)**:
         - [x] Hardened `toXmlDocument` with standardized error handling and justified coverage ignore.
         - [x] Implement lenient child parsing (skip unknown tags instead of failing).
-        - [ ] Add namespace awareness to tag identification.
+        - [x] Add namespace awareness to tag identification.
         - [ ] Refine `<style>` element discovery scope.
         - [ ] Comprehensive audit of structural parsing logic.
     - [ ] **SVG Conversion Layer (`lib/src/svg_conversion`)**:

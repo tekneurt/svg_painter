@@ -273,6 +273,23 @@ void main() {
       expect(group.fillAttributes?.color, isA<SvgNamedColor>());
     });
 
+    test('should return SvgIgnoredElement when foreign namespace element is provided', () {
+      // Arrange
+      final XmlDocument document = XmlDocument.parse(
+        '<root xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"><inkscape:perspective id="p1" /></root>',
+      );
+      final XmlElement element = document.rootElement.firstElementChild!;
+
+      // Act
+      final Result<SvgElement> result = element.toSvgElement();
+
+      // Assert
+      expect(result, isA<Success<SvgElement>>());
+      final SvgElement value = (result as Success<SvgElement>).value;
+      expect(value, isA<SvgIgnoredElement>());
+      expect(value.id, 'p1');
+    });
+
     group('Regression tests', () {
       test(
         'should convert <circle> with lengths correctly when coordinate values are provided',
