@@ -10,7 +10,7 @@ sealed class SvgGraphicsElement extends SvgElement with SvgFillAttributable, Svg
     this.opacity,
     this.cssClass,
     this.inlineStyle,
-    this.transform,
+    this.transformAttributes,
   });
 
   @override
@@ -29,5 +29,5 @@ sealed class SvgGraphicsElement extends SvgElement with SvgFillAttributable, Svg
   final String? inlineStyle;
 
   /// The transform applied to the element.
-  final String? transform;
+  final SvgTransformAttributes? transformAttributes;
 }

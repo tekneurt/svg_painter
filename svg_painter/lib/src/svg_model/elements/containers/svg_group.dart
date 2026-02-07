@@ -12,7 +12,7 @@ final class SvgGroup extends SvgContainerElement {
     super.opacity,
     super.cssClass,
     super.inlineStyle,
-    super.transform,
+    super.transformAttributes,
   });
 
   @override

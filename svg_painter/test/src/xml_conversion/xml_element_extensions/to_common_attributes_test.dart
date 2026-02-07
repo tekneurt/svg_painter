@@ -25,7 +25,7 @@ void main() {
       expect(attrs.fontAttributes.family?.value, 'Roboto');
       expect(attrs.cssClass, 'cls1');
       expect(attrs.inlineStyle, 'fill: green');
-      expect(attrs.transform, 'scale(2)');
+      expect(attrs.transformAttributes?.operations.first, isA<SvgScale>());
     });
 
     test('should return empty attribute groups when attributes are missing', () {

@@ -18,7 +18,7 @@ final class SvgUse extends SvgGraphicsElement with SvgFontAttributable {
     super.opacity,
     super.cssClass,
     super.inlineStyle,
-    super.transform,
+    super.transformAttributes,
   });
 
   /// The URI reference to the element to be cloned.

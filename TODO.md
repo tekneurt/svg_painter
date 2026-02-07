@@ -162,7 +162,7 @@
             - `SvgFontAttributes` ➔ Property: `fontAttributes`, Mixin: `SvgFontAttributable`
             - `SvgFillAttributes` ➔ Property: `fillAttributes`, Mixin: `SvgFillAttributable`
             - `SvgStrokeAttributes` ➔ Property: `strokeAttributes`, Mixin: `SvgStrokeAttributable`
-        - [ ] **Structured Transforms**: Define `SvgTransformOperation` model and refactor `SvgGraphicsElement.transform` from `String?` to `List<SvgTransformOperation>?`.
+        - [x] **Structured Transforms**: Define `SvgTransformOperation` model and refactor `SvgGraphicsElement.transform` from `String?` to `List<SvgTransformOperation>?`.
         - [x] **Strongly Typed Text Styles**: Define SvgFontWeight, SvgFontStyle, and SvgFontFamily and refactor SvgFontAttributes.
         - [x] Comprehensive audit of structural data models.
     - [ ] **XML Conversion Layer (`lib/src/xml_conversion`)**:
@@ -177,10 +177,10 @@
         - [ ] Comprehensive audit of conversion logic.
     - [ ] **Painting Model Layer (`lib/src/painting_model`)**:
         - [ ] **Strict Attribute Typing**: Refactor `PaintCommand` properties (`pathLength`, `opacity`) from nullable primitives to non-nullable types or strict objects.
-        - [ ] **Strongly Typed Commands**: Refactor `transform` string to structured `List<TransformOperation>` or `Matrix4`.
+        - [x] **Strongly Typed Commands**: Refactor `transform` string to structured `List<TransformOperation>` or `Matrix4`.
         - [ ] Comprehensive audit of command and style models.
     - [ ] **Generation Layer (`lib/src/generation`)**:
-        - [ ] Finalize code emission patterns and property safety.
+        - [x] Finalize code emission patterns and property safety.
         - [ ] Comprehensive audit of code generation logic.
 - [ ] **Bang Operator (!) Audit**: Systematically audit the codebase for the `!` operator and replace it with safe null handling (positive equality checks, `if (x == null) ...`, or explicit `assert(x != null)`) to eliminate potential runtime crashes.
 - [ ] **Coverage Exception Audit**: Investigate all `// coverage:ignore-line` and `// coverage:ignore-start/end` markers across the codebase to determine if the ignored code can be safely tested or if the ignore markers are still justified.

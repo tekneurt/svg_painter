@@ -1,4 +1,5 @@
 import '../painting_model/_painting_model.dart';
+import '../svg_model/_svg_model.dart';
 import 'command_generator.dart';
 import 'flutter_color_map.dart';
 
@@ -22,7 +23,17 @@ class RadialGradientGenerator extends CommandGenerator<DefineRadialGradient> {
         '[${command.stops.map((GradientStop s) => FlutterColorMap.getColorCode(s.colorArgb)).join(', ')}]';
     final String stops =
         '[${command.stops.map((GradientStop s) => s.offset.toString()).join(', ')}]';
-    final String transform = command.transform == 'rotate(90)'
+    
+    bool isRot90 = false;
+    final SvgTransformAttributes? ta = command.transformAttributes;
+    if (ta != null && ta.operations.length == 1) {
+      final SvgTransformOperation op = ta.operations[0];
+      if (op is SvgRotate && op.angle == 90.0) {
+        isRot90 = true;
+      }
+    }
+
+    final String transform = isRot90
         ? 'transform: const GradientRotation(3.141592653589793 / 2),'
         : '';
 

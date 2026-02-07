@@ -9,7 +9,6 @@ final class DrawText extends DrawCommand {
     required this.y,
     required this.style,
     super.id,
-    this.transform,
   });
 
   /// The x-axis coordinate of the starting point of the text.
@@ -25,9 +24,6 @@ final class DrawText extends DrawCommand {
   @override
   final PaintingStyle style;
 
-  /// The transform to apply.
-  final String? transform;
-
   @override
-  String toString() => 'DrawText(x: $x, y: $y, text: $text, style: $style, transform: $transform)';
+  String toString() => 'DrawText(x: $x, y: $y, text: $text, style: $style, id: $id)';
 }

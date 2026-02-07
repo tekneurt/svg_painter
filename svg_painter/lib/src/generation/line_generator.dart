@@ -17,11 +17,10 @@ class LineGenerator extends ShapeGenerator<DrawLine> {
     List<InheritedProperty>? inheritedFills,
     List<InheritedProperty>? inheritedStrokes,
   }) {
-    wrapWithTransform(buffer, command.transform, () {
+    wrapWithTransform(buffer, command.style.transformAttributes, () {
       final String p1 = 'const Offset(${command.x1}, ${command.y1})';
       final String p2 = 'const Offset(${command.x2}, ${command.y2})';
-      final String bounds =
-          'Rect.fromPoints($p1, $p2)'; // Not exact bounds but acceptable for gradient
+      final String bounds = 'Rect.fromPoints($p1, $p2)';
       generatePaintingCode(
         buffer,
         command,

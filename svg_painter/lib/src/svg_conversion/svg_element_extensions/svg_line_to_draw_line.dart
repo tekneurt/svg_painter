@@ -2,7 +2,6 @@ import '../../base/_base.dart';
 import '../../painting_model/_painting_model.dart';
 import '../../svg_model/_svg_model.dart';
 import '../converters/_converters.dart';
-import '../svg_transform_parser.dart';
 import '../svg_value_extensions/_svg_value_extensions.dart';
 
 /// Extension to convert [SvgLine] to [PaintCommand]s.
@@ -19,6 +18,7 @@ extension SvgLineToPaintCommands on SvgLine {
       opacity: opacity,
       cssClass: cssClass,
       inlineStyle: inlineStyle,
+      transformAttributes: context.transformAttributes(transformAttributes),
     );
 
     final double finalX1 = context.transformX(x1.resolve(context, .horizontal));
@@ -34,7 +34,6 @@ extension SvgLineToPaintCommands on SvgLine {
         y2: finalY2,
         style: paint,
         id: id,
-        transform: SvgTransformParser.scaleTransform(transform, context.parentSx, context.parentSy),
       ),
     ]);
   }

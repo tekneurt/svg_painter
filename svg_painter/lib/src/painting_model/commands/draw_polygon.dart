@@ -3,7 +3,7 @@ part of '../paint_command.dart';
 /// A command to draw a closed polygon.
 @immutable
 final class DrawPolygon extends DrawCommand {
-  const DrawPolygon({required this.points, required this.style, super.id, this.transform});
+  const DrawPolygon({required this.points, required this.style, super.id});
 
   final List<double> points;
 
@@ -11,9 +11,7 @@ final class DrawPolygon extends DrawCommand {
   @override
   final PaintingStyle style;
 
-  final String? transform;
-
   @override
   String toString() =>
-      'DrawPolygon(points: ${points.length}, style: $style, transform: $transform)';
+      'DrawPolygon(points: ${points.length}, style: $style, id: $id)';
 }

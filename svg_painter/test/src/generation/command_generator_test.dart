@@ -1,6 +1,7 @@
 import 'package:svg_painter/src/generation/_generation.dart';
 import 'package:svg_painter/src/painting_model/paint_command.dart';
 import 'package:svg_painter/src/painting_model/styles/painting_style.dart';
+import 'package:svg_painter/src/svg_model/_svg_model.dart';
 import 'package:test/test.dart';
 
 // Concrete implementation for testing abstract ShapeGenerator
@@ -18,7 +19,7 @@ class TestShapeGenerator extends ShapeGenerator<DrawCircle> {
     List<InheritedProperty>? inheritedFills,
     List<InheritedProperty>? inheritedStrokes,
   }) {
-    wrapWithTransform(buffer, command.transform, () {
+    wrapWithTransform(buffer, command.style.transformAttributes, () {
       generatePaintingCode(
         buffer,
         command,
@@ -366,14 +367,13 @@ void main() {
         expect(output, contains('{'));
       });
 
-      test('should do nothing if transform is empty string', () {
+      test('should do nothing if transform attributes are empty', () {
         // Arrange
         const DrawCircle command = DrawCircle(
           cx: 0,
           cy: 0,
           radius: 5,
-          style: PaintingStyle(),
-          transform: '   ',
+          style: PaintingStyle(transformAttributes: SvgTransformAttributes(<SvgTransformOperation>[])),
         );
         final StringBuffer buffer = StringBuffer();
 
@@ -386,25 +386,7 @@ void main() {
         expect(output, contains('{'));
       });
 
-      test('should skip unknown or invalid transform functions', () {
-        // Arrange
-        const DrawCircle command = DrawCircle(
-          cx: 0,
-          cy: 0,
-          radius: 5,
-          style: PaintingStyle(),
-          transform: 'unknown(1, 2)',
-        );
-        final StringBuffer buffer = StringBuffer();
 
-        // Act
-        generator.generate(command, buffer);
-
-        // Assert
-        final String output = buffer.toString();
-        expect(output, contains('{'));
-        expect(output, isNot(contains('canvas.save();')));
-      });
 
       test('should wrap with translate when provided', () {
         // Arrange
@@ -412,8 +394,9 @@ void main() {
           cx: 0,
           cy: 0,
           radius: 5,
-          style: PaintingStyle(),
-          transform: 'translate(10, 20)',
+          style: PaintingStyle(
+            transformAttributes: SvgTransformAttributes(<SvgTransformOperation>[SvgTranslate(10, 20)]),
+          ),
         );
         final StringBuffer buffer = StringBuffer();
 
@@ -427,14 +410,15 @@ void main() {
         expect(output, contains('canvas.restore();'));
       });
 
-      test('should wrap with scale when provided with one parameter', () {
+      test('should wrap with scale when provided', () {
         // Arrange
         const DrawCircle command = DrawCircle(
           cx: 0,
           cy: 0,
           radius: 5,
-          style: PaintingStyle(),
-          transform: 'scale(2.5)',
+          style: PaintingStyle(
+            transformAttributes: SvgTransformAttributes(<SvgTransformOperation>[SvgScale(2.5, 2.5)]),
+          ),
         );
         final StringBuffer buffer = StringBuffer();
 
@@ -446,14 +430,15 @@ void main() {
         expect(output, contains('canvas.scale(2.5, 2.5);'));
       });
 
-      test('should wrap with scale when provided with two parameters', () {
+      test('should wrap with asymmetric scale', () {
         // Arrange
         const DrawCircle command = DrawCircle(
           cx: 0,
           cy: 0,
           radius: 5,
-          style: PaintingStyle(),
-          transform: 'scale(2, 3)',
+          style: PaintingStyle(
+            transformAttributes: SvgTransformAttributes(<SvgTransformOperation>[SvgScale(2, 3)]),
+          ),
         );
         final StringBuffer buffer = StringBuffer();
 
@@ -471,8 +456,9 @@ void main() {
           cx: 0,
           cy: 0,
           radius: 5,
-          style: PaintingStyle(),
-          transform: 'rotate(45)',
+          style: PaintingStyle(
+            transformAttributes: SvgTransformAttributes(<SvgTransformOperation>[SvgRotate(45)]),
+          ),
         );
         final StringBuffer buffer = StringBuffer();
 
@@ -490,8 +476,9 @@ void main() {
           cx: 0,
           cy: 0,
           radius: 5,
-          style: PaintingStyle(),
-          transform: 'rotate(45, 10, 10)',
+          style: PaintingStyle(
+            transformAttributes: SvgTransformAttributes(<SvgTransformOperation>[SvgRotate(45, 10, 10)]),
+          ),
         );
         final StringBuffer buffer = StringBuffer();
 
@@ -511,8 +498,12 @@ void main() {
           cx: 0,
           cy: 0,
           radius: 5,
-          style: PaintingStyle(),
-          transform: 'translate(10, 10) scale(2)',
+          style: PaintingStyle(
+            transformAttributes: SvgTransformAttributes(<SvgTransformOperation>[
+              SvgTranslate(10, 10),
+              SvgScale(2, 2),
+            ]),
+          ),
         );
         final StringBuffer buffer = StringBuffer();
 

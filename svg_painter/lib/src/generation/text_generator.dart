@@ -18,7 +18,7 @@ class TextGenerator extends ShapeGenerator<DrawText> {
     List<InheritedProperty>? inheritedFills,
     List<InheritedProperty>? inheritedStrokes,
   }) {
-    wrapWithTransform(buffer, command.transform, () {
+    wrapWithTransform(buffer, command.style.transformAttributes, () {
       buffer.writeln('      {');
       buffer.writeln('        final TextSpan span = TextSpan(');
       buffer.writeln("          text: '''${command.text}''',");

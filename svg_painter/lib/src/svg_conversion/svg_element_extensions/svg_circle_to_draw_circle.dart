@@ -2,7 +2,6 @@ import '../../base/_base.dart';
 import '../../painting_model/_painting_model.dart';
 import '../../svg_model/_svg_model.dart';
 import '../converters/_converters.dart';
-import '../svg_transform_parser.dart';
 import '../svg_value_extensions/_svg_value_extensions.dart';
 
 /// Extension to convert [SvgCircle] to [PaintCommand]s.
@@ -23,6 +22,7 @@ extension SvgCircleToPaintCommands on SvgCircle {
       opacity: opacity,
       cssClass: cssClass,
       inlineStyle: inlineStyle,
+      transformAttributes: context.transformAttributes(transformAttributes),
     );
 
     final double finalCx = context.transformX(cx.toPosition(context, .horizontal));
@@ -36,7 +36,6 @@ extension SvgCircleToPaintCommands on SvgCircle {
         radius: finalR,
         style: paint,
         id: id,
-        transform: SvgTransformParser.scaleTransform(transform, context.parentSx, context.parentSy),
       ),
     ]);
   }

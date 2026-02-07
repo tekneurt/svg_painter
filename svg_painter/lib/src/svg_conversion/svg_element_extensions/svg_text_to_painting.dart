@@ -2,7 +2,6 @@ import '../../base/_base.dart';
 import '../../painting_model/_painting_model.dart';
 import '../../svg_model/_svg_model.dart';
 import '../converters/_converters.dart';
-import '../svg_transform_parser.dart';
 import '../svg_value_extensions/_svg_value_extensions.dart';
 
 /// Extension to convert [SvgText] to [PaintCommand]s.
@@ -23,6 +22,7 @@ extension SvgTextToPaintCommands on SvgText {
       opacity: opacity,
       cssClass: cssClass,
       inlineStyle: inlineStyle,
+      transformAttributes: context.transformAttributes(transformAttributes),
     );
 
     final double finalX = context.transformX(x.resolve(context, .horizontal));
@@ -35,7 +35,6 @@ extension SvgTextToPaintCommands on SvgText {
         text: text,
         style: paint,
         id: id,
-        transform: SvgTransformParser.scaleTransform(transform, context.parentSx, context.parentSy),
       ),
     ]);
   }

@@ -11,7 +11,6 @@ import '../svg_element_extensions/svg_polygon_to_draw_polygon.dart';
 import '../svg_element_extensions/svg_polyline_to_draw_polyline.dart';
 import '../svg_element_extensions/svg_rect_to_draw_rect.dart';
 import '../svg_element_extensions/svg_text_to_painting.dart';
-import '../svg_transform_parser.dart';
 import '../svg_value_extensions/_svg_value_extensions.dart';
 import 'svg_definition_collector.dart';
 import 'svg_paint_resolver.dart';
@@ -275,6 +274,7 @@ extension _SvgGroupToPaintCommands on SvgGroup {
       opacity: opacity,
       cssClass: cssClass,
       inlineStyle: inlineStyle,
+      transformAttributes: context.transformAttributes(transformAttributes),
     );
 
     return children.map((SvgElement child) => child.toPaintCommands(childContext)).combine().map((
@@ -285,11 +285,6 @@ extension _SvgGroupToPaintCommands on SvgGroup {
           commands: childCommands,
           style: style,
           id: id,
-          transform: SvgTransformParser.scaleTransform(
-            transform,
-            context.parentSx,
-            context.parentSy,
-          ),
           opacity: groupOpacity,
         ),
       ];

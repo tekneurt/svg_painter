@@ -9,7 +9,6 @@ final class DrawCircle extends DrawCommand {
     required this.radius,
     required this.style,
     super.id,
-    this.transform,
   });
 
   /// The x-coordinate of the center.
@@ -25,10 +24,7 @@ final class DrawCircle extends DrawCommand {
   @override
   final PaintingStyle style;
 
-  /// The transformation string.
-  final String? transform;
-
   @override
   String toString() =>
-      'DrawCircle(cx: $cx, cy: $cy, radius: $radius, style: $style, transform: $transform)';
+      'DrawCircle(cx: $cx, cy: $cy, radius: $radius, style: $style, id: $id)';
 }

@@ -4,6 +4,7 @@ import '../../base/_base.dart';
 import '../../svg_model/_svg_model.dart';
 import '../../xml_model/_xml_model.dart';
 import '../_xml_conversion.dart';
+import '../parsers/svg_transform_parser.dart';
 
 extension ToSvgRadialGradient on XmlElement {
   /// Converts this [XmlElement] to an [SvgRadialGradient].
@@ -51,7 +52,7 @@ extension ToSvgRadialGradient on XmlElement {
         fx: fx,
         fy: fy,
         fr: fr,
-        gradientTransform: gradientTransform,
+        gradientTransformAttributes: SvgTransformParser.parse(gradientTransform),
         id: id,
       ),
     );

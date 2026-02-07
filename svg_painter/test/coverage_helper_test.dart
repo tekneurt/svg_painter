@@ -46,7 +46,7 @@ import 'package:svg_painter/src/svg_conversion/svg_element_extensions/svg_polygo
 import 'package:svg_painter/src/svg_conversion/svg_element_extensions/svg_polyline_to_draw_polyline.dart';
 import 'package:svg_painter/src/svg_conversion/svg_element_extensions/svg_rect_to_draw_rect.dart';
 import 'package:svg_painter/src/svg_conversion/svg_element_extensions/svg_text_to_painting.dart';
-import 'package:svg_painter/src/svg_conversion/svg_transform_parser.dart';
+import 'package:svg_painter/src/xml_conversion/parsers/svg_transform_parser.dart';
 import 'package:svg_painter/src/svg_conversion/svg_value_extensions/_svg_value_extensions.dart';
 import 'package:svg_painter/src/svg_conversion/svg_value_extensions/svg_color_to_int.dart';
 import 'package:svg_painter/src/svg_conversion/svg_value_extensions/svg_length_extensions.dart';

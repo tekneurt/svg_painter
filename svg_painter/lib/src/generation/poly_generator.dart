@@ -1,4 +1,5 @@
 import '../painting_model/_painting_model.dart';
+import '../svg_model/_svg_model.dart';
 import 'command_generator.dart';
 
 import 'palette_analyzer.dart';
@@ -20,23 +21,23 @@ class PolyGenerator extends ShapeGenerator<PaintCommand> {
     final List<double> pts;
     final bool closed;
     final PaintingStyle style;
-    final String? transform;
+    final SvgTransformAttributes? transformAttributes;
 
     if (command is DrawPolyline) {
       pts = command.points;
       closed = false;
       style = command.style;
-      transform = command.transform;
+      transformAttributes = command.style.transformAttributes;
     } else if (command is DrawPolygon) {
       pts = command.points;
       closed = true;
       style = command.style;
-      transform = command.transform;
+      transformAttributes = command.style.transformAttributes;
     } else {
       return;
     }
 
-    wrapWithTransform(buffer, transform, () {
+    wrapWithTransform(buffer, transformAttributes, () {
       buffer.writeln('      {');
       buffer.writeln('        final Path path = Path();');
       final StringBuffer sb = StringBuffer();

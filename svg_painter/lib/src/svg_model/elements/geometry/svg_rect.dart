@@ -18,7 +18,7 @@ final class SvgRect extends SvgBasicShape {
     super.opacity,
     super.cssClass,
     super.inlineStyle,
-    super.transform,
+    super.transformAttributes,
     super.id,
   });
 

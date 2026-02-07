@@ -64,7 +64,11 @@ void main() {
           isA<SvgPolygon>()
               .having((SvgPolygon p) => p.id, 'id', 'poly1')
               .having((SvgPolygon p) => p.fillAttributes?.color, 'fill', isA<SvgNamedColor>())
-              .having((SvgPolygon p) => p.transform, 'transform', 'scale(2.5)'),
+              .having(
+                (SvgPolygon p) => p.transformAttributes?.operations.first,
+                'transform',
+                isA<SvgScale>(),
+              ),
         ),
       );
     });

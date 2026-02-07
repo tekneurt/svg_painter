@@ -28,7 +28,7 @@ void main() {
       expect((grad.x2 as SvgPercentage).value, 100.0);
       expect((grad.y2 as SvgPercentage).value, 100.0);
       expect(grad.id, 'grad1');
-      expect(grad.gradientTransform, 'rotate(90)');
+      expect(grad.gradientTransformAttributes?.operations.first, isA<SvgRotate>());
       expect(grad.stops, hasLength(2));
     });
 

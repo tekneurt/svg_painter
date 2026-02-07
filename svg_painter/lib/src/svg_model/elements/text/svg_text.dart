@@ -15,7 +15,7 @@ final class SvgText extends SvgGraphicsElement with SvgFontAttributable {
     super.opacity,
     super.cssClass,
     super.inlineStyle,
-    super.transform,
+    super.transformAttributes,
     super.id,
   });
 

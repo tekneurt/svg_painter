@@ -10,7 +10,6 @@ final class DrawOval extends DrawCommand {
     required this.ry,
     required this.style,
     super.id,
-    this.transform,
   });
 
   /// The x-coordinate of the center.
@@ -29,10 +28,7 @@ final class DrawOval extends DrawCommand {
   @override
   final PaintingStyle style;
 
-  /// The transformation string.
-  final String? transform;
-
   @override
   String toString() =>
-      'DrawOval(cx: $cx, cy: $cy, rx: $rx, ry: $ry, style: $style, transform: $transform)';
+      'DrawOval(cx: $cx, cy: $cy, rx: $rx, ry: $ry, style: $style, id: $id)';
 }

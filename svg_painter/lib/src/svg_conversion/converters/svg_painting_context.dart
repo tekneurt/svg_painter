@@ -176,4 +176,38 @@ final class SvgPaintingContext {
 
   /// Scales a normalized length (like radius) from current user space to root coordinate space.
   double scaleNormalized(double l) => l * parentScale;
+
+  /// Applies the context's scaling to the given [transformAttributes].
+  ///
+  /// This creates a new [SvgTransformAttributes] where translations and scalings
+  /// are adjusted by [parentSx] and [parentSy].
+  SvgTransformAttributes? transformAttributes(SvgTransformAttributes? attrs) {
+    if (attrs == null || attrs.operations.isEmpty) {
+      return null;
+    }
+
+    final List<SvgTransformOperation> scaledOps = <SvgTransformOperation>[];
+    for (final SvgTransformOperation op in attrs.operations) {
+      switch (op) {
+        case SvgTranslate(:final double x, :final double y):
+          scaledOps.add(SvgTranslate(x * parentSx, y * parentSy));
+        case SvgRotate(:final double angle, cx: final double cx, cy: final double cy):
+          scaledOps.add(SvgRotate(angle, cx * parentSx, cy * parentSy));
+        case SvgRotate() || SvgScale() || SvgSkewX() || SvgSkewY():
+          // Angle-only rotations, scales, and skews are preserved as-is.
+          scaledOps.add(op);
+        case SvgMatrix(
+          :final double a,
+          :final double b,
+          :final double c,
+          :final double d,
+          :final double e,
+          :final double f,
+        ):
+          // e and f are translation components (tx, ty). They are scaled.
+          scaledOps.add(SvgMatrix(a, b, c, d, e * parentSx, f * parentSy));
+      }
+    }
+    return SvgTransformAttributes(scaledOps);
+  }
 }

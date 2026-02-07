@@ -33,12 +33,12 @@ void main() {
       );
 
       // Act
-      style.toString();
+      final String result = style.toString();
 
       // Assert
       expect(
-        style.toString(),
-        'PaintingStyle(fill: PaintingFillStyle(color: 4294901760, shader: null, opacity: 1.0, explicit: true, currentColor: false), stroke: null, text: null, groupOpacity: 0.8)',
+        result,
+        'PaintingStyle(fill: PaintingFillStyle(color: 4294901760, shader: null, opacity: 1.0, explicit: true, currentColor: false), stroke: null, text: null, groupOpacity: 0.8, transform: null)',
       );
     });
   });

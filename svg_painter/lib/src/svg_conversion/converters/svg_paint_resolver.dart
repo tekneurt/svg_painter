@@ -17,6 +17,7 @@ PaintingStyle resolvePaint(
   SvgLengthPercentage? opacity,
   String? cssClass,
   String? inlineStyle,
+  SvgTransformAttributes? transformAttributes,
 }) {
   // 1. Resolve CSS properties
   final Map<String, String> resolvedRules = <String, String>{};
@@ -314,6 +315,7 @@ PaintingStyle resolvePaint(
     stroke: strokeStyle,
     text: textStyle,
     groupOpacity: elementOpacity,
+    transformAttributes: transformAttributes,
   );
 }
 

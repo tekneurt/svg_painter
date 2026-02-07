@@ -12,7 +12,9 @@ void main() {
         x2: SvgLength(33.0),
         y2: SvgLength(44.0),
         stops: <SvgStop>[],
-        gradientTransform: 'matrix(1,0,0,1,0,0)',
+        gradientTransformAttributes: SvgTransformAttributes(<SvgTransformOperation>[
+          SvgMatrix(1, 0, 0, 1, 0, 0),
+        ]),
         id: 'g1',
       );
 
@@ -22,7 +24,7 @@ void main() {
       // Assert
       expect(
         result,
-        'SvgLinearGradient(x1: 11.0, y1: 22.0, x2: 33.0, y2: 44.0, stops: 0, transform: matrix(1,0,0,1,0,0), id: g1)',
+        'SvgLinearGradient(x1: 11.0, y1: 22.0, x2: 33.0, y2: 44.0, stops: 0, transform: SvgTransformAttributes(matrix(1.0, 0.0, 0.0, 1.0, 0.0, 0.0)), id: g1)',
       );
     });
 

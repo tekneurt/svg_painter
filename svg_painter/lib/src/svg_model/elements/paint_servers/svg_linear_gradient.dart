@@ -12,7 +12,7 @@ final class SvgLinearGradient extends SvgGradient {
     required this.y2,
     required super.stops,
     super.id,
-    super.gradientTransform,
+    super.gradientTransformAttributes,
   });
 
   /// The x-axis coordinate of the start of the gradient vector.
@@ -35,7 +35,7 @@ final class SvgLinearGradient extends SvgGradient {
       'x2: $x2',
       'y2: $y2',
       'stops: ${stops.length}',
-      if (gradientTransform != null) 'transform: $gradientTransform',
+      if (gradientTransformAttributes != null) 'transform: $gradientTransformAttributes',
       if (id != null) 'id: $id',
     ];
     return 'SvgLinearGradient(${parts.join(', ')})';

@@ -2,7 +2,6 @@ import '../../base/_base.dart';
 import '../../painting_model/_painting_model.dart';
 import '../../svg_model/_svg_model.dart';
 import '../converters/_converters.dart';
-import '../svg_transform_parser.dart';
 import '../svg_value_extensions/_svg_value_extensions.dart';
 
 /// Extension to convert [SvgEllipse] to [PaintCommand]s.
@@ -25,6 +24,7 @@ extension SvgEllipseToPaintCommands on SvgEllipse {
       opacity: opacity,
       cssClass: cssClass,
       inlineStyle: inlineStyle,
+      transformAttributes: context.transformAttributes(transformAttributes),
     );
 
     // Apply transformation
@@ -41,7 +41,6 @@ extension SvgEllipseToPaintCommands on SvgEllipse {
         ry: finalRy,
         style: paint,
         id: id,
-        transform: SvgTransformParser.scaleTransform(transform, context.parentSx, context.parentSy),
       ),
     ]);
   }

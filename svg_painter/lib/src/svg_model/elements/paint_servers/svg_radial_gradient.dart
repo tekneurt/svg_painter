@@ -14,7 +14,7 @@ final class SvgRadialGradient extends SvgGradient {
     required this.fr,
     required super.stops,
     super.id,
-    super.gradientTransform,
+    super.gradientTransformAttributes,
   });
 
   /// The x-axis coordinate of the center of the largest circle for the gradient.
@@ -45,7 +45,7 @@ final class SvgRadialGradient extends SvgGradient {
       'fy: $fy',
       'fr: $fr',
       'stops: ${stops.length}',
-      if (gradientTransform != null) 'transform: $gradientTransform',
+      if (gradientTransformAttributes != null) 'transform: $gradientTransformAttributes',
       if (id != null) 'id: $id',
     ];
     return 'SvgRadialGradient(${parts.join(', ')})';

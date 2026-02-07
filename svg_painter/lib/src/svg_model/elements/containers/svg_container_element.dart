@@ -12,7 +12,7 @@ sealed class SvgContainerElement extends SvgGraphicsElement with SvgParent, SvgF
     super.opacity,
     super.cssClass,
     super.inlineStyle,
-    super.transform,
+    super.transformAttributes,
   });
 
   @override

@@ -2,7 +2,6 @@ import '../../base/_base.dart';
 import '../../painting_model/_painting_model.dart';
 import '../../svg_model/_svg_model.dart';
 import '../converters/_converters.dart';
-import '../svg_transform_parser.dart';
 
 /// Extension to convert [SvgPolygon] to [PaintCommand]s.
 extension SvgPolygonToPaintCommands on SvgPolygon {
@@ -36,6 +35,7 @@ extension SvgPolygonToPaintCommands on SvgPolygon {
       opacity: opacity,
       cssClass: cssClass,
       inlineStyle: inlineStyle,
+      transformAttributes: context.transformAttributes(transformAttributes),
     );
 
     return Success<List<PaintCommand>>(<PaintCommand>[
@@ -43,7 +43,6 @@ extension SvgPolygonToPaintCommands on SvgPolygon {
         points: resolvedPoints,
         style: paint,
         id: id,
-        transform: SvgTransformParser.scaleTransform(transform, context.parentSx, context.parentSy),
       ),
     ]);
   }

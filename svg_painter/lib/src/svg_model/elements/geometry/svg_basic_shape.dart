@@ -10,7 +10,7 @@ sealed class SvgBasicShape extends SvgGraphicsElement with SvgGeometry {
     super.opacity,
     super.cssClass,
     super.inlineStyle,
-    super.transform,
+    super.transformAttributes,
     super.id,
   });
 

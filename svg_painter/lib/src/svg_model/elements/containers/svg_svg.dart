@@ -19,7 +19,7 @@ base class SvgSvg extends SvgContainerElement {
     super.opacity,
     super.cssClass,
     super.inlineStyle,
-    super.transform,
+    super.transformAttributes,
   });
 
   /// The x-axis coordinate of the SVG.
@@ -61,7 +61,7 @@ final class SvgRoot extends SvgSvg {
     super.opacity,
     super.cssClass,
     super.inlineStyle,
-    super.transform,
+    super.transformAttributes,
   });
 
   @override

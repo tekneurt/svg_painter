@@ -4,6 +4,7 @@ import 'package:svg_painter/src/generation/group_generator.dart';
 import 'package:svg_painter/src/generation/palette_analyzer.dart';
 import 'package:svg_painter/src/painting_model/paint_command.dart';
 import 'package:svg_painter/src/painting_model/styles/painting_style.dart';
+import 'package:svg_painter/src/svg_model/_svg_model.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -87,7 +88,9 @@ void main() {
       // Arrange
       const DrawGroup command = DrawGroup(
         commands: <PaintCommand>[],
-        transform: 'translate(12, 34)',
+        style: PaintingStyle(
+          transformAttributes: SvgTransformAttributes(<SvgTransformOperation>[SvgTranslate(12, 34)]),
+        ),
       );
       final StringBuffer buffer = StringBuffer();
 

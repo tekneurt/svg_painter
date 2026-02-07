@@ -17,7 +17,7 @@ class RectGenerator extends ShapeGenerator<DrawRect> {
     List<InheritedProperty>? inheritedFills,
     List<InheritedProperty>? inheritedStrokes,
   }) {
-    wrapWithTransform(buffer, command.transform, () {
+    wrapWithTransform(buffer, command.style.transformAttributes, () {
       final String r =
           'Rect.fromLTWH(${command.x}, ${command.y}, ${command.width}, ${command.height})';
       final String drawMethod = (command.rx > 0 || command.ry > 0) ? 'drawRRect' : 'drawRect';

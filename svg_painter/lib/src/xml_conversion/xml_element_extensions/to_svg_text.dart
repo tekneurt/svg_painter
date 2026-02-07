@@ -30,7 +30,7 @@ extension ToSvgText on XmlElement {
         opacity: common.opacity,
         cssClass: common.cssClass,
         inlineStyle: common.inlineStyle,
-        transform: common.transform,
+        transformAttributes: common.transformAttributes,
         id: common.id,
       ),
     );

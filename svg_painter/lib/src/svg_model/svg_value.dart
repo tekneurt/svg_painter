@@ -19,6 +19,7 @@ part 'values/colors/svg_current_color.dart';
 part 'values/colors/svg_paint_reference.dart';
 part 'values/colors/svg_color_name.dart';
 part 'values/svg_point_list.dart';
+part 'values/svg_transform.dart';
 
 /// Base class for all SVG attribute values.
 @immutable

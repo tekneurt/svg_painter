@@ -24,7 +24,7 @@ class GroupGenerator extends ShapeGenerator<DrawGroup> {
       return;
     }
 
-    wrapWithTransform(buffer, command.transform, () {
+    wrapWithTransform(buffer, command.style.transformAttributes, () {
       if (command.opacity == 1.0) {
         // Full opacity, no layer needed
       } else {

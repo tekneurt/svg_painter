@@ -12,14 +12,14 @@ void main() {
         x2: SvgLength(5.6),
         y2: SvgLength(7.8),
         stops: <SvgStop>[],
-        gradientTransform: 'translate(10, 20)',
+        gradientTransformAttributes: SvgTransformAttributes(<SvgTransformOperation>[SvgTranslate(10, 20)]),
         id: 'grad1',
       );
 
       // Act & Assert
       expect(gradient.id, 'grad1');
       expect(gradient.stops, isEmpty);
-      expect(gradient.gradientTransform, 'translate(10, 20)');
+      expect(gradient.gradientTransformAttributes?.operations.first, isA<SvgTranslate>());
     });
   });
 }

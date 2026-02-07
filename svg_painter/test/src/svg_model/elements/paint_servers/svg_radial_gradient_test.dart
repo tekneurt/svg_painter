@@ -14,7 +14,7 @@ void main() {
         fy: SvgLength(55.0),
         fr: SvgLength(66.0),
         stops: <SvgStop>[],
-        gradientTransform: 'scale(2.5)',
+        gradientTransformAttributes: SvgTransformAttributes(<SvgTransformOperation>[SvgScale(2.5, 2.5)]),
         id: 'rg1',
       );
 
@@ -24,7 +24,7 @@ void main() {
       // Assert
       expect(
         result,
-        'SvgRadialGradient(cx: 11.0, cy: 22.0, r: 33.0, fx: 44.0, fy: 55.0, fr: 66.0, stops: 0, transform: scale(2.5), id: rg1)',
+        'SvgRadialGradient(cx: 11.0, cy: 22.0, r: 33.0, fx: 44.0, fy: 55.0, fr: 66.0, stops: 0, transform: SvgTransformAttributes(scale(2.5, 2.5)), id: rg1)',
       );
     });
 

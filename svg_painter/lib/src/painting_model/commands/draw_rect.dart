@@ -12,7 +12,6 @@ final class DrawRect extends DrawCommand {
     required this.ry,
     required this.style,
     super.id,
-    this.transform,
   });
 
   final double x;
@@ -30,9 +29,7 @@ final class DrawRect extends DrawCommand {
   @override
   final PaintingStyle style;
 
-  final String? transform;
-
   @override
   String toString() =>
-      'DrawRect(x: $x, y: $y, w: $width, h: $height, rx: $rx, ry: $ry, style: $style, transform: $transform)';
+      'DrawRect(x: $x, y: $y, w: $width, h: $height, rx: $rx, ry: $ry, style: $style, id: $id)';
 }

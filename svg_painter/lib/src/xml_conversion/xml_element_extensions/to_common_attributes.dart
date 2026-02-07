@@ -2,6 +2,7 @@ import 'package:xml/xml.dart';
 
 import '../../svg_model/_svg_model.dart';
 import '../../xml_model/_xml_model.dart';
+import '../parsers/svg_transform_parser.dart';
 import '_xml_element_extensions.dart';
 
 /// Resolved common attributes for a graphics element.
@@ -13,7 +14,7 @@ typedef CommonAttributes = ({
   SvgLengthPercentage? opacity,
   String? cssClass,
   String? inlineStyle,
-  String? transform,
+  SvgTransformAttributes? transformAttributes,
 });
 
 extension ToCommonAttributes on XmlElement {
@@ -42,7 +43,7 @@ extension ToCommonAttributes on XmlElement {
       opacity: toSvgValueOrNull<SvgLengthPercentage>(elementName, XmlAttributeName.opacity),
       cssClass: toXmlAttributeValue(XmlAttributeName.className),
       inlineStyle: toXmlAttributeValue(XmlAttributeName.style),
-      transform: toXmlAttributeValue(XmlAttributeName.transform),
+      transformAttributes: SvgTransformParser.parse(toXmlAttributeValue(XmlAttributeName.transform)),
     );
   }
 }

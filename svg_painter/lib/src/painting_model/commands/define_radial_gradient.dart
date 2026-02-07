@@ -12,7 +12,7 @@ final class DefineRadialGradient extends DefineGradient {
     required this.fy,
     required this.focalRadius,
     required super.stops,
-    super.transform,
+    super.transformAttributes,
   });
 
   /// Normalized x-coordinate (0.0 - 1.0).

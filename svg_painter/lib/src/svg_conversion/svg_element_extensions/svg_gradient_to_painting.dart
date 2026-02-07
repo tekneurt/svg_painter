@@ -23,7 +23,7 @@ extension SvgGradientToPainting on SvgGradient {
           x2: finalX2,
           y2: finalY2,
           stops: stops.toPaintingStops(context),
-          transform: gradientTransform,
+          transformAttributes: context.transformAttributes(gradientTransformAttributes),
         ),
       );
     } else if (self is SvgRadialGradient) {
@@ -44,7 +44,7 @@ extension SvgGradientToPainting on SvgGradient {
           fy: finalFy,
           focalRadius: finalFr,
           stops: stops.toPaintingStops(context),
-          transform: gradientTransform,
+          transformAttributes: context.transformAttributes(gradientTransformAttributes),
         ),
       );
     }
