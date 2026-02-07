@@ -277,27 +277,6 @@ void main() {
         });
 
         test(
-          'should throw InvalidGenerationSourceError when mapping fails (unsupported element)',
-          () {
-            // Arrange
-            const String unsupportedElementSvg = '<svg><unsupported /></svg>';
-
-            // Act & Assert
-            expect(
-              () =>
-                  generator.generateFromSvg(elementName: 'Test', svgContent: unsupportedElementSvg),
-              throwsA(
-                isA<InvalidGenerationSourceError>().having(
-                  (InvalidGenerationSourceError e) => e.message,
-                  'message',
-                  contains('Failed to map SVG content'),
-                ),
-              ),
-            );
-          },
-        );
-
-        test(
           'should throw InvalidGenerationSourceError when conversion fails (broken reference)',
           () {
             // Arrange

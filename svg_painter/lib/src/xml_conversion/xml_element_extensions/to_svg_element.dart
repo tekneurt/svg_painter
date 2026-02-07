@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:xml/xml.dart';
 
 import '../../base/_base.dart';
@@ -12,7 +14,9 @@ extension ToSvgElement on XmlElement {
     final XmlElementName? elementName = XmlElementName.from(name.local);
 
     if (elementName == null) {
-      return Failure<SvgElement>('Unsupported SVG element: <${name.local}>');
+      // Treat unknown elements as groups per SVG spec (container behavior).
+      stdout.writeln('$unsupportedFeaturePrefix: <${name.local}>. Treating as group.');
+      return toSvgGroup();
     }
 
     switch (elementName) {

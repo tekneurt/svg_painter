@@ -7,5 +7,8 @@ library;
 /// expected Exceptions are already caught explicitly) MUST:
 /// 1. Use this prefix in the failure message.
 /// 2. Include the exact comment: `// Defensive catch-all for untreatable Errors (all expected Exceptions are handled explicitly).`
-/// 3. Add `// coverage:ignore-line` to the return/throw statement.
+/// Add `// coverage:ignore-line` to the return/throw statement.
 const String untreatableErrorPrefix = 'An untreatable Error occurred';
+
+/// Standardized prefix for warning messages when an unsupported SVG feature (e.g., unknown tag) is encountered.
+const String unsupportedFeaturePrefix = 'Unsupported SVG feature encountered';
