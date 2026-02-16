@@ -76,11 +76,13 @@ extension ToSvgRoot on XmlElement {
         final String localName = child.name.local;
         if (localName == XmlElementName.style.tagName) {
           allRules.add(SvgStyleParser.parse(child.innerText).rules);
-        } else if (localName == XmlElementName.defs.tagName || localName == XmlElementName.g.tagName) {
-          // Recursively collect from groups and defs.
+        } else if (localName == XmlElementName.svg.tagName ||
+            localName == 'symbol' ||
+            localName == 'marker') {
+          // Scope boundary reached, do not look inside.
+        } else {
           _collectStyles(child, allRules);
         }
-        // Nested <svg> or <symbol> elements are separate scopes; we don't look inside them.
       }
     }
   }

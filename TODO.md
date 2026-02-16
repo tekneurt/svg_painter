@@ -170,7 +170,11 @@
         - [x] Implement lenient child parsing (skip unknown tags instead of failing).
         - [x] Add namespace awareness to tag identification.
         - [x] Refine `<style>` element discovery scope.
-        - [ ] Comprehensive audit of structural parsing logic.
+        - [x] **Structural Parsing Audit & Hardening**:
+            - [x] Update `SvgDefs` to support presentation attribute inheritance.
+            - [x] Harden `toXmlAttributeValue` for `xlink:href` compatibility.
+            - [x] Expand `<style>` collection scope in `SvgRoot`.
+            - [x] Standardize optional attribute parsing safety across all element converters.
     - [ ] **SVG Conversion Layer (`lib/src/svg_conversion`)**:
         - [x] **Length Extension Consolidation**: Rename `svg_resolution_extensions.dart` to `svg_length_extensions.dart` and merge all length/percentage conversion logic into it for better semantics and clarity.
         - [ ] Verify data inheritance resolution and painting context propagation.

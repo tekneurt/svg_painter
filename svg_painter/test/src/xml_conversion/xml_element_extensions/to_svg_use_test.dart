@@ -29,6 +29,27 @@ void main() {
       );
     });
 
+    test('should support xlink:href fallback', () {
+      // Arrange
+      final XmlDocument document = XmlDocument.parse(
+        '<use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon2" x="33" y="44" />',
+      );
+      final XmlElement element = document.rootElement;
+
+      // Act
+      final Result<SvgUse> result = element.toSvgUse();
+
+      // Assert
+      expect(
+        result,
+        isA<Success<SvgUse>>().having(
+          (Success<SvgUse> s) => s.value,
+          'value',
+          isA<SvgUse>().having((SvgUse u) => u.href, 'href', '#icon2'),
+        ),
+      );
+    });
+
     test('should return Failure when href attribute is missing', () {
       // Arrange
       final XmlDocument document = XmlDocument.parse('<use x="0" y="0" />');

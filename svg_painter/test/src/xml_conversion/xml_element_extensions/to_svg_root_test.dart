@@ -102,5 +102,29 @@ void main() {
       final SvgRoot root = (result as Success<SvgRoot>).value;
       expect(root.styleSheet.rules, contains('def-style'));
     });
+
+    test('should collect CSS rules from <style> blocks inside other containers (like <a> or <span>)', () {
+      // Arrange
+      final XmlDocument document = XmlDocument.parse('''
+        <svg>
+          <a href="http://example.com">
+            <style>.link-style { fill: yellow; }</style>
+          </a>
+          <span>
+             <style>.span-style { fill: purple; }</style>
+          </span>
+        </svg>
+      ''');
+      final XmlElement element = document.rootElement;
+
+      // Act
+      final Result<SvgRoot> result = element.toSvgRoot();
+
+      // Assert
+      expect(result, isA<Success<SvgRoot>>());
+      final SvgRoot root = (result as Success<SvgRoot>).value;
+      expect(root.styleSheet.rules, contains('link-style'));
+      expect(root.styleSheet.rules, contains('span-style'));
+    });
   });
 }
