@@ -8,9 +8,10 @@ import 'palette_analyzer.dart';
 import 'svg_id_formatter.dart';
 
 class InheritedProperty {
-  const InheritedProperty(this.propertyName, this.value);
+  const InheritedProperty(this.propertyName, {this.colorArgb, this.shaderId});
   final String propertyName;
-  final int value;
+  final int? colorArgb;
+  final String? shaderId;
 }
 
 /// Base class for all command-specific code generators.
@@ -48,211 +49,156 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
     List<InheritedProperty>? inheritedStrokes,
   }) {
     // 1. Fill
-    final PaintingFillStyle? fill = style.fill;
-    if (fill == null) {
-      // No fill
-    } else {
-      buffer.writeln('      {');
-      buffer.writeln('        final Paint paint = Paint();');
-
-      final String? id = command.id;
-      final String? propName = id == null ? null : '${SvgIdFormatter.format(id)}Fill';
-      final String? assignedFill = palette?.fillAssignments[command];
-
-      String? activeProperty;
-      if (propName != null &&
-          fill.isExplicit &&
-          activeFillProperties != null &&
-          activeFillProperties.containsKey(propName)) {
-        activeProperty = activeFillProperties[propName];
-      } else if (assignedFill != null &&
-          activeFillProperties != null &&
-          activeFillProperties.containsKey(assignedFill)) {
-        activeProperty = activeFillProperties[assignedFill];
-      }
-
-      if (activeProperty == null) {
-        String? inheritedOverride;
-        if (!fill.isExplicit && inheritedFills != null) {
-          for (final InheritedProperty prop in inheritedFills.reversed) {
-            if (prop.value == fill.colorArgb) {
-              inheritedOverride = prop.propertyName;
-              break;
-            }
-          }
-        }
-
-        if (inheritedOverride == null) {
-          _generateOriginalFill(buffer, fill, boundsRect, indent: '        ');
-        } else {
-          buffer.writeln('        final Color? inheritedFill = $inheritedOverride;');
-          buffer.writeln('        if (inheritedFill == null) {');
-          _generateOriginalFill(buffer, fill, boundsRect, indent: '          ');
-          buffer.writeln('        } else {');
-          buffer.writeln('          paint.color = inheritedFill;');
-          buffer.writeln('        }');
-        }
-      } else {
-        // TODO(Gemini): Support both single color and gradient overrides.
-        buffer.writeln('        final Color? localFill = $activeProperty;');
-        buffer.writeln('        if (localFill == null) {');
-        _generateOriginalFill(buffer, fill, boundsRect, indent: '          ');
-        buffer.writeln('        } else {');
-        buffer.writeln('          paint.color = localFill;');
-        buffer.writeln('        }');
-      }
-
-      buffer.writeln('        paint.style = PaintingStyle.fill;');
-      drawCall('paint');
-      buffer.writeln('      }');
+    if (style.fill != null) {
+      _generateStyleBlock(
+        buffer: buffer,
+        command: command,
+        style: style.fill!,
+        boundsRect: boundsRect,
+        isFill: true,
+        palette: palette,
+        activeProperties: activeFillProperties,
+        inheritedProperties: inheritedFills,
+        drawCall: drawCall,
+      );
     }
 
     // 2. Stroke
-    final PaintingStrokeStyle? stroke = style.stroke;
-    if (stroke == null) {
-      // No stroke
-    } else {
-      buffer.writeln('      {');
-      buffer.writeln('        final Paint paint = Paint();');
+    if (style.stroke != null) {
+      _generateStyleBlock(
+        buffer: buffer,
+        command: command,
+        style: style.stroke!,
+        boundsRect: boundsRect,
+        isFill: false,
+        palette: palette,
+        activeProperties: activeStrokeProperties,
+        inheritedProperties: inheritedStrokes,
+        drawCall: drawCall,
+      );
+    }
+  }
 
-      final String? id = command.id;
-      final String? propName = id == null ? null : '${SvgIdFormatter.format(id)}Stroke';
-      final String? assignedStroke = palette?.strokeAssignments[command];
+  void _generateStyleBlock({
+    required StringBuffer buffer,
+    required T command,
+    required dynamic style, // PaintingFillStyle or PaintingStrokeStyle
+    required String boundsRect,
+    required bool isFill,
+    required PaletteResult? palette,
+    required Map<String, String>? activeProperties,
+    required List<InheritedProperty>? inheritedProperties,
+    required void Function(String paintVar, {String? dashArray, String? pathLength}) drawCall,
+  }) {
+    buffer.writeln('      {');
+    buffer.writeln('        final Paint paint = Paint();');
 
-      String? activeProperty;
-      if (propName != null &&
-          stroke.isExplicit &&
-          activeStrokeProperties != null &&
-          activeStrokeProperties.containsKey(propName)) {
-        activeProperty = activeStrokeProperties[propName];
-      } else if (assignedStroke != null &&
-          activeStrokeProperties != null &&
-          activeStrokeProperties.containsKey(assignedStroke)) {
-        activeProperty = activeStrokeProperties[assignedStroke];
+    final String suffix = isFill ? 'Fill' : 'Stroke';
+    final String? id = command.id;
+    final String? propName = id == null ? null : '${SvgIdFormatter.format(id)}$suffix';
+    final String? assignedProp = isFill ? palette?.fillAssignments[command] : palette?.strokeAssignments[command];
+
+    String? localActiveProperty;
+    if (propName != null && style.isExplicit && activeProperties != null && activeProperties.containsKey(propName)) {
+      localActiveProperty = activeProperties[propName];
+    } else if (assignedProp != null && activeProperties != null && activeProperties.containsKey(assignedProp)) {
+      localActiveProperty = activeProperties[assignedProp];
+    }
+
+    String? inheritedPropertyName;
+    if (!style.isExplicit && inheritedProperties != null) {
+      for (final InheritedProperty prop in inheritedProperties.reversed) {
+        if (style.shaderId != null && prop.shaderId == style.shaderId) {
+          inheritedPropertyName = prop.propertyName;
+          break;
+        } else if (style.colorArgb != null && prop.colorArgb == style.colorArgb) {
+          inheritedPropertyName = prop.propertyName;
+          break;
+        }
+      }
+    }
+
+    if (localActiveProperty != null || inheritedPropertyName != null) {
+      final String indent = localActiveProperty != null ? '          ' : '        ';
+      if (localActiveProperty != null) {
+        buffer.writeln('        final Object? local$suffix = $localActiveProperty;');
+        buffer.writeln('        if (local$suffix == null) {');
       }
 
-      if (activeProperty == null) {
-        String? inheritedOverride;
-        if (!stroke.isExplicit && inheritedStrokes != null) {
-          for (final InheritedProperty prop in inheritedStrokes.reversed) {
-            if (prop.value == stroke.colorArgb) {
-              inheritedOverride = prop.propertyName;
-              break;
-            }
-          }
-        }
-
-        if (inheritedOverride == null) {
-          _generateOriginalStroke(buffer, stroke, boundsRect, indent: '        ');
-        } else {
-          buffer.writeln('        final Color? inheritedStroke = $inheritedOverride;');
-          buffer.writeln('        if (inheritedStroke == null) {');
-          _generateOriginalStroke(buffer, stroke, boundsRect, indent: '          ');
-          buffer.writeln('        } else {');
-          buffer.writeln('          paint.color = inheritedStroke;');
-          buffer.writeln('        }');
-        }
+      if (inheritedPropertyName != null) {
+        buffer.writeln('${indent}final Object? inherited$suffix = $inheritedPropertyName;');
+        buffer.writeln('${indent}if (inherited$suffix == null) {');
+        _generateOriginalStyle(buffer, style, boundsRect, indent: '$indent  ');
+        buffer.writeln('$indent} else {');
+        buffer.writeln('$indent  _applyOverride(paint, inherited$suffix);');
+        buffer.writeln('$indent}');
       } else {
-        // TODO(Gemini): Support both single color and gradient overrides.
-        buffer.writeln('        final Color? localStroke = $activeProperty;');
-        buffer.writeln('        if (localStroke == null) {');
-        _generateOriginalStroke(buffer, stroke, boundsRect, indent: '          ');
+        _generateOriginalStyle(buffer, style, boundsRect, indent: indent);
+      }
+
+      if (localActiveProperty != null) {
         buffer.writeln('        } else {');
-        buffer.writeln('          paint.color = localStroke;');
+        buffer.writeln('          _applyOverride(paint, local$suffix);');
         buffer.writeln('        }');
       }
+    } else {
+      _generateOriginalStyle(buffer, style, boundsRect, indent: '        ');
+    }
 
-      buffer.writeln('        paint.style = PaintingStyle.stroke;');
+    buffer.writeln('        paint.style = PaintingStyle.${isFill ? 'fill' : 'stroke'};');
+
+    if (!isFill) {
+      final PaintingStrokeStyle stroke = style as PaintingStrokeStyle;
       buffer.writeln('        paint.strokeWidth = ${stroke.width};');
-      if (stroke.cap == PaintingStrokeCap.butt) {
-        // Default cap
-      } else {
+      if (stroke.cap != PaintingStrokeCap.butt) {
         buffer.writeln('        paint.strokeCap = ${stroke.cap.toFlutterString()};');
       }
-      if (stroke.join == PaintingStrokeJoin.miter) {
-        // Default join
-      } else {
+      if (stroke.join != PaintingStrokeJoin.miter) {
         buffer.writeln('        paint.strokeJoin = ${stroke.join.toFlutterString()};');
       }
 
-      if (stroke.dashArray == null) {
+      final List<double>? dashArray = stroke.dashArray;
+      if (dashArray == null) {
         drawCall('paint');
       } else {
-        final List<double> da = stroke.dashArray!;
-        buffer.writeln('        final List<double> dashArray = [${da.join(', ')}];');
-        final String? pl = stroke.pathLength?.toString();
-        drawCall('paint', dashArray: 'dashArray', pathLength: pl);
+        buffer.writeln('        final List<double> dashArray = [${dashArray.join(', ')}];');
+        final String? pathLength = stroke.pathLength?.toString();
+        drawCall('paint', dashArray: 'dashArray', pathLength: pathLength);
       }
-      buffer.writeln('      }');
+    } else {
+      drawCall('paint');
     }
+
+    buffer.writeln('      }');
   }
 
-  void _generateOriginalStroke(
+  void _generateOriginalStyle(
     StringBuffer buffer,
-    PaintingStrokeStyle stroke,
+    dynamic style,
     String boundsRect, {
     required String indent,
   }) {
-    if (stroke.isCurrentColor) {
-      if (stroke.opacity == 1.0) {
+    if (style.isCurrentColor) {
+      if (style.opacity == 1.0) {
         buffer.writeln('$indent paint.color = color ?? const Color(0xFF000000);');
       } else {
         buffer.writeln(
-          '$indent paint.color = (color ?? const Color(0xFF000000)).withOpacity(${stroke.opacity});',
+          '$indent paint.color = (color ?? const Color(0xFF000000)).withOpacity(${style.opacity});',
         );
       }
-    } else if (stroke.shaderId == null) {
-      final int? argb = stroke.colorArgb;
-      if (argb == null) {
-        // No color or shader
-      } else {
-        final double finalOpacity = ((argb >> 24) & 0xFF) / 255.0 * stroke.opacity;
+    } else if (style.shaderId == null) {
+      final int? argb = style.colorArgb;
+      if (argb != null) {
+        final double finalOpacity = ((argb >> 24) & 0xFF) / 255.0 * style.opacity;
         final int alpha = (finalOpacity * 255).round().clamp(0, 255);
         final int colorWithOpacity = (argb & 0x00FFFFFF) | (alpha << 24);
         final String colorCode = FlutterColorMap.getColorCode(colorWithOpacity);
         buffer.writeln('$indent paint.color = $colorCode;');
       }
     } else {
-      buffer.writeln('$indent paint.shader = _grad_${stroke.shaderId}.createShader($boundsRect);');
-      if (stroke.opacity == 1.0) {
-        // Full opacity
-      } else {
-        buffer.writeln('$indent paint.color = paint.color.withOpacity(${stroke.opacity});');
-      }
-    }
-  }
-
-  void _generateOriginalFill(
-    StringBuffer buffer,
-    PaintingFillStyle fill,
-    String boundsRect, {
-    required String indent,
-  }) {
-    if (fill.isCurrentColor) {
-      if (fill.opacity == 1.0) {
-        buffer.writeln('$indent paint.color = color ?? const Color(0xFF000000);');
-      } else {
-        buffer.writeln(
-          '$indent paint.color = (color ?? const Color(0xFF000000)).withOpacity(${fill.opacity});',
-        );
-      }
-    } else if (fill.shaderId == null) {
-      final int? argb = fill.colorArgb;
-      if (argb == null) {
-        // No color or shader
-      } else {
-        final double finalOpacity = ((argb >> 24) & 0xFF) / 255.0 * fill.opacity;
-        final int alpha = (finalOpacity * 255).round().clamp(0, 255);
-        final int colorWithOpacity = (argb & 0x00FFFFFF) | (alpha << 24);
-        final String colorCode = FlutterColorMap.getColorCode(colorWithOpacity);
-        buffer.writeln('$indent paint.color = $colorCode;');
-      }
-    } else {
-      buffer.writeln('$indent paint.shader = _grad_${fill.shaderId}.createShader($boundsRect);');
-      if (fill.opacity == 1.0) {
-        // Full opacity
-      } else {
-        buffer.writeln('$indent paint.color = paint.color.withOpacity(${fill.opacity});');
+      buffer.writeln('$indent paint.shader = _grad_${style.shaderId}.createShader($boundsRect);');
+      if (style.opacity != 1.0) {
+        buffer.writeln('$indent paint.color = paint.color.withOpacity(${style.opacity});');
       }
     }
   }

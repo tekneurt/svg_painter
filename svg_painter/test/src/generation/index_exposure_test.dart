@@ -23,11 +23,11 @@ void main() {
       );
 
       // Assert
-      expect(output, contains('final Color? fill;'));
-      expect(output, contains('final Color? stroke;'));
+      expect(output, contains('final Object? fill;'));
+      expect(output, contains('final Object? stroke;'));
       // Verify usage
-      expect(output, contains('final Color? localFill = fill;'));
-      expect(output, contains('final Color? localStroke = stroke;'));
+      expect(output, contains('final Object? localFill = fill;'));
+      expect(output, contains('final Object? localStroke = stroke;'));
     });
 
     test('should prioritize most used colors (9 black, 1 yellow)', () {
@@ -49,18 +49,18 @@ void main() {
 
       // Assert
       // stroke1 should be black (most frequent), stroke2 yellow.
-      expect(output, contains('final Color? stroke1;'));
-      expect(output, contains('final Color? stroke2;'));
+      expect(output, contains('final Object? stroke1;'));
+      expect(output, contains('final Object? stroke2;'));
 
       // Verify stroke1 maps to black (0xFF000000)
-      expect(output, contains('final Color? localStroke = stroke1;'));
+      expect(output, contains('final Object? localStroke = stroke1;'));
       expect(
         output,
         contains('paint.color = Colors.black;'),
       ); // inside the localStroke == null block
 
       // Verify stroke2 maps to yellow (0xFFFF00)
-      expect(output, contains('final Color? localStroke = stroke2;'));
+      expect(output, contains('final Object? localStroke = stroke2;'));
       expect(output, contains('paint.color = const Color(0xFFFFFF00);'));
     });
 
@@ -82,11 +82,11 @@ void main() {
       );
 
       // Assert
-      expect(output, contains('final Color? namedFill;'));
+      expect(output, contains('final Object? namedFill;'));
       // Remaining red and blue circles get indexed.
       // Frequency: red (1), blue (1). Stable sort by key.
-      expect(output, contains('final Color? fill1;'));
-      expect(output, contains('final Color? fill2;'));
+      expect(output, contains('final Object? fill1;'));
+      expect(output, contains('final Object? fill2;'));
     });
 
     test('should generate NO properties when mode is none', () {

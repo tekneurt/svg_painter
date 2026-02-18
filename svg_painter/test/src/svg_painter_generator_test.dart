@@ -114,7 +114,7 @@ void main() {
         );
 
         // Assert
-        expect(output, contains('final Color? myIdFill;'));
+        expect(output, contains('final Object? myIdFill;'));
         expect(output, contains('this.myIdFill,'));
       });
 
@@ -145,8 +145,8 @@ void main() {
         );
 
         // Assert
-        expect(output, contains('final Color? fill1;'));
-        expect(output, contains('final Color? fill2;'));
+        expect(output, contains('final Object? fill1;'));
+        expect(output, contains('final Object? fill2;'));
       });
 
       test('should respect propertyMapping', () {
@@ -172,8 +172,8 @@ void main() {
         );
 
         // Assert
-        expect(output, contains('final Color? customColor;'));
-        expect(output, isNot(contains('final Color? c1Fill;')));
+        expect(output, contains('final Object? customColor;'));
+        expect(output, isNot(contains('final Object? c1Fill;')));
       });
 
       test('should include currentColor color property if present in commands', () {
@@ -475,7 +475,7 @@ void main() {
         );
 
         // Assert
-        expect(result, contains('final Color? myColor;'));
+        expect(result, contains('final Object? myColor;'));
       });
     });
   });

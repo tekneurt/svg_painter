@@ -282,23 +282,23 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
       buffer.writeln('  final Color? color;');
     }
     for (final String id in sortedFillIds) {
-      buffer.writeln('  final Color? ${resolveName('${SvgIdFormatter.format(id)}Fill')};');
+      buffer.writeln('  final Object? ${resolveName('${SvgIdFormatter.format(id)}Fill')};');
     }
     if (sortedFillIndexed == null) {
       // No indexed fills
     } else {
       for (final String name in sortedFillIndexed) {
-        buffer.writeln('  final Color? ${resolveName(name)};');
+        buffer.writeln('  final Object? ${resolveName(name)};');
       }
     }
     for (final String id in sortedStrokeIds) {
-      buffer.writeln('  final Color? ${resolveName('${SvgIdFormatter.format(id)}Stroke')};');
+      buffer.writeln('  final Object? ${resolveName('${SvgIdFormatter.format(id)}Stroke')};');
     }
     if (sortedStrokeIndexed == null) {
       // No indexed strokes
     } else {
       for (final String name in sortedStrokeIndexed) {
-        buffer.writeln('  final Color? ${resolveName(name)};');
+        buffer.writeln('  final Object? ${resolveName(name)};');
       }
     }
     buffer.writeln();
@@ -359,6 +359,17 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
     }
 
     buffer.writeln('    canvas.restore();');
+    buffer.writeln('  }');
+    buffer.writeln();
+
+    buffer.writeln('  void _applyOverride(Paint paint, Object? override) {');
+    buffer.writeln('    if (override == null) return;');
+    buffer.writeln('    if (override is Color) {');
+    buffer.writeln('      paint.color = override;');
+    buffer.writeln('      paint.shader = null;');
+    buffer.writeln('    } else if (override is Shader) {');
+    buffer.writeln('      paint.shader = override;');
+    buffer.writeln('    }');
     buffer.writeln('  }');
     buffer.writeln();
 
@@ -480,7 +491,7 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
 
     // Fields for properties
     for (final String prop in allProps) {
-      buffer.writeln('  final Color? $prop;');
+      buffer.writeln('  final Object? $prop;');
     }
 
     buffer.writeln();

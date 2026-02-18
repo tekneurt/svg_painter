@@ -111,10 +111,10 @@ void main() {
           <Type, CommandGenerator<PaintCommand>>{DrawCircle: spy};
 
       final List<InheritedProperty> initialFills = <InheritedProperty>[
-        const InheritedProperty('fillProp', 0xFF112233),
+        const InheritedProperty('fillProp', colorArgb: 0xFF112233),
       ];
       final List<InheritedProperty> initialStrokes = <InheritedProperty>[
-        const InheritedProperty('strokeProp', 0xFF445566),
+        const InheritedProperty('strokeProp', colorArgb: 0xFF445566),
       ];
 
       const DrawGroup command = DrawGroup(
@@ -162,7 +162,7 @@ void main() {
         // Assert
         expect(spy.lastInheritedFills, hasLength(1));
         expect(spy.lastInheritedFills![0].propertyName, 'mappedFillProp');
-        expect(spy.lastInheritedFills![0].value, 0xFF111111);
+        expect(spy.lastInheritedFills![0].colorArgb, 0xFF111111);
       },
     );
 
@@ -192,7 +192,7 @@ void main() {
         // Assert
         expect(spy.lastInheritedStrokes, hasLength(1));
         expect(spy.lastInheritedStrokes![0].propertyName, 'mappedStrokeProp');
-        expect(spy.lastInheritedStrokes![0].value, 0xFF222222);
+        expect(spy.lastInheritedStrokes![0].colorArgb, 0xFF222222);
       },
     );
   });

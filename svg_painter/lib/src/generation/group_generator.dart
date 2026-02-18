@@ -53,10 +53,11 @@ class GroupGenerator extends ShapeGenerator<DrawGroup> {
         final String propName = '${SvgIdFormatter.format(id)}Fill';
         if (activeFillProperties != null && activeFillProperties.containsKey(propName)) {
           final String mappedName = activeFillProperties[propName]!;
-          final int? argb = fill?.colorArgb;
-          if (argb != null) {
-            nextInheritedFills.add(InheritedProperty(mappedName, argb));
-          }
+          nextInheritedFills.add(InheritedProperty(
+            mappedName,
+            colorArgb: fill?.colorArgb,
+            shaderId: fill?.shaderId,
+          ));
         }
       }
 
@@ -66,10 +67,11 @@ class GroupGenerator extends ShapeGenerator<DrawGroup> {
         final String propName = '${SvgIdFormatter.format(id)}Stroke';
         if (activeStrokeProperties != null && activeStrokeProperties.containsKey(propName)) {
           final String mappedName = activeStrokeProperties[propName]!;
-          final int? argb = stroke?.colorArgb;
-          if (argb != null) {
-            nextInheritedStrokes.add(InheritedProperty(mappedName, argb));
-          }
+          nextInheritedStrokes.add(InheritedProperty(
+            mappedName,
+            colorArgb: stroke?.colorArgb,
+            shaderId: stroke?.shaderId,
+          ));
         }
       }
 

@@ -22,14 +22,14 @@ void main() {
       );
 
       // Assert
-      expect(output, contains('final Color? myCircleFill;'));
+      expect(output, contains('final Object? myCircleFill;'));
       expect(output, contains('this.myCircleFill,'));
       // Check that it's used in the paint method
-      expect(output, contains('final Color? localFill = myCircleFill;'));
+      expect(output, contains('final Object? localFill = myCircleFill;'));
       expect(output, contains('if (localFill == null) {'));
       expect(output, contains('paint.color = const Color(0xFFFF0000);'));
       expect(output, contains('} else {'));
-      expect(output, contains('paint.color = localFill;'));
+      expect(output, contains('_applyOverride(paint, localFill);'));
       // Check shouldRepaint
       expect(output, contains(r'bool shouldRepaint(covariant _$MyPainter oldDelegate) {'));
       expect(
@@ -59,9 +59,9 @@ void main() {
       );
 
       // Assert
-      expect(output, contains('final Color? myRectFill;'));
-      expect(output, contains('final Color? v123boxFill;'));
-      expect(output, contains('final Color? classPropertyFill;'));
+      expect(output, contains('final Object? myRectFill;'));
+      expect(output, contains('final Object? v123boxFill;'));
+      expect(output, contains('final Object? classPropertyFill;'));
     });
 
     test('should preserve camelCase in IDs', () {
@@ -80,7 +80,7 @@ void main() {
       );
 
       // Assert
-      expect(output, contains('final Color? myCircleFill;'));
+      expect(output, contains('final Object? myCircleFill;'));
     });
 
     test('should NOT generate properties for elements with an id but NO explicit fill/stroke', () {
@@ -117,13 +117,13 @@ void main() {
       );
 
       // Assert
-      expect(output, contains('final Color? strokedRectStroke;'));
+      expect(output, contains('final Object? strokedRectStroke;'));
       expect(output, contains('this.strokedRectStroke,'));
-      expect(output, contains('final Color? localStroke = strokedRectStroke;'));
+      expect(output, contains('final Object? localStroke = strokedRectStroke;'));
       expect(output, contains('if (localStroke == null) {'));
       expect(output, contains('paint.color = const Color(0xFF0000FF);'));
       expect(output, contains('} else {'));
-      expect(output, contains('paint.color = localStroke;'));
+      expect(output, contains('_applyOverride(paint, localStroke);'));
     });
 
     test('should use named Flutter colors (including shades) when a match exists', () {

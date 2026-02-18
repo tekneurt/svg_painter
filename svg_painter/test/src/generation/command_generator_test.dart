@@ -154,9 +154,9 @@ void main() {
 
         // Assert
         final String output = buffer.toString();
-        expect(output, contains('final Color? localFill = myCustomFill;'));
+        expect(output, contains('final Object? localFill = myCustomFill;'));
         expect(output, contains('if (localFill == null) {'));
-        expect(output, contains('paint.color = localFill;'));
+        expect(output, contains('_applyOverride(paint, localFill);'));
       });
 
       test('should use active property via assignedFill from palette', () {
@@ -178,7 +178,8 @@ void main() {
 
         // Assert
         final String output = buffer.toString();
-        expect(output, contains('final Color? localFill = customFill1;'));
+        expect(output, contains('final Object? localFill = customFill1;'));
+        expect(output, contains('_applyOverride(paint, localFill);'));
       });
 
       test('should use active property via assignedStroke from palette', () {
@@ -203,7 +204,8 @@ void main() {
 
         // Assert
         final String output = buffer.toString();
-        expect(output, contains('final Color? localStroke = customStroke1;'));
+        expect(output, contains('final Object? localStroke = customStroke1;'));
+        expect(output, contains('_applyOverride(paint, localStroke);'));
       });
 
       test('should use inherited property for fill if implicit match found', () {
@@ -219,14 +221,14 @@ void main() {
         generator.generate(
           command,
           buffer,
-          inheritedFills: <InheritedProperty>[const InheritedProperty('groupFill', color)],
+          inheritedFills: <InheritedProperty>[const InheritedProperty('groupFill', colorArgb: color)],
         );
 
         // Assert
         final String output = buffer.toString();
-        expect(output, contains('final Color? inheritedFill = groupFill;'));
+        expect(output, contains('final Object? inheritedFill = groupFill;'));
         expect(output, contains('if (inheritedFill == null) {'));
-        expect(output, contains('paint.color = inheritedFill;'));
+        expect(output, contains('_applyOverride(paint, inheritedFill);'));
       });
 
       test('should use original color if inherited property does not match', () {
@@ -243,7 +245,7 @@ void main() {
           command,
           buffer,
           inheritedFills: <InheritedProperty>[
-            const InheritedProperty('groupFill', 0xFF0000FF), // Different color
+            const InheritedProperty('groupFill', colorArgb: 0xFF0000FF), // Different color
           ],
         );
 
