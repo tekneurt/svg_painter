@@ -22,12 +22,12 @@ extension SvgCircleToPaintCommands on SvgCircle {
       opacity: opacity,
       cssClass: cssClass,
       inlineStyle: inlineStyle,
-      transformAttributes: context.transformAttributes(transformAttributes),
+      transformAttributes: transformAttributes,
     );
 
-    final double finalCx = context.transformX(cx.toPosition(context, .horizontal));
-    final double finalCy = context.transformY(cy.toPosition(context, .vertical));
-    final double finalR = context.scaleNormalized(r.resolve(context, .normalized));
+    final double finalCx = cx.toPosition(context, .horizontal);
+    final double finalCy = cy.toPosition(context, .vertical);
+    final double finalR = r.resolve(context, .normalized);
 
     return Success<List<PaintCommand>>(<PaintCommand>[
       DrawCircle(

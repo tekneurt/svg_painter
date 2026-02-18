@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:analyzer/dart/constant/value.dart';
 import 'package:analyzer/dart/element/element.dart';
+import 'package:analyzer/dart/element/type.dart';
 import 'package:build/build.dart';
 import 'package:meta/meta.dart';
 import 'package:source_gen/source_gen.dart';
@@ -60,13 +61,14 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
         ? null
         : annotation.read('painterClassName').stringValue;
 
-    final SvgExposureMode exposureMode = annotation.read('exposureMode').isNull
-        ? SvgExposureMode.none
-        : SvgExposureMode.values[annotation
-              .read('exposureMode')
-              .objectValue
-              .getField('index')!
-              .toIntValue()!];
+    final ConstantReader exposureReader = annotation.read('exposureMode');
+    SvgExposureMode exposureMode = SvgExposureMode.none;
+    if (!exposureReader.isNull) {
+      final int? index = exposureReader.objectValue.getField('index')?.toIntValue();
+      if (index != null && index >= 0 && index < SvgExposureMode.values.length) {
+        exposureMode = SvgExposureMode.values[index];
+      }
+    }
 
     final Map<String, String> propertyMapping = <String, String>{};
     if (annotation.read('propertyMapping').isNull) {
@@ -540,13 +542,14 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
 
   void _collectIds(List<PaintCommand> commands, Set<String> fillIds, Set<String> strokeIds) {
     for (final PaintCommand command in commands) {
-      if (command is DrawCommand && command.id != null) {
+      final String? cmdId = command.id;
+      if (command is DrawCommand && cmdId != null) {
         final PaintingStyle style = command.style;
         if (style.fill?.isExplicit ?? false) {
-          fillIds.add(command.id!);
+          fillIds.add(cmdId);
         }
         if (style.stroke?.isExplicit ?? false) {
-          strokeIds.add(command.id!);
+          strokeIds.add(cmdId);
         }
       }
       if (command is DrawGroup) {
@@ -557,9 +560,14 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
 
   @visibleForTesting
   Future<Result<String>> loadSvgContent(ConstantReader annotation, BuildStep buildStep) async {
-    if (_fileChecker.isExactlyType(annotation.objectValue.type!)) {
+    final DartType? type = annotation.objectValue.type;
+    if (type == null) {
+      return const Failure<String>('Annotation object has no type.');
+    }
+
+    if (_fileChecker.isExactlyType(type)) {
       return loadFromFile(annotation, buildStep);
-    } else if (_codeChecker.isExactlyType(annotation.objectValue.type!)) {
+    } else if (_codeChecker.isExactlyType(type)) {
       return Success<String>(annotation.read('code').stringValue);
     }
     return const Failure<String>(

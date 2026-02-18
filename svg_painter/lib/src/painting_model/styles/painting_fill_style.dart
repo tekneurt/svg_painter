@@ -9,7 +9,7 @@ final class PaintingFillStyle {
     this.opacity = 1.0,
     this.isExplicit = true,
     this.isCurrentColor = false,
-  });
+  }) : assert(opacity >= 0.0 && opacity <= 1.0, 'Opacity must be between 0.0 and 1.0');
 
   /// The ARGB integer for the fill color.
   final int? colorArgb;

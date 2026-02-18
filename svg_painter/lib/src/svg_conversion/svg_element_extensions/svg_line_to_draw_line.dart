@@ -18,13 +18,14 @@ extension SvgLineToPaintCommands on SvgLine {
       opacity: opacity,
       cssClass: cssClass,
       inlineStyle: inlineStyle,
-      transformAttributes: context.transformAttributes(transformAttributes),
+      transformAttributes: transformAttributes,
     );
 
-    final double finalX1 = context.transformX(x1.resolve(context, .horizontal));
-    final double finalY1 = context.transformY(y1.resolve(context, .vertical));
-    final double finalX2 = context.transformX(x2.resolve(context, .horizontal));
-    final double finalY2 = context.transformY(y2.resolve(context, .vertical));
+    // Use local coordinates (generator handles transforms)
+    final double finalX1 = x1.resolve(context, .horizontal);
+    final double finalY1 = y1.resolve(context, .vertical);
+    final double finalX2 = x2.resolve(context, .horizontal);
+    final double finalY2 = y2.resolve(context, .vertical);
 
     return Success<List<PaintCommand>>(<PaintCommand>[
       DrawLine(

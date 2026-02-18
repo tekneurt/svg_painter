@@ -28,5 +28,6 @@ import 'svg_painting_context.dart';
     return (ryVal, ryVal);
   }
 
-  return (rxVal!, ryVal!);
+  // Both are non-null
+  return (rxVal ?? 0.0, ryVal ?? 0.0);
 }

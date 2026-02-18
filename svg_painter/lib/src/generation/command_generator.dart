@@ -178,7 +178,8 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
       if (stroke.dashArray == null) {
         drawCall('paint');
       } else {
-        buffer.writeln('        final List<double> dashArray = [${stroke.dashArray!.join(', ')}];');
+        final List<double> da = stroke.dashArray!;
+        buffer.writeln('        final List<double> dashArray = [${da.join(', ')}];');
         final String? pl = stroke.pathLength?.toString();
         drawCall('paint', dashArray: 'dashArray', pathLength: pl);
       }
@@ -201,12 +202,13 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
         );
       }
     } else if (stroke.shaderId == null) {
-      if (stroke.colorArgb == null) {
+      final int? argb = stroke.colorArgb;
+      if (argb == null) {
         // No color or shader
       } else {
-        final double finalOpacity = ((stroke.colorArgb! >> 24) & 0xFF) / 255.0 * stroke.opacity;
+        final double finalOpacity = ((argb >> 24) & 0xFF) / 255.0 * stroke.opacity;
         final int alpha = (finalOpacity * 255).round().clamp(0, 255);
-        final int colorWithOpacity = (stroke.colorArgb! & 0x00FFFFFF) | (alpha << 24);
+        final int colorWithOpacity = (argb & 0x00FFFFFF) | (alpha << 24);
         final String colorCode = FlutterColorMap.getColorCode(colorWithOpacity);
         buffer.writeln('$indent paint.color = $colorCode;');
       }
@@ -235,12 +237,13 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
         );
       }
     } else if (fill.shaderId == null) {
-      if (fill.colorArgb == null) {
+      final int? argb = fill.colorArgb;
+      if (argb == null) {
         // No color or shader
       } else {
-        final double finalOpacity = ((fill.colorArgb! >> 24) & 0xFF) / 255.0 * fill.opacity;
+        final double finalOpacity = ((argb >> 24) & 0xFF) / 255.0 * fill.opacity;
         final int alpha = (finalOpacity * 255).round().clamp(0, 255);
-        final int colorWithOpacity = (fill.colorArgb! & 0x00FFFFFF) | (alpha << 24);
+        final int colorWithOpacity = (argb & 0x00FFFFFF) | (alpha << 24);
         final String colorCode = FlutterColorMap.getColorCode(colorWithOpacity);
         buffer.writeln('$indent paint.color = $colorCode;');
       }

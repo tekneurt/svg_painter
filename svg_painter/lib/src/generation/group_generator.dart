@@ -48,23 +48,27 @@ class GroupGenerator extends ShapeGenerator<DrawGroup> {
       final PaintingStyle style = command.style;
 
       // Check Fill inheritance
-      if (id != null && (style.fill?.isExplicit ?? false)) {
+      final PaintingFillStyle? fill = style.fill;
+      if (id != null && (fill?.isExplicit ?? false)) {
         final String propName = '${SvgIdFormatter.format(id)}Fill';
         if (activeFillProperties != null && activeFillProperties.containsKey(propName)) {
           final String mappedName = activeFillProperties[propName]!;
-          if (style.fill!.colorArgb != null) {
-            nextInheritedFills.add(InheritedProperty(mappedName, style.fill!.colorArgb!));
+          final int? argb = fill?.colorArgb;
+          if (argb != null) {
+            nextInheritedFills.add(InheritedProperty(mappedName, argb));
           }
         }
       }
 
       // Check Stroke inheritance
-      if (id != null && (style.stroke?.isExplicit ?? false)) {
+      final PaintingStrokeStyle? stroke = style.stroke;
+      if (id != null && (stroke?.isExplicit ?? false)) {
         final String propName = '${SvgIdFormatter.format(id)}Stroke';
         if (activeStrokeProperties != null && activeStrokeProperties.containsKey(propName)) {
           final String mappedName = activeStrokeProperties[propName]!;
-          if (style.stroke!.colorArgb != null) {
-            nextInheritedStrokes.add(InheritedProperty(mappedName, style.stroke!.colorArgb!));
+          final int? argb = stroke?.colorArgb;
+          if (argb != null) {
+            nextInheritedStrokes.add(InheritedProperty(mappedName, argb));
           }
         }
       }

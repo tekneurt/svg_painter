@@ -9,6 +9,11 @@ extension SvgGradientToPainting on SvgGradient {
   /// Converts this [SvgGradient] to a [PaintCommand].
   Result<PaintCommand> toPaintCommand(SvgPaintingContext context) {
     final SvgGradient self = this;
+    final String? gradId = id;
+    if (gradId == null) {
+      return const Failure<PaintCommand>('Gradient element must have an ID to be referenced.');
+    }
+
     if (self is SvgLinearGradient) {
       final double finalX1 = self.x1.resolve(context, SvgOrientation.horizontal);
       final double finalY1 = self.y1.resolve(context, SvgOrientation.vertical);
@@ -17,13 +22,13 @@ extension SvgGradientToPainting on SvgGradient {
 
       return Success<PaintCommand>(
         DefineLinearGradient(
-          id: id!,
+          id: gradId,
           x1: finalX1,
           y1: finalY1,
           x2: finalX2,
           y2: finalY2,
           stops: stops.toPaintingStops(context),
-          transformAttributes: context.transformAttributes(gradientTransformAttributes),
+          transformAttributes: gradientTransformAttributes,
         ),
       );
     } else if (self is SvgRadialGradient) {
@@ -36,7 +41,7 @@ extension SvgGradientToPainting on SvgGradient {
 
       return Success<PaintCommand>(
         DefineRadialGradient(
-          id: id!,
+          id: gradId,
           cx: finalCx,
           cy: finalCy,
           radius: finalR,
@@ -44,7 +49,7 @@ extension SvgGradientToPainting on SvgGradient {
           fy: finalFy,
           focalRadius: finalFr,
           stops: stops.toPaintingStops(context),
-          transformAttributes: context.transformAttributes(gradientTransformAttributes),
+          transformAttributes: gradientTransformAttributes,
         ),
       );
     }

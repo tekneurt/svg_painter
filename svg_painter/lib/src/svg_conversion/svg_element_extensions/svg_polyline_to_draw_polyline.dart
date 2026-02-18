@@ -20,9 +20,9 @@ extension SvgPolylineToPaintCommands on SvgPolyline {
       final double x = points.points[i];
       final double y = points.points[i + 1];
 
-      // Apply transform directly to points
-      resolvedPoints.add(context.transformX(x));
-      resolvedPoints.add(context.transformY(y));
+      // Use local coordinates (generator handles transforms)
+      resolvedPoints.add(x);
+      resolvedPoints.add(y);
     }
 
     final PaintingStyle paint = resolvePaint(
@@ -35,7 +35,7 @@ extension SvgPolylineToPaintCommands on SvgPolyline {
       opacity: opacity,
       cssClass: cssClass,
       inlineStyle: inlineStyle,
-      transformAttributes: context.transformAttributes(transformAttributes),
+      transformAttributes: transformAttributes,
     );
 
     return Success<List<PaintCommand>>(<PaintCommand>[

@@ -23,7 +23,7 @@ extension SvgPathToPaintCommands on SvgPath {
       opacity: opacity,
       cssClass: cssClass,
       inlineStyle: inlineStyle,
-      transformAttributes: context.transformAttributes(transformAttributes),
+      transformAttributes: transformAttributes,
     );
 
     return operationsResult.map(

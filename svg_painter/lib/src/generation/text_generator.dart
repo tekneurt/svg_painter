@@ -25,11 +25,12 @@ class TextGenerator extends ShapeGenerator<DrawText> {
       buffer.writeln('          style: TextStyle(');
 
       final PaintingFillStyle? fill = command.style.fill;
-      if (fill == null || fill.colorArgb == null) {
+      final int? fillArgb = fill?.colorArgb;
+      if (fill == null || fillArgb == null) {
         // No fill or no color
       } else {
-        final double finalOpacity = ((fill.colorArgb! >> 24) & 0xFF) / 255.0 * fill.opacity;
-        final int colorWithoutAlpha = fill.colorArgb! & 0x00FFFFFF;
+        final double finalOpacity = ((fillArgb >> 24) & 0xFF) / 255.0 * fill.opacity;
+        final int colorWithoutAlpha = fillArgb & 0x00FFFFFF;
         final String colorHex = colorWithoutAlpha.toRadixString(16).toUpperCase().padLeft(6, '0');
         buffer.writeln(
           '            color: const Color(0x${(finalOpacity * 255).round().toRadixString(16).toUpperCase().padLeft(2, '0')}$colorHex),',
@@ -38,24 +39,15 @@ class TextGenerator extends ShapeGenerator<DrawText> {
 
       final PaintingTextStyle? textStyle = command.style.text;
       if (textStyle != null) {
-        if (textStyle.fontSize != null) {
-          buffer.writeln('            fontSize: ${textStyle.fontSize},');
+        buffer.writeln('            fontSize: ${textStyle.fontSize},');
+        buffer.writeln("            fontFamily: '${textStyle.fontFamily}',");
+
+        if (textStyle.fontWeight == 'bold') {
+          buffer.writeln('            fontWeight: FontWeight.bold,');
         }
 
-        if (textStyle.fontFamily != null) {
-          buffer.writeln("            fontFamily: '${textStyle.fontFamily}',");
-        }
-
-        if (textStyle.fontWeight != null) {
-          if (textStyle.fontWeight == 'bold') {
-            buffer.writeln('            fontWeight: FontWeight.bold,');
-          }
-        }
-
-        if (textStyle.fontStyle != null) {
-          if (textStyle.fontStyle == 'italic') {
-            buffer.writeln('            fontStyle: FontStyle.italic,');
-          }
+        if (textStyle.fontStyle == 'italic') {
+          buffer.writeln('            fontStyle: FontStyle.italic,');
         }
       }
 

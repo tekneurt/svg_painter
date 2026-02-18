@@ -41,6 +41,18 @@ void main() {
       expect(style.text?.fontFamily, 'Noto Serif'); // Mapped from 'serif'
     });
 
+    test('should handle robust font shorthand parsing', () {
+      final PaintingStyle style = resolvePaint(
+        emptyContext,
+        inlineStyle: 'font: italic bold 14px/1.2 "Open Sans", sans-serif',
+      );
+
+      expect(style.text?.fontStyle, 'italic');
+      expect(style.text?.fontWeight, 'bold');
+      expect(style.text?.fontSize, 14.0);
+      expect(style.text?.fontFamily, 'Open Sans');
+    });
+
     test('should respect CSS specificity (ID > Class > Tag)', () {
       // Need a context with a stylesheet
       const SvgStyleSheet sheet = SvgStyleSheet(<String, Map<String, String>>{

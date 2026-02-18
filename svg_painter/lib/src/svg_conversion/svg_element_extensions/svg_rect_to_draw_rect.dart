@@ -31,16 +31,16 @@ extension SvgRectToPaintCommands on SvgRect {
       opacity: opacity,
       cssClass: cssClass,
       inlineStyle: inlineStyle,
-      transformAttributes: context.transformAttributes(transformAttributes),
+      transformAttributes: transformAttributes,
     );
 
-    // Apply transformation
-    final double finalX = context.transformX(x.toPosition(context, .horizontal));
-    final double finalY = context.transformY(y.toPosition(context, .vertical));
-    final double finalWidth = context.scaleHorizontal(wVal);
-    final double finalHeight = context.scaleVertical(hVal);
-    final double finalRx = context.scaleHorizontal(clampedRx);
-    final double finalRy = context.scaleVertical(clampedRy);
+    // Use local coordinates (generator handles transforms)
+    final double finalX = x.toPosition(context, .horizontal);
+    final double finalY = y.toPosition(context, .vertical);
+    final double finalWidth = wVal;
+    final double finalHeight = hVal;
+    final double finalRx = clampedRx;
+    final double finalRy = clampedRy;
 
     return Success<List<PaintCommand>>(<PaintCommand>[
       DrawRect(

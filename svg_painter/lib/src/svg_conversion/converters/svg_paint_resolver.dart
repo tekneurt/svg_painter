@@ -97,17 +97,39 @@ PaintingStyle resolvePaint(
   SvgNumber? cssPathLength;
 
   if (resolvedRules.containsKey('font')) {
-    // Basic font shorthand support: [style] [weight] size [family]
-    final List<String> parts = resolvedRules['font']!.split(RegExp(r'\s+'));
-    for (final String part in parts) {
-      if (part == 'italic') {
-        cssFontStyle = SvgFontStyle.italic;
-      } else if (part == 'bold' || part == 'heavy') {
-        cssFontWeight = const SvgFontWeightBold();
-      } else if (part.contains(RegExp(r'\d'))) {
-        cssFontSize = part.toSvgLengthPercentage();
-      } else if (part != 'normal') {
-        cssFontFamily ??= part.toSvgFontFamily();
+    final String fontValue = resolvedRules['font']!;
+    // 1. Handle font-family (everything after the last size-like token)
+    // Find the index of the first token that looks like a size (contains a digit)
+    final List<String> allParts = fontValue.split(RegExp(r'\s+'));
+    int sizeIndex = -1;
+    for (int i = 0; i < allParts.length; i++) {
+      if (allParts[i].contains(RegExp(r'\d'))) {
+        sizeIndex = i;
+        break;
+      }
+    }
+
+    if (sizeIndex != -1) {
+      // Parts before size are style/weight
+      for (int i = 0; i < sizeIndex; i++) {
+        final String part = allParts[i];
+        if (part == 'italic') {
+          cssFontStyle = SvgFontStyle.italic;
+        } else if (part == 'bold' || part == 'heavy') {
+          cssFontWeight = const SvgFontWeightBold();
+        }
+      }
+
+      // The size part (may contain /line-height)
+      final String sizePart = allParts[sizeIndex].split('/')[0];
+      cssFontSize = sizePart.toSvgLengthPercentage();
+
+      // Everything after size is font-family
+      if (sizeIndex + 1 < allParts.length) {
+        final String familyPart = allParts.sublist(sizeIndex + 1).join(' ');
+        // Clean up quotes and take the first family if multiple are provided
+        final String firstFamily = familyPart.split(',')[0].trim().replaceAll(RegExp(r'["'']'), '');
+        cssFontFamily = firstFamily.toSvgFontFamily();
       }
     }
   }
@@ -174,7 +196,7 @@ PaintingStyle resolvePaint(
 
   // 5. Resolve final values using priority: Inline Style/CSS > Presentation Attribute > Inherited
   final SvgColor? fillPaint = cssFill ?? fillAttributes?.color ?? context.inheritedFill;
-  final bool hasFill = fillPaint is! SvgNoneColor;
+  final bool hasFill = fillPaint != null && fillPaint is! SvgNoneColor;
   PaintingFillStyle? fillStyle;
   if (hasFill) {
     int? fillColorArgb;
@@ -224,9 +246,8 @@ PaintingStyle resolvePaint(
 
     final SvgLengthPercentage? sw =
         cssStrokeWidth ?? strokeAttributes?.width ?? context.inheritedStrokeWidth;
-    final double finalStrokeWidth = context.scaleNormalized(
-      sw?.resolve(context, SvgOrientation.normalized) ?? 1.0,
-    );
+    // Resolve width in user space (don't scale by parentSx/Sy, the canvas transform handles that)
+    final double finalStrokeWidth = sw?.resolve(context, SvgOrientation.normalized) ?? 1.0;
 
     final SvgPointList? sda =
         cssStrokeDasharray ?? strokeAttributes?.dashArray ?? context.inheritedStrokeDasharray;
@@ -234,7 +255,8 @@ PaintingStyle resolvePaint(
     if (sda == null || sda.points.isEmpty) {
       // No dash array
     } else {
-      finalDashArray = sda.points.map((double d) => context.scaleNormalized(d)).toList();
+      // Points in user space
+      finalDashArray = sda.points;
     }
 
     final double? finalPathLength = (cssPathLength ?? pathLength)?.value;
@@ -273,30 +295,29 @@ PaintingStyle resolvePaint(
     );
   }
 
-  final double? rawFontSize = (cssFontSize ?? fontAttributes?.size ?? context.inheritedFontSize)
-      ?.resolve(context, SvgOrientation.vertical);
-  final double? finalFontSize = rawFontSize == null ? null : context.scaleVertical(rawFontSize);
+  final double finalFontSize = (cssFontSize ?? fontAttributes?.size ?? context.inheritedFontSize ?? const SvgLength(12.0))
+      .resolve(context, SvgOrientation.vertical);
 
-  final SvgFontWeight? weight =
-      cssFontWeight ?? fontAttributes?.weight ?? context.inheritedFontWeight;
-  final String? finalFontWeight = switch (weight) {
+  final SvgFontWeight weight =
+      cssFontWeight ?? fontAttributes?.weight ?? context.inheritedFontWeight ?? const SvgFontWeightNormal();
+  final String finalFontWeight = switch (weight) {
     SvgFontWeightNormal() => 'normal',
     SvgFontWeightBold() => 'bold',
     SvgFontWeightBolder() => 'bold', // Simplified for now
     SvgFontWeightLighter() => 'lighter',
     SvgFontWeightNumeric(value: final double v) => v.toString(),
-    null => null,
   };
 
-  final SvgFontStyle? style = cssFontStyle ?? fontAttributes?.style ?? context.inheritedFontStyle;
-  final String? finalFontStyle = style?.value;
+  final SvgFontStyle style =
+      cssFontStyle ?? fontAttributes?.style ?? context.inheritedFontStyle ?? SvgFontStyle.normal;
+  final String finalFontStyle = style.value;
 
-  final SvgFontFamily? family =
-      cssFontFamily ?? fontAttributes?.family ?? context.inheritedFontFamily;
-  final String? rawFontFamily = family?.value;
+  final SvgFontFamily family =
+      cssFontFamily ?? fontAttributes?.family ?? context.inheritedFontFamily ?? const SvgFontFamily('sans-serif');
+  final String rawFontFamily = family.value;
 
   // Map generic font families to bundled font files for Flutter rendering.
-  final String? finalFontFamily = switch (rawFontFamily) {
+  final String finalFontFamily = switch (rawFontFamily) {
     'sans-serif' => 'Roboto',
     'serif' => 'Noto Serif',
     'monospace' => 'Roboto Mono',

@@ -177,12 +177,16 @@
             - [x] Standardize optional attribute parsing safety across all element converters.
     - [ ] **SVG Conversion Layer (`lib/src/svg_conversion`)**:
         - [x] **Length Extension Consolidation**: Rename `svg_resolution_extensions.dart` to `svg_length_extensions.dart` and merge all length/percentage conversion logic into it for better semantics and clarity.
-        - [ ] Verify data inheritance resolution and painting context propagation.
-        - [ ] Comprehensive audit of conversion logic.
+        - [x] Verify data inheritance resolution and painting context propagation.
+        - [x] **Conversion Logic Hardening**:
+            - [x] **Fix Double Transformation**: Refactor shape extensions to keep coordinates in local space and rely on the generator's `canvas.transform`.
+            - [x] **Centralize Inheritance**: Implement `SvgPaintingContext.deriveWith(element)` to unify attribute priority (Inline > CSS > Attr > Inherited).
+            - [x] **Refactor `<use>` Implementation**: Treat `(x, y)` as a translation that wraps the target, rather than absolute positioning.
+            - [x] Harden CSS `font` shorthand parsing in `resolvePaint`.
     - [ ] **Painting Model Layer (`lib/src/painting_model`)**:
-        - [ ] **Strict Attribute Typing**: Refactor `PaintCommand` properties (`pathLength`, `opacity`) from nullable primitives to non-nullable types or strict objects.
+        - [x] **Strict Attribute Typing**: Refactor `PaintCommand` properties (`pathLength`, `opacity`) from nullable primitives to non-nullable types or strict objects.
         - [x] **Strongly Typed Commands**: Refactor `transform` string to structured `List<TransformOperation>` or `Matrix4`.
-        - [ ] Comprehensive audit of command and style models.
+        - [x] Comprehensive audit of command and style models.
     - [ ] **Generation Layer (`lib/src/generation`)**:
         - [x] Finalize code emission patterns and property safety.
         - [ ] Comprehensive audit of code generation logic.
@@ -208,6 +212,7 @@
     - Ensure invalid values (e.g. negative radius) result in spec-compliant behavior (ignore element vs ignore attribute).
 
     - [ ] **Strong Typing of Painting Model**: Audit all styles and commands to replace `String?` with dedicated Enums or value objects.
+    - [ ] **Harden Regex Parsers**: Update style and length parsers to safely handle regex match groups instead of using non-null assertions.
     - [ ] **Standardized Formatting & Style Audit**: Perform a project-wide pass to add trailing commas to all collection literals and parameter lists to ensure stable multi-line formatting.
 ### Phase 4: Essential Elements (0.3.0)
 *Reaching standard compatibility with essential SVG elements.*

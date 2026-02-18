@@ -24,14 +24,14 @@ extension SvgEllipseToPaintCommands on SvgEllipse {
       opacity: opacity,
       cssClass: cssClass,
       inlineStyle: inlineStyle,
-      transformAttributes: context.transformAttributes(transformAttributes),
+      transformAttributes: transformAttributes,
     );
 
-    // Apply transformation
-    final double finalCx = context.transformX(cx.toPosition(context, .horizontal));
-    final double finalCy = context.transformY(cy.toPosition(context, .vertical));
-    final double finalRx = context.scaleHorizontal(initialRx);
-    final double finalRy = context.scaleVertical(initialRy);
+    // Use local coordinates (generator handles transforms)
+    final double finalCx = cx.toPosition(context, .horizontal);
+    final double finalCy = cy.toPosition(context, .vertical);
+    final double finalRx = initialRx;
+    final double finalRy = initialRy;
 
     return Success<List<PaintCommand>>(<PaintCommand>[
       DrawOval(

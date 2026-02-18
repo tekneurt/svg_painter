@@ -7,7 +7,12 @@ void main() {
       // Arrange
       const PaintingFillStyle fill = PaintingFillStyle(colorArgb: 0xFFFF0000);
       const PaintingStrokeStyle stroke = PaintingStrokeStyle(colorArgb: 0xFF0000FF);
-      const PaintingTextStyle text = PaintingTextStyle(fontSize: 12.0);
+      const PaintingTextStyle text = PaintingTextStyle(
+        fontSize: 12.0,
+        fontWeight: 'normal',
+        fontStyle: 'normal',
+        fontFamily: 'Roboto',
+      );
       const double opacity = 0.5;
 
       // Act
@@ -102,14 +107,18 @@ void main() {
     });
 
     test('should return correct string representation when toString() is called', () {
-      // Arrange
-      const PaintingTextStyle text = PaintingTextStyle(fontSize: 14.0, fontFamily: 'Arial');
+      const PaintingTextStyle text = PaintingTextStyle(
+        fontSize: 14.0,
+        fontWeight: 'bold',
+        fontStyle: 'italic',
+        fontFamily: 'Arial',
+      );
 
       // Act
       final String result = text.toString();
 
       // Assert
-      expect(result, 'PaintingTextStyle(size: 14.0, weight: null, style: null, family: Arial)');
+      expect(result, 'PaintingTextStyle(size: 14.0, weight: bold, style: italic, family: Arial)');
     });
   });
 }

@@ -4,11 +4,12 @@ extension SvgElementToDefinitions on SvgElement {
   /// recursively collects all elements with IDs into a map.
   void collectDefinitions(Map<String, SvgElement> map) {
     final SvgElement self = this;
-    if (self.id == null) {
+    final String? elementId = self.id;
+    if (elementId == null) {
       // No ID
     } else {
-      // print('Collecting definition: ${self.id}');
-      map[self.id!] = self;
+      // print('Collecting definition: $elementId');
+      map[elementId] = self;
     }
 
     if (self is SvgSvg) {

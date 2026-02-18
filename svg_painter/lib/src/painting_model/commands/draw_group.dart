@@ -8,7 +8,7 @@ final class DrawGroup extends DrawCommand {
     this.style = const PaintingStyle(),
     super.id,
     this.opacity = 1.0,
-  });
+  }) : assert(opacity >= 0.0 && opacity <= 1.0, 'Opacity must be between 0.0 and 1.0');
 
   /// The list of commands in this group.
   final List<PaintCommand> commands;

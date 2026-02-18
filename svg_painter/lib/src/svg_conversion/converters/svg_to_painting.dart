@@ -23,7 +23,6 @@ extension SvgElementToPaintCommands on SvgElement {
     final SvgElement self = this;
     if (self is SvgRoot && context == null) {
       // Establish context from SvgRoot.
-      // Prefer explicit absolute width/height for the intrinsic viewport size.
       final SvgLengthPercentageAuto? w = self.width;
       final SvgLength? wLen = w is SvgLength ? w : null;
       final SvgLengthPercentageAuto? h = self.height;
@@ -38,32 +37,28 @@ extension SvgElementToPaintCommands on SvgElement {
       final Map<String, SvgElement> definitions = <String, SvgElement>{};
       self.collectDefinitions(definitions);
 
-      // Root context: parent transform maps (minX, minY) to (0, 0) in the painter's canvas.
-      // Note: _toPaintCommands will handle the viewBox (minX, minY) -> (0, 0) mapping.
       final SvgPaintingContext rootContext = SvgPaintingContext(
         viewBoxWidth: width,
         viewBoxHeight: height,
         viewBoxMinX: minX,
         viewBoxMinY: minY,
-        inheritedFill: self.fillAttributes?.color,
-        inheritedFillOpacity: self.fillAttributes?.opacity,
-        inheritedStroke: self.strokeAttributes?.color,
-        inheritedStrokeOpacity: self.strokeAttributes?.opacity,
-        inheritedStrokeWidth: self.strokeAttributes?.width,
+        inheritedFill: self.fillAttributes?.color ?? const SvgNamedColor(SvgColorName.black),
+        inheritedFillOpacity: self.fillAttributes?.opacity ?? const SvgLength(1.0),
+        inheritedStroke: self.strokeAttributes?.color ?? const SvgNoneColor(),
+        inheritedStrokeOpacity: self.strokeAttributes?.opacity ?? const SvgLength(1.0),
+        inheritedStrokeWidth: self.strokeAttributes?.width ?? const SvgLength(1.0),
         inheritedStrokeDasharray: self.strokeAttributes?.dashArray,
-        inheritedStrokeLinecap: self.strokeAttributes?.linecap,
-        inheritedStrokeLinejoin: self.strokeAttributes?.linejoin,
-        // Opacity on root element.
-        parentOpacity:
-            self.opacity?.resolve(
+        inheritedStrokeLinecap: self.strokeAttributes?.linecap ?? SvgStrokeLinecap.butt,
+        inheritedStrokeLinejoin: self.strokeAttributes?.linejoin ?? SvgStrokeLinejoin.miter,
+        parentOpacity: self.opacity?.resolve(
               const SvgPaintingContext(viewBoxWidth: 1, viewBoxHeight: 1),
               SvgOrientation.unit,
             ) ??
             1.0,
-        inheritedFontSize: self.fontAttributes?.size,
-        inheritedFontWeight: self.fontAttributes?.weight,
-        inheritedFontStyle: self.fontAttributes?.style,
-        inheritedFontFamily: self.fontAttributes?.family,
+        inheritedFontSize: self.fontAttributes?.size ?? const SvgLength(12.0),
+        inheritedFontWeight: self.fontAttributes?.weight ?? const SvgFontWeightNormal(),
+        inheritedFontStyle: self.fontAttributes?.style ?? SvgFontStyle.normal,
+        inheritedFontFamily: self.fontAttributes?.family ?? const SvgFontFamily('sans-serif'),
         styleSheet: self.styleSheet,
         definitions: definitions,
       );
@@ -71,34 +66,7 @@ extension SvgElementToPaintCommands on SvgElement {
     }
 
     context ??= const SvgPaintingContext(viewBoxWidth: 100.0, viewBoxHeight: 100.0);
-
-    // Determine context for children (override inherited with current element styles)
-    final SvgPaintingContext childContext;
-    if (self is SvgGraphicsElement) {
-      final SvgFontAttributes? font = self is SvgFontAttributable
-          ? (self as SvgFontAttributable).fontAttributes
-          : null;
-      childContext = context.derive(
-        inheritedFill: self.fillAttributes?.color ?? context.inheritedFill,
-        inheritedFillOpacity: self.fillAttributes?.opacity ?? context.inheritedFillOpacity,
-        inheritedStroke: self.strokeAttributes?.color ?? context.inheritedStroke,
-        inheritedStrokeOpacity: self.strokeAttributes?.opacity ?? context.inheritedStrokeOpacity,
-        inheritedStrokeWidth: self.strokeAttributes?.width ?? context.inheritedStrokeWidth,
-        inheritedStrokeDasharray:
-            self.strokeAttributes?.dashArray ?? context.inheritedStrokeDasharray,
-        inheritedStrokeLinecap: self.strokeAttributes?.linecap ?? context.inheritedStrokeLinecap,
-        inheritedStrokeLinejoin: self.strokeAttributes?.linejoin ?? context.inheritedStrokeLinejoin,
-        // Multiply parent opacity with current element opacity.
-        parentOpacity:
-            context.parentOpacity * (self.opacity?.resolve(context, SvgOrientation.unit) ?? 1.0),
-        inheritedFontSize: font?.size ?? context.inheritedFontSize,
-        inheritedFontWeight: font?.weight ?? context.inheritedFontWeight,
-        inheritedFontStyle: font?.style ?? context.inheritedFontStyle,
-        inheritedFontFamily: font?.family ?? context.inheritedFontFamily,
-      );
-    } else {
-      childContext = context;
-    }
+    final SvgPaintingContext childContext = context.deriveWith(self);
 
     return switch (self) {
       // Containers
@@ -142,40 +110,51 @@ extension SvgElementToPaintCommands on SvgElement {
 
 extension _SvgUseToPaintCommands on SvgUse {
   Result<List<PaintCommand>> _toPaintCommands(SvgPaintingContext context) {
-    // 1. Resolve ID from href (remove leading #)
     final String targetId = href.startsWith('#') ? href.substring(1) : href;
-
-    // 2. Lookup definition
     final SvgElement? target = context.definitions[targetId];
+
     if (target == null) {
       return Failure<List<PaintCommand>>(
         'Could not find definition for ID "$targetId" referenced by <use>.',
       );
     }
 
-    // 3. Apply x/y translation (relative to current user space)
+    // <use> x/y act as a translation.
     final double dx = x.resolve(context, SvgOrientation.horizontal);
     final double dy = y.resolve(context, SvgOrientation.vertical);
 
-    // Create context for target, preserving inherited styles.
-    // Note: <use> offsets the origin by (dx, dy) in the current space.
-    final SvgPaintingContext useCtx = context.derive(
-      parentTx: context.parentTx + (dx * context.parentSx),
-      parentTy: context.parentTy + (dy * context.parentSy),
-      inheritedFill: fillAttributes?.color ?? context.inheritedFill,
-      inheritedFillOpacity: fillAttributes?.opacity ?? context.inheritedFillOpacity,
-      inheritedStroke: strokeAttributes?.color ?? context.inheritedStroke,
-      inheritedStrokeOpacity: strokeAttributes?.opacity ?? context.inheritedStrokeOpacity,
-      inheritedStrokeWidth: strokeAttributes?.width ?? context.inheritedStrokeWidth,
-      inheritedStrokeLinecap: strokeAttributes?.linecap ?? context.inheritedStrokeLinecap,
-      inheritedStrokeLinejoin: strokeAttributes?.linejoin ?? context.inheritedStrokeLinejoin,
-      inheritedFontSize: fontAttributes?.size ?? context.inheritedFontSize,
-      inheritedFontWeight: fontAttributes?.weight ?? context.inheritedFontWeight,
-      inheritedFontStyle: fontAttributes?.style ?? context.inheritedFontStyle,
-      inheritedFontFamily: fontAttributes?.family ?? context.inheritedFontFamily,
+    final List<SvgTransformOperation> ops = <SvgTransformOperation>[];
+    if (dx != 0 || dy != 0) {
+      ops.add(SvgTranslate(dx, dy));
+    }
+    final SvgTransformAttributes? ta = transformAttributes;
+    if (ta != null) {
+      ops.addAll(ta.operations);
+    }
+
+    final PaintingStyle style = resolvePaint(
+      context,
+      id: id,
+      tagName: 'use',
+      fillAttributes: fillAttributes,
+      strokeAttributes: strokeAttributes,
+      fontAttributes: fontAttributes,
+      opacity: opacity,
+      cssClass: cssClass,
+      inlineStyle: inlineStyle,
+      transformAttributes: ops.isEmpty ? null : SvgTransformAttributes(ops),
     );
 
-    return target.toPaintCommands(useCtx);
+    // Context for children inherits styles, but coordinates are now in the <use> local space.
+    return target.toPaintCommands(context).map((List<PaintCommand> childCommands) {
+      return <PaintCommand>[
+        DrawGroup(
+          commands: childCommands,
+          style: style,
+          id: id,
+        ),
+      ];
+    });
   }
 }
 
@@ -184,7 +163,6 @@ extension _SvgDefsToPaintCommands on SvgDefs {
     return children.map((SvgElement child) => child.toPaintCommands(context)).combine().map((
       List<PaintCommand> commands,
     ) {
-      // Only include definition commands (Gradients), exclude drawing commands
       return commands
           .where((PaintCommand cmd) => cmd is DefineLinearGradient || cmd is DefineRadialGradient)
           .toList();
@@ -194,7 +172,6 @@ extension _SvgDefsToPaintCommands on SvgDefs {
 
 extension _SvgSvgToPaintCommands on SvgSvg {
   Result<List<PaintCommand>> _toPaintCommands(SvgPaintingContext context) {
-    // 1. Resolve viewport geometry (relative to parent coordinate system)
     final double xVal = (x ?? const SvgLength(0.0)).resolve(context, SvgOrientation.horizontal);
     final double yVal = (y ?? const SvgLength(0.0)).resolve(context, SvgOrientation.vertical);
 
@@ -203,68 +180,72 @@ extension _SvgSvgToPaintCommands on SvgSvg {
     final double hVal =
         height?.resolveOrNull(context, SvgOrientation.vertical) ?? context.viewBoxHeight;
 
-    // ViewBox establishes the internal coordinate system mapping.
     final double vbW = viewBox?.width ?? wVal;
     final double vbH = viewBox?.height ?? hVal;
     final double vbMinX = viewBox?.minX ?? 0.0;
     final double vbMinY = viewBox?.minY ?? 0.0;
 
-    // Scale factors to map viewBox to the viewport rectangle.
     final double sx = wVal / vbW;
     final double sy = hVal / vbH;
 
-    final double newSx = context.parentSx * sx;
-    final double newSy = context.parentSy * sy;
+    // The viewBox mapping is: translate(x, y) * scale(sx, sy) * translate(-vbMinX, -vbMinY).
+    final List<SvgTransformOperation> ops = <SvgTransformOperation>[];
+    if (xVal != 0 || yVal != 0) {
+      ops.add(SvgTranslate(xVal, yVal));
+    }
+    if (sx != 1.0 || sy != 1.0) {
+      ops.add(SvgScale(sx, sy));
+    }
+    if (vbMinX != 0 || vbMinY != 0) {
+      ops.add(SvgTranslate(-vbMinX, -vbMinY));
+    }
 
-    // newTx = screen position where internal coord (vbMinX, vbMinY) maps to screen point (x, y).
-    // P_screen = (P_inner - vbMinX) * newSx + screenX
-    //          = P_inner * newSx + screenX - vbMinX * newSx
-    final double screenX = (xVal * context.parentSx) + context.parentTx;
-    final double screenY = (yVal * context.parentSy) + context.parentTy;
-
-    final double newTx = screenX - (vbMinX * newSx);
-    final double newTy = screenY - (vbMinY * newSy);
+    final SvgTransformAttributes? ta = transformAttributes;
+    if (ta != null) {
+      ops.insertAll(0, ta.operations);
+    }
 
     final SvgPaintingContext innerContext = context.derive(
       viewBoxWidth: vbW,
       viewBoxHeight: vbH,
       viewBoxMinX: vbMinX,
       viewBoxMinY: vbMinY,
-      parentTx: newTx,
-      parentTy: newTy,
-      parentSx: newSx,
-      parentSy: newSy,
-      inheritedFill: fillAttributes?.color ?? context.inheritedFill,
-      inheritedFillOpacity: fillAttributes?.opacity ?? context.inheritedFillOpacity,
-      inheritedStroke: strokeAttributes?.color ?? context.inheritedStroke,
-      inheritedStrokeOpacity: strokeAttributes?.opacity ?? context.inheritedStrokeOpacity,
-      inheritedStrokeWidth: strokeAttributes?.width ?? context.inheritedStrokeWidth,
-      inheritedStrokeLinecap: strokeAttributes?.linecap ?? context.inheritedStrokeLinecap,
-      inheritedStrokeLinejoin: strokeAttributes?.linejoin ?? context.inheritedStrokeLinejoin,
-      inheritedFontSize: fontAttributes?.size ?? context.inheritedFontSize,
-      inheritedFontWeight: fontAttributes?.weight ?? context.inheritedFontWeight,
-      inheritedFontStyle: fontAttributes?.style ?? context.inheritedFontStyle,
-      inheritedFontFamily: fontAttributes?.family ?? context.inheritedFontFamily,
     );
 
-    return children.map((SvgElement child) => child.toPaintCommands(innerContext)).combine();
+    final PaintingStyle style = resolvePaint(
+      context,
+      id: id,
+      tagName: 'svg',
+      fillAttributes: fillAttributes,
+      strokeAttributes: strokeAttributes,
+      fontAttributes: fontAttributes,
+      opacity: opacity,
+      cssClass: cssClass,
+      inlineStyle: inlineStyle,
+      transformAttributes: ops.isEmpty ? null : SvgTransformAttributes(ops),
+    );
+
+    return children.map((SvgElement child) => child.toPaintCommands(innerContext)).combine().map(
+      (List<PaintCommand> childCommands) {
+        return <PaintCommand>[
+          DrawGroup(
+            commands: childCommands,
+            style: style,
+            id: id,
+          ),
+        ];
+      },
+    );
   }
 }
 
 extension _SvgGroupToPaintCommands on SvgGroup {
   Result<List<PaintCommand>> _toPaintCommands(SvgPaintingContext context) {
     // Determine if we should use saveLayer (group opacity) or flattening (multiplication).
-    // context.parentOpacity already contains the accumulated opacity including this group's opacity.
-    final double combinedOpacity = context.parentOpacity;
-    final bool useSaveLayer = combinedOpacity < 1.0 && children.length > 1;
+    final double groupOpacity = opacity?.resolve(context, SvgOrientation.unit) ?? 1.0;
+    final bool useSaveLayer = groupOpacity < 1.0 && children.length > 1;
 
-    final double groupOpacity = useSaveLayer ? combinedOpacity : 1.0;
-    final double childParentOpacity = useSaveLayer ? 1.0 : combinedOpacity;
-
-    // Create a new context for children if we need to reset opacity for layering.
-    final SvgPaintingContext childContext = useSaveLayer
-        ? context.derive(parentOpacity: childParentOpacity)
-        : context;
+    final double finalGroupOpacity = useSaveLayer ? groupOpacity : 1.0;
 
     final PaintingStyle style = resolvePaint(
       context,
@@ -276,10 +257,10 @@ extension _SvgGroupToPaintCommands on SvgGroup {
       opacity: opacity,
       cssClass: cssClass,
       inlineStyle: inlineStyle,
-      transformAttributes: context.transformAttributes(transformAttributes),
+      transformAttributes: transformAttributes,
     );
 
-    return children.map((SvgElement child) => child.toPaintCommands(childContext)).combine().map((
+    return children.map((SvgElement child) => child.toPaintCommands(context)).combine().map((
       List<PaintCommand> childCommands,
     ) {
       return <PaintCommand>[
@@ -287,7 +268,7 @@ extension _SvgGroupToPaintCommands on SvgGroup {
           commands: childCommands,
           style: style,
           id: id,
-          opacity: groupOpacity,
+          opacity: finalGroupOpacity,
         ),
       ];
     });

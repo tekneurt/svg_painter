@@ -22,11 +22,11 @@ extension SvgTextToPaintCommands on SvgText {
       opacity: opacity,
       cssClass: cssClass,
       inlineStyle: inlineStyle,
-      transformAttributes: context.transformAttributes(transformAttributes),
+      transformAttributes: transformAttributes,
     );
 
-    final double finalX = context.transformX(x.resolve(context, .horizontal));
-    final double finalY = context.transformY(y.resolve(context, .vertical));
+    final double finalX = x.resolve(context, .horizontal);
+    final double finalY = y.resolve(context, .vertical);
 
     return Success<List<PaintCommand>>(<PaintCommand>[
       DrawText(
