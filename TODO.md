@@ -192,7 +192,7 @@
         - [ ] Comprehensive audit of code generation logic.
             - [x] **Harden `command_generator.dart`**: Replace `!` operators with safe null handling (e.g., `stroke.dashArray`).
             - [x] **Refactor `generatePaintingCode`**: Remove `TODO(Gemini)` and improve local vs inherited property override handling.
-            - [ ] **Correct `SvgSkewY` logic**: Implement accurate tangent calculation in `wrapWithTransform`.
+            - [x] **Correct `SvgSkewY` logic**: Implement accurate tangent calculation in `wrapWithTransform`.
             - [ ] **Verify `_dashPath` consistency**: Ensure all shape generators use a consistent dashed path implementation.
 - [ ] **Bang Operator (!) Audit**: Systematically audit the codebase for the `!` operator and replace it with safe null handling (positive equality checks, `if (x == null) ...`, or explicit `assert(x != null)`) to eliminate potential runtime crashes.
 - [ ] **Coverage Exception Audit**: Investigate all `// coverage:ignore-line` and `// coverage:ignore-start/end` markers across the codebase to determine if the ignored code can be safely tested or if the ignore markers are still justified.

@@ -517,6 +517,48 @@ void main() {
         expect(output, contains('canvas.translate(10.0, 10.0);'));
         expect(output, contains('canvas.scale(2.0, 2.0);'));
       });
+
+      test('should wrap with skewX when provided', () {
+        // Arrange
+        const DrawCircle command = DrawCircle(
+          cx: 0,
+          cy: 0,
+          radius: 5,
+          style: PaintingStyle(
+            transformAttributes: SvgTransformAttributes(<SvgTransformOperation>[SvgSkewX(30)]),
+          ),
+        );
+        final StringBuffer buffer = StringBuffer();
+
+        // Act
+        generator.generate(command, buffer);
+
+        // Assert
+        final String output = buffer.toString();
+        // tan(30 degrees) = 0.5773502691896256 (math.tan calculation)
+        expect(output, contains('canvas.skew(0.5773502691896256, 0.0);'));
+      });
+
+      test('should wrap with skewY when provided', () {
+        // Arrange
+        const DrawCircle command = DrawCircle(
+          cx: 0,
+          cy: 0,
+          radius: 5,
+          style: PaintingStyle(
+            transformAttributes: SvgTransformAttributes(<SvgTransformOperation>[SvgSkewY(30)]),
+          ),
+        );
+        final StringBuffer buffer = StringBuffer();
+
+        // Act
+        generator.generate(command, buffer);
+
+        // Assert
+        final String output = buffer.toString();
+        // tan(30 degrees) = 0.5773502691896256 (math.tan calculation)
+        expect(output, contains('canvas.skew(0.0, 0.5773502691896256);'));
+      });
     });
     group('CommandGenerator (Implicit)', () {
       test('should exist as abstract base', () {

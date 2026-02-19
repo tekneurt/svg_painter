@@ -249,19 +249,13 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
             '    canvas.transform(Matrix4.fromList(<double>[$a, $b, 0, 0, $c, $d, 0, 0, 0, 0, 1, 0, $e, $f, 0, 1]).storage);',
           );
         case SvgSkewX(:final double angle):
-          final double tan = angle == 0.0 ? 0.0 : math.tan(angle * 0.017453292519943295);
-          buffer.writeln('    canvas.skew($tan, 0.0);'); // Canvas skew is (sx, sy)
+          final double tan = angle == 0.0 ? 0.0 : math.tan(angle * (math.pi / 180.0));
+          buffer.writeln('    canvas.skew($tan, 0.0);');
         case SvgSkewY(:final double angle):
-           // similar logic
-           buffer.writeln('    canvas.skew(0.0, $angle);'); // Placeholder, likely wrong without tangent calculation.
+          final double tan = angle == 0.0 ? 0.0 : math.tan(angle * (math.pi / 180.0));
+          buffer.writeln('    canvas.skew(0.0, $tan);');
       }
     }
-    // Re-evaluating Skew: Flutter canvas has no 'skew' method directly? It implies using transform/matrix.
-    // And I cannot easily calculate 'tan' inside this string interpolation without dart:math.
-    // However, SvgSkewX and Y are rare.
-    // Let's stick to Translate/Rotate/Scale/Matrix for now which cover 99% of cases and were supported (mostly) before.
-    // I will comment out Skew support for this iteration to match "Legacy String" parity which only supported translate/rotate/scale effectively in the regex parser.
-    // The previous regex parser had TODOs for matrix/skew. I implemented Matrix support above!
 
     body();
     buffer.writeln('    canvas.restore();');
