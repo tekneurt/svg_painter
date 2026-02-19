@@ -391,13 +391,15 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
       buffer.writeln('      bool draw = true;');
       buffer.writeln('      while (distance < metric.length) {');
       buffer.writeln('        final double len = dashArray[index] * scale;');
-      buffer.writeln('        if (draw) {');
+      buffer.writeln('        if (len > 0) {');
+      buffer.writeln('          if (draw) {');
       buffer.writeln(
-        '          final double end = distance + len < metric.length ? distance + len : metric.length;',
+        '            final double end = distance + len < metric.length ? distance + len : metric.length;',
       );
-      buffer.writeln('          dest.addPath(metric.extractPath(distance, end), Offset.zero);');
+      buffer.writeln('            dest.addPath(metric.extractPath(distance, end), Offset.zero);');
+      buffer.writeln('          }');
+      buffer.writeln('          distance += len;');
       buffer.writeln('        }');
-      buffer.writeln('        distance += len;');
       buffer.writeln('        draw = !draw;');
       buffer.writeln('        index = (index + 1) % dashArray.length;');
       buffer.writeln('      }');

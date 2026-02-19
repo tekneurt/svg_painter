@@ -151,11 +151,11 @@
 *Crucial cleanup to ensure Phase 4 features (symbols, clipping) are built on a solid type-safe base.*
 
 - [x] **Standardize Error Handling**: Establish centralized `untreatableErrorPrefix` and comment convention for defensive catch-all blocks.
-- [ ] **Pipeline Layer Hardening**: Systematic audit and quality improvement of each processing layer.
-    - [ ] **XML Model Layer (`lib/src/xml_model`)**:
+- [x] **Pipeline Layer Hardening**: Systematic audit and quality improvement of each processing layer.
+    - [x] **XML Model Layer (`lib/src/xml_model`)**:
         - [x] Exhaustive Enum regression tests for `XmlAttributeName` and `XmlElementName`.
         - [x] Comprehensive audit of structural data models.
-    - [ ] **SVG Model Layer (`lib/src/svg_model`)**:
+    - [x] **SVG Model Layer (`lib/src/svg_model`)**:
         - [x] **Mixin Refactoring**: Implement attribute grouping via mixins to ensure type safety (e.g., `mixin SvgGeometry`).
         - [x] **Attribute Grouping**: Group related presentation attributes into semantic components (Fill, Stroke, Font).
         - [x] **Attributes Harmonization**: Rename attributes, properties, and mixins to follow a consistent "SVG-Truthful" naming convention:
@@ -165,7 +165,7 @@
         - [x] **Structured Transforms**: Define `SvgTransformOperation` model and refactor `SvgGraphicsElement.transform` from `String?` to `List<SvgTransformOperation>?`.
         - [x] **Strongly Typed Text Styles**: Define SvgFontWeight, SvgFontStyle, and SvgFontFamily and refactor SvgFontAttributes.
         - [x] Comprehensive audit of structural data models.
-    - [ ] **XML Conversion Layer (`lib/src/xml_conversion`)**:
+    - [x] **XML Conversion Layer (`lib/src/xml_conversion`)**:
         - [x] Hardened `toXmlDocument` with standardized error handling and justified coverage ignore.
         - [x] Implement lenient child parsing (skip unknown tags instead of failing).
         - [x] Add namespace awareness to tag identification.
@@ -175,7 +175,7 @@
             - [x] Harden `toXmlAttributeValue` for `xlink:href` compatibility.
             - [x] Expand `<style>` collection scope in `SvgRoot`.
             - [x] Standardize optional attribute parsing safety across all element converters.
-    - [ ] **SVG Conversion Layer (`lib/src/svg_conversion`)**:
+    - [x] **SVG Conversion Layer (`lib/src/svg_conversion`)**:
         - [x] **Length Extension Consolidation**: Rename `svg_resolution_extensions.dart` to `svg_length_extensions.dart` and merge all length/percentage conversion logic into it for better semantics and clarity.
         - [x] Verify data inheritance resolution and painting context propagation.
         - [x] **Conversion Logic Hardening**:
@@ -183,18 +183,19 @@
             - [x] **Centralize Inheritance**: Implement `SvgPaintingContext.deriveWith(element)` to unify attribute priority (Inline > CSS > Attr > Inherited).
             - [x] **Refactor `<use>` Implementation**: Treat `(x, y)` as a translation that wraps the target, rather than absolute positioning.
             - [x] Harden CSS `font` shorthand parsing in `resolvePaint`.
-    - [ ] **Painting Model Layer (`lib/src/painting_model`)**:
+    - [x] **Painting Model Layer (`lib/src/painting_model`)**:
         - [x] **Strict Attribute Typing**: Refactor `PaintCommand` properties (`pathLength`, `opacity`) from nullable primitives to non-nullable types or strict objects.
         - [x] **Strongly Typed Commands**: Refactor `transform` string to structured `List<TransformOperation>` or `Matrix4`.
         - [x] Comprehensive audit of command and style models.
-    - [ ] **Generation Layer (`lib/src/generation`)**:
+    - [x] **Generation Layer (`lib/src/generation`)**:
         - [x] Finalize code emission patterns and property safety.
-        - [ ] Comprehensive audit of code generation logic.
+        - [x] Comprehensive audit of code generation logic.
             - [x] **Harden `command_generator.dart`**: Replace `!` operators with safe null handling (e.g., `stroke.dashArray`).
             - [x] **Refactor `generatePaintingCode`**: Remove `TODO(Gemini)` and improve local vs inherited property override handling.
             - [x] **Correct `SvgSkewY` logic**: Implement accurate tangent calculation in `wrapWithTransform`.
-            - [ ] **Verify `_dashPath` consistency**: Ensure all shape generators use a consistent dashed path implementation.
+            - [x] **Verify `_dashPath` consistency**: Ensure all shape generators use a consistent dashed path implementation.
 - [ ] **Bang Operator (!) Audit**: Systematically audit the codebase for the `!` operator and replace it with safe null handling (positive equality checks, `if (x == null) ...`, or explicit `assert(x != null)`) to eliminate potential runtime crashes.
+- [ ] **Improve Generator Readability**: Refactor the "string buffer waterfall" into a cleaner code emission pattern (e.g., multiline strings or a structured emitter) to prevent broken `buffer.writeln` calls.
 - [ ] **Coverage Exception Audit**: Investigate all `// coverage:ignore-line` and `// coverage:ignore-start/end` markers across the codebase to determine if the ignored code can be safely tested or if the ignore markers are still justified.
 - [ ] **Hardening Coverage for 0.2.0 files**: Improve coverage for the following files to reach >95% patch coverage:
     - `command_generator.dart`
