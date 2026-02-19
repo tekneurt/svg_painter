@@ -26,7 +26,7 @@ enum PaintingStrokeJoin {
 
 /// Represents the stroking style for an SVG element.
 @immutable
-final class PaintingStrokeStyle {
+final class PaintingStrokeStyle implements PaintingPaintStyle {
   const PaintingStrokeStyle({
     this.colorArgb,
     this.shaderId,
@@ -41,9 +41,11 @@ final class PaintingStrokeStyle {
   }) : assert(opacity >= 0.0 && opacity <= 1.0, 'Opacity must be between 0.0 and 1.0');
 
   /// The ARGB integer for the stroke color.
+  @override
   final int? colorArgb;
 
   /// The ID of the shader (e.g., gradient) to use for stroking.
+  @override
   final String? shaderId;
 
   /// The width of the stroke.
@@ -53,6 +55,7 @@ final class PaintingStrokeStyle {
   final double? pathLength;
 
   /// The opacity of the stroke (0.0 to 1.0).
+  @override
   final double opacity;
 
   /// The shape to be used at the end of open subpaths.
@@ -65,9 +68,11 @@ final class PaintingStrokeStyle {
   final List<double>? dashArray;
 
   /// Whether this stroke was explicitly defined on the element (not just inherited).
+  @override
   final bool isExplicit;
 
   /// Whether this stroke uses the 'currentColor' keyword.
+  @override
   final bool isCurrentColor;
 
   @override

@@ -6,6 +6,24 @@ part 'painting_fill_style.dart';
 part 'painting_stroke_style.dart';
 part 'painting_text_style.dart';
 
+/// Common interface for styles that can be applied to a [Paint] object (Fill or Stroke).
+abstract interface class PaintingPaintStyle {
+  /// The ARGB integer for the color.
+  int? get colorArgb;
+
+  /// The ID of the shader (e.g., gradient) to use.
+  String? get shaderId;
+
+  /// The opacity of the paint (0.0 to 1.0).
+  double get opacity;
+
+  /// Whether this style was explicitly defined on the element.
+  bool get isExplicit;
+
+  /// Whether this style uses the 'currentColor' keyword.
+  bool get isCurrentColor;
+}
+
 /// Represents the visual style (fill and stroke) for a drawing command.
 @immutable
 final class PaintingStyle {

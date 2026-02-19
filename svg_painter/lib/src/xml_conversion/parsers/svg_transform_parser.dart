@@ -13,8 +13,14 @@ class SvgTransformParser {
     final Iterable<Match> matches = transformReg.allMatches(transform);
 
     for (final Match match in matches) {
-      final String type = match.group(1)!;
-      final String paramsStr = match.group(2)!;
+      final String? type = match.group(1);
+      final String? paramsStr = match.group(2);
+
+      assert(type != null && paramsStr != null, 'Regex match guaranteed groups 1 and 2');
+      if (type == null || paramsStr == null) {
+        continue;
+      }
+
       final List<double> params = paramsStr
           .split(RegExp(r'[\s,]+'))
           .where((String s) => s.isNotEmpty)

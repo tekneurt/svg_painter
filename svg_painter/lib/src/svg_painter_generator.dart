@@ -130,43 +130,43 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
       (SvgElement value) => value,
     );
 
-    if (svgRoot is! SvgSvg) {
+    if (svgRoot is SvgSvg) {
+      double viewBoxWidth = 100.0;
+      double viewBoxHeight = 100.0;
+
+      if (svgRoot is SvgRoot) {
+        final SvgLengthPercentageAuto? w = svgRoot.width;
+        final SvgLength? wLen = w is SvgLength ? w : null;
+        final SvgLengthPercentageAuto? h = svgRoot.height;
+        final SvgLength? hLen = h is SvgLength ? h : null;
+
+        viewBoxWidth = wLen?.toDouble() ?? svgRoot.viewBox?.width ?? 100.0;
+        viewBoxHeight = hLen?.toDouble() ?? svgRoot.viewBox?.height ?? 100.0;
+      }
+
+      final Result<List<PaintCommand>> paintingResult = svgRoot.toPaintCommands();
+      final List<PaintCommand> commands = paintingResult.fold(
+        (Failure<List<PaintCommand>> failure) => throw InvalidGenerationSourceError(
+          'Failed to convert SVG to painting commands for $elementName: ${failure.message}',
+        ),
+        (List<PaintCommand> value) => value,
+      );
+
+      final String className = painterClassName ?? r'_$' + elementName;
+
+      return generatePainterClass(
+        className: className,
+        viewBoxWidth: viewBoxWidth,
+        viewBoxHeight: viewBoxHeight,
+        commands: commands,
+        exposureMode: exposureMode,
+        propertyMapping: propertyMapping,
+      );
+    } else {
       throw InvalidGenerationSourceError(
         'Root element must be <svg>, but found ${svgRoot.runtimeType}',
       );
     }
-
-    double viewBoxWidth = 100.0;
-    double viewBoxHeight = 100.0;
-
-    if (svgRoot is SvgRoot) {
-      final SvgLengthPercentageAuto? w = svgRoot.width;
-      final SvgLength? wLen = w is SvgLength ? w : null;
-      final SvgLengthPercentageAuto? h = svgRoot.height;
-      final SvgLength? hLen = h is SvgLength ? h : null;
-
-      viewBoxWidth = wLen?.toDouble() ?? svgRoot.viewBox?.width ?? 100.0;
-      viewBoxHeight = hLen?.toDouble() ?? svgRoot.viewBox?.height ?? 100.0;
-    }
-
-    final Result<List<PaintCommand>> paintingResult = svgRoot.toPaintCommands();
-    final List<PaintCommand> commands = paintingResult.fold(
-      (Failure<List<PaintCommand>> failure) => throw InvalidGenerationSourceError(
-        'Failed to convert SVG to painting commands for $elementName: ${failure.message}',
-      ),
-      (List<PaintCommand> value) => value,
-    );
-
-    final String className = painterClassName ?? r'_$' + elementName;
-
-    return generatePainterClass(
-      className: className,
-      viewBoxWidth: viewBoxWidth,
-      viewBoxHeight: viewBoxHeight,
-      commands: commands,
-      exposureMode: exposureMode,
-      propertyMapping: propertyMapping,
-    );
   }
 
   /// Generates the full CustomPainter class code.

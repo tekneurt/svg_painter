@@ -138,30 +138,30 @@ final class SvgPaintingContext {
 
   /// Creates a new context by applying the styles of the given [element].
   SvgPaintingContext deriveWith(SvgElement element) {
-    if (element is! SvgGraphicsElement) {
-      return this;
+    if (element is SvgGraphicsElement) {
+      final SvgFontAttributes? font = element is SvgFontAttributable
+          ? (element as SvgFontAttributable).fontAttributes
+          : null;
+
+      return derive(
+        inheritedFill: element.fillAttributes?.color ?? inheritedFill,
+        inheritedFillOpacity: element.fillAttributes?.opacity ?? inheritedFillOpacity,
+        inheritedStroke: element.strokeAttributes?.color ?? inheritedStroke,
+        inheritedStrokeOpacity: element.strokeAttributes?.opacity ?? inheritedStrokeOpacity,
+        inheritedStrokeWidth: element.strokeAttributes?.width ?? inheritedStrokeWidth,
+        inheritedStrokeDasharray:
+            element.strokeAttributes?.dashArray ?? inheritedStrokeDasharray,
+        inheritedStrokeLinecap: element.strokeAttributes?.linecap ?? inheritedStrokeLinecap,
+        inheritedStrokeLinejoin: element.strokeAttributes?.linejoin ?? inheritedStrokeLinejoin,
+        parentOpacity:
+            parentOpacity * (element.opacity?.resolve(this, SvgOrientation.unit) ?? 1.0),
+        inheritedFontSize: font?.size ?? inheritedFontSize,
+        inheritedFontWeight: font?.weight ?? inheritedFontWeight,
+        inheritedFontStyle: font?.style ?? inheritedFontStyle,
+        inheritedFontFamily: font?.family ?? inheritedFontFamily,
+      );
     }
 
-    final SvgFontAttributes? font = element is SvgFontAttributable
-        ? (element as SvgFontAttributable).fontAttributes
-        : null;
-
-    return derive(
-      inheritedFill: element.fillAttributes?.color ?? inheritedFill,
-      inheritedFillOpacity: element.fillAttributes?.opacity ?? inheritedFillOpacity,
-      inheritedStroke: element.strokeAttributes?.color ?? inheritedStroke,
-      inheritedStrokeOpacity: element.strokeAttributes?.opacity ?? inheritedStrokeOpacity,
-      inheritedStrokeWidth: element.strokeAttributes?.width ?? inheritedStrokeWidth,
-      inheritedStrokeDasharray:
-          element.strokeAttributes?.dashArray ?? inheritedStrokeDasharray,
-      inheritedStrokeLinecap: element.strokeAttributes?.linecap ?? inheritedStrokeLinecap,
-      inheritedStrokeLinejoin: element.strokeAttributes?.linejoin ?? inheritedStrokeLinejoin,
-      parentOpacity:
-          parentOpacity * (element.opacity?.resolve(this, SvgOrientation.unit) ?? 1.0),
-      inheritedFontSize: font?.size ?? inheritedFontSize,
-      inheritedFontWeight: font?.weight ?? inheritedFontWeight,
-      inheritedFontStyle: font?.style ?? inheritedFontStyle,
-      inheritedFontFamily: font?.family ?? inheritedFontFamily,
-    );
+    return this;
   }
 }

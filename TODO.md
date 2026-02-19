@@ -194,7 +194,7 @@
             - [x] **Refactor `generatePaintingCode`**: Remove `TODO(Gemini)` and improve local vs inherited property override handling.
             - [x] **Correct `SvgSkewY` logic**: Implement accurate tangent calculation in `wrapWithTransform`.
             - [x] **Verify `_dashPath` consistency**: Ensure all shape generators use a consistent dashed path implementation.
-- [ ] **Bang Operator (!) Audit**: Systematically audit the codebase for the `!` operator and replace it with safe null handling (positive equality checks, `if (x == null) ...`, or explicit `assert(x != null)`) to eliminate potential runtime crashes.
+- [x] **Bang Operator (!) Audit**: Systematically audit the codebase for the `!` operator and replace it with safe null handling (core logic completed, tests remain).
 - [ ] **Improve Generator Readability**: Refactor the "string buffer waterfall" into a cleaner code emission pattern (e.g., multiline strings or a structured emitter) to prevent broken `buffer.writeln` calls.
 - [ ] **Coverage Exception Audit**: Investigate all `// coverage:ignore-line` and `// coverage:ignore-start/end` markers across the codebase to determine if the ignored code can be safely tested or if the ignore markers are still justified.
 - [ ] **Hardening Coverage for 0.2.0 files**: Improve coverage for the following files to reach >95% patch coverage:

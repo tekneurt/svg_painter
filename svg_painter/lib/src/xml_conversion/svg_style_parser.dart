@@ -17,8 +17,15 @@ class SvgStyleParser {
     final RegExp ruleRegex = RegExp(r'([#\.a-zA-Z0-9_-]+)\s*\{([^}]*)\}');
 
     for (final Match match in ruleRegex.allMatches(cleanCss)) {
-      String selector = match.group(1)!;
-      final String propsBlock = match.group(2)!;
+      final String? rawSelector = match.group(1);
+      final String? propsBlock = match.group(2);
+
+      assert(rawSelector != null && propsBlock != null, 'Regex match guaranteed groups 1 and 2');
+      if (rawSelector == null || propsBlock == null) {
+        continue;
+      }
+
+      String selector = rawSelector;
 
       // Note: We leave '.' and '#' prefixes on the keys in the rules map
       // so we can distinguish between tags, classes (.name), and IDs (#name).

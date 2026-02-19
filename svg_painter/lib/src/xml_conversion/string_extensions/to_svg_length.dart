@@ -17,8 +17,13 @@ extension ToSvgLength on String {
     if (match == null) {
       return const SvgLength(0.0);
     } else {
-      final String numberPart = match.group(1)!;
-      final String unitSuffix = match.group(2)!;
+      final String? numberPart = match.group(1);
+      final String? unitSuffix = match.group(2);
+
+      assert(numberPart != null && unitSuffix != null, 'Regex match guaranteed groups 1 and 2');
+      if (numberPart == null || unitSuffix == null) {
+        return const SvgLength(0.0);
+      }
 
       final double? parsedNumber = double.tryParse(numberPart);
       if (parsedNumber == null) {

@@ -28,15 +28,18 @@ extension ToSvgLengthPercentage on String {
     if (match == null) {
       // No match
     } else {
-      final String numberPart = match.group(1)!;
-      final String unitSuffix = match.group(2)!;
+      final String? numberPart = match.group(1);
+      final String? unitSuffix = match.group(2);
 
-      final double? parsedNumber = double.tryParse(numberPart);
-      if (parsedNumber == null) {
-        // Failed to parse number
-      } else {
-        final SvgLengthUnit unit = unitSuffix.toSvgLengthUnit(); // Use new extension
-        return SvgLength(parsedNumber, unit);
+      assert(numberPart != null && unitSuffix != null, 'Regex match guaranteed groups 1 and 2');
+      if (numberPart != null && unitSuffix != null) {
+        final double? parsedNumber = double.tryParse(numberPart);
+        if (parsedNumber == null) {
+          // Failed to parse number
+        } else {
+          final SvgLengthUnit unit = unitSuffix.toSvgLengthUnit(); // Use new extension
+          return SvgLength(parsedNumber, unit);
+        }
       }
     }
 

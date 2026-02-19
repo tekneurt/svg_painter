@@ -63,9 +63,18 @@ extension ToSvgColor on String {
       return null;
     }
 
-    final double h = double.parse(match.group(1)!) % 360;
-    final double s = double.parse(match.group(2)!).clamp(0.0, 100.0);
-    final double l = double.parse(match.group(3)!).clamp(0.0, 100.0);
+    final String? hGroup = match.group(1);
+    final String? sGroup = match.group(2);
+    final String? lGroup = match.group(3);
+
+    assert(hGroup != null && sGroup != null && lGroup != null, 'Regex match guaranteed HSL groups 1, 2 and 3');
+    if (hGroup == null || sGroup == null || lGroup == null) {
+      return null;
+    }
+
+    final double h = double.parse(hGroup) % 360;
+    final double s = double.parse(sGroup).clamp(0.0, 100.0);
+    final double l = double.parse(lGroup).clamp(0.0, 100.0);
     final String? aGroup = match.group(4);
     final double a = aGroup == null ? 1.0 : double.parse(aGroup).clamp(0.0, 1.0);
 
@@ -89,9 +98,18 @@ extension ToSvgColor on String {
       return int.parse(part).clamp(0, 255);
     }
 
-    final int r = parsePart(match.group(1)!);
-    final int g = parsePart(match.group(2)!);
-    final int b = parsePart(match.group(3)!);
+    final String? rGroup = match.group(1);
+    final String? gGroup = match.group(2);
+    final String? bGroup = match.group(3);
+
+    assert(rGroup != null && gGroup != null && bGroup != null, 'Regex match guaranteed RGB groups 1, 2 and 3');
+    if (rGroup == null || gGroup == null || bGroup == null) {
+      return null;
+    }
+
+    final int r = parsePart(rGroup);
+    final int g = parsePart(gGroup);
+    final int b = parsePart(bGroup);
     final String? aGroup = match.group(4);
     final int a = aGroup == null ? 255 : (double.parse(aGroup) * 255).round().clamp(0, 255);
 

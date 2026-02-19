@@ -49,11 +49,14 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
     List<InheritedProperty>? inheritedStrokes,
   }) {
     // 1. Fill
-    if (style.fill != null) {
+    final PaintingFillStyle? fill = style.fill;
+    if (fill == null) {
+      // No fill
+    } else {
       _generateStyleBlock(
         buffer: buffer,
         command: command,
-        style: style.fill!,
+        style: fill,
         boundsRect: boundsRect,
         isFill: true,
         palette: palette,
@@ -64,11 +67,14 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
     }
 
     // 2. Stroke
-    if (style.stroke != null) {
+    final PaintingStrokeStyle? stroke = style.stroke;
+    if (stroke == null) {
+      // No stroke
+    } else {
       _generateStyleBlock(
         buffer: buffer,
         command: command,
-        style: style.stroke!,
+        style: stroke,
         boundsRect: boundsRect,
         isFill: false,
         palette: palette,
@@ -82,7 +88,7 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
   void _generateStyleBlock({
     required StringBuffer buffer,
     required T command,
-    required dynamic style, // PaintingFillStyle or PaintingStrokeStyle
+    required PaintingPaintStyle style,
     required String boundsRect,
     required bool isFill,
     required PaletteResult? palette,
@@ -174,7 +180,7 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
 
   void _generateOriginalStyle(
     StringBuffer buffer,
-    dynamic style,
+    PaintingPaintStyle style,
     String boundsRect, {
     required String indent,
   }) {

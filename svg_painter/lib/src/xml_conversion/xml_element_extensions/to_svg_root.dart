@@ -18,8 +18,8 @@ extension ToSvgRoot on XmlElement {
     // Merge rules (later ones override earlier ones)
     final Map<String, Map<String, String>> mergedRules = <String, Map<String, String>>{};
     for (final Map<String, Map<String, String>> rules in allRules) {
-      for (final String className in rules.keys) {
-        mergedRules.putIfAbsent(className, () => <String, String>{}).addAll(rules[className]!);
+      for (final MapEntry<String, Map<String, String>> entry in rules.entries) {
+        mergedRules.putIfAbsent(entry.key, () => <String, String>{}).addAll(entry.value);
       }
     }
     final SvgStyleSheet styleSheet = SvgStyleSheet(mergedRules);

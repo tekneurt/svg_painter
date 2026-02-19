@@ -52,12 +52,15 @@ class GroupGenerator extends ShapeGenerator<DrawGroup> {
       if (id != null && (fill?.isExplicit ?? false)) {
         final String propName = '${SvgIdFormatter.format(id)}Fill';
         if (activeFillProperties != null && activeFillProperties.containsKey(propName)) {
-          final String mappedName = activeFillProperties[propName]!;
-          nextInheritedFills.add(InheritedProperty(
-            mappedName,
-            colorArgb: fill?.colorArgb,
-            shaderId: fill?.shaderId,
-          ));
+          final String? mappedName = activeFillProperties[propName];
+          assert(mappedName != null, 'mappedName should not be null if key exists');
+          if (mappedName != null) {
+            nextInheritedFills.add(InheritedProperty(
+              mappedName,
+              colorArgb: fill?.colorArgb,
+              shaderId: fill?.shaderId,
+            ));
+          }
         }
       }
 
@@ -66,12 +69,15 @@ class GroupGenerator extends ShapeGenerator<DrawGroup> {
       if (id != null && (stroke?.isExplicit ?? false)) {
         final String propName = '${SvgIdFormatter.format(id)}Stroke';
         if (activeStrokeProperties != null && activeStrokeProperties.containsKey(propName)) {
-          final String mappedName = activeStrokeProperties[propName]!;
-          nextInheritedStrokes.add(InheritedProperty(
-            mappedName,
-            colorArgb: stroke?.colorArgb,
-            shaderId: stroke?.shaderId,
-          ));
+          final String? mappedName = activeStrokeProperties[propName];
+          assert(mappedName != null, 'mappedName should not be null if key exists');
+          if (mappedName != null) {
+            nextInheritedStrokes.add(InheritedProperty(
+              mappedName,
+              colorArgb: stroke?.colorArgb,
+              shaderId: stroke?.shaderId,
+            ));
+          }
         }
       }
 

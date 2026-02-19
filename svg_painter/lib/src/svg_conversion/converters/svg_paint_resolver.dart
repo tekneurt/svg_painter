@@ -96,8 +96,13 @@ PaintingStyle resolvePaint(
   SvgFontFamily? cssFontFamily;
   SvgNumber? cssPathLength;
 
-  if (resolvedRules.containsKey('font')) {
-    final String fontValue = resolvedRules['font']!;
+  final String? fontValue = resolvedRules['font'];
+  if (fontValue == null) {
+    cssFontWeight = resolvedRules['font-weight']?.toSvgFontWeight();
+    cssFontStyle = resolvedRules['font-style']?.toSvgFontStyle();
+    cssFontSize = resolvedRules['font-size']?.toSvgLengthPercentage();
+    cssFontFamily = resolvedRules['font-family']?.toSvgFontFamily();
+  } else {
     // 1. Handle font-family (everything after the last size-like token)
     // Find the index of the first token that looks like a size (contains a digit)
     final List<String> allParts = fontValue.split(RegExp(r'\s+'));
@@ -132,50 +137,24 @@ PaintingStyle resolvePaint(
         cssFontFamily = firstFamily.toSvgFontFamily();
       }
     }
+
+    // Individual font overrides (shorthand has lower priority than individual props in same scope)
+    cssFontWeight = resolvedRules['font-weight']?.toSvgFontWeight() ?? cssFontWeight;
+    cssFontStyle = resolvedRules['font-style']?.toSvgFontStyle() ?? cssFontStyle;
+    cssFontSize = resolvedRules['font-size']?.toSvgLengthPercentage() ?? cssFontSize;
+    cssFontFamily = resolvedRules['font-family']?.toSvgFontFamily() ?? cssFontFamily;
   }
 
-  if (resolvedRules.containsKey('fill')) {
-    cssFill = resolvedRules['fill']!.toSvgColor();
-  }
-  if (resolvedRules.containsKey('fill-opacity')) {
-    cssFillOpacity = resolvedRules['fill-opacity']!.toSvgLengthPercentage();
-  }
-  if (resolvedRules.containsKey('stroke')) {
-    cssStroke = resolvedRules['stroke']!.toSvgColor();
-  }
-  if (resolvedRules.containsKey('stroke-opacity')) {
-    cssStrokeOpacity = resolvedRules['stroke-opacity']!.toSvgLengthPercentage();
-  }
-  if (resolvedRules.containsKey('stroke-width')) {
-    cssStrokeWidth = resolvedRules['stroke-width']!.toSvgLengthPercentage();
-  }
-  if (resolvedRules.containsKey('stroke-dasharray')) {
-    cssStrokeDasharray = resolvedRules['stroke-dasharray']!.toSvgPointList();
-  }
-  if (resolvedRules.containsKey('stroke-linecap')) {
-    cssStrokeLinecap = resolvedRules['stroke-linecap']!.toSvgStrokeLinecap();
-  }
-  if (resolvedRules.containsKey('stroke-linejoin')) {
-    cssStrokeLinejoin = resolvedRules['stroke-linejoin']!.toSvgStrokeLinejoin();
-  }
-  if (resolvedRules.containsKey('opacity')) {
-    cssOpacity = resolvedRules['opacity']!.toSvgLengthPercentage();
-  }
-  if (resolvedRules.containsKey('font-weight')) {
-    cssFontWeight = resolvedRules['font-weight']!.toSvgFontWeight();
-  }
-  if (resolvedRules.containsKey('font-style')) {
-    cssFontStyle = resolvedRules['font-style']!.toSvgFontStyle();
-  }
-  if (resolvedRules.containsKey('font-size')) {
-    cssFontSize = resolvedRules['font-size']!.toSvgLengthPercentage();
-  }
-  if (resolvedRules.containsKey('font-family')) {
-    cssFontFamily = resolvedRules['font-family']!.toSvgFontFamily();
-  }
-  if (resolvedRules.containsKey('pathLength')) {
-    cssPathLength = resolvedRules['pathLength']!.toSvgNonNegativeNumber();
-  }
+  cssFill = resolvedRules['fill']?.toSvgColor();
+  cssFillOpacity = resolvedRules['fill-opacity']?.toSvgLengthPercentage();
+  cssStroke = resolvedRules['stroke']?.toSvgColor();
+  cssStrokeOpacity = resolvedRules['stroke-opacity']?.toSvgLengthPercentage();
+  cssStrokeWidth = resolvedRules['stroke-width']?.toSvgLengthPercentage();
+  cssStrokeDasharray = resolvedRules['stroke-dasharray']?.toSvgPointList();
+  cssStrokeLinecap = resolvedRules['stroke-linecap']?.toSvgStrokeLinecap();
+  cssStrokeLinejoin = resolvedRules['stroke-linejoin']?.toSvgStrokeLinejoin();
+  cssOpacity = resolvedRules['opacity']?.toSvgLengthPercentage();
+  cssPathLength = resolvedRules['pathLength']?.toSvgNonNegativeNumber();
 
   // Determine if fill/stroke are explicit (not just inherited)
   final bool isFillExplicit =
@@ -196,7 +175,12 @@ PaintingStyle resolvePaint(
 
   // 5. Resolve final values using priority: Inline Style/CSS > Presentation Attribute > Inherited
   final SvgColor? fillPaint = cssFill ?? fillAttributes?.color ?? context.inheritedFill;
-  final bool hasFill = fillPaint != null && fillPaint is! SvgNoneColor;
+
+  final bool hasFill = switch (fillPaint) {
+    null || SvgNoneColor() => false,
+    _ => true,
+  };
+
   PaintingFillStyle? fillStyle;
   if (hasFill) {
     int? fillColorArgb;
@@ -229,7 +213,11 @@ PaintingStyle resolvePaint(
   }
 
   final SvgColor? strokePaint = cssStroke ?? strokeAttributes?.color ?? context.inheritedStroke;
-  final bool hasStroke = strokePaint != null && strokePaint is! SvgNoneColor;
+  final bool hasStroke = switch (strokePaint) {
+    null || SvgNoneColor() => false,
+    _ => true,
+  };
+
   PaintingStrokeStyle? strokeStyle;
   if (hasStroke) {
     int? strokeColorArgb;
