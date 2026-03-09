@@ -33,8 +33,8 @@ void main() {
       // Verify usage in paint
       expect(output, contains('final Object? localFill = backgroundFill;'));
 
-      // Verify usage in shouldRepaint
-      expect(output, contains('&& backgroundFill == oldDelegate.backgroundFill'));
+      // Verify usage in shouldRepaint (now formatted across lines)
+      expect(output, contains('backgroundFill == oldDelegate.backgroundFill'));
     });
 
     test('should rename Indexed properties', () {
@@ -61,7 +61,7 @@ void main() {
       expect(output, isNot(contains('fill1;')));
       expect(output, isNot(contains('fill2;')));
 
-      // Verify usage (fill1 mapped to primaryColor)
+      // Verify usage
       expect(output, contains('final Object? localFill = primaryColor;'));
       expect(output, contains('final Object? localFill = secondaryColor;'));
     });

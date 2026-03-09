@@ -1,4 +1,4 @@
-import 'package:svg_painter/src/generation/text_generator.dart';
+import 'package:svg_painter/src/generation/_generation.dart';
 import 'package:svg_painter/src/painting_model/paint_command.dart';
 import 'package:svg_painter/src/painting_model/styles/painting_style.dart';
 import 'package:test/test.dart';
@@ -8,9 +8,9 @@ void main() {
     fill: PaintingFillStyle(colorArgb: 0xFF000000),
     text: PaintingTextStyle(
       fontSize: 12.0,
-      fontFamily: 'Roboto',
       fontWeight: 'bold',
       fontStyle: 'italic',
+      fontFamily: 'Roboto',
     ),
   );
 
@@ -19,23 +19,23 @@ void main() {
       // Arrange
       const TextGenerator generator = TextGenerator();
       const DrawText command = DrawText(x: 10.0, y: 20.0, text: 'Hello SVG', style: textStyle);
-      final StringBuffer buffer = StringBuffer();
+      final GeneratorBuffer buffer = GeneratorBuffer();
 
       // Act
       generator.generate(command, buffer);
 
       // Assert
       final String output = buffer.toString();
-      expect(output, contains("text: '''Hello SVG'''"));
+      expect(output, contains("text: 'Hello SVG'"));
       expect(output, contains('fontSize: 12.0'));
       expect(output, contains("fontFamily: 'Roboto'"));
       expect(output, contains('fontWeight: FontWeight.bold'));
       expect(output, contains('fontStyle: FontStyle.italic'));
-      expect(output, contains('tp.layout()'));
+      expect(output, contains('..layout()'));
       expect(
         output,
         contains(
-          'tp.paint(canvas, Offset(10.0, 20.0 - tp.computeDistanceToActualBaseline(TextBaseline.alphabetic)))',
+          'tp.paint(canvas, const Offset(10.0, 20.0 - tp.ascent))',
         ),
       );
     });

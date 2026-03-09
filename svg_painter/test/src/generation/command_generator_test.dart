@@ -11,7 +11,7 @@ class TestShapeGenerator extends ShapeGenerator<DrawCircle> {
   @override
   void generate(
     DrawCircle command,
-    StringBuffer buffer, {
+    GeneratorBuffer buffer, {
     Map<Type, CommandGenerator<PaintCommand>>? generators,
     PaletteResult? palette,
     Map<String, String>? activeFillProperties,
@@ -28,11 +28,11 @@ class TestShapeGenerator extends ShapeGenerator<DrawCircle> {
         (String paintVar, {String? dashArray, String? pathLength}) {
           if (dashArray == null) {
             buffer.writeln(
-              '        canvas.drawCircle(const Offset(${command.cx}, ${command.cy}), ${command.radius}, $paintVar);',
+              'canvas.drawCircle(const Offset(${command.cx}, ${command.cy}), ${command.radius}, $paintVar);',
             );
           } else {
             buffer.writeln(
-              '        canvas.drawPath(_dashPath(Path()..addOval(Rect.fromCircle(center: const Offset(${command.cx}, ${command.cy}), radius: ${command.radius})), $dashArray, pathLength: $pathLength), $paintVar);',
+              'canvas.drawPath(_dashPath(Path()..addOval(Rect.fromCircle(center: const Offset(${command.cx}, ${command.cy}), radius: ${command.radius})), $dashArray, pathLength: $pathLength), $paintVar);',
             );
           }
         },
@@ -57,7 +57,7 @@ void main() {
           fill: PaintingFillStyle(colorArgb: 0xFFFF0000, opacity: 0.5),
         );
         const DrawCircle command = DrawCircle(cx: 10, cy: 20, radius: 5, style: style);
-        final StringBuffer buffer = StringBuffer();
+        final GeneratorBuffer buffer = GeneratorBuffer();
 
         // Act
         generator.generate(command, buffer);
@@ -81,7 +81,7 @@ void main() {
           ),
         );
         const DrawCircle command = DrawCircle(cx: 10, cy: 20, radius: 5, style: style);
-        final StringBuffer buffer = StringBuffer();
+        final GeneratorBuffer buffer = GeneratorBuffer();
 
         // Act
         generator.generate(command, buffer);
@@ -101,7 +101,7 @@ void main() {
           fill: PaintingFillStyle(shaderId: 'grad1', opacity: 0.8),
         );
         const DrawCircle command = DrawCircle(cx: 10, cy: 20, radius: 5, style: style);
-        final StringBuffer buffer = StringBuffer();
+        final GeneratorBuffer buffer = GeneratorBuffer();
 
         // Act
         generator.generate(command, buffer);
@@ -127,7 +127,7 @@ void main() {
           ),
         );
         const DrawCircle command = DrawCircle(cx: 10, cy: 20, radius: 5, style: style);
-        final StringBuffer buffer = StringBuffer();
+        final GeneratorBuffer buffer = GeneratorBuffer();
 
         // Act
         generator.generate(command, buffer);
@@ -143,7 +143,7 @@ void main() {
         // Arrange
         const PaintingStyle style = PaintingStyle(fill: PaintingFillStyle(colorArgb: 0xFFFF0000));
         const DrawCircle command = DrawCircle(cx: 10, cy: 20, radius: 5, style: style, id: 'c1');
-        final StringBuffer buffer = StringBuffer();
+        final GeneratorBuffer buffer = GeneratorBuffer();
 
         // Act
         generator.generate(
@@ -166,7 +166,7 @@ void main() {
         const PaletteResult palette = PaletteResult(<PaintCommand, String>{
           command: 'fill1',
         }, <PaintCommand, String>{});
-        final StringBuffer buffer = StringBuffer();
+        final GeneratorBuffer buffer = GeneratorBuffer();
 
         // Act
         generator.generate(
@@ -192,7 +192,7 @@ void main() {
           <PaintCommand, String>{},
           <PaintCommand, String>{command: 'stroke1'},
         );
-        final StringBuffer buffer = StringBuffer();
+        final GeneratorBuffer buffer = GeneratorBuffer();
 
         // Act
         generator.generate(
@@ -215,7 +215,7 @@ void main() {
           fill: PaintingFillStyle(colorArgb: color, isExplicit: false),
         );
         const DrawCircle command = DrawCircle(cx: 10, cy: 20, radius: 5, style: style);
-        final StringBuffer buffer = StringBuffer();
+        final GeneratorBuffer buffer = GeneratorBuffer();
 
         // Act
         generator.generate(
@@ -238,7 +238,7 @@ void main() {
           fill: PaintingFillStyle(colorArgb: color, isExplicit: false),
         );
         const DrawCircle command = DrawCircle(cx: 10, cy: 20, radius: 5, style: style);
-        final StringBuffer buffer = StringBuffer();
+        final GeneratorBuffer buffer = GeneratorBuffer();
 
         // Act
         generator.generate(
@@ -261,7 +261,7 @@ void main() {
           fill: PaintingFillStyle(isCurrentColor: true, opacity: 0.7),
         );
         const DrawCircle command = DrawCircle(cx: 10, cy: 20, radius: 5, style: style);
-        final StringBuffer buffer = StringBuffer();
+        final GeneratorBuffer buffer = GeneratorBuffer();
 
         // Act
         generator.generate(command, buffer);
@@ -280,7 +280,7 @@ void main() {
           stroke: PaintingStrokeStyle(isCurrentColor: true, opacity: 0.4),
         );
         const DrawCircle command = DrawCircle(cx: 10, cy: 20, radius: 5, style: style);
-        final StringBuffer buffer = StringBuffer();
+        final GeneratorBuffer buffer = GeneratorBuffer();
 
         // Act
         generator.generate(command, buffer);
@@ -297,7 +297,7 @@ void main() {
         // Arrange
         const PaintingStyle style = PaintingStyle(fill: PaintingFillStyle());
         const DrawCircle command = DrawCircle(cx: 10, cy: 20, radius: 5, style: style);
-        final StringBuffer buffer = StringBuffer();
+        final GeneratorBuffer buffer = GeneratorBuffer();
 
         // Act
         generator.generate(command, buffer);
@@ -312,7 +312,7 @@ void main() {
         // Arrange
         const PaintingStyle style = PaintingStyle(stroke: PaintingStrokeStyle());
         const DrawCircle command = DrawCircle(cx: 10, cy: 20, radius: 5, style: style);
-        final StringBuffer buffer = StringBuffer();
+        final GeneratorBuffer buffer = GeneratorBuffer();
 
         // Act
         generator.generate(command, buffer);
@@ -327,7 +327,7 @@ void main() {
         // Arrange
         const PaintingStyle style = PaintingStyle(fill: PaintingFillStyle(shaderId: 's1'));
         const DrawCircle command = DrawCircle(cx: 10, cy: 20, radius: 5, style: style);
-        final StringBuffer buffer = StringBuffer();
+        final GeneratorBuffer buffer = GeneratorBuffer();
 
         // Act
         generator.generate(command, buffer);
@@ -342,7 +342,7 @@ void main() {
         // Arrange
         const PaintingStyle style = PaintingStyle(stroke: PaintingStrokeStyle(shaderId: 's2'));
         const DrawCircle command = DrawCircle(cx: 10, cy: 20, radius: 5, style: style);
-        final StringBuffer buffer = StringBuffer();
+        final GeneratorBuffer buffer = GeneratorBuffer();
 
         // Act
         generator.generate(command, buffer);
@@ -352,13 +352,38 @@ void main() {
         expect(output, contains('paint.shader = _grad_s2.createShader'));
         expect(output, isNot(contains('withOpacity')));
       });
+
+      test('should use inherited property for fill if implicit shader match found', () {
+        // Arrange
+        const String shaderId = 'grad1';
+        const PaintingStyle style = PaintingStyle(
+          fill: PaintingFillStyle(shaderId: shaderId, isExplicit: false),
+        );
+        const DrawCircle command = DrawCircle(cx: 10, cy: 20, radius: 5, style: style);
+        final GeneratorBuffer buffer = GeneratorBuffer();
+
+        // Act
+        generator.generate(
+          command,
+          buffer,
+          inheritedFills: <InheritedProperty>[
+            const InheritedProperty('groupFill', shaderId: shaderId),
+          ],
+        );
+
+        // Assert
+        final String output = buffer.toString();
+        expect(output, contains('final Object? inheritedFill = groupFill;'));
+        expect(output, contains('if (inheritedFill == null) {'));
+        expect(output, contains('_applyOverride(paint, inheritedFill);'));
+      });
     });
 
     group('wrapWithTransform', () {
       test('should do nothing if transform is null', () {
         // Arrange
         const DrawCircle command = DrawCircle(cx: 0, cy: 0, radius: 5, style: PaintingStyle());
-        final StringBuffer buffer = StringBuffer();
+        final GeneratorBuffer buffer = GeneratorBuffer();
 
         // Act
         generator.generate(command, buffer);
@@ -377,7 +402,7 @@ void main() {
           radius: 5,
           style: PaintingStyle(transformAttributes: SvgTransformAttributes(<SvgTransformOperation>[])),
         );
-        final StringBuffer buffer = StringBuffer();
+        final GeneratorBuffer buffer = GeneratorBuffer();
 
         // Act
         generator.generate(command, buffer);
@@ -400,7 +425,7 @@ void main() {
             transformAttributes: SvgTransformAttributes(<SvgTransformOperation>[SvgTranslate(10, 20)]),
           ),
         );
-        final StringBuffer buffer = StringBuffer();
+        final GeneratorBuffer buffer = GeneratorBuffer();
 
         // Act
         generator.generate(command, buffer);
@@ -422,7 +447,7 @@ void main() {
             transformAttributes: SvgTransformAttributes(<SvgTransformOperation>[SvgScale(2.5, 2.5)]),
           ),
         );
-        final StringBuffer buffer = StringBuffer();
+        final GeneratorBuffer buffer = GeneratorBuffer();
 
         // Act
         generator.generate(command, buffer);
@@ -442,7 +467,7 @@ void main() {
             transformAttributes: SvgTransformAttributes(<SvgTransformOperation>[SvgScale(2, 3)]),
           ),
         );
-        final StringBuffer buffer = StringBuffer();
+        final GeneratorBuffer buffer = GeneratorBuffer();
 
         // Act
         generator.generate(command, buffer);
@@ -462,7 +487,7 @@ void main() {
             transformAttributes: SvgTransformAttributes(<SvgTransformOperation>[SvgRotate(45)]),
           ),
         );
-        final StringBuffer buffer = StringBuffer();
+        final GeneratorBuffer buffer = GeneratorBuffer();
 
         // Act
         generator.generate(command, buffer);
@@ -482,7 +507,7 @@ void main() {
             transformAttributes: SvgTransformAttributes(<SvgTransformOperation>[SvgRotate(45, 10, 10)]),
           ),
         );
-        final StringBuffer buffer = StringBuffer();
+        final GeneratorBuffer buffer = GeneratorBuffer();
 
         // Act
         generator.generate(command, buffer);
@@ -507,7 +532,7 @@ void main() {
             ]),
           ),
         );
-        final StringBuffer buffer = StringBuffer();
+        final GeneratorBuffer buffer = GeneratorBuffer();
 
         // Act
         generator.generate(command, buffer);
@@ -528,7 +553,7 @@ void main() {
             transformAttributes: SvgTransformAttributes(<SvgTransformOperation>[SvgSkewX(30)]),
           ),
         );
-        final StringBuffer buffer = StringBuffer();
+        final GeneratorBuffer buffer = GeneratorBuffer();
 
         // Act
         generator.generate(command, buffer);
@@ -549,7 +574,7 @@ void main() {
             transformAttributes: SvgTransformAttributes(<SvgTransformOperation>[SvgSkewY(30)]),
           ),
         );
-        final StringBuffer buffer = StringBuffer();
+        final GeneratorBuffer buffer = GeneratorBuffer();
 
         // Act
         generator.generate(command, buffer);
@@ -558,6 +583,33 @@ void main() {
         final String output = buffer.toString();
         // tan(30 degrees) = 0.5773502691896256 (math.tan calculation)
         expect(output, contains('canvas.skew(0.0, 0.5773502691896256);'));
+      });
+
+      test('should wrap with matrix transform when provided', () {
+        // Arrange
+        const DrawCircle command = DrawCircle(
+          cx: 0,
+          cy: 0,
+          radius: 5,
+          style: PaintingStyle(
+            transformAttributes: SvgTransformAttributes(<SvgTransformOperation>[
+              SvgMatrix(1, 2, 3, 4, 5, 6),
+            ]),
+          ),
+        );
+        final GeneratorBuffer buffer = GeneratorBuffer();
+
+        // Act
+        generator.generate(command, buffer);
+
+        // Assert
+        final String output = buffer.toString();
+        expect(
+          output,
+          contains(
+            'canvas.transform(Matrix4.fromList(<double>[1.0, 2.0, 0, 0, 3.0, 4.0, 0, 0, 0, 0, 1, 0, 5.0, 6.0, 0, 1]).storage);',
+          ),
+        );
       });
     });
     group('CommandGenerator (Implicit)', () {

@@ -1,4 +1,4 @@
-import 'package:svg_painter/src/generation/rect_generator.dart';
+import 'package:svg_painter/src/generation/_generation.dart';
 import 'package:svg_painter/src/painting_model/_painting_model.dart';
 import 'package:test/test.dart';
 
@@ -21,7 +21,7 @@ void main() {
         ry: 0.0,
         style: fillRed,
       );
-      final StringBuffer buffer = StringBuffer();
+      final GeneratorBuffer buffer = GeneratorBuffer();
 
       // Act
       generator.generate(command, buffer);
@@ -43,7 +43,7 @@ void main() {
         ry: 8.0,
         style: fillRed,
       );
-      final StringBuffer buffer = StringBuffer();
+      final GeneratorBuffer buffer = GeneratorBuffer();
 
       // Act
       generator.generate(command, buffer);
@@ -70,15 +70,14 @@ void main() {
         ry: 0.0,
         style: strokeDashed,
       );
-      final StringBuffer buffer = StringBuffer();
+      final GeneratorBuffer buffer = GeneratorBuffer();
 
       // Act
       generator.generate(command, buffer);
 
       // Assert
       final String output = buffer.toString();
-      expect(output, contains('final Path path = Path();'));
-      expect(output, contains('path.addRect(Rect.fromLTWH(10.0, 20.0, 100.0, 50.0));'));
+      expect(output, contains('final Path path = Path()..addRect(Rect.fromLTWH(10.0, 20.0, 100.0, 50.0));'));
       expect(output, contains('final List<double> dashArray = [5.0, 5.0];'));
       expect(output, contains('canvas.drawPath(_dashPath(path, dashArray), paint)'));
     });
@@ -95,18 +94,17 @@ void main() {
         ry: 8.0,
         style: strokeDashed,
       );
-      final StringBuffer buffer = StringBuffer();
+      final GeneratorBuffer buffer = GeneratorBuffer();
 
       // Act
       generator.generate(command, buffer);
 
       // Assert
       final String output = buffer.toString();
-      expect(output, contains('final Path path = Path();'));
       expect(
         output,
         contains(
-          'path.addRRect(RRect.fromRectAndRadius(Rect.fromLTWH(10.0, 20.0, 100.0, 50.0), const Radius.elliptical(5.0, 8.0)));',
+          'final Path path = Path()..addRRect(RRect.fromRectAndRadius(Rect.fromLTWH(10.0, 20.0, 100.0, 50.0), const Radius.elliptical(5.0, 8.0)));',
         ),
       );
       expect(output, contains('final List<double> dashArray = [5.0, 5.0];'));
@@ -134,7 +132,7 @@ void main() {
           ry: 0.0,
           style: strokeDashedWithPathLength,
         );
-        final StringBuffer buffer = StringBuffer();
+        final GeneratorBuffer buffer = GeneratorBuffer();
 
         // Act
         generator.generate(command, buffer);

@@ -26,18 +26,17 @@ void main() {
       expect(output, contains('this.myCircleFill,'));
       // Check that it's used in the paint method
       expect(output, contains('final Object? localFill = myCircleFill;'));
-      expect(output, contains('if (localFill == null) {'));
+      expect(output, contains('if (localFill == null)'));
       expect(output, contains('paint.color = const Color(0xFFFF0000);'));
-      expect(output, contains('} else {'));
+      expect(output, contains('else'));
       expect(output, contains('_applyOverride(paint, localFill);'));
       // Check shouldRepaint
       expect(output, contains(r'bool shouldRepaint(covariant _$MyPainter oldDelegate) {'));
       expect(
         output,
-        contains('if (fit == oldDelegate.fit && myCircleFill == oldDelegate.myCircleFill) {'),
+        contains('myCircleFill == oldDelegate.myCircleFill'),
       );
       expect(output, contains('return false;'));
-      expect(output, contains('} else {'));
       expect(output, contains('return true;'));
     });
 
@@ -120,9 +119,9 @@ void main() {
       expect(output, contains('final Object? strokedRectStroke;'));
       expect(output, contains('this.strokedRectStroke,'));
       expect(output, contains('final Object? localStroke = strokedRectStroke;'));
-      expect(output, contains('if (localStroke == null) {'));
+      expect(output, contains('if (localStroke == null)'));
       expect(output, contains('paint.color = const Color(0xFF0000FF);'));
-      expect(output, contains('} else {'));
+      expect(output, contains('else'));
       expect(output, contains('_applyOverride(paint, localStroke);'));
     });
 

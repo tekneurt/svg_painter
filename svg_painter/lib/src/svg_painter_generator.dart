@@ -35,8 +35,8 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
         DrawGroup: GroupGenerator(),
         DrawPath: PathGenerator(),
         DrawLine: LineGenerator(),
-        DrawPolyline: PolyGenerator(),
-        DrawPolygon: PolyGenerator(),
+        DrawPolyline: PolyGenerator<DrawPolyline>(),
+        DrawPolygon: PolyGenerator<DrawPolygon>(),
         DefineLinearGradient: LinearGradientGenerator(),
         DefineRadialGradient: RadialGradientGenerator(),
       };
@@ -179,7 +179,7 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
     SvgExposureMode exposureMode = SvgExposureMode.none,
     Map<String, String> propertyMapping = const <String, String>{},
   }) {
-    final StringBuffer buffer = StringBuffer();
+    final GeneratorBuffer buffer = GeneratorBuffer();
 
     // Header to ignore lints in generated code
     buffer.writeln('// coverage:ignore-file');
@@ -249,210 +249,196 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
     );
     buffer.writeln();
 
-    buffer.writeln('class $className extends CustomPainter {');
-    buffer.writeln('  const $className({');
-    buffer.writeln('    this.fit = BoxFit.contain,');
-    if (hasCurrentColor) {
-      buffer.writeln('    this.color,');
-    }
-    for (final String id in sortedFillIds) {
-      buffer.writeln('    this.${resolveName('${SvgIdFormatter.format(id)}Fill')},');
-    }
-    if (sortedFillIndexed == null) {
-      // No indexed fills
-    } else {
-      for (final String name in sortedFillIndexed) {
-        buffer.writeln('    this.${resolveName(name)},');
-      }
-    }
-    for (final String id in sortedStrokeIds) {
-      buffer.writeln('    this.${resolveName('${SvgIdFormatter.format(id)}Stroke')},');
-    }
-    if (sortedStrokeIndexed == null) {
-      // No indexed strokes
-    } else {
-      for (final String name in sortedStrokeIndexed) {
-        buffer.writeln('    this.${resolveName(name)},');
-      }
-    }
-    buffer.writeln('  });');
-    buffer.writeln();
-    buffer.writeln('  final BoxFit fit;');
-    if (hasCurrentColor) {
-      buffer.writeln('  final Color? color;');
-    }
-    for (final String id in sortedFillIds) {
-      buffer.writeln('  final Object? ${resolveName('${SvgIdFormatter.format(id)}Fill')};');
-    }
-    if (sortedFillIndexed == null) {
-      // No indexed fills
-    } else {
-      for (final String name in sortedFillIndexed) {
-        buffer.writeln('  final Object? ${resolveName(name)};');
-      }
-    }
-    for (final String id in sortedStrokeIds) {
-      buffer.writeln('  final Object? ${resolveName('${SvgIdFormatter.format(id)}Stroke')};');
-    }
-    if (sortedStrokeIndexed == null) {
-      // No indexed strokes
-    } else {
-      for (final String name in sortedStrokeIndexed) {
-        buffer.writeln('  final Object? ${resolveName(name)};');
-      }
-    }
-    buffer.writeln();
-    buffer.writeln('  Size get viewBox => const Size($viewBoxWidth, $viewBoxHeight);');
-    buffer.writeln();
-    buffer.writeln('  @override');
-    buffer.writeln('  void paint(Canvas canvas, Size size) {');
-    buffer.writeln(
-      '    final FittedSizes fittedSizes = applyBoxFit(fit, const Size($viewBoxWidth, $viewBoxHeight), size);',
-    );
-    buffer.writeln('    final Size sourceSize = fittedSizes.source;');
-    buffer.writeln(
-      '    final Rect destRect = Alignment.center.inscribe(fittedSizes.destination, Offset.zero & size);',
-    );
-    buffer.writeln();
-    buffer.writeln('    canvas.save();');
-    buffer.writeln('    canvas.translate(destRect.left, destRect.top);');
-    buffer.writeln(
-      '    canvas.scale(destRect.width / sourceSize.width, destRect.height / sourceSize.height);',
-    );
-    buffer.writeln('    canvas.clipRect(Rect.fromLTWH(0, 0, $viewBoxWidth, $viewBoxHeight));');
-    buffer.writeln();
-
-    // 1st pass: Gradient definitions (DefineCommand)
-    for (final PaintCommand command in commands) {
-      switch (command) {
-        case DefineCommand():
-          _generators[command.runtimeType]?.generate(
-            command,
-            buffer,
-            generators: _generators,
-            palette: palette,
-            activeFillProperties: activeFillProperties,
-            activeStrokeProperties: activeStrokeProperties,
-          );
-        case DrawCommand():
-          // Drawing commands are handled in the second pass
-          break;
-      }
-    }
-
-    // 2nd pass: Drawing commands (DrawCommand)
-    for (final PaintCommand command in commands) {
-      switch (command) {
-        case DrawCommand():
-          _generators[command.runtimeType]?.generate(
-            command,
-            buffer,
-            generators: _generators,
-            palette: palette,
-            activeFillProperties: activeFillProperties,
-            activeStrokeProperties: activeStrokeProperties,
-          );
-        case DefineCommand():
-          // Definition commands are handled in the first pass
-          break;
-      }
-    }
-
-    buffer.writeln('    canvas.restore();');
-    buffer.writeln('  }');
-    buffer.writeln();
-
-    buffer.writeln('  void _applyOverride(Paint paint, Object? override) {');
-    buffer.writeln('    if (override == null) return;');
-    buffer.writeln('    if (override is Color) {');
-    buffer.writeln('      paint.color = override;');
-    buffer.writeln('      paint.shader = null;');
-    buffer.writeln('    } else if (override is Shader) {');
-    buffer.writeln('      paint.shader = override;');
-    buffer.writeln('    }');
-    buffer.writeln('  }');
-    buffer.writeln();
-
-    if (_hasDashes(commands)) {
-      buffer.writeln(
-        '  Path _dashPath(Path source, List<double> dashArray, {double? pathLength}) {',
-      );
-      buffer.writeln('    if (dashArray.isEmpty) return source;');
-      buffer.writeln('    final Path dest = Path();');
-      buffer.writeln('    for (final metric in source.computeMetrics()) {');
-      buffer.writeln('      final double scale;');
-      buffer.writeln('      if (pathLength == null || pathLength <= 0) {');
-      buffer.writeln('        scale = 1.0;');
-      buffer.writeln('      } else {');
-      buffer.writeln('        scale = metric.length / pathLength;');
-      buffer.writeln('      }');
-      buffer.writeln('      double distance = 0.0;');
-      buffer.writeln('      int index = 0;');
-      buffer.writeln('      bool draw = true;');
-      buffer.writeln('      while (distance < metric.length) {');
-      buffer.writeln('        final double len = dashArray[index] * scale;');
-      buffer.writeln('        if (len > 0) {');
-      buffer.writeln('          if (draw) {');
-      buffer.writeln(
-        '            final double end = distance + len < metric.length ? distance + len : metric.length;',
-      );
-      buffer.writeln('            dest.addPath(metric.extractPath(distance, end), Offset.zero);');
-      buffer.writeln('          }');
-      buffer.writeln('          distance += len;');
-      buffer.writeln('        }');
-      buffer.writeln('        draw = !draw;');
-      buffer.writeln('        index = (index + 1) % dashArray.length;');
-      buffer.writeln('      }');
-      buffer.writeln('    }');
-      buffer.writeln('    return dest;');
-      buffer.writeln('  }');
+    buffer.writeBlock('class $className extends CustomPainter {', () {
+      buffer.writeBlock('const $className({', () {
+        buffer.writeln('this.fit = BoxFit.contain,');
+        if (hasCurrentColor) {
+          buffer.writeln('this.color,');
+        }
+        for (final String id in sortedFillIds) {
+          buffer.writeln('this.${resolveName('${SvgIdFormatter.format(id)}Fill')},');
+        }
+        if (sortedFillIndexed != null) {
+          for (final String name in sortedFillIndexed) {
+            buffer.writeln('this.${resolveName(name)},');
+          }
+        }
+        for (final String id in sortedStrokeIds) {
+          buffer.writeln('this.${resolveName('${SvgIdFormatter.format(id)}Stroke')},');
+        }
+        if (sortedStrokeIndexed != null) {
+          for (final String name in sortedStrokeIndexed) {
+            buffer.writeln('this.${resolveName(name)},');
+          }
+        }
+      }, footer: '});');
       buffer.writeln();
-    }
-
-    buffer.writeln('  @override');
-    buffer.writeln('  bool shouldRepaint(covariant $className oldDelegate) {');
-    buffer.write('    if (fit == oldDelegate.fit');
-    if (hasCurrentColor) {
-      buffer.write(' && color == oldDelegate.color');
-    }
-
-    for (final String id in sortedFillIds) {
-      final String prop = resolveName('${SvgIdFormatter.format(id)}Fill');
-      buffer.write(' && $prop == oldDelegate.$prop');
-    }
-    if (sortedFillIndexed == null) {
-      // No indexed fills
-    } else {
-      for (final String name in sortedFillIndexed) {
-        final String prop = resolveName(name);
-        buffer.write(' && $prop == oldDelegate.$prop');
+      buffer.writeln('final BoxFit fit;');
+      if (hasCurrentColor) {
+        buffer.writeln('final Color? color;');
       }
-    }
-    for (final String id in sortedStrokeIds) {
-      final String prop = resolveName('${SvgIdFormatter.format(id)}Stroke');
-      buffer.write(' && $prop == oldDelegate.$prop');
-    }
-    if (sortedStrokeIndexed == null) {
-      // No indexed strokes
-    } else {
-      for (final String name in sortedStrokeIndexed) {
-        final String prop = resolveName(name);
-        buffer.write(' && $prop == oldDelegate.$prop');
+      for (final String id in sortedFillIds) {
+        buffer.writeln('final Object? ${resolveName('${SvgIdFormatter.format(id)}Fill')};');
       }
-    }
-    buffer.writeln(') {');
-    buffer.writeln('      return false;');
-    buffer.writeln('    } else {');
-    buffer.writeln('      return true;');
-    buffer.writeln('    }');
-    buffer.writeln('  }');
-    buffer.writeln('}');
+      if (sortedFillIndexed != null) {
+        for (final String name in sortedFillIndexed) {
+          buffer.writeln('final Object? ${resolveName(name)};');
+        }
+      }
+      for (final String id in sortedStrokeIds) {
+        buffer.writeln('final Object? ${resolveName('${SvgIdFormatter.format(id)}Stroke')};');
+      }
+      if (sortedStrokeIndexed != null) {
+        for (final String name in sortedStrokeIndexed) {
+          buffer.writeln('final Object? ${resolveName(name)};');
+        }
+      }
+      buffer.writeln();
+      buffer.writeln('Size get viewBox => const Size($viewBoxWidth, $viewBoxHeight);');
+      buffer.writeln();
+      buffer.writeln('@override');
+      buffer.writeBlock('void paint(Canvas canvas, Size size) {', () {
+        buffer.writeln(
+          'final FittedSizes fittedSizes = applyBoxFit(fit, const Size($viewBoxWidth, $viewBoxHeight), size);',
+        );
+        buffer.writeln('final Size sourceSize = fittedSizes.source;');
+        buffer.writeln(
+          'final Rect destRect = Alignment.center.inscribe(fittedSizes.destination, Offset.zero & size);',
+        );
+        buffer.writeln();
+        buffer.writeln('canvas.save();');
+        buffer.writeln('canvas.translate(destRect.left, destRect.top);');
+        buffer.writeln(
+          'canvas.scale(destRect.width / sourceSize.width, destRect.height / sourceSize.height);',
+        );
+        buffer.writeln('canvas.clipRect(Rect.fromLTWH(0, 0, $viewBoxWidth, $viewBoxHeight));');
+        buffer.writeln();
+
+        // 1st pass: Gradient definitions (DefineCommand)
+        for (final PaintCommand command in commands) {
+          if (command is DefineCommand) {
+            _generators[command.runtimeType]?.generate(
+              command,
+              buffer,
+              generators: _generators,
+              palette: palette,
+              activeFillProperties: activeFillProperties,
+              activeStrokeProperties: activeStrokeProperties,
+            );
+          }
+        }
+
+        // 2nd pass: Drawing commands (DrawCommand)
+        for (final PaintCommand command in commands) {
+          if (command is DrawCommand) {
+            _generators[command.runtimeType]?.generate(
+              command,
+              buffer,
+              generators: _generators,
+              palette: palette,
+              activeFillProperties: activeFillProperties,
+              activeStrokeProperties: activeStrokeProperties,
+            );
+          }
+        }
+
+        buffer.writeln('canvas.restore();');
+      });
+      buffer.writeln();
+
+      buffer.writeBlock('void _applyOverride(Paint paint, Object? override) {', () {
+        buffer.writeln('if (override == null) return;');
+        buffer.writeBlock('if (override is Color) {', () {
+          buffer.writeln('paint.color = override;');
+          buffer.writeln('paint.shader = null;');
+        }, footer: '} else if (override is Shader) {');
+        buffer.indent();
+        buffer.writeln('paint.shader = override;');
+        buffer.outdent();
+      });
+      buffer.writeln();
+
+      if (_hasDashes(commands)) {
+        buffer.writeBlock(
+          'Path _dashPath(Path source, List<double> dashArray, {double? pathLength}) {',
+          () {
+            buffer.writeln('if (dashArray.isEmpty) return source;');
+            buffer.writeln('final Path dest = Path();');
+            buffer.writeBlock('for (final metric in source.computeMetrics()) {', () {
+              buffer.writeln('final double scale;');
+              buffer.writeBlock('if (pathLength == null || pathLength <= 0) {', () {
+                buffer.writeln('scale = 1.0;');
+              }, footer: '} else {');
+              buffer.indent();
+              buffer.writeln('scale = metric.length / pathLength;');
+              buffer.outdent();
+              buffer.writeln('}');
+              buffer.writeln('double distance = 0.0;');
+              buffer.writeln('int index = 0;');
+              buffer.writeln('bool draw = true;');
+              buffer.writeBlock('while (distance < metric.length) {', () {
+                buffer.writeln('final double len = dashArray[index] * scale;');
+                buffer.writeBlock('if (len > 0) {', () {
+                  buffer.writeBlock('if (draw) {', () {
+                    buffer.writeln(
+                      'final double end = distance + len < metric.length ? distance + len : metric.length;',
+                    );
+                    buffer.writeln('dest.addPath(metric.extractPath(distance, end), Offset.zero);');
+                  });
+                  buffer.writeln('distance += len;');
+                });
+                buffer.writeln('draw = !draw;');
+                buffer.writeln('index = (index + 1) % dashArray.length;');
+              });
+            });
+            buffer.writeln('return dest;');
+          },
+        );
+        buffer.writeln();
+      }
+
+      buffer.writeln('@override');
+      buffer.writeBlock('bool shouldRepaint(covariant $className oldDelegate) {', () {
+        final List<String> checks = <String>['fit == oldDelegate.fit'];
+        if (hasCurrentColor) {
+          checks.add('color == oldDelegate.color');
+        }
+
+        for (final String id in sortedFillIds) {
+          final String prop = resolveName('${SvgIdFormatter.format(id)}Fill');
+          checks.add('$prop == oldDelegate.$prop');
+        }
+        if (sortedFillIndexed != null) {
+          for (final String name in sortedFillIndexed) {
+            final String prop = resolveName(name);
+            checks.add('$prop == oldDelegate.$prop');
+          }
+        }
+        for (final String id in sortedStrokeIds) {
+          final String prop = resolveName('${SvgIdFormatter.format(id)}Stroke');
+          checks.add('$prop == oldDelegate.$prop');
+        }
+        if (sortedStrokeIndexed != null) {
+          for (final String name in sortedStrokeIndexed) {
+            final String prop = resolveName(name);
+            checks.add('$prop == oldDelegate.$prop');
+          }
+        }
+
+        buffer.writeBlock('if (${checks.join(' &&\n          ')}) {', () {
+          buffer.writeln('return false;');
+        }, footer: '} else {');
+        buffer.indent();
+        buffer.writeln('return true;');
+        buffer.outdent();
+      });
+    });
 
     return buffer.toString();
   }
 
   void generateWidgetClass({
-    required StringBuffer buffer,
+    required GeneratorBuffer buffer,
     required String widgetClassName,
     required String painterClassName,
     required Map<String, String> activeFillProperties,
@@ -461,58 +447,59 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
     required double viewBoxHeight,
     required bool hasCurrentColor,
   }) {
-    buffer.writeln('class $widgetClassName extends StatelessWidget {');
-    buffer.writeln('  const $widgetClassName({');
-    buffer.writeln('    super.key,');
-    buffer.writeln('    this.width,');
-    buffer.writeln('    this.height,');
-    buffer.writeln('    this.fit = BoxFit.contain,');
-    buffer.writeln('    this.alignment = Alignment.center,');
-    if (hasCurrentColor) {
-      buffer.writeln('    this.color,');
-    }
+    buffer.writeBlock('class $widgetClassName extends StatelessWidget {', () {
+      buffer.writeBlock('const $widgetClassName({', () {
+        buffer.writeln('super.key,');
+        buffer.writeln('this.width,');
+        buffer.writeln('this.height,');
+        buffer.writeln('this.fit = BoxFit.contain,');
+        buffer.writeln('this.alignment = Alignment.center,');
+        if (hasCurrentColor) {
+          buffer.writeln('this.color,');
+        }
 
-    // Constructor params for properties
-    final Set<String> allProps = <String>{
-      ...activeFillProperties.values,
-      ...activeStrokeProperties.values,
-    };
-    for (final String prop in allProps) {
-      buffer.writeln('    this.$prop,');
-    }
+        final Set<String> allProps = <String>{
+          ...activeFillProperties.values,
+          ...activeStrokeProperties.values,
+        };
+        for (final String prop in allProps) {
+          buffer.writeln('this.$prop,');
+        }
+      }, footer: '});');
+      buffer.writeln();
+      buffer.writeln('final double? width;');
+      buffer.writeln('final double? height;');
+      buffer.writeln('final BoxFit fit;');
+      buffer.writeln('final AlignmentGeometry alignment;');
+      if (hasCurrentColor) {
+        buffer.writeln('final Color? color;');
+      }
 
-    buffer.writeln('  });');
-    buffer.writeln();
-    buffer.writeln('  final double? width;');
-    buffer.writeln('  final double? height;');
-    buffer.writeln('  final BoxFit fit;');
-    buffer.writeln('  final AlignmentGeometry alignment;');
-    if (hasCurrentColor) {
-      buffer.writeln('  final Color? color;');
-    }
+      final Set<String> allProps = <String>{
+        ...activeFillProperties.values,
+        ...activeStrokeProperties.values,
+      };
+      for (final String prop in allProps) {
+        buffer.writeln('final Object? $prop;');
+      }
 
-    // Fields for properties
-    for (final String prop in allProps) {
-      buffer.writeln('  final Object? $prop;');
-    }
-
-    buffer.writeln();
-    buffer.writeln('  @override');
-    buffer.writeln('  Widget build(BuildContext context) {');
-    buffer.writeln('    return CustomPaint(');
-    buffer.writeln('      size: Size(width ?? $viewBoxWidth, height ?? $viewBoxHeight),');
-    buffer.writeln('      painter: $painterClassName(');
-    buffer.writeln('        fit: fit,');
-    if (hasCurrentColor) {
-      buffer.writeln('        color: color ?? IconTheme.of(context).color,');
-    }
-    for (final String prop in allProps) {
-      buffer.writeln('        $prop: $prop,');
-    }
-    buffer.writeln('      ),');
-    buffer.writeln('    );');
-    buffer.writeln('  }');
-    buffer.writeln('}');
+      buffer.writeln();
+      buffer.writeln('@override');
+      buffer.writeBlock('Widget build(BuildContext context) {', () {
+        buffer.writeBlock('return CustomPaint(', () {
+          buffer.writeln('size: Size(width ?? $viewBoxWidth, height ?? $viewBoxHeight),');
+          buffer.writeBlock('painter: $painterClassName(', () {
+            buffer.writeln('fit: fit,');
+            if (hasCurrentColor) {
+              buffer.writeln('color: color ?? IconTheme.of(context).color,');
+            }
+            for (final String prop in allProps) {
+              buffer.writeln('$prop: $prop,');
+            }
+          }, footer: '),');
+        }, footer: ');');
+      });
+    });
   }
 
   bool _hasDashes(List<PaintCommand> commands) {

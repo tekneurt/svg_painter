@@ -1,15 +1,17 @@
-import '../painting_model/_painting_model.dart';
-import 'command_generator.dart';
+import '../../painting_model/_painting_model.dart';
+import '../command_generator.dart';
+import '../generator_buffer.dart';
+import '../models.dart';
+import '../palette_analyzer.dart';
+import '../shape_generator.dart';
 
-import 'palette_analyzer.dart';
-
-class OvalGenerator extends ShapeGenerator<DrawOval> {
-  const OvalGenerator();
+class LineGenerator extends ShapeGenerator<DrawLine> {
+  const LineGenerator();
 
   @override
   void generate(
-    DrawOval command,
-    StringBuffer buffer, {
+    DrawLine command,
+    GeneratorBuffer buffer, {
     Map<Type, CommandGenerator<PaintCommand>>? generators,
     PaletteResult? palette,
     Map<String, String>? activeFillProperties,
@@ -19,7 +21,7 @@ class OvalGenerator extends ShapeGenerator<DrawOval> {
   }) {
     wrapWithTransform(buffer, command.style.transformAttributes, () {
       final String bounds =
-          'Rect.fromCenter(center: const Offset(${command.cx}, ${command.cy}), width: ${command.rx * 2}, height: ${command.ry * 2})';
+          'Rect.fromPoints(const Offset(${command.x1}, ${command.y1}), const Offset(${command.x2}, ${command.y2}))';
       generatePaintingCode(
         buffer,
         command,
@@ -27,7 +29,9 @@ class OvalGenerator extends ShapeGenerator<DrawOval> {
         bounds,
         (String p, {String? dashArray, String? pathLength}) {
           if (dashArray == null) {
-            buffer.writeln('      canvas.drawOval($bounds, $p);');
+            buffer.writeln(
+              'canvas.drawLine(const Offset(${command.x1}, ${command.y1}), const Offset(${command.x2}, ${command.y2}), $p);',
+            );
           } else {
             final String plArg;
             if (pathLength?.isEmpty ?? true) {
@@ -35,10 +39,12 @@ class OvalGenerator extends ShapeGenerator<DrawOval> {
             } else {
               plArg = ', pathLength: $pathLength';
             }
-            buffer.writeln('      {');
-            buffer.writeln('        final Path path = Path()..addOval($bounds);');
-            buffer.writeln('        canvas.drawPath(_dashPath(path, $dashArray$plArg), $p);');
-            buffer.writeln('      }');
+            buffer.writeBlock('{', () {
+              buffer.writeln(
+                'final Path path = Path()..moveTo(${command.x1}, ${command.y1})..lineTo(${command.x2}, ${command.y2});',
+              );
+              buffer.writeln('canvas.drawPath(_dashPath(path, $dashArray$plArg), $p);');
+            });
           }
         },
         palette: palette,

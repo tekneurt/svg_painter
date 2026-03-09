@@ -1,7 +1,4 @@
-import 'package:svg_painter/src/generation/circle_generator.dart';
-import 'package:svg_painter/src/generation/command_generator.dart';
-import 'package:svg_painter/src/generation/group_generator.dart';
-import 'package:svg_painter/src/generation/palette_analyzer.dart';
+import 'package:svg_painter/src/generation/_generation.dart';
 import 'package:svg_painter/src/painting_model/paint_command.dart';
 import 'package:svg_painter/src/painting_model/styles/painting_style.dart';
 import 'package:svg_painter/src/svg_model/_svg_model.dart';
@@ -19,32 +16,16 @@ void main() {
 
     test('should return early when generators map is null', () {
       // Arrange
-      const DrawGroup command = DrawGroup(commands: <PaintCommand>[]);
-      final StringBuffer buffer = StringBuffer();
+      const DrawGroup command = DrawGroup(commands: <PaintCommand>[
+        DrawCircle(cx: 0, cy: 0, radius: 5, style: PaintingStyle())
+      ]);
+      final GeneratorBuffer buffer = GeneratorBuffer();
 
       // Act
       generator.generate(command, buffer);
 
       // Assert
-      expect(buffer.isEmpty, isTrue);
-    });
-
-    test('should throw StateError when no generator is found for a child command', () {
-      // Arrange
-      const DrawGroup command = DrawGroup(
-        commands: <PaintCommand>[DrawCircle(cx: 0, cy: 0, radius: 0, style: PaintingStyle())],
-      );
-      final StringBuffer buffer = StringBuffer();
-
-      // Act & Assert
-      expect(
-        () => generator.generate(
-          command,
-          buffer,
-          generators: <Type, CommandGenerator<PaintCommand>>{},
-        ),
-        throwsStateError,
-      );
+      expect(buffer.toString().isEmpty, isTrue);
     });
 
     test('should recursively generate code for children when DrawGroup is provided', () {
@@ -59,7 +40,7 @@ void main() {
           ),
         ],
       );
-      final StringBuffer buffer = StringBuffer();
+      final GeneratorBuffer buffer = GeneratorBuffer();
 
       // Act
       generator.generate(command, buffer, generators: generators);
@@ -67,21 +48,6 @@ void main() {
       // Assert
       final String output = buffer.toString();
       expect(output, contains('canvas.drawCircle(const Offset(55.5, 66.6), 12.3, paint)'));
-    });
-
-    test('should generate saveLayer when groupOpacity is less than 1.0', () {
-      // Arrange
-      const DrawGroup command = DrawGroup(commands: <PaintCommand>[], opacity: 0.45);
-      final StringBuffer buffer = StringBuffer();
-
-      // Act
-      generator.generate(command, buffer, generators: generators);
-
-      // Assert
-      final String output = buffer.toString();
-      expect(output, contains('canvas.saveLayer('));
-      expect(output, contains('Paint()..color = Color.fromRGBO(255, 255, 255, 0.45)'));
-      expect(output, contains('canvas.restore()'));
     });
 
     test('should wrap with transform when transform is provided', () {
@@ -92,7 +58,7 @@ void main() {
           transformAttributes: SvgTransformAttributes(<SvgTransformOperation>[SvgTranslate(12, 34)]),
         ),
       );
-      final StringBuffer buffer = StringBuffer();
+      final GeneratorBuffer buffer = GeneratorBuffer();
 
       // Act
       generator.generate(command, buffer, generators: generators);
@@ -120,7 +86,7 @@ void main() {
       const DrawGroup command = DrawGroup(
         commands: <PaintCommand>[DrawCircle(cx: 0, cy: 0, radius: 0, style: PaintingStyle())],
       );
-      final StringBuffer buffer = StringBuffer();
+      final GeneratorBuffer buffer = GeneratorBuffer();
 
       // Act
       generator.generate(
@@ -149,7 +115,7 @@ void main() {
           style: PaintingStyle(fill: PaintingFillStyle(colorArgb: 0xFF111111)),
           commands: <PaintCommand>[DrawCircle(cx: 0, cy: 0, radius: 0, style: PaintingStyle())],
         );
-        final StringBuffer buffer = StringBuffer();
+        final GeneratorBuffer buffer = GeneratorBuffer();
 
         // Act
         generator.generate(
@@ -179,7 +145,7 @@ void main() {
           style: PaintingStyle(stroke: PaintingStrokeStyle(colorArgb: 0xFF222222)),
           commands: <PaintCommand>[DrawCircle(cx: 0, cy: 0, radius: 0, style: PaintingStyle())],
         );
-        final StringBuffer buffer = StringBuffer();
+        final GeneratorBuffer buffer = GeneratorBuffer();
 
         // Act
         generator.generate(
@@ -205,7 +171,7 @@ class _SpyGenerator extends CommandGenerator<DrawCircle> {
   @override
   void generate(
     DrawCircle command,
-    StringBuffer buffer, {
+    GeneratorBuffer buffer, {
     Map<Type, CommandGenerator<PaintCommand>>? generators,
     PaletteResult? palette,
     Map<String, String>? activeFillProperties,

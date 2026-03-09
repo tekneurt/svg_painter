@@ -1,7 +1,9 @@
-import '../painting_model/_painting_model.dart';
-import 'command_generator.dart';
-
-import 'palette_analyzer.dart';
+import '../../painting_model/_painting_model.dart';
+import '../command_generator.dart';
+import '../generator_buffer.dart';
+import '../models.dart';
+import '../palette_analyzer.dart';
+import '../shape_generator.dart';
 
 class CircleGenerator extends ShapeGenerator<DrawCircle> {
   const CircleGenerator();
@@ -9,7 +11,7 @@ class CircleGenerator extends ShapeGenerator<DrawCircle> {
   @override
   void generate(
     DrawCircle command,
-    StringBuffer buffer, {
+    GeneratorBuffer buffer, {
     Map<Type, CommandGenerator<PaintCommand>>? generators,
     PaletteResult? palette,
     Map<String, String>? activeFillProperties,
@@ -28,7 +30,7 @@ class CircleGenerator extends ShapeGenerator<DrawCircle> {
         (String p, {String? dashArray, String? pathLength}) {
           if (dashArray == null) {
             buffer.writeln(
-              '      canvas.drawCircle(const Offset(${command.cx}, ${command.cy}), ${command.radius}, $p);',
+              'canvas.drawCircle(const Offset(${command.cx}, ${command.cy}), ${command.radius}, $p);',
             );
           } else {
             final String plArg;
@@ -37,10 +39,10 @@ class CircleGenerator extends ShapeGenerator<DrawCircle> {
             } else {
               plArg = ', pathLength: $pathLength';
             }
-            buffer.writeln('      {');
-            buffer.writeln('        final Path path = Path()..addOval($bounds);');
-            buffer.writeln('        canvas.drawPath(_dashPath(path, $dashArray$plArg), $p);');
-            buffer.writeln('      }');
+            buffer.writeBlock('{', () {
+              buffer.writeln('final Path path = Path()..addOval($bounds);');
+              buffer.writeln('canvas.drawPath(_dashPath(path, $dashArray$plArg), $p);');
+            });
           }
         },
         palette: palette,

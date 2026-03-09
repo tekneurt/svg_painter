@@ -1,7 +1,9 @@
-import '../painting_model/_painting_model.dart';
-import 'command_generator.dart';
-
-import 'palette_analyzer.dart';
+import '../../painting_model/_painting_model.dart';
+import '../command_generator.dart';
+import '../generator_buffer.dart';
+import '../models.dart';
+import '../palette_analyzer.dart';
+import '../shape_generator.dart';
 
 class RectGenerator extends ShapeGenerator<DrawRect> {
   const RectGenerator();
@@ -9,7 +11,7 @@ class RectGenerator extends ShapeGenerator<DrawRect> {
   @override
   void generate(
     DrawRect command,
-    StringBuffer buffer, {
+    GeneratorBuffer buffer, {
     Map<Type, CommandGenerator<PaintCommand>>? generators,
     PaletteResult? palette,
     Map<String, String>? activeFillProperties,
@@ -18,21 +20,22 @@ class RectGenerator extends ShapeGenerator<DrawRect> {
     List<InheritedProperty>? inheritedStrokes,
   }) {
     wrapWithTransform(buffer, command.style.transformAttributes, () {
-      final String r =
+      final String bounds =
           'Rect.fromLTWH(${command.x}, ${command.y}, ${command.width}, ${command.height})';
-      final String drawMethod = (command.rx > 0 || command.ry > 0) ? 'drawRRect' : 'drawRect';
-      final String rectCode = (command.rx > 0 || command.ry > 0)
-          ? 'RRect.fromRectAndRadius($r, const Radius.elliptical(${command.rx}, ${command.ry}))'
-          : r;
-
       generatePaintingCode(
         buffer,
         command,
         command.style,
-        (command.rx > 0 || command.ry > 0) ? r : rectCode, // Bounds is always the Rect
+        bounds,
         (String p, {String? dashArray, String? pathLength}) {
           if (dashArray == null) {
-            buffer.writeln('      canvas.$drawMethod($rectCode, $p);');
+            if (command.rx != 0 || command.ry != 0) {
+              buffer.writeln(
+                'canvas.drawRRect(RRect.fromRectAndRadius($bounds, const Radius.elliptical(${command.rx}, ${command.ry})), $p);',
+              );
+            } else {
+              buffer.writeln('canvas.drawRect($bounds, $p);');
+            }
           } else {
             final String plArg;
             if (pathLength?.isEmpty ?? true) {
@@ -40,15 +43,16 @@ class RectGenerator extends ShapeGenerator<DrawRect> {
             } else {
               plArg = ', pathLength: $pathLength';
             }
-            buffer.writeln('      {');
-            buffer.writeln('        final Path path = Path();');
-            if (command.rx > 0 || command.ry > 0) {
-              buffer.writeln('        path.addRRect($rectCode);');
-            } else {
-              buffer.writeln('        path.addRect($r);');
-            }
-            buffer.writeln('        canvas.drawPath(_dashPath(path, $dashArray$plArg), $p);');
-            buffer.writeln('      }');
+            buffer.writeBlock('{', () {
+              if (command.rx != 0 || command.ry != 0) {
+                buffer.writeln(
+                  'final Path path = Path()..addRRect(RRect.fromRectAndRadius($bounds, const Radius.elliptical(${command.rx}, ${command.ry})));',
+                );
+              } else {
+                buffer.writeln('final Path path = Path()..addRect($bounds);');
+              }
+              buffer.writeln('canvas.drawPath(_dashPath(path, $dashArray$plArg), $p);');
+            });
           }
         },
         palette: palette,

@@ -1,4 +1,4 @@
-import 'package:svg_painter/src/generation/circle_generator.dart';
+import 'package:svg_painter/src/generation/_generation.dart';
 import 'package:svg_painter/src/painting_model/paint_command.dart';
 import 'package:svg_painter/src/painting_model/styles/painting_style.dart';
 import 'package:test/test.dart';
@@ -11,7 +11,7 @@ void main() {
       // Arrange
       const CircleGenerator generator = CircleGenerator();
       const DrawCircle command = DrawCircle(cx: 10.0, cy: 20.0, radius: 5.0, style: fillRed);
-      final StringBuffer buffer = StringBuffer();
+      final GeneratorBuffer buffer = GeneratorBuffer();
 
       // Act
       generator.generate(command, buffer);
@@ -34,7 +34,7 @@ void main() {
           stroke: PaintingStrokeStyle(colorArgb: 0xFF000000, dashArray: <double>[2.0, 3.0]),
         ),
       );
-      final StringBuffer buffer = StringBuffer();
+      final GeneratorBuffer buffer = GeneratorBuffer();
 
       // Act
       generator.generate(command, buffer);
