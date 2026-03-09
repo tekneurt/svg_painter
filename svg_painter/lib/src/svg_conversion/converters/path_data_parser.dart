@@ -25,7 +25,9 @@ class PathDataParser {
 
     void flushCommand() {
       if (currentCommand == null) {
-        // Nothing to process
+        if (params.isNotEmpty) {
+          errorMessage = 'Expected path command, but found coordinates: ${params.join(", ")}';
+        }
         return;
       }
 

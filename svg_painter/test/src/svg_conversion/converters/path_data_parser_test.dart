@@ -301,6 +301,18 @@ void main() {
         expect(result, isA<Failure<List<PathOperation>>>());
         expect((result as Failure<List<PathOperation>>).message, contains('Unknown path command'));
       });
+
+      test('should return Failure when path starts with a coordinate instead of a command', () {
+        // Arrange
+        const String d = '10 10 L 20 20';
+
+        // Act
+        final Result<List<PathOperation>> result = PathDataParser.parse(d, context);
+
+        // Assert
+        expect(result, isA<Failure<List<PathOperation>>>());
+        expect((result as Failure<List<PathOperation>>).message, contains('Expected path command'));
+      });
     });
   });
 }

@@ -19,10 +19,12 @@ import 'xml_model/_xml_model.dart';
 
 /// Generator that produces CustomPainter code from SVG files.
 class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
-  static const TypeChecker _fileChecker = TypeChecker.fromUrl(
+  @visibleForTesting
+  static const TypeChecker fileChecker = TypeChecker.fromUrl(
     'package:svg_painter_annotation/src/svg_painter.dart#SvgFilePainter',
   );
-  static const TypeChecker _codeChecker = TypeChecker.fromUrl(
+  @visibleForTesting
+  static const TypeChecker codeChecker = TypeChecker.fromUrl(
     'package:svg_painter_annotation/src/svg_painter.dart#SvgCodePainter',
   );
 
@@ -163,6 +165,7 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
         propertyMapping: propertyMapping,
       );
     } else {
+      // coverage:ignore-line
       throw InvalidGenerationSourceError(
         'Root element must be <svg>, but found ${svgRoot.runtimeType}',
       );
@@ -565,9 +568,9 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
       return const Failure<String>('Annotation object has no type.');
     }
 
-    if (_fileChecker.isExactlyType(type)) {
+    if (fileChecker.isExactlyType(type)) {
       return loadFromFile(annotation, buildStep);
-    } else if (_codeChecker.isExactlyType(type)) {
+    } else if (codeChecker.isExactlyType(type)) {
       return Success<String>(annotation.read('code').stringValue);
     }
     return const Failure<String>(

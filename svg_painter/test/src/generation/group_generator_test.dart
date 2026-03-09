@@ -163,6 +163,127 @@ void main() {
         expect(spy.lastInheritedStrokes![0].colorArgb, 0xFF222222);
       },
     );
+
+    test('should reuse existing inherited properties when group style matches parent', () {
+      // Arrange
+      final _SpyGenerator spy = _SpyGenerator();
+      final Map<Type, CommandGenerator<PaintCommand>> spyGenerators =
+          <Type, CommandGenerator<PaintCommand>>{
+        DrawCircle: spy,
+        DrawGroup: generator,
+      };
+
+      const int color = 0xFFABCDEF;
+      const String shader = 'grad1';
+      final List<InheritedProperty> initialFills = <InheritedProperty>[
+        const InheritedProperty('fillProp', colorArgb: color),
+      ];
+      final List<InheritedProperty> initialStrokes = <InheritedProperty>[
+        const InheritedProperty('strokeProp', shaderId: shader),
+      ];
+
+      // Nested group with same style but no ID (should match and pass on)
+      const DrawGroup command = DrawGroup(
+        style: PaintingStyle(
+          fill: PaintingFillStyle(colorArgb: color, isExplicit: false),
+          stroke: PaintingStrokeStyle(shaderId: shader, isExplicit: false),
+        ),
+        commands: <PaintCommand>[
+          DrawCircle(cx: 0, cy: 0, radius: 0, style: PaintingStyle()),
+        ],
+      );
+      final GeneratorBuffer buffer = GeneratorBuffer();
+
+      // Act
+      generator.generate(
+        command,
+        buffer,
+        generators: spyGenerators,
+        inheritedFills: initialFills,
+        inheritedStrokes: initialStrokes,
+      );
+
+      // Assert
+      expect(spy.lastInheritedFills, initialFills);
+      expect(spy.lastInheritedStrokes, initialStrokes);
+    });
+
+    test('should stop inheriting when group style differs from parent and is not mapped', () {
+      // Arrange
+      final _SpyGenerator spy = _SpyGenerator();
+      final Map<Type, CommandGenerator<PaintCommand>> spyGenerators =
+          <Type, CommandGenerator<PaintCommand>>{
+        DrawCircle: spy,
+        DrawGroup: generator,
+      };
+
+      final List<InheritedProperty> initialFills = <InheritedProperty>[
+        const InheritedProperty('fillProp', colorArgb: 0xFF111111),
+      ];
+      final List<InheritedProperty> initialStrokes = <InheritedProperty>[
+        const InheritedProperty('strokeProp', colorArgb: 0xFF222222),
+      ];
+
+      // Nested group with DIFFERENT style and no ID
+      const DrawGroup command = DrawGroup(
+        style: PaintingStyle(
+          fill: PaintingFillStyle(colorArgb: 0xFF333333, isExplicit: false),
+          stroke: PaintingStrokeStyle(colorArgb: 0xFF444444, isExplicit: false),
+        ),
+        commands: <PaintCommand>[
+          DrawCircle(cx: 0, cy: 0, radius: 0, style: PaintingStyle()),
+        ],
+      );
+      final GeneratorBuffer buffer = GeneratorBuffer();
+
+      // Act
+      generator.generate(
+        command,
+        buffer,
+        generators: spyGenerators,
+        inheritedFills: initialFills,
+        inheritedStrokes: initialStrokes,
+      );
+
+      // Assert
+      expect(spy.lastInheritedFills, isEmpty);
+      expect(spy.lastInheritedStrokes, isEmpty);
+    });
+
+    test('should use indexed property for inheritance when mapped', () {
+      // Arrange
+      final _SpyGenerator spy = _SpyGenerator();
+      final Map<Type, CommandGenerator<PaintCommand>> spyGenerators =
+          <Type, CommandGenerator<PaintCommand>>{
+        DrawCircle: spy,
+        DrawGroup: generator,
+      };
+
+      const DrawGroup command = DrawGroup(
+        style: PaintingStyle(stroke: PaintingStrokeStyle(colorArgb: 0xFF123456)),
+        commands: <PaintCommand>[DrawCircle(cx: 0, cy: 0, radius: 0, style: PaintingStyle())],
+      );
+
+      final PaletteResult palette = PaletteResult(
+        <PaintCommand, String>{},
+        <PaintCommand, String>{command: 'stroke1'},
+      );
+
+      final GeneratorBuffer buffer = GeneratorBuffer();
+
+      // Act
+      generator.generate(
+        command,
+        buffer,
+        generators: spyGenerators,
+        palette: palette,
+        activeStrokeProperties: <String, String>{'stroke1': 'customProp'},
+      );
+
+      // Assert
+      expect(spy.lastInheritedStrokes, hasLength(1));
+      expect(spy.lastInheritedStrokes![0].propertyName, 'customProp');
+    });
   });
 }
 

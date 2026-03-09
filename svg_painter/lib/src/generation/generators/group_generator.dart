@@ -24,10 +24,10 @@ class GroupGenerator extends ShapeGenerator<DrawGroup> {
       return;
     }
     wrapWithTransform(buffer, command.style.transformAttributes, () {
-      final List<InheritedProperty> nextInheritedFills = List<InheritedProperty>.from(
+      List<InheritedProperty> nextInheritedFills = List<InheritedProperty>.from(
         inheritedFills ?? <InheritedProperty>[],
       );
-      final List<InheritedProperty> nextInheritedStrokes = List<InheritedProperty>.from(
+      List<InheritedProperty> nextInheritedStrokes = List<InheritedProperty>.from(
         inheritedStrokes ?? <InheritedProperty>[],
       );
 
@@ -47,15 +47,20 @@ class GroupGenerator extends ShapeGenerator<DrawGroup> {
             InheritedProperty(activeProp, colorArgb: fill.colorArgb, shaderId: fill.shaderId),
           );
         } else if (inheritedFills != null) {
-          // Check for existing inheritance
+          // Check for existing inheritance.
+          bool foundMatch = false;
           for (final InheritedProperty prop in inheritedFills.reversed) {
-            if (fill.shaderId != null && prop.shaderId == fill.shaderId) {
-              nextInheritedFills.add(prop);
-              break;
-            } else if (fill.colorArgb != null && prop.colorArgb == fill.colorArgb) {
-              nextInheritedFills.add(prop);
+            final bool match = (fill.shaderId != null && prop.shaderId == fill.shaderId) ||
+                (fill.colorArgb != null && prop.colorArgb == fill.colorArgb);
+            if (match) {
+              foundMatch = true;
               break;
             }
+          }
+          if (!foundMatch) {
+            // Group style exists but doesn't match parent, and it's not mapped to an active prop.
+            // This means we stop inheriting.
+            nextInheritedFills = <InheritedProperty>[];
           }
         }
       }
@@ -72,14 +77,17 @@ class GroupGenerator extends ShapeGenerator<DrawGroup> {
             InheritedProperty(activeProp, colorArgb: stroke.colorArgb, shaderId: stroke.shaderId),
           );
         } else if (inheritedStrokes != null) {
+          bool foundMatch = false;
           for (final InheritedProperty prop in inheritedStrokes.reversed) {
-            if (stroke.shaderId != null && prop.shaderId == stroke.shaderId) {
-              nextInheritedStrokes.add(prop);
-              break;
-            } else if (stroke.colorArgb != null && prop.colorArgb == stroke.colorArgb) {
-              nextInheritedStrokes.add(prop);
+            final bool match = (stroke.shaderId != null && prop.shaderId == stroke.shaderId) ||
+                (stroke.colorArgb != null && prop.colorArgb == stroke.colorArgb);
+            if (match) {
+              foundMatch = true;
               break;
             }
+          }
+          if (!foundMatch) {
+            nextInheritedStrokes = <InheritedProperty>[];
           }
         }
       }

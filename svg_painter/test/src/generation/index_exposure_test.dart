@@ -107,5 +107,31 @@ void main() {
       expect(output, isNot(contains('Fill')));
       expect(output, isNot(contains('Stroke')));
     });
+
+    test('should stable sort groups with same color but different shaders', () {
+      // Arrange
+      const String svg = '''
+<svg viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="grad1"><stop offset="0" stop-color="red"/></linearGradient>
+    <linearGradient id="grad2"><stop offset="0" stop-color="blue"/></linearGradient>
+  </defs>
+  <circle cx="10" cy="10" r="5" fill="url(#grad1)" />
+  <circle cx="20" cy="20" r="5" fill="url(#grad2)" />
+</svg>
+''';
+
+      // Act
+      final String output = generator.generateFromSvg(
+        elementName: 'StabilityPainter',
+        svgContent: svg,
+        exposureMode: SvgExposureMode.indexed,
+      );
+
+      // Assert
+      // Both have null colorArgb (since they use shaders), so they hit the shaderId comparison branch.
+      expect(output, contains('final Object? fill1;'));
+      expect(output, contains('final Object? fill2;'));
+    });
   });
 }
