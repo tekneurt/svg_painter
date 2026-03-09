@@ -83,7 +83,10 @@ void main() {
       final GeneratorBuffer buffer = GeneratorBuffer();
 
       // Act
-      generator.generate(command, (buffer as dynamic) as GeneratorBuffer); // Type cast for safety in test context
+      generator.generate(
+        command,
+        (buffer as dynamic) as GeneratorBuffer,
+      ); // Type cast for safety in test context
 
       // Assert
       expect(buffer.toString().isEmpty, isTrue);

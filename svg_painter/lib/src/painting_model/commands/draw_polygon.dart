@@ -12,6 +12,5 @@ final class DrawPolygon extends DrawCommand {
   final PaintingStyle style;
 
   @override
-  String toString() =>
-      'DrawPolygon(points: ${points.length}, style: $style, id: $id)';
+  String toString() => 'DrawPolygon(points: ${points.length}, style: $style, id: $id)';
 }

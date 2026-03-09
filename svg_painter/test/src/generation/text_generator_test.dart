@@ -32,12 +32,7 @@ void main() {
       expect(output, contains('fontWeight: FontWeight.bold'));
       expect(output, contains('fontStyle: FontStyle.italic'));
       expect(output, contains('..layout()'));
-      expect(
-        output,
-        contains(
-          'tp.paint(canvas, const Offset(10.0, 20.0 - tp.ascent))',
-        ),
-      );
+      expect(output, contains('tp.paint(canvas, const Offset(10.0, 20.0 - tp.ascent))'));
     });
   });
 }

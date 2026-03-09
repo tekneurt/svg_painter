@@ -43,7 +43,9 @@ extension ToCommonAttributes on XmlElement {
       opacity: toSvgValueOrNull<SvgLengthPercentage>(elementName, XmlAttributeName.opacity),
       cssClass: toXmlAttributeValue(XmlAttributeName.className),
       inlineStyle: toXmlAttributeValue(XmlAttributeName.style),
-      transformAttributes: SvgTransformParser.parse(toXmlAttributeValue(XmlAttributeName.transform)),
+      transformAttributes: SvgTransformParser.parse(
+        toXmlAttributeValue(XmlAttributeName.transform),
+      ),
     );
   }
 }

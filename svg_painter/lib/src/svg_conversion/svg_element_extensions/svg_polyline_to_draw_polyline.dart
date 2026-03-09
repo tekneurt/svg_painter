@@ -39,11 +39,7 @@ extension SvgPolylineToPaintCommands on SvgPolyline {
     );
 
     return Success<List<PaintCommand>>(<PaintCommand>[
-      DrawPolyline(
-        points: resolvedPoints,
-        style: paint,
-        id: id,
-      ),
+      DrawPolyline(points: resolvedPoints, style: paint, id: id),
     ]);
   }
 }

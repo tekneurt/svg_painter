@@ -30,13 +30,7 @@ extension SvgCircleToPaintCommands on SvgCircle {
     final double finalR = r.resolve(context, .normalized);
 
     return Success<List<PaintCommand>>(<PaintCommand>[
-      DrawCircle(
-        cx: finalCx,
-        cy: finalCy,
-        radius: finalR,
-        style: paint,
-        id: id,
-      ),
+      DrawCircle(cx: finalCx, cy: finalCy, radius: finalR, style: paint, id: id),
     ]);
   }
 }

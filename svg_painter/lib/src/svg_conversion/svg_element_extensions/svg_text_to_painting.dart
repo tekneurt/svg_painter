@@ -29,13 +29,7 @@ extension SvgTextToPaintCommands on SvgText {
     final double finalY = y.resolve(context, .vertical);
 
     return Success<List<PaintCommand>>(<PaintCommand>[
-      DrawText(
-        x: finalX,
-        y: finalY,
-        text: text,
-        style: paint,
-        id: id,
-      ),
+      DrawText(x: finalX, y: finalY, text: text, style: paint, id: id),
     ]);
   }
 }

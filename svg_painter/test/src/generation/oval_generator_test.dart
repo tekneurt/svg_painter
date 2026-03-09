@@ -20,12 +20,7 @@ void main() {
 
       // Assert
       final String output = buffer.toString();
-      expect(
-        output,
-        contains(
-          'canvas.drawOval(Rect.fromLTWH(20.0, 40.0, 60.0, 40.0), paint)',
-        ),
-      );
+      expect(output, contains('canvas.drawOval(Rect.fromLTWH(20.0, 40.0, 60.0, 40.0), paint)'));
     });
 
     test('should generate _dashPath when oval is provided with dashed stroke', () {

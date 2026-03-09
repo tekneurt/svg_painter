@@ -28,11 +28,7 @@ extension SvgPathToPaintCommands on SvgPath {
 
     return operationsResult.map(
       (List<PathOperation> operations) => <PaintCommand>[
-        DrawPath(
-          operations: operations,
-          style: paint,
-          id: id,
-        ),
+        DrawPath(operations: operations, style: paint, id: id),
       ],
     );
   }

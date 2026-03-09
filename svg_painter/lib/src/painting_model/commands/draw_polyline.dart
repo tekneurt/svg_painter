@@ -13,6 +13,5 @@ final class DrawPolyline extends DrawCommand {
   final PaintingStyle style;
 
   @override
-  String toString() =>
-      'DrawPolyline(points: ${points.length}, style: $style, id: $id)';
+  String toString() => 'DrawPolyline(points: ${points.length}, style: $style, id: $id)';
 }

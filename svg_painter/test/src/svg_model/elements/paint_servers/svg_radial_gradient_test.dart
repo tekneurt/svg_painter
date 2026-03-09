@@ -14,7 +14,9 @@ void main() {
         fy: SvgLength(55.0),
         fr: SvgLength(66.0),
         stops: <SvgStop>[],
-        gradientTransformAttributes: SvgTransformAttributes(<SvgTransformOperation>[SvgScale(2.5, 2.5)]),
+        gradientTransformAttributes: SvgTransformAttributes(<SvgTransformOperation>[
+          SvgScale(2.5, 2.5),
+        ]),
         id: 'rg1',
       );
 

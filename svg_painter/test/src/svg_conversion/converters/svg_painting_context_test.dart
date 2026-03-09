@@ -4,10 +4,7 @@ import 'package:test/test.dart';
 
 void main() {
   group('SvgPaintingContext', () {
-    const SvgPaintingContext initial = SvgPaintingContext(
-      viewBoxWidth: 100,
-      viewBoxHeight: 100,
-    );
+    const SvgPaintingContext initial = SvgPaintingContext(viewBoxWidth: 100, viewBoxHeight: 100);
 
     test('should initialize with standard SVG defaults', () {
       expect(initial.inheritedFill, equals(const SvgNamedColor(SvgColorName.black)));

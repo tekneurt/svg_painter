@@ -221,7 +221,9 @@ void main() {
         generator.generate(
           command,
           buffer,
-          inheritedFills: <InheritedProperty>[const InheritedProperty('groupFill', colorArgb: color)],
+          inheritedFills: <InheritedProperty>[
+            const InheritedProperty('groupFill', colorArgb: color),
+          ],
         );
 
         // Assert
@@ -400,7 +402,9 @@ void main() {
           cx: 0,
           cy: 0,
           radius: 5,
-          style: PaintingStyle(transformAttributes: SvgTransformAttributes(<SvgTransformOperation>[])),
+          style: PaintingStyle(
+            transformAttributes: SvgTransformAttributes(<SvgTransformOperation>[]),
+          ),
         );
         final GeneratorBuffer buffer = GeneratorBuffer();
 
@@ -413,8 +417,6 @@ void main() {
         expect(output, contains('{'));
       });
 
-
-
       test('should wrap with translate when provided', () {
         // Arrange
         const DrawCircle command = DrawCircle(
@@ -422,7 +424,9 @@ void main() {
           cy: 0,
           radius: 5,
           style: PaintingStyle(
-            transformAttributes: SvgTransformAttributes(<SvgTransformOperation>[SvgTranslate(10, 20)]),
+            transformAttributes: SvgTransformAttributes(<SvgTransformOperation>[
+              SvgTranslate(10, 20),
+            ]),
           ),
         );
         final GeneratorBuffer buffer = GeneratorBuffer();
@@ -444,7 +448,9 @@ void main() {
           cy: 0,
           radius: 5,
           style: PaintingStyle(
-            transformAttributes: SvgTransformAttributes(<SvgTransformOperation>[SvgScale(2.5, 2.5)]),
+            transformAttributes: SvgTransformAttributes(<SvgTransformOperation>[
+              SvgScale(2.5, 2.5),
+            ]),
           ),
         );
         final GeneratorBuffer buffer = GeneratorBuffer();
@@ -504,7 +510,9 @@ void main() {
           cy: 0,
           radius: 5,
           style: PaintingStyle(
-            transformAttributes: SvgTransformAttributes(<SvgTransformOperation>[SvgRotate(45, 10, 10)]),
+            transformAttributes: SvgTransformAttributes(<SvgTransformOperation>[
+              SvgRotate(45, 10, 10),
+            ]),
           ),
         );
         final GeneratorBuffer buffer = GeneratorBuffer();

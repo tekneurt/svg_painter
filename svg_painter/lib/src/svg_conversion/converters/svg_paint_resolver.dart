@@ -133,7 +133,16 @@ PaintingStyle resolvePaint(
       if (sizeIndex + 1 < allParts.length) {
         final String familyPart = allParts.sublist(sizeIndex + 1).join(' ');
         // Clean up quotes and take the first family if multiple are provided
-        final String firstFamily = familyPart.split(',')[0].trim().replaceAll(RegExp(r'["'']'), '');
+        final String firstFamily = familyPart
+            .split(',')[0]
+            .trim()
+            .replaceAll(
+              RegExp(
+                r'["'
+                ']',
+              ),
+              '',
+            );
         cssFontFamily = firstFamily.toSvgFontFamily();
       }
     }
@@ -283,11 +292,15 @@ PaintingStyle resolvePaint(
     );
   }
 
-  final double finalFontSize = (cssFontSize ?? fontAttributes?.size ?? context.inheritedFontSize ?? const SvgLength(12.0))
-      .resolve(context, SvgOrientation.vertical);
+  final double finalFontSize =
+      (cssFontSize ?? fontAttributes?.size ?? context.inheritedFontSize ?? const SvgLength(12.0))
+          .resolve(context, SvgOrientation.vertical);
 
   final SvgFontWeight weight =
-      cssFontWeight ?? fontAttributes?.weight ?? context.inheritedFontWeight ?? const SvgFontWeightNormal();
+      cssFontWeight ??
+      fontAttributes?.weight ??
+      context.inheritedFontWeight ??
+      const SvgFontWeightNormal();
   final String finalFontWeight = switch (weight) {
     SvgFontWeightNormal() => 'normal',
     SvgFontWeightBold() => 'bold',
@@ -301,7 +314,10 @@ PaintingStyle resolvePaint(
   final String finalFontStyle = style.value;
 
   final SvgFontFamily family =
-      cssFontFamily ?? fontAttributes?.family ?? context.inheritedFontFamily ?? const SvgFontFamily('sans-serif');
+      cssFontFamily ??
+      fontAttributes?.family ??
+      context.inheritedFontFamily ??
+      const SvgFontFamily('sans-serif');
   final String rawFontFamily = family.value;
 
   // Map generic font families to bundled font files for Flutter rendering.

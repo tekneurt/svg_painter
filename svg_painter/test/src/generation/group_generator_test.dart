@@ -16,9 +16,9 @@ void main() {
 
     test('should return early when generators map is null', () {
       // Arrange
-      const DrawGroup command = DrawGroup(commands: <PaintCommand>[
-        DrawCircle(cx: 0, cy: 0, radius: 5, style: PaintingStyle())
-      ]);
+      const DrawGroup command = DrawGroup(
+        commands: <PaintCommand>[DrawCircle(cx: 0, cy: 0, radius: 5, style: PaintingStyle())],
+      );
       final GeneratorBuffer buffer = GeneratorBuffer();
 
       // Act
@@ -55,7 +55,9 @@ void main() {
       const DrawGroup command = DrawGroup(
         commands: <PaintCommand>[],
         style: PaintingStyle(
-          transformAttributes: SvgTransformAttributes(<SvgTransformOperation>[SvgTranslate(12, 34)]),
+          transformAttributes: SvgTransformAttributes(<SvgTransformOperation>[
+            SvgTranslate(12, 34),
+          ]),
         ),
       );
       final GeneratorBuffer buffer = GeneratorBuffer();

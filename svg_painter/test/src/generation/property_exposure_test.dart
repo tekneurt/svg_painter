@@ -32,10 +32,7 @@ void main() {
       expect(output, contains('_applyOverride(paint, localFill);'));
       // Check shouldRepaint
       expect(output, contains(r'bool shouldRepaint(covariant _$MyPainter oldDelegate) {'));
-      expect(
-        output,
-        contains('myCircleFill == oldDelegate.myCircleFill'),
-      );
+      expect(output, contains('myCircleFill == oldDelegate.myCircleFill'));
       expect(output, contains('return false;'));
       expect(output, contains('return true;'));
     });

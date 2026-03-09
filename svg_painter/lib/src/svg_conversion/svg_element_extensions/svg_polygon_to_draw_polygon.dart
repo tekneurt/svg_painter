@@ -39,11 +39,7 @@ extension SvgPolygonToPaintCommands on SvgPolygon {
     );
 
     return Success<List<PaintCommand>>(<PaintCommand>[
-      DrawPolygon(
-        points: resolvedPoints,
-        style: paint,
-        id: id,
-      ),
+      DrawPolygon(points: resolvedPoints, style: paint, id: id),
     ]);
   }
 }

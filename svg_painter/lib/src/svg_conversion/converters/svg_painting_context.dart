@@ -89,8 +89,7 @@ final class SvgPaintingContext {
   /// Returns the normalized diagonal length of the viewBox for resolving radii.
   /// Formula: sqrt(w*w + h*h) / sqrt(2)
   double get viewBoxNormalizedDiagonal {
-    return math.sqrt(viewBoxWidth * viewBoxWidth + viewBoxHeight * viewBoxHeight) /
-        math.sqrt(2.0);
+    return math.sqrt(viewBoxWidth * viewBoxWidth + viewBoxHeight * viewBoxHeight) / math.sqrt(2.0);
   }
 
   /// Creates a new context derived from this one, optionally overriding properties.
@@ -149,12 +148,10 @@ final class SvgPaintingContext {
         inheritedStroke: element.strokeAttributes?.color ?? inheritedStroke,
         inheritedStrokeOpacity: element.strokeAttributes?.opacity ?? inheritedStrokeOpacity,
         inheritedStrokeWidth: element.strokeAttributes?.width ?? inheritedStrokeWidth,
-        inheritedStrokeDasharray:
-            element.strokeAttributes?.dashArray ?? inheritedStrokeDasharray,
+        inheritedStrokeDasharray: element.strokeAttributes?.dashArray ?? inheritedStrokeDasharray,
         inheritedStrokeLinecap: element.strokeAttributes?.linecap ?? inheritedStrokeLinecap,
         inheritedStrokeLinejoin: element.strokeAttributes?.linejoin ?? inheritedStrokeLinejoin,
-        parentOpacity:
-            parentOpacity * (element.opacity?.resolve(this, SvgOrientation.unit) ?? 1.0),
+        parentOpacity: parentOpacity * (element.opacity?.resolve(this, SvgOrientation.unit) ?? 1.0),
         inheritedFontSize: font?.size ?? inheritedFontSize,
         inheritedFontWeight: font?.weight ?? inheritedFontWeight,
         inheritedFontStyle: font?.style ?? inheritedFontStyle,

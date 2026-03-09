@@ -12,7 +12,9 @@ void main() {
         x2: SvgLength(5.6),
         y2: SvgLength(7.8),
         stops: <SvgStop>[],
-        gradientTransformAttributes: SvgTransformAttributes(<SvgTransformOperation>[SvgTranslate(10, 20)]),
+        gradientTransformAttributes: SvgTransformAttributes(<SvgTransformOperation>[
+          SvgTranslate(10, 20),
+        ]),
         id: 'grad1',
       );
 

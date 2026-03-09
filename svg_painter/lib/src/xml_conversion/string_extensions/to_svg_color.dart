@@ -67,7 +67,10 @@ extension ToSvgColor on String {
     final String? sGroup = match.group(2);
     final String? lGroup = match.group(3);
 
-    assert(hGroup != null && sGroup != null && lGroup != null, 'Regex match guaranteed HSL groups 1, 2 and 3');
+    assert(
+      hGroup != null && sGroup != null && lGroup != null,
+      'Regex match guaranteed HSL groups 1, 2 and 3',
+    );
     if (hGroup == null || sGroup == null || lGroup == null) {
       return null;
     }
@@ -102,7 +105,10 @@ extension ToSvgColor on String {
     final String? gGroup = match.group(2);
     final String? bGroup = match.group(3);
 
-    assert(rGroup != null && gGroup != null && bGroup != null, 'Regex match guaranteed RGB groups 1, 2 and 3');
+    assert(
+      rGroup != null && gGroup != null && bGroup != null,
+      'Regex match guaranteed RGB groups 1, 2 and 3',
+    );
     if (rGroup == null || gGroup == null || bGroup == null) {
       return null;
     }

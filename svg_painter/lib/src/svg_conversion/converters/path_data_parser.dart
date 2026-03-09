@@ -102,9 +102,7 @@ class PathDataParser {
             final double y2 = isRelative ? lastY + params[i++] : params[i++];
             final double x = isRelative ? lastX + params[i++] : params[i++];
             final double y = isRelative ? lastY + params[i++] : params[i++];
-            operations.add(
-              CubicTo(x1, y1, x2, y2, x, y),
-            );
+            operations.add(CubicTo(x1, y1, x2, y2, x, y));
             lastControlX = x2;
             lastControlY = y2;
             lastX = x;
@@ -130,9 +128,7 @@ class PathDataParser {
               y1 = 2 * lastY - lcy;
             }
 
-            operations.add(
-              CubicTo(x1, y1, x2, y2, x, y),
-            );
+            operations.add(CubicTo(x1, y1, x2, y2, x, y));
             lastControlX = x2;
             lastControlY = y2;
             lastX = x;
@@ -146,9 +142,7 @@ class PathDataParser {
             final double y1 = isRelative ? lastY + params[i++] : params[i++];
             final double x = isRelative ? lastX + params[i++] : params[i++];
             final double y = isRelative ? lastY + params[i++] : params[i++];
-            operations.add(
-              QuadraticTo(x1, y1, x, y),
-            );
+            operations.add(QuadraticTo(x1, y1, x, y));
             lastControlX = x1;
             lastControlY = y1;
             lastX = x;
@@ -172,9 +166,7 @@ class PathDataParser {
               y1 = 2 * lastY - lcy;
             }
 
-            operations.add(
-              QuadraticTo(x1, y1, x, y),
-            );
+            operations.add(QuadraticTo(x1, y1, x, y));
             lastControlX = x1;
             lastControlY = y1;
             lastX = x;
@@ -191,17 +183,7 @@ class PathDataParser {
             final bool sweepFlag = params[i++] != 0;
             final double x = isRelative ? lastX + params[i++] : params[i++];
             final double y = isRelative ? lastY + params[i++] : params[i++];
-            operations.add(
-              ArcTo(
-                rx,
-                ry,
-                xAxisRotation,
-                largeArcFlag,
-                sweepFlag,
-                x,
-                y,
-              ),
-            );
+            operations.add(ArcTo(rx, ry, xAxisRotation, largeArcFlag, sweepFlag, x, y));
             lastX = x;
             lastY = y;
             lastControlX = null;

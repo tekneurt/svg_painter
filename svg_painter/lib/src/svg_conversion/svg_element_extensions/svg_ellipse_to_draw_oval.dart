@@ -34,14 +34,7 @@ extension SvgEllipseToPaintCommands on SvgEllipse {
     final double finalRy = initialRy;
 
     return Success<List<PaintCommand>>(<PaintCommand>[
-      DrawOval(
-        cx: finalCx,
-        cy: finalCy,
-        rx: finalRx,
-        ry: finalRy,
-        style: paint,
-        id: id,
-      ),
+      DrawOval(cx: finalCx, cy: finalCy, rx: finalRx, ry: finalRy, style: paint, id: id),
     ]);
   }
 }

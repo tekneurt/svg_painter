@@ -77,7 +77,10 @@ void main() {
 
       // Assert
       final String output = buffer.toString();
-      expect(output, contains('final Path path = Path()..addRect(Rect.fromLTWH(10.0, 20.0, 100.0, 50.0));'));
+      expect(
+        output,
+        contains('final Path path = Path()..addRect(Rect.fromLTWH(10.0, 20.0, 100.0, 50.0));'),
+      );
       expect(output, contains('final List<double> dashArray = [5.0, 5.0];'));
       expect(output, contains('canvas.drawPath(_dashPath(path, dashArray), paint)'));
     });

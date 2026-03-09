@@ -124,13 +124,18 @@ void main() {
 
         final DrawGroup useGroup = rootGroup.commands.whereType<DrawGroup>().single;
         expect(useGroup.commands.single, isA<DrawRect>());
-        
+
         final DrawRect rectInUse = useGroup.commands.single as DrawRect;
         // Coordinates should be 0,0 because translate(50, 50) is in useGroup transform.
         expect(rectInUse.x, 0.0);
         expect(rectInUse.y, 0.0);
-        
-        expect(useGroup.style.transformAttributes?.operations.any((SvgTransformOperation op) => op is SvgTranslate && op.x == 50.0 && op.y == 50.0), isTrue);
+
+        expect(
+          useGroup.style.transformAttributes?.operations.any(
+            (SvgTransformOperation op) => op is SvgTranslate && op.x == 50.0 && op.y == 50.0,
+          ),
+          isTrue,
+        );
       });
     });
 

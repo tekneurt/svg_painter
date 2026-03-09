@@ -50,7 +50,8 @@ extension SvgElementToPaintCommands on SvgElement {
         inheritedStrokeDasharray: self.strokeAttributes?.dashArray,
         inheritedStrokeLinecap: self.strokeAttributes?.linecap ?? SvgStrokeLinecap.butt,
         inheritedStrokeLinejoin: self.strokeAttributes?.linejoin ?? SvgStrokeLinejoin.miter,
-        parentOpacity: self.opacity?.resolve(
+        parentOpacity:
+            self.opacity?.resolve(
               const SvgPaintingContext(viewBoxWidth: 1, viewBoxHeight: 1),
               SvgOrientation.unit,
             ) ??
@@ -99,8 +100,7 @@ extension SvgElementToPaintCommands on SvgElement {
       // Non-rendering elements
       final SvgMetadataElement _ ||
       final SvgStyle _ ||
-      final SvgIgnoredElement _ =>
-        const Success<List<PaintCommand>>(<PaintCommand>[]),
+      final SvgIgnoredElement _ => const Success<List<PaintCommand>>(<PaintCommand>[]),
 
       // Safety fallback
       _ => const Success<List<PaintCommand>>(<PaintCommand>[]),
@@ -147,13 +147,7 @@ extension _SvgUseToPaintCommands on SvgUse {
 
     // Context for children inherits styles, but coordinates are now in the <use> local space.
     return target.toPaintCommands(context).map((List<PaintCommand> childCommands) {
-      return <PaintCommand>[
-        DrawGroup(
-          commands: childCommands,
-          style: style,
-          id: id,
-        ),
-      ];
+      return <PaintCommand>[DrawGroup(commands: childCommands, style: style, id: id)];
     });
   }
 }
@@ -225,17 +219,11 @@ extension _SvgSvgToPaintCommands on SvgSvg {
       transformAttributes: ops.isEmpty ? null : SvgTransformAttributes(ops),
     );
 
-    return children.map((SvgElement child) => child.toPaintCommands(innerContext)).combine().map(
-      (List<PaintCommand> childCommands) {
-        return <PaintCommand>[
-          DrawGroup(
-            commands: childCommands,
-            style: style,
-            id: id,
-          ),
-        ];
-      },
-    );
+    return children.map((SvgElement child) => child.toPaintCommands(innerContext)).combine().map((
+      List<PaintCommand> childCommands,
+    ) {
+      return <PaintCommand>[DrawGroup(commands: childCommands, style: style, id: id)];
+    });
   }
 }
 
@@ -264,12 +252,7 @@ extension _SvgGroupToPaintCommands on SvgGroup {
       List<PaintCommand> childCommands,
     ) {
       return <PaintCommand>[
-        DrawGroup(
-          commands: childCommands,
-          style: style,
-          id: id,
-          opacity: finalGroupOpacity,
-        ),
+        DrawGroup(commands: childCommands, style: style, id: id, opacity: finalGroupOpacity),
       ];
     });
   }

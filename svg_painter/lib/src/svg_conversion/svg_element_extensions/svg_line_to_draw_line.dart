@@ -28,14 +28,7 @@ extension SvgLineToPaintCommands on SvgLine {
     final double finalY2 = y2.resolve(context, .vertical);
 
     return Success<List<PaintCommand>>(<PaintCommand>[
-      DrawLine(
-        x1: finalX1,
-        y1: finalY1,
-        x2: finalX2,
-        y2: finalY2,
-        style: paint,
-        id: id,
-      ),
+      DrawLine(x1: finalX1, y1: finalY1, x2: finalX2, y2: finalY2, style: paint, id: id),
     ]);
   }
 }
