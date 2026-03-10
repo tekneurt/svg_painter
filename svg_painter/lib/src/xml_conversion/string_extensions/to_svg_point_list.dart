@@ -11,7 +11,6 @@ extension ToSvgPointList on String {
 
     for (final Match match in matches) {
       final String? group = match.group(0);
-      assert(group != null, 'Regex match guaranteed group 0');
       if (group == null) {
         break;
       }
@@ -22,6 +21,12 @@ extension ToSvgPointList on String {
         // parsing stops immediately and returns the valid values parsed so far.
         break;
       }
+    }
+
+    // According to SVG spec, an odd number of coordinates is an error.
+    // The spec says to ignore the last coordinate if the list is odd.
+    if (points.length.isOdd) {
+      points.removeLast();
     }
 
     return SvgPointList(points);

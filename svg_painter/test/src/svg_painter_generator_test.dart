@@ -331,22 +331,25 @@ void main() {
           },
         );
 
-        test('should throw InvalidGenerationSourceError when mapping fails (missing path data)', () {
-          // Arrange
-          const String invalidAttrSvg = '<svg><path /></svg>';
+        test(
+          'should throw InvalidGenerationSourceError when mapping fails (missing path data)',
+          () {
+            // Arrange
+            const String invalidAttrSvg = '<svg><path /></svg>';
 
-          // Act & Assert
-          expect(
-            () => generator.generateFromSvg(elementName: 'Test', svgContent: invalidAttrSvg),
-            throwsA(
-              isA<InvalidGenerationSourceError>().having(
-                (InvalidGenerationSourceError e) => e.message,
-                'message',
-                contains('Failed to map SVG content'),
+            // Act & Assert
+            expect(
+              () => generator.generateFromSvg(elementName: 'Test', svgContent: invalidAttrSvg),
+              throwsA(
+                isA<InvalidGenerationSourceError>().having(
+                  (InvalidGenerationSourceError e) => e.message,
+                  'message',
+                  contains('Failed to map SVG content'),
+                ),
               ),
-            ),
-          );
-        });
+            );
+          },
+        );
       });
     });
 

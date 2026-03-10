@@ -211,14 +211,14 @@
     - [x] `svg_paint_resolver.dart` (Edge cases)
     - [x] `svg_to_painting.dart` (Edge cases)
     - [x] `to_svg_element.dart` (Missing element types)
-- [ ] **SVG Spec Compliance Audit**: Systematically review all parsing logic (points, paths, transforms, colors) against the SVG 1.1/2.0 "Error Processing" rules.
+- [x] **SVG Spec Compliance Audit**: Systematically review all parsing logic (points, paths, transforms, colors) against the SVG 1.1/2.0 "Error Processing" rules.
     - Ensure partial parsing stops correctly on invalid tokens.
     - Verify odd-length lists are handled (truncated or errored) as per spec for each attribute type.
     - Ensure invalid values (e.g. negative radius) result in spec-compliant behavior (ignore element vs ignore attribute).
 
-    - [ ] **Strong Typing of Painting Model**: Audit all styles and commands to replace `String?` with dedicated Enums or value objects.
-    - [ ] **Harden Regex Parsers**: Update style and length parsers to safely handle regex match groups instead of using non-null assertions.
-    - [ ] **Standardized Formatting & Style Audit**: Perform a project-wide pass to add trailing commas to all collection literals and parameter lists to ensure stable multi-line formatting.
+    - [x] **Strong Typing of Painting Model**: Audit all styles and commands to replace `String?` with dedicated Enums or value objects.
+    - [x] **Harden Regex Parsers**: Update style and length parsers to safely handle regex match groups instead of using non-null assertions.
+    - [x] **Standardized Formatting & Style Audit**: Perform a project-wide pass to add trailing commas to all collection literals and parameter lists to ensure stable multi-line formatting.
 ### Phase 4: Essential Elements (0.3.0)
 *Reaching standard compatibility with essential SVG elements.*
 

@@ -35,7 +35,7 @@ void main() {
     test('should parse font shorthand', () {
       final PaintingStyle style = resolvePaint(emptyContext, inlineStyle: 'font: bold 16px serif');
 
-      expect(style.text?.fontWeight, 'bold');
+      expect(style.text?.fontWeight, PaintingFontWeight.bold);
       // 16px relative to 100 viewbox height -> depends on logic, but parsing should happen
       expect(style.text?.fontSize, isNotNull);
       expect(style.text?.fontFamily, 'Noto Serif'); // Mapped from 'serif'
@@ -47,8 +47,8 @@ void main() {
         inlineStyle: 'font: italic bold 14px/1.2 "Open Sans", sans-serif',
       );
 
-      expect(style.text?.fontStyle, 'italic');
-      expect(style.text?.fontWeight, 'bold');
+      expect(style.text?.fontStyle, PaintingFontStyle.italic);
+      expect(style.text?.fontWeight, PaintingFontWeight.bold);
       expect(style.text?.fontSize, 14.0);
       expect(style.text?.fontFamily, 'Open Sans');
     });
@@ -150,7 +150,7 @@ void main() {
       expect(style.stroke?.cap, PaintingStrokeCap.round);
       expect(style.stroke?.join, PaintingStrokeJoin.bevel);
       expect(style.groupOpacity, closeTo(0.9, 0.001));
-      expect(style.text?.fontStyle, 'italic');
+      expect(style.text?.fontStyle, PaintingFontStyle.italic);
       expect(style.text?.fontFamily, 'Roboto Mono');
       expect(style.stroke?.pathLength, 100.0);
     });
@@ -197,15 +197,15 @@ void main() {
     test('should resolve various font weights', () {
       expect(
         resolvePaint(emptyContext, inlineStyle: 'font-weight: bolder').text?.fontWeight,
-        'bold',
+        PaintingFontWeight.bold,
       );
       expect(
         resolvePaint(emptyContext, inlineStyle: 'font-weight: lighter').text?.fontWeight,
-        'lighter',
+        PaintingFontWeight.normal,
       );
       expect(
         resolvePaint(emptyContext, inlineStyle: 'font-weight: 500').text?.fontWeight,
-        '500.0',
+        PaintingFontWeight.w500,
       );
     });
 

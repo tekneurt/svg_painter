@@ -43,9 +43,7 @@ void main() {
         fx: 0.5,
         fy: 0.5,
         focalRadius: 0.1,
-        stops: <GradientStop>[
-          GradientStop(offset: 0, colorArgb: 0xFFFF0000),
-        ],
+        stops: <GradientStop>[GradientStop(offset: 0, colorArgb: 0xFFFF0000)],
       );
 
       final GeneratorBuffer buffer = GeneratorBuffer();

@@ -41,10 +41,8 @@ extension ToSvgValue on XmlElement {
         .y2 ||
         .cx ||
         .cy ||
-        .r ||
         .fx ||
         .fy ||
-        .fr ||
         .offset ||
         .opacity ||
         .fillOpacity ||
@@ -52,7 +50,16 @@ extension ToSvgValue on XmlElement {
         .stopOpacity ||
         .fontSize ||
         .strokeWidth => attributeValue.toSvgLengthPercentage(),
-        .rx || .ry || .width || .height => attributeValue.toSvgLengthPercentageAuto(),
+        .r || .fr || .rx || .ry || .width || .height => () {
+          final SvgLengthPercentage val = attributeValue.toSvgLengthPercentage();
+          if (val is SvgLength && val.value < 0) {
+            return null;
+          }
+          if (val is SvgPercentage && val.value < 0) {
+            return null;
+          }
+          return val;
+        }(),
         .pathLength => attributeValue.toSvgNonNegativeNumber(),
         .points || .strokeDasharray => attributeValue.toSvgPointList(),
         .fill || .stroke || .stopColor => attributeValue.toSvgColor(),

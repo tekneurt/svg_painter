@@ -68,7 +68,10 @@ void main() {
 
       // Assert
       final String output = buffer.toString();
-      expect(output, contains('canvas.drawPath(_dashPath(path, dashArray, pathLength: 100.0), paint)'));
+      expect(
+        output,
+        contains('canvas.drawPath(_dashPath(path, dashArray, pathLength: 100.0), paint)'),
+      );
     });
   });
 }

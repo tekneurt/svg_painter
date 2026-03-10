@@ -37,12 +37,8 @@ class TextGenerator extends ShapeGenerator<DrawText> {
                 buffer.writeln('foreground: $p,');
                 if (textStyle != null) {
                   buffer.writeln('fontSize: ${textStyle.fontSize},');
-                  buffer.writeln(
-                    "fontWeight: ${textStyle.fontWeight == 'bold' ? 'FontWeight.bold' : 'FontWeight.normal'},",
-                  );
-                  buffer.writeln(
-                    "fontStyle: ${textStyle.fontStyle == 'italic' ? 'FontStyle.italic' : 'FontStyle.normal'},",
-                  );
+                  buffer.writeln('fontWeight: ${textStyle.fontWeight.toFlutterString()},');
+                  buffer.writeln('fontStyle: ${textStyle.fontStyle.toFlutterString()},');
                   buffer.writeln("fontFamily: '${textStyle.fontFamily}',");
                 }
               }, footer: '),');

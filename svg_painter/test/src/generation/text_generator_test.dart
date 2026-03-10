@@ -8,8 +8,8 @@ void main() {
     fill: PaintingFillStyle(colorArgb: 0xFF000000),
     text: PaintingTextStyle(
       fontSize: 12.0,
-      fontWeight: 'bold',
-      fontStyle: 'italic',
+      fontWeight: PaintingFontWeight.bold,
+      fontStyle: PaintingFontStyle.italic,
       fontFamily: 'Roboto',
     ),
   );

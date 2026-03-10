@@ -8,15 +8,18 @@ void main() {
       const PaintingTextStyle style = PaintingTextStyle(
         fontSize: 16.0,
         fontFamily: 'Roboto',
-        fontWeight: 'bold',
-        fontStyle: 'italic',
+        fontWeight: PaintingFontWeight.bold,
+        fontStyle: PaintingFontStyle.italic,
       );
 
       // Act
       final String result = style.toString();
 
       // Assert
-      expect(result, 'PaintingTextStyle(size: 16.0, weight: bold, style: italic, family: Roboto)');
+      expect(
+        result,
+        'PaintingTextStyle(size: 16.0, weight: PaintingFontWeight.bold, style: PaintingFontStyle.italic, family: Roboto)',
+      );
     });
   });
 }

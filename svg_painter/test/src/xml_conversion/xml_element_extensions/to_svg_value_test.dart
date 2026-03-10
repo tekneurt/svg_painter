@@ -197,5 +197,25 @@ void main() {
       expect(XmlDocument.parse('<path pathLength="abc" />').rootElement.toPathLength(), isNull);
       expect(XmlDocument.parse('<path pathLength="-10" />').rootElement.toPathLength(), isNull);
     });
+
+    test('toSvgValueOrNull should return null for negative radius, width, or height', () {
+      final List<XmlAttributeName> nonNegativeAttributes = <XmlAttributeName>[
+        XmlAttributeName.r,
+        XmlAttributeName.rx,
+        XmlAttributeName.ry,
+        XmlAttributeName.width,
+        XmlAttributeName.height,
+      ];
+
+      for (final XmlAttributeName attr in nonNegativeAttributes) {
+        final XmlDocument document = XmlDocument.parse('<rect ${attr.name}="-10" />');
+        final XmlElement element = document.rootElement;
+        final SvgBaseValue? result = element.toSvgValueOrNull<SvgBaseValue>(
+          XmlElementName.rect,
+          attr,
+        );
+        expect(result, isNull, reason: 'Failed for ${attr.name}');
+      }
+    });
   });
 }

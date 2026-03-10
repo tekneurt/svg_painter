@@ -168,10 +168,7 @@ void main() {
       // Arrange
       final _SpyGenerator spy = _SpyGenerator();
       final Map<Type, CommandGenerator<PaintCommand>> spyGenerators =
-          <Type, CommandGenerator<PaintCommand>>{
-        DrawCircle: spy,
-        DrawGroup: generator,
-      };
+          <Type, CommandGenerator<PaintCommand>>{DrawCircle: spy, DrawGroup: generator};
 
       const int color = 0xFFABCDEF;
       const String shader = 'grad1';
@@ -188,9 +185,7 @@ void main() {
           fill: PaintingFillStyle(colorArgb: color, isExplicit: false),
           stroke: PaintingStrokeStyle(shaderId: shader, isExplicit: false),
         ),
-        commands: <PaintCommand>[
-          DrawCircle(cx: 0, cy: 0, radius: 0, style: PaintingStyle()),
-        ],
+        commands: <PaintCommand>[DrawCircle(cx: 0, cy: 0, radius: 0, style: PaintingStyle())],
       );
       final GeneratorBuffer buffer = GeneratorBuffer();
 
@@ -212,10 +207,7 @@ void main() {
       // Arrange
       final _SpyGenerator spy = _SpyGenerator();
       final Map<Type, CommandGenerator<PaintCommand>> spyGenerators =
-          <Type, CommandGenerator<PaintCommand>>{
-        DrawCircle: spy,
-        DrawGroup: generator,
-      };
+          <Type, CommandGenerator<PaintCommand>>{DrawCircle: spy, DrawGroup: generator};
 
       final List<InheritedProperty> initialFills = <InheritedProperty>[
         const InheritedProperty('fillProp', colorArgb: 0xFF111111),
@@ -230,9 +222,7 @@ void main() {
           fill: PaintingFillStyle(colorArgb: 0xFF333333, isExplicit: false),
           stroke: PaintingStrokeStyle(colorArgb: 0xFF444444, isExplicit: false),
         ),
-        commands: <PaintCommand>[
-          DrawCircle(cx: 0, cy: 0, radius: 0, style: PaintingStyle()),
-        ],
+        commands: <PaintCommand>[DrawCircle(cx: 0, cy: 0, radius: 0, style: PaintingStyle())],
       );
       final GeneratorBuffer buffer = GeneratorBuffer();
 
@@ -254,20 +244,16 @@ void main() {
       // Arrange
       final _SpyGenerator spy = _SpyGenerator();
       final Map<Type, CommandGenerator<PaintCommand>> spyGenerators =
-          <Type, CommandGenerator<PaintCommand>>{
-        DrawCircle: spy,
-        DrawGroup: generator,
-      };
+          <Type, CommandGenerator<PaintCommand>>{DrawCircle: spy, DrawGroup: generator};
 
       const DrawGroup command = DrawGroup(
         style: PaintingStyle(stroke: PaintingStrokeStyle(colorArgb: 0xFF123456)),
         commands: <PaintCommand>[DrawCircle(cx: 0, cy: 0, radius: 0, style: PaintingStyle())],
       );
 
-      const PaletteResult palette = PaletteResult(
-        <PaintCommand, String>{},
-        <PaintCommand, String>{command: 'stroke1'},
-      );
+      const PaletteResult palette = PaletteResult(<PaintCommand, String>{}, <PaintCommand, String>{
+        command: 'stroke1',
+      });
 
       final GeneratorBuffer buffer = GeneratorBuffer();
 

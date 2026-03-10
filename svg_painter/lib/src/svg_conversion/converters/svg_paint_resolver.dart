@@ -301,17 +301,30 @@ PaintingStyle resolvePaint(
       fontAttributes?.weight ??
       context.inheritedFontWeight ??
       const SvgFontWeightNormal();
-  final String finalFontWeight = switch (weight) {
-    SvgFontWeightNormal() => 'normal',
-    SvgFontWeightBold() => 'bold',
-    SvgFontWeightBolder() => 'bold', // Simplified for now
-    SvgFontWeightLighter() => 'lighter',
-    SvgFontWeightNumeric(value: final double v) => v.toString(),
+  final PaintingFontWeight finalFontWeight = switch (weight) {
+    SvgFontWeightNormal() => PaintingFontWeight.normal,
+    SvgFontWeightBold() => PaintingFontWeight.bold,
+    SvgFontWeightBolder() => PaintingFontWeight.bold, // Best effort
+    SvgFontWeightLighter() => PaintingFontWeight.normal, // Best effort
+    SvgFontWeightNumeric(value: final double v) => switch (v) {
+      <= 100 => PaintingFontWeight.w100,
+      <= 200 => PaintingFontWeight.w200,
+      <= 300 => PaintingFontWeight.w300,
+      <= 400 => PaintingFontWeight.w400,
+      <= 500 => PaintingFontWeight.w500,
+      <= 600 => PaintingFontWeight.w600,
+      <= 700 => PaintingFontWeight.w700,
+      <= 800 => PaintingFontWeight.w800,
+      _ => PaintingFontWeight.w900,
+    },
   };
 
   final SvgFontStyle style =
       cssFontStyle ?? fontAttributes?.style ?? context.inheritedFontStyle ?? SvgFontStyle.normal;
-  final String finalFontStyle = style.value;
+  final PaintingFontStyle finalFontStyle = switch (style.value) {
+    'italic' => PaintingFontStyle.italic,
+    _ => PaintingFontStyle.normal,
+  };
 
   final SvgFontFamily family =
       cssFontFamily ??

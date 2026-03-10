@@ -20,7 +20,6 @@ extension ToSvgLength on String {
       final String? numberPart = match.group(1);
       final String? unitSuffix = match.group(2);
 
-      assert(numberPart != null && unitSuffix != null, 'Regex match guaranteed groups 1 and 2');
       if (numberPart == null || unitSuffix == null) {
         return const SvgLength(0.0);
       }

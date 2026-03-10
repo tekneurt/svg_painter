@@ -40,9 +40,7 @@ void main() {
         y1: 0,
         x2: 10,
         y2: 10,
-        style: PaintingStyle(
-          stroke: PaintingStrokeStyle(colorArgb: 0, dashArray: <double>[5, 5]),
-        ),
+        style: PaintingStyle(stroke: PaintingStrokeStyle(colorArgb: 0, dashArray: <double>[5, 5])),
       );
       final GeneratorBuffer buffer = GeneratorBuffer();
 
@@ -74,7 +72,10 @@ void main() {
 
       // Assert
       final String output = buffer.toString();
-      expect(output, contains('canvas.drawPath(_dashPath(path, dashArray, pathLength: 100.0), paint);'));
+      expect(
+        output,
+        contains('canvas.drawPath(_dashPath(path, dashArray, pathLength: 100.0), paint);'),
+      );
     });
   });
 }

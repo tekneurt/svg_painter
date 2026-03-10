@@ -16,7 +16,6 @@ class SvgTransformParser {
       final String? type = match.group(1);
       final String? paramsStr = match.group(2);
 
-      assert(type != null && paramsStr != null, 'Regex match guaranteed groups 1 and 2');
       if (type == null || paramsStr == null) {
         continue;
       }

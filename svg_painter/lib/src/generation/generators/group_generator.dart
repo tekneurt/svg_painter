@@ -50,7 +50,8 @@ class GroupGenerator extends ShapeGenerator<DrawGroup> {
           // Check for existing inheritance.
           bool foundMatch = false;
           for (final InheritedProperty prop in inheritedFills.reversed) {
-            final bool match = (fill.shaderId != null && prop.shaderId == fill.shaderId) ||
+            final bool match =
+                (fill.shaderId != null && prop.shaderId == fill.shaderId) ||
                 (fill.colorArgb != null && prop.colorArgb == fill.colorArgb);
             if (match) {
               foundMatch = true;
@@ -79,7 +80,8 @@ class GroupGenerator extends ShapeGenerator<DrawGroup> {
         } else if (inheritedStrokes != null) {
           bool foundMatch = false;
           for (final InheritedProperty prop in inheritedStrokes.reversed) {
-            final bool match = (stroke.shaderId != null && prop.shaderId == stroke.shaderId) ||
+            final bool match =
+                (stroke.shaderId != null && prop.shaderId == stroke.shaderId) ||
                 (stroke.colorArgb != null && prop.colorArgb == stroke.colorArgb);
             if (match) {
               foundMatch = true;

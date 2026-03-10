@@ -21,23 +21,25 @@ void main() {
       buffer.outdent();
       buffer.writeln('back to 0');
 
-      expect(buffer.toString(), 
+      expect(
+        buffer.toString(),
         'level 0\n'
         '  level 1\n'
         '    level 2\n'
         '  back to 1\n'
-        'back to 0\n'
+        'back to 0\n',
       );
     });
 
     test('should handle multi-line strings and empty lines (DA:27)', () {
       final GeneratorBuffer buffer = GeneratorBuffer(initialIndent: 1);
       buffer.writeln('line 1\n\nline 3');
-      
-      expect(buffer.toString(), 
+
+      expect(
+        buffer.toString(),
         '  line 1\n'
         '\n'
-        '  line 3\n'
+        '  line 3\n',
       );
     });
 
@@ -45,7 +47,7 @@ void main() {
       final GeneratorBuffer buffer = GeneratorBuffer();
       buffer.writeln();
       buffer.writeln('   ');
-      
+
       expect(buffer.toString(), '\n\n');
     });
 
@@ -55,10 +57,11 @@ void main() {
         buffer.writeln('print("hello");');
       });
 
-      expect(buffer.toString(), 
+      expect(
+        buffer.toString(),
         'if (true) {\n'
         '  print("hello");\n'
-        '}\n'
+        '}\n',
       );
     });
 
@@ -72,9 +75,12 @@ void main() {
       }, footer: ';');
 
       expect(buffer.toString(), contains('class MyClass {\n'));
-      expect(buffer.toString(), contains('final Path path = Path() {\n')); // Current implementation behavior
+      expect(
+        buffer.toString(),
+        contains('final Path path = Path() {\n'),
+      ); // Current implementation behavior
     });
-    
+
     test('should handle custom footer in writeBlock', () {
       final GeneratorBuffer buffer = GeneratorBuffer();
       buffer.writeBlock('void myMethod() {', () {

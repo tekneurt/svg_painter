@@ -30,18 +30,18 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
 
   static const Map<Type, CommandGenerator<PaintCommand>> _generators =
       <Type, CommandGenerator<PaintCommand>>{
-    DrawCircle: CircleGenerator(),
-    DrawOval: OvalGenerator(),
-    DrawRect: RectGenerator(),
-    DrawText: TextGenerator(),
-    DrawGroup: GroupGenerator(),
-    DrawPath: PathGenerator(),
-    DrawLine: LineGenerator(),
-    DrawPolyline: PolyGenerator<DrawPolyline>(),
-    DrawPolygon: PolyGenerator<DrawPolygon>(),
-    DefineLinearGradient: LinearGradientGenerator(),
-    DefineRadialGradient: RadialGradientGenerator(),
-  };
+        DrawCircle: CircleGenerator(),
+        DrawOval: OvalGenerator(),
+        DrawRect: RectGenerator(),
+        DrawText: TextGenerator(),
+        DrawGroup: GroupGenerator(),
+        DrawPath: PathGenerator(),
+        DrawLine: LineGenerator(),
+        DrawPolyline: PolyGenerator<DrawPolyline>(),
+        DrawPolygon: PolyGenerator<DrawPolygon>(),
+        DefineLinearGradient: LinearGradientGenerator(),
+        DefineRadialGradient: RadialGradientGenerator(),
+      };
 
   @override
   FutureOr<String> generateForAnnotatedElement(
