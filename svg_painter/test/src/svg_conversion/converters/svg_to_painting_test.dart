@@ -177,6 +177,97 @@ void main() {
         expect(rootGroup.commands.whereType<DefineLinearGradient>().length, 1);
         expect(rootGroup.commands.whereType<DrawRect>().length, 0);
       });
+
+      test('should return radial gradient command when present', () {
+        const SvgRadialGradient grad = SvgRadialGradient(
+          id: 'rad1',
+          cx: SvgLength(50),
+          cy: SvgLength(50),
+          r: SvgLength(50),
+          fx: SvgLength(50),
+          fy: SvgLength(50),
+          fr: SvgLength(0),
+          stops: <SvgStop>[],
+        );
+        const SvgDefs defs = SvgDefs(children: <SvgElement>[grad]);
+        const SvgRoot root = SvgRoot(
+          children: <SvgElement>[defs],
+          viewBox: SvgViewBox(0, 0, 100, 100),
+        );
+
+        final Result<List<PaintCommand>> result = root.toPaintCommands();
+        final List<PaintCommand> commands = (result as Success<List<PaintCommand>>).value;
+        final DrawGroup rootGroup = commands.single as DrawGroup;
+
+        expect(rootGroup.commands.whereType<DefineRadialGradient>().length, 1);
+      });
+    });
+
+    group('Transforms', () {
+      test('should combine transform attribute with layout attributes (x, y)', () {
+        const SvgRect rect = SvgRect(
+          id: 'r1',
+          x: SvgLength(10),
+          y: SvgLength(20),
+          width: SvgLength(100),
+          height: SvgLength(100),
+          rx: SvgLength(0),
+          ry: SvgLength(0),
+        );
+        const SvgUse use = SvgUse(
+          href: '#r1',
+          x: SvgLength(5),
+          y: SvgLength(5),
+          width: SvgAuto(),
+          height: SvgAuto(),
+          transformAttributes: SvgTransformAttributes(<SvgTransformOperation>[SvgScale(2)]),
+        );
+        const SvgRoot root = SvgRoot(
+          children: <SvgElement>[rect, use],
+          viewBox: SvgViewBox(0, 0, 500, 500),
+        );
+
+        final Result<List<PaintCommand>> result = root.toPaintCommands();
+        final List<PaintCommand> commands = (result as Success<List<PaintCommand>>).value;
+        final DrawGroup rootGroup = commands.single as DrawGroup;
+        final DrawGroup useGroup = rootGroup.commands.whereType<DrawGroup>().single;
+
+        final List<SvgTransformOperation> ops = useGroup.style.transformAttributes!.operations;
+        // For <use>, order is [Translate(x,y), ...transformAttributes]
+        expect(ops.length, 2);
+        expect(ops[0], isA<SvgTranslate>());
+        expect(ops[1], isA<SvgScale>());
+      });
+    });
+
+    group('Nested SVG', () {
+      test('should handle nested SVG with full transform stack', () {
+        const SvgRoot nested = SvgRoot(
+          children: <SvgElement>[],
+          x: SvgLength(10),
+          y: SvgLength(20),
+          width: SvgLength(200),
+          height: SvgLength(100),
+          viewBox: SvgViewBox(0, 0, 100, 50), // sx = 2, sy = 2
+          transformAttributes: SvgTransformAttributes(<SvgTransformOperation>[SvgRotate(45)]),
+        );
+        const SvgRoot root = SvgRoot(
+          children: <SvgElement>[nested],
+          viewBox: SvgViewBox(0, 0, 500, 500),
+        );
+
+        final Result<List<PaintCommand>> result = root.toPaintCommands();
+        final List<PaintCommand> commands = (result as Success<List<PaintCommand>>).value;
+        final DrawGroup rootGroup = commands.single as DrawGroup;
+        final DrawGroup nestedGroup = rootGroup.commands.whereType<DrawGroup>().single;
+
+        final List<SvgTransformOperation> ops = nestedGroup.style.transformAttributes!.operations;
+        // For <svg>, order is [...transformAttributes, Translate(x,y), Scale(sx,sy), Translate(-vbMinX, -vbMinY)]
+        expect(ops.length, 3);
+        expect(ops[0], isA<SvgRotate>());
+        expect(ops[1], isA<SvgTranslate>());
+        expect(ops[2], isA<SvgScale>());
+      });
     });
 
     group('SvgGroup', () {

@@ -264,7 +264,7 @@ void main() {
         commands: <PaintCommand>[DrawCircle(cx: 0, cy: 0, radius: 0, style: PaintingStyle())],
       );
 
-      final PaletteResult palette = PaletteResult(
+      const PaletteResult palette = PaletteResult(
         <PaintCommand, String>{},
         <PaintCommand, String>{command: 'stroke1'},
       );

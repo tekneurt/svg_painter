@@ -197,7 +197,7 @@
 - [x] **Bang Operator (!) Audit**: Systematically audit the codebase for the `!` operator and replace it with safe null handling (core logic completed, tests remain).
 - [x] **Improve Generator Readability**: Refactor the "string buffer waterfall" into a cleaner code emission pattern (e.g., multiline strings or a structured emitter) to prevent broken `buffer.writeln` calls.
 - [x] **Coverage Exception Audit**: Investigate all `// coverage:ignore-line` and `// coverage:ignore-start/end` markers across the codebase to determine if the ignored code can be safely tested or if the ignore markers are still justified.
-- [ ] **Hardening Coverage for 0.2.0 files**: Improve coverage for the following files to reach >95% patch coverage:
+- [x] **Hardening Coverage for 0.2.0 files**: Improve coverage for the following files to reach >95% patch coverage:
     - `command_generator.dart`
     - `to_svg_value.dart`
     - `palette_analyzer.dart`
@@ -205,12 +205,12 @@
     - `line_generator.dart`
     - `path_generator.dart`
     - `svg_painter_generator.dart`
-- [ ] **Improve Coverage for Low-Coverage Files**:
-    - [ ] `oval_generator.dart` (Dash path logic)
-    - [ ] `rect_generator.dart` (Dash path logic)
-    - [ ] `svg_paint_resolver.dart` (Edge cases)
-    - [ ] `svg_to_painting.dart` (Edge cases)
-    - [ ] `to_svg_element.dart` (Missing element types)
+- [x] **Improve Coverage for Low-Coverage Files**:
+    - [x] `oval_generator.dart` (Dash path logic)
+    - [x] `rect_generator.dart` (Dash path logic)
+    - [x] `svg_paint_resolver.dart` (Edge cases)
+    - [x] `svg_to_painting.dart` (Edge cases)
+    - [x] `to_svg_element.dart` (Missing element types)
 - [ ] **SVG Spec Compliance Audit**: Systematically review all parsing logic (points, paths, transforms, colors) against the SVG 1.1/2.0 "Error Processing" rules.
     - Ensure partial parsing stops correctly on invalid tokens.
     - Verify odd-length lists are handled (truncated or errored) as per spec for each attribute type.

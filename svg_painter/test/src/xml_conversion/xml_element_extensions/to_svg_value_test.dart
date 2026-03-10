@@ -134,6 +134,49 @@ void main() {
       }
     });
 
+    test('toSvgValueOrNull should return null for complex/special attributes', () {
+      final List<XmlAttributeName> complexAttributes = <XmlAttributeName>[
+        XmlAttributeName.viewBox,
+        XmlAttributeName.id,
+        XmlAttributeName.d,
+        XmlAttributeName.className,
+        XmlAttributeName.style,
+        XmlAttributeName.href,
+        XmlAttributeName.transform,
+        XmlAttributeName.gradientTransform,
+      ];
+
+      for (final XmlAttributeName attr in complexAttributes) {
+        final XmlDocument document = XmlDocument.parse('<path ${attr.name}="something" />');
+        final XmlElement element = document.rootElement;
+        final SvgBaseValue? result = element.toSvgValueOrNull<SvgBaseValue>(
+          XmlElementName.path,
+          attr,
+        );
+        expect(result, isNull, reason: 'Failed for ${attr.name}');
+      }
+    });
+
+    test('toSvgValueOrNull should handle font weight, style, and family', () {
+      final Map<XmlAttributeName, String> fontTests = <XmlAttributeName, String>{
+        XmlAttributeName.fontWeight: 'bold',
+        XmlAttributeName.fontStyle: 'italic',
+        XmlAttributeName.fontFamily: 'Arial',
+      };
+
+      for (final MapEntry<XmlAttributeName, String> entry in fontTests.entries) {
+        final XmlDocument document = XmlDocument.parse(
+          '<text ${entry.key.name}="${entry.value}" />',
+        );
+        final XmlElement element = document.rootElement;
+        final SvgBaseValue? result = element.toSvgValueOrNull<SvgBaseValue>(
+          XmlElementName.text,
+          entry.key,
+        );
+        expect(result, isNotNull, reason: 'Failed for ${entry.key}');
+      }
+    });
+
     test('toPathLength should return SvgNumber for valid pathLength', () {
       // Arrange
       final XmlDocument document = XmlDocument.parse('<path pathLength="100" />');
@@ -149,16 +192,10 @@ void main() {
       );
     });
 
-    test('toPathLength should return null for negative pathLength', () {
-      // Arrange
-      final XmlDocument document = XmlDocument.parse('<path pathLength="-10" />');
-      final XmlElement element = document.rootElement;
-
-      // Act
-      final SvgNumber? result = element.toPathLength();
-
-      // Assert
-      expect(result, isNull);
+    test('toPathLength should return null for missing, malformed or negative pathLength', () {
+      expect(XmlDocument.parse('<path />').rootElement.toPathLength(), isNull);
+      expect(XmlDocument.parse('<path pathLength="abc" />').rootElement.toPathLength(), isNull);
+      expect(XmlDocument.parse('<path pathLength="-10" />').rootElement.toPathLength(), isNull);
     });
   });
 }

@@ -26,6 +26,18 @@ void main() {
       expect(const SvgLength(10.0, SvgLengthUnit.mm).toDouble(), closeTo(dpi / 2.54, 0.0001));
     });
 
+    test('should return value in pixels when unit is quarter-millimeters (q)', () {
+      expect(const SvgLength(40.0, SvgLengthUnit.q).toDouble(), closeTo(dpi / 2.54, 0.0001));
+    });
+
+    test('should return value in pixels when unit is picas (pc)', () {
+      expect(const SvgLength(6.0, SvgLengthUnit.pc).toDouble(), dpi);
+    });
+
+    test('should return value in pixels when unit is points (pt)', () {
+      expect(const SvgLength(72.0, SvgLengthUnit.pt).toDouble(), dpi);
+    });
+
     test('should return value relative to viewport width when unit is vw', () {
       expect(const SvgLength(10.0, SvgLengthUnit.vw).toDouble(context), 20.0);
     });
@@ -33,11 +45,30 @@ void main() {
     test('should return value relative to viewport height when unit is vh', () {
       expect(const SvgLength(10.0, SvgLengthUnit.vh).toDouble(context), 10.0);
     });
+
+    test('should return value relative to vmin', () {
+      // min(200, 100) = 100
+      expect(const SvgLength(10.0, SvgLengthUnit.vmin).toDouble(context), 10.0);
+    });
+
+    test('should return value relative to vmax', () {
+      // max(200, 100) = 200
+      expect(const SvgLength(10.0, SvgLengthUnit.vmax).toDouble(context), 20.0);
+    });
   });
 
   group('SvgPercentageToDouble', () {
     test('should resolve against width for horizontal', () {
       expect(const SvgPercentage(55.0).resolve(context, .horizontal), closeTo(110.0, 0.0001));
+    });
+
+    test('should resolve against height for vertical', () {
+      expect(const SvgPercentage(55.0).resolve(context, .vertical), closeTo(55.0, 0.0001));
+    });
+
+    test('should resolve against normalized diagonal for normalized', () {
+      // diagonal = sqrt(200^2 + 100^2) / sqrt(2) = sqrt(50000)/sqrt(2) = sqrt(25000) = 158.113883
+      expect(const SvgPercentage(100.0).resolve(context, .normalized), closeTo(158.113883, 0.0001));
     });
 
     test('should resolve as fraction for unit', () {
@@ -54,7 +85,7 @@ void main() {
       expect(const SvgPercentage(50).resolve(context, .horizontal), 100.0);
     });
 
-    test('toPosition should respect viewBox offset', () {
+    test('toPosition should respect viewBox offset and orientation', () {
       const SvgPaintingContext contextWithOffset = SvgPaintingContext(
         viewBoxWidth: 200,
         viewBoxHeight: 100,
@@ -63,6 +94,11 @@ void main() {
       );
 
       expect(const SvgLength(5.5).toPosition(contextWithOffset, .horizontal), 16.5);
+      expect(const SvgLength(5.5).toPosition(contextWithOffset, .vertical), 27.5);
+      expect(const SvgLength(5.5).toPosition(contextWithOffset, .normalized), 5.5);
+      expect(const SvgLength(5.5).toPosition(contextWithOffset, .unit), 5.5);
+
+      expect(const SvgPercentage(50).toPosition(contextWithOffset, .horizontal), 100.0);
     });
   });
 

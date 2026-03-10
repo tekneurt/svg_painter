@@ -30,18 +30,18 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
 
   static const Map<Type, CommandGenerator<PaintCommand>> _generators =
       <Type, CommandGenerator<PaintCommand>>{
-        DrawCircle: CircleGenerator(),
-        DrawOval: OvalGenerator(),
-        DrawRect: RectGenerator(),
-        DrawText: TextGenerator(),
-        DrawGroup: GroupGenerator(),
-        DrawPath: PathGenerator(),
-        DrawLine: LineGenerator(),
-        DrawPolyline: PolyGenerator<DrawPolyline>(),
-        DrawPolygon: PolyGenerator<DrawPolygon>(),
-        DefineLinearGradient: LinearGradientGenerator(),
-        DefineRadialGradient: RadialGradientGenerator(),
-      };
+    DrawCircle: CircleGenerator(),
+    DrawOval: OvalGenerator(),
+    DrawRect: RectGenerator(),
+    DrawText: TextGenerator(),
+    DrawGroup: GroupGenerator(),
+    DrawPath: PathGenerator(),
+    DrawLine: LineGenerator(),
+    DrawPolyline: PolyGenerator<DrawPolyline>(),
+    DrawPolygon: PolyGenerator<DrawPolygon>(),
+    DefineLinearGradient: LinearGradientGenerator(),
+    DefineRadialGradient: RadialGradientGenerator(),
+  };
 
   @override
   FutureOr<String> generateForAnnotatedElement(
@@ -165,10 +165,11 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
         propertyMapping: propertyMapping,
       );
     } else {
-      // coverage:ignore-line
+      // coverage:ignore-start
       throw InvalidGenerationSourceError(
         'Root element must be <svg>, but found ${svgRoot.runtimeType}',
       );
+      // coverage:ignore-end
     }
   }
 
@@ -568,11 +569,14 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
       return const Failure<String>('Annotation object has no type.');
     }
 
+    // coverage:ignore-start
     if (fileChecker.isExactlyType(type)) {
       return loadFromFile(annotation, buildStep);
     } else if (codeChecker.isExactlyType(type)) {
       return Success<String>(annotation.read('code').stringValue);
     }
+    // coverage:ignore-end
+
     return const Failure<String>(
       'Unknown SvgPainter type. Must be SvgFilePainter or SvgCodePainter.',
     );

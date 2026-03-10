@@ -68,8 +68,10 @@ class PaletteAnalyzer {
               final _StyleKey key = _StyleKey.fromStroke(stroke);
               strokeGroups.putIfAbsent(key, () => <PaintCommand>[]).add(command);
             }
+          // coverage:ignore-start
           case DefineCommand():
             break;
+          // coverage:ignore-end
         }
       }
     }

@@ -95,5 +95,29 @@ void main() {
       final String output = buffer.toString();
       expect(output, contains('canvas.drawPath(_dashPath(_path_'));
     });
+
+    test('should generate dashed path with pathLength when provided', () {
+      // Arrange
+      const PathGenerator generator = PathGenerator();
+      const DrawPath command = DrawPath(
+        operations: <PathOperation>[MoveTo(10.0, 11.0), LineTo(20.0, 21.0)],
+        style: PaintingStyle(
+          stroke: PaintingStrokeStyle(
+            colorArgb: 0xFF000000,
+            dashArray: <double>[5.0, 6.0],
+            pathLength: 100.0,
+          ),
+        ),
+      );
+      final GeneratorBuffer buffer = GeneratorBuffer();
+
+      // Act
+      generator.generate(command, buffer);
+
+      // Assert
+      final String output = buffer.toString();
+      expect(output, contains('canvas.drawPath(_dashPath(_path_'));
+      expect(output, contains('pathLength: 100.0'));
+    });
   });
 }

@@ -33,5 +33,26 @@ void main() {
       expect(result, contains('0.0,'));
       expect(result, contains('1.0,'));
     });
+
+    test('should generate RadialGradient with focalRadius properly', () {
+      const DefineRadialGradient cmd = DefineRadialGradient(
+        id: 'grad2',
+        cx: 0.5,
+        cy: 0.5,
+        radius: 0.5,
+        fx: 0.5,
+        fy: 0.5,
+        focalRadius: 0.1,
+        stops: <GradientStop>[
+          GradientStop(offset: 0, colorArgb: 0xFFFF0000),
+        ],
+      );
+
+      final GeneratorBuffer buffer = GeneratorBuffer();
+      const RadialGradientGenerator().generate(cmd, buffer);
+      final String result = buffer.toString();
+
+      expect(result, contains('focalRadius: 0.1'));
+    });
   });
 }

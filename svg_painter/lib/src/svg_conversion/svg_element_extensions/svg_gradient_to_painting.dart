@@ -54,7 +54,9 @@ extension SvgGradientToPainting on SvgGradient {
       );
     }
 
+    // coverage:ignore-start
     return Failure<PaintCommand>('Unsupported gradient type: ${self.runtimeType}');
+    // coverage:ignore-end
   }
 }
 

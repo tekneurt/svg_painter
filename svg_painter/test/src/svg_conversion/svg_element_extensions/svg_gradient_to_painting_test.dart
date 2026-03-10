@@ -9,6 +9,24 @@ void main() {
   group('SvgGradientToPainting', () {
     const SvgPaintingContext context = SvgPaintingContext(viewBoxWidth: 100, viewBoxHeight: 100);
 
+    test('should return Failure if ID is missing', () {
+      // Arrange
+      const SvgLinearGradient grad = SvgLinearGradient(
+        x1: SvgLength(0),
+        y1: SvgLength(0),
+        x2: SvgLength(100),
+        y2: SvgLength(0),
+        stops: <SvgStop>[],
+      );
+
+      // Act
+      final Result<PaintCommand> result = grad.toPaintCommand(context);
+
+      // Assert
+      expect(result, isA<Failure<PaintCommand>>());
+      expect((result as Failure<PaintCommand>).message, contains('must have an ID'));
+    });
+
     test('should convert SvgLinearGradient to DefineLinearGradient', () {
       // Arrange
       const SvgLinearGradient grad = SvgLinearGradient(

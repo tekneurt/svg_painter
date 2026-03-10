@@ -178,5 +178,43 @@ void main() {
 
       expect(style.groupOpacity, closeTo(0.25, 0.001));
     });
+
+    test('should resolve square linecap and miterClip/arcs linejoin', () {
+      final PaintingStyle style = resolvePaint(
+        emptyContext,
+        inlineStyle: 'stroke: black; stroke-linecap: square; stroke-linejoin: miter-clip',
+      );
+      expect(style.stroke?.cap, PaintingStrokeCap.square);
+      expect(style.stroke?.join, PaintingStrokeJoin.miter);
+
+      final PaintingStyle style2 = resolvePaint(
+        emptyContext,
+        inlineStyle: 'stroke: black; stroke-linejoin: arcs',
+      );
+      expect(style2.stroke?.join, PaintingStrokeJoin.miter);
+    });
+
+    test('should resolve various font weights', () {
+      expect(
+        resolvePaint(emptyContext, inlineStyle: 'font-weight: bolder').text?.fontWeight,
+        'bold',
+      );
+      expect(
+        resolvePaint(emptyContext, inlineStyle: 'font-weight: lighter').text?.fontWeight,
+        'lighter',
+      );
+      expect(
+        resolvePaint(emptyContext, inlineStyle: 'font-weight: 500').text?.fontWeight,
+        '500.0',
+      );
+    });
+
+    test('should resolve stroke shader ID', () {
+      final PaintingStyle style = resolvePaint(
+        emptyContext,
+        strokeAttributes: const SvgStrokeAttributes(color: SvgPaintReference('stroke-grad')),
+      );
+      expect(style.stroke?.shaderId, 'stroke-grad');
+    });
   });
 }

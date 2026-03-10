@@ -246,6 +246,19 @@ void main() {
         expect(ops[2], isA<ClosePath>());
       });
 
+      test('should handle Z with unexpected parameters by skipping them', () {
+        // Arrange
+        const String d = 'M 10 10 Z 100 200';
+
+        // Act
+        final Result<List<PathOperation>> result = PathDataParser.parse(d, context);
+
+        // Assert
+        final List<PathOperation> ops = (result as Success<List<PathOperation>>).value;
+        expect(ops, hasLength(2));
+        expect(ops[1], isA<ClosePath>());
+      });
+
       test('should handle commas and multiple spaces between parameters', () {
         // Arrange
         const String d = 'M10,20  L 30 , 40,50,60';

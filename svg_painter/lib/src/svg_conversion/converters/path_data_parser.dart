@@ -35,7 +35,7 @@ class PathDataParser {
       assert(errorMessage == null);
 
       int i = 0;
-      while (i < params.length || (currentCommand?.toUpperCase() == 'Z')) {
+      while (i < params.length || (currentCommand?.toUpperCase() == 'Z' && i == 0)) {
         final String? cmdName = currentCommand;
         assert(cmdName != null, 'currentCommand should not be null during command processing');
         if (cmdName == null) {

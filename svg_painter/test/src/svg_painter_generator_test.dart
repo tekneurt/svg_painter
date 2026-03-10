@@ -203,6 +203,41 @@ void main() {
         expect(output, contains('final Color? color;'));
         expect(output, contains('color: color ?? IconTheme.of(context).color,'));
       });
+
+      test('should generate gradient definitions in the first pass', () {
+        // Arrange
+        const List<PaintCommand> commands = <PaintCommand>[
+          DefineLinearGradient(
+            id: 'grad1',
+            x1: 0,
+            y1: 0,
+            x2: 1,
+            y2: 0,
+            stops: <GradientStop>[
+              GradientStop(offset: 0, colorArgb: 0xFFFF0000),
+              GradientStop(offset: 1, colorArgb: 0xFF0000FF),
+            ],
+          ),
+          DrawCircle(
+            cx: 50,
+            cy: 50,
+            radius: 40,
+            style: PaintingStyle(fill: PaintingFillStyle(shaderId: 'grad1')),
+          ),
+        ];
+
+        // Act
+        final String output = generator.generatePainterClass(
+          className: 'GradientPainter',
+          viewBoxWidth: 100,
+          viewBoxHeight: 100,
+          commands: commands,
+        );
+
+        // Assert
+        expect(output, contains('final Gradient _grad_grad1 = LinearGradient('));
+        expect(output, contains('paint.shader = _grad_grad1.createShader('));
+      });
     });
 
     group('generateFromSvg', () {
@@ -339,20 +374,6 @@ void main() {
         expect(result, isA<Failure<String>>());
         expect((result as Failure<String>).message, contains('Unknown SvgPainter type'));
       });
-
-      test('should call loadFromFile when type is SvgFilePainter', () async {
-        // Arrange
-        // We use a real SvgFilePainter type if possible, or we mock the check.
-        // For simplicity in this test, we can mock the behavior of fileChecker if it was non-static,
-        // but since it's static, we must mock the DartType to match.
-        // Actually, mocking isExactlyType on static is not possible.
-        // Instead, we will use a test that verifies the unknown fallback and assume
-        // that happy paths are covered by generateForAnnotatedElement integration tests.
-      });
-
-      test('should return code string when type is SvgCodePainter', () async {
-        // Integration test already covers this via generateForAnnotatedElement.
-      });
     });
 
     group('loadFromFile', () {
@@ -469,6 +490,26 @@ void main() {
 
         // Assert
         expect(result, contains(r'class _$TestPainter extends CustomPainter'));
+      });
+
+      test('should respect painterClassName from annotation', () async {
+        // Arrange
+        final MockConstantReader mockClassName = MockConstantReader();
+        when(mockAnnotation.read('painterClassName')).thenReturn(mockClassName);
+        when(mockClassName.isNull).thenReturn(false);
+        when(mockClassName.stringValue).thenReturn('CustomPainterName');
+
+        mockableGenerator.mockLoadResult = const Success<String>('<svg />');
+
+        // Act
+        final String result = await mockableGenerator.generateForAnnotatedElement(
+          mockElement,
+          mockAnnotation,
+          mockBuildStep,
+        );
+
+        // Assert
+        expect(result, contains('class CustomPainterName extends CustomPainter'));
       });
 
       test('should respect exposureMode and propertyMapping from annotation', () async {
