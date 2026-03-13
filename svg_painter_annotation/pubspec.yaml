@@ -1,6 +1,7 @@
 name: svg_painter_annotation
 description: Annotations for the svg_painter code generator, enabling compilation of SVGs into Flutter CustomPainters.
 version: 0.2.0
+resolution: workspace
 repository: https://github.com/tekneurt/svg_painter/tree/master/svg_painter_annotation
 homepage: https://github.com/tekneurt/svg_painter
 issue_tracker: https://github.com/tekneurt/svg_painter/issues

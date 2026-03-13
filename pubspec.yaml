@@ -1,0 +1,9 @@
+name: svg_painter_mono
+publish_to: none
+
+environment:
+  sdk: ^3.10.4
+
+workspace:
+  - svg_painter
+  - svg_painter_annotation

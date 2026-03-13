@@ -7,16 +7,20 @@ environment:
   flutter: ">=1.17.0"
 
 dependencies:
-
-dev_dependencies:
   flutter:
-    sdk: flutter
-  flutter_test:
     sdk: flutter
   svg_painter_annotation:
     path: ../svg_painter_annotation
   svg_painter_fixtures:
     path: ../svg_painter_fixtures
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
   svg_painter:
     path: ../svg_painter
   build_runner: ^2.10.4
+
+dependency_overrides:
+  svg_painter_annotation:
+    path: ../svg_painter_annotation

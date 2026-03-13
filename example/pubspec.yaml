@@ -20,5 +20,9 @@ dev_dependencies:
     path: ../svg_painter
   build_runner: ^2.10.4
 
+dependency_overrides:
+  svg_painter_annotation:
+    path: ../svg_painter_annotation
+
 flutter:
   uses-material-design: true
