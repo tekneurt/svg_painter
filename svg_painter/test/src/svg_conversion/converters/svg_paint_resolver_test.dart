@@ -57,7 +57,7 @@ void main() {
       // Need a context with a stylesheet
       const SvgStyleSheet sheet = SvgStyleSheet(<String, Map<String, String>>{
         'rect': <String, String>{'fill': 'blue'}, // Tag
-        '.myClass': <String, String>{'fill': 'green'}, // Class
+        'myClass': <String, String>{'fill': 'green'}, // Class
         '#myId': <String, String>{'fill': 'red'}, // ID
       });
 
@@ -82,7 +82,7 @@ void main() {
 
     test('should mark fill/stroke as explicit if from CSS', () {
       const SvgStyleSheet sheet = SvgStyleSheet(<String, Map<String, String>>{
-        '.myClass': <String, String>{'fill': 'green'},
+        'myClass': <String, String>{'fill': 'green'},
       });
       const SvgPaintingContext context = SvgPaintingContext(
         viewBoxWidth: 100,

@@ -42,7 +42,7 @@ PaintingStyle resolvePaint(
   } else {
     final List<String> classes = cssClass.split(RegExp(r'\s+'));
     for (final String className in classes) {
-      final Map<String, String>? rules = context.styleSheet.rules['.$className'];
+      final Map<String, String>? rules = context.styleSheet.rules[className];
       if (rules == null) {
         // No rules for this class
       } else {

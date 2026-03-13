@@ -1,4 +1,5 @@
 import 'package:meta/meta.dart';
+import 'package:svg_painter_annotation/svg_painter_annotation.dart';
 
 import '../painting_model/_painting_model.dart';
 
@@ -18,14 +19,17 @@ class PaletteAnalyzer {
   const PaletteAnalyzer();
 
   /// Analyzes the commands and returns property assignments.
-  PaletteResult analyze(List<PaintCommand> commands) {
+  PaletteResult analyze(
+    List<PaintCommand> commands, {
+    SvgExposureMode mode = SvgExposureMode.none,
+  }) {
     final Map<PaintCommand, String> fillAssignments = <PaintCommand, String>{};
     final Map<PaintCommand, String> strokeAssignments = <PaintCommand, String>{};
 
     final Map<_StyleKey, List<PaintCommand>> fillGroups = <_StyleKey, List<PaintCommand>>{};
     final Map<_StyleKey, List<PaintCommand>> strokeGroups = <_StyleKey, List<PaintCommand>>{};
 
-    _collectGroups(commands, fillGroups, strokeGroups);
+    _collectGroups(commands, fillGroups, strokeGroups, mode: mode);
 
     _assignNames(fillGroups, fillAssignments, 'fill');
     _assignNames(strokeGroups, strokeAssignments, 'stroke');
@@ -36,42 +40,43 @@ class PaletteAnalyzer {
   void _collectGroups(
     List<PaintCommand> commands,
     Map<_StyleKey, List<PaintCommand>> fillGroups,
-    Map<_StyleKey, List<PaintCommand>> strokeGroups,
-  ) {
+    Map<_StyleKey, List<PaintCommand>> strokeGroups, {
+    required SvgExposureMode mode,
+  }) {
     for (final PaintCommand command in commands) {
       if (command is DrawGroup) {
-        _collectGroups(command.commands, fillGroups, strokeGroups);
+        _collectGroups(command.commands, fillGroups, strokeGroups, mode: mode);
       }
 
-      if (command.id == null) {
-        switch (command) {
-          case DrawGroup():
-            // Groups are currently not indexed for their own styles
-            break;
-          case DrawCommand():
-            final PaintingStyle style = command.style;
+      bool shouldIndex(String? id, bool isExplicit) {
+        if (mode == SvgExposureMode.none) {
+          return false;
+        }
+        if (!isExplicit) {
+          return true;
+        }
+        if (mode == SvgExposureMode.id) {
+          return false;
+        }
+        if (mode == SvgExposureMode.indexed) {
+          return true;
+        }
+        return id == null;
+      }
 
-            // Group Fills
-            final PaintingFillStyle? fill = style.fill;
-            if (fill == null) {
-              // No fill
-            } else if (fill.isExplicit) {
-              final _StyleKey key = _StyleKey.fromFill(fill);
-              fillGroups.putIfAbsent(key, () => <PaintCommand>[]).add(command);
-            }
+      if (command is DrawCommand) {
+        final PaintingStyle style = command.style;
 
-            // Group Strokes
-            final PaintingStrokeStyle? stroke = style.stroke;
-            if (stroke == null) {
-              // No stroke
-            } else if (stroke.isExplicit) {
-              final _StyleKey key = _StyleKey.fromStroke(stroke);
-              strokeGroups.putIfAbsent(key, () => <PaintCommand>[]).add(command);
-            }
-          // coverage:ignore-start
-          case DefineCommand():
-            break;
-          // coverage:ignore-end
+        final PaintingFillStyle? fill = style.fill;
+        if (fill != null && shouldIndex(command.id, fill.isExplicit)) {
+          final _StyleKey key = _StyleKey.fromFill(fill);
+          fillGroups.putIfAbsent(key, () => <PaintCommand>[]).add(command);
+        }
+
+        final PaintingStrokeStyle? stroke = style.stroke;
+        if (stroke != null && shouldIndex(command.id, stroke.isExplicit)) {
+          final _StyleKey key = _StyleKey.fromStroke(stroke);
+          strokeGroups.putIfAbsent(key, () => <PaintCommand>[]).add(command);
         }
       }
     }
@@ -86,14 +91,12 @@ class PaletteAnalyzer {
       return;
     }
 
-    // Sort groups by frequency (descending), then by key (for stability).
     final List<MapEntry<_StyleKey, List<PaintCommand>>> sortedEntries = groups.entries.toList()
       ..sort((
         MapEntry<_StyleKey, List<PaintCommand>> a,
         MapEntry<_StyleKey, List<PaintCommand>> b,
       ) {
         final int countCompare = b.value.length.compareTo(a.value.length);
-
         if (countCompare == 0) {
           return a.key.compareTo(b.key);
         } else {
@@ -101,16 +104,44 @@ class PaletteAnalyzer {
         }
       });
 
-    // If there is only one group, name it simply 'fill' or 'stroke'.
-    // Otherwise, use 'fill1', 'fill2', etc.
-    if (sortedEntries.length == 1) {
-      for (final PaintCommand cmd in sortedEntries.first.value) {
+    final List<MapEntry<_StyleKey, List<PaintCommand>>> defaultEntries = sortedEntries.where((
+      MapEntry<_StyleKey, List<PaintCommand>> e,
+    ) {
+      final PaintCommand cmd = e.value.first;
+      if (cmd is DrawCommand) {
+        final PaintingPaintStyle? style = prefix == 'fill' ? cmd.style.fill : cmd.style.stroke;
+        return style?.isExplicit == false;
+      }
+      return false;
+    }).toList();
+
+    final List<MapEntry<_StyleKey, List<PaintCommand>>> explicitEntries =
+        sortedEntries
+            .where((MapEntry<_StyleKey, List<PaintCommand>> e) => !defaultEntries.contains(e))
+            .toList();
+
+    if (defaultEntries.length == 1) {
+      final String name = 'default${prefix[0].toUpperCase()}${prefix.substring(1)}';
+      for (final PaintCommand cmd in defaultEntries.first.value) {
+        result[cmd] = name;
+      }
+    } else if (defaultEntries.isNotEmpty) {
+      for (int i = 0; i < defaultEntries.length; i++) {
+        final String name = 'default${prefix[0].toUpperCase()}${prefix.substring(1)}${i + 1}';
+        for (final PaintCommand cmd in defaultEntries[i].value) {
+          result[cmd] = name;
+        }
+      }
+    }
+
+    if (explicitEntries.length == 1) {
+      for (final PaintCommand cmd in explicitEntries.first.value) {
         result[cmd] = prefix;
       }
-    } else {
-      for (int i = 0; i < sortedEntries.length; i++) {
+    } else if (explicitEntries.isNotEmpty) {
+      for (int i = 0; i < explicitEntries.length; i++) {
         final String name = '$prefix${i + 1}';
-        for (final PaintCommand cmd in sortedEntries[i].value) {
+        for (final PaintCommand cmd in explicitEntries[i].value) {
           result[cmd] = name;
         }
       }
@@ -118,7 +149,6 @@ class PaletteAnalyzer {
   }
 }
 
-/// A key representing a unique visual style (color or shader).
 @immutable
 class _StyleKey implements Comparable<_StyleKey> {
   const _StyleKey(this.colorArgb, this.shaderId);
@@ -147,7 +177,6 @@ class _StyleKey implements Comparable<_StyleKey> {
 
   @override
   int compareTo(_StyleKey other) {
-    // Stability sorting: arbitrary but consistent.
     if (colorArgb == other.colorArgb) {
       return (shaderId ?? '').compareTo(other.shaderId ?? '');
     } else {

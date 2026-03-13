@@ -201,7 +201,7 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
 
     PaletteResult? palette;
     if (exposureMode == SvgExposureMode.indexed || exposureMode == SvgExposureMode.mixed) {
-      palette = const PaletteAnalyzer().analyze(commands);
+      palette = const PaletteAnalyzer().analyze(commands, mode: exposureMode);
     }
 
     final List<String> sortedFillIds = fillIds.toList()..sort();
