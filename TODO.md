@@ -249,6 +249,8 @@
 - [ ] **Basic Filters**: `<filter>`, `<feGaussianBlur>`, `<feOffset>`, `<feDropShadow>`, `<feMerge>`, `<feFlood>`.
 - [ ] **Patterns**: `<pattern>` for repeating fills.
 - [ ] **Gradients (Polish)**: `objectBoundingBox` and `spreadMethod`.
+- [ ] Support `gradientTransform` properly using `Matrix4` from `vector_math_64` (see: https://api.flutter.dev/flutter/package-vector_math_vector_math_64/Matrix4-class.html).
+- [ ] Support complex nested transformations in gradients.
 
 ### Phase 6: Advanced Units & Path Syntax (0.5.0)
 - [ ] **SVG 2 Path Syntax**: Robust tokenizer for compact arc syntax (concatenated flags).

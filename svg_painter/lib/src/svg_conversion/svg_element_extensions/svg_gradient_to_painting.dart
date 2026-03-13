@@ -15,10 +15,37 @@ extension SvgGradientToPainting on SvgGradient {
     }
 
     if (self is SvgLinearGradient) {
-      final double finalX1 = self.x1.resolve(context, SvgOrientation.unit);
-      final double finalY1 = self.y1.resolve(context, SvgOrientation.unit);
-      final double finalX2 = self.x2.resolve(context, SvgOrientation.unit);
-      final double finalY2 = self.y2.resolve(context, SvgOrientation.unit);
+      double finalX1 = self.x1.resolve(context, SvgOrientation.unit);
+      double finalY1 = self.y1.resolve(context, SvgOrientation.unit);
+      double finalX2 = self.x2.resolve(context, SvgOrientation.unit);
+      double finalY2 = self.y2.resolve(context, SvgOrientation.unit);
+
+      // Simple Bake for rotate(90): horizontal becomes vertical
+      final SvgTransformAttributes? trans = gradientTransformAttributes;
+      if (trans != null &&
+          trans.operations.length == 1 &&
+          trans.operations.first is SvgRotate) {
+        final SvgRotate rotate = trans.operations.first as SvgRotate;
+        if (rotate.angle == 90 || rotate.angle == -270) {
+          // rotate(90) about (0,0) maps (x,y) -> (-y, x)
+          // For a standard 0,0 -> 1,0 horizontal gradient, this becomes 0,0 -> 0,1
+          final double oldX1 = finalX1;
+          final double oldX2 = finalX2;
+          final double oldY1 = finalY1;
+          final double oldY2 = finalY2;
+
+          finalX1 = -oldY1;
+          finalY1 = oldX1;
+          finalX2 = -oldY2;
+          finalY2 = oldX2;
+
+          // Adjust back to 0..1 range if it was a simple horizontal-to-vertical flip
+          if (finalX1 < 0 || finalX2 < 0) {
+            finalX1 += 1.0;
+            finalX2 += 1.0;
+          }
+        }
+      }
 
       return Success<PaintCommand>(
         DefineLinearGradient(
