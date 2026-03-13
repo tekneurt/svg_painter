@@ -64,42 +64,46 @@ class _$X2LinearGradientPainter extends CustomPainter {
     final Gradient _grad_g0 = LinearGradient(
       begin: Alignment(-1.0, -1.0),
       end: Alignment(1.0, -1.0),
-      colors: [Colors.black, const Color(0xFFFF0000)],
-      stops: [0.0, 1.0],
+      colors: <Color>[Colors.black, const Color(0xFFFF0000)],
+      stops: <double>[0.0, 1.0],
     );
+    {
+      final Paint paint = Paint();
+      paint.shader = _grad_g0.createShader(Rect.fromLTWH(1.0, 1.0, 8.0, 8.0));
+      paint.style = PaintingStyle.fill;
+      canvas.drawRect(Rect.fromLTWH(1.0, 1.0, 8.0, 8.0), paint);
+    }
     final Gradient _grad_g1 = LinearGradient(
       begin: Alignment(-1.0, -1.0),
       end: Alignment(-0.6, -1.0),
-      colors: [Colors.black, const Color(0xFFFF0000)],
-      stops: [0.0, 1.0],
+      colors: <Color>[Colors.black, const Color(0xFFFF0000)],
+      stops: <double>[0.0, 1.0],
     );
     {
-      {
-        final Paint paint = Paint();
-        paint.shader = _grad_g0.createShader(Rect.fromLTWH(1.0, 1.0, 8.0, 8.0));
-        paint.style = PaintingStyle.fill;
-        canvas.drawRect(Rect.fromLTWH(1.0, 1.0, 8.0, 8.0), paint);
-      }
-    }
-    {
-      {
-        final Paint paint = Paint();
-        paint.shader = _grad_g1.createShader(
-          Rect.fromLTWH(11.0, 1.0, 8.0, 8.0),
-        );
-        paint.style = PaintingStyle.fill;
-        canvas.drawRect(Rect.fromLTWH(11.0, 1.0, 8.0, 8.0), paint);
-      }
+      final Paint paint = Paint();
+      paint.shader = _grad_g1.createShader(Rect.fromLTWH(11.0, 1.0, 8.0, 8.0));
+      paint.style = PaintingStyle.fill;
+      canvas.drawRect(Rect.fromLTWH(11.0, 1.0, 8.0, 8.0), paint);
     }
     canvas.restore();
+  }
+
+  void _applyOverride(Paint paint, Object? override) {
+    if (override == null) return;
+    if (override is Color) {
+      paint.color = override;
+      paint.shader = null;
+    } else if (override is Shader) {
+      paint.shader = override;
+    }
   }
 
   @override
   bool shouldRepaint(covariant _$X2LinearGradientPainter oldDelegate) {
     if (fit == oldDelegate.fit) {
       return false;
-    } else {
-      return true;
     }
+
+    return true;
   }
 }

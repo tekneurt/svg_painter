@@ -26,9 +26,9 @@ class GermanFlagPainterWidget extends StatelessWidget {
   final double? height;
   final BoxFit fit;
   final AlignmentGeometry alignment;
-  final Color? topColor;
-  final Color? middleColor;
-  final Color? bottomColor;
+  final Object? topColor;
+  final Object? middleColor;
+  final Object? bottomColor;
 
   @override
   Widget build(BuildContext context) {
@@ -53,9 +53,9 @@ class _$GermanFlagPainter extends CustomPainter {
   });
 
   final BoxFit fit;
-  final Color? topColor;
-  final Color? middleColor;
-  final Color? bottomColor;
+  final Object? topColor;
+  final Object? middleColor;
+  final Object? bottomColor;
 
   Size get viewBox => const Size(1000.0, 600.0);
 
@@ -80,46 +80,53 @@ class _$GermanFlagPainter extends CustomPainter {
     );
     canvas.clipRect(Rect.fromLTWH(0, 0, 1000.0, 600.0));
 
+    canvas.save();
+    canvas.scale(200.0, 200.0);
     {
-      {
-        final Paint paint = Paint();
-        final Color? localFill = topColor;
-        if (localFill == null) {
-          paint.color = Colors.black;
-        } else {
-          paint.color = localFill;
-        }
-        paint.style = PaintingStyle.fill;
-        canvas.drawRect(Rect.fromLTWH(0.0, 0.0, 1000.0, 600.0), paint);
+      final Paint paint = Paint();
+      final Object? localFill = topColor;
+      if (localFill == null) {
+        paint.color = Colors.black;
+      } else {
+        _applyOverride(paint, localFill);
       }
+      paint.style = PaintingStyle.fill;
+      canvas.drawRect(Rect.fromLTWH(0.0, 0.0, 5.0, 3.0), paint);
     }
     {
-      {
-        final Paint paint = Paint();
-        final Color? localFill = middleColor;
-        if (localFill == null) {
-          paint.color = const Color(0xFFDD0000);
-        } else {
-          paint.color = localFill;
-        }
-        paint.style = PaintingStyle.fill;
-        canvas.drawRect(Rect.fromLTWH(0.0, 200.0, 1000.0, 400.0), paint);
+      final Paint paint = Paint();
+      final Object? localFill = middleColor;
+      if (localFill == null) {
+        paint.color = const Color(0xFFDD0000);
+      } else {
+        _applyOverride(paint, localFill);
       }
+      paint.style = PaintingStyle.fill;
+      canvas.drawRect(Rect.fromLTWH(0.0, 1.0, 5.0, 2.0), paint);
     }
     {
-      {
-        final Paint paint = Paint();
-        final Color? localFill = bottomColor;
-        if (localFill == null) {
-          paint.color = const Color(0xFFFFCE00);
-        } else {
-          paint.color = localFill;
-        }
-        paint.style = PaintingStyle.fill;
-        canvas.drawRect(Rect.fromLTWH(0.0, 400.0, 1000.0, 200.0), paint);
+      final Paint paint = Paint();
+      final Object? localFill = bottomColor;
+      if (localFill == null) {
+        paint.color = const Color(0xFFFFCE00);
+      } else {
+        _applyOverride(paint, localFill);
       }
+      paint.style = PaintingStyle.fill;
+      canvas.drawRect(Rect.fromLTWH(0.0, 2.0, 5.0, 1.0), paint);
     }
     canvas.restore();
+    canvas.restore();
+  }
+
+  void _applyOverride(Paint paint, Object? override) {
+    if (override == null) return;
+    if (override is Color) {
+      paint.color = override;
+      paint.shader = null;
+    } else if (override is Shader) {
+      paint.shader = override;
+    }
   }
 
   @override
@@ -129,8 +136,8 @@ class _$GermanFlagPainter extends CustomPainter {
         middleColor == oldDelegate.middleColor &&
         bottomColor == oldDelegate.bottomColor) {
       return false;
-    } else {
-      return true;
     }
+
+    return true;
   }
 }

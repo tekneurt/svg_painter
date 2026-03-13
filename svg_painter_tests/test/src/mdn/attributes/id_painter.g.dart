@@ -62,29 +62,37 @@ class _$IdPainter extends CustomPainter {
     canvas.clipRect(Rect.fromLTWH(0, 0, 120.0, 120.0));
 
     {
-      {
-        final Paint paint = Paint();
-        paint.color = const Color(0xFF00CC00);
-        paint.style = PaintingStyle.fill;
-        canvas.drawRect(Rect.fromLTWH(10.0, 10.0, 100.0, 100.0), paint);
-      }
-      {
-        final Paint paint = Paint();
-        paint.color = const Color(0xFF000066);
-        paint.style = PaintingStyle.stroke;
-        paint.strokeWidth = 1.0;
-        canvas.drawRect(Rect.fromLTWH(10.0, 10.0, 100.0, 100.0), paint);
-      }
+      final Paint paint = Paint();
+      paint.color = const Color(0xFF00CC00);
+      paint.style = PaintingStyle.fill;
+      canvas.drawRect(Rect.fromLTWH(10.0, 10.0, 100.0, 100.0), paint);
+    }
+    {
+      final Paint paint = Paint();
+      paint.color = const Color(0xFF000066);
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 1.0;
+      canvas.drawRect(Rect.fromLTWH(10.0, 10.0, 100.0, 100.0), paint);
     }
     canvas.restore();
+  }
+
+  void _applyOverride(Paint paint, Object? override) {
+    if (override == null) return;
+    if (override is Color) {
+      paint.color = override;
+      paint.shader = null;
+    } else if (override is Shader) {
+      paint.shader = override;
+    }
   }
 
   @override
   bool shouldRepaint(covariant _$IdPainter oldDelegate) {
     if (fit == oldDelegate.fit) {
       return false;
-    } else {
-      return true;
     }
+
+    return true;
   }
 }

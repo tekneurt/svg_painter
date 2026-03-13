@@ -61,45 +61,50 @@ class _$PathPainter extends CustomPainter {
     );
     canvas.clipRect(Rect.fromLTWH(0, 0, 100.0, 100.0));
 
+    final Path _path_35243774 = Path()
+      ..moveTo(10.0, 30.0)
+      ..arcToPoint(
+        const Offset(50.0, 30.0),
+        radius: const Radius.elliptical(20.0, 20.0),
+        rotation: 0.0,
+        largeArc: false,
+        clockwise: true,
+      )
+      ..arcToPoint(
+        const Offset(90.0, 30.0),
+        radius: const Radius.elliptical(20.0, 20.0),
+        rotation: 0.0,
+        largeArc: false,
+        clockwise: true,
+      )
+      ..quadraticBezierTo(90.0, 60.0, 50.0, 90.0)
+      ..quadraticBezierTo(10.0, 60.0, 10.0, 30.0)
+      ..close();
     {
-      // Path
-      {
-        final Path path = Path();
-        path.moveTo(10.0, 30.0);
-        path.arcToPoint(
-          const Offset(50.0, 30.0),
-          radius: const Radius.elliptical(20.0, 20.0),
-          rotation: 0.0,
-          largeArc: false,
-          clockwise: true,
-        );
-        path.arcToPoint(
-          const Offset(90.0, 30.0),
-          radius: const Radius.elliptical(20.0, 20.0),
-          rotation: 0.0,
-          largeArc: false,
-          clockwise: true,
-        );
-        path.quadraticBezierTo(90.0, 60.0, 50.0, 90.0);
-        path.quadraticBezierTo(10.0, 60.0, 10.0, 30.0);
-        path.close();
-        {
-          final Paint paint = Paint();
-          paint.color = Colors.black;
-          paint.style = PaintingStyle.fill;
-          canvas.drawPath(path, paint);
-        }
-      }
+      final Paint paint = Paint();
+      paint.color = Colors.black;
+      paint.style = PaintingStyle.fill;
+      canvas.drawPath(_path_35243774, paint);
     }
     canvas.restore();
+  }
+
+  void _applyOverride(Paint paint, Object? override) {
+    if (override == null) return;
+    if (override is Color) {
+      paint.color = override;
+      paint.shader = null;
+    } else if (override is Shader) {
+      paint.shader = override;
+    }
   }
 
   @override
   bool shouldRepaint(covariant _$PathPainter oldDelegate) {
     if (fit == oldDelegate.fit) {
       return false;
-    } else {
-      return true;
     }
+
+    return true;
   }
 }

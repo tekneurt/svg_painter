@@ -65,29 +65,36 @@ class _$RadialGradientPainter extends CustomPainter {
       center: Alignment(0.0, 0.0),
       radius: 0.5,
       focal: Alignment(0.0, 0.0),
-      focalRadius: 0.0,
-      colors: [const Color(0xFFFFD700), const Color(0xFFFF0000)],
-      stops: [0.1, 0.95],
+      colors: <Color>[const Color(0xFFFFD700), const Color(0xFFFF0000)],
+      stops: <double>[0.1, 0.95],
     );
     {
-      {
-        final Paint paint = Paint();
-        paint.shader = _grad_myGradient.createShader(
-          Rect.fromCircle(center: const Offset(50.0, 50.0), radius: 50.0),
-        );
-        paint.style = PaintingStyle.fill;
-        canvas.drawCircle(const Offset(50.0, 50.0), 50.0, paint);
-      }
+      final Paint paint = Paint();
+      paint.shader = _grad_myGradient.createShader(
+        Rect.fromCircle(center: const Offset(50.0, 50.0), radius: 50.0),
+      );
+      paint.style = PaintingStyle.fill;
+      canvas.drawCircle(const Offset(50.0, 50.0), 50.0, paint);
     }
     canvas.restore();
+  }
+
+  void _applyOverride(Paint paint, Object? override) {
+    if (override == null) return;
+    if (override is Color) {
+      paint.color = override;
+      paint.shader = null;
+    } else if (override is Shader) {
+      paint.shader = override;
+    }
   }
 
   @override
   bool shouldRepaint(covariant _$RadialGradientPainter oldDelegate) {
     if (fit == oldDelegate.fit) {
       return false;
-    } else {
-      return true;
     }
+
+    return true;
   }
 }

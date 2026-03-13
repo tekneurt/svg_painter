@@ -64,44 +64,48 @@ class _$OpacityPainter extends CustomPainter {
     final Gradient _grad_gradient = LinearGradient(
       begin: Alignment(-1.0, -1.0),
       end: Alignment(-1.0, 1.0),
-      colors: [const Color(0xFF87CEEB), const Color(0xFF2E8B57)],
-      stops: [0.0, 1.0],
+      colors: <Color>[const Color(0xFF87CEEB), const Color(0xFF2E8B57)],
+      stops: <double>[0.0, 1.0],
     );
     {
-      {
-        final Paint paint = Paint();
-        paint.shader = _grad_gradient.createShader(
-          Rect.fromLTWH(0.0, 0.0, 200.0, 100.0),
-        );
-        paint.style = PaintingStyle.fill;
-        canvas.drawRect(Rect.fromLTWH(0.0, 0.0, 200.0, 100.0), paint);
-      }
+      final Paint paint = Paint();
+      paint.shader = _grad_gradient.createShader(
+        Rect.fromLTWH(0.0, 0.0, 200.0, 100.0),
+      );
+      paint.style = PaintingStyle.fill;
+      canvas.drawRect(Rect.fromLTWH(0.0, 0.0, 200.0, 100.0), paint);
     }
     {
-      {
-        final Paint paint = Paint();
-        paint.color = Colors.black;
-        paint.style = PaintingStyle.fill;
-        canvas.drawCircle(const Offset(50.0, 50.0), 40.0, paint);
-      }
+      final Paint paint = Paint();
+      paint.color = Colors.black;
+      paint.style = PaintingStyle.fill;
+      canvas.drawCircle(const Offset(50.0, 50.0), 40.0, paint);
     }
     {
-      {
-        final Paint paint = Paint();
-        paint.color = const Color(0x4D000000);
-        paint.style = PaintingStyle.fill;
-        canvas.drawCircle(const Offset(150.0, 50.0), 40.0, paint);
-      }
+      final Paint paint = Paint();
+      paint.color = const Color(0x4D000000);
+      paint.style = PaintingStyle.fill;
+      canvas.drawCircle(const Offset(150.0, 50.0), 40.0, paint);
     }
     canvas.restore();
+  }
+
+  void _applyOverride(Paint paint, Object? override) {
+    if (override == null) return;
+    if (override is Color) {
+      paint.color = override;
+      paint.shader = null;
+    } else if (override is Shader) {
+      paint.shader = override;
+    }
   }
 
   @override
   bool shouldRepaint(covariant _$OpacityPainter oldDelegate) {
     if (fit == oldDelegate.fit) {
       return false;
-    } else {
-      return true;
     }
+
+    return true;
   }
 }

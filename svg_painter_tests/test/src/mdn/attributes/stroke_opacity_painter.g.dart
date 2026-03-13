@@ -62,74 +62,76 @@ class _$StrokeOpacityPainter extends CustomPainter {
     canvas.clipRect(Rect.fromLTWH(0, 0, 40.0, 10.0));
 
     {
-      {
-        final Paint paint = Paint();
-        paint.color = Colors.black;
-        paint.style = PaintingStyle.fill;
-        canvas.drawCircle(const Offset(5.0, 5.0), 4.0, paint);
-      }
-      {
-        final Paint paint = Paint();
-        paint.color = const Color(0xFF008000);
-        paint.style = PaintingStyle.stroke;
-        paint.strokeWidth = 1.0;
-        canvas.drawCircle(const Offset(5.0, 5.0), 4.0, paint);
-      }
+      final Paint paint = Paint();
+      paint.color = Colors.black;
+      paint.style = PaintingStyle.fill;
+      canvas.drawCircle(const Offset(5.0, 5.0), 4.0, paint);
     }
     {
-      {
-        final Paint paint = Paint();
-        paint.color = Colors.black;
-        paint.style = PaintingStyle.fill;
-        canvas.drawCircle(const Offset(15.0, 5.0), 4.0, paint);
-      }
-      {
-        final Paint paint = Paint();
-        paint.color = const Color(0xB3008000);
-        paint.style = PaintingStyle.stroke;
-        paint.strokeWidth = 1.0;
-        canvas.drawCircle(const Offset(15.0, 5.0), 4.0, paint);
-      }
+      final Paint paint = Paint();
+      paint.color = const Color(0xFF008000);
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 1.0;
+      canvas.drawCircle(const Offset(5.0, 5.0), 4.0, paint);
     }
     {
-      {
-        final Paint paint = Paint();
-        paint.color = Colors.black;
-        paint.style = PaintingStyle.fill;
-        canvas.drawCircle(const Offset(25.0, 5.0), 4.0, paint);
-      }
-      {
-        final Paint paint = Paint();
-        paint.color = const Color(0x80008000);
-        paint.style = PaintingStyle.stroke;
-        paint.strokeWidth = 1.0;
-        canvas.drawCircle(const Offset(25.0, 5.0), 4.0, paint);
-      }
+      final Paint paint = Paint();
+      paint.color = Colors.black;
+      paint.style = PaintingStyle.fill;
+      canvas.drawCircle(const Offset(15.0, 5.0), 4.0, paint);
     }
     {
-      {
-        final Paint paint = Paint();
-        paint.color = Colors.black;
-        paint.style = PaintingStyle.fill;
-        canvas.drawCircle(const Offset(35.0, 5.0), 4.0, paint);
-      }
-      {
-        final Paint paint = Paint();
-        paint.color = const Color(0x4D008000);
-        paint.style = PaintingStyle.stroke;
-        paint.strokeWidth = 1.0;
-        canvas.drawCircle(const Offset(35.0, 5.0), 4.0, paint);
-      }
+      final Paint paint = Paint();
+      paint.color = const Color(0xB3008000);
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 1.0;
+      canvas.drawCircle(const Offset(15.0, 5.0), 4.0, paint);
+    }
+    {
+      final Paint paint = Paint();
+      paint.color = Colors.black;
+      paint.style = PaintingStyle.fill;
+      canvas.drawCircle(const Offset(25.0, 5.0), 4.0, paint);
+    }
+    {
+      final Paint paint = Paint();
+      paint.color = const Color(0x80008000);
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 1.0;
+      canvas.drawCircle(const Offset(25.0, 5.0), 4.0, paint);
+    }
+    {
+      final Paint paint = Paint();
+      paint.color = Colors.black;
+      paint.style = PaintingStyle.fill;
+      canvas.drawCircle(const Offset(35.0, 5.0), 4.0, paint);
+    }
+    {
+      final Paint paint = Paint();
+      paint.color = const Color(0x4D008000);
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 1.0;
+      canvas.drawCircle(const Offset(35.0, 5.0), 4.0, paint);
     }
     canvas.restore();
+  }
+
+  void _applyOverride(Paint paint, Object? override) {
+    if (override == null) return;
+    if (override is Color) {
+      paint.color = override;
+      paint.shader = null;
+    } else if (override is Shader) {
+      paint.shader = override;
+    }
   }
 
   @override
   bool shouldRepaint(covariant _$StrokeOpacityPainter oldDelegate) {
     if (fit == oldDelegate.fit) {
       return false;
-    } else {
-      return true;
     }
+
+    return true;
   }
 }

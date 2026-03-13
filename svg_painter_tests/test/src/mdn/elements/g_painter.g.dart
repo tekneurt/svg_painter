@@ -62,46 +62,50 @@ class _$GPainter extends CustomPainter {
     canvas.clipRect(Rect.fromLTWH(0, 0, 100.0, 100.0));
 
     {
-      {
-        {
-          final Paint paint = Paint();
-          paint.color = Colors.white;
-          paint.style = PaintingStyle.fill;
-          canvas.drawCircle(const Offset(40.0, 40.0), 25.0, paint);
-        }
-        {
-          final Paint paint = Paint();
-          paint.color = const Color(0xFF008000);
-          paint.style = PaintingStyle.stroke;
-          paint.strokeWidth = 5.0;
-          canvas.drawCircle(const Offset(40.0, 40.0), 25.0, paint);
-        }
-      }
-      {
-        {
-          final Paint paint = Paint();
-          paint.color = Colors.white;
-          paint.style = PaintingStyle.fill;
-          canvas.drawCircle(const Offset(60.0, 60.0), 25.0, paint);
-        }
-        {
-          final Paint paint = Paint();
-          paint.color = const Color(0xFF008000);
-          paint.style = PaintingStyle.stroke;
-          paint.strokeWidth = 5.0;
-          canvas.drawCircle(const Offset(60.0, 60.0), 25.0, paint);
-        }
-      }
+      final Paint paint = Paint();
+      paint.color = Colors.white;
+      paint.style = PaintingStyle.fill;
+      canvas.drawCircle(const Offset(40.0, 40.0), 25.0, paint);
+    }
+    {
+      final Paint paint = Paint();
+      paint.color = const Color(0xFF008000);
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 5.0;
+      canvas.drawCircle(const Offset(40.0, 40.0), 25.0, paint);
+    }
+    {
+      final Paint paint = Paint();
+      paint.color = Colors.white;
+      paint.style = PaintingStyle.fill;
+      canvas.drawCircle(const Offset(60.0, 60.0), 25.0, paint);
+    }
+    {
+      final Paint paint = Paint();
+      paint.color = const Color(0xFF008000);
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 5.0;
+      canvas.drawCircle(const Offset(60.0, 60.0), 25.0, paint);
     }
     canvas.restore();
+  }
+
+  void _applyOverride(Paint paint, Object? override) {
+    if (override == null) return;
+    if (override is Color) {
+      paint.color = override;
+      paint.shader = null;
+    } else if (override is Shader) {
+      paint.shader = override;
+    }
   }
 
   @override
   bool shouldRepaint(covariant _$GPainter oldDelegate) {
     if (fit == oldDelegate.fit) {
       return false;
-    } else {
-      return true;
     }
+
+    return true;
   }
 }

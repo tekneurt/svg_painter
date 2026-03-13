@@ -15,10 +15,10 @@ extension SvgGradientToPainting on SvgGradient {
     }
 
     if (self is SvgLinearGradient) {
-      final double finalX1 = self.x1.resolve(context, SvgOrientation.horizontal);
-      final double finalY1 = self.y1.resolve(context, SvgOrientation.vertical);
-      final double finalX2 = self.x2.resolve(context, SvgOrientation.horizontal);
-      final double finalY2 = self.y2.resolve(context, SvgOrientation.vertical);
+      final double finalX1 = self.x1.resolve(context, SvgOrientation.unit);
+      final double finalY1 = self.y1.resolve(context, SvgOrientation.unit);
+      final double finalX2 = self.x2.resolve(context, SvgOrientation.unit);
+      final double finalY2 = self.y2.resolve(context, SvgOrientation.unit);
 
       return Success<PaintCommand>(
         DefineLinearGradient(
@@ -32,12 +32,12 @@ extension SvgGradientToPainting on SvgGradient {
         ),
       );
     } else if (self is SvgRadialGradient) {
-      final double finalCx = self.cx.resolve(context, SvgOrientation.horizontal);
-      final double finalCy = self.cy.resolve(context, SvgOrientation.vertical);
-      final double finalR = self.r.resolve(context, SvgOrientation.normalized);
-      final double finalFx = self.fx.resolve(context, SvgOrientation.horizontal);
-      final double finalFy = self.fy.resolve(context, SvgOrientation.vertical);
-      final double finalFr = self.fr.resolve(context, SvgOrientation.normalized);
+      final double finalCx = self.cx.resolve(context, SvgOrientation.unit);
+      final double finalCy = self.cy.resolve(context, SvgOrientation.unit);
+      final double finalR = self.r.resolve(context, SvgOrientation.unit);
+      final double finalFx = self.fx.resolve(context, SvgOrientation.unit);
+      final double finalFy = self.fy.resolve(context, SvgOrientation.unit);
+      final double finalFr = self.fr.resolve(context, SvgOrientation.unit);
 
       return Success<PaintCommand>(
         DefineRadialGradient(

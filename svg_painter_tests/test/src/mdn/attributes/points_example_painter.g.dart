@@ -61,54 +61,58 @@ class _$PointsExamplePainter extends CustomPainter {
     );
     canvas.clipRect(Rect.fromLTWH(0, 0, 220.0, 120.0));
 
+    canvas.save();
+    canvas.translate(10.0, 10.0);
+    final Path _poly_319064106 = Path()
+      ..moveTo(50.0, 0.0)
+      ..lineTo(21.0, 90.0)
+      ..lineTo(98.0, 35.0)
+      ..lineTo(2.0, 35.0)
+      ..lineTo(79.0, 90.0);
     {
-      {
-        final Path path = Path();
-        path.addPolygon([
-          const Offset(60.0, 10.0),
-          const Offset(31.0, 100.0),
-          const Offset(108.0, 45.0),
-          const Offset(12.0, 45.0),
-          const Offset(89.0, 100.0),
-        ], false);
-        {
-          final Paint paint = Paint();
-          paint.color = Colors.black;
-          paint.style = PaintingStyle.stroke;
-          paint.strokeWidth = 1.0;
-          canvas.drawPath(path, paint);
-        }
-      }
+      final Paint paint = Paint();
+      paint.color = Colors.black;
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 1.0;
+      canvas.drawPath(_poly_319064106, paint);
     }
     canvas.save();
     canvas.translate(100.0, 0.0);
+    final Path _poly_480631975 = Path()
+      ..moveTo(50.0, 0.0)
+      ..lineTo(21.0, 90.0)
+      ..lineTo(98.0, 35.0)
+      ..lineTo(2.0, 35.0)
+      ..lineTo(79.0, 90.0)
+      ..close();
     {
-      final Path path = Path();
-      path.addPolygon([
-        const Offset(60.0, 10.0),
-        const Offset(31.0, 100.0),
-        const Offset(108.0, 45.0),
-        const Offset(12.0, 45.0),
-        const Offset(89.0, 100.0),
-      ], true);
-      {
-        final Paint paint = Paint();
-        paint.color = Colors.black;
-        paint.style = PaintingStyle.stroke;
-        paint.strokeWidth = 1.0;
-        canvas.drawPath(path, paint);
-      }
+      final Paint paint = Paint();
+      paint.color = Colors.black;
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 1.0;
+      canvas.drawPath(_poly_480631975, paint);
     }
     canvas.restore();
     canvas.restore();
+    canvas.restore();
+  }
+
+  void _applyOverride(Paint paint, Object? override) {
+    if (override == null) return;
+    if (override is Color) {
+      paint.color = override;
+      paint.shader = null;
+    } else if (override is Shader) {
+      paint.shader = override;
+    }
   }
 
   @override
   bool shouldRepaint(covariant _$PointsExamplePainter oldDelegate) {
     if (fit == oldDelegate.fit) {
       return false;
-    } else {
-      return true;
     }
+
+    return true;
   }
 }

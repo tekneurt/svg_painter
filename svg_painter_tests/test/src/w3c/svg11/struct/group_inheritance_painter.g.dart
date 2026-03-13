@@ -25,8 +25,8 @@ class GroupInheritancePainterWidget extends StatelessWidget {
   final double? height;
   final BoxFit fit;
   final AlignmentGeometry alignment;
-  final Color? group1Fill;
-  final Color? group2Fill;
+  final Object? group1Fill;
+  final Object? group2Fill;
 
   @override
   Widget build(BuildContext context) {
@@ -49,8 +49,8 @@ class _$GroupInheritancePainter extends CustomPainter {
   });
 
   final BoxFit fit;
-  final Color? group1Fill;
-  final Color? group2Fill;
+  final Object? group1Fill;
+  final Object? group2Fill;
 
   Size get viewBox => const Size(188.9763779527559, 188.9763779527559);
 
@@ -76,111 +76,107 @@ class _$GroupInheritancePainter extends CustomPainter {
     canvas.clipRect(Rect.fromLTWH(0, 0, 188.9763779527559, 188.9763779527559));
 
     {
-      {
-        {
-          final Paint paint = Paint();
-          final Color? inheritedFill = group1Fill;
-          if (inheritedFill == null) {
-            paint.color = const Color(0xFFFF0000);
-          } else {
-            paint.color = inheritedFill;
-          }
-          paint.style = PaintingStyle.fill;
-          canvas.drawRect(
-            Rect.fromLTWH(
-              37.79527559055118,
-              37.79527559055118,
-              37.79527559055118,
-              37.79527559055118,
-            ),
-            paint,
-          );
-        }
+      final Paint paint = Paint();
+      final Object? inheritedFill = group1Fill;
+      if (inheritedFill == null) {
+        paint.color = const Color(0xFFFF0000);
+      } else {
+        _applyOverride(paint, inheritedFill);
       }
-      {
-        {
-          final Paint paint = Paint();
-          final Color? inheritedFill = group1Fill;
-          if (inheritedFill == null) {
-            paint.color = const Color(0xFFFF0000);
-          } else {
-            paint.color = inheritedFill;
-          }
-          paint.style = PaintingStyle.fill;
-          canvas.drawRect(
-            Rect.fromLTWH(
-              113.38582677165354,
-              37.79527559055118,
-              37.79527559055118,
-              37.79527559055118,
-            ),
-            paint,
-          );
-        }
-      }
+      paint.style = PaintingStyle.fill;
+      canvas.drawRect(
+        Rect.fromLTWH(
+          37.79527559055118,
+          37.79527559055118,
+          37.79527559055118,
+          37.79527559055118,
+        ),
+        paint,
+      );
     }
     {
-      {
-        {
-          final Paint paint = Paint();
-          final Color? inheritedFill = group2Fill;
-          if (inheritedFill == null) {
-            paint.color = const Color(0xFF0000FF);
-          } else {
-            paint.color = inheritedFill;
-          }
-          paint.style = PaintingStyle.fill;
-          canvas.drawRect(
-            Rect.fromLTWH(
-              37.79527559055118,
-              113.38582677165354,
-              37.79527559055118,
-              37.79527559055118,
-            ),
-            paint,
-          );
-        }
+      final Paint paint = Paint();
+      final Object? inheritedFill = group1Fill;
+      if (inheritedFill == null) {
+        paint.color = const Color(0xFFFF0000);
+      } else {
+        _applyOverride(paint, inheritedFill);
       }
-      {
-        {
-          final Paint paint = Paint();
-          final Color? inheritedFill = group2Fill;
-          if (inheritedFill == null) {
-            paint.color = const Color(0xFF0000FF);
-          } else {
-            paint.color = inheritedFill;
-          }
-          paint.style = PaintingStyle.fill;
-          canvas.drawRect(
-            Rect.fromLTWH(
-              113.38582677165354,
-              113.38582677165354,
-              37.79527559055118,
-              37.79527559055118,
-            ),
-            paint,
-          );
-        }
-      }
+      paint.style = PaintingStyle.fill;
+      canvas.drawRect(
+        Rect.fromLTWH(
+          113.38582677165354,
+          37.79527559055118,
+          37.79527559055118,
+          37.79527559055118,
+        ),
+        paint,
+      );
     }
     {
-      {
-        final Paint paint = Paint();
+      final Paint paint = Paint();
+      final Object? inheritedFill = group2Fill;
+      if (inheritedFill == null) {
         paint.color = const Color(0xFF0000FF);
-        paint.style = PaintingStyle.stroke;
-        paint.strokeWidth = 0.7559055118110236;
-        canvas.drawRect(
-          Rect.fromLTWH(
-            0.3779527559055118,
-            0.3779527559055118,
-            188.2204724409449,
-            188.2204724409449,
-          ),
-          paint,
-        );
+      } else {
+        _applyOverride(paint, inheritedFill);
       }
+      paint.style = PaintingStyle.fill;
+      canvas.drawRect(
+        Rect.fromLTWH(
+          37.79527559055118,
+          113.38582677165354,
+          37.79527559055118,
+          37.79527559055118,
+        ),
+        paint,
+      );
+    }
+    {
+      final Paint paint = Paint();
+      final Object? inheritedFill = group2Fill;
+      if (inheritedFill == null) {
+        paint.color = const Color(0xFF0000FF);
+      } else {
+        _applyOverride(paint, inheritedFill);
+      }
+      paint.style = PaintingStyle.fill;
+      canvas.drawRect(
+        Rect.fromLTWH(
+          113.38582677165354,
+          113.38582677165354,
+          37.79527559055118,
+          37.79527559055118,
+        ),
+        paint,
+      );
+    }
+    {
+      final Paint paint = Paint();
+      paint.color = const Color(0xFF0000FF);
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 0.7559055118110236;
+      canvas.drawRect(
+        Rect.fromLTWH(
+          0.3779527559055118,
+          0.3779527559055118,
+          188.2204724409449,
+          188.2204724409449,
+        ),
+        paint,
+      );
     }
     canvas.restore();
+  }
+
+  void _applyOverride(Paint paint, Object? override) {
+    if (override == null) return;
+    if (override is Color) {
+      paint.color = override;
+      paint.shader = null;
+    } else if (override is Shader) {
+      paint.shader = override;
+    }
   }
 
   @override
@@ -189,8 +185,8 @@ class _$GroupInheritancePainter extends CustomPainter {
         group1Fill == oldDelegate.group1Fill &&
         group2Fill == oldDelegate.group2Fill) {
       return false;
-    } else {
-      return true;
     }
+
+    return true;
   }
 }

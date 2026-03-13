@@ -61,70 +61,64 @@ class _$ExampleRect02Painter extends CustomPainter {
     );
     canvas.clipRect(Rect.fromLTWH(0, 0, 453.54330708661416, 151.1811023622047));
 
+    canvas.save();
+    canvas.scale(0.3779527559055118, 0.3779527559055118);
     {
-      {
-        final Paint paint = Paint();
-        paint.color = const Color(0xFF0000FF);
-        paint.style = PaintingStyle.stroke;
-        paint.strokeWidth = 0.7559055118110235;
-        canvas.drawRect(
-          Rect.fromLTWH(
-            0.3779527559055118,
-            0.3779527559055118,
-            452.78740157480314,
-            150.4251968503937,
-          ),
-          paint,
-        );
-      }
+      final Paint paint = Paint();
+      paint.color = const Color(0xFF0000FF);
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 2.0;
+      canvas.drawRect(Rect.fromLTWH(1.0, 1.0, 1198.0, 398.0), paint);
     }
     {
-      {
-        final Paint paint = Paint();
-        paint.color = const Color(0xFF008000);
-        paint.style = PaintingStyle.fill;
-        canvas.drawRRect(
-          RRect.fromRectAndRadius(
-            Rect.fromLTWH(
-              37.79527559055118,
-              37.79527559055118,
-              151.1811023622047,
-              75.59055118110236,
-            ),
-            const Radius.elliptical(18.89763779527559, 18.89763779527559),
-          ),
-          paint,
-        );
-      }
+      final Paint paint = Paint();
+      paint.color = const Color(0xFF008000);
+      paint.style = PaintingStyle.fill;
+      canvas.drawRRect(
+        RRect.fromRectAndRadius(
+          Rect.fromLTWH(100.0, 100.0, 400.0, 200.0),
+          const Radius.elliptical(50.0, 50.0),
+        ),
+        paint,
+      );
     }
     canvas.save();
-    canvas.translate(264.56692913385825, 79.37007874015748);
+    canvas.translate(700.0, 210.0);
     canvas.rotate(-0.5235987755982988);
     {
-      {
-        final Paint paint = Paint();
-        paint.color = const Color(0xFF800080);
-        paint.style = PaintingStyle.stroke;
-        paint.strokeWidth = 11.338582677165352;
-        canvas.drawRRect(
-          RRect.fromRectAndRadius(
-            Rect.fromLTWH(0.0, 0.0, 151.1811023622047, 75.59055118110236),
-            const Radius.elliptical(18.89763779527559, 18.89763779527559),
-          ),
-          paint,
-        );
-      }
+      final Paint paint = Paint();
+      paint.color = const Color(0xFF800080);
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 30.0;
+      canvas.drawRRect(
+        RRect.fromRectAndRadius(
+          Rect.fromLTWH(0.0, 0.0, 400.0, 200.0),
+          const Radius.elliptical(50.0, 50.0),
+        ),
+        paint,
+      );
     }
     canvas.restore();
     canvas.restore();
+    canvas.restore();
+  }
+
+  void _applyOverride(Paint paint, Object? override) {
+    if (override == null) return;
+    if (override is Color) {
+      paint.color = override;
+      paint.shader = null;
+    } else if (override is Shader) {
+      paint.shader = override;
+    }
   }
 
   @override
   bool shouldRepaint(covariant _$ExampleRect02Painter oldDelegate) {
     if (fit == oldDelegate.fit) {
       return false;
-    } else {
-      return true;
     }
+
+    return true;
   }
 }

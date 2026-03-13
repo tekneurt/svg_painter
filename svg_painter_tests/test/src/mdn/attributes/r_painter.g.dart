@@ -65,81 +65,78 @@ class _$RPainter extends CustomPainter {
       center: Alignment(0.0, 0.0),
       radius: 0.0,
       focal: Alignment(0.0, 0.0),
-      focalRadius: 0.0,
-      colors: [Colors.white, Colors.black],
-      stops: [0.0, 1.0],
+      colors: <Color>[Colors.white, Colors.black],
+      stops: <double>[0.0, 1.0],
     );
     final Gradient _grad_myGradient050 = RadialGradient(
       center: Alignment(0.0, 0.0),
       radius: 0.5,
       focal: Alignment(0.0, 0.0),
-      focalRadius: 0.0,
-      colors: [Colors.white, Colors.black],
-      stops: [0.0, 1.0],
+      colors: <Color>[Colors.white, Colors.black],
+      stops: <double>[0.0, 1.0],
     );
     final Gradient _grad_myGradient100 = RadialGradient(
       center: Alignment(0.0, 0.0),
       radius: 1.0,
       focal: Alignment(0.0, 0.0),
-      focalRadius: 0.0,
-      colors: [Colors.white, Colors.black],
-      stops: [0.0, 1.0],
+      colors: <Color>[Colors.white, Colors.black],
+      stops: <double>[0.0, 1.0],
     );
     {
-      {
-        final Paint paint = Paint();
-        paint.color = Colors.black;
-        paint.style = PaintingStyle.fill;
-        canvas.drawCircle(const Offset(150.0, 50.0), 25.0, paint);
-      }
+      final Paint paint = Paint();
+      paint.color = Colors.black;
+      paint.style = PaintingStyle.fill;
+      canvas.drawCircle(const Offset(150.0, 50.0), 25.0, paint);
     }
     {
-      {
-        final Paint paint = Paint();
-        paint.color = Colors.black;
-        paint.style = PaintingStyle.fill;
-        canvas.drawCircle(const Offset(250.0, 50.0), 50.0, paint);
-      }
+      final Paint paint = Paint();
+      paint.color = Colors.black;
+      paint.style = PaintingStyle.fill;
+      canvas.drawCircle(const Offset(250.0, 50.0), 50.0, paint);
     }
     {
-      {
-        final Paint paint = Paint();
-        paint.shader = _grad_myGradient000.createShader(
-          Rect.fromLTWH(20.0, 120.0, 60.0, 60.0),
-        );
-        paint.style = PaintingStyle.fill;
-        canvas.drawRect(Rect.fromLTWH(20.0, 120.0, 60.0, 60.0), paint);
-      }
+      final Paint paint = Paint();
+      paint.shader = _grad_myGradient000.createShader(
+        Rect.fromLTWH(20.0, 120.0, 60.0, 60.0),
+      );
+      paint.style = PaintingStyle.fill;
+      canvas.drawRect(Rect.fromLTWH(20.0, 120.0, 60.0, 60.0), paint);
     }
     {
-      {
-        final Paint paint = Paint();
-        paint.shader = _grad_myGradient050.createShader(
-          Rect.fromLTWH(120.0, 120.0, 60.0, 60.0),
-        );
-        paint.style = PaintingStyle.fill;
-        canvas.drawRect(Rect.fromLTWH(120.0, 120.0, 60.0, 60.0), paint);
-      }
+      final Paint paint = Paint();
+      paint.shader = _grad_myGradient050.createShader(
+        Rect.fromLTWH(120.0, 120.0, 60.0, 60.0),
+      );
+      paint.style = PaintingStyle.fill;
+      canvas.drawRect(Rect.fromLTWH(120.0, 120.0, 60.0, 60.0), paint);
     }
     {
-      {
-        final Paint paint = Paint();
-        paint.shader = _grad_myGradient100.createShader(
-          Rect.fromLTWH(220.0, 120.0, 60.0, 60.0),
-        );
-        paint.style = PaintingStyle.fill;
-        canvas.drawRect(Rect.fromLTWH(220.0, 120.0, 60.0, 60.0), paint);
-      }
+      final Paint paint = Paint();
+      paint.shader = _grad_myGradient100.createShader(
+        Rect.fromLTWH(220.0, 120.0, 60.0, 60.0),
+      );
+      paint.style = PaintingStyle.fill;
+      canvas.drawRect(Rect.fromLTWH(220.0, 120.0, 60.0, 60.0), paint);
     }
     canvas.restore();
+  }
+
+  void _applyOverride(Paint paint, Object? override) {
+    if (override == null) return;
+    if (override is Color) {
+      paint.color = override;
+      paint.shader = null;
+    } else if (override is Shader) {
+      paint.shader = override;
+    }
   }
 
   @override
   bool shouldRepaint(covariant _$RPainter oldDelegate) {
     if (fit == oldDelegate.fit) {
       return false;
-    } else {
-      return true;
     }
+
+    return true;
   }
 }

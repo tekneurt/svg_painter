@@ -62,29 +62,30 @@ class _$EllipsePainter extends CustomPainter {
     canvas.clipRect(Rect.fromLTWH(0, 0, 200.0, 100.0));
 
     {
-      {
-        final Paint paint = Paint();
-        paint.color = Colors.black;
-        paint.style = PaintingStyle.fill;
-        canvas.drawOval(
-          Rect.fromCenter(
-            center: const Offset(100.0, 50.0),
-            width: 200.0,
-            height: 100.0,
-          ),
-          paint,
-        );
-      }
+      final Paint paint = Paint();
+      paint.color = Colors.black;
+      paint.style = PaintingStyle.fill;
+      canvas.drawOval(Rect.fromLTWH(0.0, 0.0, 200.0, 100.0), paint);
     }
     canvas.restore();
+  }
+
+  void _applyOverride(Paint paint, Object? override) {
+    if (override == null) return;
+    if (override is Color) {
+      paint.color = override;
+      paint.shader = null;
+    } else if (override is Shader) {
+      paint.shader = override;
+    }
   }
 
   @override
   bool shouldRepaint(covariant _$EllipsePainter oldDelegate) {
     if (fit == oldDelegate.fit) {
       return false;
-    } else {
-      return true;
     }
+
+    return true;
   }
 }

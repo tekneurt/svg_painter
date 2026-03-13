@@ -68,22 +68,30 @@ class _$CurrentColorPainter extends CustomPainter {
     canvas.clipRect(Rect.fromLTWH(0, 0, 100.0, 100.0));
 
     {
-      {
-        final Paint paint = Paint();
-        paint.color = color ?? const Color(0xFF000000);
-        paint.style = PaintingStyle.fill;
-        canvas.drawCircle(const Offset(50.0, 50.0), 40.0, paint);
-      }
+      final Paint paint = Paint();
+      paint.color = color ?? const Color(0xFF000000);
+      paint.style = PaintingStyle.fill;
+      canvas.drawCircle(const Offset(50.0, 50.0), 40.0, paint);
     }
     canvas.restore();
+  }
+
+  void _applyOverride(Paint paint, Object? override) {
+    if (override == null) return;
+    if (override is Color) {
+      paint.color = override;
+      paint.shader = null;
+    } else if (override is Shader) {
+      paint.shader = override;
+    }
   }
 
   @override
   bool shouldRepaint(covariant _$CurrentColorPainter oldDelegate) {
     if (fit == oldDelegate.fit && color == oldDelegate.color) {
       return false;
-    } else {
-      return true;
     }
+
+    return true;
   }
 }
