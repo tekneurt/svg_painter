@@ -47,7 +47,7 @@ class TextGenerator extends ShapeGenerator<DrawText> {
             buffer.outdent();
             buffer.writeln(')..layout();');
             buffer.writeln(
-              'tp.paint(canvas, const Offset(${command.x}, ${command.y} - tp.ascent));',
+              'tp.paint(canvas, Offset(${command.x}, ${command.y} - tp.computeDistanceToActualBaseline(TextBaseline.alphabetic)));',
             );
           });
         },
