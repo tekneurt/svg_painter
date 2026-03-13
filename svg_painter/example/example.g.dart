@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'circle_painter.dart';
+part of 'example.dart';
 
 // **************************************************************************
 // SvgPainterGenerator
@@ -10,8 +10,8 @@ part of 'circle_painter.dart';
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
 
-class CirclePainterWidget extends StatelessWidget {
-  const CirclePainterWidget({
+class _CirclePainterWidget extends StatelessWidget {
+  const _CirclePainterWidget({
     super.key,
     this.width,
     this.height,
@@ -28,13 +28,13 @@ class CirclePainterWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return CustomPaint(
       size: Size(width ?? 100.0, height ?? 100.0),
-      painter: _$CirclePainter(fit: fit),
+      painter: _$_CirclePainter(fit: fit),
     );
   }
 }
 
-class _$CirclePainter extends CustomPainter {
-  const _$CirclePainter({this.fit = BoxFit.contain});
+class _$_CirclePainter extends CustomPainter {
+  const _$_CirclePainter({this.fit = BoxFit.contain});
 
   final BoxFit fit;
 
@@ -63,9 +63,9 @@ class _$CirclePainter extends CustomPainter {
 
     {
       final Paint paint = Paint();
-      paint.color = Colors.black;
+      paint.color = const Color(0xFF0000FF);
       paint.style = PaintingStyle.fill;
-      canvas.drawCircle(const Offset(50.0, 50.0), 50.0, paint);
+      canvas.drawCircle(const Offset(50.0, 50.0), 40.0, paint);
     }
     canvas.restore();
   }
@@ -81,7 +81,7 @@ class _$CirclePainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(covariant _$CirclePainter oldDelegate) {
+  bool shouldRepaint(covariant _$_CirclePainter oldDelegate) {
     if (fit == oldDelegate.fit) {
       return false;
     }
