@@ -49,7 +49,7 @@ void main() {
       // Assert
       final String output = buffer.toString();
       expect(output, contains('..cubicTo(12.0, 13.0, 14.0, 15.0, 16.0, 17.0)'));
-      expect(output, contains('..quadraticTo(18.0, 19.0, 20.0, 21.0)'));
+      expect(output, contains('..quadraticBezierTo(18.0, 19.0, 20.0, 21.0)'));
     });
 
     test('should generate arcToPoint when ArcTo is provided', () {

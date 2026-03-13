@@ -39,7 +39,7 @@ class PathGenerator extends ShapeGenerator<DrawPath> {
           ):
             buffer.writeln('..cubicTo($x1, $y1, $x2, $y2, $x3, $y3)');
           case QuadraticTo(:final double x1, :final double y1, :final double x2, :final double y2):
-            buffer.writeln('..quadraticTo($x1, $y1, $x2, $y2)');
+            buffer.writeln('..quadraticBezierTo($x1, $y1, $x2, $y2)');
           case ArcTo(
             :final double rx,
             :final double ry,
