@@ -32,13 +32,8 @@ class GeneratorBuffer {
   }
 
   /// Writes a scoped block (e.g., `{ ... }`) and manages indentation automatically.
-  /// The [header] will have an opening brace '{' appended if it doesn't already have one.
   void writeBlock(String header, void Function() body, {String footer = '}'}) {
-    if (!header.trim().endsWith('{') && !header.trim().endsWith(';')) {
-      writeln('$header {');
-    } else {
-      writeln(header);
-    }
+    writeln(header);
     indent();
     body();
     outdent();

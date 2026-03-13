@@ -51,9 +51,9 @@ void main() {
       expect(buffer.toString(), '\n\n');
     });
 
-    test('should writeBlock with automatic brace and indent', () {
+    test('should writeBlock with indent and footer', () {
       final GeneratorBuffer buffer = GeneratorBuffer();
-      buffer.writeBlock('if (true)', () {
+      buffer.writeBlock('if (true) {', () {
         buffer.writeln('print("hello");');
       });
 
@@ -65,7 +65,7 @@ void main() {
       );
     });
 
-    test('should respect header that already has a brace or ends with semicolon', () {
+    test('should write custom header and footer in writeBlock', () {
       final GeneratorBuffer buffer = GeneratorBuffer();
       buffer.writeBlock('class MyClass {', () {
         buffer.writeln('int x = 0;');
@@ -77,8 +77,8 @@ void main() {
       expect(buffer.toString(), contains('class MyClass {\n'));
       expect(
         buffer.toString(),
-        contains('final Path path = Path() {\n'),
-      ); // Current implementation behavior
+        contains('final Path path = Path()\n  ..moveTo(0, 0)\n;\n'),
+      );
     });
 
     test('should handle custom footer in writeBlock', () {

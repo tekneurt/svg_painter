@@ -359,6 +359,7 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
         buffer.indent();
         buffer.writeln('paint.shader = override;');
         buffer.outdent();
+        buffer.writeln('}');
       });
       buffer.writeln();
 
@@ -431,10 +432,9 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
 
         buffer.writeBlock('if (${checks.join(' &&\n          ')}) {', () {
           buffer.writeln('return false;');
-        }, footer: '} else {');
-        buffer.indent();
+        });
+        buffer.writeln();
         buffer.writeln('return true;');
-        buffer.outdent();
       });
     });
 

@@ -392,8 +392,7 @@ void main() {
 
         // Assert
         final String output = buffer.toString();
-        expect(output, isNot(contains('canvas.save();')));
-        expect(output, contains('{'));
+        expect(output, isEmpty);
       });
 
       test('should do nothing if transform attributes are empty', () {
@@ -413,8 +412,7 @@ void main() {
 
         // Assert
         final String output = buffer.toString();
-        expect(output, isNot(contains('canvas.save();')));
-        expect(output, contains('{'));
+        expect(output, isEmpty);
       });
 
       test('should wrap with translate when provided', () {

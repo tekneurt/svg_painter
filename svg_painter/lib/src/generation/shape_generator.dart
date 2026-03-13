@@ -173,7 +173,7 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
   }) {
     if (resolution.localActiveProperty != null) {
       buffer.writeln('final Object? local$suffix = ${resolution.localActiveProperty};');
-      buffer.writeBlock('if (local$suffix == null)', () {
+      buffer.writeBlock('if (local$suffix == null) {', () {
         _emitInheritedOrOriginal(
           buffer: buffer,
           style: style,
@@ -182,7 +182,7 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
           suffix: suffix,
         );
       });
-      buffer.writeBlock('else', () {
+      buffer.writeBlock('else {', () {
         buffer.writeln('_applyOverride(paint, local$suffix);');
       });
     } else {
@@ -205,10 +205,10 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
   }) {
     if (resolution.inheritedPropertyName != null) {
       buffer.writeln('final Object? inherited$suffix = ${resolution.inheritedPropertyName};');
-      buffer.writeBlock('if (inherited$suffix == null)', () {
+      buffer.writeBlock('if (inherited$suffix == null) {', () {
         _generateOriginalStyle(buffer, style, boundsRect);
       });
-      buffer.writeBlock('else', () {
+      buffer.writeBlock('else {', () {
         buffer.writeln('_applyOverride(paint, inherited$suffix);');
       });
     } else {
@@ -249,7 +249,7 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
     void Function() body,
   ) {
     if (transformAttributes == null || transformAttributes.operations.isEmpty) {
-      buffer.writeBlock('{', body);
+      body();
       return;
     }
 
