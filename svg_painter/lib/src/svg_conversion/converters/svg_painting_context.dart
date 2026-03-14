@@ -1,8 +1,6 @@
 import 'dart:math' as math;
 
-import '../../base/_base.dart';
 import '../../svg_model/_svg_model.dart';
-import '../svg_value_extensions/svg_length_extensions.dart';
 
 /// Context for converting SVG models to painting models.
 /// Holds information needed for resolving relative values like percentages.

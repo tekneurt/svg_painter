@@ -35,44 +35,45 @@ class PolyGenerator<T extends DrawCommand> extends ShapeGenerator<T> {
         return;
       }
 
-      final String pathVar = '_poly_${command.hashCode.abs()}';
-      buffer.writeln('final Path $pathVar = Path()');
-      buffer.indent();
-      buffer.writeln('..moveTo(${points[0]}, ${points[1]})');
-      for (int i = 2; i < points.length; i += 2) {
-        buffer.writeln('..lineTo(${points[i]}, ${points[i + 1]})');
-      }
-      if (isClosed) {
-        buffer.writeln('..close()');
-      }
-      buffer.outdent();
-      buffer.writeln(';');
+      buffer.writeBlock('{', () {
+        buffer.writeln('final Path path = Path()');
+        buffer.indent();
+        buffer.writeln('..moveTo(${points[0]}, ${points[1]})');
+        for (int i = 2; i < points.length; i += 2) {
+          buffer.writeln('..lineTo(${points[i]}, ${points[i + 1]})');
+        }
+        if (isClosed) {
+          buffer.writeln('..close()');
+        }
+        buffer.outdent();
+        buffer.writeln(';');
 
-      final String bounds = '$pathVar.getBounds()';
-      generatePaintingCode(
-        buffer,
-        command,
-        command.style,
-        bounds,
-        (String p, {String? dashArray, String? pathLength}) {
-          if (dashArray == null) {
-            buffer.writeln('canvas.drawPath($pathVar, $p);');
-          } else {
-            final String plArg;
-            if (pathLength?.isEmpty ?? true) {
-              plArg = '';
+        const String bounds = 'path.getBounds()';
+        generatePaintingCode(
+          buffer,
+          command,
+          command.style,
+          bounds,
+          (String p, {String? dashArray, String? pathLength}) {
+            if (dashArray == null) {
+              buffer.writeln('canvas.drawPath(path, $p);');
             } else {
-              plArg = ', pathLength: $pathLength';
+              final String plArg;
+              if (pathLength?.isEmpty ?? true) {
+                plArg = '';
+              } else {
+                plArg = ', pathLength: $pathLength';
+              }
+              buffer.writeln('canvas.drawPath(_dashPath(path, $dashArray$plArg), $p);');
             }
-            buffer.writeln('canvas.drawPath(_dashPath($pathVar, $dashArray$plArg), $p);');
-          }
-        },
-        palette: palette,
-        activeFillProperties: activeFillProperties,
-        activeStrokeProperties: activeStrokeProperties,
-        inheritedFills: inheritedFills,
-        inheritedStrokes: inheritedStrokes,
-      );
+          },
+          palette: palette,
+          activeFillProperties: activeFillProperties,
+          activeStrokeProperties: activeStrokeProperties,
+          inheritedFills: inheritedFills,
+          inheritedStrokes: inheritedStrokes,
+        );
+      });
     });
   }
 }

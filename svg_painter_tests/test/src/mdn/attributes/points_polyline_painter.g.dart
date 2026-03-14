@@ -63,18 +63,20 @@ class _$PointsPolylinePainter extends CustomPainter {
 
     canvas.save();
     canvas.translate(10.0, 10.0);
-    final Path _poly_577895024 = Path()
-      ..moveTo(50.0, 0.0)
-      ..lineTo(21.0, 90.0)
-      ..lineTo(98.0, 35.0)
-      ..lineTo(2.0, 35.0)
-      ..lineTo(79.0, 90.0);
     {
-      final Paint paint = Paint();
-      paint.color = Colors.black;
-      paint.style = PaintingStyle.stroke;
-      paint.strokeWidth = 1.0;
-      canvas.drawPath(_poly_577895024, paint);
+      final Path path = Path()
+        ..moveTo(50.0, 0.0)
+        ..lineTo(21.0, 90.0)
+        ..lineTo(98.0, 35.0)
+        ..lineTo(2.0, 35.0)
+        ..lineTo(79.0, 90.0);
+      {
+        final Paint paint = Paint();
+        paint.color = Colors.black;
+        paint.style = PaintingStyle.stroke;
+        paint.strokeWidth = 1.0;
+        canvas.drawPath(path, paint);
+      }
     }
     canvas.restore();
     canvas.restore();

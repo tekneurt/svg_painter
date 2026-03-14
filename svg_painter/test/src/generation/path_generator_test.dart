@@ -23,11 +23,11 @@ void main() {
 
       // Assert
       final String output = buffer.toString();
-      expect(output, contains('final Path _path_'));
+      expect(output, contains('final Path path = Path()'));
       expect(output, contains('..moveTo(10.0, 11.0)'));
       expect(output, contains('..lineTo(20.0, 21.0)'));
       expect(output, contains('..close()'));
-      expect(output, contains('canvas.drawPath(_path_'));
+      expect(output, contains('canvas.drawPath(path,'));
     });
 
     test('should generate curves when bezier operations are provided', () {
@@ -93,7 +93,7 @@ void main() {
 
       // Assert
       final String output = buffer.toString();
-      expect(output, contains('canvas.drawPath(_dashPath(_path_'));
+      expect(output, contains('canvas.drawPath(_dashPath(path,'));
     });
 
     test('should generate dashed path with pathLength when provided', () {
@@ -116,7 +116,7 @@ void main() {
 
       // Assert
       final String output = buffer.toString();
-      expect(output, contains('canvas.drawPath(_dashPath(_path_'));
+      expect(output, contains('canvas.drawPath(_dashPath(path,'));
       expect(output, contains('pathLength: 100.0'));
     });
   });

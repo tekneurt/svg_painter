@@ -26,7 +26,7 @@ void main() {
 
       // Assert
       final String output = buffer.toString();
-      expect(output, contains('final Path _poly_'));
+      expect(output, contains('final Path path = Path()'));
       expect(output, contains('..moveTo(1.0, 2.0)'));
       expect(output, contains('..lineTo(10.0, 11.0)'));
       expect(output, contains('..lineTo(20.0, 22.0)'));
@@ -46,7 +46,7 @@ void main() {
 
       // Assert
       final String output = buffer.toString();
-      expect(output, contains('final Path _poly_'));
+      expect(output, contains('final Path path = Path()'));
       expect(output, contains('..moveTo(1.0, 2.0)'));
       expect(output, contains('..lineTo(10.0, 11.0)'));
       expect(output, contains('..lineTo(20.0, 22.0)'));
@@ -73,7 +73,7 @@ void main() {
       // Assert
       final String output = buffer.toString();
       expect(output, contains('canvas.drawPath('));
-      expect(output, contains('_poly_'));
+      expect(output, contains('path'));
       expect(output, contains('pathLength: 100.0'));
     });
 

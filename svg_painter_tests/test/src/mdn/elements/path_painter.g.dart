@@ -61,30 +61,32 @@ class _$PathPainter extends CustomPainter {
     );
     canvas.clipRect(Rect.fromLTWH(0, 0, 100.0, 100.0));
 
-    final Path _path_35243774 = Path()
-      ..moveTo(10.0, 30.0)
-      ..arcToPoint(
-        const Offset(50.0, 30.0),
-        radius: const Radius.elliptical(20.0, 20.0),
-        rotation: 0.0,
-        largeArc: false,
-        clockwise: true,
-      )
-      ..arcToPoint(
-        const Offset(90.0, 30.0),
-        radius: const Radius.elliptical(20.0, 20.0),
-        rotation: 0.0,
-        largeArc: false,
-        clockwise: true,
-      )
-      ..quadraticBezierTo(90.0, 60.0, 50.0, 90.0)
-      ..quadraticBezierTo(10.0, 60.0, 10.0, 30.0)
-      ..close();
     {
-      final Paint paint = Paint();
-      paint.color = Colors.black;
-      paint.style = PaintingStyle.fill;
-      canvas.drawPath(_path_35243774, paint);
+      final Path path = Path()
+        ..moveTo(10.0, 30.0)
+        ..arcToPoint(
+          const Offset(50.0, 30.0),
+          radius: const Radius.elliptical(20.0, 20.0),
+          rotation: 0.0,
+          largeArc: false,
+          clockwise: true,
+        )
+        ..arcToPoint(
+          const Offset(90.0, 30.0),
+          radius: const Radius.elliptical(20.0, 20.0),
+          rotation: 0.0,
+          largeArc: false,
+          clockwise: true,
+        )
+        ..quadraticBezierTo(90.0, 60.0, 50.0, 90.0)
+        ..quadraticBezierTo(10.0, 60.0, 10.0, 30.0)
+        ..close();
+      {
+        final Paint paint = Paint();
+        paint.color = Colors.black;
+        paint.style = PaintingStyle.fill;
+        canvas.drawPath(path, paint);
+      }
     }
     canvas.restore();
   }

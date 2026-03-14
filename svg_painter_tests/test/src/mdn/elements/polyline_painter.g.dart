@@ -61,28 +61,32 @@ class _$PolylinePainter extends CustomPainter {
     );
     canvas.clipRect(Rect.fromLTWH(0, 0, 200.0, 100.0));
 
-    final Path _poly_53895891 = Path()
-      ..moveTo(0.0, 100.0)
-      ..lineTo(50.0, 25.0)
-      ..lineTo(50.0, 75.0)
-      ..lineTo(100.0, 0.0);
     {
-      final Paint paint = Paint();
-      paint.color = Colors.black;
-      paint.style = PaintingStyle.fill;
-      canvas.drawPath(_poly_53895891, paint);
+      final Path path = Path()
+        ..moveTo(0.0, 100.0)
+        ..lineTo(50.0, 25.0)
+        ..lineTo(50.0, 75.0)
+        ..lineTo(100.0, 0.0);
+      {
+        final Paint paint = Paint();
+        paint.color = Colors.black;
+        paint.style = PaintingStyle.fill;
+        canvas.drawPath(path, paint);
+      }
     }
-    final Path _poly_498509927 = Path()
-      ..moveTo(100.0, 100.0)
-      ..lineTo(150.0, 25.0)
-      ..lineTo(150.0, 75.0)
-      ..lineTo(200.0, 0.0);
     {
-      final Paint paint = Paint();
-      paint.color = Colors.black;
-      paint.style = PaintingStyle.stroke;
-      paint.strokeWidth = 1.0;
-      canvas.drawPath(_poly_498509927, paint);
+      final Path path = Path()
+        ..moveTo(100.0, 100.0)
+        ..lineTo(150.0, 25.0)
+        ..lineTo(150.0, 75.0)
+        ..lineTo(200.0, 0.0);
+      {
+        final Paint paint = Paint();
+        paint.color = Colors.black;
+        paint.style = PaintingStyle.stroke;
+        paint.strokeWidth = 1.0;
+        canvas.drawPath(path, paint);
+      }
     }
     canvas.restore();
   }
