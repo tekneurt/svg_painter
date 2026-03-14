@@ -85,7 +85,7 @@ void main() {
       expect(const SvgPercentage(50).resolve(context, .horizontal), 100.0);
     });
 
-    test('toPosition should respect viewBox offset and orientation', () {
+    test('toPosition should return raw values (offset handled by generator)', () {
       const SvgPaintingContext contextWithOffset = SvgPaintingContext(
         viewBoxWidth: 200,
         viewBoxHeight: 100,
@@ -93,8 +93,8 @@ void main() {
         viewBoxMinY: 22,
       );
 
-      expect(const SvgLength(5.5).toPosition(contextWithOffset, .horizontal), 16.5);
-      expect(const SvgLength(5.5).toPosition(contextWithOffset, .vertical), 27.5);
+      expect(const SvgLength(5.5).toPosition(contextWithOffset, .horizontal), 5.5);
+      expect(const SvgLength(5.5).toPosition(contextWithOffset, .vertical), 5.5);
       expect(const SvgLength(5.5).toPosition(contextWithOffset, .normalized), 5.5);
       expect(const SvgLength(5.5).toPosition(contextWithOffset, .unit), 5.5);
 
@@ -115,7 +115,7 @@ void main() {
       expect(const SvgAuto().toPositionOrNull(context, .horizontal), isNull);
     });
 
-    test('toPositionOrNull should respect viewBox offset', () {
+    test('toPositionOrNull should return raw double for SvgLength', () {
       const SvgPaintingContext contextWithOffset = SvgPaintingContext(
         viewBoxWidth: 200,
         viewBoxHeight: 100,
@@ -123,7 +123,7 @@ void main() {
         viewBoxMinY: 34,
       );
 
-      expect(const SvgLength(5.6).toPositionOrNull(contextWithOffset, .horizontal), 17.6);
+      expect(const SvgLength(5.6).toPositionOrNull(contextWithOffset, .horizontal), 5.6);
     });
   });
 }

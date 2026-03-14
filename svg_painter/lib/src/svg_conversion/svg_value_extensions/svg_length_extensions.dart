@@ -57,11 +57,7 @@ extension SvgLengthPercentageToDouble on SvgLengthPercentage {
   double toPosition(SvgPaintingContext context, SvgOrientation orientation) {
     final SvgLengthPercentage self = this;
     return switch (self) {
-      final SvgLength length => switch (orientation) {
-        .horizontal => length.toDouble(context) + context.viewBoxMinX,
-        .vertical => length.toDouble(context) + context.viewBoxMinY,
-        .normalized || .unit => length.toDouble(context),
-      },
+      final SvgLength length => length.toDouble(context),
       final SvgPercentage percentage => percentage.resolve(context, orientation),
     };
   }

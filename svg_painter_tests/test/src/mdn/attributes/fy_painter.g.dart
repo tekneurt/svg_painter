@@ -66,47 +66,53 @@ class _$Fy1Painter extends CustomPainter {
       radius: 0.5,
       focal: Alignment(-0.30000000000000004, -0.30000000000000004),
       focalRadius: 0.05,
-      colors: [Colors.white, const Color(0xFF8FBC8F)],
-      stops: [0.0, 1.0],
+      colors: <Color>[Colors.white, const Color(0xFF8FBC8F)],
+      stops: <double>[0.0, 1.0],
     );
     final Gradient _grad_gradient2 = RadialGradient(
       center: Alignment(0.0, 0.0),
       radius: 0.5,
       focal: Alignment(-0.30000000000000004, 0.5),
       focalRadius: 0.05,
-      colors: [Colors.white, const Color(0xFF8FBC8F)],
-      stops: [0.0, 1.0],
+      colors: <Color>[Colors.white, const Color(0xFF8FBC8F)],
+      stops: <double>[0.0, 1.0],
     );
     {
-      {
-        final Paint paint = Paint();
-        paint.shader = _grad_gradient1.createShader(
-          Rect.fromCircle(center: const Offset(100.0, 100.0), radius: 100.0),
-        );
-        paint.style = PaintingStyle.fill;
-        canvas.drawCircle(const Offset(100.0, 100.0), 100.0, paint);
-      }
+      final Paint paint = Paint();
+      paint.shader = _grad_gradient1.createShader(
+        Rect.fromCircle(center: const Offset(100.0, 100.0), radius: 100.0),
+      );
+      paint.style = PaintingStyle.fill;
+      canvas.drawCircle(const Offset(100.0, 100.0), 100.0, paint);
     }
     {
-      {
-        final Paint paint = Paint();
-        paint.shader = _grad_gradient2.createShader(
-          Rect.fromCircle(center: const Offset(340.0, 100.0), radius: 100.0),
-        );
-        paint.style = PaintingStyle.fill;
-        canvas.drawCircle(const Offset(340.0, 100.0), 100.0, paint);
-      }
+      final Paint paint = Paint();
+      paint.shader = _grad_gradient2.createShader(
+        Rect.fromCircle(center: const Offset(340.0, 100.0), radius: 100.0),
+      );
+      paint.style = PaintingStyle.fill;
+      canvas.drawCircle(const Offset(340.0, 100.0), 100.0, paint);
     }
     canvas.restore();
+  }
+
+  void _applyOverride(Paint paint, Object? override) {
+    if (override == null) return;
+    if (override is Color) {
+      paint.color = override;
+      paint.shader = null;
+    } else if (override is Shader) {
+      paint.shader = override;
+    }
   }
 
   @override
   bool shouldRepaint(covariant _$Fy1Painter oldDelegate) {
     if (fit == oldDelegate.fit) {
       return false;
-    } else {
-      return true;
     }
+
+    return true;
   }
 }
 
@@ -165,169 +171,156 @@ class _$Fy2Painter extends CustomPainter {
     );
     canvas.clipRect(Rect.fromLTWH(0, 0, 200.0, 200.0));
 
+    canvas.save();
+    canvas.scale(1.6666666666666667, 1.6666666666666667);
     final Gradient _grad_Gradient = RadialGradient(
       center: Alignment(0.0, 0.0),
       radius: 0.5,
       focal: Alignment(-0.30000000000000004, -0.30000000000000004),
       focalRadius: 0.05,
-      colors: [const Color(0xFFFF0000), const Color(0xFF0000FF)],
-      stops: [0.0, 1.0],
+      colors: <Color>[const Color(0xFFFF0000), const Color(0xFF0000FF)],
+      stops: <double>[0.0, 1.0],
     );
     {
-      {
-        final Paint paint = Paint();
-        paint.shader = _grad_Gradient.createShader(
-          Rect.fromLTWH(
-            16.666666666666668,
-            16.666666666666668,
-            166.66666666666669,
-            166.66666666666669,
-          ),
-        );
-        paint.style = PaintingStyle.fill;
-        canvas.drawRRect(
-          RRect.fromRectAndRadius(
-            Rect.fromLTWH(
-              16.666666666666668,
-              16.666666666666668,
-              166.66666666666669,
-              166.66666666666669,
-            ),
-            const Radius.elliptical(25.0, 25.0),
-          ),
-          paint,
-        );
-      }
-      {
-        final Paint paint = Paint();
-        paint.color = Colors.black;
-        paint.style = PaintingStyle.stroke;
-        paint.strokeWidth = 3.333333333333333;
-        canvas.drawRRect(
-          RRect.fromRectAndRadius(
-            Rect.fromLTWH(
-              16.666666666666668,
-              16.666666666666668,
-              166.66666666666669,
-              166.66666666666669,
-            ),
-            const Radius.elliptical(25.0, 25.0),
-          ),
-          paint,
-        );
-      }
+      final Paint paint = Paint();
+      paint.shader = _grad_Gradient.createShader(
+        Rect.fromLTWH(10.0, 10.0, 100.0, 100.0),
+      );
+      paint.style = PaintingStyle.fill;
+      canvas.drawRRect(
+        RRect.fromRectAndRadius(
+          Rect.fromLTWH(10.0, 10.0, 100.0, 100.0),
+          const Radius.elliptical(15.0, 15.0),
+        ),
+        paint,
+      );
     }
     {
-      {
-        final Paint paint = Paint();
-        paint.color = Colors.transparent;
-        paint.style = PaintingStyle.fill;
-        canvas.drawCircle(const Offset(100.0, 100.0), 83.33333333333333, paint);
-      }
-      {
-        final Paint paint = Paint();
-        paint.color = Colors.white;
-        paint.style = PaintingStyle.stroke;
-        paint.strokeWidth = 3.333333333333333;
-        canvas.drawCircle(const Offset(100.0, 100.0), 83.33333333333333, paint);
-      }
+      final Paint paint = Paint();
+      paint.color = Colors.black;
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 2.0;
+      canvas.drawRRect(
+        RRect.fromRectAndRadius(
+          Rect.fromLTWH(10.0, 10.0, 100.0, 100.0),
+          const Radius.elliptical(15.0, 15.0),
+        ),
+        paint,
+      );
     }
     {
-      {
-        final Paint paint = Paint();
-        paint.color = Colors.white;
-        paint.style = PaintingStyle.fill;
-        canvas.drawCircle(
-          const Offset(58.333333333333336, 58.333333333333336),
-          3.333333333333333,
-          paint,
-        );
-      }
-      {
-        final Paint paint = Paint();
-        paint.color = Colors.white;
-        paint.style = PaintingStyle.stroke;
-        paint.strokeWidth = 1.6666666666666665;
-        canvas.drawCircle(
-          const Offset(58.333333333333336, 58.333333333333336),
-          3.333333333333333,
-          paint,
-        );
-      }
+      final Paint paint = Paint();
+      paint.color = Colors.transparent;
+      paint.style = PaintingStyle.fill;
+      canvas.drawCircle(const Offset(60.0, 60.0), 50.0, paint);
     }
     {
-      {
-        final Paint paint = Paint();
-        paint.color = Colors.white;
-        paint.style = PaintingStyle.fill;
-        canvas.drawCircle(const Offset(100.0, 100.0), 3.333333333333333, paint);
-      }
-      {
-        final Paint paint = Paint();
-        paint.color = Colors.white;
-        paint.style = PaintingStyle.stroke;
-        paint.strokeWidth = 1.6666666666666665;
-        canvas.drawCircle(const Offset(100.0, 100.0), 3.333333333333333, paint);
-      }
+      final Paint paint = Paint();
+      paint.color = Colors.white;
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 2.0;
+      canvas.drawCircle(const Offset(60.0, 60.0), 50.0, paint);
     }
     {
+      final Paint paint = Paint();
+      paint.color = Colors.white;
+      paint.style = PaintingStyle.fill;
+      canvas.drawCircle(const Offset(35.0, 35.0), 2.0, paint);
+    }
+    {
+      final Paint paint = Paint();
+      paint.color = Colors.white;
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 1.0;
+      canvas.drawCircle(const Offset(35.0, 35.0), 2.0, paint);
+    }
+    {
+      final Paint paint = Paint();
+      paint.color = Colors.white;
+      paint.style = PaintingStyle.fill;
+      canvas.drawCircle(const Offset(60.0, 60.0), 2.0, paint);
+    }
+    {
+      final Paint paint = Paint();
+      paint.color = Colors.white;
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 1.0;
+      canvas.drawCircle(const Offset(60.0, 60.0), 2.0, paint);
+    }
+    {
+      final Paint paint = Paint();
+      paint.color = Colors.white;
+      paint.style = PaintingStyle.fill;
       {
-        final TextSpan span = TextSpan(
-          text: '''(fx,fy)''',
-          style: TextStyle(
-            color: const Color(0xFFFFFFFF),
-            fontSize: 22.222222222222225,
-            fontFamily: 'Roboto',
-          ),
-        );
         final TextPainter tp = TextPainter(
-          text: span,
+          text: TextSpan(
+            text: '(fx,fy)',
+            style: TextStyle(
+              foreground: paint,
+              fontSize: 13.333333333333334,
+              fontWeight: FontWeight.normal,
+              fontStyle: FontStyle.normal,
+              fontFamily: 'Roboto',
+            ),
+          ),
           textDirection: TextDirection.ltr,
-        );
-        tp.layout();
+        )..layout();
         tp.paint(
           canvas,
           Offset(
-            63.333333333333336,
-            66.66666666666667 -
-                tp.computeDistanceToActualBaseline(TextBaseline.alphabetic),
+            38.0,
+            40.0 - tp.computeDistanceToActualBaseline(TextBaseline.alphabetic),
           ),
         );
       }
     }
     {
+      final Paint paint = Paint();
+      paint.color = Colors.white;
+      paint.style = PaintingStyle.fill;
       {
-        final TextSpan span = TextSpan(
-          text: '''(cx,cy)''',
-          style: TextStyle(
-            color: const Color(0xFFFFFFFF),
-            fontSize: 22.222222222222225,
-            fontFamily: 'Roboto',
-          ),
-        );
         final TextPainter tp = TextPainter(
-          text: span,
+          text: TextSpan(
+            text: '(cx,cy)',
+            style: TextStyle(
+              foreground: paint,
+              fontSize: 13.333333333333334,
+              fontWeight: FontWeight.normal,
+              fontStyle: FontStyle.normal,
+              fontFamily: 'Roboto',
+            ),
+          ),
           textDirection: TextDirection.ltr,
-        );
-        tp.layout();
+        )..layout();
         tp.paint(
           canvas,
           Offset(
-            105.0,
-            105.0 - tp.computeDistanceToActualBaseline(TextBaseline.alphabetic),
+            63.0,
+            63.0 - tp.computeDistanceToActualBaseline(TextBaseline.alphabetic),
           ),
         );
       }
     }
     canvas.restore();
+    canvas.restore();
+  }
+
+  void _applyOverride(Paint paint, Object? override) {
+    if (override == null) return;
+    if (override is Color) {
+      paint.color = override;
+      paint.shader = null;
+    } else if (override is Shader) {
+      paint.shader = override;
+    }
   }
 
   @override
   bool shouldRepaint(covariant _$Fy2Painter oldDelegate) {
     if (fit == oldDelegate.fit) {
       return false;
-    } else {
-      return true;
     }
+
+    return true;
   }
 }

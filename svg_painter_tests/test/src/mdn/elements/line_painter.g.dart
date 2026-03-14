@@ -64,16 +64,6 @@ class _$LinePainter extends CustomPainter {
     {
       final Paint paint = Paint();
       paint.color = Colors.black;
-      paint.style = PaintingStyle.fill;
-      canvas.drawLine(
-        const Offset(0.0, 80.0),
-        const Offset(100.0, 20.0),
-        paint,
-      );
-    }
-    {
-      final Paint paint = Paint();
-      paint.color = Colors.black;
       paint.style = PaintingStyle.stroke;
       paint.strokeWidth = 1.0;
       canvas.drawLine(

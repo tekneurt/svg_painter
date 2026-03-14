@@ -164,11 +164,10 @@ void main() {
       expect(style.stroke?.dashArray, equals(<double>[5.0, 5.0]));
     });
 
-    test('should combine parent opacity with element opacity', () {
+    test('should resolve element opacity', () {
       const SvgPaintingContext context = SvgPaintingContext(
         viewBoxWidth: 100,
         viewBoxHeight: 100,
-        parentOpacity: 0.5,
       );
 
       final PaintingStyle style = resolvePaint(
@@ -176,8 +175,6 @@ void main() {
         opacity: const SvgPercentage(50),
       );
 
-      // NOTE: With saveLayer architecture, we only care about the element's local opacity.
-      // The parent's 0.5 opacity is handled by a saveLayer call higher up the tree.
       expect(style.groupOpacity, closeTo(0.5, 0.001));
     });
 

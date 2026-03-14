@@ -61,31 +61,40 @@ class _$ViewBox3Painter extends CustomPainter {
     );
     canvas.clipRect(Rect.fromLTWH(0, 0, 10.0, 10.0));
 
+    canvas.save();
+    canvas.translate(5.0, 5.0);
     {
-      {
-        final Paint paint = Paint();
-        paint.color = Colors.black;
-        paint.style = PaintingStyle.fill;
-        canvas.drawRect(Rect.fromLTWH(5.0, 5.0, 10.0, 10.0), paint);
-      }
+      final Paint paint = Paint();
+      paint.color = Colors.black;
+      paint.style = PaintingStyle.fill;
+      canvas.drawRect(Rect.fromLTWH(0.0, 0.0, 10.0, 10.0), paint);
     }
     {
-      {
-        final Paint paint = Paint();
-        paint.color = Colors.white;
-        paint.style = PaintingStyle.fill;
-        canvas.drawCircle(const Offset(10.0, 10.0), 4.0, paint);
-      }
+      final Paint paint = Paint();
+      paint.color = Colors.white;
+      paint.style = PaintingStyle.fill;
+      canvas.drawCircle(const Offset(5.0, 5.0), 4.0, paint);
     }
     canvas.restore();
+    canvas.restore();
+  }
+
+  void _applyOverride(Paint paint, Object? override) {
+    if (override == null) return;
+    if (override is Color) {
+      paint.color = override;
+      paint.shader = null;
+    } else if (override is Shader) {
+      paint.shader = override;
+    }
   }
 
   @override
   bool shouldRepaint(covariant _$ViewBox3Painter oldDelegate) {
     if (fit == oldDelegate.fit) {
       return false;
-    } else {
-      return true;
     }
+
+    return true;
   }
 }

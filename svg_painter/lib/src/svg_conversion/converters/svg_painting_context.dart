@@ -18,7 +18,6 @@ final class SvgPaintingContext {
     this.inheritedStrokeDasharray,
     this.inheritedStrokeLinecap = SvgStrokeLinecap.butt,
     this.inheritedStrokeLinejoin = SvgStrokeLinejoin.miter,
-    this.parentOpacity = 1.0,
     this.inheritedFontSize = const SvgLength(12.0),
     this.inheritedFontWeight = const SvgFontWeightNormal(),
     this.inheritedFontStyle = SvgFontStyle.normal,
@@ -63,9 +62,6 @@ final class SvgPaintingContext {
   /// Inherited stroke linejoin.
   final SvgStrokeLinejoin? inheritedStrokeLinejoin;
 
-  /// Accumulated opacity from parents.
-  final double parentOpacity;
-
   /// Inherited font size.
   final SvgLengthPercentage? inheritedFontSize;
 
@@ -104,7 +100,6 @@ final class SvgPaintingContext {
     SvgPointList? inheritedStrokeDasharray,
     SvgStrokeLinecap? inheritedStrokeLinecap,
     SvgStrokeLinejoin? inheritedStrokeLinejoin,
-    double? parentOpacity,
     SvgLengthPercentage? inheritedFontSize,
     SvgFontWeight? inheritedFontWeight,
     SvgFontStyle? inheritedFontStyle,
@@ -123,7 +118,6 @@ final class SvgPaintingContext {
       inheritedStrokeDasharray: inheritedStrokeDasharray ?? this.inheritedStrokeDasharray,
       inheritedStrokeLinecap: inheritedStrokeLinecap ?? this.inheritedStrokeLinecap,
       inheritedStrokeLinejoin: inheritedStrokeLinejoin ?? this.inheritedStrokeLinejoin,
-      parentOpacity: parentOpacity ?? this.parentOpacity,
       inheritedFontSize: inheritedFontSize ?? this.inheritedFontSize,
       inheritedFontWeight: inheritedFontWeight ?? this.inheritedFontWeight,
       inheritedFontStyle: inheritedFontStyle ?? this.inheritedFontStyle,
@@ -149,7 +143,6 @@ final class SvgPaintingContext {
         inheritedStrokeDasharray: element.strokeAttributes?.dashArray ?? inheritedStrokeDasharray,
         inheritedStrokeLinecap: element.strokeAttributes?.linecap ?? inheritedStrokeLinecap,
         inheritedStrokeLinejoin: element.strokeAttributes?.linejoin ?? inheritedStrokeLinejoin,
-        parentOpacity: 1.0,
         inheritedFontSize: font?.size ?? inheritedFontSize,
         inheritedFontWeight: font?.weight ?? inheritedFontWeight,
         inheritedFontStyle: font?.style ?? inheritedFontStyle,

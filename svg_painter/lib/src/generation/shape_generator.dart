@@ -30,17 +30,31 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
     // 1. Fill
     final PaintingFillStyle? fill = style.fill;
     if (fill != null) {
-      _generateStyleBlock(
-        buffer: buffer,
-        command: command,
-        style: fill,
-        boundsRect: boundsRect,
-        isFill: true,
-        palette: palette,
-        activeProperties: activeFillProperties,
-        inheritedProperties: inheritedFills,
-        drawCall: drawCall,
-      );
+      // Logic to skip implicit fills for non-closed shapes.
+      // SVG spec says they default to black, but in practice, users rarely want
+      // an implicit black fill on a single straight line.
+      // NOTE: We DO NOT skip for Polyline, as it is treated like a Path.
+      bool shouldDrawFill = fill.isExplicit;
+      if (!shouldDrawFill) {
+        // If not explicit, only draw if it's NOT a simple straight Line.
+        if (command is! DrawLine) {
+          shouldDrawFill = true;
+        }
+      }
+
+      if (shouldDrawFill) {
+        _generateStyleBlock(
+          buffer: buffer,
+          command: command,
+          style: fill,
+          boundsRect: boundsRect,
+          isFill: true,
+          palette: palette,
+          activeProperties: activeFillProperties,
+          inheritedProperties: inheritedFills,
+          drawCall: drawCall,
+        );
+      }
     }
 
     // 2. Stroke

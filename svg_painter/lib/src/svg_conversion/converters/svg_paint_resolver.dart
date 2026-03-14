@@ -179,8 +179,6 @@ PaintingStyle resolvePaint(
       (inlineStyle?.contains('stroke:') ?? false);
 
   // 4. Resolve element opacity (object opacity)
-  // NOTE: We no longer multiply by context.parentOpacity here.
-  // Group opacity is handled via saveLayer in the generator.
   final double elementOpacity = (cssOpacity ?? opacity)?.resolve(context, SvgOrientation.unit) ?? 1.0;
 
   // 5. Resolve final values using priority: Inline Style/CSS > Presentation Attribute > Inherited

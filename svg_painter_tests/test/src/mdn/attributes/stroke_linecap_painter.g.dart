@@ -64,21 +64,9 @@ class _$StrokeLinecapPainter extends CustomPainter {
     {
       final Paint paint = Paint();
       paint.color = Colors.black;
-      paint.style = PaintingStyle.fill;
-      canvas.drawLine(const Offset(1.0, 1.0), const Offset(5.0, 1.0), paint);
-    }
-    {
-      final Paint paint = Paint();
-      paint.color = Colors.black;
       paint.style = PaintingStyle.stroke;
       paint.strokeWidth = 1.0;
       canvas.drawLine(const Offset(1.0, 1.0), const Offset(5.0, 1.0), paint);
-    }
-    {
-      final Paint paint = Paint();
-      paint.color = Colors.black;
-      paint.style = PaintingStyle.fill;
-      canvas.drawLine(const Offset(1.0, 3.0), const Offset(5.0, 3.0), paint);
     }
     {
       final Paint paint = Paint();
@@ -87,12 +75,6 @@ class _$StrokeLinecapPainter extends CustomPainter {
       paint.strokeWidth = 1.0;
       paint.strokeCap = StrokeCap.round;
       canvas.drawLine(const Offset(1.0, 3.0), const Offset(5.0, 3.0), paint);
-    }
-    {
-      final Paint paint = Paint();
-      paint.color = Colors.black;
-      paint.style = PaintingStyle.fill;
-      canvas.drawLine(const Offset(1.0, 5.0), const Offset(5.0, 5.0), paint);
     }
     {
       final Paint paint = Paint();

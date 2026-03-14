@@ -63,12 +63,6 @@ class _$Y1ExamplesPainter extends CustomPainter {
 
     {
       final Paint paint = Paint();
-      paint.color = Colors.black;
-      paint.style = PaintingStyle.fill;
-      canvas.drawLine(const Offset(2.0, 0.0), const Offset(22.0, 20.0), paint);
-    }
-    {
-      final Paint paint = Paint();
       paint.color = const Color(0xFFFF0000);
       paint.style = PaintingStyle.stroke;
       paint.strokeWidth = 1.0;
@@ -76,22 +70,10 @@ class _$Y1ExamplesPainter extends CustomPainter {
     }
     {
       final Paint paint = Paint();
-      paint.color = Colors.black;
-      paint.style = PaintingStyle.fill;
-      canvas.drawLine(const Offset(2.0, 10.0), const Offset(22.0, 20.0), paint);
-    }
-    {
-      final Paint paint = Paint();
       paint.color = const Color(0xFF008000);
       paint.style = PaintingStyle.stroke;
       paint.strokeWidth = 1.0;
       canvas.drawLine(const Offset(2.0, 10.0), const Offset(22.0, 20.0), paint);
-    }
-    {
-      final Paint paint = Paint();
-      paint.color = Colors.black;
-      paint.style = PaintingStyle.fill;
-      canvas.drawLine(const Offset(2.0, 20.0), const Offset(22.0, 20.0), paint);
     }
     {
       final Paint paint = Paint();
