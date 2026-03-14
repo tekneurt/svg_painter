@@ -61,87 +61,84 @@ class _$PathLengthPainter extends CustomPainter {
     );
     canvas.clipRect(Rect.fromLTWH(0, 0, 100.0, 60.0));
 
+    final Path _path_1071557130 = Path()
+      ..moveTo(0.0, 10.0)
+      ..lineTo(100.0, 10.0);
     {
-      // Path
-      {
-        final Path path = Path();
-        path.moveTo(0.0, 10.0);
-        path.lineTo(100.0, 10.0);
-        {
-          final Paint paint = Paint();
-          paint.color = Colors.black;
-          paint.style = PaintingStyle.stroke;
-          paint.strokeWidth = 2.0;
-          final List<double> dashArray = [10.0];
-          canvas.drawPath(_dashPath(path, dashArray), paint);
-        }
-      }
+      final Paint paint = Paint();
+      paint.color = Colors.black;
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 2.0;
+      final List<double> dashArray = [10.0, 10.0];
+      canvas.drawPath(_dashPath(_path_1071557130, dashArray), paint);
     }
+    final Path _path_999290430 = Path()
+      ..moveTo(0.0, 20.0)
+      ..lineTo(100.0, 20.0);
     {
-      // Path
-      {
-        final Path path = Path();
-        path.moveTo(0.0, 20.0);
-        path.lineTo(100.0, 20.0);
-        {
-          final Paint paint = Paint();
-          paint.color = Colors.black;
-          paint.style = PaintingStyle.stroke;
-          paint.strokeWidth = 2.0;
-          final List<double> dashArray = [10.0];
-          canvas.drawPath(_dashPath(path, dashArray, pathLength: 90.0), paint);
-        }
-      }
+      final Paint paint = Paint();
+      paint.color = Colors.black;
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 2.0;
+      final List<double> dashArray = [10.0, 10.0];
+      canvas.drawPath(
+        _dashPath(_path_999290430, dashArray, pathLength: 90.0),
+        paint,
+      );
     }
+    final Path _path_853387093 = Path()
+      ..moveTo(0.0, 30.0)
+      ..lineTo(100.0, 30.0);
     {
-      // Path
-      {
-        final Path path = Path();
-        path.moveTo(0.0, 30.0);
-        path.lineTo(100.0, 30.0);
-        {
-          final Paint paint = Paint();
-          paint.color = Colors.black;
-          paint.style = PaintingStyle.stroke;
-          paint.strokeWidth = 2.0;
-          final List<double> dashArray = [10.0];
-          canvas.drawPath(_dashPath(path, dashArray, pathLength: 50.0), paint);
-        }
-      }
+      final Paint paint = Paint();
+      paint.color = Colors.black;
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 2.0;
+      final List<double> dashArray = [10.0, 10.0];
+      canvas.drawPath(
+        _dashPath(_path_853387093, dashArray, pathLength: 50.0),
+        paint,
+      );
     }
+    final Path _path_448111587 = Path()
+      ..moveTo(0.0, 40.0)
+      ..lineTo(100.0, 40.0);
     {
-      // Path
-      {
-        final Path path = Path();
-        path.moveTo(0.0, 40.0);
-        path.lineTo(100.0, 40.0);
-        {
-          final Paint paint = Paint();
-          paint.color = Colors.black;
-          paint.style = PaintingStyle.stroke;
-          paint.strokeWidth = 2.0;
-          final List<double> dashArray = [10.0];
-          canvas.drawPath(_dashPath(path, dashArray, pathLength: 30.0), paint);
-        }
-      }
+      final Paint paint = Paint();
+      paint.color = Colors.black;
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 2.0;
+      final List<double> dashArray = [10.0, 10.0];
+      canvas.drawPath(
+        _dashPath(_path_448111587, dashArray, pathLength: 30.0),
+        paint,
+      );
     }
+    final Path _path_459079031 = Path()
+      ..moveTo(0.0, 50.0)
+      ..lineTo(100.0, 50.0);
     {
-      // Path
-      {
-        final Path path = Path();
-        path.moveTo(0.0, 50.0);
-        path.lineTo(100.0, 50.0);
-        {
-          final Paint paint = Paint();
-          paint.color = Colors.black;
-          paint.style = PaintingStyle.stroke;
-          paint.strokeWidth = 2.0;
-          final List<double> dashArray = [10.0];
-          canvas.drawPath(_dashPath(path, dashArray, pathLength: 10.0), paint);
-        }
-      }
+      final Paint paint = Paint();
+      paint.color = Colors.black;
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 2.0;
+      final List<double> dashArray = [10.0, 10.0];
+      canvas.drawPath(
+        _dashPath(_path_459079031, dashArray, pathLength: 10.0),
+        paint,
+      );
     }
     canvas.restore();
+  }
+
+  void _applyOverride(Paint paint, Object? override) {
+    if (override == null) return;
+    if (override is Color) {
+      paint.color = override;
+      paint.shader = null;
+    } else if (override is Shader) {
+      paint.shader = override;
+    }
   }
 
   Path _dashPath(Path source, List<double> dashArray, {double? pathLength}) {
@@ -159,13 +156,15 @@ class _$PathLengthPainter extends CustomPainter {
       bool draw = true;
       while (distance < metric.length) {
         final double len = dashArray[index] * scale;
-        if (draw) {
-          final double end = distance + len < metric.length
-              ? distance + len
-              : metric.length;
-          dest.addPath(metric.extractPath(distance, end), Offset.zero);
+        if (len > 0) {
+          if (draw) {
+            final double end = distance + len < metric.length
+                ? distance + len
+                : metric.length;
+            dest.addPath(metric.extractPath(distance, end), Offset.zero);
+          }
+          distance += len;
         }
-        distance += len;
         draw = !draw;
         index = (index + 1) % dashArray.length;
       }
@@ -177,8 +176,8 @@ class _$PathLengthPainter extends CustomPainter {
   bool shouldRepaint(covariant _$PathLengthPainter oldDelegate) {
     if (fit == oldDelegate.fit) {
       return false;
-    } else {
-      return true;
     }
+
+    return true;
   }
 }

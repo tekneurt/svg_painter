@@ -252,8 +252,12 @@ PaintingStyle resolvePaint(
     if (sda == null || sda.points.isEmpty) {
       // No dash array
     } else {
-      // Points in user space
-      finalDashArray = sda.points;
+      // SVG Spec: If an odd number of values is provided, the list is duplicated to create an even number.
+      if (sda.points.length.isOdd) {
+        finalDashArray = <double>[...sda.points, ...sda.points];
+      } else {
+        finalDashArray = sda.points;
+      }
     }
 
     final double? finalPathLength = (cssPathLength ?? pathLength)?.value;

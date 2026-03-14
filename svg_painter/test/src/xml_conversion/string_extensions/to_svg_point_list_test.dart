@@ -27,7 +27,7 @@ void main() {
         expect(result.points, isEmpty);
       });
 
-      test('should truncate last coordinate when input has odd number of values', () {
+      test('should return all coordinates even if input has odd number of values', () {
         // Arrange
         const String input = '10,20 30';
 
@@ -35,7 +35,7 @@ void main() {
         final SvgPointList result = input.toSvgPointList();
 
         // Assert
-        expect(result.points, <double>[10.0, 20.0]);
+        expect(result.points, <double>[10.0, 20.0, 30.0]);
       });
     });
   });

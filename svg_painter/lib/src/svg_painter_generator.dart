@@ -373,11 +373,10 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
               buffer.writeln('final double scale;');
               buffer.writeBlock('if (pathLength == null || pathLength <= 0) {', () {
                 buffer.writeln('scale = 1.0;');
-              }, footer: '} else {');
-              buffer.indent();
-              buffer.writeln('scale = metric.length / pathLength;');
-              buffer.outdent();
-              buffer.writeln('}');
+              });
+              buffer.writeBlock('else {', () {
+                buffer.writeln('scale = metric.length / pathLength;');
+              });
               buffer.writeln('double distance = 0.0;');
               buffer.writeln('int index = 0;');
               buffer.writeln('bool draw = true;');

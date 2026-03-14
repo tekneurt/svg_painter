@@ -23,12 +23,6 @@ extension ToSvgPointList on String {
       }
     }
 
-    // According to SVG spec, an odd number of coordinates is an error.
-    // The spec says to ignore the last coordinate if the list is odd.
-    if (points.length.isOdd) {
-      points.removeLast();
-    }
-
     return SvgPointList(points);
   }
 }
