@@ -24,6 +24,13 @@ class GroupGenerator extends ShapeGenerator<DrawGroup> {
       return;
     }
     wrapWithTransform(buffer, command.style.transformAttributes, () {
+      final bool useLayer = command.opacity < 1.0;
+      if (useLayer) {
+        final String hexOpacity =
+            (command.opacity * 255).round().toRadixString(16).padLeft(2, '0').toUpperCase();
+        buffer.writeln('canvas.saveLayer(null, Paint()..color = const Color(0x${hexOpacity}FFFFFF));');
+      }
+
       List<InheritedProperty> nextInheritedFills = List<InheritedProperty>.from(
         inheritedFills ?? <InheritedProperty>[],
       );
@@ -105,6 +112,10 @@ class GroupGenerator extends ShapeGenerator<DrawGroup> {
           inheritedFills: nextInheritedFills,
           inheritedStrokes: nextInheritedStrokes,
         );
+      }
+
+      if (useLayer) {
+        buffer.writeln('canvas.restore();');
       }
     });
   }

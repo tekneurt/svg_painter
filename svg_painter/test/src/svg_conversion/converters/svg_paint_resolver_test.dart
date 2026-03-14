@@ -173,10 +173,12 @@ void main() {
 
       final PaintingStyle style = resolvePaint(
         context,
-        opacity: const SvgPercentage(50), // 0.5 * 0.5 = 0.25
+        opacity: const SvgPercentage(50),
       );
 
-      expect(style.groupOpacity, closeTo(0.25, 0.001));
+      // NOTE: With saveLayer architecture, we only care about the element's local opacity.
+      // The parent's 0.5 opacity is handled by a saveLayer call higher up the tree.
+      expect(style.groupOpacity, closeTo(0.5, 0.001));
     });
 
     test('should resolve square linecap and miterClip/arcs linejoin', () {

@@ -61,163 +61,128 @@ class _$OpacityPainter extends CustomPainter {
     );
     canvas.clipRect(Rect.fromLTWH(0, 0, 600.0, 175.0));
 
+    canvas.save();
+    canvas.scale(0.5, 0.5);
     {
-      {
-        final Paint paint = Paint();
-        paint.color = const Color(0xFF0000FF);
-        paint.style = PaintingStyle.fill;
-        canvas.drawRect(Rect.fromLTWH(50.0, 50.0, 500.0, 75.0), paint);
-      }
+      final Paint paint = Paint();
+      paint.color = const Color(0xFF0000FF);
+      paint.style = PaintingStyle.fill;
+      canvas.drawRect(Rect.fromLTWH(100.0, 100.0, 1000.0, 150.0), paint);
     }
     {
-      {
-        final Paint paint = Paint();
-        paint.color = const Color(0xFFFF0000);
-        paint.style = PaintingStyle.fill;
-        canvas.drawCircle(const Offset(100.0, 50.0), 25.0, paint);
-      }
+      final Paint paint = Paint();
+      paint.color = const Color(0xFFFF0000);
+      paint.style = PaintingStyle.fill;
+      canvas.drawCircle(const Offset(200.0, 100.0), 50.0, paint);
     }
     {
-      {
-        final Paint paint = Paint();
-        paint.color = const Color(0xCCFF0000);
-        paint.style = PaintingStyle.fill;
-        canvas.drawCircle(const Offset(200.0, 50.0), 25.0, paint);
-      }
+      final Paint paint = Paint();
+      paint.color = const Color(0xCCFF0000);
+      paint.style = PaintingStyle.fill;
+      canvas.drawCircle(const Offset(400.0, 100.0), 50.0, paint);
     }
     {
-      {
-        final Paint paint = Paint();
-        paint.color = const Color(0x99FF0000);
-        paint.style = PaintingStyle.fill;
-        canvas.drawCircle(const Offset(300.0, 50.0), 25.0, paint);
-      }
+      final Paint paint = Paint();
+      paint.color = const Color(0x99FF0000);
+      paint.style = PaintingStyle.fill;
+      canvas.drawCircle(const Offset(600.0, 100.0), 50.0, paint);
     }
     {
-      {
-        final Paint paint = Paint();
-        paint.color = const Color(0x66FF0000);
-        paint.style = PaintingStyle.fill;
-        canvas.drawCircle(const Offset(400.0, 50.0), 25.0, paint);
-      }
+      final Paint paint = Paint();
+      paint.color = const Color(0x66FF0000);
+      paint.style = PaintingStyle.fill;
+      canvas.drawCircle(const Offset(800.0, 100.0), 50.0, paint);
     }
     {
-      {
-        final Paint paint = Paint();
-        paint.color = const Color(0x33FF0000);
-        paint.style = PaintingStyle.fill;
-        canvas.drawCircle(const Offset(500.0, 50.0), 25.0, paint);
-      }
+      final Paint paint = Paint();
+      paint.color = const Color(0x33FF0000);
+      paint.style = PaintingStyle.fill;
+      canvas.drawCircle(const Offset(1000.0, 100.0), 50.0, paint);
     }
     {
-      {
-        {
-          final Paint paint = Paint();
-          paint.color = const Color(0xFFFF0000);
-          paint.style = PaintingStyle.fill;
-          canvas.drawCircle(const Offset(91.25, 125.0), 25.0, paint);
-        }
-      }
-      {
-        {
-          final Paint paint = Paint();
-          paint.color = const Color(0xFF008000);
-          paint.style = PaintingStyle.fill;
-          canvas.drawCircle(const Offset(108.75, 125.0), 25.0, paint);
-        }
-      }
+      final Paint paint = Paint();
+      paint.color = const Color(0xFFFF0000);
+      paint.style = PaintingStyle.fill;
+      canvas.drawCircle(const Offset(182.5, 250.0), 50.0, paint);
     }
     {
-      canvas.saveLayer(
-        null,
-        Paint()..color = Color.fromRGBO(255, 255, 255, 0.5),
-      );
-      {
-        {
-          final Paint paint = Paint();
-          paint.color = const Color(0xFFFF0000);
-          paint.style = PaintingStyle.fill;
-          canvas.drawCircle(const Offset(191.25, 125.0), 25.0, paint);
-        }
-      }
-      {
-        {
-          final Paint paint = Paint();
-          paint.color = const Color(0xFF008000);
-          paint.style = PaintingStyle.fill;
-          canvas.drawCircle(const Offset(208.75, 125.0), 25.0, paint);
-        }
-      }
-      canvas.restore();
+      final Paint paint = Paint();
+      paint.color = const Color(0xFF008000);
+      paint.style = PaintingStyle.fill;
+      canvas.drawCircle(const Offset(217.5, 250.0), 50.0, paint);
+    }
+    canvas.saveLayer(null, Paint()..color = const Color(0x80FFFFFF));
+    {
+      final Paint paint = Paint();
+      paint.color = const Color(0xFFFF0000);
+      paint.style = PaintingStyle.fill;
+      canvas.drawCircle(const Offset(382.5, 250.0), 50.0, paint);
     }
     {
-      {
-        {
-          final Paint paint = Paint();
-          paint.color = const Color(0x80FF0000);
-          paint.style = PaintingStyle.fill;
-          canvas.drawCircle(const Offset(291.25, 125.0), 25.0, paint);
-        }
-      }
-      {
-        {
-          final Paint paint = Paint();
-          paint.color = const Color(0x80008000);
-          paint.style = PaintingStyle.fill;
-          canvas.drawCircle(const Offset(308.75, 125.0), 25.0, paint);
-        }
-      }
-    }
-    {
-      {
-        {
-          final Paint paint = Paint();
-          paint.color = const Color(0x80008000);
-          paint.style = PaintingStyle.fill;
-          canvas.drawCircle(const Offset(408.75, 125.0), 25.0, paint);
-        }
-      }
-      {
-        {
-          final Paint paint = Paint();
-          paint.color = const Color(0x80FF0000);
-          paint.style = PaintingStyle.fill;
-          canvas.drawCircle(const Offset(391.25, 125.0), 25.0, paint);
-        }
-      }
-    }
-    {
-      canvas.saveLayer(
-        null,
-        Paint()..color = Color.fromRGBO(255, 255, 255, 0.5),
-      );
-      {
-        {
-          final Paint paint = Paint();
-          paint.color = const Color(0x80FF0000);
-          paint.style = PaintingStyle.fill;
-          canvas.drawCircle(const Offset(491.25, 125.0), 25.0, paint);
-        }
-      }
-      {
-        {
-          final Paint paint = Paint();
-          paint.color = const Color(0x80008000);
-          paint.style = PaintingStyle.fill;
-          canvas.drawCircle(const Offset(508.75, 125.0), 25.0, paint);
-        }
-      }
-      canvas.restore();
+      final Paint paint = Paint();
+      paint.color = const Color(0xFF008000);
+      paint.style = PaintingStyle.fill;
+      canvas.drawCircle(const Offset(417.5, 250.0), 50.0, paint);
     }
     canvas.restore();
+    {
+      final Paint paint = Paint();
+      paint.color = const Color(0x80FF0000);
+      paint.style = PaintingStyle.fill;
+      canvas.drawCircle(const Offset(582.5, 250.0), 50.0, paint);
+    }
+    {
+      final Paint paint = Paint();
+      paint.color = const Color(0x80008000);
+      paint.style = PaintingStyle.fill;
+      canvas.drawCircle(const Offset(617.5, 250.0), 50.0, paint);
+    }
+    {
+      final Paint paint = Paint();
+      paint.color = const Color(0x80008000);
+      paint.style = PaintingStyle.fill;
+      canvas.drawCircle(const Offset(817.5, 250.0), 50.0, paint);
+    }
+    {
+      final Paint paint = Paint();
+      paint.color = const Color(0x80FF0000);
+      paint.style = PaintingStyle.fill;
+      canvas.drawCircle(const Offset(782.5, 250.0), 50.0, paint);
+    }
+    canvas.saveLayer(null, Paint()..color = const Color(0x80FFFFFF));
+    {
+      final Paint paint = Paint();
+      paint.color = const Color(0x80FF0000);
+      paint.style = PaintingStyle.fill;
+      canvas.drawCircle(const Offset(982.5, 250.0), 50.0, paint);
+    }
+    {
+      final Paint paint = Paint();
+      paint.color = const Color(0x80008000);
+      paint.style = PaintingStyle.fill;
+      canvas.drawCircle(const Offset(1017.5, 250.0), 50.0, paint);
+    }
+    canvas.restore();
+    canvas.restore();
+    canvas.restore();
+  }
+
+  void _applyOverride(Paint paint, Object? override) {
+    if (override == null) return;
+    if (override is Color) {
+      paint.color = override;
+      paint.shader = null;
+    } else if (override is Shader) {
+      paint.shader = override;
+    }
   }
 
   @override
   bool shouldRepaint(covariant _$OpacityPainter oldDelegate) {
     if (fit == oldDelegate.fit) {
       return false;
-    } else {
-      return true;
     }
+
+    return true;
   }
 }

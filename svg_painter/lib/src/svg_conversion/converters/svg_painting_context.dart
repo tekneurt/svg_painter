@@ -151,7 +151,7 @@ final class SvgPaintingContext {
         inheritedStrokeDasharray: element.strokeAttributes?.dashArray ?? inheritedStrokeDasharray,
         inheritedStrokeLinecap: element.strokeAttributes?.linecap ?? inheritedStrokeLinecap,
         inheritedStrokeLinejoin: element.strokeAttributes?.linejoin ?? inheritedStrokeLinejoin,
-        parentOpacity: parentOpacity * (element.opacity?.resolve(this, SvgOrientation.unit) ?? 1.0),
+        parentOpacity: 1.0,
         inheritedFontSize: font?.size ?? inheritedFontSize,
         inheritedFontWeight: font?.weight ?? inheritedFontWeight,
         inheritedFontStyle: font?.style ?? inheritedFontStyle,

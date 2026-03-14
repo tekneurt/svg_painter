@@ -50,12 +50,7 @@ extension SvgElementToPaintCommands on SvgElement {
         inheritedStrokeDasharray: self.strokeAttributes?.dashArray,
         inheritedStrokeLinecap: self.strokeAttributes?.linecap ?? SvgStrokeLinecap.butt,
         inheritedStrokeLinejoin: self.strokeAttributes?.linejoin ?? SvgStrokeLinejoin.miter,
-        parentOpacity:
-            self.opacity?.resolve(
-              const SvgPaintingContext(viewBoxWidth: 1, viewBoxHeight: 1),
-              SvgOrientation.unit,
-            ) ??
-            1.0,
+        parentOpacity: 1.0,
         inheritedFontSize: self.fontAttributes?.size ?? const SvgLength(12.0),
         inheritedFontWeight: self.fontAttributes?.weight ?? const SvgFontWeightNormal(),
         inheritedFontStyle: self.fontAttributes?.style ?? SvgFontStyle.normal,
