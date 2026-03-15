@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:svg_painter/src/generation/_generation.dart';
 import 'package:svg_painter/src/painting_model/paint_command.dart';
 import 'package:svg_painter/src/painting_model/styles/painting_style.dart';
