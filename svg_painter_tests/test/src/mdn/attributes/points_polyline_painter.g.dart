@@ -83,12 +83,16 @@ class _$PointsPolylinePainter extends CustomPainter {
   }
 
   void _applyOverride(Paint paint, Object? override) {
-    if (override == null) return;
-    if (override is Color) {
-      paint.color = override;
-      paint.shader = null;
-    } else if (override is Shader) {
-      paint.shader = override;
+    switch (override) {
+      case final Color color:
+        paint.color = color;
+        paint.shader = null;
+
+      case final Shader shader:
+        paint.shader = shader;
+
+      case null || _:
+        break;
     }
   }
 
@@ -96,8 +100,8 @@ class _$PointsPolylinePainter extends CustomPainter {
   bool shouldRepaint(covariant _$PointsPolylinePainter oldDelegate) {
     if (fit == oldDelegate.fit) {
       return false;
+    } else {
+      return true;
     }
-
-    return true;
   }
 }

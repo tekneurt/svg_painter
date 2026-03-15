@@ -419,12 +419,16 @@ class _$StrokeLinejoinPainter extends CustomPainter {
   }
 
   void _applyOverride(Paint paint, Object? override) {
-    if (override == null) return;
-    if (override is Color) {
-      paint.color = override;
-      paint.shader = null;
-    } else if (override is Shader) {
-      paint.shader = override;
+    switch (override) {
+      case final Color color:
+        paint.color = color;
+        paint.shader = null;
+
+      case final Shader shader:
+        paint.shader = shader;
+
+      case null || _:
+        break;
     }
   }
 
@@ -432,9 +436,9 @@ class _$StrokeLinejoinPainter extends CustomPainter {
   bool shouldRepaint(covariant _$StrokeLinejoinPainter oldDelegate) {
     if (fit == oldDelegate.fit) {
       return false;
+    } else {
+      return true;
     }
-
-    return true;
   }
 }
 
@@ -565,12 +569,16 @@ class _$StrokeLinejoinArcsPainter extends CustomPainter {
   }
 
   void _applyOverride(Paint paint, Object? override) {
-    if (override == null) return;
-    if (override is Color) {
-      paint.color = override;
-      paint.shader = null;
-    } else if (override is Shader) {
-      paint.shader = override;
+    switch (override) {
+      case final Color color:
+        paint.color = color;
+        paint.shader = null;
+
+      case final Shader shader:
+        paint.shader = shader;
+
+      case null || _:
+        break;
     }
   }
 
@@ -578,9 +586,9 @@ class _$StrokeLinejoinArcsPainter extends CustomPainter {
   bool shouldRepaint(covariant _$StrokeLinejoinArcsPainter oldDelegate) {
     if (fit == oldDelegate.fit) {
       return false;
+    } else {
+      return true;
     }
-
-    return true;
   }
 }
 
@@ -688,12 +696,16 @@ class _$StrokeLinejoinBevelPainter extends CustomPainter {
   }
 
   void _applyOverride(Paint paint, Object? override) {
-    if (override == null) return;
-    if (override is Color) {
-      paint.color = override;
-      paint.shader = null;
-    } else if (override is Shader) {
-      paint.shader = override;
+    switch (override) {
+      case final Color color:
+        paint.color = color;
+        paint.shader = null;
+
+      case final Shader shader:
+        paint.shader = shader;
+
+      case null || _:
+        break;
     }
   }
 
@@ -701,9 +713,9 @@ class _$StrokeLinejoinBevelPainter extends CustomPainter {
   bool shouldRepaint(covariant _$StrokeLinejoinBevelPainter oldDelegate) {
     if (fit == oldDelegate.fit) {
       return false;
+    } else {
+      return true;
     }
-
-    return true;
   }
 }
 
@@ -876,12 +888,16 @@ class _$StrokeLinejoinMiterPainter extends CustomPainter {
   }
 
   void _applyOverride(Paint paint, Object? override) {
-    if (override == null) return;
-    if (override is Color) {
-      paint.color = override;
-      paint.shader = null;
-    } else if (override is Shader) {
-      paint.shader = override;
+    switch (override) {
+      case final Color color:
+        paint.color = color;
+        paint.shader = null;
+
+      case final Shader shader:
+        paint.shader = shader;
+
+      case null || _:
+        break;
     }
   }
 
@@ -920,9 +936,9 @@ class _$StrokeLinejoinMiterPainter extends CustomPainter {
   bool shouldRepaint(covariant _$StrokeLinejoinMiterPainter oldDelegate) {
     if (fit == oldDelegate.fit) {
       return false;
+    } else {
+      return true;
     }
-
-    return true;
   }
 }
 
@@ -1095,12 +1111,16 @@ class _$StrokeLinejoinMiterClipPainter extends CustomPainter {
   }
 
   void _applyOverride(Paint paint, Object? override) {
-    if (override == null) return;
-    if (override is Color) {
-      paint.color = override;
-      paint.shader = null;
-    } else if (override is Shader) {
-      paint.shader = override;
+    switch (override) {
+      case final Color color:
+        paint.color = color;
+        paint.shader = null;
+
+      case final Shader shader:
+        paint.shader = shader;
+
+      case null || _:
+        break;
     }
   }
 
@@ -1139,9 +1159,9 @@ class _$StrokeLinejoinMiterClipPainter extends CustomPainter {
   bool shouldRepaint(covariant _$StrokeLinejoinMiterClipPainter oldDelegate) {
     if (fit == oldDelegate.fit) {
       return false;
+    } else {
+      return true;
     }
-
-    return true;
   }
 }
 
@@ -1249,12 +1269,16 @@ class _$StrokeLinejoinRoundPainter extends CustomPainter {
   }
 
   void _applyOverride(Paint paint, Object? override) {
-    if (override == null) return;
-    if (override is Color) {
-      paint.color = override;
-      paint.shader = null;
-    } else if (override is Shader) {
-      paint.shader = override;
+    switch (override) {
+      case final Color color:
+        paint.color = color;
+        paint.shader = null;
+
+      case final Shader shader:
+        paint.shader = shader;
+
+      case null || _:
+        break;
     }
   }
 
@@ -1262,8 +1286,8 @@ class _$StrokeLinejoinRoundPainter extends CustomPainter {
   bool shouldRepaint(covariant _$StrokeLinejoinRoundPainter oldDelegate) {
     if (fit == oldDelegate.fit) {
       return false;
+    } else {
+      return true;
     }
-
-    return true;
   }
 }

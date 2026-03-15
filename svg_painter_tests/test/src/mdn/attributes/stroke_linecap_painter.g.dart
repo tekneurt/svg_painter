@@ -110,12 +110,16 @@ class _$StrokeLinecapPainter extends CustomPainter {
   }
 
   void _applyOverride(Paint paint, Object? override) {
-    if (override == null) return;
-    if (override is Color) {
-      paint.color = override;
-      paint.shader = null;
-    } else if (override is Shader) {
-      paint.shader = override;
+    switch (override) {
+      case final Color color:
+        paint.color = color;
+        paint.shader = null;
+
+      case final Shader shader:
+        paint.shader = shader;
+
+      case null || _:
+        break;
     }
   }
 
@@ -123,9 +127,9 @@ class _$StrokeLinecapPainter extends CustomPainter {
   bool shouldRepaint(covariant _$StrokeLinecapPainter oldDelegate) {
     if (fit == oldDelegate.fit) {
       return false;
+    } else {
+      return true;
     }
-
-    return true;
   }
 }
 
@@ -260,12 +264,16 @@ class _$StrokeLinecapButtPainter extends CustomPainter {
   }
 
   void _applyOverride(Paint paint, Object? override) {
-    if (override == null) return;
-    if (override is Color) {
-      paint.color = override;
-      paint.shader = null;
-    } else if (override is Shader) {
-      paint.shader = override;
+    switch (override) {
+      case final Color color:
+        paint.color = color;
+        paint.shader = null;
+
+      case final Shader shader:
+        paint.shader = shader;
+
+      case null || _:
+        break;
     }
   }
 
@@ -273,9 +281,9 @@ class _$StrokeLinecapButtPainter extends CustomPainter {
   bool shouldRepaint(covariant _$StrokeLinecapButtPainter oldDelegate) {
     if (fit == oldDelegate.fit) {
       return false;
+    } else {
+      return true;
     }
-
-    return true;
   }
 }
 
@@ -412,12 +420,16 @@ class _$StrokeLinecapRoundPainter extends CustomPainter {
   }
 
   void _applyOverride(Paint paint, Object? override) {
-    if (override == null) return;
-    if (override is Color) {
-      paint.color = override;
-      paint.shader = null;
-    } else if (override is Shader) {
-      paint.shader = override;
+    switch (override) {
+      case final Color color:
+        paint.color = color;
+        paint.shader = null;
+
+      case final Shader shader:
+        paint.shader = shader;
+
+      case null || _:
+        break;
     }
   }
 
@@ -425,9 +437,9 @@ class _$StrokeLinecapRoundPainter extends CustomPainter {
   bool shouldRepaint(covariant _$StrokeLinecapRoundPainter oldDelegate) {
     if (fit == oldDelegate.fit) {
       return false;
+    } else {
+      return true;
     }
-
-    return true;
   }
 }
 
@@ -564,12 +576,16 @@ class _$StrokeLinecapSquarePainter extends CustomPainter {
   }
 
   void _applyOverride(Paint paint, Object? override) {
-    if (override == null) return;
-    if (override is Color) {
-      paint.color = override;
-      paint.shader = null;
-    } else if (override is Shader) {
-      paint.shader = override;
+    switch (override) {
+      case final Color color:
+        paint.color = color;
+        paint.shader = null;
+
+      case final Shader shader:
+        paint.shader = shader;
+
+      case null || _:
+        break;
     }
   }
 
@@ -577,8 +593,8 @@ class _$StrokeLinecapSquarePainter extends CustomPainter {
   bool shouldRepaint(covariant _$StrokeLinecapSquarePainter oldDelegate) {
     if (fit == oldDelegate.fit) {
       return false;
+    } else {
+      return true;
     }
-
-    return true;
   }
 }

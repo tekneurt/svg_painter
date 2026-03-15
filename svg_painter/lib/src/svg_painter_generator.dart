@@ -351,15 +351,18 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
       buffer.writeln();
 
       buffer.writeBlock('void _applyOverride(Paint paint, Object? override) {', () {
-        buffer.writeln('if (override == null) return;');
-        buffer.writeBlock('if (override is Color) {', () {
-          buffer.writeln('paint.color = override;');
-          buffer.writeln('paint.shader = null;');
-        }, footer: '} else if (override is Shader) {');
-        buffer.indent();
-        buffer.writeln('paint.shader = override;');
-        buffer.outdent();
-        buffer.writeln('}');
+        buffer.writeBlock('switch (override) {', () {
+          buffer.writeBlock('case final Color color:', () {
+            buffer.writeln('paint.color = color;');
+            buffer.writeln('paint.shader = null;');
+          }, footer: '');
+          buffer.writeBlock('case final Shader shader:', () {
+            buffer.writeln('paint.shader = shader;');
+          }, footer: '');
+          buffer.writeBlock('case null || _:', () {
+            buffer.writeln('break;');
+          }, footer: '');
+        });
       });
       buffer.writeln();
 
@@ -431,9 +434,11 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
 
         buffer.writeBlock('if (${checks.join(' &&\n          ')}) {', () {
           buffer.writeln('return false;');
-        });
-        buffer.writeln();
+        }, footer: '} else {');
+        buffer.indent();
         buffer.writeln('return true;');
+        buffer.outdent();
+        buffer.writeln('}');
       });
     });
 

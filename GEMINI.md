@@ -46,6 +46,10 @@ The engine operates as a strict, unidirectional layered pipeline:
 
 All contributions MUST adhere to these core engineering principles:
 
+- **Readability & Cognitive Load**: Code (especially generated code) must read like a clear, step-by-step instruction manual. Always optimize for human comprehension over brevity or character count.
+    - **Avoid Negative Framing (De Morgan's trap)**: The human brain incurs a high cognitive tax when parsing negative logic (e.g., `if (A != B || C != D)`). Always prefer explicit, positively-framed logic (e.g., `if (A == B && C == D) { return false; } else { return true; }`).
+    - **Explicit Control Flow**: Avoid "open continuations" (returning a default value after an `if` block without an `else`). If an `if` returns a specific outcome, the alternative MUST be explicitly defined in an `else` block to remove ambiguity about the code's intent.
+    - **Minimize Bang Operators (`!`)**: Both as a null-assertion and as a boolean NOT operator. Use modern Dart 3 features (like pattern matching and `switch`) to avoid `!` entirely when possible, provided it remains explicitly clear.
 - **KISS (Keep It Simple, Stupid)**: Favor simple, readable solutions over complex architectures. Avoid over-engineering and unnecessary abstractions.
 - **YAGNI (You Ain't Gonna Need It)**: Do not add functionality until it is explicitly required. Focus on the task at hand.
 - **DRY (Don't Repeat Yourself)**: Consolidate logic into reusable components, but not at the expense of readability (avoid "DRYing" code into unreadable abstractions).

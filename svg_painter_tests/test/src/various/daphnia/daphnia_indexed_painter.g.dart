@@ -661,12 +661,16 @@ class _$DaphniaIndexedPainter extends CustomPainter {
   }
 
   void _applyOverride(Paint paint, Object? override) {
-    if (override == null) return;
-    if (override is Color) {
-      paint.color = override;
-      paint.shader = null;
-    } else if (override is Shader) {
-      paint.shader = override;
+    switch (override) {
+      case final Color color:
+        paint.color = color;
+        paint.shader = null;
+
+      case final Shader shader:
+        paint.shader = shader;
+
+      case null || _:
+        break;
     }
   }
 
@@ -678,8 +682,8 @@ class _$DaphniaIndexedPainter extends CustomPainter {
         fill2 == oldDelegate.fill2 &&
         fill3 == oldDelegate.fill3) {
       return false;
+    } else {
+      return true;
     }
-
-    return true;
   }
 }

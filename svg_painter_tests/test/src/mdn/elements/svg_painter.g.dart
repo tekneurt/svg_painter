@@ -108,12 +108,16 @@ class _$Svg1Painter extends CustomPainter {
   }
 
   void _applyOverride(Paint paint, Object? override) {
-    if (override == null) return;
-    if (override is Color) {
-      paint.color = override;
-      paint.shader = null;
-    } else if (override is Shader) {
-      paint.shader = override;
+    switch (override) {
+      case final Color color:
+        paint.color = color;
+        paint.shader = null;
+
+      case final Shader shader:
+        paint.shader = shader;
+
+      case null || _:
+        break;
     }
   }
 
@@ -121,9 +125,9 @@ class _$Svg1Painter extends CustomPainter {
   bool shouldRepaint(covariant _$Svg1Painter oldDelegate) {
     if (fit == oldDelegate.fit) {
       return false;
+    } else {
+      return true;
     }
-
-    return true;
   }
 }
 
@@ -214,12 +218,16 @@ class _$Svg2Painter extends CustomPainter {
   }
 
   void _applyOverride(Paint paint, Object? override) {
-    if (override == null) return;
-    if (override is Color) {
-      paint.color = override;
-      paint.shader = null;
-    } else if (override is Shader) {
-      paint.shader = override;
+    switch (override) {
+      case final Color color:
+        paint.color = color;
+        paint.shader = null;
+
+      case final Shader shader:
+        paint.shader = shader;
+
+      case null || _:
+        break;
     }
   }
 
@@ -227,8 +235,8 @@ class _$Svg2Painter extends CustomPainter {
   bool shouldRepaint(covariant _$Svg2Painter oldDelegate) {
     if (fit == oldDelegate.fit) {
       return false;
+    } else {
+      return true;
     }
-
-    return true;
   }
 }

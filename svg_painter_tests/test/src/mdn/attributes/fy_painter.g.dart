@@ -97,12 +97,16 @@ class _$Fy1Painter extends CustomPainter {
   }
 
   void _applyOverride(Paint paint, Object? override) {
-    if (override == null) return;
-    if (override is Color) {
-      paint.color = override;
-      paint.shader = null;
-    } else if (override is Shader) {
-      paint.shader = override;
+    switch (override) {
+      case final Color color:
+        paint.color = color;
+        paint.shader = null;
+
+      case final Shader shader:
+        paint.shader = shader;
+
+      case null || _:
+        break;
     }
   }
 
@@ -110,9 +114,9 @@ class _$Fy1Painter extends CustomPainter {
   bool shouldRepaint(covariant _$Fy1Painter oldDelegate) {
     if (fit == oldDelegate.fit) {
       return false;
+    } else {
+      return true;
     }
-
-    return true;
   }
 }
 
@@ -306,12 +310,16 @@ class _$Fy2Painter extends CustomPainter {
   }
 
   void _applyOverride(Paint paint, Object? override) {
-    if (override == null) return;
-    if (override is Color) {
-      paint.color = override;
-      paint.shader = null;
-    } else if (override is Shader) {
-      paint.shader = override;
+    switch (override) {
+      case final Color color:
+        paint.color = color;
+        paint.shader = null;
+
+      case final Shader shader:
+        paint.shader = shader;
+
+      case null || _:
+        break;
     }
   }
 
@@ -319,8 +327,8 @@ class _$Fy2Painter extends CustomPainter {
   bool shouldRepaint(covariant _$Fy2Painter oldDelegate) {
     if (fit == oldDelegate.fit) {
       return false;
+    } else {
+      return true;
     }
-
-    return true;
   }
 }
