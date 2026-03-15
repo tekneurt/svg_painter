@@ -47,6 +47,8 @@ jobs:
         run: |
           echo "=== Modified golden files ==="
           mkdir -p modified-goldens
+          # Fix dubious ownership error in Docker container
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
           # Copy only files that were actually modified/created
           git status --porcelain | grep '\.png$' | awk '{print $2}' | while read file; do
             if [ -f "$file" ]; then
