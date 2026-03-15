@@ -151,36 +151,94 @@ class PaletteAnalyzer {
 
 @immutable
 class _StyleKey implements Comparable<_StyleKey> {
-  const _StyleKey(this.colorArgb, this.shaderId);
+  const _StyleKey(this.colorArgb, this.shaderId, this.dashArray, this.pathLength);
 
   factory _StyleKey.fromFill(PaintingFillStyle fill) {
-    return _StyleKey(fill.colorArgb, fill.shaderId);
+    return _StyleKey(fill.colorArgb, fill.shaderId, null, null);
   }
 
   factory _StyleKey.fromStroke(PaintingStrokeStyle stroke) {
-    return _StyleKey(stroke.colorArgb, stroke.shaderId);
+    return _StyleKey(stroke.colorArgb, stroke.shaderId, stroke.dashArray, stroke.pathLength);
   }
 
   final int? colorArgb;
   final String? shaderId;
+  final List<double>? dashArray;
+  final double? pathLength;
 
   @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is _StyleKey &&
-          runtimeType == other.runtimeType &&
-          colorArgb == other.colorArgb &&
-          shaderId == other.shaderId;
+  bool operator ==(Object other) {
+    if (identical(this, other)) {
+      return true;
+    }
+    if (other is! _StyleKey) {
+      return false;
+    }
+
+    if (colorArgb != other.colorArgb) {
+      return false;
+    }
+    if (shaderId != other.shaderId) {
+      return false;
+    }
+    if (pathLength != other.pathLength) {
+      return false;
+    }
+
+    if (dashArray == null && other.dashArray == null) {
+      return true;
+    }
+    if (dashArray == null || other.dashArray == null) {
+      return false;
+    }
+    if (dashArray!.length != other.dashArray!.length) {
+      return false;
+    }
+
+    for (int i = 0; i < dashArray!.length; i++) {
+      if (dashArray![i] != other.dashArray![i]) {
+        return false;
+      }
+    }
+
+    return true;
+  }
 
   @override
-  int get hashCode => colorArgb.hashCode ^ shaderId.hashCode;
+  int get hashCode =>
+      colorArgb.hashCode ^
+      shaderId.hashCode ^
+      (dashArray?.length ?? 0).hashCode ^
+      pathLength.hashCode;
 
   @override
   int compareTo(_StyleKey other) {
-    if (colorArgb == other.colorArgb) {
-      return (shaderId ?? '').compareTo(other.shaderId ?? '');
-    } else {
+    if (colorArgb != other.colorArgb) {
       return (colorArgb ?? 0).compareTo(other.colorArgb ?? 0);
     }
+    if (shaderId != other.shaderId) {
+      return (shaderId ?? '').compareTo(other.shaderId ?? '');
+    }
+    if (pathLength != other.pathLength) {
+      return (pathLength ?? 0).compareTo(other.pathLength ?? 0);
+    }
+
+    // Dash array comparison
+    final int lenA = dashArray?.length ?? 0;
+    final int lenB = other.dashArray?.length ?? 0;
+    if (lenA != lenB) {
+      return lenA.compareTo(lenB);
+    }
+
+    if (dashArray != null && other.dashArray != null) {
+      for (int i = 0; i < dashArray!.length; i++) {
+        final int valComp = dashArray![i].compareTo(other.dashArray![i]);
+        if (valComp != 0) {
+          return valComp;
+        }
+      }
+    }
+
+    return 0;
   }
 }

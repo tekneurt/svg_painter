@@ -203,9 +203,50 @@ void main() {
         PaintingFontWeight.normal,
       );
       expect(
+        resolvePaint(emptyContext, inlineStyle: 'font-weight: 100').text?.fontWeight,
+        PaintingFontWeight.w100,
+      );
+      expect(
+        resolvePaint(emptyContext, inlineStyle: 'font-weight: 200').text?.fontWeight,
+        PaintingFontWeight.w200,
+      );
+      expect(
+        resolvePaint(emptyContext, inlineStyle: 'font-weight: 300').text?.fontWeight,
+        PaintingFontWeight.w300,
+      );
+      expect(
+        resolvePaint(emptyContext, inlineStyle: 'font-weight: 400').text?.fontWeight,
+        PaintingFontWeight.w400,
+      );
+      expect(
         resolvePaint(emptyContext, inlineStyle: 'font-weight: 500').text?.fontWeight,
         PaintingFontWeight.w500,
       );
+      expect(
+        resolvePaint(emptyContext, inlineStyle: 'font-weight: 600').text?.fontWeight,
+        PaintingFontWeight.w600,
+      );
+      expect(
+        resolvePaint(emptyContext, inlineStyle: 'font-weight: 700').text?.fontWeight,
+        PaintingFontWeight.w700,
+      );
+      expect(
+        resolvePaint(emptyContext, inlineStyle: 'font-weight: 800').text?.fontWeight,
+        PaintingFontWeight.w800,
+      );
+      expect(
+        resolvePaint(emptyContext, inlineStyle: 'font-weight: 900').text?.fontWeight,
+        PaintingFontWeight.w900,
+      );
+    });
+
+    test('should duplicate dasharray if length is odd', () {
+      final PaintingStyle style = resolvePaint(
+        emptyContext,
+        inlineStyle: 'stroke: black; stroke-dasharray: 5',
+      );
+
+      expect(style.stroke?.dashArray, equals(<double>[5.0, 5.0]));
     });
 
     test('should resolve stroke shader ID', () {
