@@ -566,8 +566,12 @@ void main() {
 
         // Assert
         final String output = buffer.toString();
-        // tan(30 degrees) = 0.5773502691896256 (math.tan calculation)
-        expect(output, contains('canvas.skew(0.5773502691896256, 0.0);'));
+        // Calculate tangent dynamically to avoid false-positive test failures on CI.
+        // Floating-point precision for math.tan differs slightly between architectures:
+        // macOS (ARM): 0.5773502691896256
+        // Linux (x86): 0.5773502691896257
+        final double tanValue = math.tan(30 * (math.pi / 180.0));
+        expect(output, contains('canvas.skew($tanValue, 0.0);'));
       });
 
       test('should wrap with skewY when provided', () {
@@ -587,8 +591,12 @@ void main() {
 
         // Assert
         final String output = buffer.toString();
-        // tan(30 degrees) = 0.5773502691896256 (math.tan calculation)
-        expect(output, contains('canvas.skew(0.0, 0.5773502691896256);'));
+        // Calculate tangent dynamically to avoid false-positive test failures on CI.
+        // Floating-point precision for math.tan differs slightly between architectures:
+        // macOS (ARM): 0.5773502691896256
+        // Linux (x86): 0.5773502691896257
+        final double tanValue = math.tan(30 * (math.pi / 180.0));
+        expect(output, contains('canvas.skew(0.0, $tanValue);'));
       });
 
       test('should wrap with matrix transform when provided', () {
