@@ -30,9 +30,8 @@ jobs:
 
       - name: Install dependencies
         run: |
-          cd svg_painter_annotation && dart pub get && cd ..
+          dart pub get
           cd svg_painter_fixtures && dart pub get && cd ..
-          cd svg_painter && dart pub get && cd ..
           cd svg_painter_tests && flutter pub get && cd ..
 
       - name: Generate golden files
