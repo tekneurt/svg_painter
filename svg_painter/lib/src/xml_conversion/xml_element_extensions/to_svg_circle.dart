@@ -19,6 +19,10 @@ extension ToSvgCircle on XmlElement {
       XmlAttributeName.cy,
     );
     final SvgLengthPercentage r = toSvgValue<SvgLengthPercentage>(elementName, XmlAttributeName.r);
+    final SvgNonNegativeNumber? pathLength = toSvgValueOrNull<SvgNonNegativeNumber>(
+      elementName,
+      XmlAttributeName.pathLength,
+    );
 
     final CommonAttributes common = toCommonAttributes(elementName);
 
@@ -27,14 +31,13 @@ extension ToSvgCircle on XmlElement {
         cx: cx,
         cy: cy,
         r: r,
-        fill: common.fill,
-        fillOpacity: common.fillOpacity,
-        stroke: common.stroke,
+        pathLength: pathLength,
+        fillAttributes: common.fillAttributes,
+        strokeAttributes: common.strokeAttributes,
         opacity: common.opacity,
         cssClass: common.cssClass,
         inlineStyle: common.inlineStyle,
-        transform: common.transform,
-        pathLength: common.pathLength,
+        transformAttributes: common.transformAttributes,
         id: common.id,
       ),
     );

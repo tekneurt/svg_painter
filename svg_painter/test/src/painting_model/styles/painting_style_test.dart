@@ -7,7 +7,12 @@ void main() {
       // Arrange
       const PaintingFillStyle fill = PaintingFillStyle(colorArgb: 0xFFFF0000);
       const PaintingStrokeStyle stroke = PaintingStrokeStyle(colorArgb: 0xFF0000FF);
-      const PaintingTextStyle text = PaintingTextStyle(fontSize: 12.0);
+      const PaintingTextStyle text = PaintingTextStyle(
+        fontSize: 12.0,
+        fontWeight: PaintingFontWeight.normal,
+        fontStyle: PaintingFontStyle.normal,
+        fontFamily: 'Roboto',
+      );
       const double opacity = 0.5;
 
       // Act
@@ -33,12 +38,12 @@ void main() {
       );
 
       // Act
-      style.toString();
+      final String result = style.toString();
 
       // Assert
       expect(
-        style.toString(),
-        'PaintingStyle(fill: PaintingFillStyle(color: 4294901760, shader: null, opacity: 1.0, explicit: true, currentColor: false), stroke: null, text: null, groupOpacity: 0.8)',
+        result,
+        'PaintingStyle(fill: PaintingFillStyle(color: 4294901760, shader: null, opacity: 1.0, explicit: true, currentColor: false), stroke: null, text: null, groupOpacity: 0.8, transform: null)',
       );
     });
   });
@@ -83,8 +88,8 @@ void main() {
       // Arrange
       const double fontSize = 16.0;
       const String fontFamily = 'Roboto';
-      const String fontWeight = 'bold';
-      const String fontStyle = 'italic';
+      const PaintingFontWeight fontWeight = PaintingFontWeight.bold;
+      const PaintingFontStyle fontStyle = PaintingFontStyle.italic;
 
       // Act
       const PaintingTextStyle text = PaintingTextStyle(
@@ -103,13 +108,21 @@ void main() {
 
     test('should return correct string representation when toString() is called', () {
       // Arrange
-      const PaintingTextStyle text = PaintingTextStyle(fontSize: 14.0, fontFamily: 'Arial');
+      const PaintingTextStyle text = PaintingTextStyle(
+        fontSize: 14.0,
+        fontWeight: PaintingFontWeight.bold,
+        fontStyle: PaintingFontStyle.italic,
+        fontFamily: 'Arial',
+      );
 
       // Act
       final String result = text.toString();
 
       // Assert
-      expect(result, 'PaintingTextStyle(size: 14.0, weight: null, style: null, family: Arial)');
+      expect(
+        result,
+        'PaintingTextStyle(size: 14.0, weight: PaintingFontWeight.bold, style: PaintingFontStyle.italic, family: Arial)',
+      );
     });
   });
 }

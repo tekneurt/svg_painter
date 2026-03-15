@@ -65,44 +65,44 @@ class _$CxPainter extends CustomPainter {
       center: Alignment(-0.5, 0.0),
       radius: 0.5,
       focal: Alignment(-0.5, 0.0),
-      focalRadius: 0.0,
-      colors: [Colors.white, Colors.black],
-      stops: [0.0, 1.0],
+      colors: <Color>[Colors.white, Colors.black],
+      stops: <double>[0.0, 1.0],
     );
     {
-      {
-        final Paint paint = Paint();
-        paint.color = Colors.black;
-        paint.style = PaintingStyle.fill;
-        canvas.drawCircle(const Offset(50.0, 50.0), 45.0, paint);
-      }
+      final Paint paint = Paint();
+      paint.color = Colors.black;
+      paint.style = PaintingStyle.fill;
+      canvas.drawCircle(const Offset(50.0, 50.0), 45.0, paint);
     }
     {
-      {
-        final Paint paint = Paint();
-        paint.color = Colors.black;
-        paint.style = PaintingStyle.fill;
-        canvas.drawOval(
-          Rect.fromCenter(
-            center: const Offset(150.0, 50.0),
-            width: 90.0,
-            height: 50.0,
-          ),
-          paint,
-        );
-      }
+      final Paint paint = Paint();
+      paint.color = Colors.black;
+      paint.style = PaintingStyle.fill;
+      canvas.drawOval(Rect.fromLTWH(105.0, 25.0, 90.0, 50.0), paint);
     }
     {
-      {
-        final Paint paint = Paint();
-        paint.shader = _grad_myGradient.createShader(
-          Rect.fromLTWH(205.0, 5.0, 90.0, 90.0),
-        );
-        paint.style = PaintingStyle.fill;
-        canvas.drawRect(Rect.fromLTWH(205.0, 5.0, 90.0, 90.0), paint);
-      }
+      final Paint paint = Paint();
+      paint.shader = _grad_myGradient.createShader(
+        Rect.fromLTWH(205.0, 5.0, 90.0, 90.0),
+      );
+      paint.style = PaintingStyle.fill;
+      canvas.drawRect(Rect.fromLTWH(205.0, 5.0, 90.0, 90.0), paint);
     }
     canvas.restore();
+  }
+
+  void _applyOverride(Paint paint, Object? override) {
+    switch (override) {
+      case final Color color:
+        paint.color = color;
+        paint.shader = null;
+
+      case final Shader shader:
+        paint.shader = shader;
+
+      case null || _:
+        break;
+    }
   }
 
   @override
@@ -174,78 +174,95 @@ class _$CxRadialGradientPainter extends CustomPainter {
       center: Alignment(-1.0, 0.0),
       radius: 0.5,
       focal: Alignment(-1.0, 0.0),
-      focalRadius: 0.0,
-      colors: [const Color(0xFFFFD700), const Color(0xFF008000), Colors.white],
-      stops: [0.0, 0.5, 1.0],
+      colors: <Color>[
+        const Color(0xFFFFD700),
+        const Color(0xFF008000),
+        Colors.white,
+      ],
+      stops: <double>[0.0, 0.5, 1.0],
     );
     final Gradient _grad_myGradient050 = RadialGradient(
       center: Alignment(0.0, 0.0),
       radius: 0.5,
       focal: Alignment(0.0, 0.0),
-      focalRadius: 0.0,
-      colors: [const Color(0xFFFFD700), const Color(0xFF008000), Colors.white],
-      stops: [0.0, 0.5, 1.0],
+      colors: <Color>[
+        const Color(0xFFFFD700),
+        const Color(0xFF008000),
+        Colors.white,
+      ],
+      stops: <double>[0.0, 0.5, 1.0],
     );
     final Gradient _grad_myGradient100 = RadialGradient(
       center: Alignment(1.0, 0.0),
       radius: 0.5,
       focal: Alignment(1.0, 0.0),
-      focalRadius: 0.0,
-      colors: [const Color(0xFFFFD700), const Color(0xFF008000), Colors.white],
-      stops: [0.0, 0.5, 1.0],
+      colors: <Color>[
+        const Color(0xFFFFD700),
+        const Color(0xFF008000),
+        Colors.white,
+      ],
+      stops: <double>[0.0, 0.5, 1.0],
     );
     {
-      {
-        final Paint paint = Paint();
-        paint.shader = _grad_myGradient000.createShader(
-          Rect.fromLTWH(1.0, 1.0, 8.0, 8.0),
-        );
-        paint.style = PaintingStyle.fill;
-        canvas.drawRect(Rect.fromLTWH(1.0, 1.0, 8.0, 8.0), paint);
-      }
-      {
-        final Paint paint = Paint();
-        paint.color = Colors.black;
-        paint.style = PaintingStyle.stroke;
-        paint.strokeWidth = 1.0;
-        canvas.drawRect(Rect.fromLTWH(1.0, 1.0, 8.0, 8.0), paint);
-      }
+      final Paint paint = Paint();
+      paint.shader = _grad_myGradient000.createShader(
+        Rect.fromLTWH(1.0, 1.0, 8.0, 8.0),
+      );
+      paint.style = PaintingStyle.fill;
+      canvas.drawRect(Rect.fromLTWH(1.0, 1.0, 8.0, 8.0), paint);
     }
     {
-      {
-        final Paint paint = Paint();
-        paint.shader = _grad_myGradient050.createShader(
-          Rect.fromLTWH(13.0, 1.0, 8.0, 8.0),
-        );
-        paint.style = PaintingStyle.fill;
-        canvas.drawRect(Rect.fromLTWH(13.0, 1.0, 8.0, 8.0), paint);
-      }
-      {
-        final Paint paint = Paint();
-        paint.color = Colors.black;
-        paint.style = PaintingStyle.stroke;
-        paint.strokeWidth = 1.0;
-        canvas.drawRect(Rect.fromLTWH(13.0, 1.0, 8.0, 8.0), paint);
-      }
+      final Paint paint = Paint();
+      paint.color = Colors.black;
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 1.0;
+      canvas.drawRect(Rect.fromLTWH(1.0, 1.0, 8.0, 8.0), paint);
     }
     {
-      {
-        final Paint paint = Paint();
-        paint.shader = _grad_myGradient100.createShader(
-          Rect.fromLTWH(25.0, 1.0, 8.0, 8.0),
-        );
-        paint.style = PaintingStyle.fill;
-        canvas.drawRect(Rect.fromLTWH(25.0, 1.0, 8.0, 8.0), paint);
-      }
-      {
-        final Paint paint = Paint();
-        paint.color = Colors.black;
-        paint.style = PaintingStyle.stroke;
-        paint.strokeWidth = 1.0;
-        canvas.drawRect(Rect.fromLTWH(25.0, 1.0, 8.0, 8.0), paint);
-      }
+      final Paint paint = Paint();
+      paint.shader = _grad_myGradient050.createShader(
+        Rect.fromLTWH(13.0, 1.0, 8.0, 8.0),
+      );
+      paint.style = PaintingStyle.fill;
+      canvas.drawRect(Rect.fromLTWH(13.0, 1.0, 8.0, 8.0), paint);
+    }
+    {
+      final Paint paint = Paint();
+      paint.color = Colors.black;
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 1.0;
+      canvas.drawRect(Rect.fromLTWH(13.0, 1.0, 8.0, 8.0), paint);
+    }
+    {
+      final Paint paint = Paint();
+      paint.shader = _grad_myGradient100.createShader(
+        Rect.fromLTWH(25.0, 1.0, 8.0, 8.0),
+      );
+      paint.style = PaintingStyle.fill;
+      canvas.drawRect(Rect.fromLTWH(25.0, 1.0, 8.0, 8.0), paint);
+    }
+    {
+      final Paint paint = Paint();
+      paint.color = Colors.black;
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 1.0;
+      canvas.drawRect(Rect.fromLTWH(25.0, 1.0, 8.0, 8.0), paint);
     }
     canvas.restore();
+  }
+
+  void _applyOverride(Paint paint, Object? override) {
+    switch (override) {
+      case final Color color:
+        paint.color = color;
+        paint.shader = null;
+
+      case final Shader shader:
+        paint.shader = shader;
+
+      case null || _:
+        break;
+    }
   }
 
   @override

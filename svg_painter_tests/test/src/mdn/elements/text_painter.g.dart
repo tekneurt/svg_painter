@@ -62,21 +62,23 @@ class _$MdnTextExamplePainter extends CustomPainter {
     canvas.clipRect(Rect.fromLTWH(0, 0, 240.0, 80.0));
 
     {
+      final Paint paint = Paint();
+      paint.color = Colors.black;
+      paint.style = PaintingStyle.fill;
       {
-        final TextSpan span = TextSpan(
-          text: '''My''',
-          style: TextStyle(
-            color: const Color(0xFF000000),
-            fontSize: 13.0,
-            fontFamily: 'Roboto',
-            fontStyle: FontStyle.italic,
-          ),
-        );
         final TextPainter tp = TextPainter(
-          text: span,
+          text: TextSpan(
+            text: 'My',
+            style: TextStyle(
+              foreground: paint,
+              fontSize: 13.0,
+              fontWeight: FontWeight.normal,
+              fontStyle: FontStyle.italic,
+              fontFamily: 'Roboto',
+            ),
+          ),
           textDirection: TextDirection.ltr,
-        );
-        tp.layout();
+        )..layout();
         tp.paint(
           canvas,
           Offset(
@@ -87,21 +89,23 @@ class _$MdnTextExamplePainter extends CustomPainter {
       }
     }
     {
+      final Paint paint = Paint();
+      paint.color = Colors.black;
+      paint.style = PaintingStyle.fill;
       {
-        final TextSpan span = TextSpan(
-          text: '''cat''',
-          style: TextStyle(
-            color: const Color(0xFF000000),
-            fontSize: 30.0,
-            fontFamily: 'Roboto',
-            fontWeight: FontWeight.bold,
-          ),
-        );
         final TextPainter tp = TextPainter(
-          text: span,
+          text: TextSpan(
+            text: 'cat',
+            style: TextStyle(
+              foreground: paint,
+              fontSize: 30.0,
+              fontWeight: FontWeight.bold,
+              fontStyle: FontStyle.normal,
+              fontFamily: 'Roboto',
+            ),
+          ),
           textDirection: TextDirection.ltr,
-        );
-        tp.layout();
+        )..layout();
         tp.paint(
           canvas,
           Offset(
@@ -112,21 +116,23 @@ class _$MdnTextExamplePainter extends CustomPainter {
       }
     }
     {
+      final Paint paint = Paint();
+      paint.color = Colors.black;
+      paint.style = PaintingStyle.fill;
       {
-        final TextSpan span = TextSpan(
-          text: '''is''',
-          style: TextStyle(
-            color: const Color(0xFF000000),
-            fontSize: 13.0,
-            fontFamily: 'Roboto',
-            fontStyle: FontStyle.italic,
-          ),
-        );
         final TextPainter tp = TextPainter(
-          text: span,
+          text: TextSpan(
+            text: 'is',
+            style: TextStyle(
+              foreground: paint,
+              fontSize: 13.0,
+              fontWeight: FontWeight.normal,
+              fontStyle: FontStyle.italic,
+              fontFamily: 'Roboto',
+            ),
+          ),
           textDirection: TextDirection.ltr,
-        );
-        tp.layout();
+        )..layout();
         tp.paint(
           canvas,
           Offset(
@@ -137,21 +143,23 @@ class _$MdnTextExamplePainter extends CustomPainter {
       }
     }
     {
+      final Paint paint = Paint();
+      paint.color = const Color(0xFFFF0000);
+      paint.style = PaintingStyle.fill;
       {
-        final TextSpan span = TextSpan(
-          text: '''Grumpy!''',
-          style: TextStyle(
-            color: const Color(0xFFFF0000),
-            fontSize: 40.0,
-            fontFamily: 'Noto Serif',
-            fontStyle: FontStyle.italic,
-          ),
-        );
         final TextPainter tp = TextPainter(
-          text: span,
+          text: TextSpan(
+            text: 'Grumpy!',
+            style: TextStyle(
+              foreground: paint,
+              fontSize: 40.0,
+              fontWeight: FontWeight.normal,
+              fontStyle: FontStyle.italic,
+              fontFamily: 'Noto Serif',
+            ),
+          ),
           textDirection: TextDirection.ltr,
-        );
-        tp.layout();
+        )..layout();
         tp.paint(
           canvas,
           Offset(
@@ -162,6 +170,20 @@ class _$MdnTextExamplePainter extends CustomPainter {
       }
     }
     canvas.restore();
+  }
+
+  void _applyOverride(Paint paint, Object? override) {
+    switch (override) {
+      case final Color color:
+        paint.color = color;
+        paint.shader = null;
+
+      case final Shader shader:
+        paint.shader = shader;
+
+      case null || _:
+        break;
+    }
   }
 
   @override

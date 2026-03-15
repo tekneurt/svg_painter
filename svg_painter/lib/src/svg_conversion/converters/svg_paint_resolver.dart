@@ -1,3 +1,4 @@
+import '../../base/_base.dart';
 import '../../painting_model/_painting_model.dart';
 import '../../svg_model/_svg_model.dart';
 import '../../xml_conversion/_xml_conversion.dart';
@@ -9,17 +10,14 @@ PaintingStyle resolvePaint(
   SvgPaintingContext context, {
   String? tagName,
   String? id,
-  SvgColor? fill,
-  SvgLengthPercentage? fillOpacity,
-  SvgStrokeAttributes? stroke,
+  SvgNumber? pathLength,
+  SvgFillAttributes? fillAttributes,
+  SvgStrokeAttributes? strokeAttributes,
+  SvgFontAttributes? fontAttributes,
   SvgLengthPercentage? opacity,
-  SvgLengthPercentage? fontSize,
-  String? fontWeight,
-  String? fontStyle,
-  String? fontFamily,
   String? cssClass,
   String? inlineStyle,
-  SvgLength? pathLength,
+  SvgTransformAttributes? transformAttributes,
 }) {
   // 1. Resolve CSS properties
   final Map<String, String> resolvedRules = <String, String>{};
@@ -44,7 +42,7 @@ PaintingStyle resolvePaint(
   } else {
     final List<String> classes = cssClass.split(RegExp(r'\s+'));
     for (final String className in classes) {
-      final Map<String, String>? rules = context.styleSheet.rules['.$className'];
+      final Map<String, String>? rules = context.styleSheet.rules[className];
       if (rules == null) {
         // No rules for this class
       } else {
@@ -92,91 +90,105 @@ PaintingStyle resolvePaint(
   SvgStrokeLinecap? cssStrokeLinecap;
   SvgStrokeLinejoin? cssStrokeLinejoin;
   SvgLengthPercentage? cssOpacity;
-  String? cssFontWeight;
-  String? cssFontStyle;
+  SvgFontWeight? cssFontWeight;
+  SvgFontStyle? cssFontStyle;
   SvgLengthPercentage? cssFontSize;
-  String? cssFontFamily;
-  SvgLength? cssPathLength;
+  SvgFontFamily? cssFontFamily;
+  SvgNumber? cssPathLength;
 
-  if (resolvedRules.containsKey('font')) {
-    // Basic font shorthand support: [style] [weight] size [family]
-    final List<String> parts = resolvedRules['font']!.split(RegExp(r'\s+'));
-    for (final String part in parts) {
-      if (part == 'italic') {
-        cssFontStyle = 'italic';
-      } else if (part == 'bold' || part == 'heavy') {
-        cssFontWeight = 'bold';
-      } else if (part.contains(RegExp(r'\d'))) {
-        cssFontSize = part.toSvgLengthPercentage();
-      } else if (part != 'normal') {
-        cssFontFamily ??= part;
+  final String? fontValue = resolvedRules['font'];
+  if (fontValue == null) {
+    cssFontWeight = resolvedRules['font-weight']?.toSvgFontWeight();
+    cssFontStyle = resolvedRules['font-style']?.toSvgFontStyle();
+    cssFontSize = resolvedRules['font-size']?.toSvgLengthPercentage();
+    cssFontFamily = resolvedRules['font-family']?.toSvgFontFamily();
+  } else {
+    // 1. Handle font-family (everything after the last size-like token)
+    // Find the index of the first token that looks like a size (contains a digit)
+    final List<String> allParts = fontValue.split(RegExp(r'\s+'));
+    int sizeIndex = -1;
+    for (int i = 0; i < allParts.length; i++) {
+      if (allParts[i].contains(RegExp(r'\d'))) {
+        sizeIndex = i;
+        break;
       }
     }
+
+    if (sizeIndex != -1) {
+      // Parts before size are style/weight
+      for (int i = 0; i < sizeIndex; i++) {
+        final String part = allParts[i];
+        if (part == 'italic') {
+          cssFontStyle = SvgFontStyle.italic;
+        } else if (part == 'bold' || part == 'heavy') {
+          cssFontWeight = const SvgFontWeightBold();
+        }
+      }
+
+      // The size part (may contain /line-height)
+      final String sizePart = allParts[sizeIndex].split('/')[0];
+      cssFontSize = sizePart.toSvgLengthPercentage();
+
+      // Everything after size is font-family
+      if (sizeIndex + 1 < allParts.length) {
+        final String familyPart = allParts.sublist(sizeIndex + 1).join(' ');
+        // Clean up quotes and take the first family if multiple are provided
+        final String firstFamily = familyPart
+            .split(',')[0]
+            .trim()
+            .replaceAll(
+              RegExp(
+                r'["'
+                ']',
+              ),
+              '',
+            );
+        cssFontFamily = firstFamily.toSvgFontFamily();
+      }
+    }
+
+    // Individual font overrides (shorthand has lower priority than individual props in same scope)
+    cssFontWeight = resolvedRules['font-weight']?.toSvgFontWeight() ?? cssFontWeight;
+    cssFontStyle = resolvedRules['font-style']?.toSvgFontStyle() ?? cssFontStyle;
+    cssFontSize = resolvedRules['font-size']?.toSvgLengthPercentage() ?? cssFontSize;
+    cssFontFamily = resolvedRules['font-family']?.toSvgFontFamily() ?? cssFontFamily;
   }
 
-  if (resolvedRules.containsKey('fill')) {
-    cssFill = resolvedRules['fill']!.toSvgColor();
-  }
-  if (resolvedRules.containsKey('fill-opacity')) {
-    cssFillOpacity = resolvedRules['fill-opacity']!.toSvgLengthPercentage();
-  }
-  if (resolvedRules.containsKey('stroke')) {
-    cssStroke = resolvedRules['stroke']!.toSvgColor();
-  }
-  if (resolvedRules.containsKey('stroke-opacity')) {
-    cssStrokeOpacity = resolvedRules['stroke-opacity']!.toSvgLengthPercentage();
-  }
-  if (resolvedRules.containsKey('stroke-width')) {
-    cssStrokeWidth = resolvedRules['stroke-width']!.toSvgLengthPercentage();
-  }
-  if (resolvedRules.containsKey('stroke-dasharray')) {
-    cssStrokeDasharray = resolvedRules['stroke-dasharray']!.toSvgPointList();
-  }
-  if (resolvedRules.containsKey('stroke-linecap')) {
-    cssStrokeLinecap = SvgStrokeLinecap.from(resolvedRules['stroke-linecap']!);
-  }
-  if (resolvedRules.containsKey('stroke-linejoin')) {
-    cssStrokeLinejoin = SvgStrokeLinejoin.from(resolvedRules['stroke-linejoin']!);
-  }
-  if (resolvedRules.containsKey('opacity')) {
-    cssOpacity = resolvedRules['opacity']!.toSvgLengthPercentage();
-  }
-  if (resolvedRules.containsKey('font-weight')) {
-    cssFontWeight = resolvedRules['font-weight'];
-  }
-  if (resolvedRules.containsKey('font-style')) {
-    cssFontStyle = resolvedRules['font-style'];
-  }
-  if (resolvedRules.containsKey('font-size')) {
-    cssFontSize = resolvedRules['font-size']!.toSvgLengthPercentage();
-  }
-  if (resolvedRules.containsKey('font-family')) {
-    cssFontFamily = resolvedRules['font-family'];
-  }
-  if (resolvedRules.containsKey('pathLength')) {
-    cssPathLength = resolvedRules['pathLength']!.toSvgLength();
-  }
+  cssFill = resolvedRules['fill']?.toSvgColor();
+  cssFillOpacity = resolvedRules['fill-opacity']?.toSvgLengthPercentage();
+  cssStroke = resolvedRules['stroke']?.toSvgColor();
+  cssStrokeOpacity = resolvedRules['stroke-opacity']?.toSvgLengthPercentage();
+  cssStrokeWidth = resolvedRules['stroke-width']?.toSvgLengthPercentage();
+  cssStrokeDasharray = resolvedRules['stroke-dasharray']?.toSvgPointList();
+  cssStrokeLinecap = resolvedRules['stroke-linecap']?.toSvgStrokeLinecap();
+  cssStrokeLinejoin = resolvedRules['stroke-linejoin']?.toSvgStrokeLinejoin();
+  cssOpacity = resolvedRules['opacity']?.toSvgLengthPercentage();
+  cssPathLength = resolvedRules['pathLength']?.toSvgNonNegativeNumber();
 
   // Determine if fill/stroke are explicit (not just inherited)
   final bool isFillExplicit =
-      fill != null ||
+      fillAttributes?.color != null ||
       cssFill != null ||
       resolvedRules.containsKey('fill') ||
       (inlineStyle?.contains('fill:') ?? false);
 
   final bool isStrokeExplicit =
-      stroke != null ||
+      strokeAttributes?.color != null ||
       cssStroke != null ||
       resolvedRules.containsKey('stroke') ||
       (inlineStyle?.contains('stroke:') ?? false);
 
-  // 4. Resolve element opacity (group opacity)
-  final double selfOpacity = (cssOpacity ?? opacity)?.resolve(context, .unit) ?? 1.0;
-  final double elementOpacity = selfOpacity * context.parentOpacity;
+  // 4. Resolve element opacity (object opacity)
+  final double elementOpacity = (cssOpacity ?? opacity)?.resolve(context, SvgOrientation.unit) ?? 1.0;
 
   // 5. Resolve final values using priority: Inline Style/CSS > Presentation Attribute > Inherited
-  final SvgColor? fillPaint = cssFill ?? fill ?? context.inheritedFill;
-  final bool hasFill = fillPaint is! SvgNoneColor;
+  final SvgColor? fillPaint = cssFill ?? fillAttributes?.color ?? context.inheritedFill;
+
+  final bool hasFill = switch (fillPaint) {
+    null || SvgNoneColor() => false,
+    _ => true,
+  };
+
   PaintingFillStyle? fillStyle;
   if (hasFill) {
     int? fillColorArgb;
@@ -193,7 +205,10 @@ PaintingStyle resolvePaint(
 
     final double finalFillOpacity =
         elementOpacity *
-        ((cssFillOpacity ?? fillOpacity ?? context.inheritedFillOpacity)?.resolve(context, .unit) ??
+        ((cssFillOpacity ?? fillAttributes?.opacity ?? context.inheritedFillOpacity)?.resolve(
+              context,
+              SvgOrientation.unit,
+            ) ??
             1.0);
 
     fillStyle = PaintingFillStyle(
@@ -205,8 +220,12 @@ PaintingStyle resolvePaint(
     );
   }
 
-  final SvgColor? strokePaint = cssStroke ?? stroke?.color ?? context.inheritedStroke;
-  final bool hasStroke = strokePaint != null && strokePaint is! SvgNoneColor;
+  final SvgColor? strokePaint = cssStroke ?? strokeAttributes?.color ?? context.inheritedStroke;
+  final bool hasStroke = switch (strokePaint) {
+    null || SvgNoneColor() => false,
+    _ => true,
+  };
+
   PaintingStrokeStyle? strokeStyle;
   if (hasStroke) {
     int? strokeColorArgb;
@@ -221,34 +240,44 @@ PaintingStyle resolvePaint(
       strokeColorArgb = strokePaint.toStrokeArgb();
     }
 
-    final SvgLengthPercentage? sw = cssStrokeWidth ?? stroke?.width ?? context.inheritedStrokeWidth;
-    final double finalStrokeWidth = context.scaleNormalized(
-      sw?.resolve(context, .normalized) ?? 1.0,
-    );
+    final SvgLengthPercentage? sw =
+        cssStrokeWidth ?? strokeAttributes?.width ?? context.inheritedStrokeWidth;
+    // Resolve width in user space (don't scale by parentSx/Sy, the canvas transform handles that)
+    final double finalStrokeWidth = sw?.resolve(context, SvgOrientation.normalized) ?? 1.0;
 
     final SvgPointList? sda =
-        cssStrokeDasharray ?? stroke?.dashArray ?? context.inheritedStrokeDasharray;
+        cssStrokeDasharray ?? strokeAttributes?.dashArray ?? context.inheritedStrokeDasharray;
     List<double>? finalDashArray;
     if (sda == null || sda.points.isEmpty) {
       // No dash array
     } else {
-      finalDashArray = sda.points.map((double d) => context.scaleNormalized(d)).toList();
+      // SVG Spec: If an odd number of values is provided, the list is duplicated to create an even number.
+      if (sda.points.length.isOdd) {
+        finalDashArray = <double>[...sda.points, ...sda.points];
+      } else {
+        finalDashArray = sda.points;
+      }
     }
 
-    final SvgLength? pLength = cssPathLength ?? pathLength;
-    final double? finalPathLength = pLength?.value;
+    final double? finalPathLength = (cssPathLength ?? pathLength)?.value;
 
     final SvgStrokeLinecap resolvedCap =
-        cssStrokeLinecap ?? stroke?.linecap ?? context.inheritedStrokeLinecap ?? .butt;
+        cssStrokeLinecap ??
+        strokeAttributes?.linecap ??
+        context.inheritedStrokeLinecap ??
+        SvgStrokeLinecap.butt;
 
     final SvgStrokeLinejoin resolvedJoin =
-        cssStrokeLinejoin ?? stroke?.linejoin ?? context.inheritedStrokeLinejoin ?? .miter;
+        cssStrokeLinejoin ??
+        strokeAttributes?.linejoin ??
+        context.inheritedStrokeLinejoin ??
+        SvgStrokeLinejoin.miter;
 
     final double finalStrokeOpacity =
         elementOpacity *
-        ((cssStrokeOpacity ?? stroke?.opacity ?? context.inheritedStrokeOpacity)?.resolve(
+        ((cssStrokeOpacity ?? strokeAttributes?.opacity ?? context.inheritedStrokeOpacity)?.resolve(
               context,
-              .unit,
+              SvgOrientation.unit,
             ) ??
             1.0);
 
@@ -256,28 +285,59 @@ PaintingStyle resolvePaint(
       colorArgb: strokeColorArgb,
       shaderId: strokeShaderId,
       width: finalStrokeWidth,
+      pathLength: finalPathLength,
       opacity: finalStrokeOpacity,
       cap: resolvedCap.toStrokeCap(),
       join: resolvedJoin.toStrokeJoin(),
       dashArray: finalDashArray,
-      pathLength: finalPathLength,
       isExplicit: isStrokeExplicit,
       isCurrentColor: isCurrentColor,
     );
   }
 
-  final double? rawFontSize = (cssFontSize ?? fontSize ?? context.inheritedFontSize)?.resolve(
-    context,
-    .vertical,
-  );
-  final double? finalFontSize = rawFontSize == null ? null : context.scaleVertical(rawFontSize);
+  final double finalFontSize =
+      (cssFontSize ?? fontAttributes?.size ?? context.inheritedFontSize ?? const SvgLength(12.0))
+          .resolve(context, SvgOrientation.vertical);
 
-  final String? finalFontWeight = cssFontWeight ?? fontWeight ?? context.inheritedFontWeight;
-  final String? finalFontStyle = cssFontStyle ?? fontStyle ?? context.inheritedFontStyle;
-  final String? rawFontFamily = cssFontFamily ?? fontFamily ?? context.inheritedFontFamily;
+  final SvgFontWeight weight =
+      cssFontWeight ??
+      fontAttributes?.weight ??
+      context.inheritedFontWeight ??
+      const SvgFontWeightNormal();
+  final PaintingFontWeight finalFontWeight = switch (weight) {
+    SvgFontWeightNormal() => PaintingFontWeight.normal,
+    SvgFontWeightBold() => PaintingFontWeight.bold,
+    SvgFontWeightBolder() => PaintingFontWeight.bold, // Best effort
+    SvgFontWeightLighter() => PaintingFontWeight.normal, // Best effort
+    SvgFontWeightNumeric(value: final double v) => switch (v) {
+      <= 100 => PaintingFontWeight.w100,
+      <= 200 => PaintingFontWeight.w200,
+      <= 300 => PaintingFontWeight.w300,
+      <= 400 => PaintingFontWeight.w400,
+      <= 500 => PaintingFontWeight.w500,
+      <= 600 => PaintingFontWeight.w600,
+      <= 700 => PaintingFontWeight.w700,
+      <= 800 => PaintingFontWeight.w800,
+      _ => PaintingFontWeight.w900,
+    },
+  };
+
+  final SvgFontStyle style =
+      cssFontStyle ?? fontAttributes?.style ?? context.inheritedFontStyle ?? SvgFontStyle.normal;
+  final PaintingFontStyle finalFontStyle = switch (style.value) {
+    'italic' => PaintingFontStyle.italic,
+    _ => PaintingFontStyle.normal,
+  };
+
+  final SvgFontFamily family =
+      cssFontFamily ??
+      fontAttributes?.family ??
+      context.inheritedFontFamily ??
+      const SvgFontFamily('sans-serif');
+  final String rawFontFamily = family.value;
 
   // Map generic font families to bundled font files for Flutter rendering.
-  final String? finalFontFamily = switch (rawFontFamily) {
+  final String finalFontFamily = switch (rawFontFamily) {
     'sans-serif' => 'Roboto',
     'serif' => 'Noto Serif',
     'monospace' => 'Roboto Mono',
@@ -296,15 +356,16 @@ PaintingStyle resolvePaint(
     stroke: strokeStyle,
     text: textStyle,
     groupOpacity: elementOpacity,
+    transformAttributes: transformAttributes,
   );
 }
 
 extension on SvgStrokeLinecap {
   PaintingStrokeCap toStrokeCap() {
     return switch (this) {
-      .butt => .butt,
-      .round => .round,
-      .square => .square,
+      SvgStrokeLinecap.butt => PaintingStrokeCap.butt,
+      SvgStrokeLinecap.round => PaintingStrokeCap.round,
+      SvgStrokeLinecap.square => PaintingStrokeCap.square,
     };
   }
 }
@@ -312,11 +373,11 @@ extension on SvgStrokeLinecap {
 extension on SvgStrokeLinejoin {
   PaintingStrokeJoin toStrokeJoin() {
     return switch (this) {
-      .miter => .miter,
-      .round => .round,
-      .bevel => .bevel,
-      .miterClip => .miter,
-      .arcs => .miter,
+      SvgStrokeLinejoin.miter => PaintingStrokeJoin.miter,
+      SvgStrokeLinejoin.round => PaintingStrokeJoin.round,
+      SvgStrokeLinejoin.bevel => PaintingStrokeJoin.bevel,
+      SvgStrokeLinejoin.miterClip => PaintingStrokeJoin.miter,
+      SvgStrokeLinejoin.arcs => PaintingStrokeJoin.miter,
     };
   }
 }

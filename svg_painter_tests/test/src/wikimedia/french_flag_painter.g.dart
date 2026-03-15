@@ -17,6 +17,7 @@ class FrenchFlagPainterWidget extends StatelessWidget {
     this.height,
     this.fit = BoxFit.contain,
     this.alignment = Alignment.center,
+    this.defaultFill,
     this.leftColor,
     this.rightColor,
     this.middleColor,
@@ -26,9 +27,10 @@ class FrenchFlagPainterWidget extends StatelessWidget {
   final double? height;
   final BoxFit fit;
   final AlignmentGeometry alignment;
-  final Color? leftColor;
-  final Color? rightColor;
-  final Color? middleColor;
+  final Object? defaultFill;
+  final Object? leftColor;
+  final Object? rightColor;
+  final Object? middleColor;
 
   @override
   Widget build(BuildContext context) {
@@ -36,6 +38,7 @@ class FrenchFlagPainterWidget extends StatelessWidget {
       size: Size(width ?? 900.0, height ?? 600.0),
       painter: _$FrenchFlagPainter(
         fit: fit,
+        defaultFill: defaultFill,
         leftColor: leftColor,
         rightColor: rightColor,
         middleColor: middleColor,
@@ -47,15 +50,17 @@ class FrenchFlagPainterWidget extends StatelessWidget {
 class _$FrenchFlagPainter extends CustomPainter {
   const _$FrenchFlagPainter({
     this.fit = BoxFit.contain,
+    this.defaultFill,
     this.leftColor,
     this.rightColor,
     this.middleColor,
   });
 
   final BoxFit fit;
-  final Color? leftColor;
-  final Color? rightColor;
-  final Color? middleColor;
+  final Object? defaultFill;
+  final Object? leftColor;
+  final Object? rightColor;
+  final Object? middleColor;
 
   Size get viewBox => const Size(900.0, 600.0);
 
@@ -80,51 +85,63 @@ class _$FrenchFlagPainter extends CustomPainter {
     );
     canvas.clipRect(Rect.fromLTWH(0, 0, 900.0, 600.0));
 
+    canvas.save();
+    canvas.scale(300.0, 300.0);
     {
-      {
-        final Paint paint = Paint();
-        final Color? localFill = leftColor;
-        if (localFill == null) {
-          paint.color = const Color(0xFF0055A4);
-        } else {
-          paint.color = localFill;
-        }
-        paint.style = PaintingStyle.fill;
-        canvas.drawRect(Rect.fromLTWH(0.0, 0.0, 900.0, 600.0), paint);
+      final Paint paint = Paint();
+      final Object? localFill = leftColor;
+      if (localFill == null) {
+        paint.color = const Color(0xFF0055A4);
+      } else {
+        _applyOverride(paint, localFill);
       }
+      paint.style = PaintingStyle.fill;
+      canvas.drawRect(Rect.fromLTWH(0.0, 0.0, 3.0, 2.0), paint);
     }
     {
-      {
-        final Paint paint = Paint();
-        final Color? localFill = middleColor;
-        if (localFill == null) {
-          paint.color = Colors.white;
-        } else {
-          paint.color = localFill;
-        }
-        paint.style = PaintingStyle.fill;
-        canvas.drawRect(Rect.fromLTWH(300.0, 0.0, 600.0, 600.0), paint);
+      final Paint paint = Paint();
+      final Object? localFill = middleColor;
+      if (localFill == null) {
+        paint.color = Colors.white;
+      } else {
+        _applyOverride(paint, localFill);
       }
+      paint.style = PaintingStyle.fill;
+      canvas.drawRect(Rect.fromLTWH(1.0, 0.0, 2.0, 2.0), paint);
     }
     {
-      {
-        final Paint paint = Paint();
-        final Color? localFill = rightColor;
-        if (localFill == null) {
-          paint.color = const Color(0xFFEF4135);
-        } else {
-          paint.color = localFill;
-        }
-        paint.style = PaintingStyle.fill;
-        canvas.drawRect(Rect.fromLTWH(600.0, 0.0, 300.0, 600.0), paint);
+      final Paint paint = Paint();
+      final Object? localFill = rightColor;
+      if (localFill == null) {
+        paint.color = const Color(0xFFEF4135);
+      } else {
+        _applyOverride(paint, localFill);
       }
+      paint.style = PaintingStyle.fill;
+      canvas.drawRect(Rect.fromLTWH(2.0, 0.0, 1.0, 2.0), paint);
     }
     canvas.restore();
+    canvas.restore();
+  }
+
+  void _applyOverride(Paint paint, Object? override) {
+    switch (override) {
+      case final Color color:
+        paint.color = color;
+        paint.shader = null;
+
+      case final Shader shader:
+        paint.shader = shader;
+
+      case null || _:
+        break;
+    }
   }
 
   @override
   bool shouldRepaint(covariant _$FrenchFlagPainter oldDelegate) {
     if (fit == oldDelegate.fit &&
+        defaultFill == oldDelegate.defaultFill &&
         leftColor == oldDelegate.leftColor &&
         rightColor == oldDelegate.rightColor &&
         middleColor == oldDelegate.middleColor) {

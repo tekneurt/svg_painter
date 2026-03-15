@@ -62,51 +62,63 @@ class _$Svg1Painter extends CustomPainter {
     canvas.clipRect(Rect.fromLTWH(0, 0, 300.0, 100.0));
 
     {
-      {
-        final Paint paint = Paint();
-        paint.color = const Color(0xFF808080);
-        paint.style = PaintingStyle.fill;
-        canvas.drawCircle(const Offset(50.0, 50.0), 40.0, paint);
-      }
-      {
-        final Paint paint = Paint();
-        paint.color = const Color(0xFFFF0000);
-        paint.style = PaintingStyle.stroke;
-        paint.strokeWidth = 1.0;
-        canvas.drawCircle(const Offset(50.0, 50.0), 40.0, paint);
-      }
+      final Paint paint = Paint();
+      paint.color = const Color(0xFF808080);
+      paint.style = PaintingStyle.fill;
+      canvas.drawCircle(const Offset(50.0, 50.0), 40.0, paint);
     }
     {
-      {
-        final Paint paint = Paint();
-        paint.color = const Color(0xFF808080);
-        paint.style = PaintingStyle.fill;
-        canvas.drawCircle(const Offset(150.0, 50.0), 4.0, paint);
-      }
-      {
-        final Paint paint = Paint();
-        paint.color = const Color(0xFFFF0000);
-        paint.style = PaintingStyle.stroke;
-        paint.strokeWidth = 1.0;
-        canvas.drawCircle(const Offset(150.0, 50.0), 4.0, paint);
-      }
+      final Paint paint = Paint();
+      paint.color = const Color(0xFFFF0000);
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 1.0;
+      canvas.drawCircle(const Offset(50.0, 50.0), 40.0, paint);
     }
     {
-      {
-        final Paint paint = Paint();
-        paint.color = const Color(0xFF808080);
-        paint.style = PaintingStyle.fill;
-        canvas.drawCircle(const Offset(250.0, 50.0), 40.0, paint);
-      }
-      {
-        final Paint paint = Paint();
-        paint.color = const Color(0xFFFF0000);
-        paint.style = PaintingStyle.stroke;
-        paint.strokeWidth = 10.0;
-        canvas.drawCircle(const Offset(250.0, 50.0), 40.0, paint);
-      }
+      final Paint paint = Paint();
+      paint.color = const Color(0xFF808080);
+      paint.style = PaintingStyle.fill;
+      canvas.drawCircle(const Offset(150.0, 50.0), 4.0, paint);
+    }
+    {
+      final Paint paint = Paint();
+      paint.color = const Color(0xFFFF0000);
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 1.0;
+      canvas.drawCircle(const Offset(150.0, 50.0), 4.0, paint);
+    }
+    canvas.save();
+    canvas.translate(200.0, 0.0);
+    canvas.scale(10.0, 10.0);
+    {
+      final Paint paint = Paint();
+      paint.color = const Color(0xFF808080);
+      paint.style = PaintingStyle.fill;
+      canvas.drawCircle(const Offset(5.0, 5.0), 4.0, paint);
+    }
+    {
+      final Paint paint = Paint();
+      paint.color = const Color(0xFFFF0000);
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 1.0;
+      canvas.drawCircle(const Offset(5.0, 5.0), 4.0, paint);
     }
     canvas.restore();
+    canvas.restore();
+  }
+
+  void _applyOverride(Paint paint, Object? override) {
+    switch (override) {
+      case final Color color:
+        paint.color = color;
+        paint.shader = null;
+
+      case final Shader shader:
+        paint.shader = shader;
+
+      case null || _:
+        break;
+    }
   }
 
   @override
@@ -174,40 +186,49 @@ class _$Svg2Painter extends CustomPainter {
     );
     canvas.clipRect(Rect.fromLTWH(0, 0, 60.0, 60.0));
 
+    canvas.save();
+    canvas.scale(0.09, 0.09);
     {
-      {
-        final Paint paint = Paint();
-        paint.color = const Color(0xBFFF6347);
-        paint.style = PaintingStyle.fill;
-        canvas.drawRect(Rect.fromLTWH(0.0, 0.0, 18.0, 18.0), paint);
-      }
+      final Paint paint = Paint();
+      paint.color = const Color(0xBFFF6347);
+      paint.style = PaintingStyle.fill;
+      canvas.drawRect(Rect.fromLTWH(0.0, 0.0, 200.0, 200.0), paint);
     }
     {
-      {
-        final Paint paint = Paint();
-        paint.color = const Color(0xBF708090);
-        paint.style = PaintingStyle.fill;
-        canvas.drawRect(Rect.fromLTWH(9.0, 9.0, 18.0, 18.0), paint);
-      }
+      final Paint paint = Paint();
+      paint.color = const Color(0xBF708090);
+      paint.style = PaintingStyle.fill;
+      canvas.drawRect(Rect.fromLTWH(100.0, 100.0, 200.0, 200.0), paint);
     }
     {
-      {
-        final Paint paint = Paint();
-        paint.color = const Color(0xBF808000);
-        paint.style = PaintingStyle.fill;
-        canvas.drawRect(Rect.fromLTWH(18.0, 18.0, 18.0, 18.0), paint);
-      }
+      final Paint paint = Paint();
+      paint.color = const Color(0xBF808000);
+      paint.style = PaintingStyle.fill;
+      canvas.drawRect(Rect.fromLTWH(200.0, 200.0, 200.0, 200.0), paint);
     }
     {
-      {
-        final Paint paint = Paint();
-        paint.color = const Color(0xFF5F9EA0);
-        paint.style = PaintingStyle.stroke;
-        paint.strokeWidth = 0.17999999999999997;
-        canvas.drawRect(Rect.fromLTWH(0.0, 0.0, 36.0, 36.0), paint);
-      }
+      final Paint paint = Paint();
+      paint.color = const Color(0xFF5F9EA0);
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 2.0;
+      canvas.drawRect(Rect.fromLTWH(0.0, 0.0, 400.0, 400.0), paint);
     }
     canvas.restore();
+    canvas.restore();
+  }
+
+  void _applyOverride(Paint paint, Object? override) {
+    switch (override) {
+      case final Color color:
+        paint.color = color;
+        paint.shader = null;
+
+      case final Shader shader:
+        paint.shader = shader;
+
+      case null || _:
+        break;
+    }
   }
 
   @override

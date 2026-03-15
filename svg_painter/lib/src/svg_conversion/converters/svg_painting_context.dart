@@ -10,23 +10,18 @@ final class SvgPaintingContext {
     required this.viewBoxHeight,
     this.viewBoxMinX = 0.0,
     this.viewBoxMinY = 0.0,
-    this.parentTx = 0.0,
-    this.parentTy = 0.0,
-    this.parentSx = 1.0,
-    this.parentSy = 1.0,
-    this.inheritedFill,
-    this.inheritedFillOpacity,
-    this.inheritedStroke,
-    this.inheritedStrokeOpacity,
-    this.inheritedStrokeWidth,
+    this.inheritedFill = const SvgNamedColor(SvgColorName.black),
+    this.inheritedFillOpacity = const SvgLength(1.0),
+    this.inheritedStroke = const SvgNoneColor(),
+    this.inheritedStrokeOpacity = const SvgLength(1.0),
+    this.inheritedStrokeWidth = const SvgLength(1.0),
     this.inheritedStrokeDasharray,
-    this.inheritedStrokeLinecap,
-    this.inheritedStrokeLinejoin,
-    this.parentOpacity = 1.0,
-    this.inheritedFontSize,
-    this.inheritedFontWeight,
-    this.inheritedFontStyle,
-    this.inheritedFontFamily,
+    this.inheritedStrokeLinecap = SvgStrokeLinecap.butt,
+    this.inheritedStrokeLinejoin = SvgStrokeLinejoin.miter,
+    this.inheritedFontSize = const SvgLength(12.0),
+    this.inheritedFontWeight = const SvgFontWeightNormal(),
+    this.inheritedFontStyle = SvgFontStyle.normal,
+    this.inheritedFontFamily = const SvgFontFamily('sans-serif'),
     this.styleSheet = const SvgStyleSheet(<String, Map<String, String>>{}),
     this.definitions = const <String, SvgElement>{},
   });
@@ -42,18 +37,6 @@ final class SvgPaintingContext {
 
   /// The min-y coordinate of the viewBox.
   final double viewBoxMinY;
-
-  /// Translation X from parent context.
-  final double parentTx;
-
-  /// Translation Y from parent context.
-  final double parentTy;
-
-  /// Scale X from parent context.
-  final double parentSx;
-
-  /// Scale Y from parent context.
-  final double parentSy;
 
   /// Inherited fill color.
   final SvgColor? inheritedFill;
@@ -79,20 +62,17 @@ final class SvgPaintingContext {
   /// Inherited stroke linejoin.
   final SvgStrokeLinejoin? inheritedStrokeLinejoin;
 
-  /// Accumulated opacity from parents.
-  final double parentOpacity;
-
   /// Inherited font size.
   final SvgLengthPercentage? inheritedFontSize;
 
   /// Inherited font weight.
-  final String? inheritedFontWeight;
+  final SvgFontWeight? inheritedFontWeight;
 
   /// Inherited font style.
-  final String? inheritedFontStyle;
+  final SvgFontStyle? inheritedFontStyle;
 
   /// Inherited font family.
-  final String? inheritedFontFamily;
+  final SvgFontFamily? inheritedFontFamily;
 
   /// The CSS rules defined for the document.
   final SvgStyleSheet styleSheet;
@@ -106,21 +86,12 @@ final class SvgPaintingContext {
     return math.sqrt(viewBoxWidth * viewBoxWidth + viewBoxHeight * viewBoxHeight) / math.sqrt(2.0);
   }
 
-  /// The combined scale factor from parents.
-  double get parentScale {
-    return math.sqrt(parentSx * parentSx + parentSy * parentSy) / math.sqrt(2.0);
-  }
-
   /// Creates a new context derived from this one, optionally overriding properties.
   SvgPaintingContext derive({
     double? viewBoxWidth,
     double? viewBoxHeight,
     double? viewBoxMinX,
     double? viewBoxMinY,
-    double? parentTx,
-    double? parentTy,
-    double? parentSx,
-    double? parentSy,
     SvgColor? inheritedFill,
     SvgLengthPercentage? inheritedFillOpacity,
     SvgColor? inheritedStroke,
@@ -129,21 +100,16 @@ final class SvgPaintingContext {
     SvgPointList? inheritedStrokeDasharray,
     SvgStrokeLinecap? inheritedStrokeLinecap,
     SvgStrokeLinejoin? inheritedStrokeLinejoin,
-    double? parentOpacity,
     SvgLengthPercentage? inheritedFontSize,
-    String? inheritedFontWeight,
-    String? inheritedFontStyle,
-    String? inheritedFontFamily,
+    SvgFontWeight? inheritedFontWeight,
+    SvgFontStyle? inheritedFontStyle,
+    SvgFontFamily? inheritedFontFamily,
   }) {
     return SvgPaintingContext(
       viewBoxWidth: viewBoxWidth ?? this.viewBoxWidth,
       viewBoxHeight: viewBoxHeight ?? this.viewBoxHeight,
       viewBoxMinX: viewBoxMinX ?? this.viewBoxMinX,
       viewBoxMinY: viewBoxMinY ?? this.viewBoxMinY,
-      parentTx: parentTx ?? this.parentTx,
-      parentTy: parentTy ?? this.parentTy,
-      parentSx: parentSx ?? this.parentSx,
-      parentSy: parentSy ?? this.parentSy,
       inheritedFill: inheritedFill ?? this.inheritedFill,
       inheritedFillOpacity: inheritedFillOpacity ?? this.inheritedFillOpacity,
       inheritedStroke: inheritedStroke ?? this.inheritedStroke,
@@ -152,7 +118,6 @@ final class SvgPaintingContext {
       inheritedStrokeDasharray: inheritedStrokeDasharray ?? this.inheritedStrokeDasharray,
       inheritedStrokeLinecap: inheritedStrokeLinecap ?? this.inheritedStrokeLinecap,
       inheritedStrokeLinejoin: inheritedStrokeLinejoin ?? this.inheritedStrokeLinejoin,
-      parentOpacity: parentOpacity ?? this.parentOpacity,
       inheritedFontSize: inheritedFontSize ?? this.inheritedFontSize,
       inheritedFontWeight: inheritedFontWeight ?? this.inheritedFontWeight,
       inheritedFontStyle: inheritedFontStyle ?? this.inheritedFontStyle,
@@ -162,18 +127,29 @@ final class SvgPaintingContext {
     );
   }
 
-  /// Transforms an x-coordinate from current user space to root coordinate space.
-  double transformX(double x) => (x * parentSx) + parentTx;
+  /// Creates a new context by applying the styles of the given [element].
+  SvgPaintingContext deriveWith(SvgElement element) {
+    if (element is SvgGraphicsElement) {
+      final SvgFontAttributes? font = element is SvgFontAttributable
+          ? (element as SvgFontAttributable).fontAttributes
+          : null;
 
-  /// Transforms a y-coordinate from current user space to root coordinate space.
-  double transformY(double y) => (y * parentSy) + parentTy;
+      return derive(
+        inheritedFill: element.fillAttributes?.color ?? inheritedFill,
+        inheritedFillOpacity: element.fillAttributes?.opacity ?? inheritedFillOpacity,
+        inheritedStroke: element.strokeAttributes?.color ?? inheritedStroke,
+        inheritedStrokeOpacity: element.strokeAttributes?.opacity ?? inheritedStrokeOpacity,
+        inheritedStrokeWidth: element.strokeAttributes?.width ?? inheritedStrokeWidth,
+        inheritedStrokeDasharray: element.strokeAttributes?.dashArray ?? inheritedStrokeDasharray,
+        inheritedStrokeLinecap: element.strokeAttributes?.linecap ?? inheritedStrokeLinecap,
+        inheritedStrokeLinejoin: element.strokeAttributes?.linejoin ?? inheritedStrokeLinejoin,
+        inheritedFontSize: font?.size ?? inheritedFontSize,
+        inheritedFontWeight: font?.weight ?? inheritedFontWeight,
+        inheritedFontStyle: font?.style ?? inheritedFontStyle,
+        inheritedFontFamily: font?.family ?? inheritedFontFamily,
+      );
+    }
 
-  /// Scales a horizontal length from current user space to root coordinate space.
-  double scaleHorizontal(double w) => w * parentSx;
-
-  /// Scales a vertical length from current user space to root coordinate space.
-  double scaleVertical(double h) => h * parentSy;
-
-  /// Scales a normalized length (like radius) from current user space to root coordinate space.
-  double scaleNormalized(double l) => l * parentScale;
+    return this;
+  }
 }

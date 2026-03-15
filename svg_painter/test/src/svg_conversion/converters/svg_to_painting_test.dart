@@ -17,7 +17,6 @@ void main() {
 
         // Assert
         expect(result, isA<Success<List<PaintCommand>>>());
-        // We can't easily inspect the internal context, but success implies it worked.
       });
 
       test('should fallback to default 100x100 if no dimensions', () {
@@ -115,20 +114,28 @@ void main() {
 
         // Assert
         final List<PaintCommand> commands = (result as Success<List<PaintCommand>>).value;
+        // The root is always a DrawGroup now.
+        expect(commands.single, isA<DrawGroup>());
+        final DrawGroup rootGroup = commands.single as DrawGroup;
+
         // 1. DrawRect (original)
-        // 2. DrawRect (via Use) - verify position
-        expect(commands.length, 2);
+        // 2. DrawGroup (via Use) - verify position
+        expect(rootGroup.commands.length, 2);
 
-        // The 'use' command should result in a DrawRect (resolved from target)
-        // Check if one of the rects has the offset applied.
-        final Iterable<DrawRect> rects = commands.whereType<DrawRect>();
-        expect(rects.length, 2);
+        final DrawGroup useGroup = rootGroup.commands.whereType<DrawGroup>().single;
+        expect(useGroup.commands.single, isA<DrawRect>());
 
-        // One rect at 0,0 (target), one at 50,50 (use)
-        // Note: 'x' on DrawRect is transformed.
-        final bool hasOffsetRect = rects.any((DrawRect r) => r.x == 50.0 && r.y == 50.0);
+        final DrawRect rectInUse = useGroup.commands.single as DrawRect;
+        // Coordinates should be 0,0 because translate(50, 50) is in useGroup transform.
+        expect(rectInUse.x, 0.0);
+        expect(rectInUse.y, 0.0);
 
-        expect(hasOffsetRect, isTrue);
+        expect(
+          useGroup.style.transformAttributes?.operations.any(
+            (SvgTransformOperation op) => op is SvgTranslate && op.x == 50.0 && op.y == 50.0,
+          ),
+          isTrue,
+        );
       });
     });
 
@@ -164,10 +171,102 @@ void main() {
 
         // Assert
         final List<PaintCommand> commands = (result as Success<List<PaintCommand>>).value;
+        final DrawGroup rootGroup = commands.single as DrawGroup;
 
         // Should contain DefineLinearGradient, but NOT DrawRect
-        expect(commands.whereType<DefineLinearGradient>().length, 1);
-        expect(commands.whereType<DrawRect>().length, 0);
+        expect(rootGroup.commands.whereType<DefineLinearGradient>().length, 1);
+        expect(rootGroup.commands.whereType<DrawRect>().length, 0);
+      });
+
+      test('should return radial gradient command when present', () {
+        const SvgRadialGradient grad = SvgRadialGradient(
+          id: 'rad1',
+          cx: SvgLength(50),
+          cy: SvgLength(50),
+          r: SvgLength(50),
+          fx: SvgLength(50),
+          fy: SvgLength(50),
+          fr: SvgLength(0),
+          stops: <SvgStop>[],
+        );
+        const SvgDefs defs = SvgDefs(children: <SvgElement>[grad]);
+        const SvgRoot root = SvgRoot(
+          children: <SvgElement>[defs],
+          viewBox: SvgViewBox(0, 0, 100, 100),
+        );
+
+        final Result<List<PaintCommand>> result = root.toPaintCommands();
+        final List<PaintCommand> commands = (result as Success<List<PaintCommand>>).value;
+        final DrawGroup rootGroup = commands.single as DrawGroup;
+
+        expect(rootGroup.commands.whereType<DefineRadialGradient>().length, 1);
+      });
+    });
+
+    group('Transforms', () {
+      test('should combine transform attribute with layout attributes (x, y)', () {
+        const SvgRect rect = SvgRect(
+          id: 'r1',
+          x: SvgLength(10),
+          y: SvgLength(20),
+          width: SvgLength(100),
+          height: SvgLength(100),
+          rx: SvgLength(0),
+          ry: SvgLength(0),
+        );
+        const SvgUse use = SvgUse(
+          href: '#r1',
+          x: SvgLength(5),
+          y: SvgLength(5),
+          width: SvgAuto(),
+          height: SvgAuto(),
+          transformAttributes: SvgTransformAttributes(<SvgTransformOperation>[SvgScale(2)]),
+        );
+        const SvgRoot root = SvgRoot(
+          children: <SvgElement>[rect, use],
+          viewBox: SvgViewBox(0, 0, 500, 500),
+        );
+
+        final Result<List<PaintCommand>> result = root.toPaintCommands();
+        final List<PaintCommand> commands = (result as Success<List<PaintCommand>>).value;
+        final DrawGroup rootGroup = commands.single as DrawGroup;
+        final DrawGroup useGroup = rootGroup.commands.whereType<DrawGroup>().single;
+
+        final List<SvgTransformOperation> ops = useGroup.style.transformAttributes!.operations;
+        // For <use>, order is [Translate(x,y), ...transformAttributes]
+        expect(ops.length, 2);
+        expect(ops[0], isA<SvgTranslate>());
+        expect(ops[1], isA<SvgScale>());
+      });
+    });
+
+    group('Nested SVG', () {
+      test('should handle nested SVG with full transform stack', () {
+        const SvgRoot nested = SvgRoot(
+          children: <SvgElement>[],
+          x: SvgLength(10),
+          y: SvgLength(20),
+          width: SvgLength(200),
+          height: SvgLength(100),
+          viewBox: SvgViewBox(0, 0, 100, 50), // sx = 2, sy = 2
+          transformAttributes: SvgTransformAttributes(<SvgTransformOperation>[SvgRotate(45)]),
+        );
+        const SvgRoot root = SvgRoot(
+          children: <SvgElement>[nested],
+          viewBox: SvgViewBox(0, 0, 500, 500),
+        );
+
+        final Result<List<PaintCommand>> result = root.toPaintCommands();
+        final List<PaintCommand> commands = (result as Success<List<PaintCommand>>).value;
+        final DrawGroup rootGroup = commands.single as DrawGroup;
+        final DrawGroup nestedGroup = rootGroup.commands.whereType<DrawGroup>().single;
+
+        final List<SvgTransformOperation> ops = nestedGroup.style.transformAttributes!.operations;
+        // For <svg>, order is [...transformAttributes, Translate(x,y), Scale(sx,sy), Translate(-vbMinX, -vbMinY)]
+        expect(ops.length, 3);
+        expect(ops[0], isA<SvgRotate>());
+        expect(ops[1], isA<SvgTranslate>());
+        expect(ops[2], isA<SvgScale>());
       });
     });
 
@@ -197,9 +296,10 @@ void main() {
 
         final Result<List<PaintCommand>> result = root.toPaintCommands();
         final List<PaintCommand> commands = (result as Success<List<PaintCommand>>).value;
+        final DrawGroup rootGroup = commands.single as DrawGroup;
 
-        expect(commands.single, isA<DrawGroup>());
-        final DrawGroup drawGroup = commands.single as DrawGroup;
+        expect(rootGroup.commands.single, isA<DrawGroup>());
+        final DrawGroup drawGroup = rootGroup.commands.single as DrawGroup;
         expect(drawGroup.opacity, 0.5);
         expect(drawGroup.commands.length, 2);
       });
@@ -218,9 +318,10 @@ void main() {
 
         final Result<List<PaintCommand>> result = root.toPaintCommands();
         final List<PaintCommand> commands = (result as Success<List<PaintCommand>>).value;
+        final DrawGroup rootGroup = commands.single as DrawGroup;
 
-        expect(commands.single, isA<DrawGroup>());
-        final DrawGroup drawGroup = commands.single as DrawGroup;
+        expect(rootGroup.commands.single, isA<DrawGroup>());
+        final DrawGroup drawGroup = rootGroup.commands.single as DrawGroup;
         expect(drawGroup.opacity, 1.0);
       });
     });
@@ -240,16 +341,17 @@ void main() {
         final SvgRoot root = SvgRoot(children: elements);
         final Result<List<PaintCommand>> result = root.toPaintCommands();
         final List<PaintCommand> commands = (result as Success<List<PaintCommand>>).value;
+        final DrawGroup rootGroup = commands.single as DrawGroup;
 
         // Verify we got commands for each
-        expect(commands.length, elements.length);
-        expect(commands.whereType<DrawCircle>().length, 1); // Circle
-        expect(commands.whereType<DrawOval>().length, 1); // Ellipse
-        expect(commands.whereType<DrawLine>().length, 1);
-        expect(commands.whereType<DrawPath>().length, 1);
-        expect(commands.whereType<DrawPolyline>().length, 1);
-        expect(commands.whereType<DrawPolygon>().length, 1);
-        expect(commands.whereType<DrawText>().length, 1);
+        expect(rootGroup.commands.length, elements.length);
+        expect(rootGroup.commands.whereType<DrawCircle>().length, 1); // Circle
+        expect(rootGroup.commands.whereType<DrawOval>().length, 1); // Ellipse
+        expect(rootGroup.commands.whereType<DrawLine>().length, 1);
+        expect(rootGroup.commands.whereType<DrawPath>().length, 1);
+        expect(rootGroup.commands.whereType<DrawPolyline>().length, 1);
+        expect(rootGroup.commands.whereType<DrawPolygon>().length, 1);
+        expect(rootGroup.commands.whereType<DrawText>().length, 1);
       });
 
       test('should ignore non-renderable elements', () {
@@ -258,13 +360,15 @@ void main() {
             SvgTitle(content: 'Title'),
             SvgDesc(content: 'Desc'),
             SvgStyle(),
+            SvgIgnoredElement(),
           ],
         );
 
         final Result<List<PaintCommand>> result = root.toPaintCommands();
         final List<PaintCommand> commands = (result as Success<List<PaintCommand>>).value;
+        final DrawGroup rootGroup = commands.single as DrawGroup;
 
-        expect(commands, isEmpty);
+        expect(rootGroup.commands, isEmpty);
       });
     });
   });

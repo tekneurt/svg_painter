@@ -61,55 +61,44 @@ class _$ExampleRect01Painter extends CustomPainter {
     );
     canvas.clipRect(Rect.fromLTWH(0, 0, 453.54330708661416, 151.1811023622047));
 
+    canvas.save();
+    canvas.scale(0.3779527559055118, 0.3779527559055118);
     {
-      {
-        final Paint paint = Paint();
-        paint.color = const Color(0xFF0000FF);
-        paint.style = PaintingStyle.stroke;
-        paint.strokeWidth = 0.7559055118110235;
-        canvas.drawRect(
-          Rect.fromLTWH(
-            0.3779527559055118,
-            0.3779527559055118,
-            452.78740157480314,
-            150.4251968503937,
-          ),
-          paint,
-        );
-      }
+      final Paint paint = Paint();
+      paint.color = const Color(0xFF0000FF);
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 2.0;
+      canvas.drawRect(Rect.fromLTWH(1.0, 1.0, 1198.0, 398.0), paint);
     }
     {
-      {
-        final Paint paint = Paint();
-        paint.color = const Color(0xFFFFFF00);
-        paint.style = PaintingStyle.fill;
-        canvas.drawRect(
-          Rect.fromLTWH(
-            151.1811023622047,
-            37.79527559055118,
-            151.1811023622047,
-            75.59055118110236,
-          ),
-          paint,
-        );
-      }
-      {
-        final Paint paint = Paint();
-        paint.color = const Color(0xFF000080);
-        paint.style = PaintingStyle.stroke;
-        paint.strokeWidth = 3.7795275590551176;
-        canvas.drawRect(
-          Rect.fromLTWH(
-            151.1811023622047,
-            37.79527559055118,
-            151.1811023622047,
-            75.59055118110236,
-          ),
-          paint,
-        );
-      }
+      final Paint paint = Paint();
+      paint.color = const Color(0xFFFFFF00);
+      paint.style = PaintingStyle.fill;
+      canvas.drawRect(Rect.fromLTWH(400.0, 100.0, 400.0, 200.0), paint);
+    }
+    {
+      final Paint paint = Paint();
+      paint.color = const Color(0xFF000080);
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 10.0;
+      canvas.drawRect(Rect.fromLTWH(400.0, 100.0, 400.0, 200.0), paint);
     }
     canvas.restore();
+    canvas.restore();
+  }
+
+  void _applyOverride(Paint paint, Object? override) {
+    switch (override) {
+      case final Color color:
+        paint.color = color;
+        paint.shader = null;
+
+      case final Shader shader:
+        paint.shader = shader;
+
+      case null || _:
+        break;
+    }
   }
 
   @override

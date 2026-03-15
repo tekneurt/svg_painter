@@ -10,19 +10,16 @@ extension ToSvgRoot on XmlElement {
   Result<SvgRoot> toSvgRoot() {
     const XmlElementName elementName = XmlElementName.svg;
 
-    // Collect all CSS rules from <style> elements
+    // Collect all CSS rules from <style> elements within the current SVG scope.
+    // We ignore <style> elements inside nested <svg> elements as those are separate roots.
     final List<Map<String, Map<String, String>>> allRules = <Map<String, Map<String, String>>>[];
-    final Iterable<XmlElement> styleElements = findAllElements(XmlElementName.style.tagName);
-    for (final XmlElement styleEl in styleElements) {
-      final String css = styleEl.innerText;
-      allRules.add(SvgStyleParser.parse(css).rules);
-    }
+    _collectStyles(this, allRules);
 
     // Merge rules (later ones override earlier ones)
     final Map<String, Map<String, String>> mergedRules = <String, Map<String, String>>{};
     for (final Map<String, Map<String, String>> rules in allRules) {
-      for (final String className in rules.keys) {
-        mergedRules.putIfAbsent(className, () => <String, String>{}).addAll(rules[className]!);
+      for (final MapEntry<String, Map<String, String>> entry in rules.entries) {
+        mergedRules.putIfAbsent(entry.key, () => <String, String>{}).addAll(entry.value);
       }
     }
     final SvgStyleSheet styleSheet = SvgStyleSheet(mergedRules);
@@ -61,16 +58,32 @@ extension ToSvgRoot on XmlElement {
         width: width,
         height: height,
         viewBox: viewBox,
-        fill: common.fill,
-        fillOpacity: common.fillOpacity,
-        stroke: common.stroke,
+        fillAttributes: common.fillAttributes,
+        strokeAttributes: common.strokeAttributes,
+        fontAttributes: common.fontAttributes,
         opacity: common.opacity,
         cssClass: common.cssClass,
         inlineStyle: common.inlineStyle,
-        transform: common.transform,
-        pathLength: common.pathLength,
+        transformAttributes: common.transformAttributes,
         id: common.id,
       ),
     );
+  }
+
+  void _collectStyles(XmlNode node, List<Map<String, Map<String, String>>> allRules) {
+    for (final XmlNode child in node.children) {
+      if (child is XmlElement) {
+        final String localName = child.name.local;
+        if (localName == XmlElementName.style.tagName) {
+          allRules.add(SvgStyleParser.parse(child.innerText).rules);
+        } else if (localName == XmlElementName.svg.tagName ||
+            localName == 'symbol' ||
+            localName == 'marker') {
+          // Scope boundary reached, do not look inside.
+        } else {
+          _collectStyles(child, allRules);
+        }
+      }
+    }
   }
 }

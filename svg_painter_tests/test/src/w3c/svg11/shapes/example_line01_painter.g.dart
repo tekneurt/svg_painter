@@ -61,141 +61,86 @@ class _$ExampleLine01Painter extends CustomPainter {
     );
     canvas.clipRect(Rect.fromLTWH(0, 0, 453.54330708661416, 151.1811023622047));
 
+    canvas.save();
+    canvas.scale(0.3779527559055118, 0.3779527559055118);
     {
-      {
-        final Paint paint = Paint();
-        paint.color = const Color(0xFF0000FF);
-        paint.style = PaintingStyle.stroke;
-        paint.strokeWidth = 0.7559055118110235;
-        canvas.drawRect(
-          Rect.fromLTWH(
-            0.3779527559055118,
-            0.3779527559055118,
-            452.78740157480314,
-            150.4251968503937,
-          ),
-          paint,
-        );
-      }
+      final Paint paint = Paint();
+      paint.color = const Color(0xFF0000FF);
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 2.0;
+      canvas.drawRect(Rect.fromLTWH(1.0, 1.0, 1198.0, 398.0), paint);
     }
     {
-      {
-        {
-          final Paint paint = Paint();
-          paint.color = Colors.black;
-          paint.style = PaintingStyle.fill;
-          canvas.drawLine(
-            const Offset(37.79527559055118, 113.38582677165354),
-            const Offset(113.38582677165354, 37.79527559055118),
-            paint,
-          );
-        }
-        {
-          final Paint paint = Paint();
-          paint.color = const Color(0xFF008000);
-          paint.style = PaintingStyle.stroke;
-          paint.strokeWidth = 1.8897637795275588;
-          canvas.drawLine(
-            const Offset(37.79527559055118, 113.38582677165354),
-            const Offset(113.38582677165354, 37.79527559055118),
-            paint,
-          );
-        }
-      }
-      {
-        {
-          final Paint paint = Paint();
-          paint.color = Colors.black;
-          paint.style = PaintingStyle.fill;
-          canvas.drawLine(
-            const Offset(113.38582677165354, 113.38582677165354),
-            const Offset(188.9763779527559, 37.79527559055118),
-            paint,
-          );
-        }
-        {
-          final Paint paint = Paint();
-          paint.color = const Color(0xFF008000);
-          paint.style = PaintingStyle.stroke;
-          paint.strokeWidth = 3.7795275590551176;
-          canvas.drawLine(
-            const Offset(113.38582677165354, 113.38582677165354),
-            const Offset(188.9763779527559, 37.79527559055118),
-            paint,
-          );
-        }
-      }
-      {
-        {
-          final Paint paint = Paint();
-          paint.color = Colors.black;
-          paint.style = PaintingStyle.fill;
-          canvas.drawLine(
-            const Offset(188.9763779527559, 113.38582677165354),
-            const Offset(264.56692913385825, 37.79527559055118),
-            paint,
-          );
-        }
-        {
-          final Paint paint = Paint();
-          paint.color = const Color(0xFF008000);
-          paint.style = PaintingStyle.stroke;
-          paint.strokeWidth = 5.669291338582676;
-          canvas.drawLine(
-            const Offset(188.9763779527559, 113.38582677165354),
-            const Offset(264.56692913385825, 37.79527559055118),
-            paint,
-          );
-        }
-      }
-      {
-        {
-          final Paint paint = Paint();
-          paint.color = Colors.black;
-          paint.style = PaintingStyle.fill;
-          canvas.drawLine(
-            const Offset(264.56692913385825, 113.38582677165354),
-            const Offset(340.15748031496065, 37.79527559055118),
-            paint,
-          );
-        }
-        {
-          final Paint paint = Paint();
-          paint.color = const Color(0xFF008000);
-          paint.style = PaintingStyle.stroke;
-          paint.strokeWidth = 7.559055118110235;
-          canvas.drawLine(
-            const Offset(264.56692913385825, 113.38582677165354),
-            const Offset(340.15748031496065, 37.79527559055118),
-            paint,
-          );
-        }
-      }
-      {
-        {
-          final Paint paint = Paint();
-          paint.color = Colors.black;
-          paint.style = PaintingStyle.fill;
-          canvas.drawLine(
-            const Offset(340.15748031496065, 113.38582677165354),
-            const Offset(415.748031496063, 37.79527559055118),
-            paint,
-          );
-        }
-        {
-          final Paint paint = Paint();
-          paint.color = const Color(0xFF008000);
-          paint.style = PaintingStyle.stroke;
-          paint.strokeWidth = 9.448818897637794;
-          canvas.drawLine(
-            const Offset(340.15748031496065, 113.38582677165354),
-            const Offset(415.748031496063, 37.79527559055118),
-            paint,
-          );
-        }
-      }
+      final Paint paint = Paint();
+      paint.color = const Color(0xFF008000);
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 5.0;
+      canvas.drawLine(
+        const Offset(100.0, 300.0),
+        const Offset(300.0, 100.0),
+        paint,
+      );
+    }
+    {
+      final Paint paint = Paint();
+      paint.color = const Color(0xFF008000);
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 10.0;
+      canvas.drawLine(
+        const Offset(300.0, 300.0),
+        const Offset(500.0, 100.0),
+        paint,
+      );
+    }
+    {
+      final Paint paint = Paint();
+      paint.color = const Color(0xFF008000);
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 15.0;
+      canvas.drawLine(
+        const Offset(500.0, 300.0),
+        const Offset(700.0, 100.0),
+        paint,
+      );
+    }
+    {
+      final Paint paint = Paint();
+      paint.color = const Color(0xFF008000);
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 20.0;
+      canvas.drawLine(
+        const Offset(700.0, 300.0),
+        const Offset(900.0, 100.0),
+        paint,
+      );
+    }
+    {
+      final Paint paint = Paint();
+      paint.color = const Color(0xFF008000);
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 25.0;
+      canvas.drawLine(
+        const Offset(900.0, 300.0),
+        const Offset(1100.0, 100.0),
+        paint,
+      );
     }
     canvas.restore();
+    canvas.restore();
+  }
+
+  void _applyOverride(Paint paint, Object? override) {
+    switch (override) {
+      case final Color color:
+        paint.color = color;
+        paint.shader = null;
+
+      case final Shader shader:
+        paint.shader = shader;
+
+      case null || _:
+        break;
+    }
   }
 
   @override

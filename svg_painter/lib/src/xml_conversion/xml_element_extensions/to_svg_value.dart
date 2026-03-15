@@ -41,10 +41,8 @@ extension ToSvgValue on XmlElement {
         .y2 ||
         .cx ||
         .cy ||
-        .r ||
         .fx ||
         .fy ||
-        .fr ||
         .offset ||
         .opacity ||
         .fillOpacity ||
@@ -52,12 +50,24 @@ extension ToSvgValue on XmlElement {
         .stopOpacity ||
         .fontSize ||
         .strokeWidth => attributeValue.toSvgLengthPercentage(),
-        .rx || .ry || .width || .height => attributeValue.toSvgLengthPercentageAuto(),
-        .pathLength => attributeValue.toSvgLength(),
+        .r || .fr || .rx || .ry || .width || .height => () {
+          final SvgLengthPercentage val = attributeValue.toSvgLengthPercentage();
+          if (val is SvgLength && val.value < 0) {
+            return null;
+          }
+          if (val is SvgPercentage && val.value < 0) {
+            return null;
+          }
+          return val;
+        }(),
+        .pathLength => attributeValue.toSvgNonNegativeNumber(),
         .points || .strokeDasharray => attributeValue.toSvgPointList(),
         .fill || .stroke || .stopColor => attributeValue.toSvgColor(),
         .strokeLinecap => attributeValue.toSvgStrokeLinecap(),
         .strokeLinejoin => attributeValue.toSvgStrokeLinejoin(),
+        .fontWeight => attributeValue.toSvgFontWeight(),
+        .fontStyle => attributeValue.toSvgFontStyle(),
+        .fontFamily => attributeValue.toSvgFontFamily(),
         .viewBox ||
         .id ||
         .d ||
@@ -65,10 +75,7 @@ extension ToSvgValue on XmlElement {
         .style ||
         .href ||
         .transform ||
-        .gradientTransform ||
-        .fontWeight ||
-        .fontStyle ||
-        .fontFamily => null, // These are strings or special types handled elsewhere
+        .gradientTransform => null, // These are strings or special types handled elsewhere
       };
 
       if (parsedValue == null) {
@@ -81,5 +88,22 @@ extension ToSvgValue on XmlElement {
         );
       }
     }
+  }
+
+  /// Parses the `pathLength` attribute as a non-negative [SvgNonNegativeNumber].
+  ///
+  /// Returns null if the attribute is missing, malformed, or negative.
+  SvgNonNegativeNumber? toPathLength() {
+    final String? value = toXmlAttributeValue(XmlAttributeName.pathLength);
+    if (value == null) {
+      return null;
+    }
+
+    final double? parsed = double.tryParse(value);
+    if (parsed == null || parsed < 0) {
+      return null;
+    }
+
+    return SvgNonNegativeNumber(parsed);
   }
 }

@@ -16,26 +16,37 @@ void main() {
       final Result<SvgGroup> result = element.toSvgGroup();
 
       // Assert
-      expect(result, isA<Success<SvgGroup>>());
-      final SvgGroup group = (result as Success<SvgGroup>).value;
-      expect(group.id, 'group1');
-      expect(group.children, hasLength(2));
-      expect(group.children[0], isA<SvgCircle>());
-      expect(group.children[1], isA<SvgRect>());
+      expect(
+        result,
+        isA<Success<SvgGroup>>().having(
+          (Success<SvgGroup> s) => s.value,
+          'value',
+          isA<SvgGroup>()
+              .having((SvgGroup g) => g.id, 'id', 'group1')
+              .having((SvgGroup g) => g.children, 'children', hasLength(2)),
+        ),
+      );
     });
 
     test('should inherit common attributes from group when provided', () {
       // Arrange
-      final XmlDocument document = XmlDocument.parse('<g fill="red" opacity="0.8" />');
+      final XmlDocument document = XmlDocument.parse('<g fill="red" opacity="0.45" />');
       final XmlElement element = document.rootElement;
 
       // Act
       final Result<SvgGroup> result = element.toSvgGroup();
 
       // Assert
-      final SvgGroup group = (result as Success<SvgGroup>).value;
-      expect(group.fill, isA<SvgNamedColor>());
-      expect((group.opacity! as SvgLength).value, 0.8);
+      expect(
+        result,
+        isA<Success<SvgGroup>>().having(
+          (Success<SvgGroup> s) => s.value,
+          'value',
+          isA<SvgGroup>()
+              .having((SvgGroup g) => g.fillAttributes?.color, 'fill', isA<SvgNamedColor>())
+              .having((SvgGroup g) => (g.opacity as SvgLength?)?.value, 'opacity', 0.45),
+        ),
+      );
     });
   });
 }

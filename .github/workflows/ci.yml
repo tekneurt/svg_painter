@@ -20,20 +20,16 @@ jobs:
 
       - name: Install dependencies
         run: |
-          cd svg_painter_annotation && dart pub get && cd ..
+          dart pub get
           cd svg_painter_fixtures && dart pub get && cd ..
-          cd svg_painter && dart pub get && cd ..
           cd svg_painter_tests && flutter pub get && cd ..
           cd example && flutter pub get && cd ..
 
-      - name: Analyze svg_painter_annotation
-        run: dart analyze --fatal-infos svg_painter_annotation
+      - name: Analyze Dart Workspace (svg_painter, svg_painter_annotation)
+        run: dart analyze --fatal-infos .
 
       - name: Analyze svg_painter_fixtures
         run: dart analyze --fatal-infos svg_painter_fixtures
-
-      - name: Analyze svg_painter
-        run: dart analyze --fatal-infos svg_painter
 
       - name: Analyze svg_painter_tests
         run: flutter analyze --fatal-infos svg_painter_tests
@@ -53,9 +49,8 @@ jobs:
 
       - name: Install dependencies
         run: |
-          cd svg_painter_annotation && dart pub get && cd ..
+          dart pub get --no-example
           cd svg_painter_fixtures && dart pub get && cd ..
-          cd svg_painter && dart pub get && cd ..
 
       - name: Run svg_painter tests with coverage
         working-directory: svg_painter
@@ -88,11 +83,11 @@ jobs:
 
       - name: Install dependencies
         run: |
-          cd svg_painter_annotation && dart pub get && cd ..
+          dart pub get
           cd svg_painter_fixtures && dart pub get && cd ..
-          cd svg_painter && dart pub get && cd ..
           cd svg_painter_tests && flutter pub get && cd ..
 
       - name: Run golden tests
         working-directory: svg_painter_tests
         run: flutter test
+

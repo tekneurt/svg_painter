@@ -10,7 +10,6 @@ final class DrawLine extends DrawCommand {
     required this.y2,
     required this.style,
     super.id,
-    this.transform,
   });
 
   final double x1;
@@ -22,9 +21,6 @@ final class DrawLine extends DrawCommand {
   @override
   final PaintingStyle style;
 
-  final String? transform;
-
   @override
-  String toString() =>
-      'DrawLine(x1: $x1, y1: $y1, x2: $x2, y2: $y2, style: $style, transform: $transform)';
+  String toString() => 'DrawLine(x1: $x1, y1: $y1, x2: $x2, y2: $y2, style: $style, id: $id)';
 }

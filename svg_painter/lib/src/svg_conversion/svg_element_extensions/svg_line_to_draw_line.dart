@@ -2,9 +2,7 @@ import '../../base/_base.dart';
 import '../../painting_model/_painting_model.dart';
 import '../../svg_model/_svg_model.dart';
 import '../converters/_converters.dart';
-import '../svg_transform_parser.dart';
-import '../svg_value_extensions/svg_length_percentage_to_double.dart';
-import '../svg_value_extensions/svg_percentage_to_double.dart';
+import '../svg_value_extensions/_svg_value_extensions.dart';
 
 /// Extension to convert [SvgLine] to [PaintCommand]s.
 extension SvgLineToPaintCommands on SvgLine {
@@ -14,34 +12,23 @@ extension SvgLineToPaintCommands on SvgLine {
       context,
       tagName: 'line',
       id: id,
-      fill: fill,
-      fillOpacity: fillOpacity,
-      stroke: stroke,
       pathLength: pathLength,
+      fillAttributes: fillAttributes,
+      strokeAttributes: strokeAttributes,
       opacity: opacity,
-      fontSize: fontSize,
-      fontWeight: fontWeight,
-      fontStyle: fontStyle,
-      fontFamily: fontFamily,
       cssClass: cssClass,
       inlineStyle: inlineStyle,
+      transformAttributes: transformAttributes,
     );
 
-    final double finalX1 = context.transformX(x1.resolve(context, SvgOrientation.horizontal));
-    final double finalY1 = context.transformY(y1.resolve(context, SvgOrientation.vertical));
-    final double finalX2 = context.transformX(x2.resolve(context, SvgOrientation.horizontal));
-    final double finalY2 = context.transformY(y2.resolve(context, SvgOrientation.vertical));
+    // Use local coordinates (generator handles transforms)
+    final double finalX1 = x1.resolve(context, .horizontal);
+    final double finalY1 = y1.resolve(context, .vertical);
+    final double finalX2 = x2.resolve(context, .horizontal);
+    final double finalY2 = y2.resolve(context, .vertical);
 
     return Success<List<PaintCommand>>(<PaintCommand>[
-      DrawLine(
-        x1: finalX1,
-        y1: finalY1,
-        x2: finalX2,
-        y2: finalY2,
-        style: paint,
-        id: id,
-        transform: SvgTransformParser.scaleTransform(transform, context.parentSx, context.parentSy),
-      ),
+      DrawLine(x1: finalX1, y1: finalY1, x2: finalX2, y2: finalY2, style: paint, id: id),
     ]);
   }
 }

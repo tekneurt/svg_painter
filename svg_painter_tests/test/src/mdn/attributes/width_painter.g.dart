@@ -62,36 +62,46 @@ class _$WidthPainter extends CustomPainter {
     canvas.clipRect(Rect.fromLTWH(0, 0, 100.0, 300.0));
 
     {
-      {
-        final Paint paint = Paint();
-        paint.color = const Color(0xFFFF0000);
-        paint.style = PaintingStyle.fill;
-        canvas.drawRect(Rect.fromLTWH(0.0, 100.0, 60.0, 90.0), paint);
-      }
-      {
-        final Paint paint = Paint();
-        paint.color = Colors.black;
-        paint.style = PaintingStyle.stroke;
-        paint.strokeWidth = 5.0;
-        canvas.drawRect(Rect.fromLTWH(0.0, 100.0, 60.0, 90.0), paint);
-      }
+      final Paint paint = Paint();
+      paint.color = const Color(0xFFFF0000);
+      paint.style = PaintingStyle.fill;
+      canvas.drawRect(Rect.fromLTWH(0.0, 100.0, 60.0, 90.0), paint);
     }
     {
-      {
-        final Paint paint = Paint();
-        paint.color = const Color(0xFFFF0000);
-        paint.style = PaintingStyle.fill;
-        canvas.drawRect(Rect.fromLTWH(0.0, 200.0, 100.0, 90.0), paint);
-      }
-      {
-        final Paint paint = Paint();
-        paint.color = Colors.black;
-        paint.style = PaintingStyle.stroke;
-        paint.strokeWidth = 5.0;
-        canvas.drawRect(Rect.fromLTWH(0.0, 200.0, 100.0, 90.0), paint);
-      }
+      final Paint paint = Paint();
+      paint.color = Colors.black;
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 5.0;
+      canvas.drawRect(Rect.fromLTWH(0.0, 100.0, 60.0, 90.0), paint);
+    }
+    {
+      final Paint paint = Paint();
+      paint.color = const Color(0xFFFF0000);
+      paint.style = PaintingStyle.fill;
+      canvas.drawRect(Rect.fromLTWH(0.0, 200.0, 100.0, 90.0), paint);
+    }
+    {
+      final Paint paint = Paint();
+      paint.color = Colors.black;
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 5.0;
+      canvas.drawRect(Rect.fromLTWH(0.0, 200.0, 100.0, 90.0), paint);
     }
     canvas.restore();
+  }
+
+  void _applyOverride(Paint paint, Object? override) {
+    switch (override) {
+      case final Color color:
+        paint.color = color;
+        paint.shader = null;
+
+      case final Shader shader:
+        paint.shader = shader;
+
+      case null || _:
+        break;
+    }
   }
 
   @override

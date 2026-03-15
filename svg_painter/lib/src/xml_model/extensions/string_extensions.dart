@@ -1,6 +1,6 @@
 import 'package:xml/xml.dart';
 
-import '../../base/result.dart';
+import '../../base/_base.dart';
 
 /// Extension on [String] to facilitate conversion to XML.
 extension ToXml on String {
@@ -15,7 +15,10 @@ extension ToXml on String {
     } on XmlException catch (e) {
       return Failure<XmlDocument>('XML parsing failed: ${e.message}');
     } catch (e) {
-      return Failure<XmlDocument>('An unknown error occurred during XML parsing: $e');
+      // Defensive catch-all for untreatable Errors (all expected Exceptions are handled explicitly).
+      // coverage:ignore-start
+      return Failure<XmlDocument>('$untreatableErrorPrefix during XML parsing: $e');
+      // coverage:ignore-end
     }
   }
 }

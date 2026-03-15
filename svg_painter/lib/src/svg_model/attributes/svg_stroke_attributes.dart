@@ -34,6 +34,14 @@ class SvgStrokeAttributes {
 
   @override
   String toString() {
-    return 'SvgStrokeAttributes(color: $color, opacity: $opacity, width: $width, dashArray: $dashArray, linecap: $linecap, linejoin: $linejoin)';
+    final List<String> parts = <String>[
+      if (color != null) 'color: $color',
+      if (opacity != null) 'opacity: $opacity',
+      if (width != null) 'width: $width',
+      if (dashArray != null) 'dashArray: $dashArray',
+      if (linecap != null) 'linecap: $linecap',
+      if (linejoin != null) 'linejoin: $linejoin',
+    ];
+    return 'SvgStrokeAttributes(${parts.join(', ')})';
   }
 }

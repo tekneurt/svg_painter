@@ -62,41 +62,49 @@ class _$PolygonPainter extends CustomPainter {
     canvas.clipRect(Rect.fromLTWH(0, 0, 200.0, 100.0));
 
     {
+      final Path path = Path()
+        ..moveTo(0.0, 100.0)
+        ..lineTo(50.0, 25.0)
+        ..lineTo(50.0, 75.0)
+        ..lineTo(100.0, 0.0)
+        ..close();
       {
-        final Path path = Path();
-        path.addPolygon([
-          const Offset(0.0, 100.0),
-          const Offset(50.0, 25.0),
-          const Offset(50.0, 75.0),
-          const Offset(100.0, 0.0),
-        ], true);
-        {
-          final Paint paint = Paint();
-          paint.color = Colors.black;
-          paint.style = PaintingStyle.fill;
-          canvas.drawPath(path, paint);
-        }
+        final Paint paint = Paint();
+        paint.color = Colors.black;
+        paint.style = PaintingStyle.fill;
+        canvas.drawPath(path, paint);
       }
     }
     {
+      final Path path = Path()
+        ..moveTo(100.0, 100.0)
+        ..lineTo(150.0, 25.0)
+        ..lineTo(150.0, 75.0)
+        ..lineTo(200.0, 0.0)
+        ..close();
       {
-        final Path path = Path();
-        path.addPolygon([
-          const Offset(100.0, 100.0),
-          const Offset(150.0, 25.0),
-          const Offset(150.0, 75.0),
-          const Offset(200.0, 0.0),
-        ], true);
-        {
-          final Paint paint = Paint();
-          paint.color = Colors.black;
-          paint.style = PaintingStyle.stroke;
-          paint.strokeWidth = 1.0;
-          canvas.drawPath(path, paint);
-        }
+        final Paint paint = Paint();
+        paint.color = Colors.black;
+        paint.style = PaintingStyle.stroke;
+        paint.strokeWidth = 1.0;
+        canvas.drawPath(path, paint);
       }
     }
     canvas.restore();
+  }
+
+  void _applyOverride(Paint paint, Object? override) {
+    switch (override) {
+      case final Color color:
+        paint.color = color;
+        paint.shader = null;
+
+      case final Shader shader:
+        paint.shader = shader;
+
+      case null || _:
+        break;
+    }
   }
 
   @override

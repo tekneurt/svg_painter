@@ -2,15 +2,13 @@ import '../../base/_base.dart';
 import '../../painting_model/_painting_model.dart';
 import '../../svg_model/_svg_model.dart';
 import '../converters/_converters.dart';
-import '../svg_transform_parser.dart';
-import '../svg_value_extensions/svg_length_percentage_to_double.dart';
-import '../svg_value_extensions/svg_percentage_to_double.dart';
+import '../svg_value_extensions/_svg_value_extensions.dart';
 
 /// Extension to convert [SvgCircle] to [PaintCommand]s.
 extension SvgCircleToPaintCommands on SvgCircle {
   /// Converts this [SvgCircle] to a list of [PaintCommand]s.
   Result<List<PaintCommand>> toPaintCommands(SvgPaintingContext context) {
-    if (r.resolve(context, SvgOrientation.normalized) <= 0) {
+    if (r.resolve(context, .normalized) <= 0) {
       return const Success<List<PaintCommand>>(<PaintCommand>[]);
     }
 
@@ -18,32 +16,21 @@ extension SvgCircleToPaintCommands on SvgCircle {
       context,
       tagName: 'circle',
       id: id,
-      fill: fill,
-      fillOpacity: fillOpacity,
-      stroke: stroke,
       pathLength: pathLength,
+      fillAttributes: fillAttributes,
+      strokeAttributes: strokeAttributes,
       opacity: opacity,
-      fontSize: fontSize,
-      fontWeight: fontWeight,
-      fontStyle: fontStyle,
-      fontFamily: fontFamily,
       cssClass: cssClass,
       inlineStyle: inlineStyle,
+      transformAttributes: transformAttributes,
     );
 
-    final double finalCx = context.transformX(cx.toPosition(context, SvgOrientation.horizontal));
-    final double finalCy = context.transformY(cy.toPosition(context, SvgOrientation.vertical));
-    final double finalR = context.scaleNormalized(r.resolve(context, SvgOrientation.normalized));
+    final double finalCx = cx.toPosition(context, .horizontal);
+    final double finalCy = cy.toPosition(context, .vertical);
+    final double finalR = r.resolve(context, .normalized);
 
     return Success<List<PaintCommand>>(<PaintCommand>[
-      DrawCircle(
-        cx: finalCx,
-        cy: finalCy,
-        radius: finalR,
-        style: paint,
-        id: id,
-        transform: SvgTransformParser.scaleTransform(transform, context.parentSx, context.parentSy),
-      ),
+      DrawCircle(cx: finalCx, cy: finalCy, radius: finalR, style: paint, id: id),
     ]);
   }
 }

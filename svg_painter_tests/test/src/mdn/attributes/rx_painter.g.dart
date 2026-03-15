@@ -62,78 +62,68 @@ class _$RxPainter extends CustomPainter {
     canvas.clipRect(Rect.fromLTWH(0, 0, 300.0, 200.0));
 
     {
-      {
-        final Paint paint = Paint();
-        paint.color = Colors.black;
-        paint.style = PaintingStyle.fill;
-        canvas.drawOval(
-          Rect.fromCenter(
-            center: const Offset(150.0, 50.0),
-            width: 50.0,
-            height: 50.0,
-          ),
-          paint,
-        );
-      }
+      final Paint paint = Paint();
+      paint.color = Colors.black;
+      paint.style = PaintingStyle.fill;
+      canvas.drawOval(Rect.fromLTWH(125.0, 25.0, 50.0, 50.0), paint);
     }
     {
-      {
-        final Paint paint = Paint();
-        paint.color = Colors.black;
-        paint.style = PaintingStyle.fill;
-        canvas.drawOval(
-          Rect.fromCenter(
-            center: const Offset(250.0, 50.0),
-            width: 100.0,
-            height: 50.0,
-          ),
-          paint,
-        );
-      }
+      final Paint paint = Paint();
+      paint.color = Colors.black;
+      paint.style = PaintingStyle.fill;
+      canvas.drawOval(Rect.fromLTWH(200.0, 25.0, 100.0, 50.0), paint);
     }
     {
-      {
-        final Paint paint = Paint();
-        paint.color = Colors.black;
-        paint.style = PaintingStyle.fill;
-        canvas.drawRRect(
-          RRect.fromRectAndRadius(
-            Rect.fromLTWH(20.0, 120.0, 60.0, 60.0),
-            const Radius.elliptical(0.0, 15.0),
-          ),
-          paint,
-        );
-      }
+      final Paint paint = Paint();
+      paint.color = Colors.black;
+      paint.style = PaintingStyle.fill;
+      canvas.drawRRect(
+        RRect.fromRectAndRadius(
+          Rect.fromLTWH(20.0, 120.0, 60.0, 60.0),
+          const Radius.elliptical(0.0, 15.0),
+        ),
+        paint,
+      );
     }
     {
-      {
-        final Paint paint = Paint();
-        paint.color = Colors.black;
-        paint.style = PaintingStyle.fill;
-        canvas.drawRRect(
-          RRect.fromRectAndRadius(
-            Rect.fromLTWH(120.0, 120.0, 60.0, 60.0),
-            const Radius.elliptical(15.0, 15.0),
-          ),
-          paint,
-        );
-      }
+      final Paint paint = Paint();
+      paint.color = Colors.black;
+      paint.style = PaintingStyle.fill;
+      canvas.drawRRect(
+        RRect.fromRectAndRadius(
+          Rect.fromLTWH(120.0, 120.0, 60.0, 60.0),
+          const Radius.elliptical(15.0, 15.0),
+        ),
+        paint,
+      );
     }
     {
-      {
-        final Paint paint = Paint();
-        paint.color = Colors.black;
-        paint.style = PaintingStyle.fill;
-        canvas.drawRRect(
-          RRect.fromRectAndRadius(
-            Rect.fromLTWH(220.0, 120.0, 60.0, 60.0),
-            const Radius.elliptical(30.0, 15.0),
-          ),
-          paint,
-        );
-      }
+      final Paint paint = Paint();
+      paint.color = Colors.black;
+      paint.style = PaintingStyle.fill;
+      canvas.drawRRect(
+        RRect.fromRectAndRadius(
+          Rect.fromLTWH(220.0, 120.0, 60.0, 60.0),
+          const Radius.elliptical(30.0, 15.0),
+        ),
+        paint,
+      );
     }
     canvas.restore();
+  }
+
+  void _applyOverride(Paint paint, Object? override) {
+    switch (override) {
+      case final Color color:
+        paint.color = color;
+        paint.shader = null;
+
+      case final Shader shader:
+        paint.shader = shader;
+
+      case null || _:
+        break;
+    }
   }
 
   @override

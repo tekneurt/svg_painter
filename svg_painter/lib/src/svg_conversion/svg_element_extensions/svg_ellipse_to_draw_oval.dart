@@ -2,8 +2,7 @@ import '../../base/_base.dart';
 import '../../painting_model/_painting_model.dart';
 import '../../svg_model/_svg_model.dart';
 import '../converters/_converters.dart';
-import '../svg_transform_parser.dart';
-import '../svg_value_extensions/svg_length_percentage_to_double.dart';
+import '../svg_value_extensions/_svg_value_extensions.dart';
 
 /// Extension to convert [SvgEllipse] to [PaintCommand]s.
 extension SvgEllipseToPaintCommands on SvgEllipse {
@@ -19,35 +18,23 @@ extension SvgEllipseToPaintCommands on SvgEllipse {
       context,
       tagName: 'ellipse',
       id: id,
-      fill: fill,
-      fillOpacity: fillOpacity,
-      stroke: stroke,
       pathLength: pathLength,
+      fillAttributes: fillAttributes,
+      strokeAttributes: strokeAttributes,
       opacity: opacity,
-      fontSize: fontSize,
-      fontWeight: fontWeight,
-      fontStyle: fontStyle,
-      fontFamily: fontFamily,
       cssClass: cssClass,
       inlineStyle: inlineStyle,
+      transformAttributes: transformAttributes,
     );
 
-    // Apply transformation
-    final double finalCx = context.transformX(cx.toPosition(context, .horizontal));
-    final double finalCy = context.transformY(cy.toPosition(context, .vertical));
-    final double finalRx = context.scaleHorizontal(initialRx);
-    final double finalRy = context.scaleVertical(initialRy);
+    // Use local coordinates (generator handles transforms)
+    final double finalCx = cx.toPosition(context, .horizontal);
+    final double finalCy = cy.toPosition(context, .vertical);
+    final double finalRx = initialRx;
+    final double finalRy = initialRy;
 
     return Success<List<PaintCommand>>(<PaintCommand>[
-      DrawOval(
-        cx: finalCx,
-        cy: finalCy,
-        rx: finalRx,
-        ry: finalRy,
-        style: paint,
-        id: id,
-        transform: SvgTransformParser.scaleTransform(transform, context.parentSx, context.parentSy),
-      ),
+      DrawOval(cx: finalCx, cy: finalCy, rx: finalRx, ry: finalRy, style: paint, id: id),
     ]);
   }
 }

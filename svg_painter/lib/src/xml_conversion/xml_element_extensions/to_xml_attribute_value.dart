@@ -7,6 +7,12 @@ extension ToXmlAttributeValue on XmlElement {
   ///
   /// Returns `null` if the attribute is not present.
   String? toXmlAttributeValue(XmlAttributeName attribute) {
-    return getAttribute(attribute.name);
+    final String? value = getAttribute(attribute.name);
+
+    if ((value == null) && (attribute == XmlAttributeName.href)) {
+      return getAttribute('href', namespace: 'http://www.w3.org/1999/xlink');
+    } else {
+      return value;
+    }
   }
 }

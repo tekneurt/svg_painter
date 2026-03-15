@@ -24,17 +24,17 @@ void main() {
 
       // Assert
       // Should contain renamed property
-      expect(output, contains('final Color? backgroundFill;'));
+      expect(output, contains('final Object? backgroundFill;'));
       expect(output, contains('this.backgroundFill,'));
 
       // Should NOT contain original property
       expect(output, isNot(contains('myCircleFill;')));
 
       // Verify usage in paint
-      expect(output, contains('final Color? localFill = backgroundFill;'));
+      expect(output, contains('final Object? localFill = backgroundFill;'));
 
-      // Verify usage in shouldRepaint
-      expect(output, contains('&& backgroundFill == oldDelegate.backgroundFill'));
+      // Verify usage in shouldRepaint (now formatted across lines)
+      expect(output, contains('backgroundFill == oldDelegate.backgroundFill'));
     });
 
     test('should rename Indexed properties', () {
@@ -55,15 +55,15 @@ void main() {
       );
 
       // Assert
-      expect(output, contains('final Color? primaryColor;'));
-      expect(output, contains('final Color? secondaryColor;'));
+      expect(output, contains('final Object? primaryColor;'));
+      expect(output, contains('final Object? secondaryColor;'));
 
       expect(output, isNot(contains('fill1;')));
       expect(output, isNot(contains('fill2;')));
 
-      // Verify usage (fill1 mapped to primaryColor)
-      expect(output, contains('final Color? localFill = primaryColor;'));
-      expect(output, contains('final Color? localFill = secondaryColor;'));
+      // Verify usage
+      expect(output, contains('final Object? localFill = primaryColor;'));
+      expect(output, contains('final Object? localFill = secondaryColor;'));
     });
 
     test('should handle partial renaming', () {
@@ -87,8 +87,8 @@ void main() {
       );
 
       // Assert
-      expect(output, contains('final Color? primaryColor;'));
-      expect(output, contains('final Color? fill2;')); // Original name kept
+      expect(output, contains('final Object? primaryColor;'));
+      expect(output, contains('final Object? fill2;')); // Original name kept
     });
   });
 }

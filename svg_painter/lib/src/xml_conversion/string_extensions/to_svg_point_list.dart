@@ -10,8 +10,12 @@ extension ToSvgPointList on String {
     final Iterable<Match> matches = regex.allMatches(this);
 
     for (final Match match in matches) {
+      final String? group = match.group(0);
+      if (group == null) {
+        break;
+      }
       try {
-        points.add(double.parse(match.group(0)!));
+        points.add(double.parse(group));
       } on FormatException {
         // According to SVG spec, if an invalid value is encountered (e.g. "1,B,2"),
         // parsing stops immediately and returns the valid values parsed so far.

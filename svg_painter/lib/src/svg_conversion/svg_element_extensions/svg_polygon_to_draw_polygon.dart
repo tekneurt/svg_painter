@@ -2,7 +2,6 @@ import '../../base/_base.dart';
 import '../../painting_model/_painting_model.dart';
 import '../../svg_model/_svg_model.dart';
 import '../converters/_converters.dart';
-import '../svg_transform_parser.dart';
 
 /// Extension to convert [SvgPolygon] to [PaintCommand]s.
 extension SvgPolygonToPaintCommands on SvgPolygon {
@@ -21,35 +20,26 @@ extension SvgPolygonToPaintCommands on SvgPolygon {
       final double x = points.points[i];
       final double y = points.points[i + 1];
 
-      // Points are transformed through the context.
-      resolvedPoints.add(context.transformX(x));
-      resolvedPoints.add(context.transformY(y));
+      // Use local coordinates (generator handles transforms)
+      resolvedPoints.add(x);
+      resolvedPoints.add(y);
     }
 
     final PaintingStyle paint = resolvePaint(
       context,
       tagName: 'polygon',
       id: id,
-      fill: fill,
-      fillOpacity: fillOpacity,
-      stroke: stroke,
       pathLength: pathLength,
+      fillAttributes: fillAttributes,
+      strokeAttributes: strokeAttributes,
       opacity: opacity,
-      fontSize: fontSize,
-      fontWeight: fontWeight,
-      fontStyle: fontStyle,
-      fontFamily: fontFamily,
       cssClass: cssClass,
       inlineStyle: inlineStyle,
+      transformAttributes: transformAttributes,
     );
 
     return Success<List<PaintCommand>>(<PaintCommand>[
-      DrawPolygon(
-        points: resolvedPoints,
-        style: paint,
-        id: id,
-        transform: SvgTransformParser.scaleTransform(transform, context.parentSx, context.parentSy),
-      ),
+      DrawPolygon(points: resolvedPoints, style: paint, id: id),
     ]);
   }
 }

@@ -62,21 +62,33 @@ class _$StylePainter extends CustomPainter {
     canvas.clipRect(Rect.fromLTWH(0, 0, 100.0, 60.0));
 
     {
-      {
-        final Paint paint = Paint();
-        paint.color = const Color(0xFF87CEEB);
-        paint.style = PaintingStyle.fill;
-        canvas.drawRect(Rect.fromLTWH(10.0, 10.0, 80.0, 40.0), paint);
-      }
-      {
-        final Paint paint = Paint();
-        paint.color = const Color(0xFF5F9EA0);
-        paint.style = PaintingStyle.stroke;
-        paint.strokeWidth = 2.0;
-        canvas.drawRect(Rect.fromLTWH(10.0, 10.0, 80.0, 40.0), paint);
-      }
+      final Paint paint = Paint();
+      paint.color = const Color(0xFF87CEEB);
+      paint.style = PaintingStyle.fill;
+      canvas.drawRect(Rect.fromLTWH(10.0, 10.0, 80.0, 40.0), paint);
+    }
+    {
+      final Paint paint = Paint();
+      paint.color = const Color(0xFF5F9EA0);
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 2.0;
+      canvas.drawRect(Rect.fromLTWH(10.0, 10.0, 80.0, 40.0), paint);
     }
     canvas.restore();
+  }
+
+  void _applyOverride(Paint paint, Object? override) {
+    switch (override) {
+      case final Color color:
+        paint.color = color;
+        paint.shader = null;
+
+      case final Shader shader:
+        paint.shader = shader;
+
+      case null || _:
+        break;
+    }
   }
 
   @override

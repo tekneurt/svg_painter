@@ -63,22 +63,33 @@ class _$LinearGradientPainter extends CustomPainter {
 
     final Gradient _grad_myGradient = LinearGradient(
       begin: Alignment(-1.0, -1.0),
-      end: Alignment(1.0, -1.0),
-      colors: [const Color(0xFFFFD700), const Color(0xFFFF0000)],
-      stops: [0.05, 0.95],
-      transform: const GradientRotation(3.141592653589793 / 2),
+      end: Alignment(-1.0, 1.0),
+      colors: <Color>[const Color(0xFFFFD700), const Color(0xFFFF0000)],
+      stops: <double>[0.05, 0.95],
     );
     {
-      {
-        final Paint paint = Paint();
-        paint.shader = _grad_myGradient.createShader(
-          Rect.fromCircle(center: const Offset(50.0, 50.0), radius: 50.0),
-        );
-        paint.style = PaintingStyle.fill;
-        canvas.drawCircle(const Offset(50.0, 50.0), 50.0, paint);
-      }
+      final Paint paint = Paint();
+      paint.shader = _grad_myGradient.createShader(
+        Rect.fromCircle(center: const Offset(50.0, 50.0), radius: 50.0),
+      );
+      paint.style = PaintingStyle.fill;
+      canvas.drawCircle(const Offset(50.0, 50.0), 50.0, paint);
     }
     canvas.restore();
+  }
+
+  void _applyOverride(Paint paint, Object? override) {
+    switch (override) {
+      case final Color color:
+        paint.color = color;
+        paint.shader = null;
+
+      case final Shader shader:
+        paint.shader = shader;
+
+      case null || _:
+        break;
+    }
   }
 
   @override

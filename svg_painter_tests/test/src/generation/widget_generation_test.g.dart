@@ -62,14 +62,26 @@ class _$CircleWidgetTest extends CustomPainter {
     canvas.clipRect(Rect.fromLTWH(0, 0, 100.0, 100.0));
 
     {
-      {
-        final Paint paint = Paint();
-        paint.color = Colors.black;
-        paint.style = PaintingStyle.fill;
-        canvas.drawCircle(const Offset(50.0, 50.0), 50.0, paint);
-      }
+      final Paint paint = Paint();
+      paint.color = Colors.black;
+      paint.style = PaintingStyle.fill;
+      canvas.drawCircle(const Offset(50.0, 50.0), 50.0, paint);
     }
     canvas.restore();
+  }
+
+  void _applyOverride(Paint paint, Object? override) {
+    switch (override) {
+      case final Color color:
+        paint.color = color;
+        paint.shader = null;
+
+      case final Shader shader:
+        paint.shader = shader;
+
+      case null || _:
+        break;
+    }
   }
 
   @override

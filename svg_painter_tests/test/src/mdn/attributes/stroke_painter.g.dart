@@ -61,33 +61,43 @@ class _$StrokePainter extends CustomPainter {
     );
     canvas.clipRect(Rect.fromLTWH(0, 0, 20.0, 10.0));
 
+    {
+      final Paint paint = Paint();
+      paint.color = const Color(0xFF008000);
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 1.0;
+      canvas.drawCircle(const Offset(5.0, 5.0), 4.0, paint);
+    }
     final Gradient _grad_myGradient = LinearGradient(
       begin: Alignment(-1.0, -1.0),
       end: Alignment(1.0, -1.0),
-      colors: [const Color(0xFF008000), Colors.white],
-      stops: [0.0, 1.0],
+      colors: <Color>[const Color(0xFF008000), Colors.white],
+      stops: <double>[0.0, 1.0],
     );
     {
-      {
-        final Paint paint = Paint();
-        paint.color = const Color(0xFF008000);
-        paint.style = PaintingStyle.stroke;
-        paint.strokeWidth = 1.0;
-        canvas.drawCircle(const Offset(5.0, 5.0), 4.0, paint);
-      }
-    }
-    {
-      {
-        final Paint paint = Paint();
-        paint.shader = _grad_myGradient.createShader(
-          Rect.fromCircle(center: const Offset(15.0, 5.0), radius: 4.0),
-        );
-        paint.style = PaintingStyle.stroke;
-        paint.strokeWidth = 1.0;
-        canvas.drawCircle(const Offset(15.0, 5.0), 4.0, paint);
-      }
+      final Paint paint = Paint();
+      paint.shader = _grad_myGradient.createShader(
+        Rect.fromCircle(center: const Offset(15.0, 5.0), radius: 4.0),
+      );
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 1.0;
+      canvas.drawCircle(const Offset(15.0, 5.0), 4.0, paint);
     }
     canvas.restore();
+  }
+
+  void _applyOverride(Paint paint, Object? override) {
+    switch (override) {
+      case final Color color:
+        paint.color = color;
+        paint.shader = null;
+
+      case final Shader shader:
+        paint.shader = shader;
+
+      case null || _:
+        break;
+    }
   }
 
   @override

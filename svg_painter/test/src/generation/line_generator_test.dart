@@ -1,4 +1,4 @@
-import 'package:svg_painter/src/generation/line_generator.dart';
+import 'package:svg_painter/src/generation/_generation.dart';
 import 'package:svg_painter/src/painting_model/_painting_model.dart';
 import 'package:test/test.dart';
 
@@ -18,7 +18,7 @@ void main() {
         y2: 200.0,
         style: strokeBlack,
       );
-      final StringBuffer buffer = StringBuffer();
+      final GeneratorBuffer buffer = GeneratorBuffer();
 
       // Act
       generator.generate(command, buffer);
@@ -30,6 +30,52 @@ void main() {
         contains('canvas.drawLine(const Offset(10.0, 20.0), const Offset(100.0, 200.0), paint)'),
       );
       expect(output, contains('paint.strokeWidth = 2.0'));
+    });
+
+    test('should generate dashed path when dashArray is provided', () {
+      // Arrange
+      const LineGenerator generator = LineGenerator();
+      const DrawLine command = DrawLine(
+        x1: 0,
+        y1: 0,
+        x2: 10,
+        y2: 10,
+        style: PaintingStyle(stroke: PaintingStrokeStyle(colorArgb: 0, dashArray: <double>[5, 5])),
+      );
+      final GeneratorBuffer buffer = GeneratorBuffer();
+
+      // Act
+      generator.generate(command, buffer);
+
+      // Assert
+      final String output = buffer.toString();
+      expect(output, contains('final Path path = Path()..moveTo(0.0, 0.0)..lineTo(10.0, 10.0);'));
+      expect(output, contains('canvas.drawPath(_dashPath(path, dashArray), paint);'));
+    });
+
+    test('should generate dashed path with pathLength when provided', () {
+      // Arrange
+      const LineGenerator generator = LineGenerator();
+      const DrawLine command = DrawLine(
+        x1: 0,
+        y1: 0,
+        x2: 10,
+        y2: 10,
+        style: PaintingStyle(
+          stroke: PaintingStrokeStyle(colorArgb: 0, dashArray: <double>[5, 5], pathLength: 100),
+        ),
+      );
+      final GeneratorBuffer buffer = GeneratorBuffer();
+
+      // Act
+      generator.generate(command, buffer);
+
+      // Assert
+      final String output = buffer.toString();
+      expect(
+        output,
+        contains('canvas.drawPath(_dashPath(path, dashArray, pathLength: 100.0), paint);'),
+      );
     });
   });
 }

@@ -1,4 +1,4 @@
-import 'package:svg_painter/src/generation/circle_generator.dart';
+import 'package:svg_painter/src/generation/_generation.dart';
 import 'package:svg_painter/src/painting_model/paint_command.dart';
 import 'package:svg_painter/src/painting_model/styles/painting_style.dart';
 import 'package:test/test.dart';
@@ -11,7 +11,7 @@ void main() {
       // Arrange
       const CircleGenerator generator = CircleGenerator();
       const DrawCircle command = DrawCircle(cx: 10.0, cy: 20.0, radius: 5.0, style: fillRed);
-      final StringBuffer buffer = StringBuffer();
+      final GeneratorBuffer buffer = GeneratorBuffer();
 
       // Act
       generator.generate(command, buffer);
@@ -34,7 +34,7 @@ void main() {
           stroke: PaintingStrokeStyle(colorArgb: 0xFF000000, dashArray: <double>[2.0, 3.0]),
         ),
       );
-      final StringBuffer buffer = StringBuffer();
+      final GeneratorBuffer buffer = GeneratorBuffer();
 
       // Act
       generator.generate(command, buffer);
@@ -44,6 +44,34 @@ void main() {
       expect(output, contains('final Path path = Path()..addOval'));
       expect(output, contains('canvas.drawPath(_dashPath(path, dashArray), paint)'));
       expect(output, contains('final List<double> dashArray = [2.0, 3.0]'));
+    });
+
+    test('should generate dashed path with pathLength when provided', () {
+      // Arrange
+      const CircleGenerator generator = CircleGenerator();
+      const DrawCircle command = DrawCircle(
+        cx: 10.0,
+        cy: 20.0,
+        radius: 5.0,
+        style: PaintingStyle(
+          stroke: PaintingStrokeStyle(
+            colorArgb: 0xFF000000,
+            dashArray: <double>[2.0, 3.0],
+            pathLength: 100.0,
+          ),
+        ),
+      );
+      final GeneratorBuffer buffer = GeneratorBuffer();
+
+      // Act
+      generator.generate(command, buffer);
+
+      // Assert
+      final String output = buffer.toString();
+      expect(
+        output,
+        contains('canvas.drawPath(_dashPath(path, dashArray, pathLength: 100.0), paint)'),
+      );
     });
   });
 }

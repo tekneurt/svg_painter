@@ -30,9 +30,8 @@ jobs:
 
       - name: Install dependencies
         run: |
-          cd svg_painter_annotation && dart pub get && cd ..
+          dart pub get
           cd svg_painter_fixtures && dart pub get && cd ..
-          cd svg_painter && dart pub get && cd ..
           cd svg_painter_tests && flutter pub get && cd ..
 
       - name: Generate golden files
@@ -45,21 +44,22 @@ jobs:
           fi
 
       - name: Collect modified golden files
-        working-directory: svg_painter_tests
         run: |
           echo "=== Modified golden files ==="
-          mkdir -p ../modified-goldens
+          mkdir -p modified-goldens
+          # Fix dubious ownership error in Docker container
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
           # Copy only files that were actually modified/created
-          git status --porcelain test/**/goldens/*.png | while read status file; do
+          git status --porcelain | grep '\.png$' | awk '{print $2}' | while read file; do
             if [ -f "$file" ]; then
               # Preserve directory structure
-              mkdir -p "../modified-goldens/$(dirname "$file")"
-              cp "$file" "../modified-goldens/$file"
+              mkdir -p "modified-goldens/$(dirname "$file")"
+              cp "$file" "modified-goldens/$file"
               echo "  $file"
             fi
           done
           # Count files
-          count=$(find ../modified-goldens -name "*.png" 2>/dev/null | wc -l)
+          count=$(find modified-goldens -name "*.png" 2>/dev/null | wc -l)
           echo ""
           echo "Total modified golden files: $count"
 

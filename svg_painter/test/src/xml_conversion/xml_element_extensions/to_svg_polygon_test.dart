@@ -9,16 +9,21 @@ void main() {
   group('ToSvgPolygon', () {
     test('should return Success with SvgPolygon when valid points attribute is provided', () {
       // Arrange
-      final XmlDocument document = XmlDocument.parse('<polygon points="10,11 20,21 30,31" />');
+      final XmlDocument document = XmlDocument.parse('<polygon points="11,22 33,44 55,66" />');
       final XmlElement element = document.rootElement;
 
       // Act
       final Result<SvgPolygon> result = element.toSvgPolygon();
 
       // Assert
-      expect(result, isA<Success<SvgPolygon>>());
-      final SvgPolygon polygon = (result as Success<SvgPolygon>).value;
-      expect(polygon.points.points, <double>[10.0, 11.0, 20.0, 21.0, 30.0, 31.0]);
+      expect(
+        result,
+        isA<Success<SvgPolygon>>().having(
+          (Success<SvgPolygon> s) => s.value.points.points,
+          'points',
+          <double>[11.0, 22.0, 33.0, 44.0, 55.0, 66.0],
+        ),
+      );
     });
 
     test('should return Success with empty points when points attribute is missing', () {
@@ -30,15 +35,20 @@ void main() {
       final Result<SvgPolygon> result = element.toSvgPolygon();
 
       // Assert
-      expect(result, isA<Success<SvgPolygon>>());
-      final SvgPolygon polygon = (result as Success<SvgPolygon>).value;
-      expect(polygon.points.points, isEmpty);
+      expect(
+        result,
+        isA<Success<SvgPolygon>>().having(
+          (Success<SvgPolygon> s) => s.value.points.points,
+          'points',
+          isEmpty,
+        ),
+      );
     });
 
     test('should map common attributes when provided', () {
       // Arrange
       final XmlDocument document = XmlDocument.parse(
-        '<polygon points="1,2 3,4" id="poly1" fill="green" transform="scale(2)" />',
+        '<polygon points="1,2 3,4" id="poly1" fill="green" transform="scale(2.5)" />',
       );
       final XmlElement element = document.rootElement;
 
@@ -46,11 +56,21 @@ void main() {
       final Result<SvgPolygon> result = element.toSvgPolygon();
 
       // Assert
-      final SvgPolygon polygon = (result as Success<SvgPolygon>).value;
-      expect(polygon.points.points, <double>[1.0, 2.0, 3.0, 4.0]);
-      expect(polygon.id, 'poly1');
-      expect(polygon.fill, isA<SvgNamedColor>());
-      expect(polygon.transform, 'scale(2)');
+      expect(
+        result,
+        isA<Success<SvgPolygon>>().having(
+          (Success<SvgPolygon> s) => s.value,
+          'value',
+          isA<SvgPolygon>()
+              .having((SvgPolygon p) => p.id, 'id', 'poly1')
+              .having((SvgPolygon p) => p.fillAttributes?.color, 'fill', isA<SvgNamedColor>())
+              .having(
+                (SvgPolygon p) => p.transformAttributes?.operations.first,
+                'transform',
+                isA<SvgScale>(),
+              ),
+        ),
+      );
     });
   });
 }

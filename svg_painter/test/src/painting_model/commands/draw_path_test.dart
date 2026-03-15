@@ -17,7 +17,7 @@ void main() {
       // Assert
       expect(
         result,
-        'DrawPath(ops: 3, style: PaintingStyle(fill: null, stroke: null, text: null, groupOpacity: 1.0), transform: null)',
+        'DrawPath(ops: 3, style: PaintingStyle(fill: null, stroke: null, text: null, groupOpacity: 1.0, transform: null), id: null)',
       );
     });
 

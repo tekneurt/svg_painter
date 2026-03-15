@@ -2,28 +2,33 @@ part of 'painting_style.dart';
 
 /// Represents the filling style for an SVG element.
 @immutable
-final class PaintingFillStyle {
+final class PaintingFillStyle implements PaintingPaintStyle {
   const PaintingFillStyle({
     this.colorArgb,
     this.shaderId,
     this.opacity = 1.0,
     this.isExplicit = true,
     this.isCurrentColor = false,
-  });
+  }) : assert(opacity >= 0.0 && opacity <= 1.0, 'Opacity must be between 0.0 and 1.0');
 
   /// The ARGB integer for the fill color.
+  @override
   final int? colorArgb;
 
   /// The ID of the shader (e.g., gradient) to use for filling.
-  final String? shaderId; // coverage:ignore-line
+  @override
+  final String? shaderId;
 
   /// The opacity of the fill (0.0 to 1.0).
+  @override
   final double opacity;
 
   /// Whether this fill was explicitly defined on the element (not just inherited).
+  @override
   final bool isExplicit;
 
   /// Whether this fill uses the 'currentColor' keyword.
+  @override
   final bool isCurrentColor;
 
   @override

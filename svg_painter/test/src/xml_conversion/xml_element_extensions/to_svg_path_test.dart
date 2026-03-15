@@ -9,16 +9,17 @@ void main() {
   group('ToSvgPath', () {
     test('should return Success with SvgPath when valid d attribute is provided', () {
       // Arrange
-      final XmlDocument document = XmlDocument.parse('<path d="M 10 11 L 20 21" />');
+      final XmlDocument document = XmlDocument.parse('<path d="M 11 22 L 33 44" />');
       final XmlElement element = document.rootElement;
 
       // Act
       final Result<SvgPath> result = element.toSvgPath();
 
       // Assert
-      expect(result, isA<Success<SvgPath>>());
-      final SvgPath path = (result as Success<SvgPath>).value;
-      expect(path.d, 'M 10 11 L 20 21');
+      expect(
+        result,
+        isA<Success<SvgPath>>().having((Success<SvgPath> s) => s.value.d, 'd', 'M 11 22 L 33 44'),
+      );
     });
 
     test('should return Failure when d attribute is missing', () {
@@ -30,14 +31,20 @@ void main() {
       final Result<SvgPath> result = element.toSvgPath();
 
       // Assert
-      expect(result, isA<Failure<SvgPath>>());
-      expect((result as Failure<SvgPath>).message, contains('must have a "d" attribute'));
+      expect(
+        result,
+        isA<Failure<SvgPath>>().having(
+          (Failure<SvgPath> f) => f.message,
+          'message',
+          contains('must have a "d" attribute'),
+        ),
+      );
     });
 
     test('should map common attributes when provided', () {
       // Arrange
       final XmlDocument document = XmlDocument.parse(
-        '<path d="M1 2" id="path1" fill="red" stroke="blue" opacity="50%" />',
+        '<path d="M1 2" id="path1" fill="red" stroke="blue" opacity="45%" />',
       );
       final XmlElement element = document.rootElement;
 
@@ -45,11 +52,22 @@ void main() {
       final Result<SvgPath> result = element.toSvgPath();
 
       // Assert
-      final SvgPath path = (result as Success<SvgPath>).value;
-      expect(path.id, 'path1');
-      expect(path.fill, isA<SvgNamedColor>());
-      expect(path.stroke?.color, isA<SvgNamedColor>());
-      expect((path.opacity! as SvgPercentage).value, 50.0);
+      expect(
+        result,
+        isA<Success<SvgPath>>().having(
+          (Success<SvgPath> s) => s.value,
+          'value',
+          isA<SvgPath>()
+              .having((SvgPath p) => p.id, 'id', 'path1')
+              .having((SvgPath p) => p.fillAttributes?.color, 'fill', isA<SvgNamedColor>())
+              .having(
+                (SvgPath p) => p.strokeAttributes?.color,
+                'stroke color',
+                isA<SvgNamedColor>(),
+              )
+              .having((SvgPath p) => (p.opacity as SvgPercentage?)?.value, 'opacity', 45.0),
+        ),
+      );
     });
   });
 }

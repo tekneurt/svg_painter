@@ -6,7 +6,7 @@ extension ToSvgLengthUnit on String {
   ///
   /// Returns [SvgLengthUnit.none] if the suffix is empty or unknown.
   SvgLengthUnit toSvgLengthUnit() {
-    return _suffixToUnit[this] ?? SvgLengthUnit.none;
+    return _suffixToUnit[toLowerCase()] ?? SvgLengthUnit.none;
   }
 }
 
@@ -16,7 +16,7 @@ const Map<String, SvgLengthUnit> _suffixToUnit = <String, SvgLengthUnit>{
   'px': SvgLengthUnit.px,
   'cm': SvgLengthUnit.cm,
   'mm': SvgLengthUnit.mm,
-  'Q': SvgLengthUnit.q,
+  'q': SvgLengthUnit.q,
   'in': SvgLengthUnit.inUnit,
   'pt': SvgLengthUnit.pt,
   'pc': SvgLengthUnit.pc,

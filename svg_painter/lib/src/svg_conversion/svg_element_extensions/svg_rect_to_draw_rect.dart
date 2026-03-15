@@ -2,17 +2,14 @@ import '../../base/_base.dart';
 import '../../painting_model/_painting_model.dart';
 import '../../svg_model/_svg_model.dart';
 import '../converters/_converters.dart';
-import '../svg_transform_parser.dart';
-import '../svg_value_extensions/svg_auto_to_double.dart';
-import '../svg_value_extensions/svg_length_percentage_to_double.dart';
-import '../svg_value_extensions/svg_percentage_to_double.dart';
+import '../svg_value_extensions/_svg_value_extensions.dart';
 
 /// Extension to convert [SvgRect] to [PaintCommand]s.
 extension SvgRectToPaintCommands on SvgRect {
   /// Converts this [SvgRect] to a list of [PaintCommand]s.
   Result<List<PaintCommand>> toPaintCommands(SvgPaintingContext context) {
-    final double wVal = width.resolveOrNull(context, SvgOrientation.horizontal) ?? 0.0;
-    final double hVal = height.resolveOrNull(context, SvgOrientation.vertical) ?? 0.0;
+    final double wVal = width.resolveOrNull(context, .horizontal) ?? 0.0;
+    final double hVal = height.resolveOrNull(context, .vertical) ?? 0.0;
 
     if (wVal <= 0 || hVal <= 0) {
       return const Success<List<PaintCommand>>(<PaintCommand>[]);
@@ -28,26 +25,22 @@ extension SvgRectToPaintCommands on SvgRect {
       context,
       tagName: 'rect',
       id: id,
-      fill: fill,
-      fillOpacity: fillOpacity,
-      stroke: stroke,
       pathLength: pathLength,
+      fillAttributes: fillAttributes,
+      strokeAttributes: strokeAttributes,
       opacity: opacity,
-      fontSize: fontSize,
-      fontWeight: fontWeight,
-      fontStyle: fontStyle,
-      fontFamily: fontFamily,
       cssClass: cssClass,
       inlineStyle: inlineStyle,
+      transformAttributes: transformAttributes,
     );
 
-    // Apply transformation
-    final double finalX = context.transformX(x.toPosition(context, SvgOrientation.horizontal));
-    final double finalY = context.transformY(y.toPosition(context, SvgOrientation.vertical));
-    final double finalWidth = context.scaleHorizontal(wVal);
-    final double finalHeight = context.scaleVertical(hVal);
-    final double finalRx = context.scaleHorizontal(clampedRx);
-    final double finalRy = context.scaleVertical(clampedRy);
+    // Use local coordinates (generator handles transforms)
+    final double finalX = x.toPosition(context, .horizontal);
+    final double finalY = y.toPosition(context, .vertical);
+    final double finalWidth = wVal;
+    final double finalHeight = hVal;
+    final double finalRx = clampedRx;
+    final double finalRy = clampedRy;
 
     return Success<List<PaintCommand>>(<PaintCommand>[
       DrawRect(
@@ -59,7 +52,6 @@ extension SvgRectToPaintCommands on SvgRect {
         ry: finalRy,
         style: paint,
         id: id,
-        transform: SvgTransformParser.scaleTransform(transform, context.parentSx, context.parentSy),
       ),
     ]);
   }

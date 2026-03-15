@@ -7,9 +7,8 @@ final class DrawGroup extends DrawCommand {
     required this.commands,
     this.style = const PaintingStyle(),
     super.id,
-    this.transform,
     this.opacity = 1.0,
-  });
+  }) : assert(opacity >= 0.0 && opacity <= 1.0, 'Opacity must be between 0.0 and 1.0');
 
   /// The list of commands in this group.
   final List<PaintCommand> commands;
@@ -18,13 +17,9 @@ final class DrawGroup extends DrawCommand {
   @override
   final PaintingStyle style;
 
-  /// The transformation string to apply to the group.
-  final String? transform;
-
   /// The opacity to apply to the group as a whole (layering).
   final double opacity;
 
   @override
-  String toString() =>
-      'DrawGroup(cmds: ${commands.length}, style: $style, transform: $transform, opacity: $opacity)';
+  String toString() => 'DrawGroup(cmds: ${commands.length}, style: $style, opacity: $opacity)';
 }

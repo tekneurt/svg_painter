@@ -62,51 +62,59 @@ class _$StrokeWidthPainter extends CustomPainter {
     canvas.clipRect(Rect.fromLTWH(0, 0, 30.0, 10.0));
 
     {
-      {
-        final Paint paint = Paint();
-        paint.color = Colors.black;
-        paint.style = PaintingStyle.fill;
-        canvas.drawCircle(const Offset(5.0, 5.0), 3.0, paint);
-      }
-      {
-        final Paint paint = Paint();
-        paint.color = const Color(0xFF008000);
-        paint.style = PaintingStyle.stroke;
-        paint.strokeWidth = 1.0;
-        canvas.drawCircle(const Offset(5.0, 5.0), 3.0, paint);
-      }
+      final Paint paint = Paint();
+      paint.color = Colors.black;
+      paint.style = PaintingStyle.fill;
+      canvas.drawCircle(const Offset(5.0, 5.0), 3.0, paint);
     }
     {
-      {
-        final Paint paint = Paint();
-        paint.color = Colors.black;
-        paint.style = PaintingStyle.fill;
-        canvas.drawCircle(const Offset(15.0, 5.0), 3.0, paint);
-      }
-      {
-        final Paint paint = Paint();
-        paint.color = const Color(0xFF008000);
-        paint.style = PaintingStyle.stroke;
-        paint.strokeWidth = 3.0;
-        canvas.drawCircle(const Offset(15.0, 5.0), 3.0, paint);
-      }
+      final Paint paint = Paint();
+      paint.color = const Color(0xFF008000);
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 1.0;
+      canvas.drawCircle(const Offset(5.0, 5.0), 3.0, paint);
     }
     {
-      {
-        final Paint paint = Paint();
-        paint.color = Colors.black;
-        paint.style = PaintingStyle.fill;
-        canvas.drawCircle(const Offset(25.0, 5.0), 3.0, paint);
-      }
-      {
-        final Paint paint = Paint();
-        paint.color = const Color(0xFF008000);
-        paint.style = PaintingStyle.stroke;
-        paint.strokeWidth = 0.44721359549995787;
-        canvas.drawCircle(const Offset(25.0, 5.0), 3.0, paint);
-      }
+      final Paint paint = Paint();
+      paint.color = Colors.black;
+      paint.style = PaintingStyle.fill;
+      canvas.drawCircle(const Offset(15.0, 5.0), 3.0, paint);
+    }
+    {
+      final Paint paint = Paint();
+      paint.color = const Color(0xFF008000);
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 3.0;
+      canvas.drawCircle(const Offset(15.0, 5.0), 3.0, paint);
+    }
+    {
+      final Paint paint = Paint();
+      paint.color = Colors.black;
+      paint.style = PaintingStyle.fill;
+      canvas.drawCircle(const Offset(25.0, 5.0), 3.0, paint);
+    }
+    {
+      final Paint paint = Paint();
+      paint.color = const Color(0xFF008000);
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 0.44721359549995787;
+      canvas.drawCircle(const Offset(25.0, 5.0), 3.0, paint);
     }
     canvas.restore();
+  }
+
+  void _applyOverride(Paint paint, Object? override) {
+    switch (override) {
+      case final Color color:
+        paint.color = color;
+        paint.shader = null;
+
+      case final Shader shader:
+        paint.shader = shader;
+
+      case null || _:
+        break;
+    }
   }
 
   @override

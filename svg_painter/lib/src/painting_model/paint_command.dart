@@ -1,4 +1,6 @@
 import 'package:meta/meta.dart';
+
+import '../svg_model/_svg_model.dart';
 import 'styles/painting_style.dart';
 
 part 'commands/draw_circle.dart';

@@ -2,23 +2,19 @@ import 'package:xml/xml.dart';
 
 import '../../svg_model/_svg_model.dart';
 import '../../xml_model/_xml_model.dart';
+import '../parsers/svg_transform_parser.dart';
 import '_xml_element_extensions.dart';
 
 /// Resolved common attributes for a graphics element.
 typedef CommonAttributes = ({
   String? id,
-  SvgColor? fill,
-  SvgLengthPercentage? fillOpacity,
-  SvgStrokeAttributes? stroke,
+  SvgFillAttributes fillAttributes,
+  SvgStrokeAttributes strokeAttributes,
+  SvgFontAttributes fontAttributes,
   SvgLengthPercentage? opacity,
-  SvgLengthPercentage? fontSize,
-  String? fontWeight,
-  String? fontStyle,
-  String? fontFamily,
   String? cssClass,
   String? inlineStyle,
-  String? transform,
-  SvgLength? pathLength,
+  SvgTransformAttributes? transformAttributes,
 });
 
 extension ToCommonAttributes on XmlElement {
@@ -26,9 +22,11 @@ extension ToCommonAttributes on XmlElement {
   CommonAttributes toCommonAttributes(XmlElementName elementName) {
     return (
       id: toXmlAttributeValue(XmlAttributeName.id),
-      fill: toSvgValueOrNull<SvgColor>(elementName, XmlAttributeName.fill),
-      fillOpacity: toSvgValueOrNull<SvgLengthPercentage>(elementName, XmlAttributeName.fillOpacity),
-      stroke: SvgStrokeAttributes(
+      fillAttributes: SvgFillAttributes(
+        color: toSvgValueOrNull<SvgColor>(elementName, XmlAttributeName.fill),
+        opacity: toSvgValueOrNull<SvgLengthPercentage>(elementName, XmlAttributeName.fillOpacity),
+      ),
+      strokeAttributes: SvgStrokeAttributes(
         color: toSvgValueOrNull<SvgColor>(elementName, XmlAttributeName.stroke),
         opacity: toSvgValueOrNull<SvgLengthPercentage>(elementName, XmlAttributeName.strokeOpacity),
         width: toSvgValueOrNull<SvgLengthPercentage>(elementName, XmlAttributeName.strokeWidth),
@@ -36,15 +34,18 @@ extension ToCommonAttributes on XmlElement {
         linecap: toSvgValueOrNull<SvgStrokeLinecap>(elementName, XmlAttributeName.strokeLinecap),
         linejoin: toSvgValueOrNull<SvgStrokeLinejoin>(elementName, XmlAttributeName.strokeLinejoin),
       ),
+      fontAttributes: SvgFontAttributes(
+        size: toSvgValueOrNull<SvgLengthPercentage>(elementName, XmlAttributeName.fontSize),
+        weight: toSvgValueOrNull<SvgFontWeight>(elementName, XmlAttributeName.fontWeight),
+        style: toSvgValueOrNull<SvgFontStyle>(elementName, XmlAttributeName.fontStyle),
+        family: toSvgValueOrNull<SvgFontFamily>(elementName, XmlAttributeName.fontFamily),
+      ),
       opacity: toSvgValueOrNull<SvgLengthPercentage>(elementName, XmlAttributeName.opacity),
-      fontSize: toSvgValueOrNull<SvgLengthPercentage>(elementName, XmlAttributeName.fontSize),
-      fontWeight: toXmlAttributeValue(XmlAttributeName.fontWeight),
-      fontStyle: toXmlAttributeValue(XmlAttributeName.fontStyle),
-      fontFamily: toXmlAttributeValue(XmlAttributeName.fontFamily),
       cssClass: toXmlAttributeValue(XmlAttributeName.className),
       inlineStyle: toXmlAttributeValue(XmlAttributeName.style),
-      transform: toXmlAttributeValue(XmlAttributeName.transform),
-      pathLength: toSvgValueOrNull<SvgLength>(elementName, XmlAttributeName.pathLength),
+      transformAttributes: SvgTransformParser.parse(
+        toXmlAttributeValue(XmlAttributeName.transform),
+      ),
     );
   }
 }

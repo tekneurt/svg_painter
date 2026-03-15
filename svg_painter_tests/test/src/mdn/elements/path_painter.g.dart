@@ -62,36 +62,47 @@ class _$PathPainter extends CustomPainter {
     canvas.clipRect(Rect.fromLTWH(0, 0, 100.0, 100.0));
 
     {
-      // Path
-      {
-        final Path path = Path();
-        path.moveTo(10.0, 30.0);
-        path.arcToPoint(
+      final Path path = Path()
+        ..moveTo(10.0, 30.0)
+        ..arcToPoint(
           const Offset(50.0, 30.0),
           radius: const Radius.elliptical(20.0, 20.0),
           rotation: 0.0,
           largeArc: false,
           clockwise: true,
-        );
-        path.arcToPoint(
+        )
+        ..arcToPoint(
           const Offset(90.0, 30.0),
           radius: const Radius.elliptical(20.0, 20.0),
           rotation: 0.0,
           largeArc: false,
           clockwise: true,
-        );
-        path.quadraticBezierTo(90.0, 60.0, 50.0, 90.0);
-        path.quadraticBezierTo(10.0, 60.0, 10.0, 30.0);
-        path.close();
-        {
-          final Paint paint = Paint();
-          paint.color = Colors.black;
-          paint.style = PaintingStyle.fill;
-          canvas.drawPath(path, paint);
-        }
+        )
+        ..quadraticBezierTo(90.0, 60.0, 50.0, 90.0)
+        ..quadraticBezierTo(10.0, 60.0, 10.0, 30.0)
+        ..close();
+      {
+        final Paint paint = Paint();
+        paint.color = Colors.black;
+        paint.style = PaintingStyle.fill;
+        canvas.drawPath(path, paint);
       }
     }
     canvas.restore();
+  }
+
+  void _applyOverride(Paint paint, Object? override) {
+    switch (override) {
+      case final Color color:
+        paint.color = color;
+        paint.shader = null;
+
+      case final Shader shader:
+        paint.shader = shader;
+
+      case null || _:
+        break;
+    }
   }
 
   @override

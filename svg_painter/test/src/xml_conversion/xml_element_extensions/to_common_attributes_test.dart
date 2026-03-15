@@ -18,17 +18,17 @@ void main() {
 
       // Assert
       expect(attrs.id, 'c1');
-      expect(attrs.fill, isA<SvgNamedColor>());
-      expect(attrs.stroke?.color, isA<SvgNamedColor>());
+      expect(attrs.fillAttributes.color, isA<SvgNamedColor>());
+      expect(attrs.strokeAttributes.color, isA<SvgNamedColor>());
       expect((attrs.opacity! as SvgLength).value, 0.5);
-      expect((attrs.fontSize! as SvgLength).value, 12.0);
-      expect(attrs.fontFamily, 'Roboto');
+      expect((attrs.fontAttributes.size! as SvgLength).value, 12.0);
+      expect(attrs.fontAttributes.family?.value, 'Roboto');
       expect(attrs.cssClass, 'cls1');
       expect(attrs.inlineStyle, 'fill: green');
-      expect(attrs.transform, 'scale(2)');
+      expect(attrs.transformAttributes?.operations.first, isA<SvgScale>());
     });
 
-    test('should return nulls when attributes are missing', () {
+    test('should return empty attribute groups when attributes are missing', () {
       // Arrange
       final XmlDocument document = XmlDocument.parse('<circle />');
       final XmlElement element = document.rootElement;
@@ -38,8 +38,9 @@ void main() {
 
       // Assert
       expect(attrs.id, isNull);
-      expect(attrs.fill, isNull);
-      expect(attrs.stroke?.color, isNull);
+      expect(attrs.fillAttributes.color, isNull);
+      expect(attrs.strokeAttributes.color, isNull);
+      expect(attrs.fontAttributes.size, isNull);
       expect(attrs.opacity, isNull);
     });
   });

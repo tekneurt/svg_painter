@@ -1,5 +1,5 @@
 import 'package:svg_painter/src/base/result.dart';
-import 'package:svg_painter/src/svg_model/svg_element.dart';
+import 'package:svg_painter/src/svg_model/_svg_model.dart';
 import 'package:svg_painter/src/xml_conversion/xml_element_extensions/to_svg_element.dart';
 import 'package:test/test.dart';
 import 'package:xml/xml.dart';
@@ -254,18 +254,40 @@ void main() {
       expect(desc.id, id);
     });
 
-    test('should return Failure when unsupported element is provided', () {
+    test('should return SvgGroup when unknown element is provided (lenient parsing)', () {
       // Arrange
-      final XmlDocument document = XmlDocument.parse('<unsupported />');
+      final XmlDocument document = XmlDocument.parse('<unknown fill="red"><circle /></unknown>');
       final XmlElement element = document.rootElement;
 
       // Act
       final Result<SvgElement> result = element.toSvgElement();
 
       // Assert
-      expect(result, isA<Failure<SvgElement>>());
-      final Failure<SvgElement> failure = result as Failure<SvgElement>;
-      expect(failure.message, 'Unsupported SVG element: <unsupported>');
+      expect(result, isA<Success<SvgElement>>());
+      final SvgElement value = (result as Success<SvgElement>).value;
+      expect(value, isA<SvgGroup>());
+
+      final SvgGroup group = value as SvgGroup;
+      expect(group.children, hasLength(1));
+      expect(group.children.first, isA<SvgCircle>());
+      expect(group.fillAttributes?.color, isA<SvgNamedColor>());
+    });
+
+    test('should return SvgIgnoredElement when foreign namespace element is provided', () {
+      // Arrange
+      final XmlDocument document = XmlDocument.parse(
+        '<root xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"><inkscape:perspective id="p1" /></root>',
+      );
+      final XmlElement element = document.rootElement.firstElementChild!;
+
+      // Act
+      final Result<SvgElement> result = element.toSvgElement();
+
+      // Assert
+      expect(result, isA<Success<SvgElement>>());
+      final SvgElement value = (result as Success<SvgElement>).value;
+      expect(value, isA<SvgIgnoredElement>());
+      expect(value.id, 'p1');
     });
 
     group('Regression tests', () {

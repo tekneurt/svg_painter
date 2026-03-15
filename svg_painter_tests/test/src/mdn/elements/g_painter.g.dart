@@ -62,38 +62,46 @@ class _$GPainter extends CustomPainter {
     canvas.clipRect(Rect.fromLTWH(0, 0, 100.0, 100.0));
 
     {
-      {
-        {
-          final Paint paint = Paint();
-          paint.color = Colors.white;
-          paint.style = PaintingStyle.fill;
-          canvas.drawCircle(const Offset(40.0, 40.0), 25.0, paint);
-        }
-        {
-          final Paint paint = Paint();
-          paint.color = const Color(0xFF008000);
-          paint.style = PaintingStyle.stroke;
-          paint.strokeWidth = 5.0;
-          canvas.drawCircle(const Offset(40.0, 40.0), 25.0, paint);
-        }
-      }
-      {
-        {
-          final Paint paint = Paint();
-          paint.color = Colors.white;
-          paint.style = PaintingStyle.fill;
-          canvas.drawCircle(const Offset(60.0, 60.0), 25.0, paint);
-        }
-        {
-          final Paint paint = Paint();
-          paint.color = const Color(0xFF008000);
-          paint.style = PaintingStyle.stroke;
-          paint.strokeWidth = 5.0;
-          canvas.drawCircle(const Offset(60.0, 60.0), 25.0, paint);
-        }
-      }
+      final Paint paint = Paint();
+      paint.color = Colors.white;
+      paint.style = PaintingStyle.fill;
+      canvas.drawCircle(const Offset(40.0, 40.0), 25.0, paint);
+    }
+    {
+      final Paint paint = Paint();
+      paint.color = const Color(0xFF008000);
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 5.0;
+      canvas.drawCircle(const Offset(40.0, 40.0), 25.0, paint);
+    }
+    {
+      final Paint paint = Paint();
+      paint.color = Colors.white;
+      paint.style = PaintingStyle.fill;
+      canvas.drawCircle(const Offset(60.0, 60.0), 25.0, paint);
+    }
+    {
+      final Paint paint = Paint();
+      paint.color = const Color(0xFF008000);
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 5.0;
+      canvas.drawCircle(const Offset(60.0, 60.0), 25.0, paint);
     }
     canvas.restore();
+  }
+
+  void _applyOverride(Paint paint, Object? override) {
+    switch (override) {
+      case final Color color:
+        paint.color = color;
+        paint.shader = null;
+
+      case final Shader shader:
+        paint.shader = shader;
+
+      case null || _:
+        break;
+    }
   }
 
   @override

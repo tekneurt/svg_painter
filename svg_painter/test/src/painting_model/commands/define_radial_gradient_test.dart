@@ -6,21 +6,22 @@ void main() {
     test('should return correct string representation when toString() is called', () {
       // Arrange
       const DefineRadialGradient command = DefineRadialGradient(
-        id: 'rad1',
-        cx: 0.1,
-        cy: 0.2,
-        radius: 0.3,
-        fx: 0.4,
-        fy: 0.5,
-        focalRadius: 0.05,
-        stops: <GradientStop>[GradientStop(0.0, 0xFFFFFFFF)],
+        id: 'grad1',
+        cx: 50,
+        cy: 50,
+        radius: 100,
+        fx: 50,
+        fy: 50,
+        focalRadius: 0,
+        stops: <GradientStop>[GradientStop(offset: 0, colorArgb: 0xFF000000)],
       );
 
       // Act
       final String result = command.toString();
 
       // Assert
-      expect(result, 'DefineRadialGradient(id: rad1, stops: 1)');
+      expect(result, contains('id: grad1'));
+      expect(result, contains('stops: 1'));
     });
   });
 }

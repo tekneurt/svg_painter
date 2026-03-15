@@ -26,6 +26,10 @@ extension ToSvgLine on XmlElement {
       elementName,
       XmlAttributeName.y2,
     );
+    final SvgNonNegativeNumber? pathLength = toSvgValueOrNull<SvgNonNegativeNumber>(
+      elementName,
+      XmlAttributeName.pathLength,
+    );
 
     final CommonAttributes common = toCommonAttributes(elementName);
 
@@ -35,14 +39,13 @@ extension ToSvgLine on XmlElement {
         y1: y1,
         x2: x2,
         y2: y2,
-        fill: common.fill,
-        fillOpacity: common.fillOpacity,
-        stroke: common.stroke,
+        pathLength: pathLength,
+        fillAttributes: common.fillAttributes,
+        strokeAttributes: common.strokeAttributes,
         opacity: common.opacity,
         cssClass: common.cssClass,
         inlineStyle: common.inlineStyle,
-        transform: common.transform,
-        pathLength: common.pathLength,
+        transformAttributes: common.transformAttributes,
         id: common.id,
       ),
     );

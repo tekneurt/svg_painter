@@ -10,7 +10,7 @@ void main() {
     test('should convert <ellipse> with lengths when valid XML is provided', () {
       // Arrange
       final XmlDocument document = XmlDocument.parse(
-        '<ellipse cx="100" cy="50" rx="40" ry="20" />',
+        '<ellipse cx="111" cy="55" rx="44" ry="22" />',
       );
       final XmlElement element = document.rootElement;
 
@@ -18,12 +18,18 @@ void main() {
       final Result<SvgElement> result = element.toSvgEllipse();
 
       // Assert
-      expect(result, isA<Success<SvgElement>>());
-      final SvgEllipse ellipse = (result as Success<SvgElement>).value as SvgEllipse;
-      expect((ellipse.cx as SvgLength).value, 100.0);
-      expect((ellipse.cy as SvgLength).value, 50.0);
-      expect((ellipse.rx as SvgLength).value, 40.0);
-      expect((ellipse.ry as SvgLength).value, 20.0);
+      expect(
+        result,
+        isA<Success<SvgElement>>().having(
+          (Success<SvgElement> s) => s.value,
+          'value',
+          isA<SvgEllipse>()
+              .having((SvgEllipse e) => (e.cx as SvgLength).value, 'cx', 111.0)
+              .having((SvgEllipse e) => (e.cy as SvgLength).value, 'cy', 55.0)
+              .having((SvgEllipse e) => (e.rx as SvgLength).value, 'rx', 44.0)
+              .having((SvgEllipse e) => (e.ry as SvgLength).value, 'ry', 22.0),
+        ),
+      );
     });
 
     test('should return Success with auto for radii when not provided', () {
@@ -35,9 +41,16 @@ void main() {
       final Result<SvgElement> result = element.toSvgEllipse();
 
       // Assert
-      final SvgEllipse ellipse = (result as Success<SvgElement>).value as SvgEllipse;
-      expect(ellipse.rx, isA<SvgAuto>());
-      expect(ellipse.ry, isA<SvgAuto>());
+      expect(
+        result,
+        isA<Success<SvgElement>>().having(
+          (Success<SvgElement> s) => s.value,
+          'value',
+          isA<SvgEllipse>()
+              .having((SvgEllipse e) => e.rx, 'rx', isA<SvgAuto>())
+              .having((SvgEllipse e) => e.ry, 'ry', isA<SvgAuto>()),
+        ),
+      );
     });
   });
 }

@@ -10,7 +10,7 @@ void main() {
     test('should convert <rect> with all attributes when valid XML is provided', () {
       // Arrange
       final XmlDocument document = XmlDocument.parse(
-        '<rect x="10" y="20" width="100" height="50" rx="5" ry="8" fill="green" />',
+        '<rect x="11" y="22" width="111" height="55" rx="6" ry="9" fill="green" />',
       );
       final XmlElement element = document.rootElement;
 
@@ -18,14 +18,21 @@ void main() {
       final Result<SvgElement> result = element.toSvgRect();
 
       // Assert
-      expect(result, isA<Success<SvgElement>>());
-      final SvgRect rect = (result as Success<SvgElement>).value as SvgRect;
-      expect((rect.x as SvgLength).value, 10.0);
-      expect((rect.y as SvgLength).value, 20.0);
-      expect((rect.width as SvgLength).value, 100.0);
-      expect((rect.height as SvgLength).value, 50.0);
-      expect((rect.rx as SvgLength).value, 5.0);
-      expect((rect.ry as SvgLength).value, 8.0);
+      expect(
+        result,
+        isA<Success<SvgElement>>().having(
+          (Success<SvgElement> s) => s.value,
+          'value',
+          isA<SvgRect>()
+              .having((SvgRect r) => (r.x as SvgLength).value, 'x', 11.0)
+              .having((SvgRect r) => (r.y as SvgLength).value, 'y', 22.0)
+              .having((SvgRect r) => (r.width as SvgLength).value, 'width', 111.0)
+              .having((SvgRect r) => (r.height as SvgLength).value, 'height', 55.0)
+              .having((SvgRect r) => (r.rx as SvgLength).value, 'rx', 6.0)
+              .having((SvgRect r) => (r.ry as SvgLength).value, 'ry', 9.0)
+              .having((SvgRect r) => r.fillAttributes?.color, 'fill', isA<SvgNamedColor>()),
+        ),
+      );
     });
 
     test('should return Success with default values when minimal rect is provided', () {
@@ -37,11 +44,18 @@ void main() {
       final Result<SvgElement> result = element.toSvgRect();
 
       // Assert
-      final SvgRect rect = (result as Success<SvgElement>).value as SvgRect;
-      expect((rect.x as SvgLength).value, 0.0);
-      expect((rect.y as SvgLength).value, 0.0);
-      expect(rect.width, isA<SvgAuto>());
-      expect(rect.height, isA<SvgAuto>());
+      expect(
+        result,
+        isA<Success<SvgElement>>().having(
+          (Success<SvgElement> s) => s.value,
+          'value',
+          isA<SvgRect>()
+              .having((SvgRect r) => (r.x as SvgLength).value, 'x', 0.0)
+              .having((SvgRect r) => (r.y as SvgLength).value, 'y', 0.0)
+              .having((SvgRect r) => r.width, 'width', isA<SvgAuto>())
+              .having((SvgRect r) => r.height, 'height', isA<SvgAuto>()),
+        ),
+      );
     });
   });
 }

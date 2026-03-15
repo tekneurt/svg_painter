@@ -14,20 +14,23 @@ extension ToSvgPath on XmlElement {
     if (d == null) {
       return const Failure<SvgPath>('Path element must have a "d" attribute');
     }
+    final SvgNonNegativeNumber? pathLength = toSvgValueOrNull<SvgNonNegativeNumber>(
+      elementName,
+      XmlAttributeName.pathLength,
+    );
 
     final CommonAttributes common = toCommonAttributes(elementName);
 
     return Success<SvgPath>(
       SvgPath(
         d: d,
-        fill: common.fill,
-        fillOpacity: common.fillOpacity,
-        stroke: common.stroke,
+        pathLength: pathLength,
+        fillAttributes: common.fillAttributes,
+        strokeAttributes: common.strokeAttributes,
         opacity: common.opacity,
         cssClass: common.cssClass,
         inlineStyle: common.inlineStyle,
-        transform: common.transform,
-        pathLength: common.pathLength,
+        transformAttributes: common.transformAttributes,
         id: common.id,
       ),
     );

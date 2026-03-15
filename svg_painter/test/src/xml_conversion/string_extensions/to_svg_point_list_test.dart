@@ -26,6 +26,17 @@ void main() {
         // Assert
         expect(result.points, isEmpty);
       });
+
+      test('should return all coordinates even if input has odd number of values', () {
+        // Arrange
+        const String input = '10,20 30';
+
+        // Act
+        final SvgPointList result = input.toSvgPointList();
+
+        // Assert
+        expect(result.points, <double>[10.0, 20.0, 30.0]);
+      });
     });
   });
 }

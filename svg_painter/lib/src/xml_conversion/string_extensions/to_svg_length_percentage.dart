@@ -25,18 +25,16 @@ extension ToSvgLengthPercentage on String {
     final RegExp unitRegex = RegExp(r'^(-?\d*\.?\d*)([a-zA-Z%]*)$');
     final Match? match = unitRegex.firstMatch(trimmed);
 
-    if (match == null) {
-      // No match
-    } else {
-      final String numberPart = match.group(1)!;
-      final String unitSuffix = match.group(2)!;
+    if (match != null) {
+      final String? numberPart = match.group(1);
+      final String? unitSuffix = match.group(2);
 
-      final double? parsedNumber = double.tryParse(numberPart);
-      if (parsedNumber == null) {
-        // Failed to parse number
-      } else {
-        final SvgLengthUnit unit = unitSuffix.toSvgLengthUnit(); // Use new extension
-        return SvgLength(parsedNumber, unit);
+      if (numberPart != null && unitSuffix != null) {
+        final double? parsedNumber = double.tryParse(numberPart);
+        if (parsedNumber != null) {
+          final SvgLengthUnit unit = unitSuffix.toSvgLengthUnit(); // Use new extension
+          return SvgLength(parsedNumber, unit);
+        }
       }
     }
 

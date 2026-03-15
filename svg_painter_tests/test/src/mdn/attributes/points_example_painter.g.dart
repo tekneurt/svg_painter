@@ -61,36 +61,33 @@ class _$PointsExamplePainter extends CustomPainter {
     );
     canvas.clipRect(Rect.fromLTWH(0, 0, 220.0, 120.0));
 
+    canvas.save();
+    canvas.translate(10.0, 10.0);
     {
+      final Path path = Path()
+        ..moveTo(50.0, 0.0)
+        ..lineTo(21.0, 90.0)
+        ..lineTo(98.0, 35.0)
+        ..lineTo(2.0, 35.0)
+        ..lineTo(79.0, 90.0);
       {
-        final Path path = Path();
-        path.addPolygon([
-          const Offset(60.0, 10.0),
-          const Offset(31.0, 100.0),
-          const Offset(108.0, 45.0),
-          const Offset(12.0, 45.0),
-          const Offset(89.0, 100.0),
-        ], false);
-        {
-          final Paint paint = Paint();
-          paint.color = Colors.black;
-          paint.style = PaintingStyle.stroke;
-          paint.strokeWidth = 1.0;
-          canvas.drawPath(path, paint);
-        }
+        final Paint paint = Paint();
+        paint.color = Colors.black;
+        paint.style = PaintingStyle.stroke;
+        paint.strokeWidth = 1.0;
+        canvas.drawPath(path, paint);
       }
     }
     canvas.save();
     canvas.translate(100.0, 0.0);
     {
-      final Path path = Path();
-      path.addPolygon([
-        const Offset(60.0, 10.0),
-        const Offset(31.0, 100.0),
-        const Offset(108.0, 45.0),
-        const Offset(12.0, 45.0),
-        const Offset(89.0, 100.0),
-      ], true);
+      final Path path = Path()
+        ..moveTo(50.0, 0.0)
+        ..lineTo(21.0, 90.0)
+        ..lineTo(98.0, 35.0)
+        ..lineTo(2.0, 35.0)
+        ..lineTo(79.0, 90.0)
+        ..close();
       {
         final Paint paint = Paint();
         paint.color = Colors.black;
@@ -101,6 +98,21 @@ class _$PointsExamplePainter extends CustomPainter {
     }
     canvas.restore();
     canvas.restore();
+    canvas.restore();
+  }
+
+  void _applyOverride(Paint paint, Object? override) {
+    switch (override) {
+      case final Color color:
+        paint.color = color;
+        paint.shader = null;
+
+      case final Shader shader:
+        paint.shader = shader;
+
+      case null || _:
+        break;
+    }
   }
 
   @override

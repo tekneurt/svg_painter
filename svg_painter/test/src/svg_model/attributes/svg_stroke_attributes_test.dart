@@ -4,12 +4,15 @@ import 'package:test/test.dart';
 
 void main() {
   group('SvgStrokeAttributes', () {
-    test('should return correct string representation when toString() is called', () {
+    test('should return correct string representation when all fields are provided', () {
       // Arrange
       const SvgStrokeAttributes attrs = SvgStrokeAttributes(
         color: SvgNamedColor(SvgColorName.red),
-        opacity: SvgPercentage(50.0),
-        width: SvgLength(2.0),
+        opacity: SvgPercentage(55.0),
+        width: SvgLength(2.5),
+        dashArray: SvgPointList(<double>[1.0, 2.0]),
+        linecap: SvgStrokeLinecap.round,
+        linejoin: SvgStrokeLinejoin.bevel,
       );
 
       // Act
@@ -18,8 +21,22 @@ void main() {
       // Assert
       expect(
         result,
-        'SvgStrokeAttributes(color: SvgNamedColor(red), opacity: 50.0%, width: 2.0, dashArray: null, linecap: null, linejoin: null)',
+        'SvgStrokeAttributes(color: SvgNamedColor(red), opacity: 55.0%, width: 2.5, dashArray: SvgPointList([1.0, 2.0]), linecap: SvgStrokeLinecap.round, linejoin: SvgStrokeLinejoin.bevel)',
       );
+    });
+
+    test('should return compact string representation when some fields are null', () {
+      // Arrange
+      const SvgStrokeAttributes attrs = SvgStrokeAttributes(
+        color: SvgNamedColor(SvgColorName.blue),
+        width: SvgLength(1.1),
+      );
+
+      // Act
+      final String result = attrs.toString();
+
+      // Assert
+      expect(result, 'SvgStrokeAttributes(color: SvgNamedColor(blue), width: 1.1)');
     });
   });
 }

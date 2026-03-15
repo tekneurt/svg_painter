@@ -11,7 +11,6 @@ void main() {
         cy: 20.0,
         radius: 5.0,
         style: PaintingStyle(),
-        transform: 'scale(2)',
       );
 
       // Act
@@ -20,7 +19,7 @@ void main() {
       // Assert
       expect(
         result,
-        'DrawCircle(cx: 10.0, cy: 20.0, radius: 5.0, style: PaintingStyle(fill: null, stroke: null, text: null, groupOpacity: 1.0), transform: scale(2))',
+        'DrawCircle(cx: 10.0, cy: 20.0, radius: 5.0, style: PaintingStyle(fill: null, stroke: null, text: null, groupOpacity: 1.0, transform: null), id: null)',
       );
     });
   });

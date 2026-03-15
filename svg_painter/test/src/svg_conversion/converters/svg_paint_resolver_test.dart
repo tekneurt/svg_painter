@@ -14,7 +14,7 @@ void main() {
     test('should resolve inline style with highest priority', () {
       final PaintingStyle style = resolvePaint(
         emptyContext,
-        fill: const SvgRgbColor(255, 0, 0, 0), // Attribute (should be overridden)
+        fillAttributes: const SvgFillAttributes(color: SvgRgbColor(255, 0, 0, 0)),
         inlineStyle: 'fill: #FF0000',
       );
 
@@ -23,7 +23,10 @@ void main() {
     });
 
     test('should identify currentColor', () {
-      final PaintingStyle style = resolvePaint(emptyContext, fill: const SvgCurrentColor());
+      final PaintingStyle style = resolvePaint(
+        emptyContext,
+        fillAttributes: const SvgFillAttributes(color: SvgCurrentColor()),
+      );
 
       expect(style.fill?.isCurrentColor, isTrue);
       expect(style.fill?.colorArgb, isNull);
@@ -32,17 +35,29 @@ void main() {
     test('should parse font shorthand', () {
       final PaintingStyle style = resolvePaint(emptyContext, inlineStyle: 'font: bold 16px serif');
 
-      expect(style.text?.fontWeight, 'bold');
+      expect(style.text?.fontWeight, PaintingFontWeight.bold);
       // 16px relative to 100 viewbox height -> depends on logic, but parsing should happen
       expect(style.text?.fontSize, isNotNull);
       expect(style.text?.fontFamily, 'Noto Serif'); // Mapped from 'serif'
+    });
+
+    test('should handle robust font shorthand parsing', () {
+      final PaintingStyle style = resolvePaint(
+        emptyContext,
+        inlineStyle: 'font: italic bold 14px/1.2 "Open Sans", sans-serif',
+      );
+
+      expect(style.text?.fontStyle, PaintingFontStyle.italic);
+      expect(style.text?.fontWeight, PaintingFontWeight.bold);
+      expect(style.text?.fontSize, 14.0);
+      expect(style.text?.fontFamily, 'Open Sans');
     });
 
     test('should respect CSS specificity (ID > Class > Tag)', () {
       // Need a context with a stylesheet
       const SvgStyleSheet sheet = SvgStyleSheet(<String, Map<String, String>>{
         'rect': <String, String>{'fill': 'blue'}, // Tag
-        '.myClass': <String, String>{'fill': 'green'}, // Class
+        'myClass': <String, String>{'fill': 'green'}, // Class
         '#myId': <String, String>{'fill': 'red'}, // ID
       });
 
@@ -67,7 +82,7 @@ void main() {
 
     test('should mark fill/stroke as explicit if from CSS', () {
       const SvgStyleSheet sheet = SvgStyleSheet(<String, Map<String, String>>{
-        '.myClass': <String, String>{'fill': 'green'},
+        'myClass': <String, String>{'fill': 'green'},
       });
       const SvgPaintingContext context = SvgPaintingContext(
         viewBoxWidth: 100,
@@ -82,7 +97,7 @@ void main() {
     test('should resolve SvgPaintReference (url(#id)) correctly', () {
       final PaintingStyle style = resolvePaint(
         emptyContext,
-        fill: const SvgPaintReference('gradient1'),
+        fillAttributes: const SvgFillAttributes(color: SvgPaintReference('gradient1')),
       );
 
       expect(style.fill?.shaderId, 'gradient1');
@@ -94,6 +109,7 @@ void main() {
         viewBoxWidth: 100,
         viewBoxHeight: 100,
         inheritedFill: SvgRgbColor(255, 0, 0, 255), // Blue
+        inheritedFillOpacity: SvgPercentage(100),
         inheritedStroke: SvgRgbColor(255, 255, 0, 0), // Red
         inheritedStrokeWidth: SvgLength(5.0),
       );
@@ -134,7 +150,7 @@ void main() {
       expect(style.stroke?.cap, PaintingStrokeCap.round);
       expect(style.stroke?.join, PaintingStrokeJoin.bevel);
       expect(style.groupOpacity, closeTo(0.9, 0.001));
-      expect(style.text?.fontStyle, 'italic');
+      expect(style.text?.fontStyle, PaintingFontStyle.italic);
       expect(style.text?.fontFamily, 'Roboto Mono');
       expect(style.stroke?.pathLength, 100.0);
     });
@@ -148,19 +164,97 @@ void main() {
       expect(style.stroke?.dashArray, equals(<double>[5.0, 5.0]));
     });
 
-    test('should combine parent opacity with element opacity', () {
+    test('should resolve element opacity', () {
       const SvgPaintingContext context = SvgPaintingContext(
         viewBoxWidth: 100,
         viewBoxHeight: 100,
-        parentOpacity: 0.5,
       );
 
       final PaintingStyle style = resolvePaint(
         context,
-        opacity: const SvgPercentage(50), // 0.5 * 0.5 = 0.25
+        opacity: const SvgPercentage(50),
       );
 
-      expect(style.groupOpacity, closeTo(0.25, 0.001));
+      expect(style.groupOpacity, closeTo(0.5, 0.001));
+    });
+
+    test('should resolve square linecap and miterClip/arcs linejoin', () {
+      final PaintingStyle style = resolvePaint(
+        emptyContext,
+        inlineStyle: 'stroke: black; stroke-linecap: square; stroke-linejoin: miter-clip',
+      );
+      expect(style.stroke?.cap, PaintingStrokeCap.square);
+      expect(style.stroke?.join, PaintingStrokeJoin.miter);
+
+      final PaintingStyle style2 = resolvePaint(
+        emptyContext,
+        inlineStyle: 'stroke: black; stroke-linejoin: arcs',
+      );
+      expect(style2.stroke?.join, PaintingStrokeJoin.miter);
+    });
+
+    test('should resolve various font weights', () {
+      expect(
+        resolvePaint(emptyContext, inlineStyle: 'font-weight: bolder').text?.fontWeight,
+        PaintingFontWeight.bold,
+      );
+      expect(
+        resolvePaint(emptyContext, inlineStyle: 'font-weight: lighter').text?.fontWeight,
+        PaintingFontWeight.normal,
+      );
+      expect(
+        resolvePaint(emptyContext, inlineStyle: 'font-weight: 100').text?.fontWeight,
+        PaintingFontWeight.w100,
+      );
+      expect(
+        resolvePaint(emptyContext, inlineStyle: 'font-weight: 200').text?.fontWeight,
+        PaintingFontWeight.w200,
+      );
+      expect(
+        resolvePaint(emptyContext, inlineStyle: 'font-weight: 300').text?.fontWeight,
+        PaintingFontWeight.w300,
+      );
+      expect(
+        resolvePaint(emptyContext, inlineStyle: 'font-weight: 400').text?.fontWeight,
+        PaintingFontWeight.w400,
+      );
+      expect(
+        resolvePaint(emptyContext, inlineStyle: 'font-weight: 500').text?.fontWeight,
+        PaintingFontWeight.w500,
+      );
+      expect(
+        resolvePaint(emptyContext, inlineStyle: 'font-weight: 600').text?.fontWeight,
+        PaintingFontWeight.w600,
+      );
+      expect(
+        resolvePaint(emptyContext, inlineStyle: 'font-weight: 700').text?.fontWeight,
+        PaintingFontWeight.w700,
+      );
+      expect(
+        resolvePaint(emptyContext, inlineStyle: 'font-weight: 800').text?.fontWeight,
+        PaintingFontWeight.w800,
+      );
+      expect(
+        resolvePaint(emptyContext, inlineStyle: 'font-weight: 900').text?.fontWeight,
+        PaintingFontWeight.w900,
+      );
+    });
+
+    test('should duplicate dasharray if length is odd', () {
+      final PaintingStyle style = resolvePaint(
+        emptyContext,
+        inlineStyle: 'stroke: black; stroke-dasharray: 5',
+      );
+
+      expect(style.stroke?.dashArray, equals(<double>[5.0, 5.0]));
+    });
+
+    test('should resolve stroke shader ID', () {
+      final PaintingStyle style = resolvePaint(
+        emptyContext,
+        strokeAttributes: const SvgStrokeAttributes(color: SvgPaintReference('stroke-grad')),
+      );
+      expect(style.stroke?.shaderId, 'stroke-grad');
     });
   });
 }

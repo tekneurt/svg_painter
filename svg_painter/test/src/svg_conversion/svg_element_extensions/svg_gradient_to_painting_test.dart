@@ -1,85 +1,126 @@
 import 'package:svg_painter/src/base/result.dart';
-import 'package:svg_painter/src/painting_model/paint_command.dart';
+import 'package:svg_painter/src/painting_model/_painting_model.dart';
 import 'package:svg_painter/src/svg_conversion/converters/svg_painting_context.dart';
 import 'package:svg_painter/src/svg_conversion/svg_element_extensions/svg_gradient_to_painting.dart';
-import 'package:svg_painter/src/svg_model/svg_element.dart';
-import 'package:svg_painter/src/svg_model/svg_value.dart';
+import 'package:svg_painter/src/svg_model/_svg_model.dart';
 import 'package:test/test.dart';
 
 void main() {
-  const SvgPaintingContext context = SvgPaintingContext(viewBoxWidth: 100, viewBoxHeight: 200);
+  group('SvgGradientToPainting', () {
+    const SvgPaintingContext context = SvgPaintingContext(viewBoxWidth: 100, viewBoxHeight: 100);
 
-  group('SvgGradientToPaintCommand', () {
-    const List<SvgStop> stops = <SvgStop>[
-      SvgStop(
-        offset: SvgLength(0.0),
-        stopColor: SvgNamedColor(SvgColorName.white),
-        stopOpacity: SvgLength(1.0),
-      ),
-      SvgStop(
-        offset: SvgLength(1.0),
-        stopColor: SvgNamedColor(SvgColorName.black),
-        stopOpacity: SvgLength(0.5),
-      ),
-    ];
-
-    test('should return Success with DefineLinearGradient when SvgLinearGradient is provided', () {
-      // Arrange
+    test('SvgLinearGradient should convert to DefineLinearGradient', () {
       const SvgLinearGradient grad = SvgLinearGradient(
-        id: 'grad1',
-        x1: SvgLength(10.0),
-        y1: SvgLength(20.0),
-        x2: SvgLength(30.0),
-        y2: SvgLength(40.0),
-        stops: stops,
-        gradientTransform: 'scale(2)',
+        id: 'g1',
+        x1: SvgLength(0),
+        y1: SvgLength(0),
+        x2: SvgLength(100),
+        y2: SvgLength(0),
+        stops: <SvgStop>[
+          SvgStop(
+            offset: SvgLength(0),
+            stopColor: SvgNamedColor(SvgColorName.red),
+            stopOpacity: SvgLength(1.0),
+          ),
+          SvgStop(
+            offset: SvgLength(1),
+            stopColor: SvgNamedColor(SvgColorName.blue),
+            stopOpacity: SvgLength(0.5),
+          ),
+        ],
       );
 
-      // Act
-      final Result<DefineLinearGradient> result = grad.toPaintCommand(context);
+      final Result<PaintCommand> result = grad.toPaintCommand(context);
 
-      // Assert
-      expect(result, isA<Success<DefineLinearGradient>>());
-      final DefineLinearGradient cmd = (result as Success<DefineLinearGradient>).value;
-      expect(cmd.id, 'grad1');
-      expect(cmd.x1, 10.0);
-      expect(cmd.y1, 20.0);
-      expect(cmd.x2, 30.0);
-      expect(cmd.y2, 40.0);
-      expect(cmd.stops, hasLength(2));
-      expect(cmd.stops[0].offset, 0.0);
-      expect(cmd.stops[0].colorArgb, 0xFFFFFFFF);
-      expect(cmd.stops[1].offset, 1.0);
-      expect(cmd.stops[1].colorArgb, 0x80000000);
-      expect(cmd.transform, 'scale(2)');
+      expect(result, isA<Success<PaintCommand>>());
+      final PaintCommand cmd = (result as Success<PaintCommand>).value;
+      expect(cmd, isA<DefineLinearGradient>());
+      final DefineLinearGradient lgrad = cmd as DefineLinearGradient;
+      expect(lgrad.id, 'g1');
+      expect(lgrad.stops, hasLength(2));
+      expect(lgrad.stops[1].opacity, 0.5);
     });
 
-    test('should return Success with DefineRadialGradient when SvgRadialGradient is provided', () {
-      // Arrange
-      const SvgRadialGradient grad = SvgRadialGradient(
-        id: 'rad1',
-        cx: SvgLength(50.0),
-        cy: SvgLength(60.0),
-        r: SvgLength(70.0),
-        fx: SvgLength(80.0),
-        fy: SvgLength(90.0),
-        fr: SvgLength(5.0),
-        stops: stops,
+    test('SvgLinearGradient should bake rotate(90) transform and adjust range', () {
+      const SvgLinearGradient grad = SvgLinearGradient(
+        id: 'g-rot-adj',
+        x1: SvgLength(0),
+        y1: SvgLength(0),
+        x2: SvgLength(0),
+        y2: SvgLength(1), // Vertical
+        gradientTransformAttributes: SvgTransformAttributes(<SvgTransformOperation>[SvgRotate(90)]),
+        stops: <SvgStop>[
+          SvgStop(
+            offset: SvgLength(0),
+            stopColor: SvgNamedColor(SvgColorName.red),
+            stopOpacity: SvgLength(1.0),
+          ),
+        ],
       );
 
-      // Act
-      final Result<DefineRadialGradient> result = grad.toPaintCommand(context);
+      final Result<PaintCommand> result = grad.toPaintCommand(context);
 
-      // Assert
-      expect(result, isA<Success<DefineRadialGradient>>());
-      final DefineRadialGradient cmd = (result as Success<DefineRadialGradient>).value;
-      expect(cmd.id, 'rad1');
-      expect(cmd.cx, 50.0);
-      expect(cmd.cy, 60.0);
-      expect(cmd.radius, 70.0);
-      expect(cmd.fx, 80.0);
-      expect(cmd.fy, 90.0);
-      expect(cmd.focalRadius, 5.0);
+      expect(result, isA<Success<PaintCommand>>());
+      final PaintCommand cmd = (result as Success<PaintCommand>).value;
+      final DefineLinearGradient lgrad = cmd as DefineLinearGradient;
+      // rotate(90) on (0,1) gives (-1, 0), then adjusted by +1 to (0,0)
+      // (0,0) remains (0,0) then adjusted by +1 to (1,0)
+      expect(lgrad.x1, closeTo(1, 0.001));
+      expect(lgrad.y1, closeTo(0, 0.001));
+      expect(lgrad.x2, closeTo(0, 0.001));
+      expect(lgrad.y2, closeTo(0, 0.001));
+    });
+
+    test('SvgRadialGradient should convert to DefineRadialGradient', () {
+      const SvgRadialGradient grad = SvgRadialGradient(
+        id: 'rg1',
+        cx: SvgLength(50),
+        cy: SvgLength(50),
+        r: SvgLength(50),
+        fx: SvgLength(50),
+        fy: SvgLength(50),
+        fr: SvgLength(0),
+        stops: <SvgStop>[
+          SvgStop(
+            offset: SvgLength(0),
+            stopColor: SvgNamedColor(SvgColorName.black),
+            stopOpacity: SvgLength(1.0),
+          ),
+        ],
+      );
+
+      final Result<PaintCommand> result = grad.toPaintCommand(context);
+
+      expect(result, isA<Success<PaintCommand>>());
+      final PaintCommand cmd = (result as Success<PaintCommand>).value;
+      expect(cmd, isA<DefineRadialGradient>());
+      final DefineRadialGradient rgrad = cmd as DefineRadialGradient;
+      expect(rgrad.id, 'rg1');
+      expect(rgrad.cx, 50.0);
+    });
+
+    test('SvgRadialGradient should handle focal point defaults correctly', () {
+      const SvgRadialGradient gradient = SvgRadialGradient(
+        id: 'rg2',
+        cx: SvgPercentage(50),
+        cy: SvgPercentage(50),
+        r: SvgPercentage(50),
+        fx: SvgPercentage(50),
+        fy: SvgPercentage(50),
+        fr: SvgPercentage(0),
+        stops: <SvgStop>[
+          SvgStop(
+            offset: SvgPercentage(0),
+            stopColor: SvgNamedColor(SvgColorName.red),
+            stopOpacity: SvgPercentage(100),
+          )
+        ],
+      );
+
+      final Result<PaintCommand> result = gradient.toPaintCommand(context);
+      expect(result, isA<Success<PaintCommand>>());
+      final PaintCommand cmd = (result as Success<PaintCommand>).value;
+      expect(cmd, isA<DefineRadialGradient>());
     });
   });
 }

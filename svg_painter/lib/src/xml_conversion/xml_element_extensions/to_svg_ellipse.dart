@@ -26,6 +26,10 @@ extension ToSvgEllipse on XmlElement {
       elementName,
       XmlAttributeName.ry,
     );
+    final SvgNonNegativeNumber? pathLength = toSvgValueOrNull<SvgNonNegativeNumber>(
+      elementName,
+      XmlAttributeName.pathLength,
+    );
 
     final CommonAttributes common = toCommonAttributes(elementName);
 
@@ -35,14 +39,13 @@ extension ToSvgEllipse on XmlElement {
         cy: cy,
         rx: rx,
         ry: ry,
-        fill: common.fill,
-        fillOpacity: common.fillOpacity,
-        stroke: common.stroke,
+        pathLength: pathLength,
+        fillAttributes: common.fillAttributes,
+        strokeAttributes: common.strokeAttributes,
         opacity: common.opacity,
         cssClass: common.cssClass,
         inlineStyle: common.inlineStyle,
-        transform: common.transform,
-        pathLength: common.pathLength,
+        transformAttributes: common.transformAttributes,
         id: common.id,
       ),
     );

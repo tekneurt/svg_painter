@@ -25,18 +25,24 @@ class PathDataParser {
 
     void flushCommand() {
       if (currentCommand == null) {
-        // Nothing to process
+        if (params.isNotEmpty) {
+          errorMessage = 'Expected path command, but found coordinates: ${params.join(", ")}';
+        }
         return;
       }
 
       // Caller guarantees errorMessage is null
       assert(errorMessage == null);
 
-      final bool isRelative = currentCommand!.toLowerCase() == currentCommand;
-
       int i = 0;
-      while (i < params.length || currentCommand?.toUpperCase() == 'Z') {
-        final String cmd = currentCommand!.toUpperCase();
+      while (i < params.length || (currentCommand?.toUpperCase() == 'Z' && i == 0)) {
+        final String? cmdName = currentCommand;
+        assert(cmdName != null, 'currentCommand should not be null during command processing');
+        if (cmdName == null) {
+          break;
+        }
+        final bool isRelative = cmdName.toLowerCase() == cmdName;
+        final String cmd = cmdName.toUpperCase();
         final int remaining = params.length - i;
         switch (cmd) {
           case 'M':
@@ -46,7 +52,7 @@ class PathDataParser {
             }
             final double x = isRelative ? lastX + params[i++] : params[i++];
             final double y = isRelative ? lastY + params[i++] : params[i++];
-            operations.add(MoveTo(context.transformX(x), context.transformY(y)));
+            operations.add(MoveTo(x, y));
             lastX = x;
             lastY = y;
             subpathStartX = x;
@@ -62,7 +68,7 @@ class PathDataParser {
             }
             final double x = isRelative ? lastX + params[i++] : params[i++];
             final double y = isRelative ? lastY + params[i++] : params[i++];
-            operations.add(LineTo(context.transformX(x), context.transformY(y)));
+            operations.add(LineTo(x, y));
             lastX = x;
             lastY = y;
             lastControlX = null;
@@ -73,7 +79,7 @@ class PathDataParser {
               return;
             }
             final double x = isRelative ? lastX + params[i++] : params[i++];
-            operations.add(LineTo(context.transformX(x), context.transformY(lastY)));
+            operations.add(LineTo(x, lastY));
             lastX = x;
             lastControlX = null;
             lastControlY = null;
@@ -83,7 +89,7 @@ class PathDataParser {
               return;
             }
             final double y = isRelative ? lastY + params[i++] : params[i++];
-            operations.add(LineTo(context.transformX(lastX), context.transformY(y)));
+            operations.add(LineTo(lastX, y));
             lastY = y;
             lastControlX = null;
             lastControlY = null;
@@ -98,16 +104,7 @@ class PathDataParser {
             final double y2 = isRelative ? lastY + params[i++] : params[i++];
             final double x = isRelative ? lastX + params[i++] : params[i++];
             final double y = isRelative ? lastY + params[i++] : params[i++];
-            operations.add(
-              CubicTo(
-                context.transformX(x1),
-                context.transformY(y1),
-                context.transformX(x2),
-                context.transformY(y2),
-                context.transformX(x),
-                context.transformY(y),
-              ),
-            );
+            operations.add(CubicTo(x1, y1, x2, y2, x, y));
             lastControlX = x2;
             lastControlY = y2;
             lastX = x;
@@ -123,24 +120,17 @@ class PathDataParser {
             final double y = isRelative ? lastY + params[i++] : params[i++];
 
             double x1, y1;
-            if (lastControlX == null || lastControlY == null) {
+            final double? lcx = lastControlX;
+            final double? lcy = lastControlY;
+            if (lcx == null || lcy == null) {
               x1 = lastX;
               y1 = lastY;
             } else {
-              x1 = 2 * lastX - lastControlX!;
-              y1 = 2 * lastY - lastControlY!;
+              x1 = 2 * lastX - lcx;
+              y1 = 2 * lastY - lcy;
             }
 
-            operations.add(
-              CubicTo(
-                context.transformX(x1),
-                context.transformY(y1),
-                context.transformX(x2),
-                context.transformY(y2),
-                context.transformX(x),
-                context.transformY(y),
-              ),
-            );
+            operations.add(CubicTo(x1, y1, x2, y2, x, y));
             lastControlX = x2;
             lastControlY = y2;
             lastX = x;
@@ -154,14 +144,7 @@ class PathDataParser {
             final double y1 = isRelative ? lastY + params[i++] : params[i++];
             final double x = isRelative ? lastX + params[i++] : params[i++];
             final double y = isRelative ? lastY + params[i++] : params[i++];
-            operations.add(
-              QuadraticTo(
-                context.transformX(x1),
-                context.transformY(y1),
-                context.transformX(x),
-                context.transformY(y),
-              ),
-            );
+            operations.add(QuadraticTo(x1, y1, x, y));
             lastControlX = x1;
             lastControlY = y1;
             lastX = x;
@@ -175,22 +158,17 @@ class PathDataParser {
             final double y = isRelative ? lastY + params[i++] : params[i++];
 
             double x1, y1;
-            if (lastControlX == null || lastControlY == null) {
+            final double? lcx = lastControlX;
+            final double? lcy = lastControlY;
+            if (lcx == null || lcy == null) {
               x1 = lastX;
               y1 = lastY;
             } else {
-              x1 = 2 * lastX - lastControlX!;
-              y1 = 2 * lastY - lastControlY!;
+              x1 = 2 * lastX - lcx;
+              y1 = 2 * lastY - lcy;
             }
 
-            operations.add(
-              QuadraticTo(
-                context.transformX(x1),
-                context.transformY(y1),
-                context.transformX(x),
-                context.transformY(y),
-              ),
-            );
+            operations.add(QuadraticTo(x1, y1, x, y));
             lastControlX = x1;
             lastControlY = y1;
             lastX = x;
@@ -207,17 +185,7 @@ class PathDataParser {
             final bool sweepFlag = params[i++] != 0;
             final double x = isRelative ? lastX + params[i++] : params[i++];
             final double y = isRelative ? lastY + params[i++] : params[i++];
-            operations.add(
-              ArcTo(
-                context.scaleHorizontal(rx),
-                context.scaleVertical(ry),
-                xAxisRotation,
-                largeArcFlag,
-                sweepFlag,
-                context.transformX(x),
-                context.transformY(y),
-              ),
-            );
+            operations.add(ArcTo(rx, ry, xAxisRotation, largeArcFlag, sweepFlag, x, y));
             lastX = x;
             lastY = y;
             lastControlX = null;
@@ -252,19 +220,21 @@ class PathDataParser {
       } else {
         // New command
         flushCommand();
-        if (errorMessage == null) {
+        final String? err = errorMessage;
+        if (err == null) {
           currentCommand = match.group(1);
         } else {
-          return Failure<List<PathOperation>>(errorMessage!);
+          return Failure<List<PathOperation>>(err);
         }
       }
     }
     flushCommand();
 
-    if (errorMessage == null) {
+    final String? err = errorMessage;
+    if (err == null) {
       return Success<List<PathOperation>>(operations);
     } else {
-      return Failure<List<PathOperation>>(errorMessage!);
+      return Failure<List<PathOperation>>(err);
     }
   }
 }

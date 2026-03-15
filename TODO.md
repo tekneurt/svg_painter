@@ -94,32 +94,6 @@
         [x] **Base SVG Element toString Tests**: Ensure base `toString()` methods in `lib/src/svg_model/svg_element.dart` are fully covered.
         [x] **Default Value Exception Audit**: Systematically test all `UnsupportedError` paths in `to_default_value.dart`.
     - [x] **Final Coverage Check**: Verify high coverage (>90%).
-    - [ ] **Bang Operator (Null Assertion) Audit**: Systematically audit the codebase for the `!` operator and replace it with safe null handling (positive equality checks, `if (x == null) ...`, or explicit `assert(x != null)`) to eliminate potential runtime crashes.
-    - [ ] **Coverage Exception Audit**: Investigate all `// coverage:ignore-line` and `// coverage:ignore-start/end` markers across the codebase to determine if the ignored code can be safely tested or if the ignore markers are still justified.
-    - [ ] **Hardening Coverage for 0.2.0 files**: Improve coverage for the following files to reach >95% patch coverage:
-        - `command_generator.dart` (Current: ~87%)
-        - `to_svg_value.dart` (Current: ~79%)
-        - `palette_analyzer.dart` (Current: ~94%)
-        - `circle_generator.dart` (Current: ~81%)
-        - `line_generator.dart` (Current: ~84%)
-        - `path_generator.dart` (Current: ~75%)
-        - `svg_painter_generator.dart` (Current: ~98%)
-    - [ ] **Improve Coverage for Low-Coverage Files**:
-        - [ ] `oval_generator.dart` (Dash path logic)
-        - [ ] `rect_generator.dart` (Dash path logic)
-        - [ ] `svg_paint_resolver.dart` (Edge cases)
-        - [ ] `svg_to_painting.dart` (Edge cases)
-        - [ ] `to_svg_element.dart` (Missing element types)
-    - [ ] **Strict Attribute Typing**: Refactor `PaintCommand` properties like `pathLength`, `opacity`, etc., from nullable primitives (`double?`) to non-nullable types or strict objects (e.g. `SvgValue`) to eliminate ambiguous null checks and align with SVG spec (e.g., `pathLength` must be > 0 or it's ignored).
-    - [ ] **SVG Spec Compliance Audit**: Systematically review all parsing logic (points, paths, transforms, colors) against the SVG 1.1/2.0 "Error Processing" rules.
-        - Ensure partial parsing stops correctly on invalid tokens.
-        - Verify odd-length lists are handled (truncated or errored) as per spec for each attribute type.
-        - Ensure invalid values (e.g. negative radius) result in spec-compliant behavior (ignore element vs ignore attribute).
-    - [ ] **Strong Typing of Painting Model**: Audit all styles and commands to replace `String?` with dedicated Enums or value objects.
-        - `PaintingTextStyle`: Refactor `fontWeight` (Enum/Number), `fontStyle` (Enum), and potentially `fontFamily`.
-        - `PaintCommand`: Refactor `transform` string to a structured `List<TransformOperation>` or `Matrix4`.
-        - Ensure all "magic strings" from the SVG spec are internalized into typed models before they reach the generators.
-
 
 ### Phase 2: Repository & Release Infrastructure (0.1.0)
 *Setting up CI/CD, publishing pipeline, and releasing initial version.*
@@ -173,6 +147,78 @@
     - [x] Implement `BoxFit` and `Alignment` support in the generated Widget.
 - [x] **"CurrentColor" Support**: Map `currentColor` to a primary `color` property on the Widget (matching Flutter's `Icon` behavior).
 
+### Phase 3.5: Foundation Hardening & Structural Refactoring (Preparation for 0.3.0)
+*Crucial cleanup to ensure Phase 4 features (symbols, clipping) are built on a solid type-safe base.*
+
+- [x] **Standardize Error Handling**: Establish centralized `untreatableErrorPrefix` and comment convention for defensive catch-all blocks.
+- [x] **Pipeline Layer Hardening**: Systematic audit and quality improvement of each processing layer.
+    - [x] **XML Model Layer (`lib/src/xml_model`)**:
+        - [x] Exhaustive Enum regression tests for `XmlAttributeName` and `XmlElementName`.
+        - [x] Comprehensive audit of structural data models.
+    - [x] **SVG Model Layer (`lib/src/svg_model`)**:
+        - [x] **Mixin Refactoring**: Implement attribute grouping via mixins to ensure type safety (e.g., `mixin SvgGeometry`).
+        - [x] **Attribute Grouping**: Group related presentation attributes into semantic components (Fill, Stroke, Font).
+        - [x] **Attributes Harmonization**: Rename attributes, properties, and mixins to follow a consistent "SVG-Truthful" naming convention:
+            - `SvgFontAttributes` ➔ Property: `fontAttributes`, Mixin: `SvgFontAttributable`
+            - `SvgFillAttributes` ➔ Property: `fillAttributes`, Mixin: `SvgFillAttributable`
+            - `SvgStrokeAttributes` ➔ Property: `strokeAttributes`, Mixin: `SvgStrokeAttributable`
+        - [x] **Structured Transforms**: Define `SvgTransformOperation` model and refactor `SvgGraphicsElement.transform` from `String?` to `List<SvgTransformOperation>?`.
+        - [x] **Strongly Typed Text Styles**: Define SvgFontWeight, SvgFontStyle, and SvgFontFamily and refactor SvgFontAttributes.
+        - [x] Comprehensive audit of structural data models.
+    - [x] **XML Conversion Layer (`lib/src/xml_conversion`)**:
+        - [x] Hardened `toXmlDocument` with standardized error handling and justified coverage ignore.
+        - [x] Implement lenient child parsing (skip unknown tags instead of failing).
+        - [x] Add namespace awareness to tag identification.
+        - [x] Refine `<style>` element discovery scope.
+        - [x] **Structural Parsing Audit & Hardening**:
+            - [x] Update `SvgDefs` to support presentation attribute inheritance.
+            - [x] Harden `toXmlAttributeValue` for `xlink:href` compatibility.
+            - [x] Expand `<style>` collection scope in `SvgRoot`.
+            - [x] Standardize optional attribute parsing safety across all element converters.
+    - [x] **SVG Conversion Layer (`lib/src/svg_conversion`)**:
+        - [x] **Length Extension Consolidation**: Rename `svg_resolution_extensions.dart` to `svg_length_extensions.dart` and merge all length/percentage conversion logic into it for better semantics and clarity.
+        - [x] Verify data inheritance resolution and painting context propagation.
+        - [x] **Conversion Logic Hardening**:
+            - [x] **Fix Double Transformation**: Refactor shape extensions to keep coordinates in local space and rely on the generator's `canvas.transform`.
+            - [x] **Centralize Inheritance**: Implement `SvgPaintingContext.deriveWith(element)` to unify attribute priority (Inline > CSS > Attr > Inherited).
+            - [x] **Refactor `<use>` Implementation**: Treat `(x, y)` as a translation that wraps the target, rather than absolute positioning.
+            - [x] Harden CSS `font` shorthand parsing in `resolvePaint`.
+    - [x] **Painting Model Layer (`lib/src/painting_model`)**:
+        - [x] **Strict Attribute Typing**: Refactor `PaintCommand` properties (`pathLength`, `opacity`) from nullable primitives to non-nullable types or strict objects.
+        - [x] **Strongly Typed Commands**: Refactor `transform` string to structured `List<TransformOperation>` or `Matrix4`.
+        - [x] Comprehensive audit of command and style models.
+    - [x] **Generation Layer (`lib/src/generation`)**:
+        - [x] Finalize code emission patterns and property safety.
+        - [x] Comprehensive audit of code generation logic.
+            - [x] **Harden `command_generator.dart`**: Replace `!` operators with safe null handling (e.g., `stroke.dashArray`).
+            - [x] **Refactor `generatePaintingCode`**: Remove `TODO(Gemini)` and improve local vs inherited property override handling.
+            - [x] **Correct `SvgSkewY` logic**: Implement accurate tangent calculation in `wrapWithTransform`.
+            - [x] **Verify `_dashPath` consistency**: Ensure all shape generators use a consistent dashed path implementation.
+- [x] **Bang Operator (!) Audit**: Systematically audit the codebase for the `!` operator and replace it with safe null handling (core logic completed, tests remain).
+- [x] **Improve Generator Readability**: Refactor the "string buffer waterfall" into a cleaner code emission pattern (e.g., multiline strings or a structured emitter) to prevent broken `buffer.writeln` calls.
+- [x] **Coverage Exception Audit**: Investigate all `// coverage:ignore-line` and `// coverage:ignore-start/end` markers across the codebase to determine if the ignored code can be safely tested or if the ignore markers are still justified.
+- [x] **Hardening Coverage for 0.2.0 files**: Improve coverage for the following files to reach >95% patch coverage:
+    - `command_generator.dart`
+    - `to_svg_value.dart`
+    - `palette_analyzer.dart`
+    - `circle_generator.dart`
+    - `line_generator.dart`
+    - `path_generator.dart`
+    - `svg_painter_generator.dart`
+- [x] **Improve Coverage for Low-Coverage Files**:
+    - [x] `oval_generator.dart` (Dash path logic)
+    - [x] `rect_generator.dart` (Dash path logic)
+    - [x] `svg_paint_resolver.dart` (Edge cases)
+    - [x] `svg_to_painting.dart` (Edge cases)
+    - [x] `to_svg_element.dart` (Missing element types)
+- [x] **SVG Spec Compliance Audit**: Systematically review all parsing logic (points, paths, transforms, colors) against the SVG 1.1/2.0 "Error Processing" rules.
+    - Ensure partial parsing stops correctly on invalid tokens.
+    - Verify odd-length lists are handled (truncated or errored) as per spec for each attribute type.
+    - Ensure invalid values (e.g. negative radius) result in spec-compliant behavior (ignore element vs ignore attribute).
+
+    - [x] **Strong Typing of Painting Model**: Audit all styles and commands to replace `String?` with dedicated Enums or value objects.
+    - [x] **Harden Regex Parsers**: Update style and length parsers to safely handle regex match groups instead of using non-null assertions.
+    - [x] **Standardized Formatting & Style Audit**: Perform a project-wide pass to add trailing commas to all collection literals and parameter lists to ensure stable multi-line formatting.
 ### Phase 4: Essential Elements (0.3.0)
 *Reaching standard compatibility with essential SVG elements.*
 
@@ -203,6 +249,8 @@
 - [ ] **Basic Filters**: `<filter>`, `<feGaussianBlur>`, `<feOffset>`, `<feDropShadow>`, `<feMerge>`, `<feFlood>`.
 - [ ] **Patterns**: `<pattern>` for repeating fills.
 - [ ] **Gradients (Polish)**: `objectBoundingBox` and `spreadMethod`.
+- [ ] Support `gradientTransform` properly using `Matrix4` from `vector_math_64` (see: https://api.flutter.dev/flutter/package-vector_math_vector_math_64/Matrix4-class.html).
+- [ ] Support complex nested transformations in gradients.
 
 ### Phase 6: Advanced Units & Path Syntax (0.5.0)
 - [ ] **SVG 2 Path Syntax**: Robust tokenizer for compact arc syntax (concatenated flags).
@@ -214,3 +262,6 @@
 - [ ] **Complex Filter Primitives**: Lighting, turbulence, displacement maps, color matrices.
 - [ ] **Interactive Elements**: Event handling (taps, hovers) for SVG shapes.
 - [ ] **Misc Attributes**: Rendering hints and CSS interpolation properties.
+- [ ] **Future Refactoring**:
+    - [ ] `mixin SvgViewBoxed`: Holds `viewBox` and `preserveAspectRatio` (applied to: `SvgSvg`, `SvgSymbol`, `SvgMarker`).
+    - [ ] `mixin SvgBounded`: Holds `x`, `y`, `width`, `height` (applied to: `SvgRect`, `SvgSvg`, `SvgUse`, `SvgImage`).

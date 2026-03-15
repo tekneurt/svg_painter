@@ -20,14 +20,13 @@ extension ToSvgGroup on XmlElement {
     return childrenResult.map(
       (List<SvgElement> childElements) => SvgGroup(
         children: childElements,
-        fill: common.fill,
-        fillOpacity: common.fillOpacity,
-        stroke: common.stroke,
+        fillAttributes: common.fillAttributes,
+        strokeAttributes: common.strokeAttributes,
+        fontAttributes: common.fontAttributes,
         opacity: common.opacity,
         cssClass: common.cssClass,
         inlineStyle: common.inlineStyle,
-        transform: common.transform,
-        pathLength: common.pathLength,
+        transformAttributes: common.transformAttributes,
         id: common.id,
       ),
     );

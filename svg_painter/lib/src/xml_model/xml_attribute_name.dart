@@ -58,6 +58,10 @@ enum XmlAttributeName {
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/height
   height('height'),
 
+  /// The total length of the path in user units.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/pathLength
+  pathLength('pathLength'),
+
   /// The transformation applied to the element.
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/transform
   transform('transform'),
@@ -164,11 +168,7 @@ enum XmlAttributeName {
 
   /// The viewBox of the element.
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/viewBox
-  viewBox('viewBox'),
-
-  /// The total length of the path in user units.
-  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/pathLength
-  pathLength('pathLength');
+  viewBox('viewBox');
 
   const XmlAttributeName(this.name);
 

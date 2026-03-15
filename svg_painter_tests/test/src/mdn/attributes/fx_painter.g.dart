@@ -66,38 +66,48 @@ class _$FxPainter extends CustomPainter {
       radius: 0.5,
       focal: Alignment(-0.30000000000000004, -0.30000000000000004),
       focalRadius: 0.05,
-      colors: [Colors.white, const Color(0xFF8FBC8F)],
-      stops: [0.0, 1.0],
+      colors: <Color>[Colors.white, const Color(0xFF8FBC8F)],
+      stops: <double>[0.0, 1.0],
     );
     final Gradient _grad_gradient2 = RadialGradient(
       center: Alignment(0.0, 0.0),
       radius: 0.5,
       focal: Alignment(0.5, -0.30000000000000004),
       focalRadius: 0.05,
-      colors: [Colors.white, const Color(0xFF8FBC8F)],
-      stops: [0.0, 1.0],
+      colors: <Color>[Colors.white, const Color(0xFF8FBC8F)],
+      stops: <double>[0.0, 1.0],
     );
     {
-      {
-        final Paint paint = Paint();
-        paint.shader = _grad_gradient1.createShader(
-          Rect.fromCircle(center: const Offset(100.0, 100.0), radius: 100.0),
-        );
-        paint.style = PaintingStyle.fill;
-        canvas.drawCircle(const Offset(100.0, 100.0), 100.0, paint);
-      }
+      final Paint paint = Paint();
+      paint.shader = _grad_gradient1.createShader(
+        Rect.fromCircle(center: const Offset(100.0, 100.0), radius: 100.0),
+      );
+      paint.style = PaintingStyle.fill;
+      canvas.drawCircle(const Offset(100.0, 100.0), 100.0, paint);
     }
     {
-      {
-        final Paint paint = Paint();
-        paint.shader = _grad_gradient2.createShader(
-          Rect.fromCircle(center: const Offset(340.0, 100.0), radius: 100.0),
-        );
-        paint.style = PaintingStyle.fill;
-        canvas.drawCircle(const Offset(340.0, 100.0), 100.0, paint);
-      }
+      final Paint paint = Paint();
+      paint.shader = _grad_gradient2.createShader(
+        Rect.fromCircle(center: const Offset(340.0, 100.0), radius: 100.0),
+      );
+      paint.style = PaintingStyle.fill;
+      canvas.drawCircle(const Offset(340.0, 100.0), 100.0, paint);
     }
     canvas.restore();
+  }
+
+  void _applyOverride(Paint paint, Object? override) {
+    switch (override) {
+      case final Color color:
+        paint.color = color;
+        paint.shader = null;
+
+      case final Shader shader:
+        paint.shader = shader;
+
+      case null || _:
+        break;
+    }
   }
 
   @override

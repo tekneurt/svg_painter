@@ -1,5 +1,5 @@
 import '../../svg_model/_svg_model.dart';
-import '../svg_value_extensions/svg_auto_to_double.dart';
+import '../svg_value_extensions/_svg_value_extensions.dart';
 import 'svg_painting_context.dart';
 
 /// Resolves the horizontal and vertical radii for elements like `<rect>` and `<ellipse>`.
@@ -13,13 +13,21 @@ import 'svg_painting_context.dart';
   SvgLengthPercentageAuto ry,
   SvgPaintingContext context,
 ) {
-  final double? x = rx.resolveOrNull(context, .horizontal);
-  final double? y = ry.resolveOrNull(context, .vertical);
+  final double? rxVal = rx.resolveOrNull(context, .horizontal);
+  final double? ryVal = ry.resolveOrNull(context, .vertical);
 
-  return switch ((x, y)) {
-    (null, null) => (0.0, 0.0),
-    (null, final double val) => (val, val),
-    (final double val, null) => (val, val),
-    (final double vx, final double vy) => (vx, vy),
-  };
+  if (rxVal == null && ryVal == null) {
+    return (0.0, 0.0);
+  }
+
+  if (rxVal != null && ryVal == null) {
+    return (rxVal, rxVal);
+  }
+
+  if (rxVal == null && ryVal != null) {
+    return (ryVal, ryVal);
+  }
+
+  // Both are non-null
+  return (rxVal ?? 0.0, ryVal ?? 0.0);
 }

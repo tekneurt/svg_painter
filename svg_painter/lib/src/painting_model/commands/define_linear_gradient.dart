@@ -10,7 +10,7 @@ final class DefineLinearGradient extends DefineGradient {
     required this.x2,
     required this.y2,
     required super.stops,
-    super.transform,
+    super.transformAttributes,
   });
 
   /// Normalized x-axis start coordinate (0.0 - 1.0).

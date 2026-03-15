@@ -61,60 +61,63 @@ class _$ExamplePolyline01Painter extends CustomPainter {
     );
     canvas.clipRect(Rect.fromLTWH(0, 0, 453.54330708661416, 151.1811023622047));
 
+    canvas.save();
+    canvas.scale(0.3779527559055118, 0.3779527559055118);
     {
+      final Paint paint = Paint();
+      paint.color = const Color(0xFF0000FF);
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 2.0;
+      canvas.drawRect(Rect.fromLTWH(1.0, 1.0, 1198.0, 398.0), paint);
+    }
+    {
+      final Path path = Path()
+        ..moveTo(50.0, 375.0)
+        ..lineTo(150.0, 375.0)
+        ..lineTo(150.0, 325.0)
+        ..lineTo(250.0, 325.0)
+        ..lineTo(250.0, 375.0)
+        ..lineTo(350.0, 375.0)
+        ..lineTo(350.0, 250.0)
+        ..lineTo(450.0, 250.0)
+        ..lineTo(450.0, 375.0)
+        ..lineTo(550.0, 375.0)
+        ..lineTo(550.0, 175.0)
+        ..lineTo(650.0, 175.0)
+        ..lineTo(650.0, 375.0)
+        ..lineTo(750.0, 375.0)
+        ..lineTo(750.0, 100.0)
+        ..lineTo(850.0, 100.0)
+        ..lineTo(850.0, 375.0)
+        ..lineTo(950.0, 375.0)
+        ..lineTo(950.0, 25.0)
+        ..lineTo(1050.0, 25.0)
+        ..lineTo(1050.0, 375.0)
+        ..lineTo(1150.0, 375.0);
       {
         final Paint paint = Paint();
         paint.color = const Color(0xFF0000FF);
         paint.style = PaintingStyle.stroke;
-        paint.strokeWidth = 0.7559055118110235;
-        canvas.drawRect(
-          Rect.fromLTWH(
-            0.3779527559055118,
-            0.3779527559055118,
-            452.78740157480314,
-            150.4251968503937,
-          ),
-          paint,
-        );
-      }
-    }
-    {
-      {
-        final Path path = Path();
-        path.addPolygon([
-          const Offset(18.89763779527559, 141.73228346456693),
-          const Offset(56.69291338582677, 141.73228346456693),
-          const Offset(56.69291338582677, 122.83464566929133),
-          const Offset(94.48818897637796, 122.83464566929133),
-          const Offset(94.48818897637796, 141.73228346456693),
-          const Offset(132.28346456692913, 141.73228346456693),
-          const Offset(132.28346456692913, 94.48818897637796),
-          const Offset(170.07874015748033, 94.48818897637796),
-          const Offset(170.07874015748033, 141.73228346456693),
-          const Offset(207.8740157480315, 141.73228346456693),
-          const Offset(207.8740157480315, 66.14173228346456),
-          const Offset(245.66929133858267, 66.14173228346456),
-          const Offset(245.66929133858267, 141.73228346456693),
-          const Offset(283.46456692913387, 141.73228346456693),
-          const Offset(283.46456692913387, 37.79527559055118),
-          const Offset(321.25984251968504, 37.79527559055118),
-          const Offset(321.25984251968504, 141.73228346456693),
-          const Offset(359.0551181102362, 141.73228346456693),
-          const Offset(359.0551181102362, 9.448818897637794),
-          const Offset(396.8503937007874, 9.448818897637794),
-          const Offset(396.8503937007874, 141.73228346456693),
-          const Offset(434.64566929133855, 141.73228346456693),
-        ], false);
-        {
-          final Paint paint = Paint();
-          paint.color = const Color(0xFF0000FF);
-          paint.style = PaintingStyle.stroke;
-          paint.strokeWidth = 3.7795275590551176;
-          canvas.drawPath(path, paint);
-        }
+        paint.strokeWidth = 10.0;
+        canvas.drawPath(path, paint);
       }
     }
     canvas.restore();
+    canvas.restore();
+  }
+
+  void _applyOverride(Paint paint, Object? override) {
+    switch (override) {
+      case final Color color:
+        paint.color = color;
+        paint.shader = null;
+
+      case final Shader shader:
+        paint.shader = shader;
+
+      case null || _:
+        break;
+    }
   }
 
   @override

@@ -61,60 +61,51 @@ class _$ExampleEllipse01Painter extends CustomPainter {
     );
     canvas.clipRect(Rect.fromLTWH(0, 0, 453.54330708661416, 151.1811023622047));
 
+    canvas.save();
+    canvas.scale(0.3779527559055118, 0.3779527559055118);
     {
-      {
-        final Paint paint = Paint();
-        paint.color = const Color(0xFF0000FF);
-        paint.style = PaintingStyle.stroke;
-        paint.strokeWidth = 0.7559055118110235;
-        canvas.drawRect(
-          Rect.fromLTWH(
-            0.3779527559055118,
-            0.3779527559055118,
-            452.78740157480314,
-            150.4251968503937,
-          ),
-          paint,
-        );
-      }
+      final Paint paint = Paint();
+      paint.color = const Color(0xFF0000FF);
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 2.0;
+      canvas.drawRect(Rect.fromLTWH(1.0, 1.0, 1198.0, 398.0), paint);
     }
     canvas.save();
-    canvas.translate(113.38582677165354, 75.59055118110236);
+    canvas.translate(300.0, 200.0);
     {
-      {
-        final Paint paint = Paint();
-        paint.color = const Color(0xFFFF0000);
-        paint.style = PaintingStyle.fill;
-        canvas.drawOval(
-          Rect.fromCenter(
-            center: const Offset(0.0, 0.0),
-            width: 188.9763779527559,
-            height: 75.59055118110236,
-          ),
-          paint,
-        );
-      }
+      final Paint paint = Paint();
+      paint.color = const Color(0xFFFF0000);
+      paint.style = PaintingStyle.fill;
+      canvas.drawOval(Rect.fromLTWH(-250.0, -100.0, 500.0, 200.0), paint);
     }
     canvas.restore();
     canvas.save();
-    canvas.translate(340.15748031496065, 75.59055118110236);
+    canvas.translate(900.0, 200.0);
     canvas.rotate(-0.5235987755982988);
     {
       final Paint paint = Paint();
       paint.color = const Color(0xFF0000FF);
       paint.style = PaintingStyle.stroke;
-      paint.strokeWidth = 7.559055118110235;
-      canvas.drawOval(
-        Rect.fromCenter(
-          center: const Offset(0.0, 0.0),
-          width: 188.9763779527559,
-          height: 75.59055118110236,
-        ),
-        paint,
-      );
+      paint.strokeWidth = 20.0;
+      canvas.drawOval(Rect.fromLTWH(-250.0, -100.0, 500.0, 200.0), paint);
     }
     canvas.restore();
     canvas.restore();
+    canvas.restore();
+  }
+
+  void _applyOverride(Paint paint, Object? override) {
+    switch (override) {
+      case final Color color:
+        paint.color = color;
+        paint.shader = null;
+
+      case final Shader shader:
+        paint.shader = shader;
+
+      case null || _:
+        break;
+    }
   }
 
   @override

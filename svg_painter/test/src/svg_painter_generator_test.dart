@@ -114,7 +114,7 @@ void main() {
         );
 
         // Assert
-        expect(output, contains('final Color? myIdFill;'));
+        expect(output, contains('final Object? myIdFill;'));
         expect(output, contains('this.myIdFill,'));
       });
 
@@ -145,8 +145,8 @@ void main() {
         );
 
         // Assert
-        expect(output, contains('final Color? fill1;'));
-        expect(output, contains('final Color? fill2;'));
+        expect(output, contains('final Object? fill1;'));
+        expect(output, contains('final Object? fill2;'));
       });
 
       test('should respect propertyMapping', () {
@@ -172,8 +172,8 @@ void main() {
         );
 
         // Assert
-        expect(output, contains('final Color? customColor;'));
-        expect(output, isNot(contains('final Color? c1Fill;')));
+        expect(output, contains('final Object? customColor;'));
+        expect(output, isNot(contains('final Object? c1Fill;')));
       });
 
       test('should include currentColor color property if present in commands', () {
@@ -202,6 +202,41 @@ void main() {
         // Assert
         expect(output, contains('final Color? color;'));
         expect(output, contains('color: color ?? IconTheme.of(context).color,'));
+      });
+
+      test('should generate gradient definitions in the first pass', () {
+        // Arrange
+        const List<PaintCommand> commands = <PaintCommand>[
+          DefineLinearGradient(
+            id: 'grad1',
+            x1: 0,
+            y1: 0,
+            x2: 1,
+            y2: 0,
+            stops: <GradientStop>[
+              GradientStop(offset: 0, colorArgb: 0xFFFF0000),
+              GradientStop(offset: 1, colorArgb: 0xFF0000FF),
+            ],
+          ),
+          DrawCircle(
+            cx: 50,
+            cy: 50,
+            radius: 40,
+            style: PaintingStyle(fill: PaintingFillStyle(shaderId: 'grad1')),
+          ),
+        ];
+
+        // Act
+        final String output = generator.generatePainterClass(
+          className: 'GradientPainter',
+          viewBoxWidth: 100,
+          viewBoxHeight: 100,
+          commands: commands,
+        );
+
+        // Assert
+        expect(output, contains('final Gradient _grad_grad1 = LinearGradient('));
+        expect(output, contains('paint.shader = _grad_grad1.createShader('));
       });
     });
 
@@ -277,27 +312,6 @@ void main() {
         });
 
         test(
-          'should throw InvalidGenerationSourceError when mapping fails (unsupported element)',
-          () {
-            // Arrange
-            const String unsupportedElementSvg = '<svg><unsupported /></svg>';
-
-            // Act & Assert
-            expect(
-              () =>
-                  generator.generateFromSvg(elementName: 'Test', svgContent: unsupportedElementSvg),
-              throwsA(
-                isA<InvalidGenerationSourceError>().having(
-                  (InvalidGenerationSourceError e) => e.message,
-                  'message',
-                  contains('Failed to map SVG content'),
-                ),
-              ),
-            );
-          },
-        );
-
-        test(
           'should throw InvalidGenerationSourceError when conversion fails (broken reference)',
           () {
             // Arrange
@@ -311,6 +325,26 @@ void main() {
                   (InvalidGenerationSourceError e) => e.message,
                   'message',
                   contains('Failed to convert SVG to painting commands'),
+                ),
+              ),
+            );
+          },
+        );
+
+        test(
+          'should throw InvalidGenerationSourceError when mapping fails (missing path data)',
+          () {
+            // Arrange
+            const String invalidAttrSvg = '<svg><path /></svg>';
+
+            // Act & Assert
+            expect(
+              () => generator.generateFromSvg(elementName: 'Test', svgContent: invalidAttrSvg),
+              throwsA(
+                isA<InvalidGenerationSourceError>().having(
+                  (InvalidGenerationSourceError e) => e.message,
+                  'message',
+                  contains('Failed to map SVG content'),
                 ),
               ),
             );
@@ -461,6 +495,26 @@ void main() {
         expect(result, contains(r'class _$TestPainter extends CustomPainter'));
       });
 
+      test('should respect painterClassName from annotation', () async {
+        // Arrange
+        final MockConstantReader mockClassName = MockConstantReader();
+        when(mockAnnotation.read('painterClassName')).thenReturn(mockClassName);
+        when(mockClassName.isNull).thenReturn(false);
+        when(mockClassName.stringValue).thenReturn('CustomPainterName');
+
+        mockableGenerator.mockLoadResult = const Success<String>('<svg />');
+
+        // Act
+        final String result = await mockableGenerator.generateForAnnotatedElement(
+          mockElement,
+          mockAnnotation,
+          mockBuildStep,
+        );
+
+        // Assert
+        expect(result, contains('class CustomPainterName extends CustomPainter'));
+      });
+
       test('should respect exposureMode and propertyMapping from annotation', () async {
         // Arrange
         mockableGenerator.mockLoadResult = const Success<String>(
@@ -496,7 +550,7 @@ void main() {
         );
 
         // Assert
-        expect(result, contains('final Color? myColor;'));
+        expect(result, contains('final Object? myColor;'));
       });
     });
   });

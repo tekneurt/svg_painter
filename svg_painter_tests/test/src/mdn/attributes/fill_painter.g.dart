@@ -61,33 +61,42 @@ class _$FillPainter extends CustomPainter {
     );
     canvas.clipRect(Rect.fromLTWH(0, 0, 300.0, 100.0));
 
+    {
+      final Paint paint = Paint();
+      paint.color = const Color(0xFFFFC0CB);
+      paint.style = PaintingStyle.fill;
+      canvas.drawCircle(const Offset(50.0, 50.0), 40.0, paint);
+    }
     final Gradient _grad_myGradient = RadialGradient(
       center: Alignment(0.0, 0.0),
       radius: 0.5,
       focal: Alignment(0.0, 0.0),
-      focalRadius: 0.0,
-      colors: [const Color(0xFFFFC0CB), Colors.black],
-      stops: [0.0, 1.0],
+      colors: <Color>[const Color(0xFFFFC0CB), Colors.black],
+      stops: <double>[0.0, 1.0],
     );
     {
-      {
-        final Paint paint = Paint();
-        paint.color = const Color(0xFFFFC0CB);
-        paint.style = PaintingStyle.fill;
-        canvas.drawCircle(const Offset(50.0, 50.0), 40.0, paint);
-      }
-    }
-    {
-      {
-        final Paint paint = Paint();
-        paint.shader = _grad_myGradient.createShader(
-          Rect.fromCircle(center: const Offset(150.0, 50.0), radius: 40.0),
-        );
-        paint.style = PaintingStyle.fill;
-        canvas.drawCircle(const Offset(150.0, 50.0), 40.0, paint);
-      }
+      final Paint paint = Paint();
+      paint.shader = _grad_myGradient.createShader(
+        Rect.fromCircle(center: const Offset(150.0, 50.0), radius: 40.0),
+      );
+      paint.style = PaintingStyle.fill;
+      canvas.drawCircle(const Offset(150.0, 50.0), 40.0, paint);
     }
     canvas.restore();
+  }
+
+  void _applyOverride(Paint paint, Object? override) {
+    switch (override) {
+      case final Color color:
+        paint.color = color;
+        paint.shader = null;
+
+      case final Shader shader:
+        paint.shader = shader;
+
+      case null || _:
+        break;
+    }
   }
 
   @override

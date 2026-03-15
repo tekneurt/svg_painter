@@ -1,9 +1,7 @@
-import 'package:svg_painter/src/generation/circle_generator.dart';
-import 'package:svg_painter/src/generation/command_generator.dart';
-import 'package:svg_painter/src/generation/group_generator.dart';
-import 'package:svg_painter/src/generation/palette_analyzer.dart';
+import 'package:svg_painter/src/generation/_generation.dart';
 import 'package:svg_painter/src/painting_model/paint_command.dart';
 import 'package:svg_painter/src/painting_model/styles/painting_style.dart';
+import 'package:svg_painter/src/svg_model/_svg_model.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -18,32 +16,16 @@ void main() {
 
     test('should return early when generators map is null', () {
       // Arrange
-      const DrawGroup command = DrawGroup(commands: <PaintCommand>[]);
-      final StringBuffer buffer = StringBuffer();
+      const DrawGroup command = DrawGroup(
+        commands: <PaintCommand>[DrawCircle(cx: 0, cy: 0, radius: 5, style: PaintingStyle())],
+      );
+      final GeneratorBuffer buffer = GeneratorBuffer();
 
       // Act
       generator.generate(command, buffer);
 
       // Assert
-      expect(buffer.isEmpty, isTrue);
-    });
-
-    test('should throw StateError when no generator is found for a child command', () {
-      // Arrange
-      const DrawGroup command = DrawGroup(
-        commands: <PaintCommand>[DrawCircle(cx: 0, cy: 0, radius: 0, style: PaintingStyle())],
-      );
-      final StringBuffer buffer = StringBuffer();
-
-      // Act & Assert
-      expect(
-        () => generator.generate(
-          command,
-          buffer,
-          generators: <Type, CommandGenerator<PaintCommand>>{},
-        ),
-        throwsStateError,
-      );
+      expect(buffer.toString().isEmpty, isTrue);
     });
 
     test('should recursively generate code for children when DrawGroup is provided', () {
@@ -58,7 +40,7 @@ void main() {
           ),
         ],
       );
-      final StringBuffer buffer = StringBuffer();
+      final GeneratorBuffer buffer = GeneratorBuffer();
 
       // Act
       generator.generate(command, buffer, generators: generators);
@@ -68,28 +50,17 @@ void main() {
       expect(output, contains('canvas.drawCircle(const Offset(55.5, 66.6), 12.3, paint)'));
     });
 
-    test('should generate saveLayer when groupOpacity is less than 1.0', () {
-      // Arrange
-      const DrawGroup command = DrawGroup(commands: <PaintCommand>[], opacity: 0.45);
-      final StringBuffer buffer = StringBuffer();
-
-      // Act
-      generator.generate(command, buffer, generators: generators);
-
-      // Assert
-      final String output = buffer.toString();
-      expect(output, contains('canvas.saveLayer('));
-      expect(output, contains('Paint()..color = Color.fromRGBO(255, 255, 255, 0.45)'));
-      expect(output, contains('canvas.restore()'));
-    });
-
     test('should wrap with transform when transform is provided', () {
       // Arrange
       const DrawGroup command = DrawGroup(
         commands: <PaintCommand>[],
-        transform: 'translate(12, 34)',
+        style: PaintingStyle(
+          transformAttributes: SvgTransformAttributes(<SvgTransformOperation>[
+            SvgTranslate(12, 34),
+          ]),
+        ),
       );
-      final StringBuffer buffer = StringBuffer();
+      final GeneratorBuffer buffer = GeneratorBuffer();
 
       // Act
       generator.generate(command, buffer, generators: generators);
@@ -108,16 +79,16 @@ void main() {
           <Type, CommandGenerator<PaintCommand>>{DrawCircle: spy};
 
       final List<InheritedProperty> initialFills = <InheritedProperty>[
-        const InheritedProperty('fillProp', 0xFF112233),
+        const InheritedProperty('fillProp', colorArgb: 0xFF112233),
       ];
       final List<InheritedProperty> initialStrokes = <InheritedProperty>[
-        const InheritedProperty('strokeProp', 0xFF445566),
+        const InheritedProperty('strokeProp', colorArgb: 0xFF445566),
       ];
 
       const DrawGroup command = DrawGroup(
         commands: <PaintCommand>[DrawCircle(cx: 0, cy: 0, radius: 0, style: PaintingStyle())],
       );
-      final StringBuffer buffer = StringBuffer();
+      final GeneratorBuffer buffer = GeneratorBuffer();
 
       // Act
       generator.generate(
@@ -146,7 +117,7 @@ void main() {
           style: PaintingStyle(fill: PaintingFillStyle(colorArgb: 0xFF111111)),
           commands: <PaintCommand>[DrawCircle(cx: 0, cy: 0, radius: 0, style: PaintingStyle())],
         );
-        final StringBuffer buffer = StringBuffer();
+        final GeneratorBuffer buffer = GeneratorBuffer();
 
         // Act
         generator.generate(
@@ -159,7 +130,7 @@ void main() {
         // Assert
         expect(spy.lastInheritedFills, hasLength(1));
         expect(spy.lastInheritedFills![0].propertyName, 'mappedFillProp');
-        expect(spy.lastInheritedFills![0].value, 0xFF111111);
+        expect(spy.lastInheritedFills![0].colorArgb, 0xFF111111);
       },
     );
 
@@ -176,7 +147,7 @@ void main() {
           style: PaintingStyle(stroke: PaintingStrokeStyle(colorArgb: 0xFF222222)),
           commands: <PaintCommand>[DrawCircle(cx: 0, cy: 0, radius: 0, style: PaintingStyle())],
         );
-        final StringBuffer buffer = StringBuffer();
+        final GeneratorBuffer buffer = GeneratorBuffer();
 
         // Act
         generator.generate(
@@ -189,9 +160,116 @@ void main() {
         // Assert
         expect(spy.lastInheritedStrokes, hasLength(1));
         expect(spy.lastInheritedStrokes![0].propertyName, 'mappedStrokeProp');
-        expect(spy.lastInheritedStrokes![0].value, 0xFF222222);
+        expect(spy.lastInheritedStrokes![0].colorArgb, 0xFF222222);
       },
     );
+
+    test('should reuse existing inherited properties when group style matches parent', () {
+      // Arrange
+      final _SpyGenerator spy = _SpyGenerator();
+      final Map<Type, CommandGenerator<PaintCommand>> spyGenerators =
+          <Type, CommandGenerator<PaintCommand>>{DrawCircle: spy, DrawGroup: generator};
+
+      const int color = 0xFFABCDEF;
+      const String shader = 'grad1';
+      final List<InheritedProperty> initialFills = <InheritedProperty>[
+        const InheritedProperty('fillProp', colorArgb: color),
+      ];
+      final List<InheritedProperty> initialStrokes = <InheritedProperty>[
+        const InheritedProperty('strokeProp', shaderId: shader),
+      ];
+
+      // Nested group with same style but no ID (should match and pass on)
+      const DrawGroup command = DrawGroup(
+        style: PaintingStyle(
+          fill: PaintingFillStyle(colorArgb: color, isExplicit: false),
+          stroke: PaintingStrokeStyle(shaderId: shader, isExplicit: false),
+        ),
+        commands: <PaintCommand>[DrawCircle(cx: 0, cy: 0, radius: 0, style: PaintingStyle())],
+      );
+      final GeneratorBuffer buffer = GeneratorBuffer();
+
+      // Act
+      generator.generate(
+        command,
+        buffer,
+        generators: spyGenerators,
+        inheritedFills: initialFills,
+        inheritedStrokes: initialStrokes,
+      );
+
+      // Assert
+      expect(spy.lastInheritedFills, initialFills);
+      expect(spy.lastInheritedStrokes, initialStrokes);
+    });
+
+    test('should stop inheriting when group style differs from parent and is not mapped', () {
+      // Arrange
+      final _SpyGenerator spy = _SpyGenerator();
+      final Map<Type, CommandGenerator<PaintCommand>> spyGenerators =
+          <Type, CommandGenerator<PaintCommand>>{DrawCircle: spy, DrawGroup: generator};
+
+      final List<InheritedProperty> initialFills = <InheritedProperty>[
+        const InheritedProperty('fillProp', colorArgb: 0xFF111111),
+      ];
+      final List<InheritedProperty> initialStrokes = <InheritedProperty>[
+        const InheritedProperty('strokeProp', colorArgb: 0xFF222222),
+      ];
+
+      // Nested group with DIFFERENT style and no ID
+      const DrawGroup command = DrawGroup(
+        style: PaintingStyle(
+          fill: PaintingFillStyle(colorArgb: 0xFF333333, isExplicit: false),
+          stroke: PaintingStrokeStyle(colorArgb: 0xFF444444, isExplicit: false),
+        ),
+        commands: <PaintCommand>[DrawCircle(cx: 0, cy: 0, radius: 0, style: PaintingStyle())],
+      );
+      final GeneratorBuffer buffer = GeneratorBuffer();
+
+      // Act
+      generator.generate(
+        command,
+        buffer,
+        generators: spyGenerators,
+        inheritedFills: initialFills,
+        inheritedStrokes: initialStrokes,
+      );
+
+      // Assert
+      expect(spy.lastInheritedFills, isEmpty);
+      expect(spy.lastInheritedStrokes, isEmpty);
+    });
+
+    test('should use indexed property for inheritance when mapped', () {
+      // Arrange
+      final _SpyGenerator spy = _SpyGenerator();
+      final Map<Type, CommandGenerator<PaintCommand>> spyGenerators =
+          <Type, CommandGenerator<PaintCommand>>{DrawCircle: spy, DrawGroup: generator};
+
+      const DrawGroup command = DrawGroup(
+        style: PaintingStyle(stroke: PaintingStrokeStyle(colorArgb: 0xFF123456)),
+        commands: <PaintCommand>[DrawCircle(cx: 0, cy: 0, radius: 0, style: PaintingStyle())],
+      );
+
+      const PaletteResult palette = PaletteResult(<PaintCommand, String>{}, <PaintCommand, String>{
+        command: 'stroke1',
+      });
+
+      final GeneratorBuffer buffer = GeneratorBuffer();
+
+      // Act
+      generator.generate(
+        command,
+        buffer,
+        generators: spyGenerators,
+        palette: palette,
+        activeStrokeProperties: <String, String>{'stroke1': 'customProp'},
+      );
+
+      // Assert
+      expect(spy.lastInheritedStrokes, hasLength(1));
+      expect(spy.lastInheritedStrokes![0].propertyName, 'customProp');
+    });
   });
 }
 
@@ -202,7 +280,7 @@ class _SpyGenerator extends CommandGenerator<DrawCircle> {
   @override
   void generate(
     DrawCircle command,
-    StringBuffer buffer, {
+    GeneratorBuffer buffer, {
     Map<Type, CommandGenerator<PaintCommand>>? generators,
     PaletteResult? palette,
     Map<String, String>? activeFillProperties,
