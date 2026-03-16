@@ -19,7 +19,7 @@ class PathGenerator extends ShapeGenerator<DrawPath> {
     List<InheritedProperty>? inheritedFills,
     List<InheritedProperty>? inheritedStrokes,
   }) {
-    wrapWithTransform(buffer, command.style.transformAttributes, () {
+    wrapWithStyle(buffer, command.style, () {
       buffer.writeBlock('{', () {
         buffer.writeln('final Path path = Path()');
         buffer.indent();

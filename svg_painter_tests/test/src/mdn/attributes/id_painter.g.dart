@@ -59,7 +59,6 @@ class _$IdPainter extends CustomPainter {
       destRect.width / sourceSize.width,
       destRect.height / sourceSize.height,
     );
-    canvas.clipRect(Rect.fromLTWH(0, 0, 120.0, 120.0));
 
     {
       final Paint paint = Paint();

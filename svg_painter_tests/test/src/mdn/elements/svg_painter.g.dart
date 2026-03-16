@@ -59,7 +59,6 @@ class _$Svg1Painter extends CustomPainter {
       destRect.width / sourceSize.width,
       destRect.height / sourceSize.height,
     );
-    canvas.clipRect(Rect.fromLTWH(0, 0, 300.0, 100.0));
 
     {
       final Paint paint = Paint();
@@ -89,6 +88,7 @@ class _$Svg1Painter extends CustomPainter {
     }
     canvas.save();
     canvas.translate(200.0, 0.0);
+    canvas.save();
     canvas.scale(10.0, 10.0);
     {
       final Paint paint = Paint();
@@ -103,6 +103,7 @@ class _$Svg1Painter extends CustomPainter {
       paint.strokeWidth = 1.0;
       canvas.drawCircle(const Offset(5.0, 5.0), 4.0, paint);
     }
+    canvas.restore();
     canvas.restore();
     canvas.restore();
   }
@@ -184,7 +185,6 @@ class _$Svg2Painter extends CustomPainter {
       destRect.width / sourceSize.width,
       destRect.height / sourceSize.height,
     );
-    canvas.clipRect(Rect.fromLTWH(0, 0, 60.0, 60.0));
 
     canvas.save();
     canvas.scale(0.09, 0.09);

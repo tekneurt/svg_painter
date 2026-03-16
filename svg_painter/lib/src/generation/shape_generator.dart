@@ -256,63 +256,66 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
     }
   }
 
-  /// Helper to wrap a block of code with a transform if present.
-  void wrapWithTransform(
+  /// Helper to wrap a block of code with styling features like transforms or clips.
+  void wrapWithStyle(
     GeneratorBuffer buffer,
-    SvgTransformAttributes? transformAttributes,
+    PaintingStyle style,
     void Function() body,
   ) {
-    if (transformAttributes == null || transformAttributes.operations.isEmpty) {
+    final SvgTransformAttributes? transformAttributes = style.transformAttributes;
+    final PaintingRect? clipRect = style.clipRect;
+
+    final bool hasTransform = transformAttributes != null && transformAttributes.operations.isNotEmpty;
+    final bool hasClip = clipRect != null;
+
+    if (!hasTransform && !hasClip) {
       body();
       return;
     }
 
     buffer.writeln('canvas.save();');
 
-    for (final SvgTransformOperation op in transformAttributes.operations) {
-      switch (op) {
-        case SvgTranslate(:final double x, :final double y):
-          buffer.writeln('canvas.translate($x, $y);');
-        case SvgRotate(:final double angle, :final double? cx, :final double? cy):
-          final double radians = angle * 0.017453292519943295;
-          if (cx != null && cy != null) {
-            buffer.writeln('canvas.translate($cx, $cy);');
-            buffer.writeln('canvas.rotate($radians);');
-            buffer.writeln('canvas.translate(${-cx}, ${-cy});');
-          } else {
-            buffer.writeln('canvas.rotate($radians);');
-          }
-        case SvgScale(:final double x, :final double y):
-          buffer.writeln('canvas.scale($x, $y);');
-        case SvgMatrix(
-          :final double a,
-          :final double b,
-          :final double c,
-          :final double d,
-          :final double e,
-          :final double f,
-        ):
-          // Matrix4.fromList takes column-major order (Flutter/OpenGL style).
-          // SVG matrix(a, b, c, d, e, f) corresponds to:
-          // | a c e |
-          // | b d f |
-          // | 0 0 1 |
-          //
-          // Flutter Matrix4 is 4x4 column-major:
-          // | 0 4 8  12 |   | a c 0 e |
-          // | 1 5 9  13 | = | b d 0 f |
-          // | 2 6 10 14 |   | 0 0 1 0 |
-          // | 3 7 11 15 |   | 0 0 0 1 |
-          buffer.writeln(
-            'canvas.transform(Matrix4.fromList(<double>[$a, $b, 0, 0, $c, $d, 0, 0, 0, 0, 1, 0, $e, $f, 0, 1]).storage);',
-          );
-        case SvgSkewX(:final double angle):
-          final double tan = angle == 0.0 ? 0.0 : math.tan(angle * (math.pi / 180.0));
-          buffer.writeln('canvas.skew($tan, 0.0);');
-        case SvgSkewY(:final double angle):
-          final double tan = angle == 0.0 ? 0.0 : math.tan(angle * (math.pi / 180.0));
-          buffer.writeln('canvas.skew(0.0, $tan);');
+    if (hasTransform) {
+      for (final SvgTransformOperation op in transformAttributes.operations) {
+        switch (op) {
+          case SvgTranslate(:final double x, :final double y):
+            buffer.writeln('canvas.translate($x, $y);');
+          case SvgRotate(:final double angle, :final double? cx, :final double? cy):
+            final double radians = angle * 0.017453292519943295;
+            if (cx != null && cy != null) {
+              buffer.writeln('canvas.translate($cx, $cy);');
+              buffer.writeln('canvas.rotate($radians);');
+              buffer.writeln('canvas.translate(${-cx}, ${-cy});');
+            } else {
+              buffer.writeln('canvas.rotate($radians);');
+            }
+          case SvgScale(:final double x, :final double y):
+            buffer.writeln('canvas.scale($x, $y);');
+          case SvgMatrix(
+            :final double a,
+            :final double b,
+            :final double c,
+            :final double d,
+            :final double e,
+            :final double f,
+          ):
+            buffer.writeln(
+              'canvas.transform(Matrix4.fromList(<double>[$a, $b, 0, 0, $c, $d, 0, 0, 0, 0, 1, 0, $e, $f, 0, 1]).storage);',
+            );
+          case SvgSkewX(:final double angle):
+            final double tan = angle == 0.0 ? 0.0 : math.tan(angle * (math.pi / 180.0));
+            buffer.writeln('canvas.skew($tan, 0.0);');
+          case SvgSkewY(:final double angle):
+            final double tan = angle == 0.0 ? 0.0 : math.tan(angle * (math.pi / 180.0));
+            buffer.writeln('canvas.skew(0.0, $tan);');
+        }
       }
+    }
+
+    if (hasClip) {
+      buffer.writeln(
+        'canvas.clipRect(Rect.fromLTWH(${clipRect.left}, ${clipRect.top}, ${clipRect.width}, ${clipRect.height}));',
+      );
     }
 
     body();

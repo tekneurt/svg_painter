@@ -9,6 +9,7 @@ export 'id.dart';
 export 'opacity.dart';
 export 'path_length.dart';
 export 'points.dart';
+export 'preserve_aspect_ratio.dart';
 export 'r.dart';
 export 'rx.dart';
 export 'ry.dart';

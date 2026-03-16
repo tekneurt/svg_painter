@@ -3,12 +3,13 @@ part of '../../svg_element.dart';
 /// Represents an `<svg>` element (generic container).
 ///
 /// See: https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Element/svg
-base class SvgSvg extends SvgContainerElement {
+base class SvgSvg extends SvgContainerElement with SvgViewBoxed {
   const SvgSvg({
     required super.children,
     this.width,
     this.height,
     this.viewBox,
+    this.preserveAspectRatio,
     this.x,
     this.y,
     this.styleSheet = const SvgStyleSheet.empty(),
@@ -34,8 +35,11 @@ base class SvgSvg extends SvgContainerElement {
   /// The height of the SVG.
   final SvgLengthPercentageAuto? height;
 
-  /// The viewBox of the SVG.
+  @override
   final SvgViewBox? viewBox;
+
+  @override
+  final SvgPreserveAspectRatio? preserveAspectRatio;
 
   /// The CSS rules defined for this SVG (or empty for non-root SVGs).
   final SvgStyleSheet styleSheet;
@@ -54,6 +58,7 @@ final class SvgRoot extends SvgSvg {
     super.width,
     super.height,
     super.viewBox,
+    super.preserveAspectRatio,
     super.id,
     super.fillAttributes,
     super.strokeAttributes,

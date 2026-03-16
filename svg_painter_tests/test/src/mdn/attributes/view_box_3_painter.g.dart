@@ -59,7 +59,6 @@ class _$ViewBox3Painter extends CustomPainter {
       destRect.width / sourceSize.width,
       destRect.height / sourceSize.height,
     );
-    canvas.clipRect(Rect.fromLTWH(0, 0, 10.0, 10.0));
 
     canvas.save();
     canvas.translate(5.0, 5.0);

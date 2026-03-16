@@ -16,6 +16,7 @@ part 'elements/base/svg_ignored_element.dart';
 part 'elements/base/svg_metadata_element.dart';
 part 'elements/base/svg_parent.dart';
 part 'elements/base/svg_stroke_attributable.dart';
+part 'elements/base/svg_view_boxed.dart';
 
 // Containers
 part 'elements/containers/svg_container_element.dart';

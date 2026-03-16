@@ -59,7 +59,6 @@ class _$Y2ExamplesPainter extends CustomPainter {
       destRect.width / sourceSize.width,
       destRect.height / sourceSize.height,
     );
-    canvas.clipRect(Rect.fromLTWH(0, 0, 25.0, 25.0));
 
     {
       final Paint paint = Paint();

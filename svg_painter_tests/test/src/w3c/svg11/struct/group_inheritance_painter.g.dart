@@ -73,7 +73,6 @@ class _$GroupInheritancePainter extends CustomPainter {
       destRect.width / sourceSize.width,
       destRect.height / sourceSize.height,
     );
-    canvas.clipRect(Rect.fromLTWH(0, 0, 188.9763779527559, 188.9763779527559));
 
     {
       final Paint paint = Paint();

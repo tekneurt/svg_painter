@@ -69,6 +69,7 @@ extension ToSvgValue on XmlElement {
         .fontStyle => attributeValue.toSvgFontStyle(),
         .fontFamily => attributeValue.toSvgFontFamily(),
         .viewBox ||
+        .preserveAspectRatio ||
         .id ||
         .d ||
         .className ||

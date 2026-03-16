@@ -59,7 +59,6 @@ class _$Fy1Painter extends CustomPainter {
       destRect.width / sourceSize.width,
       destRect.height / sourceSize.height,
     );
-    canvas.clipRect(Rect.fromLTWH(0, 0, 480.0, 200.0));
 
     final Gradient _grad_gradient1 = RadialGradient(
       center: Alignment(0.0, 0.0),
@@ -173,7 +172,6 @@ class _$Fy2Painter extends CustomPainter {
       destRect.width / sourceSize.width,
       destRect.height / sourceSize.height,
     );
-    canvas.clipRect(Rect.fromLTWH(0, 0, 200.0, 200.0));
 
     canvas.save();
     canvas.scale(1.6666666666666667, 1.6666666666666667);

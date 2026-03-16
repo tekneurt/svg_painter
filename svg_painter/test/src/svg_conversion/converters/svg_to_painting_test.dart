@@ -259,14 +259,21 @@ void main() {
         final Result<List<PaintCommand>> result = root.toPaintCommands();
         final List<PaintCommand> commands = (result as Success<List<PaintCommand>>).value;
         final DrawGroup rootGroup = commands.single as DrawGroup;
-        final DrawGroup nestedGroup = rootGroup.commands.whereType<DrawGroup>().single;
+        
+        // The nested SVG is now represented by an outer viewport group and an inner viewBox group.
+        final DrawGroup nestedViewportGroup = rootGroup.commands.whereType<DrawGroup>().single;
+        final DrawGroup nestedViewBoxGroup = nestedViewportGroup.commands.whereType<DrawGroup>().single;
 
-        final List<SvgTransformOperation> ops = nestedGroup.style.transformAttributes!.operations;
-        // For <svg>, order is [...transformAttributes, Translate(x,y), Scale(sx,sy), Translate(-vbMinX, -vbMinY)]
-        expect(ops.length, 3);
-        expect(ops[0], isA<SvgRotate>());
-        expect(ops[1], isA<SvgTranslate>());
-        expect(ops[2], isA<SvgScale>());
+        final List<SvgTransformOperation> viewportOps = nestedViewportGroup.style.transformAttributes!.operations;
+        // For outer <svg> viewport, order is [...transformAttributes, Translate(x,y)]
+        expect(viewportOps.length, 2);
+        expect(viewportOps[0], isA<SvgRotate>());
+        expect(viewportOps[1], isA<SvgTranslate>());
+
+        final List<SvgTransformOperation> viewBoxOps = nestedViewBoxGroup.style.transformAttributes!.operations;
+        // For inner <svg> viewBox, order is [Scale(sx,sy)] (since minX/Y and align are 0 in this test)
+        expect(viewBoxOps.length, 1);
+        expect(viewBoxOps[0], isA<SvgScale>());
       });
     });
 

@@ -8,6 +8,7 @@ export 'to_svg_length_percentage_auto.dart';
 export 'to_svg_length_unit.dart';
 export 'to_svg_number.dart';
 export 'to_svg_point_list.dart';
+export 'to_svg_preserve_aspect_ratio.dart';
 export 'to_svg_stroke_linecap.dart';
 export 'to_svg_stroke_linejoin.dart';
 export 'to_svg_url.dart';

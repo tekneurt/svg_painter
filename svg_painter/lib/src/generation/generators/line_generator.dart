@@ -19,7 +19,7 @@ class LineGenerator extends ShapeGenerator<DrawLine> {
     List<InheritedProperty>? inheritedFills,
     List<InheritedProperty>? inheritedStrokes,
   }) {
-    wrapWithTransform(buffer, command.style.transformAttributes, () {
+    wrapWithStyle(buffer, command.style, () {
       final String bounds =
           'Rect.fromPoints(const Offset(${command.x1}, ${command.y1}), const Offset(${command.x2}, ${command.y2}))';
       generatePaintingCode(

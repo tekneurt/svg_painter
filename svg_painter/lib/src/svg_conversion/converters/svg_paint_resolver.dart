@@ -18,6 +18,7 @@ PaintingStyle resolvePaint(
   String? cssClass,
   String? inlineStyle,
   SvgTransformAttributes? transformAttributes,
+  PaintingRect? clipRect,
 }) {
   // 1. Resolve CSS properties
   final Map<String, String> resolvedRules = <String, String>{};
@@ -357,6 +358,7 @@ PaintingStyle resolvePaint(
     text: textStyle,
     groupOpacity: elementOpacity,
     transformAttributes: transformAttributes,
+    clipRect: clipRect,
   );
 }
 

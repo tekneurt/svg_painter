@@ -46,6 +46,8 @@ extension ToSvgRoot on XmlElement {
       XmlAttributeName.y,
     );
     final SvgViewBox? viewBox = toXmlAttributeValue(XmlAttributeName.viewBox)?.toSvgViewBox();
+    final SvgPreserveAspectRatio? preserveAspectRatio =
+        toXmlAttributeValue(XmlAttributeName.preserveAspectRatio)?.toSvgPreserveAspectRatio();
 
     final CommonAttributes common = toCommonAttributes(elementName);
 
@@ -58,6 +60,7 @@ extension ToSvgRoot on XmlElement {
         width: width,
         height: height,
         viewBox: viewBox,
+        preserveAspectRatio: preserveAspectRatio,
         fillAttributes: common.fillAttributes,
         strokeAttributes: common.strokeAttributes,
         fontAttributes: common.fontAttributes,

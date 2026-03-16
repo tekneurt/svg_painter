@@ -21,7 +21,7 @@ class TestShapeGenerator extends ShapeGenerator<DrawCircle> {
     List<InheritedProperty>? inheritedFills,
     List<InheritedProperty>? inheritedStrokes,
   }) {
-    wrapWithTransform(buffer, command.style.transformAttributes, () {
+    wrapWithStyle(buffer, command.style, () {
       generatePaintingCode(
         buffer,
         command,
@@ -383,7 +383,7 @@ void main() {
       });
     });
 
-    group('wrapWithTransform', () {
+    group('wrapWithStyle', () {
       test('should do nothing if transform is null', () {
         // Arrange
         const DrawCircle command = DrawCircle(cx: 0, cy: 0, radius: 5, style: PaintingStyle());

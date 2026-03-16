@@ -137,6 +137,7 @@ void main() {
     test('toSvgValueOrNull should return null for complex/special attributes', () {
       final List<XmlAttributeName> complexAttributes = <XmlAttributeName>[
         XmlAttributeName.viewBox,
+        XmlAttributeName.preserveAspectRatio,
         XmlAttributeName.id,
         XmlAttributeName.d,
         XmlAttributeName.className,

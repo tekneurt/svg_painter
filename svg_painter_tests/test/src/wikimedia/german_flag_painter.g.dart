@@ -78,7 +78,6 @@ class _$GermanFlagPainter extends CustomPainter {
       destRect.width / sourceSize.width,
       destRect.height / sourceSize.height,
     );
-    canvas.clipRect(Rect.fromLTWH(0, 0, 1000.0, 600.0));
 
     canvas.save();
     canvas.scale(200.0, 200.0);

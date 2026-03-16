@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import '../../base/_base.dart';
 import '../../painting_model/paint_command.dart';
 import '../../painting_model/styles/painting_style.dart';
@@ -173,24 +175,81 @@ extension _SvgSvgToPaintCommands on SvgSvg {
     final double vbMinX = viewBox?.minX ?? 0.0;
     final double vbMinY = viewBox?.minY ?? 0.0;
 
-    final double sx = wVal / vbW;
-    final double sy = hVal / vbH;
+    final SvgPreserveAspectRatio par = preserveAspectRatio ?? SvgPreserveAspectRatio.defaults;
 
-    // The viewBox mapping is: translate(x, y) * scale(sx, sy) * translate(-vbMinX, -vbMinY).
-    final List<SvgTransformOperation> ops = <SvgTransformOperation>[];
-    if (xVal != 0 || yVal != 0) {
-      ops.add(SvgTranslate(xVal, yVal));
-    }
-    if (sx != 1.0 || sy != 1.0) {
-      ops.add(SvgScale(sx, sy));
-    }
-    if (vbMinX != 0 || vbMinY != 0) {
-      ops.add(SvgTranslate(-vbMinX, -vbMinY));
+    double sx = wVal / vbW;
+    double sy = hVal / vbH;
+
+    double alignX = 0.0;
+    double alignY = 0.0;
+
+    if (par.alignment != SvgPreserveAspectRatioAlignment.none) {
+      if (par.scale == SvgPreserveAspectRatioScale.slice) {
+        sx = math.max(sx, sy);
+        sy = sx;
+      } else {
+        sx = math.min(sx, sy);
+        sy = sx;
+      }
+
+      final double viewBoxScaledWidth = vbW * sx;
+      final double viewBoxScaledHeight = vbH * sy;
+
+      switch (par.alignment) {
+        case SvgPreserveAspectRatioAlignment.xMinYMin:
+        case SvgPreserveAspectRatioAlignment.xMinYMid:
+        case SvgPreserveAspectRatioAlignment.xMinYMax:
+          alignX = 0.0;
+        case SvgPreserveAspectRatioAlignment.xMidYMin:
+        case SvgPreserveAspectRatioAlignment.xMidYMid:
+        case SvgPreserveAspectRatioAlignment.xMidYMax:
+          alignX = (wVal - viewBoxScaledWidth) / 2.0;
+        case SvgPreserveAspectRatioAlignment.xMaxYMin:
+        case SvgPreserveAspectRatioAlignment.xMaxYMid:
+        case SvgPreserveAspectRatioAlignment.xMaxYMax:
+          alignX = wVal - viewBoxScaledWidth;
+        case SvgPreserveAspectRatioAlignment.none:
+          break; // Handled above
+      }
+
+      switch (par.alignment) {
+        case SvgPreserveAspectRatioAlignment.xMinYMin:
+        case SvgPreserveAspectRatioAlignment.xMidYMin:
+        case SvgPreserveAspectRatioAlignment.xMaxYMin:
+          alignY = 0.0;
+        case SvgPreserveAspectRatioAlignment.xMinYMid:
+        case SvgPreserveAspectRatioAlignment.xMidYMid:
+        case SvgPreserveAspectRatioAlignment.xMaxYMid:
+          alignY = (hVal - viewBoxScaledHeight) / 2.0;
+        case SvgPreserveAspectRatioAlignment.xMinYMax:
+        case SvgPreserveAspectRatioAlignment.xMidYMax:
+        case SvgPreserveAspectRatioAlignment.xMaxYMax:
+          alignY = hVal - viewBoxScaledHeight;
+        case SvgPreserveAspectRatioAlignment.none:
+          break;
+      }
     }
 
+    // 1. Viewport mapping (Outer)
+    final List<SvgTransformOperation> viewportOps = <SvgTransformOperation>[];
     final SvgTransformAttributes? ta = transformAttributes;
     if (ta != null) {
-      ops.insertAll(0, ta.operations);
+      viewportOps.insertAll(0, ta.operations);
+    }
+    if (xVal != 0 || yVal != 0) {
+      viewportOps.add(SvgTranslate(xVal, yVal));
+    }
+
+    // 2. ViewBox mapping (Inner)
+    final List<SvgTransformOperation> viewBoxOps = <SvgTransformOperation>[];
+    if (alignX != 0 || alignY != 0) {
+      viewBoxOps.add(SvgTranslate(alignX, alignY));
+    }
+    if (sx != 1.0 || sy != 1.0) {
+      viewBoxOps.add(SvgScale(sx, sy));
+    }
+    if (vbMinX != 0 || vbMinY != 0) {
+      viewBoxOps.add(SvgTranslate(-vbMinX, -vbMinY));
     }
 
     final SvgPaintingContext innerContext = context.derive(
@@ -200,7 +259,12 @@ extension _SvgSvgToPaintCommands on SvgSvg {
       viewBoxMinY: vbMinY,
     );
 
-    final PaintingStyle style = resolvePaint(
+    // Inner <svg> elements explicitly clip to their viewport width/height (unless overflow=visible, but SVG 1.1 defaults to hidden).
+    // The root <svg> also must clip to its width/height to prevent 'slice' content from bleeding outside the designated viewport.
+    final bool hasSliceOrNone = par.scale == SvgPreserveAspectRatioScale.slice || par.alignment == SvgPreserveAspectRatioAlignment.none;
+    final PaintingRect? clipRect = hasSliceOrNone ? PaintingRect(0, 0, wVal, hVal) : null;
+
+    final PaintingStyle viewportStyle = resolvePaint(
       context,
       id: id,
       tagName: 'svg',
@@ -210,13 +274,22 @@ extension _SvgSvgToPaintCommands on SvgSvg {
       opacity: opacity,
       cssClass: cssClass,
       inlineStyle: inlineStyle,
-      transformAttributes: ops.isEmpty ? null : SvgTransformAttributes(ops),
+      transformAttributes: viewportOps.isEmpty ? null : SvgTransformAttributes(viewportOps),
+      clipRect: clipRect,
     );
 
     return children.map((SvgElement child) => child.toPaintCommands(innerContext)).combine().map((
       List<PaintCommand> childCommands,
     ) {
-      return <PaintCommand>[DrawGroup(commands: childCommands, style: style, id: id)];
+      if (viewBoxOps.isEmpty) {
+        return <PaintCommand>[DrawGroup(commands: childCommands, style: viewportStyle, id: id)];
+      } else {
+        final PaintingStyle viewBoxStyle = PaintingStyle(
+          transformAttributes: SvgTransformAttributes(viewBoxOps),
+        );
+        final DrawGroup innerGroup = DrawGroup(commands: childCommands, style: viewBoxStyle);
+        return <PaintCommand>[DrawGroup(commands: <PaintCommand>[innerGroup], style: viewportStyle, id: id)];
+      }
     });
   }
 }

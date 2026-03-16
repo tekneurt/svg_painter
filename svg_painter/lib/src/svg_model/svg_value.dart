@@ -5,6 +5,7 @@ part 'values/svg_length.dart';
 part 'values/svg_number.dart';
 part 'values/svg_percentage.dart';
 part 'values/svg_view_box.dart';
+part 'values/svg_preserve_aspect_ratio.dart';
 part 'values/svg_color.dart';
 part 'values/svg_font_family.dart';
 part 'values/svg_font_style.dart';

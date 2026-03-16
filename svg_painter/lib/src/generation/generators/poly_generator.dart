@@ -30,7 +30,7 @@ class PolyGenerator<T extends DrawCommand> extends ShapeGenerator<T> {
       return;
     }
 
-    wrapWithTransform(buffer, command.style.transformAttributes, () {
+    wrapWithStyle(buffer, command.style, () {
       if (points.isEmpty) {
         return;
       }

@@ -87,6 +87,7 @@ extension ToDefaultValue on XmlAttributeName {
           (_) => throw UnsupportedError('Invalid combination $this x $elementName '),
         };
       case .viewBox:
+      case .preserveAspectRatio:
       case .id:
       case .d:
       case .className:

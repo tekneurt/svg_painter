@@ -83,7 +83,6 @@ class _$FrenchFlagPainter extends CustomPainter {
       destRect.width / sourceSize.width,
       destRect.height / sourceSize.height,
     );
-    canvas.clipRect(Rect.fromLTWH(0, 0, 900.0, 600.0));
 
     canvas.save();
     canvas.scale(300.0, 300.0);

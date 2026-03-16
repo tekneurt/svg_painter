@@ -315,7 +315,6 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
         buffer.writeln(
           'canvas.scale(destRect.width / sourceSize.width, destRect.height / sourceSize.height);',
         );
-        buffer.writeln('canvas.clipRect(Rect.fromLTWH(0, 0, $viewBoxWidth, $viewBoxHeight));');
         buffer.writeln();
 
         // 1st pass: Gradient definitions (DefineCommand)

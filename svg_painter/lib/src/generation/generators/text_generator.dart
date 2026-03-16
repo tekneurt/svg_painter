@@ -19,7 +19,7 @@ class TextGenerator extends ShapeGenerator<DrawText> {
     List<InheritedProperty>? inheritedFills,
     List<InheritedProperty>? inheritedStrokes,
   }) {
-    wrapWithTransform(buffer, command.style.transformAttributes, () {
+    wrapWithStyle(buffer, command.style, () {
       final String bounds = 'Rect.fromLTWH(${command.x}, ${command.y}, 100, 100)'; // Approximation
       generatePaintingCode(
         buffer,

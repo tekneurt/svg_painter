@@ -59,7 +59,6 @@ class _$OpacityPainter extends CustomPainter {
       destRect.width / sourceSize.width,
       destRect.height / sourceSize.height,
     );
-    canvas.clipRect(Rect.fromLTWH(0, 0, 200.0, 100.0));
 
     final Gradient _grad_gradient = LinearGradient(
       begin: Alignment(-1.0, -1.0),

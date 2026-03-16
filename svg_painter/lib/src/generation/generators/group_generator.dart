@@ -23,7 +23,7 @@ class GroupGenerator extends ShapeGenerator<DrawGroup> {
     if (generators == null) {
       return;
     }
-    wrapWithTransform(buffer, command.style.transformAttributes, () {
+    wrapWithStyle(buffer, command.style, () {
       final bool useLayer = command.opacity < 1.0;
       if (useLayer) {
         final String hexOpacity =

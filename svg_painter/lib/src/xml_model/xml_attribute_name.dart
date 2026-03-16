@@ -168,7 +168,11 @@ enum XmlAttributeName {
 
   /// The viewBox of the element.
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/viewBox
-  viewBox('viewBox');
+  viewBox('viewBox'),
+
+  /// The preserveAspectRatio of the element.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/preserveAspectRatio
+  preserveAspectRatio('preserveAspectRatio');
 
   const XmlAttributeName(this.name);
 

@@ -15,6 +15,11 @@ import 'attributes/path_length_painter.dart';
 import 'attributes/points_example_painter.dart';
 import 'attributes/points_polygon_painter.dart';
 import 'attributes/points_polyline_painter.dart';
+import 'attributes/preserve_aspect_ratio_1_painter.dart';
+import 'attributes/preserve_aspect_ratio_2_painter.dart';
+import 'attributes/preserve_aspect_ratio_3_painter.dart';
+import 'attributes/preserve_aspect_ratio_4_painter.dart';
+import 'attributes/preserve_aspect_ratio_5_painter.dart';
 import 'attributes/r_painter.dart';
 import 'attributes/rx_painter.dart';
 import 'attributes/ry_painter.dart';
@@ -71,6 +76,11 @@ final List<({CustomPainter painter, String name, Map<GoldenTestType, Set<TargetP
   (painter: const PointsExamplePainter(), name: 'points_example_painter', tests: defaultGoldenTests),
   (painter: const PointsPolygonPainter(), name: 'points_polygon_painter', tests: defaultGoldenTests),
   (painter: const PointsPolylinePainter(), name: 'points_polyline_painter', tests: defaultGoldenTests),
+  (painter: const PreserveAspectRatio1Painter(), name: 'preserve_aspect_ratio_1_painter', tests: defaultGoldenTests),
+  (painter: const PreserveAspectRatio2Painter(), name: 'preserve_aspect_ratio_2_painter', tests: defaultGoldenTests),
+  (painter: const PreserveAspectRatio3Painter(), name: 'preserve_aspect_ratio_3_painter', tests: defaultGoldenTests),
+  (painter: const PreserveAspectRatio4Painter(), name: 'preserve_aspect_ratio_4_painter', tests: defaultGoldenTests),
+  (painter: const PreserveAspectRatio5Painter(), name: 'preserve_aspect_ratio_5_painter', tests: defaultGoldenTests),
   // r_painter: 1px circle anti-aliasing diff on fixed test (macOS)
   (painter: const RPainter(), name: 'r_painter', tests: <GoldenTestType, Set<TargetPlatform>?>{
     GoldenTestType.fixed: <TargetPlatform>{TargetPlatform.macOS},

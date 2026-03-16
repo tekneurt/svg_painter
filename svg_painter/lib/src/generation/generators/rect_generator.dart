@@ -19,7 +19,7 @@ class RectGenerator extends ShapeGenerator<DrawRect> {
     List<InheritedProperty>? inheritedFills,
     List<InheritedProperty>? inheritedStrokes,
   }) {
-    wrapWithTransform(buffer, command.style.transformAttributes, () {
+    wrapWithStyle(buffer, command.style, () {
       final String bounds =
           'Rect.fromLTWH(${command.x}, ${command.y}, ${command.width}, ${command.height})';
       generatePaintingCode(

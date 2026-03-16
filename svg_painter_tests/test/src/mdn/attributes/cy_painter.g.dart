@@ -59,7 +59,6 @@ class _$CyPainter extends CustomPainter {
       destRect.width / sourceSize.width,
       destRect.height / sourceSize.height,
     );
-    canvas.clipRect(Rect.fromLTWH(0, 0, 100.0, 300.0));
 
     final Gradient _grad_myGradient = RadialGradient(
       center: Alignment(0.0, -0.5),
@@ -168,7 +167,6 @@ class _$CyRadialGradientPainter extends CustomPainter {
       destRect.width / sourceSize.width,
       destRect.height / sourceSize.height,
     );
-    canvas.clipRect(Rect.fromLTWH(0, 0, 34.0, 10.0));
 
     final Gradient _grad_myGradient000 = RadialGradient(
       center: Alignment(0.0, -1.0),

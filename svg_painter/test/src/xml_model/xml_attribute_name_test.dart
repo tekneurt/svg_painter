@@ -49,6 +49,7 @@ void main() {
           XmlAttributeName.fontStyle => 'font-style',
           XmlAttributeName.fontFamily => 'font-family',
           XmlAttributeName.viewBox => 'viewBox',
+          XmlAttributeName.preserveAspectRatio => 'preserveAspectRatio',
         };
         expect(value.name, expected, reason: 'Enum $value should map to "$expected"');
       }
