@@ -6,7 +6,6 @@ import '../../base/_base.dart';
 import '../../svg_model/_svg_model.dart';
 import '../../xml_model/_xml_model.dart';
 import '../_xml_conversion.dart';
-import '_xml_element_extensions.dart';
 
 extension ToSvgElement on XmlElement {
   /// Converts this [XmlElement] to an [SvgElement].
@@ -26,7 +25,9 @@ extension ToSvgElement on XmlElement {
 
       switch (elementName) {
         case .svg:
-          return toSvgRoot();
+          // Only the root element of the document should be mapped to SvgRoot.
+          // Nested <svg> elements are standard SvgSvg containers.
+          return parent is XmlDocument ? toSvgRoot() : _toSvgSvg();
         case .circle:
           return toSvgCircle();
         case .ellipse:
@@ -72,5 +73,55 @@ extension ToSvgElement on XmlElement {
         SvgIgnoredElement(id: toXmlAttributeValue(XmlAttributeName.id)),
       );
     }
+  }
+
+  Result<SvgSvg> _toSvgSvg() {
+    const XmlElementName elementName = XmlElementName.svg;
+    final Result<List<SvgElement>> childrenResult = children
+        .whereType<XmlElement>()
+        .map((XmlElement child) => child.toSvgElement())
+        .combine();
+
+    final SvgLengthPercentageAuto width = toSvgValue<SvgLengthPercentageAuto>(
+      elementName,
+      XmlAttributeName.width,
+    );
+    final SvgLengthPercentageAuto height = toSvgValue<SvgLengthPercentageAuto>(
+      elementName,
+      XmlAttributeName.height,
+    );
+    final SvgLengthPercentage? x = toSvgValueOrNull<SvgLengthPercentage>(
+      elementName,
+      XmlAttributeName.x,
+    );
+    final SvgLengthPercentage? y = toSvgValueOrNull<SvgLengthPercentage>(
+      elementName,
+      XmlAttributeName.y,
+    );
+    final SvgViewBox? viewBox = toXmlAttributeValue(XmlAttributeName.viewBox)?.toSvgViewBox();
+    final SvgPreserveAspectRatio? preserveAspectRatio =
+        toXmlAttributeValue(XmlAttributeName.preserveAspectRatio)?.toSvgPreserveAspectRatio();
+
+    final CommonAttributes common = toCommonAttributes(elementName);
+
+    return childrenResult.map(
+      (List<SvgElement> childElements) => SvgSvg(
+        children: childElements,
+        x: x,
+        y: y,
+        width: width,
+        height: height,
+        viewBox: viewBox,
+        preserveAspectRatio: preserveAspectRatio,
+        fillAttributes: common.fillAttributes,
+        strokeAttributes: common.strokeAttributes,
+        fontAttributes: common.fontAttributes,
+        opacity: common.opacity,
+        cssClass: common.cssClass,
+        inlineStyle: common.inlineStyle,
+        transformAttributes: common.transformAttributes,
+        id: common.id,
+      ),
+    );
   }
 }

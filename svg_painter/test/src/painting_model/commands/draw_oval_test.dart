@@ -20,7 +20,7 @@ void main() {
       // Assert
       expect(
         result,
-        'DrawOval(cx: 50.0, cy: 60.0, rx: 30.0, ry: 20.0, style: PaintingStyle(fill: null, stroke: null, text: null, groupOpacity: 1.0, transform: null), id: null)',
+        'DrawOval(cx: 50.0, cy: 60.0, rx: 30.0, ry: 20.0, style: PaintingStyle(fill: null, stroke: null, text: null, groupOpacity: 1.0, transform: null, clipRect: null), id: null)',
       );
     });
   });

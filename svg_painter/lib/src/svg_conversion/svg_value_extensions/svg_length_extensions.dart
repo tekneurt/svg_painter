@@ -65,6 +65,15 @@ extension SvgLengthPercentageToDouble on SvgLengthPercentage {
 
 /// Extension to convert [SvgLengthPercentageAuto] to a double.
 extension SvgAutoToDouble on SvgLengthPercentageAuto {
+  /// Converts this [SvgLengthPercentageAuto] to a double value, resolving 'auto' to [defaultValue].
+  double resolve(
+    SvgPaintingContext context,
+    SvgOrientation orientation, {
+    required double defaultValue,
+  }) {
+    return resolveOrNull(context, orientation) ?? defaultValue;
+  }
+
   /// Converts this [SvgLengthPercentageAuto] to a double value, or null if it is 'auto'.
   double? resolveOrNull(SvgPaintingContext context, SvgOrientation orientation) {
     final SvgLengthPercentageAuto self = this;

@@ -162,8 +162,16 @@ extension _SvgDefsToPaintCommands on SvgDefs {
 
 extension _SvgSvgToPaintCommands on SvgSvg {
   Result<List<PaintCommand>> _toPaintCommands(SvgPaintingContext context) {
-    final double xVal = (x ?? const SvgLength(0.0)).resolve(context, SvgOrientation.horizontal);
-    final double yVal = (y ?? const SvgLength(0.0)).resolve(context, SvgOrientation.vertical);
+    final double xVal = (x ?? const SvgLength(0.0)).resolve(
+      context,
+      SvgOrientation.horizontal,
+      defaultValue: 0.0,
+    );
+    final double yVal = (y ?? const SvgLength(0.0)).resolve(
+      context,
+      SvgOrientation.vertical,
+      defaultValue: 0.0,
+    );
 
     final double wVal =
         width?.resolveOrNull(context, SvgOrientation.horizontal) ?? context.viewBoxWidth;
@@ -259,10 +267,11 @@ extension _SvgSvgToPaintCommands on SvgSvg {
       viewBoxMinY: vbMinY,
     );
 
-    // Inner <svg> elements explicitly clip to their viewport width/height (unless overflow=visible, but SVG 1.1 defaults to hidden).
-    // The root <svg> also must clip to its width/height to prevent 'slice' content from bleeding outside the designated viewport.
-    final bool hasSliceOrNone = par.scale == SvgPreserveAspectRatioScale.slice || par.alignment == SvgPreserveAspectRatioAlignment.none;
-    final PaintingRect? clipRect = hasSliceOrNone ? PaintingRect(0, 0, wVal, hVal) : null;
+    // Nested <svg> elements establishing sub-viewports must always clip.
+    // The root <svg> only needs to clip if 'slice' scaling is used (which explicitly bleeds).
+    final bool isRoot = this is SvgRoot;
+    final bool isSliceOrNone = par.scale == SvgPreserveAspectRatioScale.slice || par.alignment == SvgPreserveAspectRatioAlignment.none;
+    final PaintingRect? clipRect = (!isRoot || isSliceOrNone) ? PaintingRect(0, 0, wVal, hVal) : null;
 
     final PaintingStyle viewportStyle = resolvePaint(
       context,

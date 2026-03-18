@@ -1,4 +1,5 @@
 /// https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/preserveAspectRatio
+library;
 
 const String _smileyStyle = '''
   <style>

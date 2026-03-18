@@ -17,7 +17,7 @@ void main() {
       // Assert
       expect(
         command.toString(),
-        'DrawGroup(cmds: 1, style: PaintingStyle(fill: null, stroke: null, text: null, groupOpacity: 1.0, transform: null), opacity: 0.5)',
+        'DrawGroup(cmds: 1, style: PaintingStyle(fill: null, stroke: null, text: null, groupOpacity: 1.0, transform: null, clipRect: null), opacity: 0.5)',
       );
     });
   });

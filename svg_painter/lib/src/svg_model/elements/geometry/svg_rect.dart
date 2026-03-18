@@ -4,7 +4,7 @@ part of '../../svg_element.dart';
 ///
 /// See: https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Element/rect
 @immutable
-final class SvgRect extends SvgBasicShape {
+final class SvgRect extends SvgBasicShape with SvgBounded {
   const SvgRect({
     required this.x,
     required this.y,
@@ -22,16 +22,16 @@ final class SvgRect extends SvgBasicShape {
     super.id,
   });
 
-  /// The x-axis coordinate of the side of the rectangle which has the smaller x-axis coordinate value.
+  @override
   final SvgLengthPercentage x;
 
-  /// The y-axis coordinate of the side of the rectangle which has the smaller y-axis coordinate value.
+  @override
   final SvgLengthPercentage y;
 
-  /// The width of the rectangle.
+  @override
   final SvgLengthPercentageAuto width;
 
-  /// The height of the rectangle.
+  @override
   final SvgLengthPercentageAuto height;
 
   /// For rounded rectangles, the x-axis radius of the ellipse used to round off the corners of the rectangle.

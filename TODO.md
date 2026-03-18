@@ -224,13 +224,13 @@
 
 - [x] **Core Refactoring**:
     - [x] `mixin SvgViewBoxed`: Holds `viewBox` and `preserveAspectRatio` (applied to: `SvgSvg`, `SvgSymbol`, `SvgMarker`).
-    - [ ] `mixin SvgBounded`: Holds `x`, `y`, `width`, `height` (applied to: `SvgRect`, `SvgSvg`, `SvgUse`, `SvgImage`).
+    - [x] `mixin SvgBounded`: Holds `x`, `y`, `width`, `height` (applied to: `SvgRect`, `SvgSvg`, `SvgUse`, `SvgImage`).
     - [ ] **Architecture Cleanup (SVG Model)**: Rename `lib/src/svg_model/attributes/` to `attribute_groups/` to clarify that these are DTOs. Audit `lib/src/svg_model/elements/base/` mixins (like `SvgGeometry` holding `pathLength`) to ensure clear boundaries between element traits (mixins) and attribute groupings.
 - [ ] **Structural Elements**: `<symbol>`, `<tspan>`, `<defs>`.
 - [ ] **Referencing & External Assets**: `<image>`, `<use>`.
 - [ ] **Clipping & Masking**: `<clipPath>`, `<mask >`.
 - [ ] **Accessibility (Semantic Mapping)**: Map `<title>` and `<desc>` automatically to Flutter's `Semantics` widget in the generated code.
-- [ ] **Essential Attributes**: `text-anchor`, `fill-rule`, `stroke-dashoffset`, `stroke-miterlimit`, `paint-order`, `vector-effect`, `dx`, `dy`, `preserveAspectRatio`.
+- [ ] **Essential Attributes**: `text-anchor`, `fill-rule`, `stroke-dashoffset`, `stroke-miterlimit`, `paint-order`, `vector-effect`, `dx`, `dy`, `preserveAspectRatio` [x].
 - [ ] **Font Management (Release Ready)**: Implement `AssetExporter` to automatically handle bundled fonts for the user.
 - [ ] **Release Preparation**:
     - [ ] **Documentation**: Write comprehensive READMEs and full API documentation.

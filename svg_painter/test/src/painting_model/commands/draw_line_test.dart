@@ -20,7 +20,7 @@ void main() {
       // Assert
       expect(
         result,
-        'DrawLine(x1: 10.0, y1: 20.0, x2: 100.0, y2: 200.0, style: PaintingStyle(fill: null, stroke: null, text: null, groupOpacity: 1.0, transform: null), id: null)',
+        'DrawLine(x1: 10.0, y1: 20.0, x2: 100.0, y2: 200.0, style: PaintingStyle(fill: null, stroke: null, text: null, groupOpacity: 1.0, transform: null, clipRect: null), id: null)',
       );
     });
   });

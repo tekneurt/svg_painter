@@ -1,0 +1,17 @@
+import 'package:svg_painter/src/base/result.dart';
+import 'package:svg_painter/src/svg_model/_svg_model.dart';
+import 'package:svg_painter/src/xml_conversion/_xml_conversion.dart';
+import 'package:test/test.dart';
+import 'package:xml/xml.dart';
+
+void main() {
+  test('nested svg should be SvgRoot? or SvgSvg?', () {
+    final XmlDocument document = XmlDocument.parse('<svg xmlns="http://www.w3.org/2000/svg"><svg id="nested" /></svg>');
+    final XmlElement rootElement = document.rootElement;
+    final Result<SvgElement> result = rootElement.toSvgElement();
+    final SvgRoot root = result.fold((Failure<SvgElement> f) => throw f, (SvgElement v) => v as SvgRoot);
+    
+    final SvgRoot nested = root.children.first as SvgRoot; // Is it SvgRoot?
+    expect(nested, isA<SvgRoot>());
+  });
+}

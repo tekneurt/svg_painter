@@ -4,7 +4,7 @@ part of '../../svg_element.dart';
 ///
 /// See: https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Element/use
 @immutable
-final class SvgUse extends SvgGraphicsElement with SvgFontAttributable {
+final class SvgUse extends SvgGraphicsElement with SvgFontAttributable, SvgBounded {
   const SvgUse({
     required this.href,
     required this.x,
@@ -24,17 +24,17 @@ final class SvgUse extends SvgGraphicsElement with SvgFontAttributable {
   /// The URI reference to the element to be cloned.
   final String href;
 
-  /// The x-axis coordinate of the element.
+  @override
   final SvgLengthPercentage x;
 
-  /// The y-axis coordinate of the element.
+  @override
   final SvgLengthPercentage y;
 
-  /// The width of the element.
+  @override
   final SvgLengthPercentageAuto width;
 
-  /// The height of the referenced element.
-  final SvgLengthPercentageAuto? height;
+  @override
+  final SvgLengthPercentageAuto height;
 
   @override
   final SvgFontAttributes? fontAttributes;

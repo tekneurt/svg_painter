@@ -3,7 +3,7 @@ part of '../../svg_element.dart';
 /// Represents an `<svg>` element (generic container).
 ///
 /// See: https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Element/svg
-base class SvgSvg extends SvgContainerElement with SvgViewBoxed {
+base class SvgSvg extends SvgContainerElement with SvgViewBoxed, SvgBounded {
   const SvgSvg({
     required super.children,
     this.width,
@@ -23,16 +23,16 @@ base class SvgSvg extends SvgContainerElement with SvgViewBoxed {
     super.transformAttributes,
   });
 
-  /// The x-axis coordinate of the SVG.
-  final SvgLengthPercentage? x;
+  @override
+  final SvgLengthPercentageAuto? x;
 
-  /// The y-axis coordinate of the SVG.
-  final SvgLengthPercentage? y;
+  @override
+  final SvgLengthPercentageAuto? y;
 
-  /// The width of the SVG.
+  @override
   final SvgLengthPercentageAuto? width;
 
-  /// The height of the SVG.
+  @override
   final SvgLengthPercentageAuto? height;
 
   @override

@@ -12,20 +12,12 @@ void main() {
     });
 
     test('should implement equality and hashCode correctly', () {
-      const SvgPreserveAspectRatio r1 = SvgPreserveAspectRatio(
-        alignment: SvgPreserveAspectRatioAlignment.xMidYMid,
-        scale: SvgPreserveAspectRatioScale.meet,
-      );
-      const SvgPreserveAspectRatio r2 = SvgPreserveAspectRatio(
-        alignment: SvgPreserveAspectRatioAlignment.xMidYMid,
-        scale: SvgPreserveAspectRatioScale.meet,
-      );
+      const SvgPreserveAspectRatio r1 = SvgPreserveAspectRatio.defaults;
+      const SvgPreserveAspectRatio r2 = SvgPreserveAspectRatio.defaults;
       const SvgPreserveAspectRatio r3 = SvgPreserveAspectRatio(
         alignment: SvgPreserveAspectRatioAlignment.none,
-        scale: SvgPreserveAspectRatioScale.meet,
       );
       const SvgPreserveAspectRatio r4 = SvgPreserveAspectRatio(
-        alignment: SvgPreserveAspectRatioAlignment.xMidYMid,
         scale: SvgPreserveAspectRatioScale.slice,
       );
 
