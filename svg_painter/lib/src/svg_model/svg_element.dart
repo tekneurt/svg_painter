@@ -1,8 +1,14 @@
 import 'package:meta/meta.dart';
 
-import 'attributes/svg_fill_attributes.dart';
-import 'attributes/svg_font_attributes.dart';
-import 'attributes/svg_stroke_attributes.dart';
+import 'attribute_groups/svg_core_attributes.dart';
+import 'attribute_groups/svg_fill_attributes.dart';
+import 'attribute_groups/svg_font_attributes.dart';
+import 'attribute_groups/svg_geometry_attributes.dart';
+import 'attribute_groups/svg_graphics_attributes.dart';
+import 'attribute_groups/svg_presentation_attributes.dart';
+import 'attribute_groups/svg_stroke_attributes.dart';
+import 'attribute_groups/svg_transform_attributes.dart';
+import 'attribute_groups/svg_viewport_attributes.dart';
 import 'svg_style_sheet.dart';
 import 'svg_value.dart';
 
@@ -10,13 +16,15 @@ import 'svg_value.dart';
 part 'elements/base/svg_definition_element.dart';
 part 'elements/base/svg_fill_attributable.dart';
 part 'elements/base/svg_font_attributable.dart';
-part 'elements/base/svg_geometry.dart';
+part 'elements/base/svg_geometry_attributable.dart';
+part 'elements/base/svg_graphics_attributable.dart';
 part 'elements/base/svg_graphics_element.dart';
 part 'elements/base/svg_ignored_element.dart';
 part 'elements/base/svg_metadata_element.dart';
 part 'elements/base/svg_parent.dart';
+part 'elements/base/svg_presentable.dart';
 part 'elements/base/svg_stroke_attributable.dart';
-part 'elements/base/svg_view_boxed.dart';
+part 'elements/base/svg_viewport_attributable.dart';
 part 'elements/base/svg_bounded.dart';
 
 // Containers
@@ -55,8 +63,11 @@ part 'elements/text/svg_text.dart';
 /// The base class for all SVG elements in the domain model.
 @immutable
 sealed class SvgElement {
-  const SvgElement({this.id});
+  const SvgElement({this.coreAttributes});
+
+  /// The global/core attributes of the element.
+  final SvgCoreAttributes? coreAttributes;
 
   /// The unique identifier of the element.
-  final String? id;
+  String? get id => coreAttributes?.id;
 }

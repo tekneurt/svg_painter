@@ -5,6 +5,7 @@ import '../../svg_model/_svg_model.dart';
 import '../../xml_model/_xml_model.dart';
 import '../_xml_conversion.dart';
 import '../parsers/svg_transform_parser.dart';
+import '_xml_element_extensions.dart';
 
 extension ToSvgRadialGradient on XmlElement {
   /// Converts this [XmlElement] to an [SvgRadialGradient].
@@ -40,8 +41,8 @@ extension ToSvgRadialGradient on XmlElement {
         .map((XmlElement child) => child.toSvgStop())
         .combine();
 
-    final String? id = toXmlAttributeValue(XmlAttributeName.id);
     final String? gradientTransform = toXmlAttributeValue(XmlAttributeName.gradientTransform);
+    final CommonAttributes common = toCommonAttributes(elementName);
 
     return stopsResult.map(
       (List<SvgStop> stops) => SvgRadialGradient(
@@ -53,7 +54,7 @@ extension ToSvgRadialGradient on XmlElement {
         fy: fy,
         fr: fr,
         gradientTransformAttributes: SvgTransformParser.parse(gradientTransform),
-        id: id,
+        coreAttributes: common.core,
       ),
     );
   }

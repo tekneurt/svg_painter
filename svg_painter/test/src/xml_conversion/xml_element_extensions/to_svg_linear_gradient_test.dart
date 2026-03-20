@@ -1,4 +1,5 @@
 import 'package:svg_painter/src/base/result.dart';
+import 'package:svg_painter/src/svg_model/attribute_groups/svg_transform_attributes.dart';
 import 'package:svg_painter/src/svg_model/svg_element.dart';
 import 'package:svg_painter/src/svg_model/svg_value.dart';
 import 'package:svg_painter/src/xml_conversion/xml_element_extensions/to_svg_linear_gradient.dart';

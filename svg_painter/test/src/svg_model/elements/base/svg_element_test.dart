@@ -1,3 +1,4 @@
+import 'package:svg_painter/src/svg_model/attribute_groups/_attribute_groups.dart';
 import 'package:svg_painter/src/svg_model/svg_element.dart';
 import 'package:svg_painter/src/svg_model/svg_value.dart';
 import 'package:test/test.dart';
@@ -10,7 +11,7 @@ void main() {
         cx: SvgLength(15.0),
         cy: SvgLength(25.0),
         r: SvgLength(10.0),
-        id: 'base-element',
+        coreAttributes: SvgCoreAttributes(id: 'base-element'),
       );
 
       // Act
@@ -21,7 +22,9 @@ void main() {
     });
 
     test('SvgIgnoredElement should return correct string representation', () {
-      const SvgIgnoredElement element = SvgIgnoredElement(id: 'ignore-me');
+      const SvgIgnoredElement element = SvgIgnoredElement(
+        coreAttributes: SvgCoreAttributes(id: 'ignore-me'),
+      );
       expect(element.toString(), 'SvgIgnoredElement(id: ignore-me)');
     });
   });

@@ -9,9 +9,10 @@ void main() {
     final XmlDocument document = XmlDocument.parse('<svg xmlns="http://www.w3.org/2000/svg"><svg id="nested" /></svg>');
     final XmlElement rootElement = document.rootElement;
     final Result<SvgElement> result = rootElement.toSvgElement();
-    final SvgRoot root = result.fold((Failure<SvgElement> f) => throw f, (SvgElement v) => v as SvgRoot);
+    final SvgRoot root = result.fold((Failure<SvgElement> f) => throw Exception(f.message), (SvgElement v) => v as SvgRoot);
     
-    final SvgRoot nested = root.children.first as SvgRoot; // Is it SvgRoot?
-    expect(nested, isA<SvgRoot>());
+    final SvgSvg nested = root.children.first as SvgSvg; // It is SvgSvg, not SvgRoot
+    expect(nested, isA<SvgSvg>());
+    expect(nested, isNot(isA<SvgRoot>()));
   });
 }

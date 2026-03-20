@@ -1,3 +1,4 @@
+import 'package:svg_painter/src/svg_model/attribute_groups/_attribute_groups.dart';
 import 'package:svg_painter/src/svg_model/svg_element.dart';
 import 'package:svg_painter/src/svg_model/svg_value.dart';
 import 'package:test/test.dart';
@@ -11,8 +12,10 @@ void main() {
         y1: SvgLength(22.0),
         x2: SvgLength(111.0),
         y2: SvgLength(222.0),
-        pathLength: SvgNonNegativeNumber(300.0),
-        id: 'l1',
+        geometryAttributes: SvgGeometryAttributes(
+          pathLength: SvgNonNegativeNumber(300.0),
+        ),
+        coreAttributes: SvgCoreAttributes(id: 'l1'),
       );
 
       // Act
@@ -21,7 +24,7 @@ void main() {
       // Assert
       expect(
         result,
-        'SvgLine(x1: 11.0, y1: 22.0, x2: 111.0, y2: 222.0, pathLength: SvgNumber(300.0), id: l1)',
+        'SvgLine(x1: 11.0, y1: 22.0, x2: 111.0, y2: 222.0, geometry: SvgGeometryAttributes(pathLength: SvgNumber(300.0)), core: SvgCoreAttributes(id: l1))',
       );
     });
 

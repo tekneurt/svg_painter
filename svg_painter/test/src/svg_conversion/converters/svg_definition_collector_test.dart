@@ -1,4 +1,5 @@
 import 'package:svg_painter/src/svg_conversion/converters/svg_definition_collector.dart';
+import 'package:svg_painter/src/svg_model/attribute_groups/_attribute_groups.dart';
 import 'package:svg_painter/src/svg_model/svg_element.dart';
 import 'package:svg_painter/src/svg_model/svg_value.dart';
 import 'package:test/test.dart';
@@ -11,7 +12,7 @@ void main() {
         cx: SvgLength(0),
         cy: SvgLength(0),
         r: SvgLength(10),
-        id: 'c1',
+        coreAttributes: SvgCoreAttributes(id: 'c1'),
       );
       const SvgRect rect = SvgRect(
         x: SvgLength(1),
@@ -20,9 +21,12 @@ void main() {
         height: SvgLength(20),
         rx: SvgAuto(),
         ry: SvgAuto(),
-        id: 'r1',
+        coreAttributes: SvgCoreAttributes(id: 'r1'),
       );
-      const SvgSvg root = SvgSvg(children: <SvgElement>[circle, rect], id: 'root');
+      const SvgSvg root = SvgSvg(
+        children: <SvgElement>[circle, rect],
+        coreAttributes: SvgCoreAttributes(id: 'root'),
+      );
       final Map<String, SvgElement> map = <String, SvgElement>{};
 
       // Act
@@ -42,10 +46,13 @@ void main() {
         y1: SvgLength(0.2),
         x2: SvgLength(0.3),
         y2: SvgLength(0.4),
-        id: 'g1',
+        coreAttributes: SvgCoreAttributes(id: 'g1'),
         stops: <SvgStop>[],
       );
-      const SvgDefs defs = SvgDefs(children: <SvgElement>[grad], id: 'defs1');
+      const SvgDefs defs = SvgDefs(
+        children: <SvgElement>[grad],
+        coreAttributes: SvgCoreAttributes(id: 'defs1'),
+      );
       final Map<String, SvgElement> map = <String, SvgElement>{};
 
       // Act

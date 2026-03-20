@@ -1,4 +1,6 @@
-part of '../svg_value.dart';
+import 'package:meta/meta.dart';
+
+import '../svg_value.dart';
 
 /// Represents the grouped transform attributes of an SVG element.
 @immutable

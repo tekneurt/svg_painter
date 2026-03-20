@@ -12,14 +12,9 @@ final class SvgRect extends SvgBasicShape with SvgBounded {
     required this.height,
     required this.rx,
     required this.ry,
-    super.pathLength,
-    super.fillAttributes,
-    super.strokeAttributes,
-    super.opacity,
-    super.cssClass,
-    super.inlineStyle,
-    super.transformAttributes,
-    super.id,
+    super.geometryAttributes,
+    super.presentationAttributes,
+    super.coreAttributes,
   });
 
   @override
@@ -49,8 +44,9 @@ final class SvgRect extends SvgBasicShape with SvgBounded {
       'h: $height',
       'rx: $rx',
       'ry: $ry',
-      if (pathLength != null) 'pathLength: $pathLength',
-      if (id != null) 'id: $id',
+      if (geometryAttributes != null) 'geometry: $geometryAttributes',
+      if (presentationAttributes != null) 'presentation: $presentationAttributes',
+      if (coreAttributes != null) 'core: $coreAttributes',
     ];
     return 'SvgRect(${parts.join(', ')})';
   }

@@ -5,28 +5,27 @@ import '../../xml_model/_xml_model.dart';
 import '../parsers/svg_transform_parser.dart';
 import '_xml_element_extensions.dart';
 
-/// Resolved common attributes for a graphics element.
+/// Resolved common attributes for an SVG element.
 typedef CommonAttributes = ({
-  String? id,
-  SvgFillAttributes fillAttributes,
-  SvgStrokeAttributes strokeAttributes,
-  SvgFontAttributes fontAttributes,
-  SvgLengthPercentage? opacity,
-  String? cssClass,
-  String? inlineStyle,
-  SvgTransformAttributes? transformAttributes,
+  SvgCoreAttributes core,
+  SvgPresentationAttributes presentation,
 });
 
 extension ToCommonAttributes on XmlElement {
-  /// Extracts common graphics attributes from this element.
+  /// Extracts common attributes from this element.
   CommonAttributes toCommonAttributes(XmlElementName elementName) {
-    return (
+    final SvgCoreAttributes core = SvgCoreAttributes(
       id: toXmlAttributeValue(XmlAttributeName.id),
-      fillAttributes: SvgFillAttributes(
+      cssClass: toXmlAttributeValue(XmlAttributeName.className),
+      inlineStyle: toXmlAttributeValue(XmlAttributeName.style),
+    );
+
+    final SvgPresentationAttributes presentation = SvgPresentationAttributes(
+      fill: SvgFillAttributes(
         color: toSvgValueOrNull<SvgColor>(elementName, XmlAttributeName.fill),
         opacity: toSvgValueOrNull<SvgLengthPercentage>(elementName, XmlAttributeName.fillOpacity),
       ),
-      strokeAttributes: SvgStrokeAttributes(
+      stroke: SvgStrokeAttributes(
         color: toSvgValueOrNull<SvgColor>(elementName, XmlAttributeName.stroke),
         opacity: toSvgValueOrNull<SvgLengthPercentage>(elementName, XmlAttributeName.strokeOpacity),
         width: toSvgValueOrNull<SvgLengthPercentage>(elementName, XmlAttributeName.strokeWidth),
@@ -34,18 +33,20 @@ extension ToCommonAttributes on XmlElement {
         linecap: toSvgValueOrNull<SvgStrokeLinecap>(elementName, XmlAttributeName.strokeLinecap),
         linejoin: toSvgValueOrNull<SvgStrokeLinejoin>(elementName, XmlAttributeName.strokeLinejoin),
       ),
-      fontAttributes: SvgFontAttributes(
+      font: SvgFontAttributes(
         size: toSvgValueOrNull<SvgLengthPercentage>(elementName, XmlAttributeName.fontSize),
         weight: toSvgValueOrNull<SvgFontWeight>(elementName, XmlAttributeName.fontWeight),
         style: toSvgValueOrNull<SvgFontStyle>(elementName, XmlAttributeName.fontStyle),
         family: toSvgValueOrNull<SvgFontFamily>(elementName, XmlAttributeName.fontFamily),
       ),
-      opacity: toSvgValueOrNull<SvgLengthPercentage>(elementName, XmlAttributeName.opacity),
-      cssClass: toXmlAttributeValue(XmlAttributeName.className),
-      inlineStyle: toXmlAttributeValue(XmlAttributeName.style),
-      transformAttributes: SvgTransformParser.parse(
-        toXmlAttributeValue(XmlAttributeName.transform),
+      graphics: SvgGraphicsAttributes(
+        opacity: toSvgValueOrNull<SvgLengthPercentage>(elementName, XmlAttributeName.opacity),
+        transformAttributes: SvgTransformParser.parse(
+          toXmlAttributeValue(XmlAttributeName.transform),
+        ),
       ),
     );
+
+    return (core: core, presentation: presentation);
   }
 }

@@ -28,14 +28,9 @@ extension SvgPolygonToPaintCommands on SvgPolygon {
     final PaintingStyle paint = resolvePaint(
       context,
       tagName: 'polygon',
-      id: id,
-      pathLength: pathLength,
-      fillAttributes: fillAttributes,
-      strokeAttributes: strokeAttributes,
-      opacity: opacity,
-      cssClass: cssClass,
-      inlineStyle: inlineStyle,
-      transformAttributes: transformAttributes,
+      coreAttributes: coreAttributes,
+      presentationAttributes: presentationAttributes,
+      geometryAttributes: geometryAttributes,
     );
 
     return Success<List<PaintCommand>>(<PaintCommand>[

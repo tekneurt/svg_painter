@@ -1,5 +1,4 @@
-import 'package:svg_painter/src/svg_model/svg_element.dart';
-import 'package:svg_painter/src/svg_model/svg_value.dart';
+import 'package:svg_painter/src/svg_model/_svg_model.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -7,6 +6,7 @@ void main() {
     test('should return correct string representation when all fields are provided', () {
       // Arrange
       const SvgRadialGradient gradient = SvgRadialGradient(
+        coreAttributes: SvgCoreAttributes(id: 'rg1'),
         cx: SvgLength(11.0),
         cy: SvgLength(22.0),
         r: SvgLength(33.0),
@@ -17,7 +17,6 @@ void main() {
         gradientTransformAttributes: SvgTransformAttributes(<SvgTransformOperation>[
           SvgScale(2.5, 2.5),
         ]),
-        id: 'rg1',
       );
 
       // Act

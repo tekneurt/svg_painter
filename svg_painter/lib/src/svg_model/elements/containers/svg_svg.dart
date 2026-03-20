@@ -3,24 +3,17 @@ part of '../../svg_element.dart';
 /// Represents an `<svg>` element (generic container).
 ///
 /// See: https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Element/svg
-base class SvgSvg extends SvgContainerElement with SvgViewBoxed, SvgBounded {
+base class SvgSvg extends SvgContainerElement with SvgViewportAttributable, SvgBounded {
   const SvgSvg({
     required super.children,
     this.width,
     this.height,
-    this.viewBox,
-    this.preserveAspectRatio,
+    this.viewportAttributes,
     this.x,
     this.y,
     this.styleSheet = const SvgStyleSheet.empty(),
-    super.id,
-    super.fillAttributes,
-    super.strokeAttributes,
-    super.fontAttributes,
-    super.opacity,
-    super.cssClass,
-    super.inlineStyle,
-    super.transformAttributes,
+    super.presentationAttributes,
+    super.coreAttributes,
   });
 
   @override
@@ -36,10 +29,7 @@ base class SvgSvg extends SvgContainerElement with SvgViewBoxed, SvgBounded {
   final SvgLengthPercentageAuto? height;
 
   @override
-  final SvgViewBox? viewBox;
-
-  @override
-  final SvgPreserveAspectRatio? preserveAspectRatio;
+  final SvgViewportAttributes? viewportAttributes;
 
   /// The CSS rules defined for this SVG (or empty for non-root SVGs).
   final SvgStyleSheet styleSheet;
@@ -57,16 +47,9 @@ final class SvgRoot extends SvgSvg {
     super.y,
     super.width,
     super.height,
-    super.viewBox,
-    super.preserveAspectRatio,
-    super.id,
-    super.fillAttributes,
-    super.strokeAttributes,
-    super.fontAttributes,
-    super.opacity,
-    super.cssClass,
-    super.inlineStyle,
-    super.transformAttributes,
+    super.viewportAttributes,
+    super.presentationAttributes,
+    super.coreAttributes,
   });
 
   @override

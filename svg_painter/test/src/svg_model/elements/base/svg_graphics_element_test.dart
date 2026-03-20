@@ -1,4 +1,4 @@
-import 'package:svg_painter/src/svg_model/attributes/svg_fill_attributes.dart';
+import 'package:svg_painter/src/svg_model/attribute_groups/_attribute_groups.dart';
 import 'package:svg_painter/src/svg_model/svg_element.dart';
 import 'package:svg_painter/src/svg_model/svg_value.dart';
 import 'package:test/test.dart';
@@ -11,8 +11,10 @@ void main() {
         cx: SvgLength(12.3),
         cy: SvgLength(45.6),
         r: SvgLength(7.8),
-        fillAttributes: SvgFillAttributes(color: SvgNamedColor(SvgColorName.red)),
-        id: 'gfx1',
+        presentationAttributes: SvgPresentationAttributes(
+          fill: SvgFillAttributes(color: SvgNamedColor(SvgColorName.red)),
+        ),
+        coreAttributes: SvgCoreAttributes(id: 'gfx1'),
       );
 
       // Act

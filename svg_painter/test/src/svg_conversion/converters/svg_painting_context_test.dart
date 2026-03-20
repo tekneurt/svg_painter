@@ -16,8 +16,10 @@ void main() {
       // Arrange
       const SvgGroup element = SvgGroup(
         children: <SvgElement>[],
-        fillAttributes: SvgFillAttributes(color: SvgNamedColor(SvgColorName.red)),
-        opacity: SvgPercentage(50),
+        presentationAttributes: SvgPresentationAttributes(
+          fill: SvgFillAttributes(color: SvgNamedColor(SvgColorName.red)),
+          graphics: SvgGraphicsAttributes(opacity: SvgPercentage(50)),
+        ),
       );
 
       // Act

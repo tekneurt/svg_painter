@@ -35,14 +35,8 @@ extension ToSvgUse on XmlElement {
         width: width,
         height: height,
         href: href,
-        fillAttributes: common.fillAttributes,
-        strokeAttributes: common.strokeAttributes,
-        fontAttributes: common.fontAttributes,
-        opacity: common.opacity,
-        cssClass: common.cssClass,
-        inlineStyle: common.inlineStyle,
-        transformAttributes: common.transformAttributes,
-        id: common.id,
+        coreAttributes: common.core,
+        presentationAttributes: common.presentation,
       ),
     );
   }

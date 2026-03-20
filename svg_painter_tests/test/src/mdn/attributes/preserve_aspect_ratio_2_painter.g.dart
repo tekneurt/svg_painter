@@ -61,6 +61,8 @@ class _$PreserveAspectRatio2Painter extends CustomPainter {
     );
 
     canvas.save();
+    canvas.clipRect(Rect.fromLTWH(0.0, 0.0, 202.0, 57.0));
+    canvas.save();
     canvas.translate(1.0, 1.0);
     {
       final Paint paint = Paint();
@@ -221,6 +223,7 @@ class _$PreserveAspectRatio2Painter extends CustomPainter {
         canvas.drawPath(path, paint);
       }
     }
+    canvas.restore();
     canvas.restore();
     canvas.restore();
     canvas.restore();

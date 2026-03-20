@@ -6,7 +6,7 @@ part of '../../svg_element.dart';
 /// collected into the [SvgStyleSheet] of the [SvgRoot].
 @immutable
 final class SvgStyle extends SvgElement {
-  const SvgStyle({super.id});
+  const SvgStyle({super.coreAttributes});
 
   @override
   String toString() => 'SvgStyle(id: $id)';

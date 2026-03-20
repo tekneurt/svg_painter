@@ -88,6 +88,7 @@ class _$Svg1Painter extends CustomPainter {
     }
     canvas.save();
     canvas.translate(200.0, 0.0);
+    canvas.clipRect(Rect.fromLTWH(0.0, 0.0, 100.0, 100.0));
     canvas.save();
     canvas.scale(10.0, 10.0);
     {

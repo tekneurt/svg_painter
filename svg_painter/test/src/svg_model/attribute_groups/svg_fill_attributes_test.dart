@@ -1,4 +1,4 @@
-import 'package:svg_painter/src/svg_model/attributes/svg_fill_attributes.dart';
+import 'package:svg_painter/src/svg_model/attribute_groups/svg_fill_attributes.dart';
 import 'package:svg_painter/src/svg_model/svg_value.dart';
 import 'package:test/test.dart';
 

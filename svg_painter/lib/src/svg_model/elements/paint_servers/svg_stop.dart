@@ -7,7 +7,7 @@ final class SvgStop extends SvgDefinitionElement {
     required this.offset,
     required this.stopColor,
     required this.stopOpacity,
-    super.id,
+    super.coreAttributes,
   });
 
   /// The location of the color stop (length or percentage).

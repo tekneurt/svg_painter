@@ -24,14 +24,9 @@ extension SvgRectToPaintCommands on SvgRect {
     final PaintingStyle paint = resolvePaint(
       context,
       tagName: 'rect',
-      id: id,
-      pathLength: pathLength,
-      fillAttributes: fillAttributes,
-      strokeAttributes: strokeAttributes,
-      opacity: opacity,
-      cssClass: cssClass,
-      inlineStyle: inlineStyle,
-      transformAttributes: transformAttributes,
+      coreAttributes: coreAttributes,
+      presentationAttributes: presentationAttributes,
+      geometryAttributes: geometryAttributes,
     );
 
     // Use local coordinates (generator handles transforms)

@@ -1,5 +1,4 @@
-import 'package:svg_painter/src/svg_model/svg_element.dart';
-import 'package:svg_painter/src/svg_model/svg_value.dart';
+import 'package:svg_painter/src/svg_model/_svg_model.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -7,6 +6,7 @@ void main() {
     test('should return correct string representation when all fields are provided', () {
       // Arrange
       const SvgLinearGradient gradient = SvgLinearGradient(
+        coreAttributes: SvgCoreAttributes(id: 'g1'),
         x1: SvgLength(11.0),
         y1: SvgLength(22.0),
         x2: SvgLength(33.0),
@@ -15,7 +15,6 @@ void main() {
         gradientTransformAttributes: SvgTransformAttributes(<SvgTransformOperation>[
           SvgMatrix(1, 0, 0, 1, 0, 0),
         ]),
-        id: 'g1',
       );
 
       // Act

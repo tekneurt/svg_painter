@@ -59,18 +59,22 @@ extension ToSvgElement on XmlElement {
         case .text:
           return toSvgText();
         case .title:
+          final CommonAttributes common = toCommonAttributes(elementName);
           return Success<SvgTitle>(
-            SvgTitle(content: innerText.trim(), id: toXmlAttributeValue(XmlAttributeName.id)),
+            SvgTitle(content: innerText.trim(), coreAttributes: common.core),
           );
         case .desc:
+          final CommonAttributes common = toCommonAttributes(elementName);
           return Success<SvgDesc>(
-            SvgDesc(content: innerText.trim(), id: toXmlAttributeValue(XmlAttributeName.id)),
+            SvgDesc(content: innerText.trim(), coreAttributes: common.core),
           );
       }
     } else {
       // Ignore elements from foreign namespaces (e.g., Inkscape, RDF).
       return Success<SvgIgnoredElement>(
-        SvgIgnoredElement(id: toXmlAttributeValue(XmlAttributeName.id)),
+        SvgIgnoredElement(
+          coreAttributes: SvgCoreAttributes(id: toXmlAttributeValue(XmlAttributeName.id)),
+        ),
       );
     }
   }
@@ -111,16 +115,12 @@ extension ToSvgElement on XmlElement {
         y: y,
         width: width,
         height: height,
-        viewBox: viewBox,
-        preserveAspectRatio: preserveAspectRatio,
-        fillAttributes: common.fillAttributes,
-        strokeAttributes: common.strokeAttributes,
-        fontAttributes: common.fontAttributes,
-        opacity: common.opacity,
-        cssClass: common.cssClass,
-        inlineStyle: common.inlineStyle,
-        transformAttributes: common.transformAttributes,
-        id: common.id,
+        viewportAttributes: SvgViewportAttributes(
+          viewBox: viewBox,
+          preserveAspectRatio: preserveAspectRatio,
+        ),
+        presentationAttributes: common.presentation,
+        coreAttributes: common.core,
       ),
     );
   }

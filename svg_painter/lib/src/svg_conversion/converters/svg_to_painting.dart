@@ -44,18 +44,26 @@ extension SvgElementToPaintCommands on SvgElement {
         viewBoxHeight: height,
         viewBoxMinX: minX,
         viewBoxMinY: minY,
-        inheritedFill: self.fillAttributes?.color ?? const SvgNamedColor(SvgColorName.black),
-        inheritedFillOpacity: self.fillAttributes?.opacity ?? const SvgLength(1.0),
-        inheritedStroke: self.strokeAttributes?.color ?? const SvgNoneColor(),
-        inheritedStrokeOpacity: self.strokeAttributes?.opacity ?? const SvgLength(1.0),
-        inheritedStrokeWidth: self.strokeAttributes?.width ?? const SvgLength(1.0),
-        inheritedStrokeDasharray: self.strokeAttributes?.dashArray,
-        inheritedStrokeLinecap: self.strokeAttributes?.linecap ?? SvgStrokeLinecap.butt,
-        inheritedStrokeLinejoin: self.strokeAttributes?.linejoin ?? SvgStrokeLinejoin.miter,
-        inheritedFontSize: self.fontAttributes?.size ?? const SvgLength(12.0),
-        inheritedFontWeight: self.fontAttributes?.weight ?? const SvgFontWeightNormal(),
-        inheritedFontStyle: self.fontAttributes?.style ?? SvgFontStyle.normal,
-        inheritedFontFamily: self.fontAttributes?.family ?? const SvgFontFamily('sans-serif'),
+        inheritedAttributes: SvgPresentationAttributes(
+          fill: SvgFillAttributes(
+            color: self.fillAttributes?.color ?? const SvgNamedColor(SvgColorName.black),
+            opacity: self.fillAttributes?.opacity ?? const SvgLength(1.0),
+          ),
+          stroke: SvgStrokeAttributes(
+            color: self.strokeAttributes?.color ?? const SvgNoneColor(),
+            opacity: self.strokeAttributes?.opacity ?? const SvgLength(1.0),
+            width: self.strokeAttributes?.width ?? const SvgLength(1.0),
+            dashArray: self.strokeAttributes?.dashArray,
+            linecap: self.strokeAttributes?.linecap ?? SvgStrokeLinecap.butt,
+            linejoin: self.strokeAttributes?.linejoin ?? SvgStrokeLinejoin.miter,
+          ),
+          font: SvgFontAttributes(
+            size: self.fontAttributes?.size ?? const SvgLength(12.0),
+            weight: self.fontAttributes?.weight ?? const SvgFontWeightNormal(),
+            style: self.fontAttributes?.style ?? SvgFontStyle.normal,
+            family: self.fontAttributes?.family ?? const SvgFontFamily('sans-serif'),
+          ),
+        ),
         styleSheet: self.styleSheet,
         definitions: definitions,
       );
@@ -130,15 +138,15 @@ extension _SvgUseToPaintCommands on SvgUse {
 
     final PaintingStyle style = resolvePaint(
       context,
-      id: id,
       tagName: 'use',
-      fillAttributes: fillAttributes,
-      strokeAttributes: strokeAttributes,
-      fontAttributes: fontAttributes,
-      opacity: opacity,
-      cssClass: cssClass,
-      inlineStyle: inlineStyle,
-      transformAttributes: ops.isEmpty ? null : SvgTransformAttributes(ops),
+      coreAttributes: coreAttributes,
+      presentationAttributes: (presentationAttributes ?? const SvgPresentationAttributes()).merge(
+        SvgPresentationAttributes(
+          graphics: SvgGraphicsAttributes(
+            transformAttributes: ops.isEmpty ? null : SvgTransformAttributes(ops),
+          ),
+        ),
+      ),
     );
 
     // Context for children inherits styles, but coordinates are now in the <use> local space.
@@ -268,22 +276,25 @@ extension _SvgSvgToPaintCommands on SvgSvg {
     );
 
     // Nested <svg> elements establishing sub-viewports must always clip.
-    // The root <svg> only needs to clip if 'slice' scaling is used (which explicitly bleeds).
+    // The root <svg> only needs to clip if 'slice' scaling is used (which explicitly bleeds)
+    // OR if the viewBox is shifted (non-zero origin), making bleeding highly likely.
     final bool isRoot = this is SvgRoot;
     final bool isSliceOrNone = par.scale == SvgPreserveAspectRatioScale.slice || par.alignment == SvgPreserveAspectRatioAlignment.none;
-    final PaintingRect? clipRect = (!isRoot || isSliceOrNone) ? PaintingRect(0, 0, wVal, hVal) : null;
+    final bool hasShiftedViewBox = (viewBox?.minX ?? 0) != 0 || (viewBox?.minY ?? 0) != 0;
+
+    final PaintingRect? clipRect = (!isRoot || isSliceOrNone || hasShiftedViewBox) ? PaintingRect(0, 0, wVal, hVal) : null;
 
     final PaintingStyle viewportStyle = resolvePaint(
       context,
-      id: id,
       tagName: 'svg',
-      fillAttributes: fillAttributes,
-      strokeAttributes: strokeAttributes,
-      fontAttributes: fontAttributes,
-      opacity: opacity,
-      cssClass: cssClass,
-      inlineStyle: inlineStyle,
-      transformAttributes: viewportOps.isEmpty ? null : SvgTransformAttributes(viewportOps),
+      coreAttributes: coreAttributes,
+      presentationAttributes: (presentationAttributes ?? const SvgPresentationAttributes()).merge(
+        SvgPresentationAttributes(
+          graphics: SvgGraphicsAttributes(
+            transformAttributes: viewportOps.isEmpty ? null : SvgTransformAttributes(viewportOps),
+          ),
+        ),
+      ),
       clipRect: clipRect,
     );
 
@@ -313,15 +324,9 @@ extension _SvgGroupToPaintCommands on SvgGroup {
 
     final PaintingStyle style = resolvePaint(
       context,
-      id: id,
       tagName: 'g',
-      fillAttributes: fillAttributes,
-      strokeAttributes: strokeAttributes,
-      fontAttributes: fontAttributes,
-      opacity: opacity,
-      cssClass: cssClass,
-      inlineStyle: inlineStyle,
-      transformAttributes: transformAttributes,
+      coreAttributes: coreAttributes,
+      presentationAttributes: presentationAttributes,
     );
 
     return children.map((SvgElement child) => child.toPaintCommands(context)).combine().map((

@@ -1,3 +1,4 @@
+import 'package:svg_painter/src/svg_model/attribute_groups/_attribute_groups.dart';
 import 'package:svg_painter/src/svg_model/svg_element.dart';
 import 'package:svg_painter/src/svg_model/svg_value.dart';
 import 'package:test/test.dart';
@@ -12,7 +13,7 @@ void main() {
         y: SvgLength(20.0),
         width: SvgLength(100.0),
         height: SvgLength(50.0),
-        id: 'u1',
+        coreAttributes: SvgCoreAttributes(id: 'u1'),
       );
 
       // Act

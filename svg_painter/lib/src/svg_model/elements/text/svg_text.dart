@@ -9,14 +9,8 @@ final class SvgText extends SvgGraphicsElement with SvgFontAttributable {
     required this.x,
     required this.y,
     required this.text,
-    super.fillAttributes,
-    super.strokeAttributes,
-    this.fontAttributes,
-    super.opacity,
-    super.cssClass,
-    super.inlineStyle,
-    super.transformAttributes,
-    super.id,
+    super.presentationAttributes,
+    super.coreAttributes,
   });
 
   /// The x-axis coordinate of the starting point of the text.
@@ -29,7 +23,7 @@ final class SvgText extends SvgGraphicsElement with SvgFontAttributable {
   final String text;
 
   @override
-  final SvgFontAttributes? fontAttributes;
+  SvgFontAttributes? get fontAttributes => presentationAttributes?.font;
 
   @override
   String toString() => 'SvgText(x: $x, y: $y, text: $text, id: $id)';

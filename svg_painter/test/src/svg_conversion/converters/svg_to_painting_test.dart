@@ -10,7 +10,10 @@ void main() {
     group('SvgRoot initialization', () {
       test('should initialize root context from viewBox', () {
         // Arrange
-        const SvgRoot root = SvgRoot(children: <SvgElement>[], viewBox: SvgViewBox(0, 0, 200, 100));
+        const SvgRoot root = SvgRoot(
+          children: <SvgElement>[],
+          viewportAttributes: SvgViewportAttributes(viewBox: SvgViewBox(0, 0, 200, 100)),
+        );
 
         // Act
         final Result<List<PaintCommand>> result = root.toPaintCommands();
@@ -45,7 +48,7 @@ void main() {
     group('SvgUse', () {
       test('should collect definitions correctly', () {
         const SvgRect target = SvgRect(
-          id: 'rect1',
+          coreAttributes: SvgCoreAttributes(id: 'rect1'),
           x: SvgLength(0),
           y: SvgLength(0),
           width: SvgLength(10),
@@ -85,7 +88,7 @@ void main() {
       test('should resolve target and apply transform', () {
         // Arrange
         const SvgRect target = SvgRect(
-          id: 'rect1',
+          coreAttributes: SvgCoreAttributes(id: 'rect1'),
           x: SvgLength(0),
           y: SvgLength(0),
           width: SvgLength(10),
@@ -102,7 +105,7 @@ void main() {
         );
         const SvgRoot root = SvgRoot(
           children: <SvgElement>[target, use],
-          viewBox: SvgViewBox(0, 0, 100, 100),
+          viewportAttributes: SvgViewportAttributes(viewBox: SvgViewBox(0, 0, 100, 100)),
         );
 
         // Act
@@ -143,7 +146,7 @@ void main() {
       test('should only return definition commands', () {
         // Arrange
         const SvgLinearGradient grad = SvgLinearGradient(
-          id: 'grad1',
+          coreAttributes: SvgCoreAttributes(id: 'grad1'),
           x1: SvgLength(0),
           y1: SvgLength(0),
           x2: SvgLength(100),
@@ -151,7 +154,7 @@ void main() {
           stops: <SvgStop>[],
         );
         const SvgRect rect = SvgRect(
-          id: 'rect1',
+          coreAttributes: SvgCoreAttributes(id: 'rect1'),
           x: SvgLength(0),
           y: SvgLength(0),
           width: SvgLength(10),
@@ -163,7 +166,7 @@ void main() {
         const SvgDefs defs = SvgDefs(children: <SvgElement>[grad, rect]);
         const SvgRoot root = SvgRoot(
           children: <SvgElement>[defs],
-          viewBox: SvgViewBox(0, 0, 100, 100),
+          viewportAttributes: SvgViewportAttributes(viewBox: SvgViewBox(0, 0, 100, 100)),
         );
 
         // Act
@@ -180,7 +183,7 @@ void main() {
 
       test('should return radial gradient command when present', () {
         const SvgRadialGradient grad = SvgRadialGradient(
-          id: 'rad1',
+          coreAttributes: SvgCoreAttributes(id: 'rad1'),
           cx: SvgLength(50),
           cy: SvgLength(50),
           r: SvgLength(50),
@@ -192,7 +195,7 @@ void main() {
         const SvgDefs defs = SvgDefs(children: <SvgElement>[grad]);
         const SvgRoot root = SvgRoot(
           children: <SvgElement>[defs],
-          viewBox: SvgViewBox(0, 0, 100, 100),
+          viewportAttributes: SvgViewportAttributes(viewBox: SvgViewBox(0, 0, 100, 100)),
         );
 
         final Result<List<PaintCommand>> result = root.toPaintCommands();
@@ -206,7 +209,7 @@ void main() {
     group('Transforms', () {
       test('should combine transform attribute with layout attributes (x, y)', () {
         const SvgRect rect = SvgRect(
-          id: 'r1',
+          coreAttributes: SvgCoreAttributes(id: 'r1'),
           x: SvgLength(10),
           y: SvgLength(20),
           width: SvgLength(100),
@@ -220,11 +223,15 @@ void main() {
           y: SvgLength(5),
           width: SvgAuto(),
           height: SvgAuto(),
-          transformAttributes: SvgTransformAttributes(<SvgTransformOperation>[SvgScale(2)]),
+          presentationAttributes: SvgPresentationAttributes(
+            graphics: SvgGraphicsAttributes(
+              transformAttributes: SvgTransformAttributes(<SvgTransformOperation>[SvgScale(2)]),
+            ),
+          ),
         );
         const SvgRoot root = SvgRoot(
           children: <SvgElement>[rect, use],
-          viewBox: SvgViewBox(0, 0, 500, 500),
+          viewportAttributes: SvgViewportAttributes(viewBox: SvgViewBox(0, 0, 500, 500)),
         );
 
         final Result<List<PaintCommand>> result = root.toPaintCommands();
@@ -248,12 +255,16 @@ void main() {
           y: SvgLength(20),
           width: SvgLength(200),
           height: SvgLength(100),
-          viewBox: SvgViewBox(0, 0, 100, 50), // sx = 2, sy = 2
-          transformAttributes: SvgTransformAttributes(<SvgTransformOperation>[SvgRotate(45)]),
+          viewportAttributes: SvgViewportAttributes(viewBox: SvgViewBox(0, 0, 100, 50)), // sx = 2, sy = 2
+          presentationAttributes: SvgPresentationAttributes(
+            graphics: SvgGraphicsAttributes(
+              transformAttributes: SvgTransformAttributes(<SvgTransformOperation>[SvgRotate(45)]),
+            ),
+          ),
         );
         const SvgRoot root = SvgRoot(
           children: <SvgElement>[nested],
-          viewBox: SvgViewBox(0, 0, 500, 500),
+          viewportAttributes: SvgViewportAttributes(viewBox: SvgViewBox(0, 0, 500, 500)),
         );
 
         final Result<List<PaintCommand>> result = root.toPaintCommands();
@@ -297,7 +308,9 @@ void main() {
         );
         const SvgGroup group = SvgGroup(
           children: <SvgElement>[rect1, rect2],
-          opacity: SvgPercentage(50),
+          presentationAttributes: SvgPresentationAttributes(
+            graphics: SvgGraphicsAttributes(opacity: SvgPercentage(50)),
+          ),
         );
         const SvgRoot root = SvgRoot(children: <SvgElement>[group]);
 
@@ -320,7 +333,12 @@ void main() {
           rx: SvgLength(0),
           ry: SvgLength(0),
         );
-        const SvgGroup group = SvgGroup(children: <SvgElement>[rect1], opacity: SvgPercentage(100));
+        const SvgGroup group = SvgGroup(
+          children: <SvgElement>[rect1],
+          presentationAttributes: SvgPresentationAttributes(
+            graphics: SvgGraphicsAttributes(opacity: SvgPercentage(100)),
+          ),
+        );
         const SvgRoot root = SvgRoot(children: <SvgElement>[group]);
 
         final Result<List<PaintCommand>> result = root.toPaintCommands();

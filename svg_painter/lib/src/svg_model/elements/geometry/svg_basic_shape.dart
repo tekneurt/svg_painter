@@ -2,18 +2,13 @@ part of '../../svg_element.dart';
 
 /// Base class for basic shape elements (`<circle>`, `<rect>`, etc.).
 @immutable
-sealed class SvgBasicShape extends SvgGraphicsElement with SvgGeometry {
+sealed class SvgBasicShape extends SvgGraphicsElement with SvgGeometryAttributable {
   const SvgBasicShape({
-    this.pathLength,
-    super.fillAttributes,
-    super.strokeAttributes,
-    super.opacity,
-    super.cssClass,
-    super.inlineStyle,
-    super.transformAttributes,
-    super.id,
+    this.geometryAttributes,
+    super.presentationAttributes,
+    super.coreAttributes,
   });
 
   @override
-  final SvgNumber? pathLength;
+  final SvgGeometryAttributes? geometryAttributes;
 }

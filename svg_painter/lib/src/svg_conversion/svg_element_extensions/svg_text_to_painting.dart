@@ -15,14 +15,8 @@ extension SvgTextToPaintCommands on SvgText {
     final PaintingStyle paint = resolvePaint(
       context,
       tagName: 'text',
-      id: id,
-      fillAttributes: fillAttributes,
-      strokeAttributes: strokeAttributes,
-      fontAttributes: fontAttributes,
-      opacity: opacity,
-      cssClass: cssClass,
-      inlineStyle: inlineStyle,
-      transformAttributes: transformAttributes,
+      coreAttributes: coreAttributes,
+      presentationAttributes: presentationAttributes,
     );
 
     final double finalX = x.resolve(context, .horizontal);

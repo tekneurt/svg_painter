@@ -13,8 +13,8 @@ final class SvgRadialGradient extends SvgGradient {
     required this.fy,
     required this.fr,
     required super.stops,
-    super.id,
     super.gradientTransformAttributes,
+    super.coreAttributes,
   });
 
   /// The x-axis coordinate of the center of the largest circle for the gradient.

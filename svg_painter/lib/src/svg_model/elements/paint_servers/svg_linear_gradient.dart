@@ -11,8 +11,8 @@ final class SvgLinearGradient extends SvgGradient {
     required this.x2,
     required this.y2,
     required super.stops,
-    super.id,
     super.gradientTransformAttributes,
+    super.coreAttributes,
   });
 
   /// The x-axis coordinate of the start of the gradient vector.

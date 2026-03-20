@@ -5,14 +5,8 @@ part of '../../svg_element.dart';
 final class SvgGroup extends SvgContainerElement {
   const SvgGroup({
     required super.children,
-    super.id,
-    super.fillAttributes,
-    super.strokeAttributes,
-    super.fontAttributes,
-    super.opacity,
-    super.cssClass,
-    super.inlineStyle,
-    super.transformAttributes,
+    super.presentationAttributes,
+    super.coreAttributes,
   });
 
   @override

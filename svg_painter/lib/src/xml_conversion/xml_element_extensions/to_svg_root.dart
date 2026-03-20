@@ -59,16 +59,12 @@ extension ToSvgRoot on XmlElement {
         y: y,
         width: width,
         height: height,
-        viewBox: viewBox,
-        preserveAspectRatio: preserveAspectRatio,
-        fillAttributes: common.fillAttributes,
-        strokeAttributes: common.strokeAttributes,
-        fontAttributes: common.fontAttributes,
-        opacity: common.opacity,
-        cssClass: common.cssClass,
-        inlineStyle: common.inlineStyle,
-        transformAttributes: common.transformAttributes,
-        id: common.id,
+        viewportAttributes: SvgViewportAttributes(
+          viewBox: viewBox,
+          preserveAspectRatio: preserveAspectRatio,
+        ),
+        coreAttributes: common.core,
+        presentationAttributes: common.presentation,
       ),
     );
   }

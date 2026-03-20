@@ -61,6 +61,8 @@ class _$PreserveAspectRatio3Painter extends CustomPainter {
     );
 
     canvas.save();
+    canvas.clipRect(Rect.fromLTWH(0.0, 0.0, 202.0, 80.0));
+    canvas.save();
     canvas.translate(1.0, 1.0);
     {
       final Paint paint = Paint();
@@ -68,6 +70,8 @@ class _$PreserveAspectRatio3Painter extends CustomPainter {
       paint.style = PaintingStyle.fill;
       canvas.drawRect(Rect.fromLTWH(0.0, 0.0, 30.0, 75.0), paint);
     }
+    canvas.save();
+    canvas.clipRect(Rect.fromLTWH(0.0, 0.0, 30.0, 75.0));
     canvas.save();
     canvas.scale(0.3, 0.3);
     {
@@ -111,6 +115,7 @@ class _$PreserveAspectRatio3Painter extends CustomPainter {
       }
     }
     canvas.restore();
+    canvas.restore();
     {
       final Paint paint = Paint();
       paint.color = Colors.black;
@@ -119,6 +124,7 @@ class _$PreserveAspectRatio3Painter extends CustomPainter {
     }
     canvas.save();
     canvas.translate(35.0, 0.0);
+    canvas.clipRect(Rect.fromLTWH(0.0, 0.0, 30.0, 75.0));
     canvas.save();
     canvas.translate(0.0, 22.5);
     canvas.scale(0.3, 0.3);
@@ -172,6 +178,7 @@ class _$PreserveAspectRatio3Painter extends CustomPainter {
     }
     canvas.save();
     canvas.translate(70.0, 0.0);
+    canvas.clipRect(Rect.fromLTWH(0.0, 0.0, 30.0, 75.0));
     canvas.save();
     canvas.translate(0.0, 45.0);
     canvas.scale(0.3, 0.3);
@@ -215,6 +222,7 @@ class _$PreserveAspectRatio3Painter extends CustomPainter {
         canvas.drawPath(path, paint);
       }
     }
+    canvas.restore();
     canvas.restore();
     canvas.restore();
     canvas.restore();

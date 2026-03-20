@@ -1,3 +1,4 @@
+import 'package:svg_painter/src/svg_model/attribute_groups/_attribute_groups.dart';
 import 'package:svg_painter/src/svg_model/svg_element.dart';
 import 'package:svg_painter/src/svg_model/svg_value.dart';
 import 'package:test/test.dart';
@@ -10,7 +11,7 @@ void main() {
         offset: SvgLength(0.5),
         stopColor: SvgNamedColor(SvgColorName.black),
         stopOpacity: SvgLength(1.0),
-        id: 'stop1',
+        coreAttributes: SvgCoreAttributes(id: 'stop1'),
       );
 
       // Act

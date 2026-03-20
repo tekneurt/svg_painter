@@ -1,0 +1,9 @@
+export 'svg_core_attributes.dart';
+export 'svg_fill_attributes.dart';
+export 'svg_font_attributes.dart';
+export 'svg_geometry_attributes.dart';
+export 'svg_graphics_attributes.dart';
+export 'svg_presentation_attributes.dart';
+export 'svg_stroke_attributes.dart';
+export 'svg_transform_attributes.dart';
+export 'svg_viewport_attributes.dart';

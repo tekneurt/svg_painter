@@ -11,7 +11,7 @@ void main() {
 
     test('SvgLinearGradient should convert to DefineLinearGradient', () {
       const SvgLinearGradient grad = SvgLinearGradient(
-        id: 'g1',
+        coreAttributes: SvgCoreAttributes(id: 'g1'),
         x1: SvgLength(0),
         y1: SvgLength(0),
         x2: SvgLength(100),
@@ -43,7 +43,7 @@ void main() {
 
     test('SvgLinearGradient should bake rotate(90) transform and adjust range', () {
       const SvgLinearGradient grad = SvgLinearGradient(
-        id: 'g-rot-adj',
+        coreAttributes: SvgCoreAttributes(id: 'g-rot-adj'),
         x1: SvgLength(0),
         y1: SvgLength(0),
         x2: SvgLength(0),
@@ -73,7 +73,7 @@ void main() {
 
     test('SvgRadialGradient should convert to DefineRadialGradient', () {
       const SvgRadialGradient grad = SvgRadialGradient(
-        id: 'rg1',
+        coreAttributes: SvgCoreAttributes(id: 'rg1'),
         cx: SvgLength(50),
         cy: SvgLength(50),
         r: SvgLength(50),
@@ -101,7 +101,7 @@ void main() {
 
     test('SvgRadialGradient should handle focal point defaults correctly', () {
       const SvgRadialGradient gradient = SvgRadialGradient(
-        id: 'rg2',
+        coreAttributes: SvgCoreAttributes(id: 'rg2'),
         cx: SvgPercentage(50),
         cy: SvgPercentage(50),
         r: SvgPercentage(50),

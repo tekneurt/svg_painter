@@ -11,14 +11,8 @@ final class SvgUse extends SvgGraphicsElement with SvgFontAttributable, SvgBound
     required this.y,
     required this.width,
     required this.height,
-    super.id,
-    super.fillAttributes,
-    super.strokeAttributes,
-    this.fontAttributes,
-    super.opacity,
-    super.cssClass,
-    super.inlineStyle,
-    super.transformAttributes,
+    super.presentationAttributes,
+    super.coreAttributes,
   });
 
   /// The URI reference to the element to be cloned.
@@ -37,7 +31,7 @@ final class SvgUse extends SvgGraphicsElement with SvgFontAttributable, SvgBound
   final SvgLengthPercentageAuto height;
 
   @override
-  final SvgFontAttributes? fontAttributes;
+  SvgFontAttributes? get fontAttributes => presentationAttributes?.font;
 
   @override
   String toString() => 'SvgUse(href: $href, id: $id)';

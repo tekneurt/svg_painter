@@ -771,6 +771,8 @@ class _$StrokeLinejoinMiterPainter extends CustomPainter {
     );
 
     canvas.save();
+    canvas.clipRect(Rect.fromLTWH(0.0, 0.0, 10.0, 7.0));
+    canvas.save();
     canvas.translate(-0.0, 1.0);
     {
       final Path path = Path()
@@ -879,6 +881,7 @@ class _$StrokeLinejoinMiterPainter extends CustomPainter {
       paint.style = PaintingStyle.fill;
       canvas.drawCircle(const Offset(8.5, 5.0), 0.05, paint);
     }
+    canvas.restore();
     canvas.restore();
     canvas.restore();
   }
@@ -993,6 +996,8 @@ class _$StrokeLinejoinMiterClipPainter extends CustomPainter {
     );
 
     canvas.save();
+    canvas.clipRect(Rect.fromLTWH(0.0, 0.0, 10.0, 7.0));
+    canvas.save();
     canvas.translate(-0.0, 1.0);
     {
       final Path path = Path()
@@ -1101,6 +1106,7 @@ class _$StrokeLinejoinMiterClipPainter extends CustomPainter {
       paint.style = PaintingStyle.fill;
       canvas.drawCircle(const Offset(8.5, 5.0), 0.05, paint);
     }
+    canvas.restore();
     canvas.restore();
     canvas.restore();
   }

@@ -1,6 +1,12 @@
-export 'package:svg_painter/src/svg_model/attributes/svg_fill_attributes.dart';
-export 'package:svg_painter/src/svg_model/attributes/svg_font_attributes.dart';
-export 'package:svg_painter/src/svg_model/attributes/svg_stroke_attributes.dart';
+export 'package:svg_painter/src/svg_model/attribute_groups/svg_core_attributes.dart';
+export 'package:svg_painter/src/svg_model/attribute_groups/svg_fill_attributes.dart';
+export 'package:svg_painter/src/svg_model/attribute_groups/svg_font_attributes.dart';
+export 'package:svg_painter/src/svg_model/attribute_groups/svg_geometry_attributes.dart';
+export 'package:svg_painter/src/svg_model/attribute_groups/svg_graphics_attributes.dart';
+export 'package:svg_painter/src/svg_model/attribute_groups/svg_presentation_attributes.dart';
+export 'package:svg_painter/src/svg_model/attribute_groups/svg_stroke_attributes.dart';
+export 'package:svg_painter/src/svg_model/attribute_groups/svg_transform_attributes.dart';
+export 'package:svg_painter/src/svg_model/attribute_groups/svg_viewport_attributes.dart';
 export 'package:svg_painter/src/svg_model/svg_element.dart';
 export 'package:svg_painter/src/svg_model/svg_style_sheet.dart';
 export 'package:svg_painter/src/svg_model/svg_value.dart';

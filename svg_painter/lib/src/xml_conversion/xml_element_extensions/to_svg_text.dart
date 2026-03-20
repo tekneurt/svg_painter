@@ -24,14 +24,8 @@ extension ToSvgText on XmlElement {
         x: x,
         y: y,
         text: textContent,
-        fillAttributes: common.fillAttributes,
-        strokeAttributes: common.strokeAttributes,
-        fontAttributes: common.fontAttributes,
-        opacity: common.opacity,
-        cssClass: common.cssClass,
-        inlineStyle: common.inlineStyle,
-        transformAttributes: common.transformAttributes,
-        id: common.id,
+        coreAttributes: common.core,
+        presentationAttributes: common.presentation,
       ),
     );
   }
