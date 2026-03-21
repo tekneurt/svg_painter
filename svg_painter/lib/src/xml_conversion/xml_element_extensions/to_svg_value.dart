@@ -70,6 +70,9 @@ extension ToSvgValue on XmlElement {
         .fontFamily => attributeValue.toSvgFontFamily(),
         .gradientUnits => attributeValue.toSvgGradientUnits(),
         .spreadMethod => throw UnimplementedError('spreadMethod is not yet implemented'),
+        .type ||
+        .media ||
+        .title ||
         .viewBox ||
         .preserveAspectRatio ||
         .id ||

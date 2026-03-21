@@ -226,7 +226,7 @@
     - [x] `mixin SvgViewBoxed`: Holds `viewBox` and `preserveAspectRatio` (applied to: `SvgSvg`, `SvgSymbol`, `SvgMarker`).
     - [x] `mixin SvgBounded`: Holds `x`, `y`, `width`, `height` (applied to: `SvgRect`, `SvgSvg`, `SvgUse`, `SvgImage`).
     - [x] **Architecture Cleanup (SVG Model)**: Rename `lib/src/svg_model/attributes/` to `attribute_groups/` to clarify that these are DTOs. Audit `lib/src/svg_model/elements/base/` mixins (like `SvgGeometry` holding `pathLength`) to ensure clear boundaries between element traits (mixins) and attribute groupings.
-- [ ] **Structural Elements**: `<symbol>` [x], `<tspan>`, `<defs>`.
+- [ ] **Structural Elements**: `<symbol>` [x],  `<style>`, `<tspan>`, `<defs>`.
 - [x] **Gradients (Polish)**: `spreadMethod` and `gradientUnits` (needed for 2nd MDN `linearGradient` example).
     - [x] **Proper `userSpaceOnUse` support**: Resolve absolute coordinates for gradients by generating `createShader` calls with absolute offsets instead of relative `Alignment`.
     - [ ] **Elliptical Radial Gradients**: Support the `r` radius being stretched by the element's bounding box using `GradientTransform` or `Matrix4`.

@@ -384,7 +384,7 @@ void main() {
           children: <SvgElement>[
             SvgTitle(content: 'Title'),
             SvgDesc(content: 'Desc'),
-            SvgStyle(),
+            SvgStyle(content: ''),
             SvgIgnoredElement(),
           ],
         );

@@ -10,6 +10,15 @@ extension ToSvgStyle on XmlElement {
   /// Converts this [XmlElement] to an [SvgStyle].
   Result<SvgStyle> toSvgStyle() {
     final CommonAttributes common = toCommonAttributes(XmlElementName.style);
-    return Success<SvgStyle>(SvgStyle(coreAttributes: common.core));
+
+    return Success<SvgStyle>(
+      SvgStyle(
+        content: innerText,
+        type: toXmlAttributeValue(XmlAttributeName.type),
+        media: toXmlAttributeValue(XmlAttributeName.media),
+        title: toXmlAttributeValue(XmlAttributeName.title),
+        coreAttributes: common.core,
+      ),
+    );
   }
 }

@@ -14,6 +14,7 @@ import 'elements/polyline_painter.dart';
 import 'elements/radial_gradient_painter.dart';
 import 'elements/rect_painter.dart';
 import 'elements/stop_painter.dart';
+import 'elements/style_painter.dart';
 import 'elements/svg_painter.dart';
 import 'elements/symbol_painter.dart';
 import 'elements/text_painter.dart';
@@ -38,6 +39,7 @@ final List<({CustomPainter painter, String name, Map<GoldenTestType, Set<TargetP
   (painter: const RadialGradientPainter(), name: 'radial_gradient_painter', tests: defaultGoldenTests),
   (painter: const RectPainter(), name: 'rect_painter', tests: defaultGoldenTests),
   (painter: const StopPainter(), name: 'stop_painter', tests: defaultGoldenTests),
+  (painter: const StyleElementPainter(), name: 'style_element_painter', tests: defaultGoldenTests),
   (painter: const Svg1Painter(), name: 'svg_painter_1', tests: defaultGoldenTests),
   (painter: const Svg2Painter(), name: 'svg_painter_2', tests: defaultGoldenTests),
   (painter: const SymbolPainter(), name: 'symbol_painter', tests: defaultGoldenTests),

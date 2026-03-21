@@ -180,7 +180,19 @@ enum XmlAttributeName {
 
   /// The preserveAspectRatio of the element.
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/preserveAspectRatio
-  preserveAspectRatio('preserveAspectRatio');
+  preserveAspectRatio('preserveAspectRatio'),
+
+  /// The type of the style or script.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/type
+  type('type'),
+
+  /// The media for which the style is applicable.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/media
+  media('media'),
+
+  /// The title of the element or style.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/title
+  title('title');
 
   const XmlAttributeName(this.name);
 
