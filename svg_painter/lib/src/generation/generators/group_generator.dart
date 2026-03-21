@@ -24,10 +24,11 @@ class GroupGenerator extends ShapeGenerator<DrawGroup> {
       return;
     }
     wrapWithStyle(buffer, command.style, () {
-      // Use command.opacity (calculated during conversion) OR style.groupOpacity.
-      // command.opacity is used for explicit saveLayer logic from _SvgGroupToPaintCommands.
-      // style.groupOpacity is used for opacity resolved from CSS/Attributes.
-      final double effectiveOpacity = command.opacity * command.style.groupOpacity;
+      // Use command.opacity (calculated during conversion) for saveLayer.
+      // We DO NOT multiply with command.style.groupOpacity here because the group's
+      // resolved opacity is already accounted for in the DrawGroup command's opacity field
+      // when useSaveLayer is true. If we multiplied them, we'd apply it twice.
+      final double effectiveOpacity = command.opacity;
       final bool useLayer = effectiveOpacity < 1.0;
 
       if (useLayer) {

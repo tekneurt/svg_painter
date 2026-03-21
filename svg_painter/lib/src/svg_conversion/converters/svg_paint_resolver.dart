@@ -186,10 +186,18 @@ PaintingStyle resolvePaint(
   if (hasFill) {
     int? fillColorArgb;
     String? fillShaderId;
+    PaintingGradientUnits? shaderUnits;
     final bool isCurrentColor = fillPaint is SvgCurrentColor;
 
     if (fillPaint is SvgPaintReference) {
       fillShaderId = fillPaint.id;
+      final SvgElement? def = context.definitions[fillShaderId];
+      if (def is SvgGradient) {
+        shaderUnits = switch (def.gradientUnits) {
+          SvgGradientUnits.objectBoundingBox => PaintingGradientUnits.objectBoundingBox,
+          SvgGradientUnits.userSpaceOnUse => PaintingGradientUnits.userSpaceOnUse,
+        };
+      }
     } else if (!isCurrentColor) {
       fillColorArgb = fillPaint.toFillArgb();
     }
@@ -200,6 +208,7 @@ PaintingStyle resolvePaint(
     fillStyle = PaintingFillStyle(
       colorArgb: fillColorArgb,
       shaderId: fillShaderId,
+      shaderUnits: shaderUnits,
       opacity: finalFillOpacity,
       isExplicit: presentationAttributes?.fill?.color != null || cssFill != null,
       isCurrentColor: isCurrentColor,
@@ -217,10 +226,18 @@ PaintingStyle resolvePaint(
   if (hasStroke) {
     int? strokeColorArgb;
     String? strokeShaderId;
+    PaintingGradientUnits? shaderUnits;
     final bool isCurrentColor = strokePaint is SvgCurrentColor;
 
     if (strokePaint is SvgPaintReference) {
       strokeShaderId = strokePaint.id;
+      final SvgElement? def = context.definitions[strokeShaderId];
+      if (def is SvgGradient) {
+        shaderUnits = switch (def.gradientUnits) {
+          SvgGradientUnits.objectBoundingBox => PaintingGradientUnits.objectBoundingBox,
+          SvgGradientUnits.userSpaceOnUse => PaintingGradientUnits.userSpaceOnUse,
+        };
+      }
     } else if (!isCurrentColor) {
       strokeColorArgb = strokePaint.toStrokeArgb();
     }
@@ -245,6 +262,7 @@ PaintingStyle resolvePaint(
     strokeStyle = PaintingStrokeStyle(
       colorArgb: strokeColorArgb,
       shaderId: strokeShaderId,
+      shaderUnits: shaderUnits,
       width: finalStrokeWidth,
       pathLength: finalPathLength,
       opacity: finalStrokeOpacity,

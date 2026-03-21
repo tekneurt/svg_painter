@@ -6,6 +6,7 @@ final class PaintingFillStyle implements PaintingPaintStyle {
   const PaintingFillStyle({
     this.colorArgb,
     this.shaderId,
+    this.shaderUnits,
     this.opacity = 1.0,
     this.isExplicit = true,
     this.isCurrentColor = false,
@@ -18,6 +19,10 @@ final class PaintingFillStyle implements PaintingPaintStyle {
   /// The ID of the shader (e.g., gradient) to use for filling.
   @override
   final String? shaderId;
+
+  /// The coordinate system used for the shader coordinates.
+  @override
+  final PaintingGradientUnits? shaderUnits;
 
   /// The opacity of the fill (0.0 to 1.0).
   @override
@@ -33,5 +38,5 @@ final class PaintingFillStyle implements PaintingPaintStyle {
 
   @override
   String toString() =>
-      'PaintingFillStyle(color: $colorArgb, shader: $shaderId, opacity: $opacity, explicit: $isExplicit, currentColor: $isCurrentColor)';
+      'PaintingFillStyle(color: $colorArgb, shader: $shaderId, units: $shaderUnits, opacity: $opacity, explicit: $isExplicit, currentColor: $isCurrentColor)';
 }

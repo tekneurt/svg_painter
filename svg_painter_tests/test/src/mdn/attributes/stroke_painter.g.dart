@@ -72,6 +72,7 @@ class _$StrokePainter extends CustomPainter {
       end: Alignment(1.0, -1.0),
       colors: <Color>[const Color(0xFF008000), Colors.white],
       stops: <double>[0.0, 1.0],
+      tileMode: TileMode.clamp,
     );
     {
       final Paint paint = Paint();

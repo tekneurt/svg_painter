@@ -14,35 +14,57 @@ extension SvgGradientToPainting on SvgGradient {
       return const Failure<PaintCommand>('Gradient element must have an ID to be referenced.');
     }
 
+    final PaintingGradientUnits paintingUnits = switch (gradientUnits) {
+      SvgGradientUnits.objectBoundingBox => PaintingGradientUnits.objectBoundingBox,
+      SvgGradientUnits.userSpaceOnUse => PaintingGradientUnits.userSpaceOnUse,
+    };
+
+    final PaintingSpreadMethod paintingSpread = switch (spreadMethod) {
+      SvgSpreadMethod.pad => PaintingSpreadMethod.pad,
+      SvgSpreadMethod.reflect => PaintingSpreadMethod.reflect,
+      SvgSpreadMethod.repeat => PaintingSpreadMethod.repeat,
+    };
+
+    final bool isUserUnits = gradientUnits == SvgGradientUnits.userSpaceOnUse;
+    final SvgOrientation xOrient = isUserUnits ? .horizontal : .unit;
+    final SvgOrientation yOrient = isUserUnits ? .vertical : .unit;
+    final SvgOrientation rOrient = isUserUnits ? .normalized : .unit;
+
     if (self is SvgLinearGradient) {
-      double finalX1 = self.x1.resolve(context, SvgOrientation.unit);
-      double finalY1 = self.y1.resolve(context, SvgOrientation.unit);
-      double finalX2 = self.x2.resolve(context, SvgOrientation.unit);
-      double finalY2 = self.y2.resolve(context, SvgOrientation.unit);
+      double x1 = self.x1.resolve(context, xOrient);
+      double y1 = self.y1.resolve(context, yOrient);
+      double x2 = self.x2.resolve(context, xOrient);
+      double y2 = self.y2.resolve(context, yOrient);
+
+      if (isUserUnits) {
+        // Normalize absolute user units to 0..1 relative to viewBox.
+        x1 /= context.viewBoxWidth;
+        y1 /= context.viewBoxHeight;
+        x2 /= context.viewBoxWidth;
+        y2 /= context.viewBoxHeight;
+      }
 
       // Simple Bake for rotate(90): horizontal becomes vertical
-      final SvgTransformAttributes? trans = gradientTransformAttributes;
-      if (trans != null &&
-          trans.operations.length == 1 &&
-          trans.operations.first is SvgRotate) {
-        final SvgRotate rotate = trans.operations.first as SvgRotate;
-        if (rotate.angle == 90 || rotate.angle == -270) {
-          // rotate(90) about (0,0) maps (x,y) -> (-y, x)
-          // For a standard 0,0 -> 1,0 horizontal gradient, this becomes 0,0 -> 0,1
-          final double oldX1 = finalX1;
-          final double oldX2 = finalX2;
-          final double oldY1 = finalY1;
-          final double oldY2 = finalY2;
+      // Only applicable for objectBoundingBox for now as it's a simple 0..1 flip.
+      if (gradientUnits == SvgGradientUnits.objectBoundingBox) {
+        final SvgTransformAttributes? trans = gradientTransformAttributes;
+        if (trans != null && trans.operations.length == 1 && trans.operations.first is SvgRotate) {
+          final SvgRotate rotate = trans.operations.first as SvgRotate;
+          if (rotate.angle == 90 || rotate.angle == -270) {
+            final double oldX1 = x1;
+            final double oldX2 = x2;
+            final double oldY1 = y1;
+            final double oldY2 = y2;
 
-          finalX1 = -oldY1;
-          finalY1 = oldX1;
-          finalX2 = -oldY2;
-          finalY2 = oldX2;
+            x1 = -oldY1;
+            y1 = oldX1;
+            x2 = -oldY2;
+            y2 = oldX2;
 
-          // Adjust back to 0..1 range if it was a simple horizontal-to-vertical flip
-          if (finalX1 < 0 || finalX2 < 0) {
-            finalX1 += 1.0;
-            finalX2 += 1.0;
+            if (x1 < 0 || x2 < 0) {
+              x1 += 1.0;
+              x2 += 1.0;
+            }
           }
         }
       }
@@ -50,33 +72,50 @@ extension SvgGradientToPainting on SvgGradient {
       return Success<PaintCommand>(
         DefineLinearGradient(
           id: gradId,
-          x1: finalX1,
-          y1: finalY1,
-          x2: finalX2,
-          y2: finalY2,
+          x1: x1,
+          y1: y1,
+          x2: x2,
+          y2: y2,
           stops: stops.toPaintingStops(context),
           transformAttributes: gradientTransformAttributes,
+          units: paintingUnits,
+          spreadMethod: paintingSpread,
         ),
       );
     } else if (self is SvgRadialGradient) {
-      final double finalCx = self.cx.resolve(context, SvgOrientation.unit);
-      final double finalCy = self.cy.resolve(context, SvgOrientation.unit);
-      final double finalR = self.r.resolve(context, SvgOrientation.unit);
-      final double finalFx = self.fx.resolve(context, SvgOrientation.unit);
-      final double finalFy = self.fy.resolve(context, SvgOrientation.unit);
-      final double finalFr = self.fr.resolve(context, SvgOrientation.unit);
+      double cx = self.cx.resolve(context, xOrient);
+      double cy = self.cy.resolve(context, yOrient);
+      double r = self.r.resolve(context, rOrient);
+      double fx = self.fx.resolve(context, xOrient);
+      double fy = self.fy.resolve(context, yOrient);
+      double fr = self.fr.resolve(context, rOrient);
+
+      if (isUserUnits) {
+        // Normalize absolute user units to 0..1 relative to viewBox.
+        cx /= context.viewBoxWidth;
+        cy /= context.viewBoxHeight;
+        // Radius resolution for radial gradients relative to a non-square viewBox is complex.
+        // For now we use the normalized diagonal factor which matches our radial resolution logic.
+        final double diag = context.viewBoxNormalizedDiagonal;
+        r /= diag;
+        fx /= context.viewBoxWidth;
+        fy /= context.viewBoxHeight;
+        fr /= diag;
+      }
 
       return Success<PaintCommand>(
         DefineRadialGradient(
           id: gradId,
-          cx: finalCx,
-          cy: finalCy,
-          radius: finalR,
-          fx: finalFx,
-          fy: finalFy,
-          focalRadius: finalFr,
+          cx: cx,
+          cy: cy,
+          radius: r,
+          fx: fx,
+          fy: fy,
+          focalRadius: fr,
           stops: stops.toPaintingStops(context),
           transformAttributes: gradientTransformAttributes,
+          units: paintingUnits,
+          spreadMethod: paintingSpread,
         ),
       );
     }

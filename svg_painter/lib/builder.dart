@@ -4,4 +4,4 @@ import 'src/svg_painter_generator.dart';
 
 /// Builder factory for SvgPainterGenerator.
 Builder svgPainterBuilder(BuilderOptions options) =>
-    SharedPartBuilder(<Generator>[SvgPainterGenerator()], 'svg_painter');
+    SharedPartBuilder(<Generator>[const SvgPainterGenerator()], 'svg_painter');

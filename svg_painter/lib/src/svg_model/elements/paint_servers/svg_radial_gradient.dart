@@ -14,6 +14,8 @@ final class SvgRadialGradient extends SvgGradient {
     required this.fr,
     required super.stops,
     super.gradientTransformAttributes,
+    super.gradientUnits,
+    super.spreadMethod,
     super.coreAttributes,
   });
 
@@ -46,6 +48,8 @@ final class SvgRadialGradient extends SvgGradient {
       'fr: $fr',
       'stops: ${stops.length}',
       if (gradientTransformAttributes != null) 'transform: $gradientTransformAttributes',
+      'units: $gradientUnits',
+      'spread: $spreadMethod',
       if (id != null) 'id: $id',
     ];
     return 'SvgRadialGradient(${parts.join(', ')})';

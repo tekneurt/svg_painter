@@ -3,6 +3,7 @@ import 'package:meta/meta.dart';
 import '../../svg_model/_svg_model.dart';
 
 part 'painting_fill_style.dart';
+part 'painting_gradient_units.dart';
 part 'painting_stroke_style.dart';
 part 'painting_text_style.dart';
 
@@ -27,6 +28,9 @@ abstract interface class PaintingPaintStyle {
 
   /// The ID of the shader (e.g., gradient) to use.
   String? get shaderId;
+
+  /// The coordinate system used for the shader coordinates.
+  PaintingGradientUnits? get shaderUnits;
 
   /// The opacity of the paint (0.0 to 1.0).
   double get opacity;

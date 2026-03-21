@@ -106,6 +106,14 @@ enum XmlAttributeName {
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/gradientTransform
   gradientTransform('gradientTransform'),
 
+  /// The coordinate system used for the gradient coordinates.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/gradientUnits
+  gradientUnits('gradientUnits'),
+
+  /// The method used to fill the area outside the gradient vector.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/spreadMethod
+  spreadMethod('spreadMethod'),
+
   /// The CSS class(es) of the element.
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/class
   className('class'),

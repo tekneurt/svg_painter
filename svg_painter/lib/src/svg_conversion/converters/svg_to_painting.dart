@@ -488,11 +488,10 @@ extension _SvgSvgToPaintCommands on SvgSvg {
 
 extension _SvgGroupToPaintCommands on SvgGroup {
   Result<List<PaintCommand>> _toPaintCommands(SvgPaintingContext context) {
-    // Determine if we should use saveLayer (group opacity) or flattening (multiplication).
-    final double groupOpacity = opacity?.resolve(context, SvgOrientation.unit) ?? 1.0;
-    final bool useSaveLayer = groupOpacity < 1.0 && children.length > 1;
-
-    final double finalGroupOpacity = useSaveLayer ? groupOpacity : 1.0;
+    // Determine if we should use saveLayer (group opacity).
+    // The resolved opacity is already in presentationAttributes.graphics.opacity.
+    final double resolvedOpacity = opacity?.resolve(context, SvgOrientation.unit) ?? 1.0;
+    final bool useSaveLayer = resolvedOpacity < 1.0 && children.length > 1;
 
     final PaintingStyle style = resolvePaint(
       context,
@@ -505,7 +504,12 @@ extension _SvgGroupToPaintCommands on SvgGroup {
       List<PaintCommand> childCommands,
     ) {
       return <PaintCommand>[
-        DrawGroup(commands: childCommands, style: style, id: id, opacity: finalGroupOpacity),
+        DrawGroup(
+          commands: childCommands,
+          style: style,
+          id: id,
+          opacity: useSaveLayer ? resolvedOpacity : 1.0,
+        ),
       ];
     });
   }

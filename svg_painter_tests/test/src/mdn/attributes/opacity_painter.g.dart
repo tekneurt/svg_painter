@@ -65,6 +65,7 @@ class _$OpacityPainter extends CustomPainter {
       end: Alignment(-1.0, 1.0),
       colors: <Color>[const Color(0xFF87CEEB), const Color(0xFF2E8B57)],
       stops: <double>[0.0, 1.0],
+      tileMode: TileMode.clamp,
     );
     {
       final Paint paint = Paint();

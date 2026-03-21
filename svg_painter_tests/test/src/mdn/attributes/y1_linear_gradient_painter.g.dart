@@ -65,6 +65,7 @@ class _$Y1LinearGradientPainter extends CustomPainter {
       end: Alignment(1.0, -1.0),
       colors: <Color>[Colors.black, const Color(0xFFFF0000), Colors.black],
       stops: <double>[0.05, 0.5, 0.95],
+      tileMode: TileMode.clamp,
     );
     {
       final Paint paint = Paint();
@@ -77,6 +78,7 @@ class _$Y1LinearGradientPainter extends CustomPainter {
       end: Alignment(1.0, -1.0),
       colors: <Color>[Colors.black, const Color(0xFFFF0000), Colors.black],
       stops: <double>[0.05, 0.5, 0.95],
+      tileMode: TileMode.clamp,
     );
     {
       final Paint paint = Paint();

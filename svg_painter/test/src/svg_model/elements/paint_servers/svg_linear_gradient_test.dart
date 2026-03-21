@@ -23,7 +23,7 @@ void main() {
       // Assert
       expect(
         result,
-        'SvgLinearGradient(x1: 11.0, y1: 22.0, x2: 33.0, y2: 44.0, stops: 0, transform: SvgTransformAttributes(matrix(1.0, 0.0, 0.0, 1.0, 0.0, 0.0)), id: g1)',
+        'SvgLinearGradient(x1: 11.0, y1: 22.0, x2: 33.0, y2: 44.0, stops: 0, transform: SvgTransformAttributes(matrix(1.0, 0.0, 0.0, 1.0, 0.0, 0.0)), units: SvgGradientUnits.objectBoundingBox, spread: SvgSpreadMethod.pad, id: g1)',
       );
     });
 
@@ -41,7 +41,7 @@ void main() {
       final String result = gradient.toString();
 
       // Assert
-      expect(result, 'SvgLinearGradient(x1: 1.1, y1: 2.2, x2: 33.3, y2: 44.4, stops: 0)');
+      expect(result, 'SvgLinearGradient(x1: 1.1, y1: 2.2, x2: 33.3, y2: 44.4, stops: 0, units: SvgGradientUnits.objectBoundingBox, spread: SvgSpreadMethod.pad)');
     });
   });
 }

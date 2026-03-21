@@ -37,7 +37,7 @@ void main() {
       // Assert
       expect(
         result,
-        'PaintingFillStyle(color: 4278190080, shader: grad1, opacity: 0.5, explicit: true, currentColor: false)',
+        'PaintingFillStyle(color: 4278190080, shader: grad1, units: null, opacity: 0.5, explicit: true, currentColor: false)',
       );
     });
   });

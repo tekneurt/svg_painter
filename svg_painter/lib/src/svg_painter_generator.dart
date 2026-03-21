@@ -19,6 +19,8 @@ import 'xml_model/_xml_model.dart';
 
 /// Generator that produces CustomPainter code from SVG files.
 class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
+  const SvgPainterGenerator();
+
   @visibleForTesting
   static const TypeChecker fileChecker = TypeChecker.fromUrl(
     'package:svg_painter_annotation/src/svg_painter.dart#SvgFilePainter',
@@ -309,7 +311,14 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
         buffer.writeln(
           'final Rect destRect = Alignment.center.inscribe(fittedSizes.destination, Offset.zero & size);',
         );
+
+        // Check if we need viewBoxRect for userSpaceOnUse shaders
+        final bool needsViewBoxRect = _needsViewBoxRect(commands);
+        if (needsViewBoxRect) {
+          buffer.writeln('final Rect viewBoxRect = Rect.fromLTWH(0, 0, $viewBoxWidth, $viewBoxHeight);');
+        }
         buffer.writeln();
+
         buffer.writeln('canvas.save();');
         buffer.writeln('canvas.translate(destRect.left, destRect.top);');
         buffer.writeln(
@@ -442,6 +451,18 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
     });
 
     return buffer.toString();
+  }
+
+  bool _needsViewBoxRect(List<PaintCommand> commands) {
+    for (final PaintCommand command in commands) {
+      if (command is DefineGradient && command.units == PaintingGradientUnits.userSpaceOnUse) {
+        return true;
+      }
+      if (command is DrawGroup && _needsViewBoxRect(command.commands)) {
+        return true;
+      }
+    }
+    return false;
   }
 
   void generateWidgetClass({

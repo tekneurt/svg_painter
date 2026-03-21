@@ -75,6 +75,10 @@ extension ToDefaultValue on XmlAttributeName {
       case .fillOpacity:
       case .strokeOpacity:
         return const SvgLength(1.0);
+      case .gradientUnits:
+        return SvgGradientUnits.objectBoundingBox;
+      case .spreadMethod:
+        return SvgSpreadMethod.pad;
       case .fx:
       case .fy:
         return switch (elementName) {

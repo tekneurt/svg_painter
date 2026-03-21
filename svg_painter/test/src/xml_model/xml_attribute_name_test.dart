@@ -33,6 +33,8 @@ void main() {
           XmlAttributeName.stopColor => 'stop-color',
           XmlAttributeName.stopOpacity => 'stop-opacity',
           XmlAttributeName.gradientTransform => 'gradientTransform',
+          XmlAttributeName.gradientUnits => 'gradientUnits',
+          XmlAttributeName.spreadMethod => 'spreadMethod',
           XmlAttributeName.className => 'class',
           XmlAttributeName.style => 'style',
           XmlAttributeName.fill => 'fill',

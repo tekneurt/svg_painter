@@ -20,12 +20,16 @@ class LinearGradientGenerator extends CommandGenerator<DefineLinearGradient> {
     List<InheritedProperty>? inheritedStrokes,
   }) {
     final String varName = '_grad_${command.id}';
+
     buffer.writeBlock('final Gradient $varName = LinearGradient(', () {
       buffer.writeln('begin: Alignment(${command.x1 * 2 - 1}, ${command.y1 * 2 - 1}),');
       buffer.writeln('end: Alignment(${command.x2 * 2 - 1}, ${command.y2 * 2 - 1}),');
+
       buffer.writeBlock('colors: <Color>[', () {
         for (final GradientStop stop in command.stops) {
-          final String colorCode = FlutterColorMap.getColorCode(stop.colorArgb);
+          final int alpha = (stop.opacity * 255).round().clamp(0, 255);
+          final int combinedColor = (stop.colorArgb & 0x00FFFFFF) | (alpha << 24);
+          final String colorCode = FlutterColorMap.getColorCode(combinedColor);
           buffer.writeln('$colorCode,');
         }
       }, footer: '],');
@@ -34,11 +38,13 @@ class LinearGradientGenerator extends CommandGenerator<DefineLinearGradient> {
           buffer.writeln('${stop.offset},');
         }
       }, footer: '],');
-      if (command.transformAttributes != null) {
-        // LinearGradient doesn't support generic Matrix4 transform directly in Flutter.
-        // It supports 'transform' which is a GradientTransform.
-        // For now, we omit it or would need a custom GradientTransform.
-      }
+
+      final String tileMode = switch (command.spreadMethod) {
+        PaintingSpreadMethod.pad => 'TileMode.clamp',
+        PaintingSpreadMethod.reflect => 'TileMode.mirror',
+        PaintingSpreadMethod.repeat => 'TileMode.repeated',
+      };
+      buffer.writeln('tileMode: $tileMode,');
     }, footer: ');');
   }
 }

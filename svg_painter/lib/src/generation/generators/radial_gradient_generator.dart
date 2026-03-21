@@ -20,16 +20,18 @@ class RadialGradientGenerator extends CommandGenerator<DefineRadialGradient> {
     List<InheritedProperty>? inheritedStrokes,
   }) {
     final String varName = '_grad_${command.id}';
+
     buffer.writeBlock('final Gradient $varName = RadialGradient(', () {
       buffer.writeln('center: Alignment(${command.cx * 2 - 1}, ${command.cy * 2 - 1}),');
       buffer.writeln('radius: ${command.radius},');
       buffer.writeln('focal: Alignment(${command.fx * 2 - 1}, ${command.fy * 2 - 1}),');
-      if (command.focalRadius != 0) {
-        buffer.writeln('focalRadius: ${command.focalRadius},');
-      }
+      buffer.writeln('focalRadius: ${command.focalRadius},');
+
       buffer.writeBlock('colors: <Color>[', () {
         for (final GradientStop stop in command.stops) {
-          final String colorCode = FlutterColorMap.getColorCode(stop.colorArgb);
+          final int alpha = (stop.opacity * 255).round().clamp(0, 255);
+          final int combinedColor = (stop.colorArgb & 0x00FFFFFF) | (alpha << 24);
+          final String colorCode = FlutterColorMap.getColorCode(combinedColor);
           buffer.writeln('$colorCode,');
         }
       }, footer: '],');
@@ -38,6 +40,13 @@ class RadialGradientGenerator extends CommandGenerator<DefineRadialGradient> {
           buffer.writeln('${stop.offset},');
         }
       }, footer: '],');
+
+      final String tileMode = switch (command.spreadMethod) {
+        PaintingSpreadMethod.pad => 'TileMode.clamp',
+        PaintingSpreadMethod.reflect => 'TileMode.mirror',
+        PaintingSpreadMethod.repeat => 'TileMode.repeated',
+      };
+      buffer.writeln('tileMode: $tileMode,');
     }, footer: ');');
   }
 }

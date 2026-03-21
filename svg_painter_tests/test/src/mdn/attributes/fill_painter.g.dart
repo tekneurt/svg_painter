@@ -70,8 +70,10 @@ class _$FillPainter extends CustomPainter {
       center: Alignment(0.0, 0.0),
       radius: 0.5,
       focal: Alignment(0.0, 0.0),
+      focalRadius: 0.0,
       colors: <Color>[const Color(0xFFFFC0CB), Colors.black],
       stops: <double>[0.0, 1.0],
+      tileMode: TileMode.clamp,
     );
     {
       final Paint paint = Paint();

@@ -65,6 +65,7 @@ class _$StopPainter extends CustomPainter {
       end: Alignment(-1.0, 1.0),
       colors: <Color>[const Color(0xFFFFD700), const Color(0xFFFF0000)],
       stops: <double>[0.05, 0.95],
+      tileMode: TileMode.clamp,
     );
     {
       final Paint paint = Paint();

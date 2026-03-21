@@ -26,7 +26,8 @@ final List<({CustomPainter painter, String name, Map<GoldenTestType, Set<TargetP
   (painter: const EllipsePainter(), name: 'ellipse_painter', tests: defaultGoldenTests),
   (painter: const GPainter(), name: 'g_painter', tests: defaultGoldenTests),
   (painter: const LinePainter(), name: 'line_painter', tests: defaultGoldenTests),
-  (painter: const LinearGradientPainter(), name: 'linear_gradient_painter', tests: defaultGoldenTests),
+  (painter: const LinearGradient1Painter(), name: 'linear_gradient_1_painter', tests: defaultGoldenTests),
+  (painter: const LinearGradient2Painter(), name: 'linear_gradient_2_painter', tests: defaultGoldenTests),
   // path_painter: 7px path anti-aliasing diff on viewBox test (macOS)
   (painter: const PathPainter(), name: 'path_painter', tests: <GoldenTestType, Set<TargetPlatform>?>{
     GoldenTestType.fixed: null,

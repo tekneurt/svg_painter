@@ -68,6 +68,8 @@ extension ToSvgValue on XmlElement {
         .fontWeight => attributeValue.toSvgFontWeight(),
         .fontStyle => attributeValue.toSvgFontStyle(),
         .fontFamily => attributeValue.toSvgFontFamily(),
+        .gradientUnits => attributeValue.toSvgGradientUnits(),
+        .spreadMethod => throw UnimplementedError('spreadMethod is not yet implemented'),
         .viewBox ||
         .preserveAspectRatio ||
         .id ||

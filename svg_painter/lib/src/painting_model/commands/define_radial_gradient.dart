@@ -13,26 +13,28 @@ final class DefineRadialGradient extends DefineGradient {
     required this.focalRadius,
     required super.stops,
     super.transformAttributes,
+    super.units,
+    super.spreadMethod,
   });
 
-  /// Normalized x-coordinate (0.0 - 1.0).
+  /// The x-axis coordinate of the center.
   final double cx;
 
-  /// Normalized y-coordinate (0.0 - 1.0).
+  /// The y-axis coordinate of the center.
   final double cy;
 
-  /// Normalized radius (0.0 - 1.0).
+  /// The radius.
   final double radius;
 
-  /// Normalized focal x-coordinate (0.0 - 1.0).
+  /// The x-axis coordinate of the focal point.
   final double fx;
 
-  /// Normalized focal y-coordinate (0.0 - 1.0).
+  /// The y-axis coordinate of the focal point.
   final double fy;
 
-  /// Normalized focal radius (0.0 - 1.0).
+  /// The focal radius.
   final double focalRadius;
 
   @override
-  String toString() => 'DefineRadialGradient(id: $id, stops: ${stops.length})';
+  String toString() => 'DefineRadialGradient(id: $id, stops: ${stops.length}, units: $units)';
 }

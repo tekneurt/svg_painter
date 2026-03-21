@@ -249,7 +249,9 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
         buffer.writeln('paint.color = $colorCode;');
       }
     } else {
-      buffer.writeln('paint.shader = _grad_${style.shaderId}.createShader($boundsRect);');
+      final String shaderRect =
+          style.shaderUnits == PaintingGradientUnits.userSpaceOnUse ? 'viewBoxRect' : boundsRect;
+      buffer.writeln('paint.shader = _grad_${style.shaderId}.createShader($shaderRect);');
       if (style.opacity != 1.0) {
         buffer.writeln('paint.color = paint.color.withOpacity(${style.opacity});');
       }

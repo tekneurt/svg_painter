@@ -67,6 +67,7 @@ class _$FxPainter extends CustomPainter {
       focalRadius: 0.05,
       colors: <Color>[Colors.white, const Color(0xFF8FBC8F)],
       stops: <double>[0.0, 1.0],
+      tileMode: TileMode.clamp,
     );
     final Gradient _grad_gradient2 = RadialGradient(
       center: Alignment(0.0, 0.0),
@@ -75,6 +76,7 @@ class _$FxPainter extends CustomPainter {
       focalRadius: 0.05,
       colors: <Color>[Colors.white, const Color(0xFF8FBC8F)],
       stops: <double>[0.0, 1.0],
+      tileMode: TileMode.clamp,
     );
     {
       final Paint paint = Paint();

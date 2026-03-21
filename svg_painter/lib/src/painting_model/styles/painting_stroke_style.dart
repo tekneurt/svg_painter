@@ -30,6 +30,7 @@ final class PaintingStrokeStyle implements PaintingPaintStyle {
   const PaintingStrokeStyle({
     this.colorArgb,
     this.shaderId,
+    this.shaderUnits,
     this.width = 1.0,
     this.pathLength,
     this.opacity = 1.0,
@@ -47,6 +48,10 @@ final class PaintingStrokeStyle implements PaintingPaintStyle {
   /// The ID of the shader (e.g., gradient) to use for stroking.
   @override
   final String? shaderId;
+
+  /// The coordinate system used for the shader coordinates.
+  @override
+  final PaintingGradientUnits? shaderUnits;
 
   /// The width of the stroke.
   final double width;
@@ -77,5 +82,5 @@ final class PaintingStrokeStyle implements PaintingPaintStyle {
 
   @override
   String toString() =>
-      'PaintingStrokeStyle(color: $colorArgb, shader: $shaderId, width: $width, opacity: $opacity, cap: $cap, join: $join, explicit: $isExplicit, currentColor: $isCurrentColor)';
+      'PaintingStrokeStyle(color: $colorArgb, shader: $shaderId, units: $shaderUnits, width: $width, opacity: $opacity, cap: $cap, join: $join, explicit: $isExplicit, currentColor: $isCurrentColor)';
 }
