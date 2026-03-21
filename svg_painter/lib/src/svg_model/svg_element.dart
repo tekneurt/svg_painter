@@ -32,6 +32,7 @@ part 'elements/containers/svg_container_element.dart';
 part 'elements/containers/svg_defs.dart';
 part 'elements/containers/svg_group.dart';
 part 'elements/containers/svg_svg.dart';
+part 'elements/containers/svg_symbol.dart';
 part 'elements/containers/svg_use.dart';
 
 // Geometry

@@ -9,8 +9,8 @@ final class SvgUse extends SvgGraphicsElement with SvgFontAttributable, SvgBound
     required this.href,
     required this.x,
     required this.y,
-    required this.width,
-    required this.height,
+    this.width,
+    this.height,
     super.presentationAttributes,
     super.coreAttributes,
   });
@@ -25,10 +25,10 @@ final class SvgUse extends SvgGraphicsElement with SvgFontAttributable, SvgBound
   final SvgLengthPercentage y;
 
   @override
-  final SvgLengthPercentageAuto width;
+  final SvgLengthPercentageAuto? width;
 
   @override
-  final SvgLengthPercentageAuto height;
+  final SvgLengthPercentageAuto? height;
 
   @override
   SvgFontAttributes? get fontAttributes => presentationAttributes?.font;

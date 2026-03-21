@@ -94,17 +94,17 @@ extension SvgElementToPaintCommands on SvgElement {
       final SvgUse use => use._toPaintCommands(childContext),
 
       // Definitions
+      final SvgSymbol symbol => symbol._toPaintCommands(childContext, onlyDefinitions: true),
       final SvgDefs defs => defs._toPaintCommands(childContext),
+      final SvgStop _ ||
+      final SvgMetadataElement _ ||
+      final SvgStyle _ ||
+      final SvgIgnoredElement _ =>
+        const Success<List<PaintCommand>>(<PaintCommand>[]),
       final SvgRadialGradient gradient =>
         gradient.toPaintCommand(childContext).map((PaintCommand cmd) => <PaintCommand>[cmd]),
       final SvgLinearGradient gradient =>
         gradient.toPaintCommand(childContext).map((PaintCommand cmd) => <PaintCommand>[cmd]),
-      final SvgStop _ => const Success<List<PaintCommand>>(<PaintCommand>[]),
-
-      // Non-rendering elements
-      final SvgMetadataElement _ ||
-      final SvgStyle _ ||
-      final SvgIgnoredElement _ => const Success<List<PaintCommand>>(<PaintCommand>[]),
 
       // Safety fallback
       _ => const Success<List<PaintCommand>>(<PaintCommand>[]),
@@ -149,9 +149,181 @@ extension _SvgUseToPaintCommands on SvgUse {
       ),
     );
 
+    if (target is SvgSymbol) {
+      // For symbols, we establish a NEW viewport.
+      // Width and Height from <use> override those on <symbol>.
+      return target
+          ._toPaintCommands(context, width: width, height: height)
+          .map((List<PaintCommand> childCommands) {
+        return <PaintCommand>[DrawGroup(commands: childCommands, style: style, id: id)];
+      });
+    }
+
     // Context for children inherits styles, but coordinates are now in the <use> local space.
     return target.toPaintCommands(context).map((List<PaintCommand> childCommands) {
       return <PaintCommand>[DrawGroup(commands: childCommands, style: style, id: id)];
+    });
+  }
+}
+
+extension _SvgSymbolToPaintCommands on SvgSymbol {
+  Result<List<PaintCommand>> _toPaintCommands(
+    SvgPaintingContext context, {
+    SvgLengthPercentageAuto? width,
+    SvgLengthPercentageAuto? height,
+    bool onlyDefinitions = false,
+  }) {
+    // Note: Symbols usually don't use x/y directly, but if they do, they act as an additional translation
+    // inside the viewport established by the <use> element.
+    final double xVal = (x ?? const SvgLength(0.0)).resolve(
+      context,
+      SvgOrientation.horizontal,
+    );
+    final double yVal = (y ?? const SvgLength(0.0)).resolve(
+      context,
+      SvgOrientation.vertical,
+    );
+
+    // 1. Resolve Viewport Dimensions
+    // useWidth/useHeight takes precedence over symbol's own width/height.
+    final SvgLengthPercentageAuto? finalWidthAttr = width ?? this.width;
+    final SvgLengthPercentageAuto? finalHeightAttr = height ?? this.height;
+
+    // Resolve them against the OUTER context.
+    // If width/height are not provided on <use> OR <symbol>, we MUST default to the context size.
+    final double wVal = finalWidthAttr?.resolveOrNull(context, SvgOrientation.horizontal) ??
+        context.viewBoxWidth;
+    final double hVal = finalHeightAttr?.resolveOrNull(context, SvgOrientation.vertical) ??
+        context.viewBoxHeight;
+
+    // 2. Resolve ViewBox Mapping
+    final double vbW = viewBox?.width ?? wVal;
+    final double vbH = viewBox?.height ?? hVal;
+    final double vbMinX = viewBox?.minX ?? 0.0;
+    final double vbMinY = viewBox?.minY ?? 0.0;
+
+    final SvgPreserveAspectRatio par = preserveAspectRatio ?? SvgPreserveAspectRatio.defaults;
+
+    double sx = wVal / vbW;
+    double sy = hVal / vbH;
+
+    double alignX = 0.0;
+    double alignY = 0.0;
+
+    if (par.alignment != SvgPreserveAspectRatioAlignment.none) {
+      if (par.scale == SvgPreserveAspectRatioScale.slice) {
+        sx = math.max(sx, sy);
+        sy = sx;
+      } else {
+        sx = math.min(sx, sy);
+        sy = sx;
+      }
+
+      final double viewBoxScaledWidth = vbW * sx;
+      final double viewBoxScaledHeight = vbH * sy;
+
+      switch (par.alignment) {
+        case SvgPreserveAspectRatioAlignment.xMinYMin:
+        case SvgPreserveAspectRatioAlignment.xMinYMid:
+        case SvgPreserveAspectRatioAlignment.xMinYMax:
+          alignX = 0.0;
+        case SvgPreserveAspectRatioAlignment.xMidYMin:
+        case SvgPreserveAspectRatioAlignment.xMidYMid:
+        case SvgPreserveAspectRatioAlignment.xMidYMax:
+          alignX = (wVal - viewBoxScaledWidth) / 2.0;
+        case SvgPreserveAspectRatioAlignment.xMaxYMin:
+        case SvgPreserveAspectRatioAlignment.xMaxYMid:
+        case SvgPreserveAspectRatioAlignment.xMaxYMax:
+          alignX = wVal - viewBoxScaledWidth;
+        case SvgPreserveAspectRatioAlignment.none:
+          break; // Handled above
+      }
+
+      switch (par.alignment) {
+        case SvgPreserveAspectRatioAlignment.xMinYMin:
+        case SvgPreserveAspectRatioAlignment.xMidYMin:
+        case SvgPreserveAspectRatioAlignment.xMaxYMin:
+          alignY = 0.0;
+        case SvgPreserveAspectRatioAlignment.xMinYMid:
+        case SvgPreserveAspectRatioAlignment.xMidYMid:
+        case SvgPreserveAspectRatioAlignment.xMaxYMid:
+          alignY = (hVal - viewBoxScaledHeight) / 2.0;
+        case SvgPreserveAspectRatioAlignment.xMinYMax:
+        case SvgPreserveAspectRatioAlignment.xMidYMax:
+        case SvgPreserveAspectRatioAlignment.xMaxYMax:
+          alignY = hVal - viewBoxScaledHeight;
+        case SvgPreserveAspectRatioAlignment.none:
+          break;
+      }
+    }
+
+    // 3. Coordinate Mappings
+    // Viewport mapping (Outer)
+    final List<SvgTransformOperation> viewportOps = <SvgTransformOperation>[];
+    final SvgTransformAttributes? ta = transformAttributes;
+    if (ta != null) {
+      viewportOps.insertAll(0, ta.operations);
+    }
+    if (xVal != 0 || yVal != 0) {
+      viewportOps.add(SvgTranslate(xVal, yVal));
+    }
+
+    // ViewBox mapping (Inner)
+    final List<SvgTransformOperation> viewBoxOps = <SvgTransformOperation>[];
+    if (alignX != 0 || alignY != 0) {
+      viewBoxOps.add(SvgTranslate(alignX, alignY));
+    }
+    if (sx != 1.0 || sy != 1.0) {
+      viewBoxOps.add(SvgScale(sx, sy));
+    }
+    if (vbMinX != 0 || vbMinY != 0) {
+      viewBoxOps.add(SvgTranslate(-vbMinX, -vbMinY));
+    }
+
+    final SvgPaintingContext innerContext = context.derive(
+      viewBoxWidth: vbW,
+      viewBoxHeight: vbH,
+      viewBoxMinX: vbMinX,
+      viewBoxMinY: vbMinY,
+    );
+
+    // Symbols always establish a new viewport and should clip.
+    final PaintingRect clipRect = PaintingRect(0, 0, wVal, hVal);
+
+    final PaintingStyle viewportStyle = resolvePaint(
+      context,
+      tagName: 'symbol',
+      coreAttributes: coreAttributes,
+      presentationAttributes: (presentationAttributes ?? const SvgPresentationAttributes()).merge(
+        SvgPresentationAttributes(
+          graphics: SvgGraphicsAttributes(
+            transformAttributes: viewportOps.isEmpty ? null : SvgTransformAttributes(viewportOps),
+          ),
+        ),
+      ),
+      clipRect: clipRect,
+    );
+
+    return children.map((SvgElement child) => child.toPaintCommands(innerContext)).combine().map((
+      List<PaintCommand> childCommands,
+    ) {
+      if (onlyDefinitions) {
+        return childCommands
+            .where((PaintCommand cmd) => cmd is DefineLinearGradient || cmd is DefineRadialGradient)
+            .toList();
+      }
+
+      if (viewBoxOps.isEmpty) {
+        return <PaintCommand>[DrawGroup(commands: childCommands, style: viewportStyle, id: id)];
+      } else {
+        final PaintingStyle viewBoxStyle = PaintingStyle(
+          transformAttributes: SvgTransformAttributes(viewBoxOps),
+        );
+        final DrawGroup innerGroup = DrawGroup(commands: childCommands, style: viewBoxStyle);
+        return <PaintCommand>[
+          DrawGroup(commands: <PaintCommand>[innerGroup], style: viewportStyle, id: id)
+        ];
+      }
     });
   }
 }

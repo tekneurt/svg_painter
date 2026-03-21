@@ -14,6 +14,7 @@ export 'to_svg_rect.dart';
 export 'to_svg_root.dart';
 export 'to_svg_stop.dart';
 export 'to_svg_style.dart';
+export 'to_svg_symbol.dart';
 export 'to_svg_text.dart';
 export 'to_svg_use.dart';
 export 'to_svg_value.dart';

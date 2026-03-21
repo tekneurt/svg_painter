@@ -46,6 +46,8 @@ extension ToSvgElement on XmlElement {
           return toSvgDefs();
         case .g:
           return toSvgGroup();
+        case .symbol:
+          return toSvgSymbol();
         case .use:
           return toSvgUse();
         case .radialGradient:

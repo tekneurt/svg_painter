@@ -17,11 +17,11 @@ extension ToSvgUse on XmlElement {
 
     final SvgLengthPercentage x = toSvgValue<SvgLengthPercentage>(elementName, XmlAttributeName.x);
     final SvgLengthPercentage y = toSvgValue<SvgLengthPercentage>(elementName, XmlAttributeName.y);
-    final SvgLengthPercentageAuto width = toSvgValue<SvgLengthPercentageAuto>(
+    final SvgLengthPercentageAuto? width = toSvgValueOrNull<SvgLengthPercentageAuto>(
       elementName,
       XmlAttributeName.width,
     );
-    final SvgLengthPercentageAuto height = toSvgValue<SvgLengthPercentageAuto>(
+    final SvgLengthPercentageAuto? height = toSvgValueOrNull<SvgLengthPercentageAuto>(
       elementName,
       XmlAttributeName.height,
     );

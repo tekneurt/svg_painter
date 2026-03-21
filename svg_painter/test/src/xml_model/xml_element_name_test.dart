@@ -17,6 +17,7 @@ void main() {
           XmlElementName.polygon => 'polygon',
           XmlElementName.defs => 'defs',
           XmlElementName.g => 'g',
+          XmlElementName.symbol => 'symbol',
           XmlElementName.use => 'use',
           XmlElementName.radialGradient => 'radialGradient',
           XmlElementName.linearGradient => 'linearGradient',

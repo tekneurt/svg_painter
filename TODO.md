@@ -222,11 +222,11 @@
 ### Phase 4: Essential Elements (0.3.0)
 *Reaching standard compatibility with essential SVG elements.*
 
-- [x] **Core Refactoring**:
+- [x] **Core Refactoring**:only the 
     - [x] `mixin SvgViewBoxed`: Holds `viewBox` and `preserveAspectRatio` (applied to: `SvgSvg`, `SvgSymbol`, `SvgMarker`).
     - [x] `mixin SvgBounded`: Holds `x`, `y`, `width`, `height` (applied to: `SvgRect`, `SvgSvg`, `SvgUse`, `SvgImage`).
     - [x] **Architecture Cleanup (SVG Model)**: Rename `lib/src/svg_model/attributes/` to `attribute_groups/` to clarify that these are DTOs. Audit `lib/src/svg_model/elements/base/` mixins (like `SvgGeometry` holding `pathLength`) to ensure clear boundaries between element traits (mixins) and attribute groupings.
-- [ ] **Structural Elements**: `<symbol>`, `<tspan>`, `<defs>`.
+- [ ] **Structural Elements**: `<symbol>` [x], `<tspan>`, `<defs>`.
 - [ ] **Referencing & External Assets**: `<image>`, `<use>`.
 - [ ] **Clipping & Masking**: `<clipPath>`, `<mask >`.
 - [ ] **Accessibility (Semantic Mapping)**: Map `<title>` and `<desc>` automatically to Flutter's `Semantics` widget in the generated code.

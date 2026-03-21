@@ -24,10 +24,15 @@ class GroupGenerator extends ShapeGenerator<DrawGroup> {
       return;
     }
     wrapWithStyle(buffer, command.style, () {
-      final bool useLayer = command.opacity < 1.0;
+      // Use command.opacity (calculated during conversion) OR style.groupOpacity.
+      // command.opacity is used for explicit saveLayer logic from _SvgGroupToPaintCommands.
+      // style.groupOpacity is used for opacity resolved from CSS/Attributes.
+      final double effectiveOpacity = command.opacity * command.style.groupOpacity;
+      final bool useLayer = effectiveOpacity < 1.0;
+
       if (useLayer) {
         final String hexOpacity =
-            (command.opacity * 255).round().toRadixString(16).padLeft(2, '0').toUpperCase();
+            (effectiveOpacity * 255).round().toRadixString(16).padLeft(2, '0').toUpperCase();
         buffer.writeln('canvas.saveLayer(null, Paint()..color = const Color(0x${hexOpacity}FFFFFF));');
       }
 

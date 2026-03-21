@@ -110,7 +110,7 @@ class _$OpacityPainter extends CustomPainter {
       paint.style = PaintingStyle.fill;
       canvas.drawCircle(const Offset(217.5, 250.0), 50.0, paint);
     }
-    canvas.saveLayer(null, Paint()..color = const Color(0x80FFFFFF));
+    canvas.saveLayer(null, Paint()..color = const Color(0x40FFFFFF));
     {
       final Paint paint = Paint();
       paint.color = const Color(0xFFFF0000);
@@ -148,7 +148,7 @@ class _$OpacityPainter extends CustomPainter {
       paint.style = PaintingStyle.fill;
       canvas.drawCircle(const Offset(782.5, 250.0), 50.0, paint);
     }
-    canvas.saveLayer(null, Paint()..color = const Color(0x80FFFFFF));
+    canvas.saveLayer(null, Paint()..color = const Color(0x40FFFFFF));
     {
       final Paint paint = Paint();
       paint.color = const Color(0x80FF0000);

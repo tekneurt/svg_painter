@@ -11,5 +11,6 @@ export 'radial_gradient.dart';
 export 'rect.dart';
 export 'stop.dart';
 export 'svg.dart';
+export 'symbol.dart';
 export 'text.dart';
 export 'use.dart';

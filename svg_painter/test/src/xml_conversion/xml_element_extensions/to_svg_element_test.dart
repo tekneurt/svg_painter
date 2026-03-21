@@ -136,6 +136,19 @@ void main() {
       expect((result as Success<SvgElement>).value, isA<SvgGroup>());
     });
 
+    test('should return SvgSymbol when <symbol> is provided', () {
+      // Arrange
+      final XmlDocument document = XmlDocument.parse('<symbol />');
+      final XmlElement element = document.rootElement;
+
+      // Act
+      final Result<SvgElement> result = element.toSvgElement();
+
+      // Assert
+      expect(result, isA<Success<SvgElement>>());
+      expect((result as Success<SvgElement>).value, isA<SvgSymbol>());
+    });
+
     test('should return SvgUse when <use> with valid "href" attribute is provided', () {
       // Arrange
       final XmlDocument document = XmlDocument.parse('<use href="#ref" />');
