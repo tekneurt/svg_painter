@@ -2,7 +2,7 @@ name: svg_painter_mono
 publish_to: none
 
 environment:
-  sdk: ^3.10.4
+  sdk: ^3.11.3
 
 workspace:
   - svg_painter

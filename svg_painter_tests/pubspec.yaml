@@ -3,8 +3,8 @@ description: Golden test suite for the svg_painter package, validating SVG to Cu
 publish_to: none
 
 environment:
-  sdk: ^3.10.4
-  flutter: ">=1.17.0"
+  sdk: ^3.11.3
+  flutter: ">=3.41.5"
 
 dependencies:
   flutter:
@@ -24,3 +24,9 @@ dev_dependencies:
 dependency_overrides:
   svg_painter_annotation:
     path: ../svg_painter_annotation
+  # Required to resolve conflict between dart_style ^3.1.8 (needs analyzer 12) 
+  # and mockito ^5.6.3 (needs analyzer <11).
+  analyzer: ^12.0.0
+  # Required to resolve conflict between analyzer 12 (needs meta 1.18)
+  # and Flutter SDK 3.41.5 (pins meta to 1.17.0).
+  meta: 1.17.0

@@ -1,12 +1,11 @@
 name: svg_painter_fixtures
 description: Test fixtures (SVG files and reference code) for the svg_painter project.
-version: 0.0.1
+version: 0.3.0
 repository: https://github.com/tekneurt/svg_painter/tree/master/svg_painter_fixtures
 publish_to: none
 
 environment:
-  sdk: ^3.10.4
-
+  sdk: ^3.11.3
 
 dev_dependencies:
   test: ^1.28.0
