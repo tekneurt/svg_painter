@@ -18,7 +18,7 @@ void main() {
       );
 
       final GeneratorBuffer buffer = GeneratorBuffer();
-      const LinearGradientGenerator().generate(cmd, buffer);
+      const LinearGradientGenerator().generate(cmd, buffer, painterClassName: 'TestPainter');
       final String result = buffer.toString();
 
       expect(result, contains('LinearGradient('));

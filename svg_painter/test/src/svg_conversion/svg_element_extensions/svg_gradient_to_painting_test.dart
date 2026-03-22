@@ -41,13 +41,13 @@ void main() {
       expect(lgrad.stops[1].opacity, 0.5);
     });
 
-    test('SvgLinearGradient should bake rotate(90) transform and adjust range', () {
+    test('SvgLinearGradient should preserve gradientTransformAttributes', () {
       const SvgLinearGradient grad = SvgLinearGradient(
         coreAttributes: SvgCoreAttributes(id: 'g-rot-adj'),
         x1: SvgLength(0),
         y1: SvgLength(0),
         x2: SvgLength(0),
-        y2: SvgLength(1), // Vertical
+        y2: SvgLength(1),
         gradientTransformAttributes: SvgTransformAttributes(<SvgTransformOperation>[SvgRotate(90)]),
         stops: <SvgStop>[
           SvgStop(
@@ -63,12 +63,13 @@ void main() {
       expect(result, isA<Success<PaintCommand>>());
       final PaintCommand cmd = (result as Success<PaintCommand>).value;
       final DefineLinearGradient lgrad = cmd as DefineLinearGradient;
-      // rotate(90) on (0,1) gives (-1, 0), then adjusted by +1 to (0,0)
-      // (0,0) remains (0,0) then adjusted by +1 to (1,0)
-      expect(lgrad.x1, closeTo(1, 0.001));
+      // Alignments should NOT be baked anymore
+      expect(lgrad.x1, closeTo(0, 0.001));
       expect(lgrad.y1, closeTo(0, 0.001));
       expect(lgrad.x2, closeTo(0, 0.001));
-      expect(lgrad.y2, closeTo(0, 0.001));
+      expect(lgrad.y2, closeTo(1, 0.001));
+      expect(lgrad.transformAttributes, isNotNull);
+      expect(lgrad.transformAttributes!.operations.first, isA<SvgRotate>());
     });
 
     test('SvgRadialGradient should convert to DefineRadialGradient', () {

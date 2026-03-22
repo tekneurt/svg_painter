@@ -4,7 +4,7 @@ import 'package:test/test.dart';
 
 void main() {
   group('Property Exposure', () {
-    final SvgPainterGenerator generator = SvgPainterGenerator();
+    const SvgPainterGenerator generator = SvgPainterGenerator();
 
     test('should generate a nullable Color property for elements with an id', () {
       // Arrange

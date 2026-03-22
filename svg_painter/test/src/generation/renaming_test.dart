@@ -4,7 +4,7 @@ import 'package:test/test.dart';
 
 void main() {
   group('Property Renaming', () {
-    final SvgPainterGenerator generator = SvgPainterGenerator();
+    const SvgPainterGenerator generator = SvgPainterGenerator();
 
     test('should rename ID-based properties', () {
       // Arrange

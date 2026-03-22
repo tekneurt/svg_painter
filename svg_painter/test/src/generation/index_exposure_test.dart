@@ -4,7 +4,7 @@ import 'package:test/test.dart';
 
 void main() {
   group('Index-Based Exposure', () {
-    final SvgPainterGenerator generator = SvgPainterGenerator();
+    const SvgPainterGenerator generator = SvgPainterGenerator();
 
     test('should generate fill and stroke properties when only one group exists', () {
       // Arrange

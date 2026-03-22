@@ -24,6 +24,7 @@ void main() {
         command,
         buffer,
         generators: generators,
+        painterClassName: 'TestPainter',
         inheritedFills: <InheritedProperty>[const InheritedProperty('parentFill', colorArgb: 0xFF0000FF)],
       );
 
@@ -42,7 +43,7 @@ void main() {
         DrawGroup: const GroupGenerator(),
       };
 
-      generator.generate(command, buffer, generators: generators);
+      generator.generate(command, buffer, generators: generators, painterClassName: 'TestPainter');
 
       expect(buffer.toString(), contains('canvas.saveLayer'));
       expect(buffer.toString(), contains('canvas.restore()'));

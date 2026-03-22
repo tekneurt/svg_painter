@@ -1,6 +1,7 @@
 import '../../painting_model/_painting_model.dart';
 import '../command_generator.dart';
 import '../flutter_color_map.dart';
+import '../generation_extensions.dart';
 import '../generator_buffer.dart';
 import '../models.dart';
 import '../palette_analyzer.dart';
@@ -18,6 +19,8 @@ class LinearGradientGenerator extends CommandGenerator<DefineLinearGradient> {
     Map<String, String>? activeStrokeProperties,
     List<InheritedProperty>? inheritedFills,
     List<InheritedProperty>? inheritedStrokes,
+    String? painterClassName,
+    Set<String>? gradientsNeedingStretch,
   }) {
     final String varName = '_grad_${command.id}';
 
@@ -45,6 +48,18 @@ class LinearGradientGenerator extends CommandGenerator<DefineLinearGradient> {
         PaintingSpreadMethod.repeat => 'TileMode.repeated',
       };
       buffer.writeln('tileMode: $tileMode,');
+
+      final String cleanName = (painterClassName ?? 'Unknown')
+          .replaceAll(r'$', '')
+          .replaceFirst(RegExp(r'^_+'), '');
+      final String helperName = '_SvgGradientTransform_$cleanName';
+
+      if (command.transformAttributes != null) {
+        final List<double> matrix =
+            command.transformAttributes!.toFlutterMatrix();
+        buffer.writeln(
+            'transform: $helperName(matrix: <double>[${matrix.join(', ')}]),');
+      }
     }, footer: ');');
   }
 }

@@ -16,7 +16,7 @@ void main() {
       final GeneratorBuffer buffer = GeneratorBuffer();
 
       // Act
-      generator.generate(command, buffer);
+      generator.generate(command, buffer, painterClassName: 'TestPainter');
 
       // Assert
       final String output = buffer.toString();
@@ -36,7 +36,7 @@ void main() {
       final GeneratorBuffer buffer = GeneratorBuffer();
 
       // Act
-      generator.generate(command, buffer);
+      generator.generate(command, buffer, painterClassName: 'TestPainter');
 
       // Assert
       final String output = buffer.toString();
@@ -68,7 +68,7 @@ void main() {
         final GeneratorBuffer buffer = GeneratorBuffer();
 
         // Act
-        generator.generate(command, buffer);
+        generator.generate(command, buffer, painterClassName: 'TestPainter');
 
         // Assert
         final String output = buffer.toString();

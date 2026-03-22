@@ -19,6 +19,8 @@ class GroupGenerator extends ShapeGenerator<DrawGroup> {
     Map<String, String>? activeStrokeProperties,
     List<InheritedProperty>? inheritedFills,
     List<InheritedProperty>? inheritedStrokes,
+    String? painterClassName,
+    Set<String>? gradientsNeedingStretch,
   }) {
     if (generators == null) {
       return;
@@ -117,6 +119,8 @@ class GroupGenerator extends ShapeGenerator<DrawGroup> {
           activeStrokeProperties: activeStrokeProperties,
           inheritedFills: nextInheritedFills,
           inheritedStrokes: nextInheritedStrokes,
+          painterClassName: painterClassName,
+          gradientsNeedingStretch: gradientsNeedingStretch,
         );
       }
 

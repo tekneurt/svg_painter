@@ -18,6 +18,8 @@ class PolyGenerator<T extends DrawCommand> extends ShapeGenerator<T> {
     Map<String, String>? activeStrokeProperties,
     List<InheritedProperty>? inheritedFills,
     List<InheritedProperty>? inheritedStrokes,
+    String? painterClassName,
+    Set<String>? gradientsNeedingStretch,
   }) {
     final List<double> points;
     bool isClosed = false;

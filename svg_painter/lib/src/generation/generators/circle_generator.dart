@@ -18,6 +18,8 @@ class CircleGenerator extends ShapeGenerator<DrawCircle> {
     Map<String, String>? activeStrokeProperties,
     List<InheritedProperty>? inheritedFills,
     List<InheritedProperty>? inheritedStrokes,
+    String? painterClassName,
+    Set<String>? gradientsNeedingStretch,
   }) {
     wrapWithStyle(buffer, command.style, () {
       final String bounds =

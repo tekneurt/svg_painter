@@ -17,5 +17,7 @@ abstract class CommandGenerator<T extends PaintCommand> {
     Map<String, String>? activeStrokeProperties,
     List<InheritedProperty>? inheritedFills,
     List<InheritedProperty>? inheritedStrokes,
+    String? painterClassName,
+    Set<String>? gradientsNeedingStretch,
   });
 }

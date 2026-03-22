@@ -44,31 +44,6 @@ extension SvgGradientToPainting on SvgGradient {
         y2 /= context.viewBoxHeight;
       }
 
-      // Simple Bake for rotate(90): horizontal becomes vertical
-      // Only applicable for objectBoundingBox for now as it's a simple 0..1 flip.
-      if (gradientUnits == SvgGradientUnits.objectBoundingBox) {
-        final SvgTransformAttributes? trans = gradientTransformAttributes;
-        if (trans != null && trans.operations.length == 1 && trans.operations.first is SvgRotate) {
-          final SvgRotate rotate = trans.operations.first as SvgRotate;
-          if (rotate.angle == 90 || rotate.angle == -270) {
-            final double oldX1 = x1;
-            final double oldX2 = x2;
-            final double oldY1 = y1;
-            final double oldY2 = y2;
-
-            x1 = -oldY1;
-            y1 = oldX1;
-            x2 = -oldY2;
-            y2 = oldX2;
-
-            if (x1 < 0 || x2 < 0) {
-              x1 += 1.0;
-              x2 += 1.0;
-            }
-          }
-        }
-      }
-
       return Success<PaintCommand>(
         DefineLinearGradient(
           id: gradId,

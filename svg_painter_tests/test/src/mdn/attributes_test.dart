@@ -8,6 +8,7 @@ import 'attributes/fill_opacity_painter.dart';
 import 'attributes/fill_painter.dart';
 import 'attributes/fx_painter.dart';
 import 'attributes/fy_painter.dart';
+import 'attributes/gradient_transform_painter.dart';
 import 'attributes/height_painter.dart';
 import 'attributes/id_painter.dart';
 import 'attributes/opacity_painter.dart';
@@ -130,6 +131,7 @@ final List<({CustomPainter painter, String name, Map<GoldenTestType, Set<TargetP
   (painter: const ViewBox1Painter(), name: 'view_box_1_painter', tests: defaultGoldenTests),
   (painter: const ViewBox2Painter(), name: 'view_box_2_painter', tests: defaultGoldenTests),
   (painter: const ViewBox3Painter(), name: 'view_box_3_painter', tests: defaultGoldenTests),
+  (painter: const GradientTransformPainter(), name: 'gradient_transform_painter', tests: defaultGoldenTests),
   (painter: const WidthPainter(), name: 'width_painter', tests: defaultGoldenTests),
   (painter: const X1ExamplesPainter(), name: 'x1_examples_painter', tests: defaultGoldenTests),
   (painter: const X1LinePainter(), name: 'x1_line_painter', tests: defaultGoldenTests),

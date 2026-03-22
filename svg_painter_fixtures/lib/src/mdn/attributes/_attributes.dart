@@ -4,6 +4,8 @@ export 'fill.dart';
 export 'fill_opacity.dart';
 export 'fx.dart';
 export 'fy.dart';
+export 'gradient_transform.dart';
+export 'gradient_units.dart';
 export 'height.dart';
 export 'id.dart';
 export 'opacity.dart';

@@ -20,7 +20,7 @@ void main() {
       );
 
       final GeneratorBuffer buffer = GeneratorBuffer();
-      const RadialGradientGenerator().generate(cmd, buffer);
+      const RadialGradientGenerator().generate(cmd, buffer, painterClassName: 'TestPainter');
       final String result = buffer.toString();
 
       expect(result, contains('RadialGradient('));
@@ -47,7 +47,7 @@ void main() {
       );
 
       final GeneratorBuffer buffer = GeneratorBuffer();
-      const RadialGradientGenerator().generate(cmd, buffer);
+      const RadialGradientGenerator().generate(cmd, buffer, painterClassName: 'TestPainter');
       final String result = buffer.toString();
 
       expect(result, contains('focalRadius: 0.1'));

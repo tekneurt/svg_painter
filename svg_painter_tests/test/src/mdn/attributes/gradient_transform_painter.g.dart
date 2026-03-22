@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'defs_painter.dart';
+part of 'gradient_transform_painter.dart';
 
 // **************************************************************************
 // SvgPainterGenerator
@@ -10,8 +10,8 @@ part of 'defs_painter.dart';
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
 
-class DefsPainterWidget extends StatelessWidget {
-  const DefsPainterWidget({
+class GradientTransformPainterWidget extends StatelessWidget {
+  const GradientTransformPainterWidget({
     super.key,
     this.width,
     this.height,
@@ -27,24 +27,24 @@ class DefsPainterWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomPaint(
-      size: Size(width ?? 10.0, height ?? 10.0),
-      painter: _$DefsPainter(fit: fit),
+      size: Size(width ?? 420.0, height ?? 200.0),
+      painter: _$GradientTransformPainter(fit: fit),
     );
   }
 }
 
-class _$DefsPainter extends CustomPainter {
-  const _$DefsPainter({this.fit = BoxFit.contain});
+class _$GradientTransformPainter extends CustomPainter {
+  const _$GradientTransformPainter({this.fit = BoxFit.contain});
 
   final BoxFit fit;
 
-  Size get viewBox => const Size(10.0, 10.0);
+  Size get viewBox => const Size(420.0, 200.0);
 
   @override
   void paint(Canvas canvas, Size size) {
     final FittedSizes fittedSizes = applyBoxFit(
       fit,
-      const Size(10.0, 10.0),
+      const Size(420.0, 200.0),
       size,
     );
     final Size sourceSize = fittedSizes.source;
@@ -52,6 +52,7 @@ class _$DefsPainter extends CustomPainter {
       fittedSizes.destination,
       Offset.zero & size,
     );
+    final Rect viewBoxRect = Rect.fromLTWH(0, 0, 420.0, 200.0);
 
     canvas.save();
     canvas.translate(destRect.left, destRect.top);
@@ -60,44 +61,64 @@ class _$DefsPainter extends CustomPainter {
       destRect.height / sourceSize.height,
     );
 
-    final Gradient _grad_myGradient = LinearGradient(
-      begin: Alignment(-1.0, -1.0),
-      end: Alignment(1.0, -1.0),
-      colors: <Color>[const Color(0xFFFFD700), const Color(0xFFFF0000)],
-      stops: <double>[0.2, 0.9],
+    final Gradient _grad_gradient1 = RadialGradient(
+      center: Alignment(-0.5238095238095238, 0.0),
+      radius: 0.3040089501552408,
+      focal: Alignment(-0.5238095238095238, 0.0),
+      focalRadius: 0.0,
+      colors: <Color>[
+        const Color(0xFF00008B),
+        const Color(0xFF87CEEB),
+        const Color(0xFF00008B),
+      ],
+      stops: <double>[0.0, 0.5, 1.0],
       tileMode: TileMode.clamp,
-      transform: _SvgGradientTransform_DefsPainter(
+    );
+    final Gradient _grad_gradient2 = RadialGradient(
+      center: Alignment(-0.5238095238095238, 0.0),
+      radius: 0.3040089501552408,
+      focal: Alignment(-0.5238095238095238, 0.0),
+      focalRadius: 0.0,
+      colors: <Color>[
+        const Color(0xFF00008B),
+        const Color(0xFF87CEEB),
+        const Color(0xFF00008B),
+      ],
+      stops: <double>[0.0, 0.5, 1.0],
+      tileMode: TileMode.clamp,
+      transform: _SvgGradientTransform_GradientTransformPainter(
         matrix: <double>[
-          6.123233995736766e-17,
           1.0,
           0.0,
           0.0,
-          -1.0,
-          6.123233995736766e-17,
+          0.0,
+          0.36397023426620234,
+          1.0,
           0.0,
           0.0,
           0.0,
           0.0,
           1.0,
           0.0,
-          0.0,
+          185.0,
           0.0,
           0.0,
           1.0,
         ],
       ),
     );
-    canvas.save();
-    canvas.translate(5.0, 5.0);
     {
       final Paint paint = Paint();
-      paint.shader = _grad_myGradient.createShader(
-        Rect.fromCircle(center: const Offset(0.0, 0.0), radius: 5.0),
-      );
+      paint.shader = _grad_gradient1.createShader(viewBoxRect);
       paint.style = PaintingStyle.fill;
-      canvas.drawCircle(const Offset(0.0, 0.0), 5.0, paint);
+      canvas.drawRect(Rect.fromLTWH(0.0, 0.0, 200.0, 200.0), paint);
     }
-    canvas.restore();
+    {
+      final Paint paint = Paint();
+      paint.shader = _grad_gradient2.createShader(viewBoxRect);
+      paint.style = PaintingStyle.fill;
+      canvas.drawRect(Rect.fromLTWH(220.0, 0.0, 200.0, 200.0), paint);
+    }
     canvas.restore();
   }
 
@@ -116,7 +137,7 @@ class _$DefsPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(covariant _$DefsPainter oldDelegate) {
+  bool shouldRepaint(covariant _$GradientTransformPainter oldDelegate) {
     if (fit == oldDelegate.fit) {
       return false;
     } else {
@@ -126,8 +147,8 @@ class _$DefsPainter extends CustomPainter {
 }
 
 /// A private helper class to apply arbitrary transformations to SVG gradients.
-class _SvgGradientTransform_DefsPainter extends GradientTransform {
-  const _SvgGradientTransform_DefsPainter({
+class _SvgGradientTransform_GradientTransformPainter extends GradientTransform {
+  const _SvgGradientTransform_GradientTransformPainter({
     this.matrix,
     this.isElliptical = false,
     this.centerX = 0.5,

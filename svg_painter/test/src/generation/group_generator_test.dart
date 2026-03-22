@@ -287,6 +287,8 @@ class _SpyGenerator extends CommandGenerator<DrawCircle> {
     Map<String, String>? activeStrokeProperties,
     List<InheritedProperty>? inheritedFills,
     List<InheritedProperty>? inheritedStrokes,
+    String? painterClassName,
+    Set<String>? gradientsNeedingStretch,
   }) {
     lastInheritedFills = inheritedFills;
     lastInheritedStrokes = inheritedStrokes;

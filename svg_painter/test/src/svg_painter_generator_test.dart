@@ -35,7 +35,7 @@ class MockableSvgPainterGenerator extends SvgPainterGenerator {
 ])
 void main() {
   group('SvgPainterGenerator', () {
-    final SvgPainterGenerator generator = SvgPainterGenerator();
+    const SvgPainterGenerator generator = SvgPainterGenerator();
 
     group('generatePainterClass', () {
       test('should generate a CustomPainter class with the correct name and viewBox', () {

@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'defs_painter.dart';
+part of 'radial_ellipse_painter.dart';
 
 // **************************************************************************
 // SvgPainterGenerator
@@ -10,8 +10,8 @@ part of 'defs_painter.dart';
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
 
-class DefsPainterWidget extends StatelessWidget {
-  const DefsPainterWidget({
+class RadialEllipsePainterWidget extends StatelessWidget {
+  const RadialEllipsePainterWidget({
     super.key,
     this.width,
     this.height,
@@ -27,24 +27,24 @@ class DefsPainterWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomPaint(
-      size: Size(width ?? 10.0, height ?? 10.0),
-      painter: _$DefsPainter(fit: fit),
+      size: Size(width ?? 200.0, height ?? 100.0),
+      painter: _$RadialEllipsePainter(fit: fit),
     );
   }
 }
 
-class _$DefsPainter extends CustomPainter {
-  const _$DefsPainter({this.fit = BoxFit.contain});
+class _$RadialEllipsePainter extends CustomPainter {
+  const _$RadialEllipsePainter({this.fit = BoxFit.contain});
 
   final BoxFit fit;
 
-  Size get viewBox => const Size(10.0, 10.0);
+  Size get viewBox => const Size(200.0, 100.0);
 
   @override
   void paint(Canvas canvas, Size size) {
     final FittedSizes fittedSizes = applyBoxFit(
       fit,
-      const Size(10.0, 10.0),
+      const Size(200.0, 100.0),
       size,
     );
     final Size sourceSize = fittedSizes.source;
@@ -60,44 +60,28 @@ class _$DefsPainter extends CustomPainter {
       destRect.height / sourceSize.height,
     );
 
-    final Gradient _grad_myGradient = LinearGradient(
-      begin: Alignment(-1.0, -1.0),
-      end: Alignment(1.0, -1.0),
-      colors: <Color>[const Color(0xFFFFD700), const Color(0xFFFF0000)],
-      stops: <double>[0.2, 0.9],
+    final Gradient _grad_grad = RadialGradient(
+      center: Alignment(0.0, 0.0),
+      radius: 0.5,
+      focal: Alignment(0.0, 0.0),
+      focalRadius: 0.0,
+      colors: <Color>[const Color(0xFFFF0000), const Color(0xFF0000FF)],
+      stops: <double>[0.0, 1.0],
       tileMode: TileMode.clamp,
-      transform: _SvgGradientTransform_DefsPainter(
-        matrix: <double>[
-          6.123233995736766e-17,
-          1.0,
-          0.0,
-          0.0,
-          -1.0,
-          6.123233995736766e-17,
-          0.0,
-          0.0,
-          0.0,
-          0.0,
-          1.0,
-          0.0,
-          0.0,
-          0.0,
-          0.0,
-          1.0,
-        ],
+      transform: _SvgGradientTransform_RadialEllipsePainter(
+        isElliptical: true,
+        centerX: 0.5,
+        centerY: 0.5,
       ),
     );
-    canvas.save();
-    canvas.translate(5.0, 5.0);
     {
       final Paint paint = Paint();
-      paint.shader = _grad_myGradient.createShader(
-        Rect.fromCircle(center: const Offset(0.0, 0.0), radius: 5.0),
+      paint.shader = _grad_grad.createShader(
+        Rect.fromLTWH(0.0, 0.0, 200.0, 100.0),
       );
       paint.style = PaintingStyle.fill;
-      canvas.drawCircle(const Offset(0.0, 0.0), 5.0, paint);
+      canvas.drawRect(Rect.fromLTWH(0.0, 0.0, 200.0, 100.0), paint);
     }
-    canvas.restore();
     canvas.restore();
   }
 
@@ -116,7 +100,7 @@ class _$DefsPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(covariant _$DefsPainter oldDelegate) {
+  bool shouldRepaint(covariant _$RadialEllipsePainter oldDelegate) {
     if (fit == oldDelegate.fit) {
       return false;
     } else {
@@ -126,8 +110,8 @@ class _$DefsPainter extends CustomPainter {
 }
 
 /// A private helper class to apply arbitrary transformations to SVG gradients.
-class _SvgGradientTransform_DefsPainter extends GradientTransform {
-  const _SvgGradientTransform_DefsPainter({
+class _SvgGradientTransform_RadialEllipsePainter extends GradientTransform {
+  const _SvgGradientTransform_RadialEllipsePainter({
     this.matrix,
     this.isElliptical = false,
     this.centerX = 0.5,
