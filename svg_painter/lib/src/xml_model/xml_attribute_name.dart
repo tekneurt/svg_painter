@@ -182,6 +182,18 @@ enum XmlAttributeName {
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/preserveAspectRatio
   preserveAspectRatio('preserveAspectRatio'),
 
+  /// The relative x-axis shift for text.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/dx
+  dx('dx'),
+
+  /// The relative y-axis shift for text.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/dy
+  dy('dy'),
+
+  /// The supplemental rotation applied to characters.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/rotate
+  rotate('rotate'),
+
   /// The type of the style or script.
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/type
   type('type'),
@@ -192,7 +204,11 @@ enum XmlAttributeName {
 
   /// The title of the element or style.
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/title
-  title('title');
+  title('title'),
+
+  /// The xml:space attribute.
+  /// https://www.w3.org/TR/SVG11/styling.html#XMLSpaceAttribute
+  xmlSpace('xml:space');
 
   const XmlAttributeName(this.name);
 

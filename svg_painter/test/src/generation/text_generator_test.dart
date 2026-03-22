@@ -18,7 +18,12 @@ void main() {
     test('should generate TextPainter with correct properties when DrawText is provided', () {
       // Arrange
       const TextGenerator generator = TextGenerator();
-      const DrawText command = DrawText(x: 10.0, y: 20.0, text: 'Hello SVG', style: textStyle);
+      const DrawText command = DrawText(
+        x: 10.0,
+        y: 20.0,
+        rootSpan: PaintingTextSpan(text: 'Hello SVG'),
+        style: textStyle,
+      );
       final GeneratorBuffer buffer = GeneratorBuffer();
 
       // Act

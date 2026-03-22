@@ -100,9 +100,13 @@ extension ToDefaultValue on XmlAttributeName {
       case .transform:
       case .gradientTransform:
       case .fontSize:
+      case .dx:
+      case .dy:
+      case .rotate:
       case .type:
       case .media:
       case .title:
+      case .xmlSpace:
       case .fontWeight:
       case .fontStyle:
       case .fontFamily:

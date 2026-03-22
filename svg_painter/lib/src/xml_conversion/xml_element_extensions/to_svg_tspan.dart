@@ -7,16 +7,12 @@ import '../_xml_conversion.dart';
 import '../svg_whitespace_normalizer.dart';
 import '_xml_element_extensions.dart';
 
-extension ToSvgText on XmlElement {
-  /// Converts this [XmlElement] to an [SvgText].
-  Result<SvgText> toSvgText() {
-    const XmlElementName elementName = XmlElementName.text;
+extension ToSvgTspan on XmlElement {
+  /// Converts this [XmlElement] to an [SvgTspan].
+  Result<SvgTspan> toSvgTspan() {
+    const XmlElementName elementName = XmlElementName.tspan;
 
-    final SvgLengthPercentage x = toSvgValue<SvgLengthPercentage>(elementName, XmlAttributeName.x);
-    final SvgLengthPercentage y = toSvgValue<SvgLengthPercentage>(elementName, XmlAttributeName.y);
-
-    final CommonAttributes common = toCommonAttributes(elementName);
-
+    // Detect xml:space
     final String spaceAttr = toXmlAttributeValue(XmlAttributeName.xmlSpace) ?? 'default';
     final bool preserve = spaceAttr == 'preserve';
 
@@ -63,11 +59,37 @@ extension ToSvgText on XmlElement {
       }
     }
 
-    return Success<SvgText>(
-      SvgText(
+    final SvgLengthPercentage? x = toSvgValueOrNull<SvgLengthPercentage>(
+      elementName,
+      XmlAttributeName.x,
+    );
+    final SvgLengthPercentage? y = toSvgValueOrNull<SvgLengthPercentage>(
+      elementName,
+      XmlAttributeName.y,
+    );
+    final SvgLengthPercentage? dx = toSvgValueOrNull<SvgLengthPercentage>(
+      elementName,
+      XmlAttributeName.dx,
+    );
+    final SvgLengthPercentage? dy = toSvgValueOrNull<SvgLengthPercentage>(
+      elementName,
+      XmlAttributeName.dy,
+    );
+    final SvgNumber? rotate = toSvgValueOrNull<SvgNumber>(
+      elementName,
+      XmlAttributeName.rotate,
+    );
+
+    final CommonAttributes common = toCommonAttributes(elementName);
+
+    return Success<SvgTspan>(
+      SvgTspan(
+        children: textChildren,
         x: x,
         y: y,
-        children: textChildren,
+        dx: dx,
+        dy: dy,
+        rotate: rotate,
         coreAttributes: common.core,
         presentationAttributes: common.presentation,
       ),

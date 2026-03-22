@@ -24,6 +24,7 @@ void main() {
           XmlElementName.stop => 'stop',
           XmlElementName.style => 'style',
           XmlElementName.text => 'text',
+          XmlElementName.tspan => 'tspan',
           XmlElementName.title => 'title',
           XmlElementName.desc => 'desc',
         };

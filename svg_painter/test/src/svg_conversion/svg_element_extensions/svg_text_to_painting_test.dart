@@ -12,7 +12,11 @@ void main() {
   group('SvgTextToPaintCommands', () {
     test('should return Success with DrawText when valid SvgText is provided', () {
       // Arrange
-      const SvgText text = SvgText(x: SvgLength(10.0), y: SvgLength(20.0), text: 'Hello');
+      const SvgText text = SvgText(
+        x: SvgLength(10.0),
+        y: SvgLength(20.0),
+        children: <SvgTextContent>[SvgCharacterData('Hello')],
+      );
 
       // Act
       final Result<List<PaintCommand>> result = text.toPaintCommands(context);
@@ -23,7 +27,7 @@ void main() {
       expect(commands, hasLength(1));
       expect(commands.first, isA<DrawText>());
       final DrawText drawText = commands.first as DrawText;
-      expect(drawText.text, 'Hello');
+      expect(drawText.rootSpan.children.first.text, 'Hello');
       expect(drawText.x, 10.0);
       expect(drawText.y, 20.0);
     });

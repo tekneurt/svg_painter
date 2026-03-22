@@ -354,14 +354,17 @@ void main() {
     group('Delegation', () {
       test('should delegate to all element types', () {
         final List<SvgElement> elements = <SvgElement>[
-          const SvgCircle(cx: SvgLength(0), cy: SvgLength(0), r: SvgLength(10)),
-          const SvgEllipse(cx: SvgLength(0), cy: SvgLength(0), rx: SvgLength(10), ry: SvgLength(5)),
+          const SvgCircle(cx: SvgLength(10), cy: SvgLength(10), r: SvgLength(10)),
+          const SvgEllipse(cx: SvgLength(10), cy: SvgLength(10), rx: SvgLength(5), ry: SvgLength(5)),
           const SvgLine(x1: SvgLength(0), y1: SvgLength(0), x2: SvgLength(10), y2: SvgLength(10)),
-          const SvgPath(d: 'M0 0 L10 10'),
+          const SvgRect(x: SvgLength(0), y: SvgLength(0), width: SvgLength(10), height: SvgLength(10), rx: SvgLength(2), ry: SvgLength(2)),
+          const SvgPath(d: 'M0,0 L10,10'),
+
           const SvgPolyline(points: SvgPointList(<double>[0, 0, 10, 10])),
           const SvgPolygon(points: SvgPointList(<double>[0, 0, 10, 10, 0, 10])),
-          const SvgText(x: SvgLength(0), y: SvgLength(0), text: 'Test'),
+          const SvgText(x: SvgLength(10), y: SvgLength(10), children: <SvgTextContent>[SvgCharacterData('test')]),
         ];
+
 
         final SvgRoot root = SvgRoot(children: elements);
         final Result<List<PaintCommand>> result = root.toPaintCommands();
@@ -370,9 +373,11 @@ void main() {
 
         // Verify we got commands for each
         expect(rootGroup.commands.length, elements.length);
+
         expect(rootGroup.commands.whereType<DrawCircle>().length, 1); // Circle
         expect(rootGroup.commands.whereType<DrawOval>().length, 1); // Ellipse
         expect(rootGroup.commands.whereType<DrawLine>().length, 1);
+        expect(rootGroup.commands.whereType<DrawRect>().length, 1);
         expect(rootGroup.commands.whereType<DrawPath>().length, 1);
         expect(rootGroup.commands.whereType<DrawPolyline>().length, 1);
         expect(rootGroup.commands.whereType<DrawPolygon>().length, 1);

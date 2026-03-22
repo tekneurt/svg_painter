@@ -60,6 +60,8 @@ extension ToSvgElement on XmlElement {
           return toSvgStyle();
         case .text:
           return toSvgText();
+        case .tspan:
+          return toSvgTspan();
         case .title:
           final CommonAttributes common = toCommonAttributes(elementName);
           return Success<SvgTitle>(

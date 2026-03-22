@@ -4,11 +4,11 @@ part of '../../svg_element.dart';
 ///
 /// See: https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Element/text
 @immutable
-final class SvgText extends SvgGraphicsElement with SvgFontAttributable {
+final class SvgText extends SvgGraphicsElement with SvgFontAttributable, SvgTextContent {
   const SvgText({
     required this.x,
     required this.y,
-    required this.text,
+    required this.children,
     super.presentationAttributes,
     super.coreAttributes,
   });
@@ -19,12 +19,12 @@ final class SvgText extends SvgGraphicsElement with SvgFontAttributable {
   /// The y-axis coordinate of the starting point of the text.
   final SvgLengthPercentage y;
 
-  /// The text content to draw.
-  final String text;
+  /// The child elements or character data contained within this text element.
+  final List<SvgTextContent> children;
 
   @override
   SvgFontAttributes? get fontAttributes => presentationAttributes?.font;
 
   @override
-  String toString() => 'SvgText(x: $x, y: $y, text: $text, id: $id)';
+  String toString() => 'SvgText(x: $x, y: $y, children: ${children.length}, id: $id)';
 }

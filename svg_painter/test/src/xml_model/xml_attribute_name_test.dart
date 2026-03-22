@@ -52,9 +52,13 @@ void main() {
           XmlAttributeName.fontFamily => 'font-family',
           XmlAttributeName.viewBox => 'viewBox',
           XmlAttributeName.preserveAspectRatio => 'preserveAspectRatio',
+          XmlAttributeName.dx => 'dx',
+          XmlAttributeName.dy => 'dy',
+          XmlAttributeName.rotate => 'rotate',
           XmlAttributeName.type => 'type',
           XmlAttributeName.media => 'media',
           XmlAttributeName.title => 'title',
+          XmlAttributeName.xmlSpace => 'xml:space',
         };
         expect(value.name, expected, reason: 'Enum $value should map to "$expected"');
       }

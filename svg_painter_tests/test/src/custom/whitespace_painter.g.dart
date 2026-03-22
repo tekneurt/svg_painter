@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'text_painter.dart';
+part of 'whitespace_painter.dart';
 
 // **************************************************************************
 // SvgPainterGenerator
@@ -10,8 +10,8 @@ part of 'text_painter.dart';
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
 
-class MdnTextExamplePainterWidget extends StatelessWidget {
-  const MdnTextExamplePainterWidget({
+class WhitespacePainterWidget extends StatelessWidget {
+  const WhitespacePainterWidget({
     super.key,
     this.width,
     this.height,
@@ -27,24 +27,24 @@ class MdnTextExamplePainterWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomPaint(
-      size: Size(width ?? 240.0, height ?? 80.0),
-      painter: _$MdnTextExamplePainter(fit: fit),
+      size: Size(width ?? 300.0, height ?? 60.0),
+      painter: _$WhitespacePainter(fit: fit),
     );
   }
 }
 
-class _$MdnTextExamplePainter extends CustomPainter {
-  const _$MdnTextExamplePainter({this.fit = BoxFit.contain});
+class _$WhitespacePainter extends CustomPainter {
+  const _$WhitespacePainter({this.fit = BoxFit.contain});
 
   final BoxFit fit;
 
-  Size get viewBox => const Size(240.0, 80.0);
+  Size get viewBox => const Size(300.0, 60.0);
 
   @override
   void paint(Canvas canvas, Size size) {
     final FittedSizes fittedSizes = applyBoxFit(
       fit,
-      const Size(240.0, 80.0),
+      const Size(300.0, 60.0),
       size,
     );
     final Size sourceSize = fittedSizes.source;
@@ -69,20 +69,22 @@ class _$MdnTextExamplePainter extends CustomPainter {
           text: TextSpan(
             style: TextStyle(
               color: Colors.black,
-              fontSize: 13.0,
+              fontSize: 12.0,
               fontWeight: FontWeight.normal,
-              fontStyle: FontStyle.italic,
-              fontFamily: 'Roboto',
+              fontStyle: FontStyle.normal,
+              fontFamily: 'Roboto Mono',
             ),
-            children: <InlineSpan>[TextSpan(text: 'My')],
+            children: <InlineSpan>[
+              TextSpan(text: 'Preserve:          (10 spaces)'),
+            ],
           ),
           textDirection: TextDirection.ltr,
         )..layout();
         tp.paint(
           canvas,
           Offset(
-            20.0,
-            35.0 - tp.computeDistanceToActualBaseline(TextBaseline.alphabetic),
+            10.0,
+            20.0 - tp.computeDistanceToActualBaseline(TextBaseline.alphabetic),
           ),
         );
       }
@@ -96,74 +98,22 @@ class _$MdnTextExamplePainter extends CustomPainter {
           text: TextSpan(
             style: TextStyle(
               color: Colors.black,
-              fontSize: 30.0,
-              fontWeight: FontWeight.bold,
+              fontSize: 12.0,
+              fontWeight: FontWeight.normal,
               fontStyle: FontStyle.normal,
               fontFamily: 'Roboto',
             ),
-            children: <InlineSpan>[TextSpan(text: 'cat')],
+            children: <InlineSpan>[
+              TextSpan(text: 'Collapse: multiple spaces and tabs.'),
+            ],
           ),
           textDirection: TextDirection.ltr,
         )..layout();
         tp.paint(
           canvas,
           Offset(
-            40.0,
-            35.0 - tp.computeDistanceToActualBaseline(TextBaseline.alphabetic),
-          ),
-        );
-      }
-    }
-    {
-      final Paint paint = Paint();
-      paint.color = Colors.black;
-      paint.style = PaintingStyle.fill;
-      {
-        final TextPainter tp = TextPainter(
-          text: TextSpan(
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 13.0,
-              fontWeight: FontWeight.normal,
-              fontStyle: FontStyle.italic,
-              fontFamily: 'Roboto',
-            ),
-            children: <InlineSpan>[TextSpan(text: 'is')],
-          ),
-          textDirection: TextDirection.ltr,
-        )..layout();
-        tp.paint(
-          canvas,
-          Offset(
-            55.0,
-            55.0 - tp.computeDistanceToActualBaseline(TextBaseline.alphabetic),
-          ),
-        );
-      }
-    }
-    {
-      final Paint paint = Paint();
-      paint.color = const Color(0xFFFF0000);
-      paint.style = PaintingStyle.fill;
-      {
-        final TextPainter tp = TextPainter(
-          text: TextSpan(
-            style: TextStyle(
-              color: const Color(0xFFFF0000),
-              fontSize: 40.0,
-              fontWeight: FontWeight.normal,
-              fontStyle: FontStyle.italic,
-              fontFamily: 'Noto Serif',
-            ),
-            children: <InlineSpan>[TextSpan(text: 'Grumpy!')],
-          ),
-          textDirection: TextDirection.ltr,
-        )..layout();
-        tp.paint(
-          canvas,
-          Offset(
-            65.0,
-            55.0 - tp.computeDistanceToActualBaseline(TextBaseline.alphabetic),
+            10.0,
+            50.0 - tp.computeDistanceToActualBaseline(TextBaseline.alphabetic),
           ),
         );
       }
@@ -186,7 +136,7 @@ class _$MdnTextExamplePainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(covariant _$MdnTextExamplePainter oldDelegate) {
+  bool shouldRepaint(covariant _$WhitespacePainter oldDelegate) {
     if (fit == oldDelegate.fit) {
       return false;
     } else {

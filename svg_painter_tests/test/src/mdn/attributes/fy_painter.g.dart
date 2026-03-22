@@ -259,14 +259,14 @@ class _$Fy2Painter extends CustomPainter {
       {
         final TextPainter tp = TextPainter(
           text: TextSpan(
-            text: '(fx,fy)',
             style: TextStyle(
-              foreground: paint,
+              color: Colors.white,
               fontSize: 13.333333333333334,
               fontWeight: FontWeight.normal,
               fontStyle: FontStyle.normal,
               fontFamily: 'Roboto',
             ),
+            children: <InlineSpan>[TextSpan(text: '(fx,fy)')],
           ),
           textDirection: TextDirection.ltr,
         )..layout();
@@ -286,14 +286,14 @@ class _$Fy2Painter extends CustomPainter {
       {
         final TextPainter tp = TextPainter(
           text: TextSpan(
-            text: '(cx,cy)',
             style: TextStyle(
-              foreground: paint,
+              color: Colors.white,
               fontSize: 13.333333333333334,
               fontWeight: FontWeight.normal,
               fontStyle: FontStyle.normal,
               fontFamily: 'Roboto',
             ),
+            children: <InlineSpan>[TextSpan(text: '(cx,cy)')],
           ),
           textDirection: TextDirection.ltr,
         )..layout();

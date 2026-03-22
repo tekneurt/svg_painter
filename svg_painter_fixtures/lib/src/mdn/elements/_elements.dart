@@ -14,4 +14,5 @@ export 'style.dart';
 export 'svg.dart';
 export 'symbol.dart';
 export 'text.dart';
+export 'tspan.dart';
 export 'use.dart';

@@ -4,7 +4,7 @@ part of '../paint_command.dart';
 @immutable
 final class DrawText extends DrawCommand {
   const DrawText({
-    required this.text,
+    required this.rootSpan,
     required this.x,
     required this.y,
     required this.style,
@@ -17,13 +17,13 @@ final class DrawText extends DrawCommand {
   /// The y-axis coordinate of the starting point of the text.
   final double y;
 
-  /// The text content to draw.
-  final String text;
+  /// The structured text hierarchy to draw.
+  final PaintingTextSpan rootSpan;
 
   /// The visual style (font, fill, etc.) for the text.
   @override
   final PaintingStyle style;
 
   @override
-  String toString() => 'DrawText(x: $x, y: $y, text: $text, style: $style, id: $id)';
+  String toString() => 'DrawText(x: $x, y: $y, span: $rootSpan, style: $style, id: $id)';
 }

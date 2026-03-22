@@ -226,13 +226,14 @@
     - [x] `mixin SvgViewBoxed`: Holds `viewBox` and `preserveAspectRatio` (applied to: `SvgSvg`, `SvgSymbol`, `SvgMarker`).
     - [x] `mixin SvgBounded`: Holds `x`, `y`, `width`, `height` (applied to: `SvgRect`, `SvgSvg`, `SvgUse`, `SvgImage`).
     - [x] **Architecture Cleanup (SVG Model)**: Rename `lib/src/svg_model/attributes/` to `attribute_groups/` to clarify that these are DTOs. Audit `lib/src/svg_model/elements/base/` mixins (like `SvgGeometry` holding `pathLength`) to ensure clear boundaries between element traits (mixins) and attribute groupings.
-- [ ] **Structural Elements**: `<symbol>` [x],  `<style>`, `<tspan>`, `<defs>`.
+- [ ] **Structural Elements**: `<symbol>` [x],  `<style>` [x], `<tspan>` [x], `<defs>`.
 - [x] **Gradients (Polish)**: `spreadMethod` and `gradientUnits` (needed for 2nd MDN `linearGradient` example).
     - [x] **Proper `userSpaceOnUse` support**: Resolve absolute coordinates for gradients by generating `createShader` calls with absolute offsets instead of relative `Alignment`.
     - [ ] **Elliptical Radial Gradients**: Support the `r` radius being stretched by the element's bounding box using `GradientTransform` or `Matrix4`.
 - [ ] **Referencing & External Assets**: `<image>`, `<use>`.
 - [ ] **Clipping & Masking**: `<clipPath>`, `<mask >`.
 - [ ] **Accessibility (Semantic Mapping)**: Map `<title>` and `<desc>` automatically to Flutter's `Semantics` widget in the generated code.
+- [ ] **MDN Compliance**: Add 2nd example from [MDN fill](https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/fill) once `<marker>`, `context-stroke`, and `context-fill` are implemented.
 - [ ] **Essential Attributes**: `text-anchor`, `fill-rule`, `stroke-dashoffset`, `stroke-miterlimit`, `paint-order`, `vector-effect`, `dx`, `dy`, `preserveAspectRatio` [x].
 - [ ] **Font Management (Release Ready)**: Implement `AssetExporter` to automatically handle bundled fonts for the user.
 - [ ] **Release Preparation**:
