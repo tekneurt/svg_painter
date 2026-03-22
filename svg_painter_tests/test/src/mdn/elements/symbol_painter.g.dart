@@ -99,6 +99,7 @@ class _$SymbolPainter extends CustomPainter {
     canvas.restore();
     canvas.save();
     canvas.translate(20.0, 5.0);
+    canvas.saveLayer(null, Paint()..color = const Color(0xCCFFFFFF));
     canvas.save();
     canvas.clipRect(Rect.fromLTWH(0.0, 0.0, 10.0, 10.0));
     canvas.save();
@@ -109,11 +110,13 @@ class _$SymbolPainter extends CustomPainter {
       paint.style = PaintingStyle.fill;
       canvas.drawCircle(const Offset(1.0, 1.0), 1.0, paint);
     }
+    canvas.restore();
     canvas.restore();
     canvas.restore();
     canvas.restore();
     canvas.save();
     canvas.translate(35.0, 5.0);
+    canvas.saveLayer(null, Paint()..color = const Color(0x99FFFFFF));
     canvas.save();
     canvas.clipRect(Rect.fromLTWH(0.0, 0.0, 10.0, 10.0));
     canvas.save();
@@ -124,11 +127,13 @@ class _$SymbolPainter extends CustomPainter {
       paint.style = PaintingStyle.fill;
       canvas.drawCircle(const Offset(1.0, 1.0), 1.0, paint);
     }
+    canvas.restore();
     canvas.restore();
     canvas.restore();
     canvas.restore();
     canvas.save();
     canvas.translate(50.0, 5.0);
+    canvas.saveLayer(null, Paint()..color = const Color(0x66FFFFFF));
     canvas.save();
     canvas.clipRect(Rect.fromLTWH(0.0, 0.0, 10.0, 10.0));
     canvas.save();
@@ -139,11 +144,13 @@ class _$SymbolPainter extends CustomPainter {
       paint.style = PaintingStyle.fill;
       canvas.drawCircle(const Offset(1.0, 1.0), 1.0, paint);
     }
+    canvas.restore();
     canvas.restore();
     canvas.restore();
     canvas.restore();
     canvas.save();
     canvas.translate(65.0, 5.0);
+    canvas.saveLayer(null, Paint()..color = const Color(0x33FFFFFF));
     canvas.save();
     canvas.clipRect(Rect.fromLTWH(0.0, 0.0, 10.0, 10.0));
     canvas.save();
@@ -154,6 +161,7 @@ class _$SymbolPainter extends CustomPainter {
       paint.style = PaintingStyle.fill;
       canvas.drawCircle(const Offset(1.0, 1.0), 1.0, paint);
     }
+    canvas.restore();
     canvas.restore();
     canvas.restore();
     canvas.restore();

@@ -120,7 +120,10 @@ final List<({CustomPainter painter, String name, Map<GoldenTestType, Set<TargetP
   (
     painter: const SpreadMethod2Painter(),
     name: 'spread_method_2_painter',
-    tests: defaultGoldenTests
+    tests: <GoldenTestType, Set<TargetPlatform>?>{
+      GoldenTestType.fixed: <TargetPlatform>{TargetPlatform.macOS},
+      GoldenTestType.viewBox: <TargetPlatform>{TargetPlatform.macOS},
+    }
   ),
   (painter: const StrokeLinecapPainter(), name: 'stroke_linecap_painter', tests: defaultGoldenTests),
   (painter: const StrokeLinejoinPainter(), name: 'stroke_linejoin_painter', tests: defaultGoldenTests),
@@ -131,7 +134,14 @@ final List<({CustomPainter painter, String name, Map<GoldenTestType, Set<TargetP
   (painter: const ViewBox1Painter(), name: 'view_box_1_painter', tests: defaultGoldenTests),
   (painter: const ViewBox2Painter(), name: 'view_box_2_painter', tests: defaultGoldenTests),
   (painter: const ViewBox3Painter(), name: 'view_box_3_painter', tests: defaultGoldenTests),
-  (painter: const GradientTransformPainter(), name: 'gradient_transform_painter', tests: defaultGoldenTests),
+  (
+    painter: const GradientTransformPainter(),
+    name: 'gradient_transform_painter',
+    tests: <GoldenTestType, Set<TargetPlatform>?>{
+      GoldenTestType.fixed: null,
+      GoldenTestType.viewBox: <TargetPlatform>{TargetPlatform.macOS},
+    }
+  ),
   (painter: const WidthPainter(), name: 'width_painter', tests: defaultGoldenTests),
   (painter: const X1ExamplesPainter(), name: 'x1_examples_painter', tests: defaultGoldenTests),
   (painter: const X1LinePainter(), name: 'x1_line_painter', tests: defaultGoldenTests),

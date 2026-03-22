@@ -155,13 +155,27 @@ extension _SvgUseToPaintCommands on SvgUse {
       return target
           ._toPaintCommands(context, width: width, height: height)
           .map((List<PaintCommand> childCommands) {
-        return <PaintCommand>[DrawGroup(commands: childCommands, style: style, id: id)];
+        return <PaintCommand>[
+          DrawGroup(
+            commands: childCommands,
+            style: style,
+            id: id,
+            opacity: style.groupOpacity,
+          )
+        ];
       });
     }
 
     // Context for children inherits styles, but coordinates are now in the <use> local space.
     return target.toPaintCommands(context).map((List<PaintCommand> childCommands) {
-      return <PaintCommand>[DrawGroup(commands: childCommands, style: style, id: id)];
+      return <PaintCommand>[
+        DrawGroup(
+          commands: childCommands,
+          style: style,
+          id: id,
+          opacity: style.groupOpacity,
+        )
+      ];
     });
   }
 }
@@ -314,14 +328,26 @@ extension _SvgSymbolToPaintCommands on SvgSymbol {
       }
 
       if (viewBoxOps.isEmpty) {
-        return <PaintCommand>[DrawGroup(commands: childCommands, style: viewportStyle, id: id)];
+        return <PaintCommand>[
+          DrawGroup(
+            commands: childCommands,
+            style: viewportStyle,
+            id: id,
+            opacity: viewportStyle.groupOpacity,
+          )
+        ];
       } else {
         final PaintingStyle viewBoxStyle = PaintingStyle(
           transformAttributes: SvgTransformAttributes(viewBoxOps),
         );
         final DrawGroup innerGroup = DrawGroup(commands: childCommands, style: viewBoxStyle);
         return <PaintCommand>[
-          DrawGroup(commands: <PaintCommand>[innerGroup], style: viewportStyle, id: id)
+          DrawGroup(
+            commands: <PaintCommand>[innerGroup],
+            style: viewportStyle,
+            id: id,
+            opacity: viewportStyle.groupOpacity,
+          )
         ];
       }
     });
@@ -474,13 +500,27 @@ extension _SvgSvgToPaintCommands on SvgSvg {
       List<PaintCommand> childCommands,
     ) {
       if (viewBoxOps.isEmpty) {
-        return <PaintCommand>[DrawGroup(commands: childCommands, style: viewportStyle, id: id)];
+        return <PaintCommand>[
+          DrawGroup(
+            commands: childCommands,
+            style: viewportStyle,
+            id: id,
+            opacity: viewportStyle.groupOpacity,
+          )
+        ];
       } else {
         final PaintingStyle viewBoxStyle = PaintingStyle(
           transformAttributes: SvgTransformAttributes(viewBoxOps),
         );
         final DrawGroup innerGroup = DrawGroup(commands: childCommands, style: viewBoxStyle);
-        return <PaintCommand>[DrawGroup(commands: <PaintCommand>[innerGroup], style: viewportStyle, id: id)];
+        return <PaintCommand>[
+          DrawGroup(
+            commands: <PaintCommand>[innerGroup],
+            style: viewportStyle,
+            id: id,
+            opacity: viewportStyle.groupOpacity,
+          )
+        ];
       }
     });
   }
@@ -491,7 +531,6 @@ extension _SvgGroupToPaintCommands on SvgGroup {
     // Determine if we should use saveLayer (group opacity).
     // The resolved opacity is already in presentationAttributes.graphics.opacity.
     final double resolvedOpacity = opacity?.resolve(context, SvgOrientation.unit) ?? 1.0;
-    final bool useSaveLayer = resolvedOpacity < 1.0 && children.length > 1;
 
     final PaintingStyle style = resolvePaint(
       context,
@@ -508,7 +547,7 @@ extension _SvgGroupToPaintCommands on SvgGroup {
           commands: childCommands,
           style: style,
           id: id,
-          opacity: useSaveLayer ? resolvedOpacity : 1.0,
+          opacity: resolvedOpacity,
         ),
       ];
     });

@@ -44,7 +44,15 @@ final List<({CustomPainter painter, String name, Map<GoldenTestType, Set<TargetP
   (painter: const Svg1Painter(), name: 'svg_painter_1', tests: defaultGoldenTests),
   (painter: const Svg2Painter(), name: 'svg_painter_2', tests: defaultGoldenTests),
   (painter: const SymbolPainter(), name: 'symbol_painter', tests: defaultGoldenTests),
-  (painter: const TspanPainter(), name: 'tspan_painter', tests: defaultGoldenTests),
+  // tspan_painter: ~500-600px text anti-aliasing diff on both tests (macOS)
+  (
+    painter: const TspanPainter(),
+    name: 'tspan_painter',
+    tests: <GoldenTestType, Set<TargetPlatform>?>{
+      GoldenTestType.fixed: <TargetPlatform>{TargetPlatform.macOS},
+      GoldenTestType.viewBox: <TargetPlatform>{TargetPlatform.macOS},
+    }
+  ),
   // text_painter: ~1400-1800px text anti-aliasing diff on both tests (macOS)
   (painter: const MdnTextExamplePainter(), name: 'text_painter', tests: <GoldenTestType, Set<TargetPlatform>?>{
     GoldenTestType.fixed: <TargetPlatform>{TargetPlatform.macOS},

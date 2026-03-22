@@ -86,12 +86,14 @@ class _$UseCasesPainter extends CustomPainter {
     canvas.restore();
     canvas.save();
     canvas.translate(-200.0, 0.0);
+    canvas.saveLayer(null, Paint()..color = const Color(0x80FFFFFF));
     {
       final Paint paint = Paint();
       paint.color = const Color(0xFFFFFF00);
       paint.style = PaintingStyle.fill;
       canvas.drawOval(Rect.fromLTWH(220.0, 30.0, 60.0, 40.0), paint);
     }
+    canvas.restore();
     canvas.restore();
     canvas.restore();
   }
