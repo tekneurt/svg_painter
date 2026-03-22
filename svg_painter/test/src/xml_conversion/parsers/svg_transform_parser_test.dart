@@ -17,7 +17,7 @@ void main() {
         final SvgTransformAttributes? result = SvgTransformParser.parse('translate(10)');
         expect(result, isNotNull);
         expect(result!.operations, hasLength(1));
-        final SvgTranslate op = result.operations.first as SvgTranslate;
+        final op = result.operations.first as SvgTranslate;
         expect(op.x, 10.0);
         expect(op.y, 0.0);
       });
@@ -25,7 +25,7 @@ void main() {
       test('should parse translate(tx, ty)', () {
         final SvgTransformAttributes? result = SvgTransformParser.parse('translate(10, 20)');
         expect(result, isNotNull);
-        final SvgTranslate op = result!.operations.first as SvgTranslate;
+        final op = result!.operations.first as SvgTranslate;
         expect(op.x, 10.0);
         expect(op.y, 20.0);
       });
@@ -33,7 +33,7 @@ void main() {
       test('should parse rotate(angle)', () {
         final SvgTransformAttributes? result = SvgTransformParser.parse('rotate(45)');
         expect(result, isNotNull);
-        final SvgRotate op = result!.operations.first as SvgRotate;
+        final op = result!.operations.first as SvgRotate;
         expect(op.angle, 45.0);
         expect(op.cx, isNull);
         expect(op.cy, isNull);
@@ -42,7 +42,7 @@ void main() {
       test('should parse rotate(angle, cx, cy)', () {
         final SvgTransformAttributes? result = SvgTransformParser.parse('rotate(45, 10, 20)');
         expect(result, isNotNull);
-        final SvgRotate op = result!.operations.first as SvgRotate;
+        final op = result!.operations.first as SvgRotate;
         expect(op.angle, 45.0);
         expect(op.cx, 10.0);
         expect(op.cy, 20.0);
@@ -51,7 +51,7 @@ void main() {
       test('should parse scale(sx)', () {
         final SvgTransformAttributes? result = SvgTransformParser.parse('scale(2.5)');
         expect(result, isNotNull);
-        final SvgScale op = result!.operations.first as SvgScale;
+        final op = result!.operations.first as SvgScale;
         expect(op.x, 2.5);
         expect(op.y, 2.5);
       });
@@ -59,7 +59,7 @@ void main() {
       test('should parse scale(sx, sy)', () {
         final SvgTransformAttributes? result = SvgTransformParser.parse('scale(2, 3)');
         expect(result, isNotNull);
-        final SvgScale op = result!.operations.first as SvgScale;
+        final op = result!.operations.first as SvgScale;
         expect(op.x, 2.0);
         expect(op.y, 3.0);
       });
@@ -67,14 +67,14 @@ void main() {
       test('should parse skewX(angle)', () {
         final SvgTransformAttributes? result = SvgTransformParser.parse('skewX(30)');
         expect(result, isNotNull);
-        final SvgSkewX op = result!.operations.first as SvgSkewX;
+        final op = result!.operations.first as SvgSkewX;
         expect(op.angle, 30.0);
       });
 
       test('should parse skewY(angle)', () {
         final SvgTransformAttributes? result = SvgTransformParser.parse('skewY(30)');
         expect(result, isNotNull);
-        final SvgSkewY op = result!.operations.first as SvgSkewY;
+        final op = result!.operations.first as SvgSkewY;
         expect(op.angle, 30.0);
       });
 
@@ -83,7 +83,7 @@ void main() {
           'matrix(1, 2, 3, 4, 10, 20)',
         );
         expect(result, isNotNull);
-        final SvgMatrix op = result!.operations.first as SvgMatrix;
+        final op = result!.operations.first as SvgMatrix;
         expect(op.a, 1.0);
         expect(op.b, 2.0);
         expect(op.c, 3.0);

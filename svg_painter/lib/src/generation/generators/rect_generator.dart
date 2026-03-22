@@ -22,7 +22,7 @@ class RectGenerator extends ShapeGenerator<DrawRect> {
     Set<String>? gradientsNeedingStretch,
   }) {
     wrapWithStyle(buffer, command.style, () {
-      final String bounds =
+      final bounds =
           'Rect.fromLTWH(${command.x}, ${command.y}, ${command.width}, ${command.height})';
       generatePaintingCode(
         buffer,

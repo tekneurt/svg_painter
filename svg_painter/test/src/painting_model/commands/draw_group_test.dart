@@ -6,7 +6,7 @@ void main() {
   group('DrawGroup', () {
     test('should return correct string representation when toString() is called', () {
       // Arrange
-      const DrawGroup command = DrawGroup(
+      const command = DrawGroup(
         commands: <PaintCommand>[DrawCircle(cx: 1.0, cy: 2.0, radius: 5.0, style: PaintingStyle())],
         opacity: 0.5,
       );

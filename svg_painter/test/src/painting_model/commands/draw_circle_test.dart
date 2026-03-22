@@ -6,7 +6,7 @@ void main() {
   group('DrawCircle', () {
     test('should return correct string representation when toString() is called', () {
       // Arrange
-      const DrawCircle command = DrawCircle(
+      const command = DrawCircle(
         cx: 10.0,
         cy: 20.0,
         radius: 5.0,
@@ -14,7 +14,7 @@ void main() {
       );
 
       // Act
-      final String result = command.toString();
+      final result = command.toString();
 
       // Assert
       expect(

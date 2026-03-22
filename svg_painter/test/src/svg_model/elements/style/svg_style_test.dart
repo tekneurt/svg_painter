@@ -6,7 +6,7 @@ void main() {
   group('SvgStyle', () {
     test('should return correct string representation when all fields are provided', () {
       // Arrange
-      const SvgStyle style = SvgStyle(
+      const style = SvgStyle(
         content: 'rect { fill: red; }',
         type: 'text/css',
         media: 'all',
@@ -15,7 +15,7 @@ void main() {
       );
 
       // Act
-      final String result = style.toString();
+      final result = style.toString();
 
       // Assert
       expect(result, 'SvgStyle(content: 19 chars, type: text/css, media: all, title: Main Style, id: style1)');
@@ -23,12 +23,12 @@ void main() {
 
     test('should return compact string representation when optional fields are null', () {
       // Arrange
-      const SvgStyle style = SvgStyle(
+      const style = SvgStyle(
         content: 'circle { fill: gold; }',
       );
 
       // Act
-      final String result = style.toString();
+      final result = style.toString();
 
       // Assert
       expect(result, 'SvgStyle(content: 22 chars)');

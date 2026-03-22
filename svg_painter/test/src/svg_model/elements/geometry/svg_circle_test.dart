@@ -7,7 +7,7 @@ void main() {
   group('SvgCircle', () {
     test('should return correct string representation when all fields are provided', () {
       // Arrange
-      const SvgCircle circle = SvgCircle(
+      const circle = SvgCircle(
         cx: SvgLength(11.0),
         cy: SvgLength(22.0),
         r: SvgLength(33.0),
@@ -18,7 +18,7 @@ void main() {
       );
 
       // Act
-      final String result = circle.toString();
+      final result = circle.toString();
 
       // Assert
       expect(
@@ -29,14 +29,14 @@ void main() {
 
     test('should return compact string representation when optional fields are null', () {
       // Arrange
-      const SvgCircle circle = SvgCircle(
+      const circle = SvgCircle(
         cx: SvgLength(11.0),
         cy: SvgLength(22.0),
         r: SvgLength(33.0),
       );
 
       // Act
-      final String result = circle.toString();
+      final result = circle.toString();
 
       // Assert
       expect(result, 'SvgCircle(cx: 11.0, cy: 22.0, r: 33.0)');

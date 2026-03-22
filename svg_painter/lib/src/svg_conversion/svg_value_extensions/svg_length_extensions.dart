@@ -8,7 +8,7 @@ import '../converters/svg_painting_context.dart';
 extension SvgLengthToDouble on SvgLength {
   /// Converts this [SvgLength] to a double value, resolving units against the context.
   double toDouble([SvgPaintingContext? context]) {
-    const double dpi = 96.0;
+    const dpi = 96.0;
 
     return switch (unit) {
       SvgLengthUnit.none || SvgLengthUnit.px => value,
@@ -46,7 +46,7 @@ extension SvgPercentageToDouble on SvgPercentage {
 extension SvgLengthPercentageToDouble on SvgLengthPercentage {
   /// Converts this [SvgLengthPercentage] to a double value based on context and orientation.
   double resolve(SvgPaintingContext context, SvgOrientation orientation) {
-    final SvgLengthPercentage self = this;
+    final self = this;
     return switch (self) {
       final SvgLength length => length.toDouble(context),
       final SvgPercentage percentage => percentage.resolve(context, orientation),
@@ -55,7 +55,7 @@ extension SvgLengthPercentageToDouble on SvgLengthPercentage {
 
   /// Converts this [SvgLengthPercentage] to a position double value.
   double toPosition(SvgPaintingContext context, SvgOrientation orientation) {
-    final SvgLengthPercentage self = this;
+    final self = this;
     return switch (self) {
       final SvgLength length => length.toDouble(context),
       final SvgPercentage percentage => percentage.resolve(context, orientation),
@@ -76,7 +76,7 @@ extension SvgAutoToDouble on SvgLengthPercentageAuto {
 
   /// Converts this [SvgLengthPercentageAuto] to a double value, or null if it is 'auto'.
   double? resolveOrNull(SvgPaintingContext context, SvgOrientation orientation) {
-    final SvgLengthPercentageAuto self = this;
+    final self = this;
     if (self is SvgLengthPercentage) {
       return self.resolve(context, orientation);
     }
@@ -85,7 +85,7 @@ extension SvgAutoToDouble on SvgLengthPercentageAuto {
 
   /// Converts this [SvgLengthPercentageAuto] to a position double value, or null if 'auto'.
   double? toPositionOrNull(SvgPaintingContext context, SvgOrientation orientation) {
-    final SvgLengthPercentageAuto self = this;
+    final self = this;
     if (self is SvgLengthPercentage) {
       return self.toPosition(context, orientation);
     }

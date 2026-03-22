@@ -4,10 +4,10 @@ import 'package:svg_painter/src/svg_model/svg_value.dart';
 import 'package:test/test.dart';
 
 void main() {
-  const SvgPaintingContext context = SvgPaintingContext(viewBoxWidth: 200, viewBoxHeight: 100);
+  const context = SvgPaintingContext(viewBoxWidth: 200, viewBoxHeight: 100);
 
   group('SvgLengthToDouble', () {
-    const double dpi = 96.0;
+    const dpi = 96.0;
 
     test('should return value as is when unit is none or px', () {
       expect(const SvgLength(11.0).toDouble(), 11.0);
@@ -86,7 +86,7 @@ void main() {
     });
 
     test('toPosition should return raw values (offset handled by generator)', () {
-      const SvgPaintingContext contextWithOffset = SvgPaintingContext(
+      const contextWithOffset = SvgPaintingContext(
         viewBoxWidth: 200,
         viewBoxHeight: 100,
         viewBoxMinX: 11,
@@ -116,7 +116,7 @@ void main() {
     });
 
     test('toPositionOrNull should return raw double for SvgLength', () {
-      const SvgPaintingContext contextWithOffset = SvgPaintingContext(
+      const contextWithOffset = SvgPaintingContext(
         viewBoxWidth: 200,
         viewBoxHeight: 100,
         viewBoxMinX: 12,

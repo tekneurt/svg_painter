@@ -5,7 +5,7 @@ void main() {
   group('SvgLinearGradient', () {
     test('should return correct string representation when all fields are provided', () {
       // Arrange
-      const SvgLinearGradient gradient = SvgLinearGradient(
+      const gradient = SvgLinearGradient(
         coreAttributes: SvgCoreAttributes(id: 'g1'),
         x1: SvgLength(11.0),
         y1: SvgLength(22.0),
@@ -18,7 +18,7 @@ void main() {
       );
 
       // Act
-      final String result = gradient.toString();
+      final result = gradient.toString();
 
       // Assert
       expect(
@@ -29,7 +29,7 @@ void main() {
 
     test('should return compact string representation when optional fields are null', () {
       // Arrange
-      const SvgLinearGradient gradient = SvgLinearGradient(
+      const gradient = SvgLinearGradient(
         x1: SvgLength(1.1),
         y1: SvgLength(2.2),
         x2: SvgLength(33.3),
@@ -38,7 +38,7 @@ void main() {
       );
 
       // Act
-      final String result = gradient.toString();
+      final result = gradient.toString();
 
       // Assert
       expect(result, 'SvgLinearGradient(x1: 1.1, y1: 2.2, x2: 33.3, y2: 44.4, stops: 0, units: SvgGradientUnits.objectBoundingBox, spread: SvgSpreadMethod.pad)');

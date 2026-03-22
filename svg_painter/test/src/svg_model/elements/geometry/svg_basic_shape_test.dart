@@ -7,7 +7,7 @@ void main() {
   group('SvgBasicShape', () {
     test('should return correct base string representation (tested via SvgCircle)', () {
       // Arrange
-      const SvgCircle element = SvgCircle(
+      const element = SvgCircle(
         cx: SvgLength(11.1),
         cy: SvgLength(22.2),
         r: SvgLength(33.3),
@@ -15,7 +15,7 @@ void main() {
       );
 
       // Act
-      final String result = element.toString();
+      final result = element.toString();
 
       // Assert
       expect(result, contains('id: shape1'));

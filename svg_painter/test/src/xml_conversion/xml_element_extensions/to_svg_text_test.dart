@@ -8,7 +8,7 @@ void main() {
   group('ToSvgText', () {
     test('should return SvgText with correct attributes and children when valid XML is provided', () {
       // Arrange
-      final XmlDocument document = XmlDocument.parse(
+      final document = XmlDocument.parse(
         '<text id="t1" x="10" y="20">Hello World</text>',
       );
       final XmlElement element = document.rootElement;

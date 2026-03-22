@@ -14,13 +14,13 @@ typedef CommonAttributes = ({
 extension ToCommonAttributes on XmlElement {
   /// Extracts common attributes from this element.
   CommonAttributes toCommonAttributes(XmlElementName elementName) {
-    final SvgCoreAttributes core = SvgCoreAttributes(
+    final core = SvgCoreAttributes(
       id: toXmlAttributeValue(XmlAttributeName.id),
       cssClass: toXmlAttributeValue(XmlAttributeName.className),
       inlineStyle: toXmlAttributeValue(XmlAttributeName.style),
     );
 
-    final SvgPresentationAttributes presentation = SvgPresentationAttributes(
+    final presentation = SvgPresentationAttributes(
       fill: SvgFillAttributes(
         color: toSvgValueOrNull<SvgColor>(elementName, XmlAttributeName.fill),
         opacity: toSvgValueOrNull<SvgLengthPercentage>(elementName, XmlAttributeName.fillOpacity),

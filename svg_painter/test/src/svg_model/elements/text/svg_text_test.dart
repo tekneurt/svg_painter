@@ -7,7 +7,7 @@ void main() {
   group('SvgText', () {
     test('should return correct string representation when toString() is called', () {
       // Arrange
-      const SvgText text = SvgText(
+      const text = SvgText(
         x: SvgLength(10.0),
         y: SvgLength(20.0),
         children: <SvgTextContent>[SvgCharacterData('test')],
@@ -15,7 +15,7 @@ void main() {
       );
 
       // Act
-      final String result = text.toString();
+      final result = text.toString();
 
       // Assert
       expect(result, 'SvgText(x: 10.0, y: 20.0, children: 1, id: t1)');

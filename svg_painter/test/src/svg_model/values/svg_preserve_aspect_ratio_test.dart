@@ -4,7 +4,7 @@ import 'package:test/test.dart';
 void main() {
   group('SvgPreserveAspectRatio', () {
     test('should return correct string representation', () {
-      const SvgPreserveAspectRatio ratio = SvgPreserveAspectRatio(
+      const ratio = SvgPreserveAspectRatio(
         alignment: SvgPreserveAspectRatioAlignment.xMaxYMax,
         scale: SvgPreserveAspectRatioScale.slice,
       );
@@ -14,10 +14,10 @@ void main() {
     test('should implement equality and hashCode correctly', () {
       const SvgPreserveAspectRatio r1 = SvgPreserveAspectRatio.defaults;
       const SvgPreserveAspectRatio r2 = SvgPreserveAspectRatio.defaults;
-      const SvgPreserveAspectRatio r3 = SvgPreserveAspectRatio(
+      const r3 = SvgPreserveAspectRatio(
         alignment: SvgPreserveAspectRatioAlignment.none,
       );
-      const SvgPreserveAspectRatio r4 = SvgPreserveAspectRatio(
+      const r4 = SvgPreserveAspectRatio(
         scale: SvgPreserveAspectRatioScale.slice,
       );
 

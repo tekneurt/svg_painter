@@ -5,7 +5,7 @@ import 'package:test/test.dart';
 void main() {
   group('RadialGradientGenerator', () {
     test('should generate RadialGradient properly', () {
-      const DefineRadialGradient cmd = DefineRadialGradient(
+      const cmd = DefineRadialGradient(
         id: 'grad1',
         cx: 0.5,
         cy: 0.5,
@@ -19,9 +19,9 @@ void main() {
         ],
       );
 
-      final GeneratorBuffer buffer = GeneratorBuffer();
+      final buffer = GeneratorBuffer();
       const RadialGradientGenerator().generate(cmd, buffer, painterClassName: 'TestPainter');
-      final String result = buffer.toString();
+      final result = buffer.toString();
 
       expect(result, contains('RadialGradient('));
       expect(result, contains('center: Alignment(0.0, 0.0)'));
@@ -35,7 +35,7 @@ void main() {
     });
 
     test('should generate RadialGradient with focalRadius properly', () {
-      const DefineRadialGradient cmd = DefineRadialGradient(
+      const cmd = DefineRadialGradient(
         id: 'grad2',
         cx: 0.5,
         cy: 0.5,
@@ -46,9 +46,9 @@ void main() {
         stops: <GradientStop>[GradientStop(offset: 0, colorArgb: 0xFFFF0000)],
       );
 
-      final GeneratorBuffer buffer = GeneratorBuffer();
+      final buffer = GeneratorBuffer();
       const RadialGradientGenerator().generate(cmd, buffer, painterClassName: 'TestPainter');
-      final String result = buffer.toString();
+      final result = buffer.toString();
 
       expect(result, contains('focalRadius: 0.1'));
     });

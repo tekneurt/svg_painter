@@ -22,7 +22,7 @@ class PolyGenerator<T extends DrawCommand> extends ShapeGenerator<T> {
     Set<String>? gradientsNeedingStretch,
   }) {
     final List<double> points;
-    bool isClosed = false;
+    var isClosed = false;
     if (command is DrawPolyline) {
       points = command.points;
     } else if (command is DrawPolygon) {
@@ -41,7 +41,7 @@ class PolyGenerator<T extends DrawCommand> extends ShapeGenerator<T> {
         buffer.writeln('final Path path = Path()');
         buffer.indent();
         buffer.writeln('..moveTo(${points[0]}, ${points[1]})');
-        for (int i = 2; i < points.length; i += 2) {
+        for (var i = 2; i < points.length; i += 2) {
           buffer.writeln('..lineTo(${points[i]}, ${points[i + 1]})');
         }
         if (isClosed) {
@@ -50,7 +50,7 @@ class PolyGenerator<T extends DrawCommand> extends ShapeGenerator<T> {
         buffer.outdent();
         buffer.writeln(';');
 
-        const String bounds = 'path.getBounds()';
+        const bounds = 'path.getBounds()';
         generatePaintingCode(
           buffer,
           command,

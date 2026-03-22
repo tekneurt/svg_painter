@@ -8,7 +8,7 @@ void main() {
   group('ToSvgStyle', () {
     test('should return SvgStyle with correct attributes when valid XML is provided', () {
       // Arrange
-      final XmlDocument document = XmlDocument.parse(
+      final document = XmlDocument.parse(
         '<style id="style1" type="text/css" media="all" title="Main Style">rect { fill: red; }</style>',
       );
       final XmlElement element = document.rootElement;
@@ -28,7 +28,7 @@ void main() {
 
     test('should return SvgStyle with null attributes when none are provided', () {
       // Arrange
-      final XmlDocument document = XmlDocument.parse('<style>circle { fill: gold; }</style>');
+      final document = XmlDocument.parse('<style>circle { fill: gold; }</style>');
       final XmlElement element = document.rootElement;
 
       // Act

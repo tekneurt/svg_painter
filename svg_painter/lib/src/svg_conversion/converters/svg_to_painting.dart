@@ -22,7 +22,7 @@ import 'svg_painting_context.dart';
 extension SvgElementToPaintCommands on SvgElement {
   /// Converts this [SvgElement] to a list of [PaintCommand]s.
   Result<List<PaintCommand>> toPaintCommands([SvgPaintingContext? context]) {
-    final SvgElement self = this;
+    final self = this;
     if (self is SvgRoot && context == null) {
       // Establish context from SvgRoot.
       final SvgLengthPercentageAuto? w = self.width;
@@ -36,10 +36,10 @@ extension SvgElementToPaintCommands on SvgElement {
       final double minX = self.viewBox?.minX ?? 0.0;
       final double minY = self.viewBox?.minY ?? 0.0;
 
-      final Map<String, SvgElement> definitions = <String, SvgElement>{};
+      final definitions = <String, SvgElement>{};
       self.collectDefinitions(definitions);
 
-      final SvgPaintingContext rootContext = SvgPaintingContext(
+      final rootContext = SvgPaintingContext(
         viewBoxWidth: width,
         viewBoxHeight: height,
         viewBoxMinX: minX,
@@ -127,7 +127,7 @@ extension _SvgUseToPaintCommands on SvgUse {
     final double dx = x.resolve(context, SvgOrientation.horizontal);
     final double dy = y.resolve(context, SvgOrientation.vertical);
 
-    final List<SvgTransformOperation> ops = <SvgTransformOperation>[];
+    final ops = <SvgTransformOperation>[];
     if (dx != 0 || dy != 0) {
       ops.add(SvgTranslate(dx, dy));
     }
@@ -221,8 +221,8 @@ extension _SvgSymbolToPaintCommands on SvgSymbol {
     double sx = wVal / vbW;
     double sy = hVal / vbH;
 
-    double alignX = 0.0;
-    double alignY = 0.0;
+    var alignX = 0.0;
+    var alignY = 0.0;
 
     if (par.alignment != SvgPreserveAspectRatioAlignment.none) {
       if (par.scale == SvgPreserveAspectRatioScale.slice) {
@@ -273,7 +273,7 @@ extension _SvgSymbolToPaintCommands on SvgSymbol {
 
     // 3. Coordinate Mappings
     // Viewport mapping (Outer)
-    final List<SvgTransformOperation> viewportOps = <SvgTransformOperation>[];
+    final viewportOps = <SvgTransformOperation>[];
     final SvgTransformAttributes? ta = transformAttributes;
     if (ta != null) {
       viewportOps.insertAll(0, ta.operations);
@@ -283,7 +283,7 @@ extension _SvgSymbolToPaintCommands on SvgSymbol {
     }
 
     // ViewBox mapping (Inner)
-    final List<SvgTransformOperation> viewBoxOps = <SvgTransformOperation>[];
+    final viewBoxOps = <SvgTransformOperation>[];
     if (alignX != 0 || alignY != 0) {
       viewBoxOps.add(SvgTranslate(alignX, alignY));
     }
@@ -302,7 +302,7 @@ extension _SvgSymbolToPaintCommands on SvgSymbol {
     );
 
     // Symbols always establish a new viewport and should clip.
-    final PaintingRect clipRect = PaintingRect(0, 0, wVal, hVal);
+    final clipRect = PaintingRect(0, 0, wVal, hVal);
 
     final PaintingStyle viewportStyle = resolvePaint(
       context,
@@ -337,10 +337,10 @@ extension _SvgSymbolToPaintCommands on SvgSymbol {
           )
         ];
       } else {
-        final PaintingStyle viewBoxStyle = PaintingStyle(
+        final viewBoxStyle = PaintingStyle(
           transformAttributes: SvgTransformAttributes(viewBoxOps),
         );
-        final DrawGroup innerGroup = DrawGroup(commands: childCommands, style: viewBoxStyle);
+        final innerGroup = DrawGroup(commands: childCommands, style: viewBoxStyle);
         return <PaintCommand>[
           DrawGroup(
             commands: <PaintCommand>[innerGroup],
@@ -394,8 +394,8 @@ extension _SvgSvgToPaintCommands on SvgSvg {
     double sx = wVal / vbW;
     double sy = hVal / vbH;
 
-    double alignX = 0.0;
-    double alignY = 0.0;
+    var alignX = 0.0;
+    var alignY = 0.0;
 
     if (par.alignment != SvgPreserveAspectRatioAlignment.none) {
       if (par.scale == SvgPreserveAspectRatioScale.slice) {
@@ -445,7 +445,7 @@ extension _SvgSvgToPaintCommands on SvgSvg {
     }
 
     // 1. Viewport mapping (Outer)
-    final List<SvgTransformOperation> viewportOps = <SvgTransformOperation>[];
+    final viewportOps = <SvgTransformOperation>[];
     final SvgTransformAttributes? ta = transformAttributes;
     if (ta != null) {
       viewportOps.insertAll(0, ta.operations);
@@ -455,7 +455,7 @@ extension _SvgSvgToPaintCommands on SvgSvg {
     }
 
     // 2. ViewBox mapping (Inner)
-    final List<SvgTransformOperation> viewBoxOps = <SvgTransformOperation>[];
+    final viewBoxOps = <SvgTransformOperation>[];
     if (alignX != 0 || alignY != 0) {
       viewBoxOps.add(SvgTranslate(alignX, alignY));
     }
@@ -476,7 +476,7 @@ extension _SvgSvgToPaintCommands on SvgSvg {
     // Nested <svg> elements establishing sub-viewports must always clip.
     // The root <svg> only needs to clip if 'slice' scaling is used (which explicitly bleeds)
     // OR if the viewBox is shifted (non-zero origin), making bleeding highly likely.
-    final bool isRoot = this is SvgRoot;
+    final isRoot = this is SvgRoot;
     final bool isSliceOrNone = par.scale == SvgPreserveAspectRatioScale.slice || par.alignment == SvgPreserveAspectRatioAlignment.none;
     final bool hasShiftedViewBox = (viewBox?.minX ?? 0) != 0 || (viewBox?.minY ?? 0) != 0;
 
@@ -509,10 +509,10 @@ extension _SvgSvgToPaintCommands on SvgSvg {
           )
         ];
       } else {
-        final PaintingStyle viewBoxStyle = PaintingStyle(
+        final viewBoxStyle = PaintingStyle(
           transformAttributes: SvgTransformAttributes(viewBoxOps),
         );
-        final DrawGroup innerGroup = DrawGroup(commands: childCommands, style: viewBoxStyle);
+        final innerGroup = DrawGroup(commands: childCommands, style: viewBoxStyle);
         return <PaintCommand>[
           DrawGroup(
             commands: <PaintCommand>[innerGroup],

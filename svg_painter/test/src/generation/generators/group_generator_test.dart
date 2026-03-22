@@ -4,18 +4,18 @@ import 'package:test/test.dart';
 
 void main() {
   group('GroupGenerator', () {
-    const GroupGenerator generator = GroupGenerator();
+    const generator = GroupGenerator();
 
     test('should stop inheritance when group style does not match parent and is not in palette', () {
-      const DrawGroup command = DrawGroup(
+      const command = DrawGroup(
         commands: <PaintCommand>[],
         style: PaintingStyle(
           fill: PaintingFillStyle(colorArgb: 0xFFFF0000), // Red
         ),
       );
 
-      final GeneratorBuffer buffer = GeneratorBuffer();
-      final Map<Type, CommandGenerator<PaintCommand>> generators = <Type, CommandGenerator<PaintCommand>>{
+      final buffer = GeneratorBuffer();
+      final generators = <Type, CommandGenerator<PaintCommand>>{
         DrawGroup: const GroupGenerator(),
       };
 
@@ -34,12 +34,12 @@ void main() {
     });
 
     test('should apply opacity layering via saveLayer', () {
-      const DrawGroup command = DrawGroup(
+      const command = DrawGroup(
         commands: <PaintCommand>[],
         opacity: 0.5,
       );
-      final GeneratorBuffer buffer = GeneratorBuffer();
-      final Map<Type, CommandGenerator<PaintCommand>> generators = <Type, CommandGenerator<PaintCommand>>{
+      final buffer = GeneratorBuffer();
+      final generators = <Type, CommandGenerator<PaintCommand>>{
         DrawGroup: const GroupGenerator(),
       };
 

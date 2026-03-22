@@ -7,7 +7,7 @@ void main() {
   group('SvgLine', () {
     test('should return correct string representation when all fields are provided', () {
       // Arrange
-      const SvgLine line = SvgLine(
+      const line = SvgLine(
         x1: SvgLength(11.0),
         y1: SvgLength(22.0),
         x2: SvgLength(111.0),
@@ -19,7 +19,7 @@ void main() {
       );
 
       // Act
-      final String result = line.toString();
+      final result = line.toString();
 
       // Assert
       expect(
@@ -30,7 +30,7 @@ void main() {
 
     test('should return compact string representation when optional fields are null', () {
       // Arrange
-      const SvgLine line = SvgLine(
+      const line = SvgLine(
         x1: SvgLength(11.0),
         y1: SvgLength(22.0),
         x2: SvgLength(111.0),
@@ -38,7 +38,7 @@ void main() {
       );
 
       // Act
-      final String result = line.toString();
+      final result = line.toString();
 
       // Assert
       expect(result, 'SvgLine(x1: 11.0, y1: 22.0, x2: 111.0, y2: 222.0)');

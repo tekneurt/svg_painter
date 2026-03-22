@@ -22,7 +22,7 @@ class LinearGradientGenerator extends CommandGenerator<DefineLinearGradient> {
     String? painterClassName,
     Set<String>? gradientsNeedingStretch,
   }) {
-    final String varName = '_grad_${command.id}';
+    final varName = '_grad_${command.id}';
 
     buffer.writeBlock('final Gradient $varName = LinearGradient(', () {
       buffer.writeln('begin: Alignment(${command.x1 * 2 - 1}, ${command.y1 * 2 - 1}),');
@@ -52,7 +52,7 @@ class LinearGradientGenerator extends CommandGenerator<DefineLinearGradient> {
       final String cleanName = (painterClassName ?? 'Unknown')
           .replaceAll(r'$', '')
           .replaceFirst(RegExp(r'^_+'), '');
-      final String helperName = '_SvgGradientTransform_$cleanName';
+      final helperName = '_SvgGradientTransform_$cleanName';
 
       if (command.transformAttributes != null) {
         final List<double> matrix =

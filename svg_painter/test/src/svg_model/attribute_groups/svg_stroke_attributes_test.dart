@@ -6,7 +6,7 @@ void main() {
   group('SvgStrokeAttributes', () {
     test('should return correct string representation when all fields are provided', () {
       // Arrange
-      const SvgStrokeAttributes attrs = SvgStrokeAttributes(
+      const attrs = SvgStrokeAttributes(
         color: SvgNamedColor(SvgColorName.red),
         opacity: SvgPercentage(55.0),
         width: SvgLength(2.5),
@@ -16,7 +16,7 @@ void main() {
       );
 
       // Act
-      final String result = attrs.toString();
+      final result = attrs.toString();
 
       // Assert
       expect(
@@ -27,13 +27,13 @@ void main() {
 
     test('should return compact string representation when some fields are null', () {
       // Arrange
-      const SvgStrokeAttributes attrs = SvgStrokeAttributes(
+      const attrs = SvgStrokeAttributes(
         color: SvgNamedColor(SvgColorName.blue),
         width: SvgLength(1.1),
       );
 
       // Act
-      final String result = attrs.toString();
+      final result = attrs.toString();
 
       // Assert
       expect(result, 'SvgStrokeAttributes(color: SvgNamedColor(blue), width: 1.1)');

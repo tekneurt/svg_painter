@@ -6,7 +6,7 @@ class SvgStyleParser {
   ///
   /// Currently only supports basic class selectors (e.g. .className { fill: red; }).
   static SvgStyleSheet parse(String css) {
-    final Map<String, Map<String, String>> rules = <String, Map<String, String>>{};
+    final rules = <String, Map<String, String>>{};
 
     // Remove comments
     final String cleanCss = css.replaceAll(RegExp(r'/\*[\s\S]*?\*/'), '');
@@ -14,7 +14,7 @@ class SvgStyleParser {
     // Regex to match selectors: .className, #idName, or tagName { properties }
     // Group 1: selector name
     // Group 2: properties block
-    final RegExp ruleRegex = RegExp(r'([#\.a-zA-Z0-9_-]+)\s*\{([^}]*)\}');
+    final ruleRegex = RegExp(r'([#\.a-zA-Z0-9_-]+)\s*\{([^}]*)\}');
 
     for (final Match match in ruleRegex.allMatches(cleanCss)) {
       final String? rawSelector = match.group(1);
@@ -44,10 +44,10 @@ class SvgStyleParser {
       // For ID selectors, we will keep the '#' prefix to distinguish them from tags/classes
       // (e.g. "#rect" vs "rect").
 
-      final Map<String, String> properties = <String, String>{};
+      final properties = <String, String>{};
       final List<String> declarations = propsBlock.split(';');
 
-      for (final String decl in declarations) {
+      for (final decl in declarations) {
         final String trimmedDecl = decl.trim();
         if (trimmedDecl.isEmpty) {
           continue;

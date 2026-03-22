@@ -5,7 +5,7 @@ void main() {
   group('SvgFontWeight', () {
     test('SvgFontWeightNormal should have correct toString', () {
       // Arrange
-      const SvgFontWeightNormal weight = SvgFontWeightNormal();
+      const weight = SvgFontWeightNormal();
 
       // Act & Assert
       expect(weight.toString(), 'SvgFontWeight(normal)');
@@ -13,7 +13,7 @@ void main() {
 
     test('SvgFontWeightBold should have correct toString', () {
       // Arrange
-      const SvgFontWeightBold weight = SvgFontWeightBold();
+      const weight = SvgFontWeightBold();
 
       // Act & Assert
       expect(weight.toString(), 'SvgFontWeight(bold)');
@@ -21,7 +21,7 @@ void main() {
 
     test('SvgFontWeightBolder should have correct toString', () {
       // Arrange
-      const SvgFontWeightBolder weight = SvgFontWeightBolder();
+      const weight = SvgFontWeightBolder();
 
       // Act & Assert
       expect(weight.toString(), 'SvgFontWeight(bolder)');
@@ -29,7 +29,7 @@ void main() {
 
     test('SvgFontWeightLighter should have correct toString', () {
       // Arrange
-      const SvgFontWeightLighter weight = SvgFontWeightLighter();
+      const weight = SvgFontWeightLighter();
 
       // Act & Assert
       expect(weight.toString(), 'SvgFontWeight(lighter)');
@@ -38,7 +38,7 @@ void main() {
     group('SvgFontWeightNumeric', () {
       test('should store value and have correct toString', () {
         // Arrange
-        const SvgFontWeightNumeric weight = SvgFontWeightNumeric(500);
+        const weight = SvgFontWeightNumeric(500);
 
         // Act & Assert
         expect(weight.value, 500.0);

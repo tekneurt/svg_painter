@@ -16,7 +16,7 @@ final class SvgCoreAttributes {
 
   @override
   String toString() {
-    final List<String> parts = <String>[
+    final parts = <String>[
       if (id != null) 'id: $id',
       if (cssClass != null) 'class: $cssClass',
       if (inlineStyle != null) 'style: $inlineStyle',

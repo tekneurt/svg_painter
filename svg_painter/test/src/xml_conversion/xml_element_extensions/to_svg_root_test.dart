@@ -9,7 +9,7 @@ void main() {
   group('ToSvgRoot', () {
     test('should return Success with SvgRoot when valid <svg> is provided', () {
       // Arrange
-      final XmlDocument document = XmlDocument.parse(
+      final document = XmlDocument.parse(
         '<svg width="222" height="111" viewBox="0 0 222 111"><circle /></svg>',
       );
       final XmlElement element = document.rootElement;
@@ -34,7 +34,7 @@ void main() {
 
     test('should collect and merge CSS rules from <style> blocks', () {
       // Arrange
-      final XmlDocument document = XmlDocument.parse('''
+      final document = XmlDocument.parse('''
         <svg>
           <style>.red { fill: red; }</style>
           <style>.blue { fill: blue; }</style>
@@ -59,7 +59,7 @@ void main() {
 
     test('should NOT collect CSS rules from <style> blocks inside nested <svg> elements', () {
       // Arrange
-      final XmlDocument document = XmlDocument.parse('''
+      final document = XmlDocument.parse('''
         <svg>
           <style>.outer { fill: red; }</style>
           <g>
@@ -85,7 +85,7 @@ void main() {
 
     test('should collect CSS rules from <style> blocks inside <defs>', () {
       // Arrange
-      final XmlDocument document = XmlDocument.parse('''
+      final document = XmlDocument.parse('''
         <svg>
           <defs>
             <style>.def-style { fill: green; }</style>
@@ -107,7 +107,7 @@ void main() {
       'should collect CSS rules from <style> blocks inside other containers (like <a> or <span>)',
       () {
         // Arrange
-        final XmlDocument document = XmlDocument.parse('''
+        final document = XmlDocument.parse('''
         <svg>
           <a href="http://example.com">
             <style>.link-style { fill: yellow; }</style>

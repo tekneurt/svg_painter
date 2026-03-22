@@ -6,13 +6,13 @@ void main() {
   group('SvgMetadataElement', () {
     test('should return correct base string representation (tested via SvgTitle)', () {
       // Arrange
-      const SvgTitle element = SvgTitle(
+      const element = SvgTitle(
         content: 'test content',
         coreAttributes: SvgCoreAttributes(id: 'meta1'),
       );
 
       // Act
-      final String result = element.toString();
+      final result = element.toString();
 
       // Assert
       expect(result, contains('content: test content'));

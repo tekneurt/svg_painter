@@ -34,7 +34,7 @@ class SvgStrokeAttributes {
 
   @override
   String toString() {
-    final List<String> parts = <String>[
+    final parts = <String>[
       if (color != null) 'color: $color',
       if (opacity != null) 'opacity: $opacity',
       if (width != null) 'width: $width',

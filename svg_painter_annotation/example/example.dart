@@ -22,7 +22,7 @@ import 'package:svg_painter_annotation/svg_painter_annotation.dart';
 void main() {
   // Demonstrate the annotation constructors
   // ignore: unused_local_variable
-  const SvgPainter fileBased = SvgPainter.file('assets/icon.svg');
+  const fileBased = SvgPainter.file('assets/icon.svg');
   // ignore: unused_local_variable
-  const SvgPainter codeBased = SvgPainter.code('<svg></svg>');
+  const codeBased = SvgPainter.code('<svg></svg>');
 }

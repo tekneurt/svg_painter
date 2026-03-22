@@ -21,7 +21,7 @@ class SvgFontAttributes {
 
   @override
   String toString() {
-    final List<String> parts = <String>[
+    final parts = <String>[
       if (size != null) 'size: $size',
       if (weight != null) 'weight: $weight',
       if (style != null) 'style: $style',

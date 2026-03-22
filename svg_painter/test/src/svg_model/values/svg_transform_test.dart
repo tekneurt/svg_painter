@@ -6,9 +6,9 @@ void main() {
     group('SvgTransformAttributes', () {
       test('should store operations and have correct toString', () {
         // Arrange
-        const SvgTranslate translate = SvgTranslate(10, 20);
-        const SvgScale scale = SvgScale(2);
-        const SvgTransformAttributes attrs = SvgTransformAttributes(<SvgTransformOperation>[
+        const translate = SvgTranslate(10, 20);
+        const scale = SvgScale(2);
+        const attrs = SvgTransformAttributes(<SvgTransformOperation>[
           translate,
           scale,
         ]);
@@ -22,7 +22,7 @@ void main() {
     group('SvgMatrix', () {
       test('should store values and have correct toString', () {
         // Arrange
-        const SvgMatrix matrix = SvgMatrix(1, 2, 3, 4, 5, 6);
+        const matrix = SvgMatrix(1, 2, 3, 4, 5, 6);
 
         // Act & Assert
         expect(matrix.a, 1.0);
@@ -38,7 +38,7 @@ void main() {
     group('SvgTranslate', () {
       test('should handle x and y and have correct toString', () {
         // Arrange
-        const SvgTranslate translate = SvgTranslate(10, 20);
+        const translate = SvgTranslate(10, 20);
 
         // Act & Assert
         expect(translate.x, 10.0);
@@ -48,7 +48,7 @@ void main() {
 
       test('should default y to 0.0', () {
         // Arrange
-        const SvgTranslate translate = SvgTranslate(10);
+        const translate = SvgTranslate(10);
 
         // Act & Assert
         expect(translate.x, 10.0);
@@ -60,7 +60,7 @@ void main() {
     group('SvgScale', () {
       test('should handle x and y and have correct toString', () {
         // Arrange
-        const SvgScale scale = SvgScale(2, 3);
+        const scale = SvgScale(2, 3);
 
         // Act & Assert
         expect(scale.x, 2.0);
@@ -70,7 +70,7 @@ void main() {
 
       test('should default y to x', () {
         // Arrange
-        const SvgScale scale = SvgScale(2.5);
+        const scale = SvgScale(2.5);
 
         // Act & Assert
         expect(scale.x, 2.5);
@@ -82,7 +82,7 @@ void main() {
     group('SvgRotate', () {
       test('should handle angle without pivot and have correct toString', () {
         // Arrange
-        const SvgRotate rotate = SvgRotate(45);
+        const rotate = SvgRotate(45);
 
         // Act & Assert
         expect(rotate.angle, 45.0);
@@ -93,7 +93,7 @@ void main() {
 
       test('should handle angle with pivot and have correct toString', () {
         // Arrange
-        const SvgRotate rotate = SvgRotate(45, 10, 20);
+        const rotate = SvgRotate(45, 10, 20);
 
         // Act & Assert
         expect(rotate.angle, 45.0);
@@ -104,7 +104,7 @@ void main() {
 
       test('should handle partial pivot (treated as no pivot in toString)', () {
         // Arrange
-        const SvgRotate rotate = SvgRotate(45, 10);
+        const rotate = SvgRotate(45, 10);
 
         // Act & Assert
         expect(rotate.toString(), 'rotate(45.0)');
@@ -114,7 +114,7 @@ void main() {
     group('SvgSkewX', () {
       test('should store angle and have correct toString', () {
         // Arrange
-        const SvgSkewX skew = SvgSkewX(30);
+        const skew = SvgSkewX(30);
 
         // Act & Assert
         expect(skew.angle, 30.0);
@@ -125,7 +125,7 @@ void main() {
     group('SvgSkewY', () {
       test('should store angle and have correct toString', () {
         // Arrange
-        const SvgSkewY skew = SvgSkewY(30);
+        const skew = SvgSkewY(30);
 
         // Act & Assert
         expect(skew.angle, 30.0);

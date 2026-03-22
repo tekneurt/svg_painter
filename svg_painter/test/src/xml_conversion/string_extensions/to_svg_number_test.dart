@@ -7,7 +7,7 @@ void main() {
     group('toSvgNumber', () {
       test('should return SvgGenericNumber when valid number is provided', () {
         // Arrange
-        const String input = ' 123.45 ';
+        const input = ' 123.45 ';
 
         // Act
         final SvgNumber? result = input.toSvgNumber();
@@ -19,7 +19,7 @@ void main() {
 
       test('should return SvgGenericNumber for negative numbers', () {
         // Arrange
-        const String input = '-10.5';
+        const input = '-10.5';
 
         // Act
         final SvgNumber? result = input.toSvgNumber();
@@ -31,7 +31,7 @@ void main() {
 
       test('should return null when invalid number is provided', () {
         // Arrange
-        const String input = 'abc';
+        const input = 'abc';
 
         // Act
         final SvgNumber? result = input.toSvgNumber();
@@ -44,7 +44,7 @@ void main() {
     group('toSvgNonNegativeNumber', () {
       test('should return SvgNonNegativeNumber when positive number is provided', () {
         // Arrange
-        const String input = '50';
+        const input = '50';
 
         // Act
         final SvgNonNegativeNumber? result = input.toSvgNonNegativeNumber();
@@ -56,7 +56,7 @@ void main() {
 
       test('should return SvgNonNegativeNumber when zero is provided', () {
         // Arrange
-        const String input = '0.0';
+        const input = '0.0';
 
         // Act
         final SvgNonNegativeNumber? result = input.toSvgNonNegativeNumber();
@@ -68,7 +68,7 @@ void main() {
 
       test('should return null when negative number is provided', () {
         // Arrange
-        const String input = '-1';
+        const input = '-1';
 
         // Act
         final SvgNonNegativeNumber? result = input.toSvgNonNegativeNumber();
@@ -79,7 +79,7 @@ void main() {
 
       test('should return null when malformed input is provided', () {
         // Arrange
-        const String input = '12.3.4';
+        const input = '12.3.4';
 
         // Act
         final SvgNonNegativeNumber? result = input.toSvgNonNegativeNumber();

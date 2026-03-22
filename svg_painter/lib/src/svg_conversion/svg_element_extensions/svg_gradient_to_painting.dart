@@ -8,7 +8,7 @@ import '../svg_value_extensions/_svg_value_extensions.dart';
 extension SvgGradientToPainting on SvgGradient {
   /// Converts this [SvgGradient] to a [PaintCommand].
   Result<PaintCommand> toPaintCommand(SvgPaintingContext context) {
-    final SvgGradient self = this;
+    final self = this;
     final String? gradId = id;
     if (gradId == null) {
       return const Failure<PaintCommand>('Gradient element must have an ID to be referenced.');
@@ -25,7 +25,7 @@ extension SvgGradientToPainting on SvgGradient {
       SvgSpreadMethod.repeat => PaintingSpreadMethod.repeat,
     };
 
-    final bool isUserUnits = gradientUnits == SvgGradientUnits.userSpaceOnUse;
+    final isUserUnits = gradientUnits == SvgGradientUnits.userSpaceOnUse;
     final SvgOrientation xOrient = isUserUnits ? .horizontal : .unit;
     final SvgOrientation yOrient = isUserUnits ? .vertical : .unit;
     final SvgOrientation rOrient = isUserUnits ? .normalized : .unit;

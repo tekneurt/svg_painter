@@ -6,13 +6,13 @@ void main() {
   group('DrawPolyline', () {
     test('should return correct string representation when toString() is called', () {
       // Arrange
-      const DrawPolyline command = DrawPolyline(
+      const command = DrawPolyline(
         points: <double>[10.0, 20.0, 30.0, 40.0],
         style: PaintingStyle(),
       );
 
       // Act
-      final String result = command.toString();
+      final result = command.toString();
 
       // Assert
       expect(

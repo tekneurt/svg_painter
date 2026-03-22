@@ -7,7 +7,7 @@ void main() {
   group('SvgPath', () {
     test('should return correct string representation when all fields are provided', () {
       // Arrange
-      const SvgPath path = SvgPath(
+      const path = SvgPath(
         d: 'M 11 22 L 33 44',
         geometryAttributes: SvgGeometryAttributes(
           pathLength: SvgNonNegativeNumber(400.0),
@@ -16,7 +16,7 @@ void main() {
       );
 
       // Act
-      final String result = path.toString();
+      final result = path.toString();
 
       // Assert
       expect(
@@ -27,10 +27,10 @@ void main() {
 
     test('should return compact string representation when optional fields are null', () {
       // Arrange
-      const SvgPath path = SvgPath(d: 'M 11 22 L 33 44');
+      const path = SvgPath(d: 'M 11 22 L 33 44');
 
       // Act
-      final String result = path.toString();
+      final result = path.toString();
 
       // Assert
       expect(result, 'SvgPath(d: M 11 22 L 33 44)');

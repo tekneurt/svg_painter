@@ -9,7 +9,7 @@ extension SvgColorToArgb on SvgColor? {
   /// - Fill: Black (0xFF000000)
   /// - Stroke: None (0x00000000)
   int toArgb({int fallback = 0x00000000}) {
-    final SvgColor? self = this;
+    final self = this;
     if (self == null) {
       return fallback;
     }

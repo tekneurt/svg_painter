@@ -9,7 +9,7 @@ void main() {
   group('ToSvgRect', () {
     test('should convert <rect> with all attributes when valid XML is provided', () {
       // Arrange
-      final XmlDocument document = XmlDocument.parse(
+      final document = XmlDocument.parse(
         '<rect x="11" y="22" width="111" height="55" rx="6" ry="9" fill="green" />',
       );
       final XmlElement element = document.rootElement;
@@ -37,7 +37,7 @@ void main() {
 
     test('should return Success with default values when minimal rect is provided', () {
       // Arrange
-      final XmlDocument document = XmlDocument.parse('<rect />');
+      final document = XmlDocument.parse('<rect />');
       final XmlElement element = document.rootElement;
 
       // Act

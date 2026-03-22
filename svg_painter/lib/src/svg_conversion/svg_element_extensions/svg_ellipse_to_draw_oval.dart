@@ -25,8 +25,8 @@ extension SvgEllipseToPaintCommands on SvgEllipse {
     // Use local coordinates (generator handles transforms)
     final double finalCx = cx.toPosition(context, .horizontal);
     final double finalCy = cy.toPosition(context, .vertical);
-    final double finalRx = initialRx;
-    final double finalRy = initialRy;
+    final finalRx = initialRx;
+    final finalRy = initialRy;
 
     return Success<List<PaintCommand>>(<PaintCommand>[
       DrawOval(

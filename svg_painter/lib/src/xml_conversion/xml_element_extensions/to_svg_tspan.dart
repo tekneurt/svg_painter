@@ -14,9 +14,9 @@ extension ToSvgTspan on XmlElement {
 
     // Detect xml:space
     final String spaceAttr = toXmlAttributeValue(XmlAttributeName.xmlSpace) ?? 'default';
-    final bool preserve = spaceAttr == 'preserve';
+    final preserve = spaceAttr == 'preserve';
 
-    final List<SvgTextContent> textChildren = <SvgTextContent>[];
+    final textChildren = <SvgTextContent>[];
     for (final XmlNode child in children) {
       if (child is XmlText) {
         final String text = child.value.normalizeSvgWhitespace(preserve: preserve);

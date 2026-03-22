@@ -10,7 +10,7 @@ void main() {
   group('ToSvgLinearGradient', () {
     test('should return Success with SvgLinearGradient when valid XML is provided', () {
       // Arrange
-      final XmlDocument document = XmlDocument.parse('''
+      final document = XmlDocument.parse('''
         <linearGradient x1="0%" y1="0%" x2="100%" y2="100%" id="grad1" gradientTransform="rotate(90)">
           <stop offset="0%" stop-color="white" />
           <stop offset="100%" stop-color="black" />
@@ -35,7 +35,7 @@ void main() {
 
     test('should return Success with default values when minimal gradient is provided', () {
       // Arrange
-      final XmlDocument document = XmlDocument.parse('<linearGradient />');
+      final document = XmlDocument.parse('<linearGradient />');
       final XmlElement element = document.rootElement;
 
       // Act

@@ -7,7 +7,7 @@ void main() {
   group('SvgDefinitionElement', () {
     test('should return correct base string representation (tested via SvgStop)', () {
       // Arrange
-      const SvgStop element = SvgStop(
+      const element = SvgStop(
         offset: SvgLength(0.5),
         stopColor: SvgNamedColor(SvgColorName.black),
         stopOpacity: SvgLength(1.0),
@@ -15,7 +15,7 @@ void main() {
       );
 
       // Act
-      final String result = element.toString();
+      final result = element.toString();
 
       // Assert
       expect(result, contains('id: stop1'));

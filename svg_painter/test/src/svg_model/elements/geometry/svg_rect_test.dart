@@ -7,7 +7,7 @@ void main() {
   group('SvgRect', () {
     test('should return correct string representation when all fields are provided', () {
       // Arrange
-      const SvgRect rect = SvgRect(
+      const rect = SvgRect(
         x: SvgLength(11.0),
         y: SvgLength(22.0),
         width: SvgLength(111.0),
@@ -21,7 +21,7 @@ void main() {
       );
 
       // Act
-      final String result = rect.toString();
+      final result = rect.toString();
 
       // Assert
       expect(
@@ -32,7 +32,7 @@ void main() {
 
     test('should return compact string representation when optional fields are null', () {
       // Arrange
-      const SvgRect rect = SvgRect(
+      const rect = SvgRect(
         x: SvgLength(11.0),
         y: SvgLength(22.0),
         width: SvgLength(111.0),
@@ -42,7 +42,7 @@ void main() {
       );
 
       // Act
-      final String result = rect.toString();
+      final result = rect.toString();
 
       // Assert
       expect(result, 'SvgRect(x: 11.0, y: 22.0, w: 111.0, h: 55.0, rx: 6.0, ry: 9.0)');

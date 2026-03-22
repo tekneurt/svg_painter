@@ -29,7 +29,7 @@ final class SvgEllipse extends SvgBasicShape {
 
   @override
   String toString() {
-    final List<String> parts = <String>[
+    final parts = <String>[
       'cx: $cx',
       'cy: $cy',
       'rx: $rx',

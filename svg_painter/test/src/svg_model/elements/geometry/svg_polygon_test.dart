@@ -7,7 +7,7 @@ void main() {
   group('SvgPolygon', () {
     test('should return correct string representation when all fields are provided', () {
       // Arrange
-      const SvgPolygon polygon = SvgPolygon(
+      const polygon = SvgPolygon(
         points: SvgPointList(<double>[11.0, 22.0, 33.0, 44.0]),
         geometryAttributes: SvgGeometryAttributes(
           pathLength: SvgNonNegativeNumber(500.0),
@@ -16,7 +16,7 @@ void main() {
       );
 
       // Act
-      final String result = polygon.toString();
+      final result = polygon.toString();
 
       // Assert
       expect(
@@ -27,17 +27,17 @@ void main() {
 
     test('should return compact string representation when optional fields are null', () {
       // Arrange
-      const SvgPolygon polygon = SvgPolygon(points: SvgPointList(<double>[11.0, 22.0, 33.0, 44.0]));
+      const polygon = SvgPolygon(points: SvgPointList(<double>[11.0, 22.0, 33.0, 44.0]));
 
       // Act
-      final String result = polygon.toString();
+      final result = polygon.toString();
 
       // Assert
       expect(result, 'SvgPolygon(pts: 4)');
     });
 
     test('should hold correct values', () {
-      const SvgPolygon polygon = SvgPolygon(points: SvgPointList(<double>[1.0, 2.0]));
+      const polygon = SvgPolygon(points: SvgPointList(<double>[1.0, 2.0]));
       expect(polygon.points.points, <double>[1.0, 2.0]);
     });
   });

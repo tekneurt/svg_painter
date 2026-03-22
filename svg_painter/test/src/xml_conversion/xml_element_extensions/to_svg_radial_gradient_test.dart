@@ -9,7 +9,7 @@ void main() {
   group('ToSvgRadialGradient', () {
     test('should return Success with SvgRadialGradient when valid XML is provided', () {
       // Arrange
-      final XmlDocument document = XmlDocument.parse('''
+      final document = XmlDocument.parse('''
         <radialGradient cx="50%" cy="50%" r="50%" fx="25%" fy="25%" fr="10%" id="rad1">
           <stop offset="0%" stop-color="red" />
         </radialGradient>
@@ -33,7 +33,7 @@ void main() {
 
     test('should fallback fx/fy to cx/cy when not provided', () {
       // Arrange
-      final XmlDocument document = XmlDocument.parse('<radialGradient cx="40%" cy="60%" />');
+      final document = XmlDocument.parse('<radialGradient cx="40%" cy="60%" />');
       final XmlElement element = document.rootElement;
 
       // Act
@@ -47,7 +47,7 @@ void main() {
 
     test('should return Success with default values when minimal gradient is provided', () {
       // Arrange
-      final XmlDocument document = XmlDocument.parse('<radialGradient />');
+      final document = XmlDocument.parse('<radialGradient />');
       final XmlElement element = document.rootElement;
 
       // Act

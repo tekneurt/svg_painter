@@ -7,10 +7,10 @@ import 'package:test/test.dart';
 
 void main() {
   group('SvgGradientToPainting', () {
-    const SvgPaintingContext context = SvgPaintingContext(viewBoxWidth: 100, viewBoxHeight: 100);
+    const context = SvgPaintingContext(viewBoxWidth: 100, viewBoxHeight: 100);
 
     test('SvgLinearGradient should convert to DefineLinearGradient', () {
-      const SvgLinearGradient grad = SvgLinearGradient(
+      const grad = SvgLinearGradient(
         coreAttributes: SvgCoreAttributes(id: 'g1'),
         x1: SvgLength(0),
         y1: SvgLength(0),
@@ -35,14 +35,14 @@ void main() {
       expect(result, isA<Success<PaintCommand>>());
       final PaintCommand cmd = (result as Success<PaintCommand>).value;
       expect(cmd, isA<DefineLinearGradient>());
-      final DefineLinearGradient lgrad = cmd as DefineLinearGradient;
+      final lgrad = cmd as DefineLinearGradient;
       expect(lgrad.id, 'g1');
       expect(lgrad.stops, hasLength(2));
       expect(lgrad.stops[1].opacity, 0.5);
     });
 
     test('SvgLinearGradient should preserve gradientTransformAttributes', () {
-      const SvgLinearGradient grad = SvgLinearGradient(
+      const grad = SvgLinearGradient(
         coreAttributes: SvgCoreAttributes(id: 'g-rot-adj'),
         x1: SvgLength(0),
         y1: SvgLength(0),
@@ -62,7 +62,7 @@ void main() {
 
       expect(result, isA<Success<PaintCommand>>());
       final PaintCommand cmd = (result as Success<PaintCommand>).value;
-      final DefineLinearGradient lgrad = cmd as DefineLinearGradient;
+      final lgrad = cmd as DefineLinearGradient;
       // Alignments should NOT be baked anymore
       expect(lgrad.x1, closeTo(0, 0.001));
       expect(lgrad.y1, closeTo(0, 0.001));
@@ -73,7 +73,7 @@ void main() {
     });
 
     test('SvgRadialGradient should convert to DefineRadialGradient', () {
-      const SvgRadialGradient grad = SvgRadialGradient(
+      const grad = SvgRadialGradient(
         coreAttributes: SvgCoreAttributes(id: 'rg1'),
         cx: SvgLength(50),
         cy: SvgLength(50),
@@ -95,13 +95,13 @@ void main() {
       expect(result, isA<Success<PaintCommand>>());
       final PaintCommand cmd = (result as Success<PaintCommand>).value;
       expect(cmd, isA<DefineRadialGradient>());
-      final DefineRadialGradient rgrad = cmd as DefineRadialGradient;
+      final rgrad = cmd as DefineRadialGradient;
       expect(rgrad.id, 'rg1');
       expect(rgrad.cx, 50.0);
     });
 
     test('SvgRadialGradient should handle focal point defaults correctly', () {
-      const SvgRadialGradient gradient = SvgRadialGradient(
+      const gradient = SvgRadialGradient(
         coreAttributes: SvgCoreAttributes(id: 'rg2'),
         cx: SvgPercentage(50),
         cy: SvgPercentage(50),

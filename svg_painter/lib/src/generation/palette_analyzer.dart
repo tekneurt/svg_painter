@@ -23,11 +23,11 @@ class PaletteAnalyzer {
     List<PaintCommand> commands, {
     SvgExposureMode mode = SvgExposureMode.none,
   }) {
-    final Map<PaintCommand, String> fillAssignments = <PaintCommand, String>{};
-    final Map<PaintCommand, String> strokeAssignments = <PaintCommand, String>{};
+    final fillAssignments = <PaintCommand, String>{};
+    final strokeAssignments = <PaintCommand, String>{};
 
-    final Map<_StyleKey, List<PaintCommand>> fillGroups = <_StyleKey, List<PaintCommand>>{};
-    final Map<_StyleKey, List<PaintCommand>> strokeGroups = <_StyleKey, List<PaintCommand>>{};
+    final fillGroups = <_StyleKey, List<PaintCommand>>{};
+    final strokeGroups = <_StyleKey, List<PaintCommand>>{};
 
     _collectGroups(commands, fillGroups, strokeGroups, mode: mode);
 
@@ -43,7 +43,7 @@ class PaletteAnalyzer {
     Map<_StyleKey, List<PaintCommand>> strokeGroups, {
     required SvgExposureMode mode,
   }) {
-    for (final PaintCommand command in commands) {
+    for (final command in commands) {
       if (command is DrawGroup) {
         _collectGroups(command.commands, fillGroups, strokeGroups, mode: mode);
       }
@@ -69,13 +69,13 @@ class PaletteAnalyzer {
 
         final PaintingFillStyle? fill = style.fill;
         if (fill != null && shouldIndex(command.id, fill.isExplicit)) {
-          final _StyleKey key = _StyleKey.fromFill(fill);
+          final key = _StyleKey.fromFill(fill);
           fillGroups.putIfAbsent(key, () => <PaintCommand>[]).add(command);
         }
 
         final PaintingStrokeStyle? stroke = style.stroke;
         if (stroke != null && shouldIndex(command.id, stroke.isExplicit)) {
-          final _StyleKey key = _StyleKey.fromStroke(stroke);
+          final key = _StyleKey.fromStroke(stroke);
           strokeGroups.putIfAbsent(key, () => <PaintCommand>[]).add(command);
         }
       }
@@ -121,13 +121,13 @@ class PaletteAnalyzer {
             .toList();
 
     if (defaultEntries.length == 1) {
-      final String name = 'default${prefix[0].toUpperCase()}${prefix.substring(1)}';
+      final name = 'default${prefix[0].toUpperCase()}${prefix.substring(1)}';
       for (final PaintCommand cmd in defaultEntries.first.value) {
         result[cmd] = name;
       }
     } else if (defaultEntries.isNotEmpty) {
-      for (int i = 0; i < defaultEntries.length; i++) {
-        final String name = 'default${prefix[0].toUpperCase()}${prefix.substring(1)}${i + 1}';
+      for (var i = 0; i < defaultEntries.length; i++) {
+        final name = 'default${prefix[0].toUpperCase()}${prefix.substring(1)}${i + 1}';
         for (final PaintCommand cmd in defaultEntries[i].value) {
           result[cmd] = name;
         }
@@ -139,8 +139,8 @@ class PaletteAnalyzer {
         result[cmd] = prefix;
       }
     } else if (explicitEntries.isNotEmpty) {
-      for (int i = 0; i < explicitEntries.length; i++) {
-        final String name = '$prefix${i + 1}';
+      for (var i = 0; i < explicitEntries.length; i++) {
+        final name = '$prefix${i + 1}';
         for (final PaintCommand cmd in explicitEntries[i].value) {
           result[cmd] = name;
         }
@@ -195,7 +195,7 @@ class _StyleKey implements Comparable<_StyleKey> {
       return false;
     }
 
-    for (int i = 0; i < dashArray!.length; i++) {
+    for (var i = 0; i < dashArray!.length; i++) {
       if (dashArray![i] != other.dashArray![i]) {
         return false;
       }
@@ -231,7 +231,7 @@ class _StyleKey implements Comparable<_StyleKey> {
     }
 
     if (dashArray != null && other.dashArray != null) {
-      for (int i = 0; i < dashArray!.length; i++) {
+      for (var i = 0; i < dashArray!.length; i++) {
         final int valComp = dashArray![i].compareTo(other.dashArray![i]);
         if (valComp != 0) {
           return valComp;

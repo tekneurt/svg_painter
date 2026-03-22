@@ -22,7 +22,7 @@ class CircleGenerator extends ShapeGenerator<DrawCircle> {
     Set<String>? gradientsNeedingStretch,
   }) {
     wrapWithStyle(buffer, command.style, () {
-      final String bounds =
+      final bounds =
           'Rect.fromCircle(center: const Offset(${command.cx}, ${command.cy}), radius: ${command.radius})';
       generatePaintingCode(
         buffer,

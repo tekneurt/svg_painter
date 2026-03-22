@@ -9,7 +9,7 @@ void main() {
   group('ToCommonAttributes', () {
     test('should extract attributes correctly', () {
       // Arrange
-      final XmlDocument document = XmlDocument.parse(
+      final document = XmlDocument.parse(
         '<circle id="c1" fill="red" stroke="blue" opacity="0.5" font-size="12" font-family="Roboto" class="cls1" style="fill: green" transform="scale(2)" />',
       );
       final XmlElement element = document.rootElement;
@@ -31,7 +31,7 @@ void main() {
 
     test('should return empty attribute groups when attributes are missing', () {
       // Arrange
-      final XmlDocument document = XmlDocument.parse('<circle />');
+      final document = XmlDocument.parse('<circle />');
       final XmlElement element = document.rootElement;
 
       // Act

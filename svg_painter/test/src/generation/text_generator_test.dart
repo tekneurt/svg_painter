@@ -4,7 +4,7 @@ import 'package:svg_painter/src/painting_model/styles/painting_style.dart';
 import 'package:test/test.dart';
 
 void main() {
-  const PaintingStyle textStyle = PaintingStyle(
+  const textStyle = PaintingStyle(
     fill: PaintingFillStyle(colorArgb: 0xFF000000),
     text: PaintingTextStyle(
       fontSize: 12.0,
@@ -17,20 +17,20 @@ void main() {
   group('TextGenerator', () {
     test('should generate TextPainter with correct properties when DrawText is provided', () {
       // Arrange
-      const TextGenerator generator = TextGenerator();
-      const DrawText command = DrawText(
+      const generator = TextGenerator();
+      const command = DrawText(
         x: 10.0,
         y: 20.0,
         rootSpan: PaintingTextSpan(text: 'Hello SVG'),
         style: textStyle,
       );
-      final GeneratorBuffer buffer = GeneratorBuffer();
+      final buffer = GeneratorBuffer();
 
       // Act
       generator.generate(command, buffer, painterClassName: 'TestPainter');
 
       // Assert
-      final String output = buffer.toString();
+      final output = buffer.toString();
       expect(output, contains("text: 'Hello SVG'"));
       expect(output, contains('fontSize: 12.0'));
       expect(output, contains("fontFamily: 'Roboto'"));

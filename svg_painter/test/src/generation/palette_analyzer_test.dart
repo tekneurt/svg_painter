@@ -6,10 +6,10 @@ import 'package:test/test.dart';
 
 void main() {
   group('PaletteAnalyzer', () {
-    const PaletteAnalyzer analyzer = PaletteAnalyzer();
+    const analyzer = PaletteAnalyzer();
 
     test('should identify unique strokes based on pathLength', () {
-      final List<PaintCommand> commands = <PaintCommand>[
+      final commands = <PaintCommand>[
         const DrawLine(
           x1: 0, y1: 0, x2: 10, y2: 10,
           style: PaintingStyle(
@@ -33,7 +33,7 @@ void main() {
     });
 
     test('should identify unique strokes based on dashArray', () {
-      final List<PaintCommand> commands = <PaintCommand>[
+      final commands = <PaintCommand>[
         const DrawLine(
           x1: 0, y1: 0, x2: 10, y2: 10,
           style: PaintingStyle(
@@ -54,7 +54,7 @@ void main() {
     });
 
     test('should group identical implicit strokes under defaultStroke', () {
-      final List<PaintCommand> commands = <PaintCommand>[
+      final commands = <PaintCommand>[
         const DrawLine(
           x1: 0, y1: 0, x2: 10, y2: 10,
           style: PaintingStyle(
@@ -76,7 +76,7 @@ void main() {
     });
 
     test('should identify unique strokes based on dashArray values', () {
-      final List<PaintCommand> commands = <PaintCommand>[
+      final commands = <PaintCommand>[
         const DrawLine(
           x1: 0, y1: 0, x2: 10, y2: 10,
           style: PaintingStyle(

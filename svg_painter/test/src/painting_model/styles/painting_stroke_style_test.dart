@@ -6,7 +6,7 @@ void main() {
     test('should store all properties correctly when initialized', () {
       // Arrange & Act
       // ignore: prefer_const_constructors
-      final PaintingStrokeStyle style = PaintingStrokeStyle(
+      final style = PaintingStrokeStyle(
         colorArgb: 0xFF00FF00,
         shaderId: 'stroke-shader',
         width: 3.5,
@@ -35,7 +35,7 @@ void main() {
     test('should return correct string representation when toString() is called', () {
       // Arrange
       // ignore: prefer_const_constructors
-      final PaintingStrokeStyle style = PaintingStrokeStyle(
+      final style = PaintingStrokeStyle(
         colorArgb: 0xFF000000,
         shaderId: 'grad2',
         width: 2.0,
@@ -45,7 +45,7 @@ void main() {
       );
 
       // Act
-      final String result = style.toString();
+      final result = style.toString();
 
       // Assert
       expect(

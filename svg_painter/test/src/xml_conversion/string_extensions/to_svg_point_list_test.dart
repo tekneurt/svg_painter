@@ -7,7 +7,7 @@ void main() {
     group('toSvgPointList', () {
       test('should return list of doubles when valid points string is provided', () {
         // Arrange
-        const String input = '10,20 30.5,40.5 -50,-60';
+        const input = '10,20 30.5,40.5 -50,-60';
 
         // Act
         final SvgPointList result = input.toSvgPointList();
@@ -18,7 +18,7 @@ void main() {
 
       test('should return empty list when input contains no numbers', () {
         // Arrange
-        const String input = 'abc, def';
+        const input = 'abc, def';
 
         // Act
         final SvgPointList result = input.toSvgPointList();
@@ -29,7 +29,7 @@ void main() {
 
       test('should return all coordinates even if input has odd number of values', () {
         // Arrange
-        const String input = '10,20 30';
+        const input = '10,20 30';
 
         // Act
         final SvgPointList result = input.toSvgPointList();

@@ -28,7 +28,7 @@ final class SvgStyle extends SvgElement {
 
   @override
   String toString() {
-    final List<String> parts = <String>[
+    final parts = <String>[
       'content: ${content.length} chars',
       if (type != null) 'type: $type',
       if (media != null) 'media: $media',

@@ -37,7 +37,7 @@ final class SvgRect extends SvgBasicShape with SvgBounded {
 
   @override
   String toString() {
-    final List<String> parts = <String>[
+    final parts = <String>[
       'x: $x',
       'y: $y',
       'w: $width',

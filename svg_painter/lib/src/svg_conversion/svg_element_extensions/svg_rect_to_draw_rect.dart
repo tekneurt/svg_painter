@@ -32,10 +32,10 @@ extension SvgRectToPaintCommands on SvgRect {
     // Use local coordinates (generator handles transforms)
     final double finalX = x.toPosition(context, .horizontal);
     final double finalY = y.toPosition(context, .vertical);
-    final double finalWidth = wVal;
-    final double finalHeight = hVal;
-    final double finalRx = clampedRx;
-    final double finalRy = clampedRy;
+    final finalWidth = wVal;
+    final finalHeight = hVal;
+    final finalRx = clampedRx;
+    final finalRy = clampedRy;
 
     return Success<List<PaintCommand>>(<PaintCommand>[
       DrawRect(

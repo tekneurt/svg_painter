@@ -5,7 +5,7 @@ import 'package:test/test.dart';
 void main() {
   group('LinearGradientGenerator', () {
     test('should generate LinearGradient properly', () {
-      const DefineLinearGradient cmd = DefineLinearGradient(
+      const cmd = DefineLinearGradient(
         id: 'grad1',
         x1: 0,
         y1: 0,
@@ -17,9 +17,9 @@ void main() {
         ],
       );
 
-      final GeneratorBuffer buffer = GeneratorBuffer();
+      final buffer = GeneratorBuffer();
       const LinearGradientGenerator().generate(cmd, buffer, painterClassName: 'TestPainter');
-      final String result = buffer.toString();
+      final result = buffer.toString();
 
       expect(result, contains('LinearGradient('));
       expect(result, contains('begin: Alignment(-1.0, -1.0)'));

@@ -7,7 +7,7 @@ void main() {
   group('SvgEllipse', () {
     test('should return correct string representation when all fields are provided', () {
       // Arrange
-      const SvgEllipse ellipse = SvgEllipse(
+      const ellipse = SvgEllipse(
         cx: SvgLength(111.0),
         cy: SvgLength(55.0),
         rx: SvgLength(44.0),
@@ -19,7 +19,7 @@ void main() {
       );
 
       // Act
-      final String result = ellipse.toString();
+      final result = ellipse.toString();
 
       // Assert
       expect(
@@ -30,7 +30,7 @@ void main() {
 
     test('should return compact string representation when optional fields are null', () {
       // Arrange
-      const SvgEllipse ellipse = SvgEllipse(
+      const ellipse = SvgEllipse(
         cx: SvgLength(111.0),
         cy: SvgLength(55.0),
         rx: SvgLength(44.0),
@@ -38,7 +38,7 @@ void main() {
       );
 
       // Act
-      final String result = ellipse.toString();
+      final result = ellipse.toString();
 
       // Assert
       expect(result, 'SvgEllipse(cx: 111.0, cy: 55.0, rx: 44.0, ry: 22.0)');

@@ -7,7 +7,7 @@ void main() {
   group('SvgGeometry', () {
     test('should hold pathLength when applied to a class (tested via SvgCircle)', () {
       // Arrange
-      const SvgCircle element = SvgCircle(
+      const element = SvgCircle(
         cx: SvgLength(11.0),
         cy: SvgLength(22.0),
         r: SvgLength(33.0),

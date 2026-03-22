@@ -8,7 +8,7 @@ void main() {
   group('ToSvgTspan', () {
     test('should return SvgTspan with correct attributes and children when valid XML is provided', () {
       // Arrange
-      final XmlDocument document = XmlDocument.parse(
+      final document = XmlDocument.parse(
         '<tspan id="span1" x="10" y="20" dx="5" dy="5" rotate="45">Hello <tspan>World</tspan></tspan>',
       );
       final XmlElement element = document.rootElement;

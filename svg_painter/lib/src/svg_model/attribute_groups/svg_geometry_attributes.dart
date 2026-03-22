@@ -12,7 +12,7 @@ final class SvgGeometryAttributes {
 
   @override
   String toString() {
-    final List<String> parts = <String>[
+    final parts = <String>[
       if (pathLength != null) 'pathLength: $pathLength',
     ];
     return 'SvgGeometryAttributes(${parts.join(', ')})';

@@ -6,7 +6,7 @@ void main() {
   group('SvgFontAttributes', () {
     test('should return correct string representation when all fields are provided', () {
       // Arrange
-      const SvgFontAttributes attrs = SvgFontAttributes(
+      const attrs = SvgFontAttributes(
         size: SvgLength(16.5),
         weight: SvgFontWeightBold(),
         style: SvgFontStyle.italic,
@@ -14,7 +14,7 @@ void main() {
       );
 
       // Act
-      final String result = attrs.toString();
+      final result = attrs.toString();
 
       // Assert
       expect(
@@ -25,10 +25,10 @@ void main() {
 
     test('should return compact string representation when some fields are null', () {
       // Arrange
-      const SvgFontAttributes attrs = SvgFontAttributes(family: SvgFontFamily('Noto Serif'));
+      const attrs = SvgFontAttributes(family: SvgFontFamily('Noto Serif'));
 
       // Act
-      final String result = attrs.toString();
+      final result = attrs.toString();
 
       // Assert
       expect(result, 'SvgFontAttributes(family: SvgFontFamily(Noto Serif))');

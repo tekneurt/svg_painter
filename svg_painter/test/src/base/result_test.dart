@@ -6,7 +6,7 @@ void main() {
     group('Success', () {
       test('fold should call onSuccess with value', () {
         // Arrange
-        const Success<int> success = Success<int>(42);
+        const success = Success<int>(42);
 
         // Act
         final String result = success.fold((Failure<int> f) => 'failure', (int v) => 'success $v');
@@ -17,9 +17,9 @@ void main() {
 
       test('equality and hashCode should work correctly', () {
         // Arrange
-        const Success<int> s1 = Success<int>(1);
-        const Success<int> s2 = Success<int>(1);
-        const Success<int> s3 = Success<int>(2);
+        const s1 = Success<int>(1);
+        const s2 = Success<int>(1);
+        const s3 = Success<int>(2);
 
         // Act & Assert
         expect(s1, equals(s2));
@@ -29,7 +29,7 @@ void main() {
 
       test('toString should return correct string', () {
         // Arrange
-        const Success<int> success = Success<int>(42);
+        const success = Success<int>(42);
 
         // Act & Assert
         expect(success.toString(), 'Success(42)');
@@ -39,7 +39,7 @@ void main() {
     group('Failure', () {
       test('fold should call onFailure with failure', () {
         // Arrange
-        const Failure<int> failure = Failure<int>('error');
+        const failure = Failure<int>('error');
 
         // Act
         final String result = failure.fold(
@@ -53,9 +53,9 @@ void main() {
 
       test('equality and hashCode should work correctly', () {
         // Arrange
-        const Failure<int> f1 = Failure<int>('err');
-        const Failure<int> f2 = Failure<int>('err');
-        const Failure<int> f3 = Failure<int>('other');
+        const f1 = Failure<int>('err');
+        const f2 = Failure<int>('err');
+        const f3 = Failure<int>('other');
 
         // Act & Assert
         expect(f1, equals(f2));
@@ -65,7 +65,7 @@ void main() {
 
       test('toString should return correct string', () {
         // Arrange
-        const Failure<int> failure = Failure<int>('error');
+        const failure = Failure<int>('error');
 
         // Act & Assert
         expect(failure.toString(), 'Failure(error)');
@@ -213,7 +213,7 @@ void main() {
     group('ResultListExtension.combine', () {
       test('should combine list of lists when all are Success', () {
         // Arrange
-        final List<Result<List<int>>> list = <Result<List<int>>>[
+        final list = <Result<List<int>>>[
           const Success<List<int>>(<int>[1, 2]),
           const Success<List<int>>(<int>[3, 4]),
         ];
@@ -228,7 +228,7 @@ void main() {
 
       test('should return first Failure when one fails', () {
         // Arrange
-        final List<Result<List<int>>> list = <Result<List<int>>>[
+        final list = <Result<List<int>>>[
           const Success<List<int>>(<int>[1, 2]),
           const Failure<List<int>>('error'),
           const Success<List<int>>(<int>[3, 4]),
@@ -246,7 +246,7 @@ void main() {
     group('ResultIterableExtension.combine', () {
       test('should combine list of values when all are Success', () {
         // Arrange
-        final List<Result<int>> list = <Result<int>>[const Success<int>(1), const Success<int>(2)];
+        final list = <Result<int>>[const Success<int>(1), const Success<int>(2)];
 
         // Act
         final Result<List<int>> combined = list.combine();
@@ -258,7 +258,7 @@ void main() {
 
       test('should return first Failure when one fails', () {
         // Arrange
-        final List<Result<int>> list = <Result<int>>[
+        final list = <Result<int>>[
           const Success<int>(1),
           const Failure<int>('error'),
           const Success<int>(2),

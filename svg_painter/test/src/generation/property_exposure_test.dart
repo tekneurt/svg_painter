@@ -4,11 +4,11 @@ import 'package:test/test.dart';
 
 void main() {
   group('Property Exposure', () {
-    const SvgPainterGenerator generator = SvgPainterGenerator();
+    const generator = SvgPainterGenerator();
 
     test('should generate a nullable Color property for elements with an id', () {
       // Arrange
-      const String svg = '''
+      const svg = '''
 <svg viewBox="0 0 100 100">
   <circle id="myCircle" cx="50" cy="50" r="40" fill="red" />
 </svg>
@@ -39,7 +39,7 @@ void main() {
 
     test('should sanitize IDs into valid Dart identifiers', () {
       // Arrange
-      const String svg = '''
+      const svg = '''
 <svg viewBox="0 0 100 100">
   <rect id="my-rect" x="0" y="0" width="10" height="10" fill="blue" />
   <rect id="123box" x="10" y="10" width="10" height="10" fill="green" />
@@ -62,7 +62,7 @@ void main() {
 
     test('should preserve camelCase in IDs', () {
       // Arrange
-      const String svg = '''
+      const svg = '''
 <svg viewBox="0 0 100 100">
   <circle id="myCircle" cx="50" cy="50" r="40" fill="red" />
 </svg>
@@ -81,7 +81,7 @@ void main() {
 
     test('should NOT generate properties for elements with an id but NO explicit fill/stroke', () {
       // Arrange
-      const String svg = '''
+      const svg = '''
 <svg viewBox="0 0 100 100">
   <circle id="implicitCircle" cx="50" cy="50" r="40" />
 </svg>
@@ -99,7 +99,7 @@ void main() {
 
     test('should generate a nullable Color property for elements with an explicit stroke', () {
       // Arrange
-      const String svg = '''
+      const svg = '''
 <svg viewBox="0 0 100 100">
   <rect id="strokedRect" x="10" y="10" width="80" height="80" stroke="blue" />
 </svg>
@@ -125,7 +125,7 @@ void main() {
     test('should use named Flutter colors (including shades) when a match exists', () {
       // Arrange
       // 0xFFFFAB91 matches Colors.deepOrange.shade200
-      const String svg = '''
+      const svg = '''
 <svg viewBox="0 0 100 100">
   <circle id="orangeCircle" cx="50" cy="50" r="40" fill="#FFAB91" />
 </svg>

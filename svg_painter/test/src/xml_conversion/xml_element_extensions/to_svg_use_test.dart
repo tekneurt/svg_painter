@@ -9,7 +9,7 @@ void main() {
   group('ToSvgUse', () {
     test('should return Success with SvgUse when valid attributes are provided', () {
       // Arrange
-      final XmlDocument document = XmlDocument.parse('<use href="#icon1" x="11" y="22" />');
+      final document = XmlDocument.parse('<use href="#icon1" x="11" y="22" />');
       final XmlElement element = document.rootElement;
 
       // Act
@@ -31,7 +31,7 @@ void main() {
 
     test('should support xlink:href fallback', () {
       // Arrange
-      final XmlDocument document = XmlDocument.parse(
+      final document = XmlDocument.parse(
         '<use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon2" x="33" y="44" />',
       );
       final XmlElement element = document.rootElement;
@@ -52,7 +52,7 @@ void main() {
 
     test('should return Failure when href attribute is missing', () {
       // Arrange
-      final XmlDocument document = XmlDocument.parse('<use x="0" y="0" />');
+      final document = XmlDocument.parse('<use x="0" y="0" />');
       final XmlElement element = document.rootElement;
 
       // Act

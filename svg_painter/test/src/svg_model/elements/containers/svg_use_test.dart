@@ -7,7 +7,7 @@ void main() {
   group('SvgUse', () {
     test('should return correct string representation when toString() is called', () {
       // Arrange
-      const SvgUse use = SvgUse(
+      const use = SvgUse(
         href: '#id1',
         x: SvgLength(10.0),
         y: SvgLength(20.0),
@@ -17,7 +17,7 @@ void main() {
       );
 
       // Act
-      final String result = use.toString();
+      final result = use.toString();
 
       // Assert
       expect(result, 'SvgUse(href: #id1, id: u1)');

@@ -22,7 +22,7 @@ extension ToSvgLengthPercentage on String {
     }
 
     // Try to extract number and unit suffix
-    final RegExp unitRegex = RegExp(r'^(-?\d*\.?\d*)([a-zA-Z%]*)$');
+    final unitRegex = RegExp(r'^(-?\d*\.?\d*)([a-zA-Z%]*)$');
     final Match? match = unitRegex.firstMatch(trimmed);
 
     if (match != null) {

@@ -9,7 +9,7 @@ void main() {
   group('ToSvgGroup', () {
     test('should return Success with SvgGroup and children when valid XML is provided', () {
       // Arrange
-      final XmlDocument document = XmlDocument.parse('<g id="group1"><circle /><rect /></g>');
+      final document = XmlDocument.parse('<g id="group1"><circle /><rect /></g>');
       final XmlElement element = document.rootElement;
 
       // Act
@@ -30,7 +30,7 @@ void main() {
 
     test('should inherit common attributes from group when provided', () {
       // Arrange
-      final XmlDocument document = XmlDocument.parse('<g fill="red" opacity="0.45" />');
+      final document = XmlDocument.parse('<g fill="red" opacity="0.45" />');
       final XmlElement element = document.rootElement;
 
       // Act

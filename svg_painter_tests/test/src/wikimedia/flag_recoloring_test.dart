@@ -11,7 +11,7 @@ void main() {
 
   group('Flag Recoloring', () {
     testWidgets('German Flag - Default (Black, Red, Gold)', (WidgetTester tester) async {
-      const GermanFlagPainter painter = GermanFlagPainter();
+      const painter = GermanFlagPainter();
       
       await testSvgPainter(
         tester: tester,
@@ -22,7 +22,7 @@ void main() {
     });
 
     testWidgets('German Flag -> Dutch Flag (Red, White, Blue)', (WidgetTester tester) async {
-      const GermanFlagPainter painter = GermanFlagPainter(
+      const painter = GermanFlagPainter(
         topColor: Color(0xFFAE1C28),    // Dutch Red
         middleColor: Colors.white,      // Dutch White
         bottomColor: Color(0xFF21468B), // Dutch Blue
@@ -37,7 +37,7 @@ void main() {
     });
 
     testWidgets('French Flag - Default (Blue, White, Red)', (WidgetTester tester) async {
-      const FrenchFlagPainter painter = FrenchFlagPainter();
+      const painter = FrenchFlagPainter();
       
       await testSvgPainter(
         tester: tester,
@@ -48,7 +48,7 @@ void main() {
     });
 
     testWidgets('French Flag -> Belgium Flag (Black, Yellow, Red)', (WidgetTester tester) async {
-      const FrenchFlagPainter painter = FrenchFlagPainter(
+      const painter = FrenchFlagPainter(
         leftColor: Colors.black,        // Belgium Black
         middleColor: Color(0xFFFFCE00), // Belgium Yellow
         rightColor: Color(0xFFEF4135),  // Belgium Red

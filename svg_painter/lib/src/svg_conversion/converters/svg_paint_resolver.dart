@@ -17,7 +17,7 @@ PaintingStyle resolvePaint(
   PaintingRect? clipRect,
 }) {
   // 1. Resolve CSS properties
-  final Map<String, String> resolvedRules = <String, String>{};
+  final resolvedRules = <String, String>{};
 
   // Priority: Tag selector < Class selector < ID selector < Inline style
 
@@ -31,7 +31,7 @@ PaintingStyle resolvePaint(
   final String? cssClass = coreAttributes?.cssClass;
   if (cssClass != null) {
     final List<String> classes = cssClass.split(RegExp(r'\s+'));
-    for (final String className in classes) {
+    for (final className in classes) {
       final Map<String, String>? rules = context.styleSheet.rules[className];
       if (rules != null) {
         resolvedRules.addAll(rules);
@@ -52,7 +52,7 @@ PaintingStyle resolvePaint(
   final String? inlineStyle = coreAttributes?.inlineStyle;
   if (inlineStyle != null) {
     final List<String> declarations = inlineStyle.split(';');
-    for (final String decl in declarations) {
+    for (final decl in declarations) {
       final String trimmedDecl = decl.trim();
       if (trimmedDecl.isEmpty) {
         continue;
@@ -89,8 +89,8 @@ PaintingStyle resolvePaint(
   } else {
     // Handle font shorthand
     final List<String> allParts = fontValue.split(RegExp(r'\s+'));
-    int sizeIndex = -1;
-    for (int i = 0; i < allParts.length; i++) {
+    var sizeIndex = -1;
+    for (var i = 0; i < allParts.length; i++) {
       if (allParts[i].contains(RegExp(r'\d'))) {
         sizeIndex = i;
         break;
@@ -98,7 +98,7 @@ PaintingStyle resolvePaint(
     }
 
     if (sizeIndex != -1) {
-      for (int i = 0; i < sizeIndex; i++) {
+      for (var i = 0; i < sizeIndex; i++) {
         final String part = allParts[i];
         if (part == 'italic') {
           cssFontStyle = SvgFontStyle.italic;
@@ -141,7 +141,7 @@ PaintingStyle resolvePaint(
   final SvgTransformAttributes? cssTransform = SvgTransformParser.parse(resolvedRules['transform']);
 
   // 4. Create CSS presentation attributes set
-  final SvgPresentationAttributes cssPresentation = SvgPresentationAttributes(
+  final cssPresentation = SvgPresentationAttributes(
     fill: SvgFillAttributes(color: cssFill, opacity: cssFillOpacity),
     stroke: SvgStrokeAttributes(
       color: cssStroke,
@@ -187,7 +187,7 @@ PaintingStyle resolvePaint(
     int? fillColorArgb;
     String? fillShaderId;
     PaintingGradientUnits? shaderUnits;
-    final bool isCurrentColor = fillPaint is SvgCurrentColor;
+    final isCurrentColor = fillPaint is SvgCurrentColor;
 
     if (fillPaint is SvgPaintReference) {
       fillShaderId = fillPaint.id;
@@ -227,7 +227,7 @@ PaintingStyle resolvePaint(
     int? strokeColorArgb;
     String? strokeShaderId;
     PaintingGradientUnits? shaderUnits;
-    final bool isCurrentColor = strokePaint is SvgCurrentColor;
+    final isCurrentColor = strokePaint is SvgCurrentColor;
 
     if (strokePaint is SvgPaintReference) {
       strokeShaderId = strokePaint.id;

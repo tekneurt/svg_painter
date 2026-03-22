@@ -5,10 +5,10 @@ void main() {
   group('SvgPercentage', () {
     test('should return correct string representation', () {
       // Arrange
-      const SvgPercentage percentage = SvgPercentage(50.0);
+      const percentage = SvgPercentage(50.0);
 
       // Act
-      final String result = percentage.toString();
+      final result = percentage.toString();
 
       // Assert
       expect(result, '50.0%');

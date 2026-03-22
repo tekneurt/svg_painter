@@ -7,7 +7,7 @@ void main() {
   group('SvgElement', () {
     test('should return correct string representation for basic element', () {
       // Arrange
-      const SvgCircle element = SvgCircle(
+      const element = SvgCircle(
         cx: SvgLength(15.0),
         cy: SvgLength(25.0),
         r: SvgLength(10.0),
@@ -15,14 +15,14 @@ void main() {
       );
 
       // Act
-      final String result = element.toString();
+      final result = element.toString();
 
       // Assert
       expect(result, contains('id: base-element'));
     });
 
     test('SvgIgnoredElement should return correct string representation', () {
-      const SvgIgnoredElement element = SvgIgnoredElement(
+      const element = SvgIgnoredElement(
         coreAttributes: SvgCoreAttributes(id: 'ignore-me'),
       );
       expect(element.toString(), 'SvgIgnoredElement(id: ignore-me)');

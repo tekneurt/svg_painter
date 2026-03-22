@@ -5,7 +5,7 @@ void main() {
   group('SvgGradient', () {
     test('should hold shared properties (tested via SvgLinearGradient)', () {
       // Arrange
-      const SvgLinearGradient gradient = SvgLinearGradient(
+      const gradient = SvgLinearGradient(
         coreAttributes: SvgCoreAttributes(id: 'grad1'),
         x1: SvgLength(1.2),
         y1: SvgLength(3.4),

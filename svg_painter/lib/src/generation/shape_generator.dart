@@ -88,7 +88,7 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
     buffer.writeBlock('{', () {
       buffer.writeln('final Paint paint = Paint();');
 
-      final String suffix = isFill ? 'Fill' : 'Stroke';
+      final suffix = isFill ? 'Fill' : 'Stroke';
       final StyleResolution resolution = _resolveStyle(
         command: command,
         style: style,
@@ -109,7 +109,7 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
       buffer.writeln('paint.style = PaintingStyle.${isFill ? 'fill' : 'stroke'};');
 
       if (!isFill) {
-        final PaintingStrokeStyle stroke = style as PaintingStrokeStyle;
+        final stroke = style as PaintingStrokeStyle;
         buffer.writeln('paint.strokeWidth = ${stroke.width};');
         if (stroke.cap != PaintingStrokeCap.butt) {
           buffer.writeln('paint.strokeCap = ${stroke.cap.toFlutterString()};');
@@ -123,7 +123,7 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
           drawCall('paint');
         } else {
           buffer.writeln('final List<double> dashArray = [${dashArray.join(', ')}];');
-          final String? pathLength = stroke.pathLength?.toString();
+          final pathLength = stroke.pathLength?.toString();
           drawCall('paint', dashArray: 'dashArray', pathLength: pathLength);
         }
       } else {
@@ -140,7 +140,7 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
     required Map<String, String>? activeProperties,
     required List<InheritedProperty>? inheritedProperties,
   }) {
-    final String suffix = isFill ? 'Fill' : 'Stroke';
+    final suffix = isFill ? 'Fill' : 'Stroke';
     final String? id = command.id;
     final String? propName = id == null ? null : '${SvgIdFormatter.format(id)}$suffix';
     final String? assignedProp = isFill
@@ -249,7 +249,7 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
         buffer.writeln('paint.color = $colorCode;');
       }
     } else {
-      final String shaderRect =
+      final shaderRect =
           style.shaderUnits == PaintingGradientUnits.userSpaceOnUse ? 'viewBoxRect' : boundsRect;
       buffer.writeln('paint.shader = _grad_${style.shaderId}.createShader($shaderRect);');
       if (style.opacity != 1.0) {
@@ -268,7 +268,7 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
     final PaintingRect? clipRect = style.clipRect;
 
     final bool hasTransform = transformAttributes != null && transformAttributes.operations.isNotEmpty;
-    final bool hasClip = clipRect != null;
+    final hasClip = clipRect != null;
 
     if (!hasTransform && !hasClip) {
       body();

@@ -10,7 +10,7 @@ import '../_xml_conversion.dart';
 extension ToSvgElement on XmlElement {
   /// Converts this [XmlElement] to an [SvgElement].
   Result<SvgElement> toSvgElement() {
-    const String svgNamespace = 'http://www.w3.org/2000/svg';
+    const svgNamespace = 'http://www.w3.org/2000/svg';
     final String? ns = namespaceUri;
 
     if (ns == null || ns == svgNamespace) {

@@ -22,7 +22,7 @@ class OvalGenerator extends ShapeGenerator<DrawOval> {
     Set<String>? gradientsNeedingStretch,
   }) {
     wrapWithStyle(buffer, command.style, () {
-      final String bounds =
+      final bounds =
           'Rect.fromLTWH(${command.cx - command.rx}, ${command.cy - command.ry}, ${command.rx * 2}, ${command.ry * 2})';
       generatePaintingCode(
         buffer,

@@ -6,13 +6,13 @@ void main() {
   group('SvgTspan', () {
     test('should return correct string representation when toString() is called', () {
       // Arrange
-      const SvgTspan tspan = SvgTspan(
+      const tspan = SvgTspan(
         children: <SvgTextContent>[SvgCharacterData('test')],
         coreAttributes: SvgCoreAttributes(id: 'span1'),
       );
 
       // Act
-      final String result = tspan.toString();
+      final result = tspan.toString();
 
       // Assert
       expect(result, 'SvgTspan(children: 1, id: span1)');

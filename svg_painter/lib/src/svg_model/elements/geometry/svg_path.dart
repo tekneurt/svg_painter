@@ -18,7 +18,7 @@ final class SvgPath extends SvgGraphicsElement with SvgGeometryAttributable {
 
   @override
   String toString() {
-    final List<String> parts = <String>[
+    final parts = <String>[
       'd: $d',
       if (geometryAttributes != null) 'geometry: $geometryAttributes',
       if (presentationAttributes != null) 'presentation: $presentationAttributes',

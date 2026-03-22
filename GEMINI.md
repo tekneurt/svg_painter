@@ -31,7 +31,8 @@ The engine operates as a strict, unidirectional layered pipeline:
 ## Foundational Mandates
 
 ### Coding Standards
-- **Strict Typing**: Specify explicit types for all declarations (`always_specify_types: true`).
+- **Official Flutter Style**: Adhere strictly to the official Flutter coding style. Use type inference for local variables where the type is obvious (e.g., `final name = 'SVG';`), following the `omit_obvious_local_variable_types` rule. Explicitly specify types for all class members and when the assignment is not immediately obvious.
+- **Local Immutability**: ALWAYS use `final` for local variables and loop variables. We enforce this to prevent accidental reassignments and ensure code safety.
 - **Enum Shorthands**: Use dot shorthands (e.g., `.horizontal`) when the context type is clear.
 - **SVG-Truthful Naming**: Match the SVG spec terminology (e.g., `SvgFontAttributable` for `fontAttributes`).
 - **No Bang Operators**: Avoid `!` unless absolutely necessary; use safe null-handling or defensive checks.

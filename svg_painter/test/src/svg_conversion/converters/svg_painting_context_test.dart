@@ -4,7 +4,7 @@ import 'package:test/test.dart';
 
 void main() {
   group('SvgPaintingContext', () {
-    const SvgPaintingContext initial = SvgPaintingContext(viewBoxWidth: 100, viewBoxHeight: 100);
+    const initial = SvgPaintingContext(viewBoxWidth: 100, viewBoxHeight: 100);
 
     test('should initialize with standard SVG defaults', () {
       expect(initial.inheritedFill, equals(const SvgNamedColor(SvgColorName.black)));
@@ -14,7 +14,7 @@ void main() {
 
     test('deriveWith should correctly override and inherit styles', () {
       // Arrange
-      const SvgGroup element = SvgGroup(
+      const element = SvgGroup(
         children: <SvgElement>[],
         presentationAttributes: SvgPresentationAttributes(
           fill: SvgFillAttributes(color: SvgNamedColor(SvgColorName.red)),
@@ -33,7 +33,7 @@ void main() {
 
     test('deriveWith should handle non-graphics elements by returning same context', () {
       // Arrange
-      const SvgTitle element = SvgTitle(content: 'test');
+      const element = SvgTitle(content: 'test');
 
       // Act
       final SvgPaintingContext derived = initial.deriveWith(element);

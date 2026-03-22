@@ -31,7 +31,7 @@ final class SvgLinearGradient extends SvgGradient {
 
   @override
   String toString() {
-    final List<String> parts = <String>[
+    final parts = <String>[
       'x1: $x1',
       'y1: $y1',
       'x2: $x2',

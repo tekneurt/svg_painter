@@ -7,7 +7,7 @@ void main() {
   group('SvgGraphicsElement', () {
     test('should return correct base string representation (tested via SvgCircle)', () {
       // Arrange
-      const SvgCircle element = SvgCircle(
+      const element = SvgCircle(
         cx: SvgLength(12.3),
         cy: SvgLength(45.6),
         r: SvgLength(7.8),
@@ -18,7 +18,7 @@ void main() {
       );
 
       // Act
-      final String result = element.toString();
+      final result = element.toString();
 
       // Assert
       expect(result, contains('id: gfx1'));

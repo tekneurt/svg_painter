@@ -6,10 +6,10 @@ import 'package:test/test.dart';
 
 void main() {
   test('PaletteAnalyzer should identify multiple unique implicit colors', () {
-    const PaletteAnalyzer analyzer = PaletteAnalyzer();
+    const analyzer = PaletteAnalyzer();
 
     // Simulating 3 unique colors from Daphnia, but as IMPLICIT (isExplicit: false)
-    final List<PaintCommand> commands = <PaintCommand>[
+    final commands = <PaintCommand>[
       const DrawCircle(
         cx: 0,
         cy: 0,

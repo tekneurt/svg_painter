@@ -7,12 +7,12 @@ import 'package:svg_painter/src/svg_model/svg_value.dart';
 import 'package:test/test.dart';
 
 void main() {
-  const SvgPaintingContext context = SvgPaintingContext(viewBoxWidth: 200, viewBoxHeight: 300);
+  const context = SvgPaintingContext(viewBoxWidth: 200, viewBoxHeight: 300);
 
   group('SvgEllipseToPaintCommands', () {
     test('should return Success with DrawOval when valid SvgEllipse is provided', () {
       // Arrange
-      const SvgEllipse ellipse = SvgEllipse(
+      const ellipse = SvgEllipse(
         cx: SvgLength(10.0),
         cy: SvgLength(20.0),
         rx: SvgLength(30.0),
@@ -27,7 +27,7 @@ void main() {
       final List<PaintCommand> commands = (result as Success<List<PaintCommand>>).value;
       expect(commands, hasLength(1));
       expect(commands.first, isA<DrawOval>());
-      final DrawOval drawOval = commands.first as DrawOval;
+      final drawOval = commands.first as DrawOval;
       expect(drawOval.cx, 10.0);
       expect(drawOval.cy, 20.0);
       expect(drawOval.rx, 30.0);
@@ -36,7 +36,7 @@ void main() {
 
     test('should return empty list when rx is zero', () {
       // Arrange
-      const SvgEllipse ellipse = SvgEllipse(
+      const ellipse = SvgEllipse(
         cx: SvgLength(50.0),
         cy: SvgLength(60.0),
         rx: SvgLength(0.0),

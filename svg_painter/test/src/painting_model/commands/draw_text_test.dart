@@ -5,7 +5,7 @@ void main() {
   group('DrawText', () {
     test('should return correct string representation when toString() is called', () {
       // Arrange
-      const DrawText command = DrawText(
+      const command = DrawText(
         x: 10.0,
         y: 20.0,
         rootSpan: PaintingTextSpan(text: 'Hello'),
@@ -13,7 +13,7 @@ void main() {
       );
 
       // Act
-      final String result = command.toString();
+      final result = command.toString();
 
       // Assert
       expect(

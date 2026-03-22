@@ -6,7 +6,7 @@ import 'package:test/test.dart';
 
 void main() {
   group('resolvePaint', () {
-    const SvgPaintingContext emptyContext = SvgPaintingContext(
+    const emptyContext = SvgPaintingContext(
       viewBoxWidth: 100,
       viewBoxHeight: 100,
     );
@@ -68,13 +68,13 @@ void main() {
 
     test('should respect CSS specificity (ID > Class > Tag)', () {
       // Need a context with a stylesheet
-      const SvgStyleSheet sheet = SvgStyleSheet(<String, Map<String, String>>{
+      const sheet = SvgStyleSheet(<String, Map<String, String>>{
         'rect': <String, String>{'fill': 'blue'}, // Tag
         'myClass': <String, String>{'fill': 'green'}, // Class
         '#myId': <String, String>{'fill': 'red'}, // ID
       });
 
-      const SvgPaintingContext context = SvgPaintingContext(
+      const context = SvgPaintingContext(
         viewBoxWidth: 100,
         viewBoxHeight: 100,
         styleSheet: sheet,
@@ -102,10 +102,10 @@ void main() {
     });
 
     test('should mark fill/stroke as explicit if from CSS', () {
-      const SvgStyleSheet sheet = SvgStyleSheet(<String, Map<String, String>>{
+      const sheet = SvgStyleSheet(<String, Map<String, String>>{
         'myClass': <String, String>{'fill': 'green'},
       });
-      const SvgPaintingContext context = SvgPaintingContext(
+      const context = SvgPaintingContext(
         viewBoxWidth: 100,
         viewBoxHeight: 100,
         styleSheet: sheet,
@@ -133,7 +133,7 @@ void main() {
     });
 
     test('should resolve inherited styles correctly', () {
-      const SvgPaintingContext context = SvgPaintingContext(
+      const context = SvgPaintingContext(
         viewBoxWidth: 100,
         viewBoxHeight: 100,
         inheritedAttributes: SvgPresentationAttributes(
@@ -207,7 +207,7 @@ void main() {
     });
 
     test('should resolve element opacity', () {
-      const SvgPaintingContext context = SvgPaintingContext(
+      const context = SvgPaintingContext(
         viewBoxWidth: 100,
         viewBoxHeight: 100,
       );

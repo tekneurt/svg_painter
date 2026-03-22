@@ -17,7 +17,7 @@ final class SvgPolyline extends SvgBasicShape {
 
   @override
   String toString() {
-    final List<String> parts = <String>[
+    final parts = <String>[
       'pts: ${points.points.length}',
       if (geometryAttributes != null) 'geometry: $geometryAttributes',
       if (presentationAttributes != null) 'presentation: $presentationAttributes',

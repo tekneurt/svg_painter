@@ -6,20 +6,20 @@ import 'svg_painting_context.dart';
 class PathDataParser {
   /// Parses the path data string into a list of [PathOperation]s.
   static Result<List<PathOperation>> parse(String d, SvgPaintingContext context) {
-    final List<PathOperation> operations = <PathOperation>[];
+    final operations = <PathOperation>[];
     // Improved regex to handle commas, scientific notation, and multiple numbers
-    final RegExp commandRegex = RegExp(r'([a-zA-Z])|(-?\d*\.?\d+(?:[eE][+-]?\d+)?)|[, \t\n\r]+');
+    final commandRegex = RegExp(r'([a-zA-Z])|(-?\d*\.?\d+(?:[eE][+-]?\d+)?)|[, \t\n\r]+');
     final Iterable<Match> matches = commandRegex.allMatches(d);
 
     String? currentCommand;
-    final List<double> params = <double>[];
+    final params = <double>[];
 
-    double lastX = 0.0;
-    double lastY = 0.0;
+    var lastX = 0.0;
+    var lastY = 0.0;
     double? lastControlX;
     double? lastControlY;
-    double subpathStartX = 0.0;
-    double subpathStartY = 0.0;
+    var subpathStartX = 0.0;
+    var subpathStartY = 0.0;
 
     String? errorMessage;
 
@@ -34,14 +34,14 @@ class PathDataParser {
       // Caller guarantees errorMessage is null
       assert(errorMessage == null);
 
-      int i = 0;
+      var i = 0;
       while (i < params.length || (currentCommand?.toUpperCase() == 'Z' && i == 0)) {
-        final String? cmdName = currentCommand;
+        final cmdName = currentCommand;
         assert(cmdName != null, 'currentCommand should not be null during command processing');
         if (cmdName == null) {
           break;
         }
-        final bool isRelative = cmdName.toLowerCase() == cmdName;
+        final isRelative = cmdName.toLowerCase() == cmdName;
         final String cmd = cmdName.toUpperCase();
         final int remaining = params.length - i;
         switch (cmd) {
@@ -120,8 +120,8 @@ class PathDataParser {
             final double y = isRelative ? lastY + params[i++] : params[i++];
 
             double x1, y1;
-            final double? lcx = lastControlX;
-            final double? lcy = lastControlY;
+            final lcx = lastControlX;
+            final lcy = lastControlY;
             if (lcx == null || lcy == null) {
               x1 = lastX;
               y1 = lastY;
@@ -158,8 +158,8 @@ class PathDataParser {
             final double y = isRelative ? lastY + params[i++] : params[i++];
 
             double x1, y1;
-            final double? lcx = lastControlX;
-            final double? lcy = lastControlY;
+            final lcx = lastControlX;
+            final lcy = lastControlY;
             if (lcx == null || lcy == null) {
               x1 = lastX;
               y1 = lastY;
@@ -181,8 +181,8 @@ class PathDataParser {
             final double rx = params[i++];
             final double ry = params[i++];
             final double xAxisRotation = params[i++];
-            final bool largeArcFlag = params[i++] != 0;
-            final bool sweepFlag = params[i++] != 0;
+            final largeArcFlag = params[i++] != 0;
+            final sweepFlag = params[i++] != 0;
             final double x = isRelative ? lastX + params[i++] : params[i++];
             final double y = isRelative ? lastY + params[i++] : params[i++];
             operations.add(ArcTo(rx, ry, xAxisRotation, largeArcFlag, sweepFlag, x, y));
@@ -209,7 +209,7 @@ class PathDataParser {
       params.clear();
     }
 
-    for (final Match match in matches) {
+    for (final match in matches) {
       if (match.group(1) == null) {
         final String? param = match.group(2);
         if (param == null) {
@@ -220,7 +220,7 @@ class PathDataParser {
       } else {
         // New command
         flushCommand();
-        final String? err = errorMessage;
+        final err = errorMessage;
         if (err == null) {
           currentCommand = match.group(1);
         } else {
@@ -230,7 +230,7 @@ class PathDataParser {
     }
     flushCommand();
 
-    final String? err = errorMessage;
+    final err = errorMessage;
     if (err == null) {
       return Success<List<PathOperation>>(operations);
     } else {

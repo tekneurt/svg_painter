@@ -12,7 +12,7 @@ void main() {
   group('Daphnia Exposure Modes', () {
     testWidgets('Indexed mode should match original SVG by default', (WidgetTester tester) async {
       // No overrides. Should match daphnia.svg visual.
-      const DaphniaIndexedPainter painter = DaphniaIndexedPainter();
+      const painter = DaphniaIndexedPainter();
 
       await testSvgPainter(
         tester: tester,
@@ -26,7 +26,7 @@ void main() {
       // fill1 (Dark Grey) -> Green
       // fill2 (Orange)    -> Blue
       // fill3 (White)     -> Red
-      const DaphniaIndexedPainter painter = DaphniaIndexedPainter(
+      const painter = DaphniaIndexedPainter(
         fill1: Colors.green,
         fill2: Colors.blue,
         fill3: Colors.red,
@@ -42,7 +42,7 @@ void main() {
 
     testWidgets('Mixed mode should match Indexed mode (since no IDs)', (WidgetTester tester) async {
       // Just verifying mixed mode generates the same properties
-      const DaphniaMixedPainter painter = DaphniaMixedPainter(
+      const painter = DaphniaMixedPainter(
         fill1: Colors.green,
         fill2: Colors.blue,
         fill3: Colors.red,

@@ -6,13 +6,13 @@ void main() {
   group('SvgFillAttributes', () {
     test('should return correct string representation when all fields are provided', () {
       // Arrange
-      const SvgFillAttributes attrs = SvgFillAttributes(
+      const attrs = SvgFillAttributes(
         color: SvgNamedColor(SvgColorName.red),
         opacity: SvgPercentage(55.0),
       );
 
       // Act
-      final String result = attrs.toString();
+      final result = attrs.toString();
 
       // Assert
       expect(result, 'SvgFillAttributes(color: SvgNamedColor(red), opacity: 55.0%)');
@@ -20,10 +20,10 @@ void main() {
 
     test('should return compact string representation when optional fields are null', () {
       // Arrange
-      const SvgFillAttributes attrs = SvgFillAttributes(color: SvgNamedColor(SvgColorName.blue));
+      const attrs = SvgFillAttributes(color: SvgNamedColor(SvgColorName.blue));
 
       // Act
-      final String result = attrs.toString();
+      final result = attrs.toString();
 
       // Assert
       expect(result, 'SvgFillAttributes(color: SvgNamedColor(blue))');

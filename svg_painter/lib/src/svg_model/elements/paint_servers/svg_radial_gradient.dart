@@ -39,7 +39,7 @@ final class SvgRadialGradient extends SvgGradient {
 
   @override
   String toString() {
-    final List<String> parts = <String>[
+    final parts = <String>[
       'cx: $cx',
       'cy: $cy',
       'r: $r',

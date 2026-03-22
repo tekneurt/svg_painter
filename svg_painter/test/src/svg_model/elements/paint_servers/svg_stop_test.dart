@@ -7,7 +7,7 @@ void main() {
   group('SvgStop', () {
     test('should return correct string representation when toString() is called', () {
       // Arrange
-      const SvgStop stop = SvgStop(
+      const stop = SvgStop(
         offset: SvgPercentage(55.0),
         stopColor: SvgNamedColor(SvgColorName.red),
         stopOpacity: SvgLength(0.45),
@@ -15,7 +15,7 @@ void main() {
       );
 
       // Act
-      final String result = stop.toString();
+      final result = stop.toString();
 
       // Assert
       expect(result, 'SvgStop(offset: 55.0%, color: SvgNamedColor(red), id: stop1)');

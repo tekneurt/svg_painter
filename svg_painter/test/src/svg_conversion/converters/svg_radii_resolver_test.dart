@@ -4,13 +4,13 @@ import 'package:svg_painter/src/svg_model/svg_value.dart';
 import 'package:test/test.dart';
 
 void main() {
-  const SvgPaintingContext context = SvgPaintingContext(viewBoxWidth: 100, viewBoxHeight: 200);
+  const context = SvgPaintingContext(viewBoxWidth: 100, viewBoxHeight: 200);
 
   group('resolveRadii', () {
     test('should return (0, 0) when both are auto', () {
       // Arrange
-      const SvgAuto rx = SvgAuto();
-      const SvgAuto ry = SvgAuto();
+      const rx = SvgAuto();
+      const ry = SvgAuto();
 
       // Act
       final (double, double) result = resolveRadii(rx, ry, context);
@@ -21,8 +21,8 @@ void main() {
 
     test('should use rx when ry is auto', () {
       // Arrange
-      const SvgLength rx = SvgLength(10.0);
-      const SvgAuto ry = SvgAuto();
+      const rx = SvgLength(10.0);
+      const ry = SvgAuto();
 
       // Act
       final (double, double) result = resolveRadii(rx, ry, context);
@@ -33,8 +33,8 @@ void main() {
 
     test('should use ry when rx is auto', () {
       // Arrange
-      const SvgAuto rx = SvgAuto();
-      const SvgLength ry = SvgLength(20.0);
+      const rx = SvgAuto();
+      const ry = SvgLength(20.0);
 
       // Act
       final (double, double) result = resolveRadii(rx, ry, context);
@@ -45,8 +45,8 @@ void main() {
 
     test('should use both values when provided', () {
       // Arrange
-      const SvgLength rx = SvgLength(10.0);
-      const SvgLength ry = SvgLength(20.0);
+      const rx = SvgLength(10.0);
+      const ry = SvgLength(20.0);
 
       // Act
       final (double, double) result = resolveRadii(rx, ry, context);

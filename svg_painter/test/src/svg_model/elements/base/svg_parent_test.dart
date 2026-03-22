@@ -5,8 +5,8 @@ void main() {
   group('SvgParent', () {
     test('should hold children when applied to a class (tested via SvgGroup)', () {
       // Arrange
-      const SvgTitle child = SvgTitle(content: 'child');
-      const SvgGroup parent = SvgGroup(children: <SvgElement>[child]);
+      const child = SvgTitle(content: 'child');
+      const parent = SvgGroup(children: <SvgElement>[child]);
 
       // Act & Assert
       expect(parent.children, hasLength(1));

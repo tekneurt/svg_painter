@@ -9,7 +9,7 @@ void main() {
   group('ToSvgCircle', () {
     test('should convert <circle> with attributes when valid XML is provided', () {
       // Arrange
-      final XmlDocument document = XmlDocument.parse(
+      final document = XmlDocument.parse(
         '<circle cx="11" cy="22" r="33" fill="red" stroke="blue" stroke-width="2.5" />',
       );
       final XmlElement element = document.rootElement;
@@ -44,7 +44,7 @@ void main() {
 
     test('should return Success with default values when no attributes are provided', () {
       // Arrange
-      final XmlDocument document = XmlDocument.parse('<circle />');
+      final document = XmlDocument.parse('<circle />');
       final XmlElement element = document.rootElement;
 
       // Act

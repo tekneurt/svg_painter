@@ -6,7 +6,7 @@ void main() {
   group('SvgStyleParser', () {
     test('should parse class selectors', () {
       // Arrange
-      const String css = '.red { fill: red; } .blue { stroke: blue; stroke-width: 2; }';
+      const css = '.red { fill: red; } .blue { stroke: blue; stroke-width: 2; }';
 
       // Act
       final SvgStyleSheet result = SvgStyleParser.parse(css);
@@ -20,7 +20,7 @@ void main() {
 
     test('should parse tag selectors', () {
       // Arrange
-      const String css = 'circle { fill: green; }';
+      const css = 'circle { fill: green; }';
 
       // Act
       final SvgStyleSheet result = SvgStyleParser.parse(css);
@@ -31,7 +31,7 @@ void main() {
 
     test('should ignore comments', () {
       // Arrange
-      const String css =
+      const css =
           '/* comment */ .c1 { fill: red; } // not a css comment but handled by split';
 
       // Act
@@ -43,7 +43,7 @@ void main() {
 
     test('should handle empty or whitespace declarations', () {
       // Arrange
-      const String css = '.c1 { ; fill: red; ; }';
+      const css = '.c1 { ; fill: red; ; }';
 
       // Act
       final SvgStyleSheet result = SvgStyleParser.parse(css);

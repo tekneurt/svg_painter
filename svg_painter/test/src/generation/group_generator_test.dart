@@ -6,9 +6,9 @@ import 'package:test/test.dart';
 
 void main() {
   group('GroupGenerator', () {
-    const GroupGenerator generator = GroupGenerator();
+    const generator = GroupGenerator();
 
-    final Map<Type, CommandGenerator<PaintCommand>> generators =
+    final generators =
         <Type, CommandGenerator<PaintCommand>>{
           DrawCircle: const CircleGenerator(),
           DrawGroup: const GroupGenerator(),
@@ -16,10 +16,10 @@ void main() {
 
     test('should return early when generators map is null', () {
       // Arrange
-      const DrawGroup command = DrawGroup(
+      const command = DrawGroup(
         commands: <PaintCommand>[DrawCircle(cx: 0, cy: 0, radius: 5, style: PaintingStyle())],
       );
-      final GeneratorBuffer buffer = GeneratorBuffer();
+      final buffer = GeneratorBuffer();
 
       // Act
       generator.generate(command, buffer);
@@ -30,7 +30,7 @@ void main() {
 
     test('should recursively generate code for children when DrawGroup is provided', () {
       // Arrange
-      const DrawGroup command = DrawGroup(
+      const command = DrawGroup(
         commands: <PaintCommand>[
           DrawCircle(
             cx: 55.5,
@@ -40,19 +40,19 @@ void main() {
           ),
         ],
       );
-      final GeneratorBuffer buffer = GeneratorBuffer();
+      final buffer = GeneratorBuffer();
 
       // Act
       generator.generate(command, buffer, generators: generators);
 
       // Assert
-      final String output = buffer.toString();
+      final output = buffer.toString();
       expect(output, contains('canvas.drawCircle(const Offset(55.5, 66.6), 12.3, paint)'));
     });
 
     test('should wrap with transform when transform is provided', () {
       // Arrange
-      const DrawGroup command = DrawGroup(
+      const command = DrawGroup(
         commands: <PaintCommand>[],
         style: PaintingStyle(
           transformAttributes: SvgTransformAttributes(<SvgTransformOperation>[
@@ -60,13 +60,13 @@ void main() {
           ]),
         ),
       );
-      final GeneratorBuffer buffer = GeneratorBuffer();
+      final buffer = GeneratorBuffer();
 
       // Act
       generator.generate(command, buffer, generators: generators);
 
       // Assert
-      final String output = buffer.toString();
+      final output = buffer.toString();
       expect(output, contains('canvas.save()'));
       expect(output, contains('canvas.translate(12.0, 34.0)'));
       expect(output, contains('canvas.restore()'));
@@ -74,21 +74,21 @@ void main() {
 
     test('should pass inherited properties to children when group has style but no ID', () {
       // Arrange
-      final _SpyGenerator spy = _SpyGenerator();
-      final Map<Type, CommandGenerator<PaintCommand>> spyGenerators =
+      final spy = _SpyGenerator();
+      final spyGenerators =
           <Type, CommandGenerator<PaintCommand>>{DrawCircle: spy};
 
-      final List<InheritedProperty> initialFills = <InheritedProperty>[
+      final initialFills = <InheritedProperty>[
         const InheritedProperty('fillProp', colorArgb: 0xFF112233),
       ];
-      final List<InheritedProperty> initialStrokes = <InheritedProperty>[
+      final initialStrokes = <InheritedProperty>[
         const InheritedProperty('strokeProp', colorArgb: 0xFF445566),
       ];
 
-      const DrawGroup command = DrawGroup(
+      const command = DrawGroup(
         commands: <PaintCommand>[DrawCircle(cx: 0, cy: 0, radius: 0, style: PaintingStyle())],
       );
-      final GeneratorBuffer buffer = GeneratorBuffer();
+      final buffer = GeneratorBuffer();
 
       // Act
       generator.generate(
@@ -108,16 +108,16 @@ void main() {
       'should create and pass nextInheritedFills when group has ID and active fill property',
       () {
         // Arrange
-        final _SpyGenerator spy = _SpyGenerator();
-        final Map<Type, CommandGenerator<PaintCommand>> spyGenerators =
+        final spy = _SpyGenerator();
+        final spyGenerators =
             <Type, CommandGenerator<PaintCommand>>{DrawCircle: spy};
 
-        const DrawGroup command = DrawGroup(
+        const command = DrawGroup(
           id: 'test-group',
           style: PaintingStyle(fill: PaintingFillStyle(colorArgb: 0xFF111111)),
           commands: <PaintCommand>[DrawCircle(cx: 0, cy: 0, radius: 0, style: PaintingStyle())],
         );
-        final GeneratorBuffer buffer = GeneratorBuffer();
+        final buffer = GeneratorBuffer();
 
         // Act
         generator.generate(
@@ -138,16 +138,16 @@ void main() {
       'should create and pass nextInheritedStrokes when group has ID and active stroke property',
       () {
         // Arrange
-        final _SpyGenerator spy = _SpyGenerator();
-        final Map<Type, CommandGenerator<PaintCommand>> spyGenerators =
+        final spy = _SpyGenerator();
+        final spyGenerators =
             <Type, CommandGenerator<PaintCommand>>{DrawCircle: spy};
 
-        const DrawGroup command = DrawGroup(
+        const command = DrawGroup(
           id: 'test-group',
           style: PaintingStyle(stroke: PaintingStrokeStyle(colorArgb: 0xFF222222)),
           commands: <PaintCommand>[DrawCircle(cx: 0, cy: 0, radius: 0, style: PaintingStyle())],
         );
-        final GeneratorBuffer buffer = GeneratorBuffer();
+        final buffer = GeneratorBuffer();
 
         // Act
         generator.generate(
@@ -166,28 +166,28 @@ void main() {
 
     test('should reuse existing inherited properties when group style matches parent', () {
       // Arrange
-      final _SpyGenerator spy = _SpyGenerator();
-      final Map<Type, CommandGenerator<PaintCommand>> spyGenerators =
+      final spy = _SpyGenerator();
+      final spyGenerators =
           <Type, CommandGenerator<PaintCommand>>{DrawCircle: spy, DrawGroup: generator};
 
-      const int color = 0xFFABCDEF;
-      const String shader = 'grad1';
-      final List<InheritedProperty> initialFills = <InheritedProperty>[
+      const color = 0xFFABCDEF;
+      const shader = 'grad1';
+      final initialFills = <InheritedProperty>[
         const InheritedProperty('fillProp', colorArgb: color),
       ];
-      final List<InheritedProperty> initialStrokes = <InheritedProperty>[
+      final initialStrokes = <InheritedProperty>[
         const InheritedProperty('strokeProp', shaderId: shader),
       ];
 
       // Nested group with same style but no ID (should match and pass on)
-      const DrawGroup command = DrawGroup(
+      const command = DrawGroup(
         style: PaintingStyle(
           fill: PaintingFillStyle(colorArgb: color, isExplicit: false),
           stroke: PaintingStrokeStyle(shaderId: shader, isExplicit: false),
         ),
         commands: <PaintCommand>[DrawCircle(cx: 0, cy: 0, radius: 0, style: PaintingStyle())],
       );
-      final GeneratorBuffer buffer = GeneratorBuffer();
+      final buffer = GeneratorBuffer();
 
       // Act
       generator.generate(
@@ -205,26 +205,26 @@ void main() {
 
     test('should stop inheriting when group style differs from parent and is not mapped', () {
       // Arrange
-      final _SpyGenerator spy = _SpyGenerator();
-      final Map<Type, CommandGenerator<PaintCommand>> spyGenerators =
+      final spy = _SpyGenerator();
+      final spyGenerators =
           <Type, CommandGenerator<PaintCommand>>{DrawCircle: spy, DrawGroup: generator};
 
-      final List<InheritedProperty> initialFills = <InheritedProperty>[
+      final initialFills = <InheritedProperty>[
         const InheritedProperty('fillProp', colorArgb: 0xFF111111),
       ];
-      final List<InheritedProperty> initialStrokes = <InheritedProperty>[
+      final initialStrokes = <InheritedProperty>[
         const InheritedProperty('strokeProp', colorArgb: 0xFF222222),
       ];
 
       // Nested group with DIFFERENT style and no ID
-      const DrawGroup command = DrawGroup(
+      const command = DrawGroup(
         style: PaintingStyle(
           fill: PaintingFillStyle(colorArgb: 0xFF333333, isExplicit: false),
           stroke: PaintingStrokeStyle(colorArgb: 0xFF444444, isExplicit: false),
         ),
         commands: <PaintCommand>[DrawCircle(cx: 0, cy: 0, radius: 0, style: PaintingStyle())],
       );
-      final GeneratorBuffer buffer = GeneratorBuffer();
+      final buffer = GeneratorBuffer();
 
       // Act
       generator.generate(
@@ -242,20 +242,20 @@ void main() {
 
     test('should use indexed property for inheritance when mapped', () {
       // Arrange
-      final _SpyGenerator spy = _SpyGenerator();
-      final Map<Type, CommandGenerator<PaintCommand>> spyGenerators =
+      final spy = _SpyGenerator();
+      final spyGenerators =
           <Type, CommandGenerator<PaintCommand>>{DrawCircle: spy, DrawGroup: generator};
 
-      const DrawGroup command = DrawGroup(
+      const command = DrawGroup(
         style: PaintingStyle(stroke: PaintingStrokeStyle(colorArgb: 0xFF123456)),
         commands: <PaintCommand>[DrawCircle(cx: 0, cy: 0, radius: 0, style: PaintingStyle())],
       );
 
-      const PaletteResult palette = PaletteResult(<PaintCommand, String>{}, <PaintCommand, String>{
+      const palette = PaletteResult(<PaintCommand, String>{}, <PaintCommand, String>{
         command: 'stroke1',
       });
 
-      final GeneratorBuffer buffer = GeneratorBuffer();
+      final buffer = GeneratorBuffer();
 
       // Act
       generator.generate(

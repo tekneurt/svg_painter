@@ -8,7 +8,7 @@ void main() {
   group('ToSvgSymbol', () {
     test('should return SvgSymbol with correct attributes when valid XML is provided', () {
       // Arrange
-      final XmlDocument document = XmlDocument.parse(
+      final document = XmlDocument.parse(
         '<symbol id="sym1" viewBox="0 0 10 10" preserveAspectRatio="xMidYMid meet" width="100" height="50" x="10" y="20" />',
       );
       final XmlElement element = document.rootElement;
@@ -35,7 +35,7 @@ void main() {
 
     test('should return SvgSymbol with null attributes when none are provided', () {
       // Arrange
-      final XmlDocument document = XmlDocument.parse('<symbol />');
+      final document = XmlDocument.parse('<symbol />');
       final XmlElement element = document.rootElement;
 
       // Act

@@ -22,7 +22,7 @@ class LineGenerator extends ShapeGenerator<DrawLine> {
     Set<String>? gradientsNeedingStretch,
   }) {
     wrapWithStyle(buffer, command.style, () {
-      final String bounds =
+      final bounds =
           'Rect.fromPoints(const Offset(${command.x1}, ${command.y1}), const Offset(${command.x2}, ${command.y2}))';
       generatePaintingCode(
         buffer,

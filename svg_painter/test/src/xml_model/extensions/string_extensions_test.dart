@@ -8,7 +8,7 @@ void main() {
     group('toXmlDocument', () {
       test('should return Success with XmlDocument when valid XML is provided', () {
         // Arrange
-        const String xml = '<svg width="111" height="222"><circle cx="55" cy="66" r="44" /></svg>';
+        const xml = '<svg width="111" height="222"><circle cx="55" cy="66" r="44" /></svg>';
 
         // Act
         final Result<XmlDocument> result = xml.toXmlDocument();
@@ -22,7 +22,7 @@ void main() {
 
       test('should return Success when XML contains comments and processing instructions', () {
         // Arrange
-        const String xml = '''
+        const xml = '''
           <?xml version="1.0" encoding="UTF-8"?>
           <!-- This is a comment -->
           <svg>
@@ -42,27 +42,27 @@ void main() {
 
       test('should return Failure when malformed XML is provided', () {
         // Arrange
-        const String malformedXml = '<svg><circle></svg>'; // Missing closing tag for circle
+        const malformedXml = '<svg><circle></svg>'; // Missing closing tag for circle
 
         // Act
         final Result<XmlDocument> result = malformedXml.toXmlDocument();
 
         // Assert
         expect(result, isA<Failure<XmlDocument>>());
-        final Failure<XmlDocument> failure = result as Failure<XmlDocument>;
+        final failure = result as Failure<XmlDocument>;
         expect(failure.message, contains('XML parsing failed'));
       });
 
       test('should return Failure when empty string is provided', () {
         // Arrange
-        const String emptyStr = '';
+        const emptyStr = '';
 
         // Act
         final Result<XmlDocument> result = emptyStr.toXmlDocument();
 
         // Assert
         expect(result, isA<Failure<XmlDocument>>());
-        final Failure<XmlDocument> failure = result as Failure<XmlDocument>;
+        final failure = result as Failure<XmlDocument>;
         expect(failure.message, contains('XML parsing failed'));
       });
     });

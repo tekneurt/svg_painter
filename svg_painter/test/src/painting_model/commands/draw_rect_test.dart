@@ -6,7 +6,7 @@ void main() {
   group('DrawRect', () {
     test('should return correct string representation when toString() is called', () {
       // Arrange
-      const DrawRect command = DrawRect(
+      const command = DrawRect(
         x: 10.0,
         y: 20.0,
         width: 100.0,
@@ -17,7 +17,7 @@ void main() {
       );
 
       // Act
-      final String result = command.toString();
+      final result = command.toString();
 
       // Assert
       expect(

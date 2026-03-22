@@ -31,9 +31,9 @@ extension SvgTextToPaintCommands on SvgText {
     SvgPaintingContext context,
     String tagName,
   ) {
-    final List<PaintingTextSpan> childSpans = <PaintingTextSpan>[];
+    final childSpans = <PaintingTextSpan>[];
 
-    for (final SvgTextContent child in children) {
+    for (final child in children) {
       if (child is SvgCharacterData) {
         childSpans.add(PaintingTextSpan(text: child.text));
       } else if (child is SvgTspan) {

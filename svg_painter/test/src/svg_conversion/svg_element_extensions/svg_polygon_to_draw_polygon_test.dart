@@ -7,12 +7,12 @@ import 'package:svg_painter/src/svg_model/svg_value.dart';
 import 'package:test/test.dart';
 
 void main() {
-  const SvgPaintingContext context = SvgPaintingContext(viewBoxWidth: 100, viewBoxHeight: 200);
+  const context = SvgPaintingContext(viewBoxWidth: 100, viewBoxHeight: 200);
 
   group('SvgPolygonToPaintCommands', () {
     test('should return Success with DrawPolygon when valid SvgPolygon is provided', () {
       // Arrange
-      const SvgPolygon polygon = SvgPolygon(
+      const polygon = SvgPolygon(
         points: SvgPointList(<double>[1.0, 2.0, 10.0, 11.0, 20.0, 22.0]),
       );
 
@@ -24,13 +24,13 @@ void main() {
       final List<PaintCommand> commands = (result as Success<List<PaintCommand>>).value;
       expect(commands, hasLength(1));
       expect(commands.first, isA<DrawPolygon>());
-      final DrawPolygon drawPolygon = commands.first as DrawPolygon;
+      final drawPolygon = commands.first as DrawPolygon;
       expect(drawPolygon.points, <double>[1.0, 2.0, 10.0, 11.0, 20.0, 22.0]);
     });
 
     test('should return empty list when less than 2 points are provided', () {
       // Arrange
-      const SvgPolygon polygon = SvgPolygon(points: SvgPointList(<double>[1.0, 2.0]));
+      const polygon = SvgPolygon(points: SvgPointList(<double>[1.0, 2.0]));
 
       // Act
       final Result<List<PaintCommand>> result = polygon.toPaintCommands(context);

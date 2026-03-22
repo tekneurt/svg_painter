@@ -4,12 +4,12 @@ import '../../svg_model/_svg_model.dart';
 extension ToSvgPointList on String {
   /// Parses the string as an [SvgPointList].
   SvgPointList toSvgPointList() {
-    final List<double> points = <double>[];
+    final points = <double>[];
     // Match numbers (including scientific notation) or any other non-separator tokens
-    final RegExp regex = RegExp(r'[+-]?\d*\.?\d+(?:[eE][+-]?\d+)?|[^,\s]+');
+    final regex = RegExp(r'[+-]?\d*\.?\d+(?:[eE][+-]?\d+)?|[^,\s]+');
     final Iterable<Match> matches = regex.allMatches(this);
 
-    for (final Match match in matches) {
+    for (final match in matches) {
       final String? group = match.group(0);
       if (group == null) {
         break;

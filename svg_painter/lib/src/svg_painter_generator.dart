@@ -74,7 +74,7 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
       }
     }
 
-    final Map<String, String> propertyMapping = <String, String>{};
+    final propertyMapping = <String, String>{};
     if (annotation.read('propertyMapping').isNull) {
       // No mapping provided
     } else {
@@ -135,8 +135,8 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
     );
 
     if (svgRoot is SvgSvg) {
-      double viewBoxWidth = 100.0;
-      double viewBoxHeight = 100.0;
+      var viewBoxWidth = 100.0;
+      var viewBoxHeight = 100.0;
 
       if (svgRoot is SvgRoot) {
         final SvgLengthPercentageAuto? w = svgRoot.width;
@@ -185,7 +185,7 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
     SvgExposureMode exposureMode = SvgExposureMode.none,
     Map<String, String> propertyMapping = const <String, String>{},
   }) {
-    final GeneratorBuffer buffer = GeneratorBuffer();
+    final buffer = GeneratorBuffer();
 
     // Header to ignore lints in generated code
     buffer.writeln('// coverage:ignore-file');
@@ -195,8 +195,8 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
     );
     buffer.writeln();
 
-    final Set<String> fillIds = <String>{};
-    final Set<String> strokeIds = <String>{};
+    final fillIds = <String>{};
+    final strokeIds = <String>{};
     if (exposureMode == SvgExposureMode.id || exposureMode == SvgExposureMode.mixed) {
       _collectIds(commands, fillIds, strokeIds);
     }
@@ -220,9 +220,9 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
     String resolveName(String defaultName) =>
         propertyMapping[defaultName] ?? defaultName;
 
-    final Map<String, String> activeFillProperties = <String, String>{};
-    for (final String id in sortedFillIds) {
-      final String original = '${SvgIdFormatter.format(id)}Fill';
+    final activeFillProperties = <String, String>{};
+    for (final id in sortedFillIds) {
+      final original = '${SvgIdFormatter.format(id)}Fill';
       activeFillProperties[original] = resolveName(original);
     }
     if (sortedFillIndexed != null) {
@@ -231,9 +231,9 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
       }
     }
 
-    final Map<String, String> activeStrokeProperties = <String, String>{};
-    for (final String id in sortedStrokeIds) {
-      final String original = '${SvgIdFormatter.format(id)}Stroke';
+    final activeStrokeProperties = <String, String>{};
+    for (final id in sortedStrokeIds) {
+      final original = '${SvgIdFormatter.format(id)}Stroke';
       activeStrokeProperties[original] = resolveName(original);
     }
     if (sortedStrokeIndexed != null) {
@@ -247,7 +247,7 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
     // Generate the convenience Widget
     final String publicName =
         className.startsWith(r'_$') ? className.substring(2) : className;
-    final String widgetClassName = '${publicName}Widget';
+    final widgetClassName = '${publicName}Widget';
 
     generateWidgetClass(
       buffer: buffer,
@@ -267,7 +267,7 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
         if (hasCurrentColor) {
           buffer.writeln('this.color,');
         }
-        for (final String id in sortedFillIds) {
+        for (final id in sortedFillIds) {
           buffer.writeln(
               'this.${resolveName('${SvgIdFormatter.format(id)}Fill')},');
         }
@@ -276,7 +276,7 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
             buffer.writeln('this.${resolveName(name)},');
           }
         }
-        for (final String id in sortedStrokeIds) {
+        for (final id in sortedStrokeIds) {
           buffer.writeln(
               'this.${resolveName('${SvgIdFormatter.format(id)}Stroke')},');
         }
@@ -291,7 +291,7 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
       if (hasCurrentColor) {
         buffer.writeln('final Color? color;');
       }
-      for (final String id in sortedFillIds) {
+      for (final id in sortedFillIds) {
         buffer.writeln(
             'final Object? ${resolveName('${SvgIdFormatter.format(id)}Fill')};');
       }
@@ -300,7 +300,7 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
           buffer.writeln('final Object? ${resolveName(name)};');
         }
       }
-      for (final String id in sortedStrokeIds) {
+      for (final id in sortedStrokeIds) {
         buffer.writeln(
             'final Object? ${resolveName('${SvgIdFormatter.format(id)}Stroke')};');
       }
@@ -339,7 +339,7 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
         buffer.writeln();
 
         // 1st pass: Gradient definitions (DefineCommand)
-        for (final PaintCommand command in commands) {
+        for (final command in commands) {
           if (command is DefineCommand) {
             _generators[command.runtimeType]?.generate(
               command,
@@ -355,7 +355,7 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
         }
 
         // 2nd pass: Drawing commands (DrawCommand)
-        for (final PaintCommand command in commands) {
+        for (final command in commands) {
           if (command is DrawCommand) {
             _generators[command.runtimeType]?.generate(
               command,
@@ -435,12 +435,12 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
       buffer.writeln('@override');
       buffer.writeBlock('bool shouldRepaint(covariant $className oldDelegate) {',
           () {
-        final List<String> checks = <String>['fit == oldDelegate.fit'];
+        final checks = <String>['fit == oldDelegate.fit'];
         if (hasCurrentColor) {
           checks.add('color == oldDelegate.color');
         }
 
-        for (final String id in sortedFillIds) {
+        for (final id in sortedFillIds) {
           final String prop = resolveName('${SvgIdFormatter.format(id)}Fill');
           checks.add('$prop == oldDelegate.$prop');
         }
@@ -450,7 +450,7 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
             checks.add('$prop == oldDelegate.$prop');
           }
         }
-        for (final String id in sortedStrokeIds) {
+        for (final id in sortedStrokeIds) {
           final String prop = resolveName('${SvgIdFormatter.format(id)}Stroke');
           checks.add('$prop == oldDelegate.$prop');
         }
@@ -474,7 +474,7 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
     if (_needsGradientTransform(commands, gradientsNeedingStretch)) {
       final String cleanName =
           publicName.replaceAll(r'$', '').replaceFirst(RegExp(r'^_+'), '');
-      final String helperClassName = '_SvgGradientTransform_$cleanName';
+      final helperClassName = '_SvgGradientTransform_$cleanName';
 
       buffer.writeln();
       buffer.writeln(
@@ -537,7 +537,7 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
   }
 
   bool _needsViewBoxRect(List<PaintCommand> commands) {
-    for (final PaintCommand command in commands) {
+    for (final command in commands) {
       if (command is DefineGradient && command.units == PaintingGradientUnits.userSpaceOnUse) {
         return true;
       }
@@ -549,8 +549,8 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
   }
 
   Set<String> _findGradientsNeedingStretch(List<PaintCommand> commands) {
-    final Set<String> ids = <String>{};
-    for (final PaintCommand command in commands) {
+    final ids = <String>{};
+    for (final command in commands) {
       if (command is DrawGroup) {
         ids.addAll(_findGradientsNeedingStretch(command.commands));
       } else if (command is DrawCommand) {
@@ -582,7 +582,7 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
     List<PaintCommand> commands,
     Set<String> gradientsNeedingStretch,
   ) {
-    for (final PaintCommand command in commands) {
+    for (final command in commands) {
       if (command is DefineGradient) {
         if (command.transformAttributes != null) {
           return true;
@@ -622,11 +622,11 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
           buffer.writeln('this.color,');
         }
 
-        final Set<String> allProps = <String>{
+        final allProps = <String>{
           ...activeFillProperties.values,
           ...activeStrokeProperties.values,
         };
-        for (final String prop in allProps) {
+        for (final prop in allProps) {
           buffer.writeln('this.$prop,');
         }
       }, footer: '});');
@@ -639,11 +639,11 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
         buffer.writeln('final Color? color;');
       }
 
-      final Set<String> allProps = <String>{
+      final allProps = <String>{
         ...activeFillProperties.values,
         ...activeStrokeProperties.values,
       };
-      for (final String prop in allProps) {
+      for (final prop in allProps) {
         buffer.writeln('final Object? $prop;');
       }
 
@@ -657,7 +657,7 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
             if (hasCurrentColor) {
               buffer.writeln('color: color ?? IconTheme.of(context).color,');
             }
-            for (final String prop in allProps) {
+            for (final prop in allProps) {
               buffer.writeln('$prop: $prop,');
             }
           }, footer: '),');
@@ -667,7 +667,7 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
   }
 
   bool _hasDashes(List<PaintCommand> commands) {
-    for (final PaintCommand command in commands) {
+    for (final command in commands) {
       if (command is DrawCommand) {
         final PaintingStyle style = command.style;
         final List<double>? dashArray = style.stroke?.dashArray;
@@ -687,7 +687,7 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
   }
 
   bool _hasCurrentColor(List<PaintCommand> commands) {
-    for (final PaintCommand command in commands) {
+    for (final command in commands) {
       if (command is DrawCommand) {
         final PaintingStyle style = command.style;
         if ((style.fill?.isCurrentColor ?? false) || (style.stroke?.isCurrentColor ?? false)) {
@@ -705,7 +705,7 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
   }
 
   void _collectIds(List<PaintCommand> commands, Set<String> fillIds, Set<String> strokeIds) {
-    for (final PaintCommand command in commands) {
+    for (final command in commands) {
       final String? cmdId = command.id;
       if (command is DrawCommand && cmdId != null) {
         final PaintingStyle style = command.style;
@@ -750,7 +750,7 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
     }
 
     final Uri uri = Uri.parse(path);
-    final AssetId assetId = AssetId(
+    final assetId = AssetId(
       uri.pathSegments.first,
       'lib/${uri.pathSegments.skip(1).join('/')}',
     );

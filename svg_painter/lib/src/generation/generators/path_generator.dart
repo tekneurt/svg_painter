@@ -61,7 +61,7 @@ class PathGenerator extends ShapeGenerator<DrawPath> {
         buffer.outdent();
         buffer.writeln(';');
 
-        const String bounds = 'path.getBounds()';
+        const bounds = 'path.getBounds()';
         generatePaintingCode(
           buffer,
           command,

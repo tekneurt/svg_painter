@@ -27,14 +27,14 @@ void main() {
 
   group('PaintingTextStyle', () {
     test('toString should contain all relevant properties', () {
-      const PaintingTextStyle style = PaintingTextStyle(
+      const style = PaintingTextStyle(
         fontSize: 12.0,
         fontWeight: PaintingFontWeight.bold,
         fontStyle: PaintingFontStyle.italic,
         fontFamily: 'Roboto',
       );
 
-      final String str = style.toString();
+      final str = style.toString();
       expect(str, contains('size: 12.0'));
       expect(str, contains('weight: PaintingFontWeight.bold'));
       expect(str, contains('style: PaintingFontStyle.italic'));

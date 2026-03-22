@@ -16,7 +16,7 @@ final class SvgGraphicsAttributes {
 
   @override
   String toString() {
-    final List<String> parts = <String>[
+    final parts = <String>[
       if (opacity != null) 'opacity: $opacity',
       if (transformAttributes != null) 'transform: $transformAttributes',
     ];

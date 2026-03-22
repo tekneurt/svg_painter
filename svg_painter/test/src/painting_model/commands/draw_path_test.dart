@@ -6,13 +6,13 @@ void main() {
   group('DrawPath', () {
     test('should return correct string representation when toString() is called', () {
       // Arrange
-      const DrawPath command = DrawPath(
+      const command = DrawPath(
         operations: <PathOperation>[MoveTo(10.0, 20.0), LineTo(30.0, 40.0), ClosePath()],
         style: PaintingStyle(),
       );
 
       // Act
-      final String result = command.toString();
+      final result = command.toString();
 
       // Assert
       expect(

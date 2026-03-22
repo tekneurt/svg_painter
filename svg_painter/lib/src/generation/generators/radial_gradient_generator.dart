@@ -22,7 +22,7 @@ class RadialGradientGenerator extends CommandGenerator<DefineRadialGradient> {
     String? painterClassName,
     Set<String>? gradientsNeedingStretch,
   }) {
-    final String varName = '_grad_${command.id}';
+    final varName = '_grad_${command.id}';
 
     final bool needsStretch = gradientsNeedingStretch?.contains(command.id) ?? false;
 
@@ -59,12 +59,12 @@ class RadialGradientGenerator extends CommandGenerator<DefineRadialGradient> {
       final String cleanName = (painterClassName ?? 'Unknown')
           .replaceAll(r'$', '')
           .replaceFirst(RegExp(r'^_+'), '');
-      final String helperName = '_SvgGradientTransform_$cleanName';
+      final helperName = '_SvgGradientTransform_$cleanName';
 
       if (command.transformAttributes != null) {
         final List<double> matrix =
             command.transformAttributes!.toFlutterMatrix();
-        final String extra =
+        final extra =
             command.units == PaintingGradientUnits.objectBoundingBox &&
                     needsStretch
                 ? ', isElliptical: true, centerX: ${command.cx}, centerY: ${command.cy}'

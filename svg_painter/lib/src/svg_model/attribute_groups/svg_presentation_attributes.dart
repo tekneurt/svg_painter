@@ -165,7 +165,7 @@ final class SvgPresentationAttributes {
 
   @override
   String toString() {
-    final List<String> parts = <String>[
+    final parts = <String>[
       if (fill != null) 'fill: $fill',
       if (stroke != null) 'stroke: $stroke',
       if (font != null) 'font: $font',

@@ -6,13 +6,13 @@ void main() {
   group('SvgTitle', () {
     test('should return correct string representation when toString() is called', () {
       // Arrange
-      const SvgTitle element = SvgTitle(
+      const element = SvgTitle(
         content: 'test-title',
         coreAttributes: SvgCoreAttributes(id: 't1'),
       );
 
       // Act
-      final String result = element.toString();
+      final result = element.toString();
 
       // Assert
       expect(result, 'SvgTitle(content: test-title, id: t1)');

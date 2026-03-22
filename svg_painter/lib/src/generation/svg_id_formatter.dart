@@ -90,8 +90,8 @@ class SvgIdFormatter {
       return 'identifier';
     }
 
-    final StringBuffer buffer = StringBuffer();
-    for (int i = 0; i < words.length; i++) {
+    final buffer = StringBuffer();
+    for (var i = 0; i < words.length; i++) {
       final String word = words[i];
       if (i == 0) {
         buffer.write(_lowercaseFirst(word));
@@ -100,7 +100,7 @@ class SvgIdFormatter {
       }
     }
 
-    String result = buffer.toString();
+    var result = buffer.toString();
 
     // 3. Handle leading digits
     if (RegExp(r'^[0-9]').hasMatch(result)) {

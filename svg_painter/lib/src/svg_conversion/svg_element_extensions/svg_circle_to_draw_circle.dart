@@ -24,7 +24,7 @@ extension SvgCircleToPaintCommands on SvgCircle {
     // Use local coordinates (generator handles transforms)
     final double finalCx = cx.toPosition(context, .horizontal);
     final double finalCy = cy.toPosition(context, .vertical);
-    final double finalR = radius;
+    final finalR = radius;
 
     return Success<List<PaintCommand>>(<PaintCommand>[
       DrawCircle(cx: finalCx, cy: finalCy, radius: finalR, style: paint, id: id),

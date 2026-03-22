@@ -7,7 +7,7 @@ void main() {
   group('SvgPolyline', () {
     test('should return correct string representation when all fields are provided', () {
       // Arrange
-      const SvgPolyline polyline = SvgPolyline(
+      const polyline = SvgPolyline(
         points: SvgPointList(<double>[11.0, 22.0, 55.0, 66.0]),
         geometryAttributes: SvgGeometryAttributes(
           pathLength: SvgNonNegativeNumber(600.0),
@@ -16,7 +16,7 @@ void main() {
       );
 
       // Act
-      final String result = polyline.toString();
+      final result = polyline.toString();
 
       // Assert
       expect(
@@ -27,12 +27,12 @@ void main() {
 
     test('should return compact string representation when optional fields are null', () {
       // Arrange
-      const SvgPolyline polyline = SvgPolyline(
+      const polyline = SvgPolyline(
         points: SvgPointList(<double>[11.0, 22.0, 55.0, 66.0]),
       );
 
       // Act
-      final String result = polyline.toString();
+      final result = polyline.toString();
 
       // Assert
       expect(result, 'SvgPolyline(pts: 4)');

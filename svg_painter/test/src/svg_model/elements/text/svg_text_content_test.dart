@@ -5,10 +5,10 @@ void main() {
   group('SvgCharacterData', () {
     test('should return correct string representation when toString() is called', () {
       // Arrange
-      const SvgCharacterData data = SvgCharacterData('Hello');
+      const data = SvgCharacterData('Hello');
 
       // Act
-      final String result = data.toString();
+      final result = data.toString();
 
       // Assert
       expect(result, 'SvgCharacterData("Hello")');

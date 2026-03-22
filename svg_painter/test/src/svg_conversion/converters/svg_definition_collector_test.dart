@@ -8,13 +8,13 @@ void main() {
   group('SvgElementToDefinitions', () {
     test('should collect definitions from SvgSvg and its children', () {
       // Arrange
-      const SvgCircle circle = SvgCircle(
+      const circle = SvgCircle(
         cx: SvgLength(0),
         cy: SvgLength(0),
         r: SvgLength(10),
         coreAttributes: SvgCoreAttributes(id: 'c1'),
       );
-      const SvgRect rect = SvgRect(
+      const rect = SvgRect(
         x: SvgLength(1),
         y: SvgLength(2),
         width: SvgLength(10),
@@ -23,11 +23,11 @@ void main() {
         ry: SvgAuto(),
         coreAttributes: SvgCoreAttributes(id: 'r1'),
       );
-      const SvgSvg root = SvgSvg(
+      const root = SvgSvg(
         children: <SvgElement>[circle, rect],
         coreAttributes: SvgCoreAttributes(id: 'root'),
       );
-      final Map<String, SvgElement> map = <String, SvgElement>{};
+      final map = <String, SvgElement>{};
 
       // Act
       root.collectDefinitions(map);
@@ -41,7 +41,7 @@ void main() {
 
     test('should collect definitions from SvgDefs and its children', () {
       // Arrange
-      const SvgLinearGradient grad = SvgLinearGradient(
+      const grad = SvgLinearGradient(
         x1: SvgLength(0.1),
         y1: SvgLength(0.2),
         x2: SvgLength(0.3),
@@ -49,11 +49,11 @@ void main() {
         coreAttributes: SvgCoreAttributes(id: 'g1'),
         stops: <SvgStop>[],
       );
-      const SvgDefs defs = SvgDefs(
+      const defs = SvgDefs(
         children: <SvgElement>[grad],
         coreAttributes: SvgCoreAttributes(id: 'defs1'),
       );
-      final Map<String, SvgElement> map = <String, SvgElement>{};
+      final map = <String, SvgElement>{};
 
       // Act
       defs.collectDefinitions(map);
@@ -66,8 +66,8 @@ void main() {
 
     test('should not add to map if id is null', () {
       // Arrange
-      const SvgCircle circle = SvgCircle(cx: SvgLength(0), cy: SvgLength(0), r: SvgLength(10));
-      final Map<String, SvgElement> map = <String, SvgElement>{};
+      const circle = SvgCircle(cx: SvgLength(0), cy: SvgLength(0), r: SvgLength(10));
+      final map = <String, SvgElement>{};
 
       // Act
       circle.collectDefinitions(map);

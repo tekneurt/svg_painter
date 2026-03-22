@@ -55,7 +55,7 @@ extension ToSvgColor on String {
   }
 
   SvgColor? _parseHsl(String hsl) {
-    final RegExp hslRegex = RegExp(
+    final hslRegex = RegExp(
       r'^hsla?\(\s*([\d.]+)(?:deg)?\s*,\s*([\d.]+)%\s*,\s*([\d.]+)%\s*(?:,\s*([\d.]+)\s*)?\)$',
     );
     final Match? match = hslRegex.firstMatch(hsl);
@@ -85,7 +85,7 @@ extension ToSvgColor on String {
   }
 
   SvgColor? _parseRgb(String rgb) {
-    final RegExp rgbRegex = RegExp(
+    final rgbRegex = RegExp(
       r'^rgba?\(\s*(\d+%?)\s*,\s*(\d+%?)\s*,\s*(\d+%?)\s*(?:,\s*([\d.]+)\s*)?\)$',
     );
     final Match? match = rgbRegex.firstMatch(rgb);

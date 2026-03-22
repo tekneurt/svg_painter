@@ -15,7 +15,7 @@ final class SvgViewportAttributes {
 
   @override
   String toString() {
-    final List<String> parts = <String>[
+    final parts = <String>[
       if (viewBox != null) 'viewBox: $viewBox',
       if (preserveAspectRatio != null) 'preserveAspectRatio: $preserveAspectRatio',
     ];

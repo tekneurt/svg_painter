@@ -39,10 +39,10 @@ class GroupGenerator extends ShapeGenerator<DrawGroup> {
         buffer.writeln('canvas.saveLayer(null, Paint()..color = const Color(0x${hexOpacity}FFFFFF));');
       }
 
-      List<InheritedProperty> nextInheritedFills = List<InheritedProperty>.from(
+      var nextInheritedFills = List<InheritedProperty>.from(
         inheritedFills ?? <InheritedProperty>[],
       );
-      List<InheritedProperty> nextInheritedStrokes = List<InheritedProperty>.from(
+      var nextInheritedStrokes = List<InheritedProperty>.from(
         inheritedStrokes ?? <InheritedProperty>[],
       );
 
@@ -52,7 +52,7 @@ class GroupGenerator extends ShapeGenerator<DrawGroup> {
       // Resolve overrides
       final PaintingFillStyle? fill = command.style.fill;
       if (fill != null) {
-        final String propName = '${suffix}Fill';
+        final propName = '${suffix}Fill';
         final String? assignedProp = palette?.fillAssignments[command];
         final String? activeProp =
             activeFillProperties?[propName] ?? activeFillProperties?[assignedProp];
@@ -63,7 +63,7 @@ class GroupGenerator extends ShapeGenerator<DrawGroup> {
           );
         } else if (inheritedFills != null) {
           // Check for existing inheritance.
-          bool foundMatch = false;
+          var foundMatch = false;
           for (final InheritedProperty prop in inheritedFills.reversed) {
             final bool match =
                 (fill.shaderId != null && prop.shaderId == fill.shaderId) ||
@@ -83,7 +83,7 @@ class GroupGenerator extends ShapeGenerator<DrawGroup> {
 
       final PaintingStrokeStyle? stroke = command.style.stroke;
       if (stroke != null) {
-        final String propName = '${suffix}Stroke';
+        final propName = '${suffix}Stroke';
         final String? assignedProp = palette?.strokeAssignments[command];
         final String? activeProp =
             activeStrokeProperties?[propName] ?? activeStrokeProperties?[assignedProp];
@@ -93,7 +93,7 @@ class GroupGenerator extends ShapeGenerator<DrawGroup> {
             InheritedProperty(activeProp, colorArgb: stroke.colorArgb, shaderId: stroke.shaderId),
           );
         } else if (inheritedStrokes != null) {
-          bool foundMatch = false;
+          var foundMatch = false;
           for (final InheritedProperty prop in inheritedStrokes.reversed) {
             final bool match =
                 (stroke.shaderId != null && prop.shaderId == stroke.shaderId) ||

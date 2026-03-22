@@ -31,7 +31,7 @@ extension SvgTransformToFlutterMatrix on SvgTransformAttributes {
   /// Converts the transform operations to a 16-element Matrix4 storage list.
   List<double> toFlutterMatrix() {
     // Start with identity matrix
-    List<double> matrix = <double>[
+    var matrix = <double>[
       1, 0, 0, 0,
       0, 1, 0, 0,
       0, 0, 1, 0,
@@ -74,7 +74,7 @@ extension SvgTransformToFlutterMatrix on SvgTransformAttributes {
         final double cos = math.cos(rad);
         final double sin = math.sin(rad);
         
-        final List<double> rotate = <double>[
+        final rotate = <double>[
           cos, sin, 0, 0,
           -sin, cos, 0, 0,
           0, 0, 1, 0,
@@ -107,11 +107,11 @@ extension SvgTransformToFlutterMatrix on SvgTransformAttributes {
   }
 
   List<double> _multiply(List<double> a, List<double> b) {
-    final List<double> result = List<double>.filled(16, 0.0);
-    for (int i = 0; i < 4; i++) {
-      for (int j = 0; j < 4; j++) {
-        double sum = 0.0;
-        for (int k = 0; k < 4; k++) {
+    final result = List<double>.filled(16, 0.0);
+    for (var i = 0; i < 4; i++) {
+      for (var j = 0; j < 4; j++) {
+        var sum = 0.0;
+        for (var k = 0; k < 4; k++) {
           sum += a[i + k * 4] * b[k + j * 4];
         }
         result[i + j * 4] = sum;
