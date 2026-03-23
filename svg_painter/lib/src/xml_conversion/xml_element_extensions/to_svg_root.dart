@@ -12,17 +12,17 @@ extension ToSvgRoot on XmlElement {
 
     // Collect all CSS rules from <style> elements within the current SVG scope.
     // We ignore <style> elements inside nested <svg> elements as those are separate roots.
-    final List<Map<String, Map<String, String>>> allRules = <Map<String, Map<String, String>>>[];
+    final allRules = <Map<String, Map<String, String>>>[];
     _collectStyles(this, allRules);
 
     // Merge rules (later ones override earlier ones)
-    final Map<String, Map<String, String>> mergedRules = <String, Map<String, String>>{};
-    for (final Map<String, Map<String, String>> rules in allRules) {
+    final mergedRules = <String, Map<String, String>>{};
+    for (final rules in allRules) {
       for (final MapEntry<String, Map<String, String>> entry in rules.entries) {
         mergedRules.putIfAbsent(entry.key, () => <String, String>{}).addAll(entry.value);
       }
     }
-    final SvgStyleSheet styleSheet = SvgStyleSheet(mergedRules);
+    final styleSheet = SvgStyleSheet(mergedRules);
 
     final Result<List<SvgElement>> childrenResult = children
         .whereType<XmlElement>()
@@ -46,6 +46,8 @@ extension ToSvgRoot on XmlElement {
       XmlAttributeName.y,
     );
     final SvgViewBox? viewBox = toXmlAttributeValue(XmlAttributeName.viewBox)?.toSvgViewBox();
+    final SvgPreserveAspectRatio? preserveAspectRatio =
+        toXmlAttributeValue(XmlAttributeName.preserveAspectRatio)?.toSvgPreserveAspectRatio();
 
     final CommonAttributes common = toCommonAttributes(elementName);
 
@@ -57,15 +59,12 @@ extension ToSvgRoot on XmlElement {
         y: y,
         width: width,
         height: height,
-        viewBox: viewBox,
-        fillAttributes: common.fillAttributes,
-        strokeAttributes: common.strokeAttributes,
-        fontAttributes: common.fontAttributes,
-        opacity: common.opacity,
-        cssClass: common.cssClass,
-        inlineStyle: common.inlineStyle,
-        transformAttributes: common.transformAttributes,
-        id: common.id,
+        viewportAttributes: SvgViewportAttributes(
+          viewBox: viewBox,
+          preserveAspectRatio: preserveAspectRatio,
+        ),
+        coreAttributes: common.core,
+        presentationAttributes: common.presentation,
       ),
     );
   }

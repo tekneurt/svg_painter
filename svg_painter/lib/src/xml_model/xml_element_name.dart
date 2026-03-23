@@ -30,6 +30,9 @@ enum XmlElementName {
   /// The `<g>` element.
   g('g'),
 
+  /// The `<symbol>` element.
+  symbol('symbol'),
+
   /// The `<use>` element.
   use('use'),
   radialGradient('radialGradient'),
@@ -37,6 +40,11 @@ enum XmlElementName {
   stop('stop'),
   style('style'),
   text('text'),
+
+  /// The `<tspan>` element.
+  tspan('tspan'),
+
+  /// The `<title>` element.
   title('title'),
   desc('desc');
 

@@ -108,8 +108,8 @@ extension ResultListExtension<T> on Iterable<Result<List<T>>> {
   ///
   /// If any [Result] is a [Failure], the first [Failure] is returned.
   Result<List<T>> combine() {
-    final List<T> combined = <T>[];
-    for (final Result<List<T>> result in this) {
+    final combined = <T>[];
+    for (final result in this) {
       if (result is Failure<List<T>>) {
         return Failure<List<T>>(result.message);
       }
@@ -125,8 +125,8 @@ extension ResultIterableExtension<T> on Iterable<Result<T>> {
   ///
   /// If any [Result] is a [Failure], the first [Failure] is returned.
   Result<List<T>> combine() {
-    final List<T> combined = <T>[];
-    for (final Result<T> result in this) {
+    final combined = <T>[];
+    for (final result in this) {
       if (result is Failure<T>) {
         return Failure<List<T>>(result.message);
       }

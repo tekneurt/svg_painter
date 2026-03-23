@@ -7,29 +7,22 @@ import '../converters/_converters.dart';
 extension SvgPathToPaintCommands on SvgPath {
   /// Converts this [SvgPath] to a list of [PaintCommand]s.
   Result<List<PaintCommand>> toPaintCommands(SvgPaintingContext context) {
-    if (d.trim().isEmpty) {
+    if (d.isEmpty) {
       return const Success<List<PaintCommand>>(<PaintCommand>[]);
     }
-
-    final Result<List<PathOperation>> operationsResult = PathDataParser.parse(d, context);
 
     final PaintingStyle paint = resolvePaint(
       context,
       tagName: 'path',
-      id: id,
-      pathLength: pathLength,
-      fillAttributes: fillAttributes,
-      strokeAttributes: strokeAttributes,
-      opacity: opacity,
-      cssClass: cssClass,
-      inlineStyle: inlineStyle,
-      transformAttributes: transformAttributes,
+      coreAttributes: coreAttributes,
+      presentationAttributes: presentationAttributes,
+      geometryAttributes: geometryAttributes,
     );
 
-    return operationsResult.map(
-      (List<PathOperation> operations) => <PaintCommand>[
-        DrawPath(operations: operations, style: paint, id: id),
-      ],
-    );
+    return PathDataParser.parse(d, context).map((List<PathOperation> ops) {
+      return <PaintCommand>[
+        DrawPath(operations: ops, style: paint, id: id),
+      ];
+    });
   }
 }

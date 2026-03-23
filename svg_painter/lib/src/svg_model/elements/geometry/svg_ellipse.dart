@@ -10,14 +10,9 @@ final class SvgEllipse extends SvgBasicShape {
     required this.cy,
     required this.rx,
     required this.ry,
-    super.pathLength,
-    super.fillAttributes,
-    super.strokeAttributes,
-    super.opacity,
-    super.cssClass,
-    super.inlineStyle,
-    super.transformAttributes,
-    super.id,
+    super.geometryAttributes,
+    super.presentationAttributes,
+    super.coreAttributes,
   });
 
   /// The x-axis coordinate of the center of the ellipse.
@@ -34,13 +29,14 @@ final class SvgEllipse extends SvgBasicShape {
 
   @override
   String toString() {
-    final List<String> parts = <String>[
+    final parts = <String>[
       'cx: $cx',
       'cy: $cy',
       'rx: $rx',
       'ry: $ry',
-      if (pathLength != null) 'pathLength: $pathLength',
-      if (id != null) 'id: $id',
+      if (geometryAttributes != null) 'geometry: $geometryAttributes',
+      if (presentationAttributes != null) 'presentation: $presentationAttributes',
+      if (coreAttributes != null) 'core: $coreAttributes',
     ];
     return 'SvgEllipse(${parts.join(', ')})';
   }

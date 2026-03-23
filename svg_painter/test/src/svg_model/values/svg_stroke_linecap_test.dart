@@ -3,7 +3,7 @@ import 'package:test/test.dart';
 
 void main() {
   group('SvgStrokeLinecap', () {
-    const Map<String, SvgStrokeLinecap> expectedMapping = <String, SvgStrokeLinecap>{
+    const expectedMapping = <String, SvgStrokeLinecap>{
       'butt': SvgStrokeLinecap.butt,
       'round': SvgStrokeLinecap.round,
       'square': SvgStrokeLinecap.square,

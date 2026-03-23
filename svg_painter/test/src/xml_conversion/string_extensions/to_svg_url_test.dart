@@ -6,7 +6,7 @@ void main() {
     group('extractUrlId', () {
       test('should return id when valid url(#id) is provided', () {
         // Arrange
-        const String input = 'url(#my-id)';
+        const input = 'url(#my-id)';
 
         // Act
         final String? result = input.extractUrlId();
@@ -17,8 +17,8 @@ void main() {
 
       test('should return id when url with quotes is provided', () {
         // Arrange
-        const String input1 = "url('#id1')";
-        const String input2 = 'url("#id2")';
+        const input1 = "url('#id1')";
+        const input2 = 'url("#id2")';
 
         // Act & Assert
         expect(input1.extractUrlId(), 'id1');
@@ -27,9 +27,9 @@ void main() {
 
       test('should return null when format is invalid', () {
         // Arrange
-        const String input1 = '#id';
-        const String input2 = 'url(id)';
-        const String input3 = 'none';
+        const input1 = '#id';
+        const input2 = 'url(id)';
+        const input3 = 'none';
 
         // Act & Assert
         expect(input1.extractUrlId(), isNull);

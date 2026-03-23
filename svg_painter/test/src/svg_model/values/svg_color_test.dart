@@ -5,42 +5,42 @@ void main() {
   group('SvgColor', () {
     test('SvgNoneColor should return "none"', () {
       // Arrange & Act
-      final String result = const SvgNoneColor().toString();
+      final result = const SvgNoneColor().toString();
       // Assert
       expect(result, 'none');
     });
 
     test('SvgCurrentColor should return "currentColor"', () {
       // Arrange & Act
-      final String result = const SvgCurrentColor().toString();
+      final result = const SvgCurrentColor().toString();
       // Assert
       expect(result, 'currentColor');
     });
 
     test('SvgNamedColor should return correct string', () {
       // Arrange & Act
-      final String result = const SvgNamedColor(SvgColorName.red).toString();
+      final result = const SvgNamedColor(SvgColorName.red).toString();
       // Assert
       expect(result, 'SvgNamedColor(red)');
     });
 
     test('SvgRgbColor should return correct string', () {
       // Arrange & Act
-      final String result = const SvgRgbColor(255, 255, 0, 0).toString();
+      final result = const SvgRgbColor(255, 255, 0, 0).toString();
       // Assert
       expect(result, 'SvgRgbColor(255, 255, 0, 0)');
     });
 
     test('SvgHslColor should return correct string', () {
       // Arrange & Act
-      final String result = const SvgHslColor(1.0, 0.0, 100.0, 50.0).toString();
+      final result = const SvgHslColor(1.0, 0.0, 100.0, 50.0).toString();
       // Assert
       expect(result, 'SvgHslColor(1.0, 0.0, 100.0%, 50.0%)');
     });
 
     test('SvgPaintReference should return correct string', () {
       // Arrange & Act
-      final String result = const SvgPaintReference('grad1').toString();
+      final result = const SvgPaintReference('grad1').toString();
       // Assert
       expect(result, 'SvgPaintReference(grad1, fallback: null)');
     });

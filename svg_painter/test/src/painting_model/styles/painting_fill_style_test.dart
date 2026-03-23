@@ -6,7 +6,7 @@ void main() {
     test('should store all properties correctly when initialized', () {
       // Arrange & Act
       // ignore: prefer_const_constructors
-      final PaintingFillStyle style = PaintingFillStyle(
+      final style = PaintingFillStyle(
         colorArgb: 0xFFFF0000,
         shaderId: 'test-shader',
         opacity: 0.75,
@@ -25,19 +25,19 @@ void main() {
     test('should return correct string representation when toString() is called', () {
       // Arrange
       // ignore: prefer_const_constructors
-      final PaintingFillStyle style = PaintingFillStyle(
+      final style = PaintingFillStyle(
         colorArgb: 0xFF000000,
         shaderId: 'grad1',
         opacity: 0.5,
       );
 
       // Act
-      final String result = style.toString();
+      final result = style.toString();
 
       // Assert
       expect(
         result,
-        'PaintingFillStyle(color: 4278190080, shader: grad1, opacity: 0.5, explicit: true, currentColor: false)',
+        'PaintingFillStyle(color: 4278190080, shader: grad1, units: null, opacity: 0.5, explicit: true, currentColor: false)',
       );
     });
   });

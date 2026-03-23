@@ -4,7 +4,7 @@ import 'package:test/test.dart';
 
 void main() {
   group('ToSvgLengthUnit', () {
-    const Map<String, SvgLengthUnit> expectedMapping = <String, SvgLengthUnit>{
+    const expectedMapping = <String, SvgLengthUnit>{
       'px': SvgLengthUnit.px,
       'cm': SvgLengthUnit.cm,
       'mm': SvgLengthUnit.mm,

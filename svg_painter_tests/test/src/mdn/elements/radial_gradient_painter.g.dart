@@ -59,14 +59,15 @@ class _$RadialGradientPainter extends CustomPainter {
       destRect.width / sourceSize.width,
       destRect.height / sourceSize.height,
     );
-    canvas.clipRect(Rect.fromLTWH(0, 0, 100.0, 100.0));
 
     final Gradient _grad_myGradient = RadialGradient(
       center: Alignment(0.0, 0.0),
       radius: 0.5,
       focal: Alignment(0.0, 0.0),
+      focalRadius: 0.0,
       colors: <Color>[const Color(0xFFFFD700), const Color(0xFFFF0000)],
       stops: <double>[0.1, 0.95],
+      tileMode: TileMode.clamp,
     );
     {
       final Paint paint = Paint();

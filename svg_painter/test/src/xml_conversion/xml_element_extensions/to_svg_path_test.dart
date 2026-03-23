@@ -9,7 +9,7 @@ void main() {
   group('ToSvgPath', () {
     test('should return Success with SvgPath when valid d attribute is provided', () {
       // Arrange
-      final XmlDocument document = XmlDocument.parse('<path d="M 11 22 L 33 44" />');
+      final document = XmlDocument.parse('<path d="M 11 22 L 33 44" />');
       final XmlElement element = document.rootElement;
 
       // Act
@@ -24,7 +24,7 @@ void main() {
 
     test('should return Failure when d attribute is missing', () {
       // Arrange
-      final XmlDocument document = XmlDocument.parse('<path />');
+      final document = XmlDocument.parse('<path />');
       final XmlElement element = document.rootElement;
 
       // Act
@@ -43,7 +43,7 @@ void main() {
 
     test('should map common attributes when provided', () {
       // Arrange
-      final XmlDocument document = XmlDocument.parse(
+      final document = XmlDocument.parse(
         '<path d="M1 2" id="path1" fill="red" stroke="blue" opacity="45%" />',
       );
       final XmlElement element = document.rootElement;

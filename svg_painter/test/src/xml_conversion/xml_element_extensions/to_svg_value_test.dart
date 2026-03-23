@@ -9,7 +9,7 @@ void main() {
   group('ToSvgValue', () {
     test('toSvgValue should return parsed value when present', () {
       // Arrange
-      final XmlDocument document = XmlDocument.parse('<rect x="10" />');
+      final document = XmlDocument.parse('<rect x="10" />');
       final XmlElement element = document.rootElement;
 
       // Act
@@ -24,7 +24,7 @@ void main() {
 
     test('toSvgValue should return default value when absent', () {
       // Arrange
-      final XmlDocument document = XmlDocument.parse('<rect />');
+      final document = XmlDocument.parse('<rect />');
       final XmlElement element = document.rootElement;
 
       // Act
@@ -39,7 +39,7 @@ void main() {
 
     test('toSvgValue should throw UnsupportedError when default value type mismatches', () {
       // Arrange
-      final XmlDocument document = XmlDocument.parse('<rect />');
+      final document = XmlDocument.parse('<rect />');
       final XmlElement element = document.rootElement;
 
       // Act & Assert
@@ -51,7 +51,7 @@ void main() {
 
     test('toSvgValueOrNull should return null when absent', () {
       // Arrange
-      final XmlDocument document = XmlDocument.parse('<rect />');
+      final document = XmlDocument.parse('<rect />');
       final XmlElement element = document.rootElement;
 
       // Act
@@ -66,7 +66,7 @@ void main() {
 
     test('toSvgValueOrNull should return null for string-only attributes', () {
       // Arrange
-      final XmlDocument document = XmlDocument.parse('<rect id="r1" />');
+      final document = XmlDocument.parse('<rect id="r1" />');
       final XmlElement element = document.rootElement;
 
       // Act
@@ -81,7 +81,7 @@ void main() {
 
     test('toSvgValueOrNull should return parsed SvgNonNegativeNumber for pathLength', () {
       // Arrange
-      final XmlDocument document = XmlDocument.parse('<rect pathLength="100" />');
+      final document = XmlDocument.parse('<rect pathLength="100" />');
       final XmlElement element = document.rootElement;
 
       // Act
@@ -99,7 +99,7 @@ void main() {
 
     test('toSvgValueOrNull should throw UnsupportedError on type mismatch', () {
       // Arrange
-      final XmlDocument document = XmlDocument.parse('<rect x="10" />');
+      final document = XmlDocument.parse('<rect x="10" />');
       final XmlElement element = document.rootElement;
 
       // Act & Assert
@@ -111,7 +111,7 @@ void main() {
 
     test('toSvgValueOrNull should handle all attribute types in switch', () {
       // This test is to ensure coverage of the switch statement branches
-      final Map<XmlAttributeName, String> tests = <XmlAttributeName, String>{
+      final tests = <XmlAttributeName, String>{
         XmlAttributeName.x: '10',
         XmlAttributeName.width: '100',
         XmlAttributeName.pathLength: '50',
@@ -122,7 +122,7 @@ void main() {
       };
 
       for (final MapEntry<XmlAttributeName, String> entry in tests.entries) {
-        final XmlDocument document = XmlDocument.parse(
+        final document = XmlDocument.parse(
           '<rect ${entry.key.name}="${entry.value}" />',
         );
         final XmlElement element = document.rootElement;
@@ -135,8 +135,9 @@ void main() {
     });
 
     test('toSvgValueOrNull should return null for complex/special attributes', () {
-      final List<XmlAttributeName> complexAttributes = <XmlAttributeName>[
+      final complexAttributes = <XmlAttributeName>[
         XmlAttributeName.viewBox,
+        XmlAttributeName.preserveAspectRatio,
         XmlAttributeName.id,
         XmlAttributeName.d,
         XmlAttributeName.className,
@@ -146,8 +147,8 @@ void main() {
         XmlAttributeName.gradientTransform,
       ];
 
-      for (final XmlAttributeName attr in complexAttributes) {
-        final XmlDocument document = XmlDocument.parse('<path ${attr.name}="something" />');
+      for (final attr in complexAttributes) {
+        final document = XmlDocument.parse('<path ${attr.name}="something" />');
         final XmlElement element = document.rootElement;
         final SvgBaseValue? result = element.toSvgValueOrNull<SvgBaseValue>(
           XmlElementName.path,
@@ -158,14 +159,14 @@ void main() {
     });
 
     test('toSvgValueOrNull should handle font weight, style, and family', () {
-      final Map<XmlAttributeName, String> fontTests = <XmlAttributeName, String>{
+      final fontTests = <XmlAttributeName, String>{
         XmlAttributeName.fontWeight: 'bold',
         XmlAttributeName.fontStyle: 'italic',
         XmlAttributeName.fontFamily: 'Arial',
       };
 
       for (final MapEntry<XmlAttributeName, String> entry in fontTests.entries) {
-        final XmlDocument document = XmlDocument.parse(
+        final document = XmlDocument.parse(
           '<text ${entry.key.name}="${entry.value}" />',
         );
         final XmlElement element = document.rootElement;
@@ -179,7 +180,7 @@ void main() {
 
     test('toPathLength should return SvgNumber for valid pathLength', () {
       // Arrange
-      final XmlDocument document = XmlDocument.parse('<path pathLength="100" />');
+      final document = XmlDocument.parse('<path pathLength="100" />');
       final XmlElement element = document.rootElement;
 
       // Act
@@ -199,7 +200,7 @@ void main() {
     });
 
     test('toSvgValueOrNull should return null for negative radius, width, or height', () {
-      final List<XmlAttributeName> nonNegativeAttributes = <XmlAttributeName>[
+      final nonNegativeAttributes = <XmlAttributeName>[
         XmlAttributeName.r,
         XmlAttributeName.rx,
         XmlAttributeName.ry,
@@ -207,8 +208,8 @@ void main() {
         XmlAttributeName.height,
       ];
 
-      for (final XmlAttributeName attr in nonNegativeAttributes) {
-        final XmlDocument document = XmlDocument.parse('<rect ${attr.name}="-10" />');
+      for (final attr in nonNegativeAttributes) {
+        final document = XmlDocument.parse('<rect ${attr.name}="-10" />');
         final XmlElement element = document.rootElement;
         final SvgBaseValue? result = element.toSvgValueOrNull<SvgBaseValue>(
           XmlElementName.rect,

@@ -6,7 +6,7 @@ void main() {
   group('DrawLine', () {
     test('should return correct string representation when toString() is called', () {
       // Arrange
-      const DrawLine command = DrawLine(
+      const command = DrawLine(
         x1: 10.0,
         y1: 20.0,
         x2: 100.0,
@@ -15,12 +15,12 @@ void main() {
       );
 
       // Act
-      final String result = command.toString();
+      final result = command.toString();
 
       // Assert
       expect(
         result,
-        'DrawLine(x1: 10.0, y1: 20.0, x2: 100.0, y2: 200.0, style: PaintingStyle(fill: null, stroke: null, text: null, groupOpacity: 1.0, transform: null), id: null)',
+        'DrawLine(x1: 10.0, y1: 20.0, x2: 100.0, y2: 200.0, style: PaintingStyle(fill: null, stroke: null, text: null, groupOpacity: 1.0, transform: null, clipRect: null), id: null)',
       );
     });
   });

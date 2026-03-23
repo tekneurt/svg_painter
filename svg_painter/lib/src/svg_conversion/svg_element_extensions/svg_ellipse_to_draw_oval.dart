@@ -17,24 +17,26 @@ extension SvgEllipseToPaintCommands on SvgEllipse {
     final PaintingStyle paint = resolvePaint(
       context,
       tagName: 'ellipse',
-      id: id,
-      pathLength: pathLength,
-      fillAttributes: fillAttributes,
-      strokeAttributes: strokeAttributes,
-      opacity: opacity,
-      cssClass: cssClass,
-      inlineStyle: inlineStyle,
-      transformAttributes: transformAttributes,
+      coreAttributes: coreAttributes,
+      presentationAttributes: presentationAttributes,
+      geometryAttributes: geometryAttributes,
     );
 
     // Use local coordinates (generator handles transforms)
     final double finalCx = cx.toPosition(context, .horizontal);
     final double finalCy = cy.toPosition(context, .vertical);
-    final double finalRx = initialRx;
-    final double finalRy = initialRy;
+    final finalRx = initialRx;
+    final finalRy = initialRy;
 
     return Success<List<PaintCommand>>(<PaintCommand>[
-      DrawOval(cx: finalCx, cy: finalCy, rx: finalRx, ry: finalRy, style: paint, id: id),
+      DrawOval(
+        cx: finalCx,
+        cy: finalCy,
+        rx: finalRx,
+        ry: finalRy,
+        style: paint,
+        id: id,
+      ),
     ]);
   }
 }

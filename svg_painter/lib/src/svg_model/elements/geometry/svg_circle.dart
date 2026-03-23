@@ -9,14 +9,9 @@ final class SvgCircle extends SvgBasicShape {
     required this.cx,
     required this.cy,
     required this.r,
-    super.pathLength,
-    super.fillAttributes,
-    super.strokeAttributes,
-    super.opacity,
-    super.cssClass,
-    super.inlineStyle,
-    super.transformAttributes,
-    super.id,
+    super.geometryAttributes,
+    super.presentationAttributes,
+    super.coreAttributes,
   });
 
   /// The x-axis coordinate of the center of the circle.
@@ -30,12 +25,13 @@ final class SvgCircle extends SvgBasicShape {
 
   @override
   String toString() {
-    final List<String> parts = <String>[
+    final parts = <String>[
       'cx: $cx',
       'cy: $cy',
       'r: $r',
-      if (pathLength != null) 'pathLength: $pathLength',
-      if (id != null) 'id: $id',
+      if (geometryAttributes != null) 'geometry: $geometryAttributes',
+      if (presentationAttributes != null) 'presentation: $presentationAttributes',
+      if (coreAttributes != null) 'core: $coreAttributes',
     ];
     return 'SvgCircle(${parts.join(', ')})';
   }

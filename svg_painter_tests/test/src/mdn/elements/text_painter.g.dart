@@ -59,7 +59,6 @@ class _$MdnTextExamplePainter extends CustomPainter {
       destRect.width / sourceSize.width,
       destRect.height / sourceSize.height,
     );
-    canvas.clipRect(Rect.fromLTWH(0, 0, 240.0, 80.0));
 
     {
       final Paint paint = Paint();
@@ -68,14 +67,14 @@ class _$MdnTextExamplePainter extends CustomPainter {
       {
         final TextPainter tp = TextPainter(
           text: TextSpan(
-            text: 'My',
             style: TextStyle(
-              foreground: paint,
+              color: Colors.black,
               fontSize: 13.0,
               fontWeight: FontWeight.normal,
               fontStyle: FontStyle.italic,
               fontFamily: 'Roboto',
             ),
+            children: <InlineSpan>[TextSpan(text: 'My')],
           ),
           textDirection: TextDirection.ltr,
         )..layout();
@@ -95,14 +94,14 @@ class _$MdnTextExamplePainter extends CustomPainter {
       {
         final TextPainter tp = TextPainter(
           text: TextSpan(
-            text: 'cat',
             style: TextStyle(
-              foreground: paint,
+              color: Colors.black,
               fontSize: 30.0,
               fontWeight: FontWeight.bold,
               fontStyle: FontStyle.normal,
               fontFamily: 'Roboto',
             ),
+            children: <InlineSpan>[TextSpan(text: 'cat')],
           ),
           textDirection: TextDirection.ltr,
         )..layout();
@@ -122,14 +121,14 @@ class _$MdnTextExamplePainter extends CustomPainter {
       {
         final TextPainter tp = TextPainter(
           text: TextSpan(
-            text: 'is',
             style: TextStyle(
-              foreground: paint,
+              color: Colors.black,
               fontSize: 13.0,
               fontWeight: FontWeight.normal,
               fontStyle: FontStyle.italic,
               fontFamily: 'Roboto',
             ),
+            children: <InlineSpan>[TextSpan(text: 'is')],
           ),
           textDirection: TextDirection.ltr,
         )..layout();
@@ -149,14 +148,14 @@ class _$MdnTextExamplePainter extends CustomPainter {
       {
         final TextPainter tp = TextPainter(
           text: TextSpan(
-            text: 'Grumpy!',
             style: TextStyle(
-              foreground: paint,
+              color: const Color(0xFFFF0000),
               fontSize: 40.0,
               fontWeight: FontWeight.normal,
               fontStyle: FontStyle.italic,
               fontFamily: 'Noto Serif',
             ),
+            children: <InlineSpan>[TextSpan(text: 'Grumpy!')],
           ),
           textDirection: TextDirection.ltr,
         )..layout();

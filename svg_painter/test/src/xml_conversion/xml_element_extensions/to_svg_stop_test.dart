@@ -9,7 +9,7 @@ void main() {
   group('ToSvgStop', () {
     test('should return Success with SvgStop when valid XML is provided', () {
       // Arrange
-      final XmlDocument document = XmlDocument.parse(
+      final document = XmlDocument.parse(
         '<stop offset="50%" stop-color="red" stop-opacity="0.5" id="stop1" />',
       );
       final XmlElement element = document.rootElement;
@@ -31,7 +31,7 @@ void main() {
 
     test('should return Success with default values when minimal stop is provided', () {
       // Arrange
-      final XmlDocument document = XmlDocument.parse('<stop />');
+      final document = XmlDocument.parse('<stop />');
       final XmlElement element = document.rootElement;
 
       // Act

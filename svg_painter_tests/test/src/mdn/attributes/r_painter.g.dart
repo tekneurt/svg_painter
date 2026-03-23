@@ -59,28 +59,33 @@ class _$RPainter extends CustomPainter {
       destRect.width / sourceSize.width,
       destRect.height / sourceSize.height,
     );
-    canvas.clipRect(Rect.fromLTWH(0, 0, 300.0, 200.0));
 
     final Gradient _grad_myGradient000 = RadialGradient(
       center: Alignment(0.0, 0.0),
       radius: 0.0,
       focal: Alignment(0.0, 0.0),
+      focalRadius: 0.0,
       colors: <Color>[Colors.white, Colors.black],
       stops: <double>[0.0, 1.0],
+      tileMode: TileMode.clamp,
     );
     final Gradient _grad_myGradient050 = RadialGradient(
       center: Alignment(0.0, 0.0),
       radius: 0.5,
       focal: Alignment(0.0, 0.0),
+      focalRadius: 0.0,
       colors: <Color>[Colors.white, Colors.black],
       stops: <double>[0.0, 1.0],
+      tileMode: TileMode.clamp,
     );
     final Gradient _grad_myGradient100 = RadialGradient(
       center: Alignment(0.0, 0.0),
       radius: 1.0,
       focal: Alignment(0.0, 0.0),
+      focalRadius: 0.0,
       colors: <Color>[Colors.white, Colors.black],
       stops: <double>[0.0, 1.0],
+      tileMode: TileMode.clamp,
     );
     {
       final Paint paint = Paint();

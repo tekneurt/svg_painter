@@ -11,7 +11,7 @@ void main() {
   group('Group Inheritance', () {
     testWidgets('Should render default colors correctly', (WidgetTester tester) async {
       // Group 1: Red. Group 2: Blue.
-      const GroupInheritancePainter painter = GroupInheritancePainter();
+      const painter = GroupInheritancePainter();
       
       await testSvgPainter(
         tester: tester,
@@ -23,7 +23,7 @@ void main() {
 
     testWidgets('Should override Group 1 (Red) -> Green', (WidgetTester tester) async {
       // Top rects should become Green. Bottom rects (Blue) should stay Blue.
-      const GroupInheritancePainter painter = GroupInheritancePainter(
+      const painter = GroupInheritancePainter(
         group1Fill: Colors.green,
       );
       
@@ -37,7 +37,7 @@ void main() {
 
     testWidgets('Should override Group 2 (Blue) -> Yellow', (WidgetTester tester) async {
       // Top rects (Red) stay Red. Bottom rects become Yellow.
-      const GroupInheritancePainter painter = GroupInheritancePainter(
+      const painter = GroupInheritancePainter(
         group2Fill: Colors.yellow,
       );
       

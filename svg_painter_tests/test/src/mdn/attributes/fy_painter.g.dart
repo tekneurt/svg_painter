@@ -59,7 +59,6 @@ class _$Fy1Painter extends CustomPainter {
       destRect.width / sourceSize.width,
       destRect.height / sourceSize.height,
     );
-    canvas.clipRect(Rect.fromLTWH(0, 0, 480.0, 200.0));
 
     final Gradient _grad_gradient1 = RadialGradient(
       center: Alignment(0.0, 0.0),
@@ -68,6 +67,7 @@ class _$Fy1Painter extends CustomPainter {
       focalRadius: 0.05,
       colors: <Color>[Colors.white, const Color(0xFF8FBC8F)],
       stops: <double>[0.0, 1.0],
+      tileMode: TileMode.clamp,
     );
     final Gradient _grad_gradient2 = RadialGradient(
       center: Alignment(0.0, 0.0),
@@ -76,6 +76,7 @@ class _$Fy1Painter extends CustomPainter {
       focalRadius: 0.05,
       colors: <Color>[Colors.white, const Color(0xFF8FBC8F)],
       stops: <double>[0.0, 1.0],
+      tileMode: TileMode.clamp,
     );
     {
       final Paint paint = Paint();
@@ -173,7 +174,6 @@ class _$Fy2Painter extends CustomPainter {
       destRect.width / sourceSize.width,
       destRect.height / sourceSize.height,
     );
-    canvas.clipRect(Rect.fromLTWH(0, 0, 200.0, 200.0));
 
     canvas.save();
     canvas.scale(1.6666666666666667, 1.6666666666666667);
@@ -184,6 +184,7 @@ class _$Fy2Painter extends CustomPainter {
       focalRadius: 0.05,
       colors: <Color>[const Color(0xFFFF0000), const Color(0xFF0000FF)],
       stops: <double>[0.0, 1.0],
+      tileMode: TileMode.clamp,
     );
     {
       final Paint paint = Paint();
@@ -258,14 +259,14 @@ class _$Fy2Painter extends CustomPainter {
       {
         final TextPainter tp = TextPainter(
           text: TextSpan(
-            text: '(fx,fy)',
             style: TextStyle(
-              foreground: paint,
+              color: Colors.white,
               fontSize: 13.333333333333334,
               fontWeight: FontWeight.normal,
               fontStyle: FontStyle.normal,
               fontFamily: 'Roboto',
             ),
+            children: <InlineSpan>[TextSpan(text: '(fx,fy)')],
           ),
           textDirection: TextDirection.ltr,
         )..layout();
@@ -285,14 +286,14 @@ class _$Fy2Painter extends CustomPainter {
       {
         final TextPainter tp = TextPainter(
           text: TextSpan(
-            text: '(cx,cy)',
             style: TextStyle(
-              foreground: paint,
+              color: Colors.white,
               fontSize: 13.333333333333334,
               fontWeight: FontWeight.normal,
               fontStyle: FontStyle.normal,
               fontFamily: 'Roboto',
             ),
+            children: <InlineSpan>[TextSpan(text: '(cx,cy)')],
           ),
           textDirection: TextDirection.ltr,
         )..layout();

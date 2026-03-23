@@ -9,7 +9,7 @@ void main() {
   group('ToSvgEllipse', () {
     test('should convert <ellipse> with lengths when valid XML is provided', () {
       // Arrange
-      final XmlDocument document = XmlDocument.parse(
+      final document = XmlDocument.parse(
         '<ellipse cx="111" cy="55" rx="44" ry="22" />',
       );
       final XmlElement element = document.rootElement;
@@ -34,7 +34,7 @@ void main() {
 
     test('should return Success with auto for radii when not provided', () {
       // Arrange
-      final XmlDocument document = XmlDocument.parse('<ellipse />');
+      final document = XmlDocument.parse('<ellipse />');
       final XmlElement element = document.rootElement;
 
       // Act

@@ -7,7 +7,7 @@ void main() {
   group('ToXmlAttributeValue', () {
     test('should return attribute value when present', () {
       // Arrange
-      final XmlDocument document = XmlDocument.parse('<rect x="10" id="r1" />');
+      final document = XmlDocument.parse('<rect x="10" id="r1" />');
       final XmlElement element = document.rootElement;
 
       // Act & Assert
@@ -17,7 +17,7 @@ void main() {
 
     test('should return null when attribute is absent', () {
       // Arrange
-      final XmlDocument document = XmlDocument.parse('<rect />');
+      final document = XmlDocument.parse('<rect />');
       final XmlElement element = document.rootElement;
 
       // Act & Assert

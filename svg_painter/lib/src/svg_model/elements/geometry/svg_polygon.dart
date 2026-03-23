@@ -7,14 +7,9 @@ part of '../../svg_element.dart';
 final class SvgPolygon extends SvgBasicShape {
   const SvgPolygon({
     required this.points,
-    super.pathLength,
-    super.fillAttributes,
-    super.strokeAttributes,
-    super.opacity,
-    super.cssClass,
-    super.inlineStyle,
-    super.transformAttributes,
-    super.id,
+    super.geometryAttributes,
+    super.presentationAttributes,
+    super.coreAttributes,
   });
 
   /// The points that define the polygon.
@@ -22,10 +17,11 @@ final class SvgPolygon extends SvgBasicShape {
 
   @override
   String toString() {
-    final List<String> parts = <String>[
+    final parts = <String>[
       'pts: ${points.points.length}',
-      if (pathLength != null) 'pathLength: $pathLength',
-      if (id != null) 'id: $id',
+      if (geometryAttributes != null) 'geometry: $geometryAttributes',
+      if (presentationAttributes != null) 'presentation: $presentationAttributes',
+      if (coreAttributes != null) 'core: $coreAttributes',
     ];
     return 'SvgPolygon(${parts.join(', ')})';
   }

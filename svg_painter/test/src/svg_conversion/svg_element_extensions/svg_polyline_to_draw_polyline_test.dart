@@ -7,12 +7,12 @@ import 'package:svg_painter/src/svg_model/svg_value.dart';
 import 'package:test/test.dart';
 
 void main() {
-  const SvgPaintingContext context = SvgPaintingContext(viewBoxWidth: 100, viewBoxHeight: 200);
+  const context = SvgPaintingContext(viewBoxWidth: 100, viewBoxHeight: 200);
 
   group('SvgPolylineToPaintCommands', () {
     test('should return Success with DrawPolyline when valid SvgPolyline is provided', () {
       // Arrange
-      const SvgPolyline polyline = SvgPolyline(
+      const polyline = SvgPolyline(
         points: SvgPointList(<double>[1.0, 2.0, 50.0, 51.0, 100.0, 102.0]),
       );
 
@@ -24,7 +24,7 @@ void main() {
       final List<PaintCommand> commands = (result as Success<List<PaintCommand>>).value;
       expect(commands, hasLength(1));
       expect(commands.first, isA<DrawPolyline>());
-      final DrawPolyline drawPolyline = commands.first as DrawPolyline;
+      final drawPolyline = commands.first as DrawPolyline;
       expect(drawPolyline.points, <double>[1.0, 2.0, 50.0, 51.0, 100.0, 102.0]);
     });
   });

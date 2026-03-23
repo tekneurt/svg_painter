@@ -34,8 +34,15 @@ extension ToSvgLinearGradient on XmlElement {
         .map((XmlElement child) => child.toSvgStop())
         .combine();
 
-    final String? id = toXmlAttributeValue(XmlAttributeName.id);
     final String? gradientTransform = toXmlAttributeValue(XmlAttributeName.gradientTransform);
+    final SvgGradientUnits gradientUnits = toXmlAttributeValue(XmlAttributeName.gradientUnits)
+            ?.toSvgGradientUnits() ??
+        XmlAttributeName.gradientUnits.toDefaultValue(elementName) as SvgGradientUnits;
+    final SvgSpreadMethod spreadMethod = toXmlAttributeValue(XmlAttributeName.spreadMethod)
+            ?.toSvgSpreadMethod() ??
+        XmlAttributeName.spreadMethod.toDefaultValue(elementName) as SvgSpreadMethod;
+
+    final CommonAttributes common = toCommonAttributes(elementName);
 
     return stopsResult.map(
       (List<SvgStop> stops) => SvgLinearGradient(
@@ -45,7 +52,9 @@ extension ToSvgLinearGradient on XmlElement {
         x2: x2,
         y2: y2,
         gradientTransformAttributes: SvgTransformParser.parse(gradientTransform),
-        id: id,
+        gradientUnits: gradientUnits,
+        spreadMethod: spreadMethod,
+        coreAttributes: common.core,
       ),
     );
   }

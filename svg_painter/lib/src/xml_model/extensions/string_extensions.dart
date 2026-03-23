@@ -10,7 +10,7 @@ extension ToXml on String {
   /// Returns a [Failure] containing an error message if parsing fails (e.g., due to malformed XML).
   Result<XmlDocument> toXmlDocument() {
     try {
-      final XmlDocument document = XmlDocument.parse(this);
+      final document = XmlDocument.parse(this);
       return Success<XmlDocument>(document);
     } on XmlException catch (e) {
       return Failure<XmlDocument>('XML parsing failed: ${e.message}');

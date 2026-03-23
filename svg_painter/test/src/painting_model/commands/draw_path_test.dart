@@ -6,18 +6,18 @@ void main() {
   group('DrawPath', () {
     test('should return correct string representation when toString() is called', () {
       // Arrange
-      const DrawPath command = DrawPath(
+      const command = DrawPath(
         operations: <PathOperation>[MoveTo(10.0, 20.0), LineTo(30.0, 40.0), ClosePath()],
         style: PaintingStyle(),
       );
 
       // Act
-      final String result = command.toString();
+      final result = command.toString();
 
       // Assert
       expect(
         result,
-        'DrawPath(ops: 3, style: PaintingStyle(fill: null, stroke: null, text: null, groupOpacity: 1.0, transform: null), id: null)',
+        'DrawPath(ops: 3, style: PaintingStyle(fill: null, stroke: null, text: null, groupOpacity: 1.0, transform: null, clipRect: null), id: null)',
       );
     });
 

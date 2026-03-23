@@ -5,7 +5,7 @@ void main() {
   group('DefineLinearGradient', () {
     test('should return correct string representation when toString() is called', () {
       // Arrange
-      const DefineLinearGradient command = DefineLinearGradient(
+      const command = DefineLinearGradient(
         id: 'grad1',
         x1: 0,
         y1: 0,
@@ -18,7 +18,7 @@ void main() {
       );
 
       // Act
-      final String result = command.toString();
+      final result = command.toString();
 
       // Assert
       expect(result, contains('id: grad1'));
@@ -28,7 +28,7 @@ void main() {
 
   group('GradientStop', () {
     test('should return correct string representation', () {
-      const GradientStop stop = GradientStop(offset: 0.5, colorArgb: 4294901760, opacity: 0.8);
+      const stop = GradientStop(offset: 0.5, colorArgb: 4294901760, opacity: 0.8);
       expect(stop.toString(), 'GradientStop(offset: 0.5, color: 4294901760, opacity: 0.8)');
     });
   });

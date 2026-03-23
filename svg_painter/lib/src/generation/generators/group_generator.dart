@@ -19,22 +19,30 @@ class GroupGenerator extends ShapeGenerator<DrawGroup> {
     Map<String, String>? activeStrokeProperties,
     List<InheritedProperty>? inheritedFills,
     List<InheritedProperty>? inheritedStrokes,
+    String? painterClassName,
+    Set<String>? gradientsNeedingStretch,
   }) {
     if (generators == null) {
       return;
     }
-    wrapWithTransform(buffer, command.style.transformAttributes, () {
-      final bool useLayer = command.opacity < 1.0;
+    wrapWithStyle(buffer, command.style, () {
+      // Use command.opacity (calculated during conversion) for saveLayer.
+      // We DO NOT multiply with command.style.groupOpacity here because the group's
+      // resolved opacity is already accounted for in the DrawGroup command's opacity field
+      // when useSaveLayer is true. If we multiplied them, we'd apply it twice.
+      final double effectiveOpacity = command.opacity;
+      final bool useLayer = effectiveOpacity < 1.0;
+
       if (useLayer) {
         final String hexOpacity =
-            (command.opacity * 255).round().toRadixString(16).padLeft(2, '0').toUpperCase();
+            (effectiveOpacity * 255).round().toRadixString(16).padLeft(2, '0').toUpperCase();
         buffer.writeln('canvas.saveLayer(null, Paint()..color = const Color(0x${hexOpacity}FFFFFF));');
       }
 
-      List<InheritedProperty> nextInheritedFills = List<InheritedProperty>.from(
+      var nextInheritedFills = List<InheritedProperty>.from(
         inheritedFills ?? <InheritedProperty>[],
       );
-      List<InheritedProperty> nextInheritedStrokes = List<InheritedProperty>.from(
+      var nextInheritedStrokes = List<InheritedProperty>.from(
         inheritedStrokes ?? <InheritedProperty>[],
       );
 
@@ -44,7 +52,7 @@ class GroupGenerator extends ShapeGenerator<DrawGroup> {
       // Resolve overrides
       final PaintingFillStyle? fill = command.style.fill;
       if (fill != null) {
-        final String propName = '${suffix}Fill';
+        final propName = '${suffix}Fill';
         final String? assignedProp = palette?.fillAssignments[command];
         final String? activeProp =
             activeFillProperties?[propName] ?? activeFillProperties?[assignedProp];
@@ -55,7 +63,7 @@ class GroupGenerator extends ShapeGenerator<DrawGroup> {
           );
         } else if (inheritedFills != null) {
           // Check for existing inheritance.
-          bool foundMatch = false;
+          var foundMatch = false;
           for (final InheritedProperty prop in inheritedFills.reversed) {
             final bool match =
                 (fill.shaderId != null && prop.shaderId == fill.shaderId) ||
@@ -75,7 +83,7 @@ class GroupGenerator extends ShapeGenerator<DrawGroup> {
 
       final PaintingStrokeStyle? stroke = command.style.stroke;
       if (stroke != null) {
-        final String propName = '${suffix}Stroke';
+        final propName = '${suffix}Stroke';
         final String? assignedProp = palette?.strokeAssignments[command];
         final String? activeProp =
             activeStrokeProperties?[propName] ?? activeStrokeProperties?[assignedProp];
@@ -85,7 +93,7 @@ class GroupGenerator extends ShapeGenerator<DrawGroup> {
             InheritedProperty(activeProp, colorArgb: stroke.colorArgb, shaderId: stroke.shaderId),
           );
         } else if (inheritedStrokes != null) {
-          bool foundMatch = false;
+          var foundMatch = false;
           for (final InheritedProperty prop in inheritedStrokes.reversed) {
             final bool match =
                 (stroke.shaderId != null && prop.shaderId == stroke.shaderId) ||
@@ -111,6 +119,8 @@ class GroupGenerator extends ShapeGenerator<DrawGroup> {
           activeStrokeProperties: activeStrokeProperties,
           inheritedFills: nextInheritedFills,
           inheritedStrokes: nextInheritedStrokes,
+          painterClassName: painterClassName,
+          gradientsNeedingStretch: gradientsNeedingStretch,
         );
       }
 

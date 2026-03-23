@@ -21,14 +21,10 @@ extension ToSvgPolyline on XmlElement {
     return Success<SvgPolyline>(
       SvgPolyline(
         points: points,
-        pathLength: pathLength,
-        fillAttributes: common.fillAttributes,
-        strokeAttributes: common.strokeAttributes,
-        opacity: common.opacity,
-        cssClass: common.cssClass,
-        inlineStyle: common.inlineStyle,
-        transformAttributes: common.transformAttributes,
-        id: common.id,
+        geometryAttributes:
+            pathLength != null ? SvgGeometryAttributes(pathLength: pathLength) : null,
+        coreAttributes: common.core,
+        presentationAttributes: common.presentation,
       ),
     );
   }

@@ -5,7 +5,7 @@ void main() {
   group('DefineRadialGradient', () {
     test('should return correct string representation when toString() is called', () {
       // Arrange
-      const DefineRadialGradient command = DefineRadialGradient(
+      const command = DefineRadialGradient(
         id: 'grad1',
         cx: 50,
         cy: 50,
@@ -17,7 +17,7 @@ void main() {
       );
 
       // Act
-      final String result = command.toString();
+      final result = command.toString();
 
       // Assert
       expect(result, contains('id: grad1'));

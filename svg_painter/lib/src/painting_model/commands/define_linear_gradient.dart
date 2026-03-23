@@ -11,20 +11,22 @@ final class DefineLinearGradient extends DefineGradient {
     required this.y2,
     required super.stops,
     super.transformAttributes,
+    super.units,
+    super.spreadMethod,
   });
 
-  /// Normalized x-axis start coordinate (0.0 - 1.0).
+  /// The x-axis start coordinate.
   final double x1;
 
-  /// Normalized y-axis start coordinate (0.0 - 1.0).
+  /// The y-axis start coordinate.
   final double y1;
 
-  /// Normalized x-axis end coordinate (0.0 - 1.0).
+  /// The x-axis end coordinate.
   final double x2;
 
-  /// Normalized y-axis end coordinate (0.0 - 1.0).
+  /// The y-axis end coordinate.
   final double y2;
 
   @override
-  String toString() => 'DefineLinearGradient(id: $id, stops: ${stops.length})';
+  String toString() => 'DefineLinearGradient(id: $id, stops: ${stops.length}, units: $units)';
 }

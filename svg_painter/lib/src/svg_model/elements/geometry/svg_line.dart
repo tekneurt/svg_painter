@@ -10,14 +10,9 @@ final class SvgLine extends SvgBasicShape {
     required this.y1,
     required this.x2,
     required this.y2,
-    super.pathLength,
-    super.fillAttributes,
-    super.strokeAttributes,
-    super.opacity,
-    super.cssClass,
-    super.inlineStyle,
-    super.transformAttributes,
-    super.id,
+    super.geometryAttributes,
+    super.presentationAttributes,
+    super.coreAttributes,
   });
 
   /// The x-axis coordinate of the start of the line.
@@ -34,13 +29,14 @@ final class SvgLine extends SvgBasicShape {
 
   @override
   String toString() {
-    final List<String> parts = <String>[
+    final parts = <String>[
       'x1: $x1',
       'y1: $y1',
       'x2: $x2',
       'y2: $y2',
-      if (pathLength != null) 'pathLength: $pathLength',
-      if (id != null) 'id: $id',
+      if (geometryAttributes != null) 'geometry: $geometryAttributes',
+      if (presentationAttributes != null) 'presentation: $presentationAttributes',
+      if (coreAttributes != null) 'core: $coreAttributes',
     ];
     return 'SvgLine(${parts.join(', ')})';
   }

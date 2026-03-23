@@ -18,9 +18,11 @@ class OvalGenerator extends ShapeGenerator<DrawOval> {
     Map<String, String>? activeStrokeProperties,
     List<InheritedProperty>? inheritedFills,
     List<InheritedProperty>? inheritedStrokes,
+    String? painterClassName,
+    Set<String>? gradientsNeedingStretch,
   }) {
-    wrapWithTransform(buffer, command.style.transformAttributes, () {
-      final String bounds =
+    wrapWithStyle(buffer, command.style, () {
+      final bounds =
           'Rect.fromLTWH(${command.cx - command.rx}, ${command.cy - command.ry}, ${command.rx * 2}, ${command.ry * 2})';
       generatePaintingCode(
         buffer,

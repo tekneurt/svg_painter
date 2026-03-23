@@ -24,7 +24,7 @@ jobs:
     name: Generate Golden Files
     runs-on: ubuntu-24.04
     container:
-      image: ghcr.io/cirruslabs/flutter:3.38.5
+      image: ghcr.io/cirruslabs/flutter:3.41.5
     steps:
       - uses: actions/checkout@v4
 

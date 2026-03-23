@@ -4,7 +4,7 @@ part of '../../svg_element.dart';
 ///
 /// See: https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Element/rect
 @immutable
-final class SvgRect extends SvgBasicShape {
+final class SvgRect extends SvgBasicShape with SvgBounded {
   const SvgRect({
     required this.x,
     required this.y,
@@ -12,26 +12,21 @@ final class SvgRect extends SvgBasicShape {
     required this.height,
     required this.rx,
     required this.ry,
-    super.pathLength,
-    super.fillAttributes,
-    super.strokeAttributes,
-    super.opacity,
-    super.cssClass,
-    super.inlineStyle,
-    super.transformAttributes,
-    super.id,
+    super.geometryAttributes,
+    super.presentationAttributes,
+    super.coreAttributes,
   });
 
-  /// The x-axis coordinate of the side of the rectangle which has the smaller x-axis coordinate value.
+  @override
   final SvgLengthPercentage x;
 
-  /// The y-axis coordinate of the side of the rectangle which has the smaller y-axis coordinate value.
+  @override
   final SvgLengthPercentage y;
 
-  /// The width of the rectangle.
+  @override
   final SvgLengthPercentageAuto width;
 
-  /// The height of the rectangle.
+  @override
   final SvgLengthPercentageAuto height;
 
   /// For rounded rectangles, the x-axis radius of the ellipse used to round off the corners of the rectangle.
@@ -42,15 +37,16 @@ final class SvgRect extends SvgBasicShape {
 
   @override
   String toString() {
-    final List<String> parts = <String>[
+    final parts = <String>[
       'x: $x',
       'y: $y',
       'w: $width',
       'h: $height',
       'rx: $rx',
       'ry: $ry',
-      if (pathLength != null) 'pathLength: $pathLength',
-      if (id != null) 'id: $id',
+      if (geometryAttributes != null) 'geometry: $geometryAttributes',
+      if (presentationAttributes != null) 'presentation: $presentationAttributes',
+      if (coreAttributes != null) 'core: $coreAttributes',
     ];
     return 'SvgRect(${parts.join(', ')})';
   }

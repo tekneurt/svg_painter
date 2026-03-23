@@ -75,6 +75,10 @@ extension ToDefaultValue on XmlAttributeName {
       case .fillOpacity:
       case .strokeOpacity:
         return const SvgLength(1.0);
+      case .gradientUnits:
+        return SvgGradientUnits.objectBoundingBox;
+      case .spreadMethod:
+        return SvgSpreadMethod.pad;
       case .fx:
       case .fy:
         return switch (elementName) {
@@ -87,6 +91,7 @@ extension ToDefaultValue on XmlAttributeName {
           (_) => throw UnsupportedError('Invalid combination $this x $elementName '),
         };
       case .viewBox:
+      case .preserveAspectRatio:
       case .id:
       case .d:
       case .className:
@@ -95,6 +100,13 @@ extension ToDefaultValue on XmlAttributeName {
       case .transform:
       case .gradientTransform:
       case .fontSize:
+      case .dx:
+      case .dy:
+      case .rotate:
+      case .type:
+      case .media:
+      case .title:
+      case .xmlSpace:
       case .fontWeight:
       case .fontStyle:
       case .fontFamily:

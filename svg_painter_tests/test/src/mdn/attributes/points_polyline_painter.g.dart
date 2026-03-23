@@ -59,8 +59,9 @@ class _$PointsPolylinePainter extends CustomPainter {
       destRect.width / sourceSize.width,
       destRect.height / sourceSize.height,
     );
-    canvas.clipRect(Rect.fromLTWH(0, 0, 120.0, 120.0));
 
+    canvas.save();
+    canvas.clipRect(Rect.fromLTWH(0.0, 0.0, 120.0, 120.0));
     canvas.save();
     canvas.translate(10.0, 10.0);
     {
@@ -78,6 +79,7 @@ class _$PointsPolylinePainter extends CustomPainter {
         canvas.drawPath(path, paint);
       }
     }
+    canvas.restore();
     canvas.restore();
     canvas.restore();
   }

@@ -8,7 +8,7 @@ void main() {
   group('ToSvgDefs', () {
     test('should return Success with SvgDefs and nested children when valid XML is provided', () {
       // Arrange
-      final XmlDocument document = XmlDocument.parse('''
+      final document = XmlDocument.parse('''
         <defs id="definitions">
           <linearGradient id="grad1" />
           <circle id="sym1" />
@@ -30,7 +30,7 @@ void main() {
 
     test('should parse and hold presentation attributes for inheritance', () {
       // Arrange
-      final XmlDocument document = XmlDocument.parse('''
+      final document = XmlDocument.parse('''
         <defs fill="red" stroke="blue" stroke-width="5" font-size="20">
           <circle />
         </defs>

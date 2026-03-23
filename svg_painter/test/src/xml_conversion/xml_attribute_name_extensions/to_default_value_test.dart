@@ -150,7 +150,7 @@ void main() {
 
     test('attributes without SvgBaseValue default should throw UnsupportedError', () {
       // Arrange & Act & Assert
-      final List<XmlAttributeName> noDefaultAttrs = <XmlAttributeName>[
+      final noDefaultAttrs = <XmlAttributeName>[
         XmlAttributeName.viewBox,
         XmlAttributeName.id,
         XmlAttributeName.d,
@@ -167,7 +167,7 @@ void main() {
         XmlAttributeName.strokeDasharray,
       ];
 
-      for (final XmlAttributeName attr in noDefaultAttrs) {
+      for (final attr in noDefaultAttrs) {
         expect(
           () => attr.toDefaultValue(XmlElementName.svg),
           throwsUnsupportedError,

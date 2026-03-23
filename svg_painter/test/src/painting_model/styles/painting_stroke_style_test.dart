@@ -6,7 +6,7 @@ void main() {
     test('should store all properties correctly when initialized', () {
       // Arrange & Act
       // ignore: prefer_const_constructors
-      final PaintingStrokeStyle style = PaintingStrokeStyle(
+      final style = PaintingStrokeStyle(
         colorArgb: 0xFF00FF00,
         shaderId: 'stroke-shader',
         width: 3.5,
@@ -35,7 +35,7 @@ void main() {
     test('should return correct string representation when toString() is called', () {
       // Arrange
       // ignore: prefer_const_constructors
-      final PaintingStrokeStyle style = PaintingStrokeStyle(
+      final style = PaintingStrokeStyle(
         colorArgb: 0xFF000000,
         shaderId: 'grad2',
         width: 2.0,
@@ -45,12 +45,12 @@ void main() {
       );
 
       // Act
-      final String result = style.toString();
+      final result = style.toString();
 
       // Assert
       expect(
         result,
-        'PaintingStrokeStyle(color: 4278190080, shader: grad2, width: 2.0, opacity: 0.8, cap: PaintingStrokeCap.round, join: PaintingStrokeJoin.bevel, explicit: true, currentColor: false)',
+        'PaintingStrokeStyle(color: 4278190080, shader: grad2, units: null, width: 2.0, opacity: 0.8, cap: PaintingStrokeCap.round, join: PaintingStrokeJoin.bevel, explicit: true, currentColor: false)',
       );
     });
   });

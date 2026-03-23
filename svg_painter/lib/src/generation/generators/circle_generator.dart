@@ -18,9 +18,11 @@ class CircleGenerator extends ShapeGenerator<DrawCircle> {
     Map<String, String>? activeStrokeProperties,
     List<InheritedProperty>? inheritedFills,
     List<InheritedProperty>? inheritedStrokes,
+    String? painterClassName,
+    Set<String>? gradientsNeedingStretch,
   }) {
-    wrapWithTransform(buffer, command.style.transformAttributes, () {
-      final String bounds =
+    wrapWithStyle(buffer, command.style, () {
+      final bounds =
           'Rect.fromCircle(center: const Offset(${command.cx}, ${command.cy}), radius: ${command.radius})';
       generatePaintingCode(
         buffer,

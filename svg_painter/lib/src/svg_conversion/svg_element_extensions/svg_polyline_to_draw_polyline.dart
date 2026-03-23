@@ -12,8 +12,8 @@ extension SvgPolylineToPaintCommands on SvgPolyline {
     }
 
     // Resolve points relative to viewBox
-    final List<double> resolvedPoints = <double>[];
-    for (int i = 0; i < points.points.length; i += 2) {
+    final resolvedPoints = <double>[];
+    for (var i = 0; i < points.points.length; i += 2) {
       if (i + 1 >= points.points.length) {
         break;
       }
@@ -28,14 +28,9 @@ extension SvgPolylineToPaintCommands on SvgPolyline {
     final PaintingStyle paint = resolvePaint(
       context,
       tagName: 'polyline',
-      id: id,
-      pathLength: pathLength,
-      fillAttributes: fillAttributes,
-      strokeAttributes: strokeAttributes,
-      opacity: opacity,
-      cssClass: cssClass,
-      inlineStyle: inlineStyle,
-      transformAttributes: transformAttributes,
+      coreAttributes: coreAttributes,
+      presentationAttributes: presentationAttributes,
+      geometryAttributes: geometryAttributes,
     );
 
     return Success<List<PaintCommand>>(<PaintCommand>[

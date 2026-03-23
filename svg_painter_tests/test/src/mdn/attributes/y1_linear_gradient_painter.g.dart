@@ -59,13 +59,13 @@ class _$Y1LinearGradientPainter extends CustomPainter {
       destRect.width / sourceSize.width,
       destRect.height / sourceSize.height,
     );
-    canvas.clipRect(Rect.fromLTWH(0, 0, 20.0, 10.0));
 
     final Gradient _grad_g0 = LinearGradient(
       begin: Alignment(-1.0, -1.0),
       end: Alignment(1.0, -1.0),
       colors: <Color>[Colors.black, const Color(0xFFFF0000), Colors.black],
       stops: <double>[0.05, 0.5, 0.95],
+      tileMode: TileMode.clamp,
     );
     {
       final Paint paint = Paint();
@@ -78,6 +78,7 @@ class _$Y1LinearGradientPainter extends CustomPainter {
       end: Alignment(1.0, -1.0),
       colors: <Color>[Colors.black, const Color(0xFFFF0000), Colors.black],
       stops: <double>[0.05, 0.5, 0.95],
+      tileMode: TileMode.clamp,
     );
     {
       final Paint paint = Paint();

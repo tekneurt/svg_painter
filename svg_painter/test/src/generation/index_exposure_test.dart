@@ -4,11 +4,11 @@ import 'package:test/test.dart';
 
 void main() {
   group('Index-Based Exposure', () {
-    final SvgPainterGenerator generator = SvgPainterGenerator();
+    const generator = SvgPainterGenerator();
 
     test('should generate fill and stroke properties when only one group exists', () {
       // Arrange
-      const String svg = '''
+      const svg = '''
 <svg viewBox="0 0 100 100">
   <circle cx="50" cy="50" r="40" fill="red" stroke="blue" />
   <rect x="0" y="0" width="10" height="10" fill="red" />
@@ -33,8 +33,8 @@ void main() {
     test('should prioritize most used colors (9 black, 1 yellow)', () {
       // Arrange
       // 9 black lines, 1 yellow line
-      final StringBuffer sb = StringBuffer('<svg viewBox="0 0 100 100">');
-      for (int i = 0; i < 9; i++) {
+      final sb = StringBuffer('<svg viewBox="0 0 100 100">');
+      for (var i = 0; i < 9; i++) {
         sb.writeln('<line x1="0" y1="$i" x2="10" y2="$i" stroke="black" />');
       }
       sb.writeln('<line x1="0" y1="9" x2="10" y2="9" stroke="yellow" />');
@@ -66,7 +66,7 @@ void main() {
 
     test('should respect mixed mode (IDs take precedence)', () {
       // Arrange
-      const String svg = '''
+      const svg = '''
 <svg viewBox="0 0 100 100">
   <circle id="named" cx="10" cy="10" r="5" fill="red" />
   <circle cx="20" cy="20" r="5" fill="red" />
@@ -91,7 +91,7 @@ void main() {
 
     test('should generate NO properties when mode is none', () {
       // Arrange
-      const String svg = '''
+      const svg = '''
 <svg viewBox="0 0 100 100">
   <circle id="ignored" cx="50" cy="50" r="40" fill="red" />
 </svg>
@@ -110,7 +110,7 @@ void main() {
 
     test('should stable sort groups with same color but different shaders', () {
       // Arrange
-      const String svg = '''
+      const svg = '''
 <svg viewBox="0 0 100 100">
   <defs>
     <linearGradient id="grad1"><stop offset="0" stop-color="red"/></linearGradient>

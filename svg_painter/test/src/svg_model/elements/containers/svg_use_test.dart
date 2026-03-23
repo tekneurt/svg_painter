@@ -1,25 +1,38 @@
+import 'package:svg_painter/src/svg_model/attribute_groups/_attribute_groups.dart';
 import 'package:svg_painter/src/svg_model/svg_element.dart';
 import 'package:svg_painter/src/svg_model/svg_value.dart';
 import 'package:test/test.dart';
 
 void main() {
   group('SvgUse', () {
-    test('should return correct string representation when toString() is called', () {
-      // Arrange
-      const SvgUse use = SvgUse(
-        href: '#id1',
-        x: SvgLength(10.0),
-        y: SvgLength(20.0),
-        width: SvgLength(100.0),
-        height: SvgLength(50.0),
-        id: 'u1',
+    test('should return correct string representation', () {
+      const use = SvgUse(
+        href: '#r1',
+        x: SvgLength(0),
+        y: SvgLength(0),
+        coreAttributes: SvgCoreAttributes(id: 'u1'),
       );
+      expect(use.toString(), 'SvgUse(href: #r1, id: u1)');
+    });
 
-      // Act
-      final String result = use.toString();
+    test('should return font attributes when presentation attributes are provided', () {
+      const font = SvgFontAttributes(size: SvgLength(14));
+      const use = SvgUse(
+        href: '#r1',
+        x: SvgLength(0),
+        y: SvgLength(0),
+        presentationAttributes: SvgPresentationAttributes(font: font),
+      );
+      expect(use.fontAttributes, font);
+    });
 
-      // Assert
-      expect(result, 'SvgUse(href: #id1, id: u1)');
+    test('should return null for font attributes when presentation attributes are null', () {
+      const use = SvgUse(
+        href: '#r1',
+        x: SvgLength(0),
+        y: SvgLength(0),
+      );
+      expect(use.fontAttributes, isNull);
     });
   });
 }

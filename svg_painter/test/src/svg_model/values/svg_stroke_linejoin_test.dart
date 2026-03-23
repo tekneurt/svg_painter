@@ -3,7 +3,7 @@ import 'package:test/test.dart';
 
 void main() {
   group('SvgStrokeLinejoin', () {
-    const Map<String, SvgStrokeLinejoin> expectedMapping = <String, SvgStrokeLinejoin>{
+    const expectedMapping = <String, SvgStrokeLinejoin>{
       'miter': SvgStrokeLinejoin.miter,
       'round': SvgStrokeLinejoin.round,
       'bevel': SvgStrokeLinejoin.bevel,

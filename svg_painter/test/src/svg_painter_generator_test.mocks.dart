@@ -989,15 +989,6 @@ class MockElement extends _i1.Mock implements _i7.Element {
           as bool);
 
   @override
-  bool get isSynthetic =>
-      (super.noSuchMethod(
-            Invocation.getter(#isSynthetic),
-            returnValue: false,
-            returnValueForMissingStub: false,
-          )
-          as bool);
-
-  @override
   _i7.ElementKind get kind =>
       (super.noSuchMethod(
             Invocation.getter(#kind),

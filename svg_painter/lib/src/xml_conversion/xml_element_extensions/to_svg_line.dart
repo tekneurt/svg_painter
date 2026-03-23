@@ -39,14 +39,10 @@ extension ToSvgLine on XmlElement {
         y1: y1,
         x2: x2,
         y2: y2,
-        pathLength: pathLength,
-        fillAttributes: common.fillAttributes,
-        strokeAttributes: common.strokeAttributes,
-        opacity: common.opacity,
-        cssClass: common.cssClass,
-        inlineStyle: common.inlineStyle,
-        transformAttributes: common.transformAttributes,
-        id: common.id,
+        geometryAttributes:
+            pathLength != null ? SvgGeometryAttributes(pathLength: pathLength) : null,
+        coreAttributes: common.core,
+        presentationAttributes: common.presentation,
       ),
     );
   }

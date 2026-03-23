@@ -9,7 +9,7 @@ void main() {
   group('ToSvgLine', () {
     test('should convert <line> with coordinates when valid XML is provided', () {
       // Arrange
-      final XmlDocument document = XmlDocument.parse(
+      final document = XmlDocument.parse(
         '<line x1="11" y1="22" x2="111" y2="222" stroke="black" />',
       );
       final XmlElement element = document.rootElement;

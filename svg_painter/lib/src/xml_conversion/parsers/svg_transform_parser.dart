@@ -8,11 +8,11 @@ class SvgTransformParser {
       return null;
     }
 
-    final List<SvgTransformOperation> operations = <SvgTransformOperation>[];
-    final RegExp transformReg = RegExp(r'(\w+)\s*\(([^)]+)\)');
+    final operations = <SvgTransformOperation>[];
+    final transformReg = RegExp(r'(\w+)\s*\(([^)]+)\)');
     final Iterable<Match> matches = transformReg.allMatches(transform);
 
-    for (final Match match in matches) {
+    for (final match in matches) {
       final String? type = match.group(1);
       final String? paramsStr = match.group(2);
 

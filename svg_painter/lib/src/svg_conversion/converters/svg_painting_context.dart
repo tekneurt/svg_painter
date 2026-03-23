@@ -10,18 +10,16 @@ final class SvgPaintingContext {
     required this.viewBoxHeight,
     this.viewBoxMinX = 0.0,
     this.viewBoxMinY = 0.0,
-    this.inheritedFill = const SvgNamedColor(SvgColorName.black),
-    this.inheritedFillOpacity = const SvgLength(1.0),
-    this.inheritedStroke = const SvgNoneColor(),
-    this.inheritedStrokeOpacity = const SvgLength(1.0),
-    this.inheritedStrokeWidth = const SvgLength(1.0),
-    this.inheritedStrokeDasharray,
-    this.inheritedStrokeLinecap = SvgStrokeLinecap.butt,
-    this.inheritedStrokeLinejoin = SvgStrokeLinejoin.miter,
-    this.inheritedFontSize = const SvgLength(12.0),
-    this.inheritedFontWeight = const SvgFontWeightNormal(),
-    this.inheritedFontStyle = SvgFontStyle.normal,
-    this.inheritedFontFamily = const SvgFontFamily('sans-serif'),
+    this.inheritedAttributes = const SvgPresentationAttributes(
+      fill: SvgFillAttributes(color: SvgNamedColor(SvgColorName.black), opacity: SvgLength(1.0)),
+      stroke: SvgStrokeAttributes(color: SvgNoneColor(), opacity: SvgLength(1.0), width: SvgLength(1.0)),
+      font: SvgFontAttributes(
+        size: SvgLength(12.0),
+        weight: SvgFontWeightNormal(),
+        style: SvgFontStyle.normal,
+        family: SvgFontFamily('sans-serif'),
+      ),
+    ),
     this.styleSheet = const SvgStyleSheet(<String, Map<String, String>>{}),
     this.definitions = const <String, SvgElement>{},
   });
@@ -38,41 +36,44 @@ final class SvgPaintingContext {
   /// The min-y coordinate of the viewBox.
   final double viewBoxMinY;
 
+  /// Grouped presentation attributes inherited from ancestors.
+  final SvgPresentationAttributes inheritedAttributes;
+
   /// Inherited fill color.
-  final SvgColor? inheritedFill;
+  SvgColor? get inheritedFill => inheritedAttributes.fill?.color;
 
   /// Inherited fill opacity.
-  final SvgLengthPercentage? inheritedFillOpacity;
+  SvgLengthPercentage? get inheritedFillOpacity => inheritedAttributes.fill?.opacity;
 
   /// Inherited stroke color.
-  final SvgColor? inheritedStroke;
+  SvgColor? get inheritedStroke => inheritedAttributes.stroke?.color;
 
   /// Inherited stroke opacity.
-  final SvgLengthPercentage? inheritedStrokeOpacity;
+  SvgLengthPercentage? get inheritedStrokeOpacity => inheritedAttributes.stroke?.opacity;
 
   /// Inherited stroke width.
-  final SvgLengthPercentage? inheritedStrokeWidth;
+  SvgLengthPercentage? get inheritedStrokeWidth => inheritedAttributes.stroke?.width;
 
   /// Inherited stroke dasharray.
-  final SvgPointList? inheritedStrokeDasharray;
+  SvgPointList? get inheritedStrokeDasharray => inheritedAttributes.stroke?.dashArray;
 
   /// Inherited stroke linecap.
-  final SvgStrokeLinecap? inheritedStrokeLinecap;
+  SvgStrokeLinecap? get inheritedStrokeLinecap => inheritedAttributes.stroke?.linecap;
 
   /// Inherited stroke linejoin.
-  final SvgStrokeLinejoin? inheritedStrokeLinejoin;
+  SvgStrokeLinejoin? get inheritedStrokeLinejoin => inheritedAttributes.stroke?.linejoin;
 
   /// Inherited font size.
-  final SvgLengthPercentage? inheritedFontSize;
+  SvgLengthPercentage? get inheritedFontSize => inheritedAttributes.font?.size;
 
   /// Inherited font weight.
-  final SvgFontWeight? inheritedFontWeight;
+  SvgFontWeight? get inheritedFontWeight => inheritedAttributes.font?.weight;
 
   /// Inherited font style.
-  final SvgFontStyle? inheritedFontStyle;
+  SvgFontStyle? get inheritedFontStyle => inheritedAttributes.font?.style;
 
   /// Inherited font family.
-  final SvgFontFamily? inheritedFontFamily;
+  SvgFontFamily? get inheritedFontFamily => inheritedAttributes.font?.family;
 
   /// The CSS rules defined for the document.
   final SvgStyleSheet styleSheet;
@@ -92,36 +93,14 @@ final class SvgPaintingContext {
     double? viewBoxHeight,
     double? viewBoxMinX,
     double? viewBoxMinY,
-    SvgColor? inheritedFill,
-    SvgLengthPercentage? inheritedFillOpacity,
-    SvgColor? inheritedStroke,
-    SvgLengthPercentage? inheritedStrokeOpacity,
-    SvgLengthPercentage? inheritedStrokeWidth,
-    SvgPointList? inheritedStrokeDasharray,
-    SvgStrokeLinecap? inheritedStrokeLinecap,
-    SvgStrokeLinejoin? inheritedStrokeLinejoin,
-    SvgLengthPercentage? inheritedFontSize,
-    SvgFontWeight? inheritedFontWeight,
-    SvgFontStyle? inheritedFontStyle,
-    SvgFontFamily? inheritedFontFamily,
+    SvgPresentationAttributes? inheritedAttributes,
   }) {
     return SvgPaintingContext(
       viewBoxWidth: viewBoxWidth ?? this.viewBoxWidth,
       viewBoxHeight: viewBoxHeight ?? this.viewBoxHeight,
       viewBoxMinX: viewBoxMinX ?? this.viewBoxMinX,
       viewBoxMinY: viewBoxMinY ?? this.viewBoxMinY,
-      inheritedFill: inheritedFill ?? this.inheritedFill,
-      inheritedFillOpacity: inheritedFillOpacity ?? this.inheritedFillOpacity,
-      inheritedStroke: inheritedStroke ?? this.inheritedStroke,
-      inheritedStrokeOpacity: inheritedStrokeOpacity ?? this.inheritedStrokeOpacity,
-      inheritedStrokeWidth: inheritedStrokeWidth ?? this.inheritedStrokeWidth,
-      inheritedStrokeDasharray: inheritedStrokeDasharray ?? this.inheritedStrokeDasharray,
-      inheritedStrokeLinecap: inheritedStrokeLinecap ?? this.inheritedStrokeLinecap,
-      inheritedStrokeLinejoin: inheritedStrokeLinejoin ?? this.inheritedStrokeLinejoin,
-      inheritedFontSize: inheritedFontSize ?? this.inheritedFontSize,
-      inheritedFontWeight: inheritedFontWeight ?? this.inheritedFontWeight,
-      inheritedFontStyle: inheritedFontStyle ?? this.inheritedFontStyle,
-      inheritedFontFamily: inheritedFontFamily ?? this.inheritedFontFamily,
+      inheritedAttributes: inheritedAttributes ?? this.inheritedAttributes,
       styleSheet: styleSheet,
       definitions: definitions,
     );
@@ -129,25 +108,16 @@ final class SvgPaintingContext {
 
   /// Creates a new context by applying the styles of the given [element].
   SvgPaintingContext deriveWith(SvgElement element) {
-    if (element is SvgGraphicsElement) {
-      final SvgFontAttributes? font = element is SvgFontAttributable
-          ? (element as SvgFontAttributable).fontAttributes
-          : null;
+    if (element is SvgPresentable) {
+      final SvgPresentationAttributes? elementAttrs = element.presentationAttributes;
+      if (elementAttrs == null) {
+        return this;
+      }
 
-      return derive(
-        inheritedFill: element.fillAttributes?.color ?? inheritedFill,
-        inheritedFillOpacity: element.fillAttributes?.opacity ?? inheritedFillOpacity,
-        inheritedStroke: element.strokeAttributes?.color ?? inheritedStroke,
-        inheritedStrokeOpacity: element.strokeAttributes?.opacity ?? inheritedStrokeOpacity,
-        inheritedStrokeWidth: element.strokeAttributes?.width ?? inheritedStrokeWidth,
-        inheritedStrokeDasharray: element.strokeAttributes?.dashArray ?? inheritedStrokeDasharray,
-        inheritedStrokeLinecap: element.strokeAttributes?.linecap ?? inheritedStrokeLinecap,
-        inheritedStrokeLinejoin: element.strokeAttributes?.linejoin ?? inheritedStrokeLinejoin,
-        inheritedFontSize: font?.size ?? inheritedFontSize,
-        inheritedFontWeight: font?.weight ?? inheritedFontWeight,
-        inheritedFontStyle: font?.style ?? inheritedFontStyle,
-        inheritedFontFamily: font?.family ?? inheritedFontFamily,
-      );
+      // Handle spec inheritance rules via DTO
+      final SvgPresentationAttributes newInherited = elementAttrs.inherit(inheritedAttributes);
+
+      return derive(inheritedAttributes: newInherited);
     }
 
     return this;

@@ -21,7 +21,7 @@ class GeneratorBuffer {
     final String prefix = '  ' * _indent;
     // For multi-line strings, indent each line
     final List<String> lines = text.split('\n');
-    for (final String line in lines) {
+    for (final line in lines) {
       final String trimmed = line.trim();
       if (trimmed.isEmpty) {
         _buffer.writeln();

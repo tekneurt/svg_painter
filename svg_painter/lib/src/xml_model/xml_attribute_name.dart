@@ -106,6 +106,14 @@ enum XmlAttributeName {
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/gradientTransform
   gradientTransform('gradientTransform'),
 
+  /// The coordinate system used for the gradient coordinates.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/gradientUnits
+  gradientUnits('gradientUnits'),
+
+  /// The method used to fill the area outside the gradient vector.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/spreadMethod
+  spreadMethod('spreadMethod'),
+
   /// The CSS class(es) of the element.
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/class
   className('class'),
@@ -168,7 +176,39 @@ enum XmlAttributeName {
 
   /// The viewBox of the element.
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/viewBox
-  viewBox('viewBox');
+  viewBox('viewBox'),
+
+  /// The preserveAspectRatio of the element.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/preserveAspectRatio
+  preserveAspectRatio('preserveAspectRatio'),
+
+  /// The relative x-axis shift for text.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/dx
+  dx('dx'),
+
+  /// The relative y-axis shift for text.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/dy
+  dy('dy'),
+
+  /// The supplemental rotation applied to characters.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/rotate
+  rotate('rotate'),
+
+  /// The type of the style or script.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/type
+  type('type'),
+
+  /// The media for which the style is applicable.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/media
+  media('media'),
+
+  /// The title of the element or style.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/title
+  title('title'),
+
+  /// The xml:space attribute.
+  /// https://www.w3.org/TR/SVG11/styling.html#XMLSpaceAttribute
+  xmlSpace('xml:space');
 
   const XmlAttributeName(this.name);
 

@@ -59,13 +59,33 @@ class _$StopPainter extends CustomPainter {
       destRect.width / sourceSize.width,
       destRect.height / sourceSize.height,
     );
-    canvas.clipRect(Rect.fromLTWH(0, 0, 10.0, 10.0));
 
     final Gradient _grad_myGradient = LinearGradient(
       begin: Alignment(-1.0, -1.0),
-      end: Alignment(-1.0, 1.0),
+      end: Alignment(1.0, -1.0),
       colors: <Color>[const Color(0xFFFFD700), const Color(0xFFFF0000)],
       stops: <double>[0.05, 0.95],
+      tileMode: TileMode.clamp,
+      transform: _SvgGradientTransform_StopPainter(
+        matrix: <double>[
+          6.123233995736766e-17,
+          1.0,
+          0.0,
+          0.0,
+          -1.0,
+          6.123233995736766e-17,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+        ],
+      ),
     );
     {
       final Paint paint = Paint();
@@ -99,5 +119,56 @@ class _$StopPainter extends CustomPainter {
     } else {
       return true;
     }
+  }
+}
+
+/// A private helper class to apply arbitrary transformations to SVG gradients.
+class _SvgGradientTransform_StopPainter extends GradientTransform {
+  const _SvgGradientTransform_StopPainter({
+    this.matrix,
+    this.isElliptical = false,
+    this.centerX = 0.5,
+    this.centerY = 0.5,
+  });
+
+  /// The 4x4 matrix storage.
+  final List<double>? matrix;
+
+  /// Whether to correct the aspect ratio for elliptical gradients.
+  final bool isElliptical;
+
+  /// The normalized center X coordinate (0..1) for aspect ratio correction.
+  final double centerX;
+
+  /// The normalized center Y coordinate (0..1) for aspect ratio correction.
+  final double centerY;
+
+  @override
+  Matrix4? transform(Rect bounds, {TextDirection? textDirection}) {
+    Matrix4? m;
+    if (matrix != null) {
+      m = Matrix4.fromList(matrix!);
+    }
+
+    if (isElliptical && bounds.width != bounds.height) {
+      final double shortest = bounds.width < bounds.height
+          ? bounds.width
+          : bounds.height;
+      final double sx = bounds.width / shortest;
+      final double sy = bounds.height / shortest;
+      final double px = bounds.left + (centerX * bounds.width);
+      final double py = bounds.top + (centerY * bounds.height);
+
+      final Matrix4 scale = Matrix4.identity()
+        ..translateByDouble(px, py, 0.0, 1.0)
+        ..scaleByDouble(sx, sy, 1.0, 1.0)
+        ..translateByDouble(-px, -py, 0.0, 1.0);
+
+      if (m != null) {
+        return scale..multiply(m);
+      }
+      return scale;
+    }
+    return m;
   }
 }

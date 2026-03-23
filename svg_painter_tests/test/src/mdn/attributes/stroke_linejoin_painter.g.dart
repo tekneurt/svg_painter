@@ -59,7 +59,6 @@ class _$StrokeLinejoinPainter extends CustomPainter {
       destRect.width / sourceSize.width,
       destRect.height / sourceSize.height,
     );
-    canvas.clipRect(Rect.fromLTWH(0, 0, 18.0, 12.0));
 
     {
       final Path path = Path()
@@ -495,7 +494,6 @@ class _$StrokeLinejoinArcsPainter extends CustomPainter {
       destRect.width / sourceSize.width,
       destRect.height / sourceSize.height,
     );
-    canvas.clipRect(Rect.fromLTWH(0, 0, 6.0, 6.0));
 
     {
       final Path path = Path()
@@ -645,7 +643,6 @@ class _$StrokeLinejoinBevelPainter extends CustomPainter {
       destRect.width / sourceSize.width,
       destRect.height / sourceSize.height,
     );
-    canvas.clipRect(Rect.fromLTWH(0, 0, 6.0, 6.0));
 
     {
       final Path path = Path()
@@ -772,8 +769,9 @@ class _$StrokeLinejoinMiterPainter extends CustomPainter {
       destRect.width / sourceSize.width,
       destRect.height / sourceSize.height,
     );
-    canvas.clipRect(Rect.fromLTWH(0, 0, 10.0, 7.0));
 
+    canvas.save();
+    canvas.clipRect(Rect.fromLTWH(0.0, 0.0, 10.0, 7.0));
     canvas.save();
     canvas.translate(-0.0, 1.0);
     {
@@ -883,6 +881,7 @@ class _$StrokeLinejoinMiterPainter extends CustomPainter {
       paint.style = PaintingStyle.fill;
       canvas.drawCircle(const Offset(8.5, 5.0), 0.05, paint);
     }
+    canvas.restore();
     canvas.restore();
     canvas.restore();
   }
@@ -995,8 +994,9 @@ class _$StrokeLinejoinMiterClipPainter extends CustomPainter {
       destRect.width / sourceSize.width,
       destRect.height / sourceSize.height,
     );
-    canvas.clipRect(Rect.fromLTWH(0, 0, 10.0, 7.0));
 
+    canvas.save();
+    canvas.clipRect(Rect.fromLTWH(0.0, 0.0, 10.0, 7.0));
     canvas.save();
     canvas.translate(-0.0, 1.0);
     {
@@ -1106,6 +1106,7 @@ class _$StrokeLinejoinMiterClipPainter extends CustomPainter {
       paint.style = PaintingStyle.fill;
       canvas.drawCircle(const Offset(8.5, 5.0), 0.05, paint);
     }
+    canvas.restore();
     canvas.restore();
     canvas.restore();
   }
@@ -1218,7 +1219,6 @@ class _$StrokeLinejoinRoundPainter extends CustomPainter {
       destRect.width / sourceSize.width,
       destRect.height / sourceSize.height,
     );
-    canvas.clipRect(Rect.fromLTWH(0, 0, 6.0, 6.0));
 
     {
       final Path path = Path()

@@ -6,7 +6,7 @@ part of '../../svg_element.dart';
 /// and aren't explicitly handled as metadata.
 @immutable
 final class SvgIgnoredElement extends SvgElement {
-  const SvgIgnoredElement({super.id});
+  const SvgIgnoredElement({super.coreAttributes});
 
   @override
   String toString() => 'SvgIgnoredElement(id: $id)';

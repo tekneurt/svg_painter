@@ -7,7 +7,7 @@ void main() {
     group('toSvgViewBox', () {
       test('should return SvgViewBox when valid 4-parameter string is provided', () {
         // Arrange
-        const String input = '0 0 100 200';
+        const input = '0 0 100 200';
 
         // Act
         final SvgViewBox? result = input.toSvgViewBox();
@@ -22,7 +22,7 @@ void main() {
 
       test('should handle commas as delimiters', () {
         // Arrange
-        const String input = '10, 20, 30, 40';
+        const input = '10, 20, 30, 40';
 
         // Act
         final SvgViewBox? result = input.toSvgViewBox();
@@ -34,8 +34,8 @@ void main() {
 
       test('should return null when parameters are insufficient or excessive', () {
         // Arrange
-        const String input1 = '0 0 100';
-        const String input2 = '0 0 100 200 300';
+        const input1 = '0 0 100';
+        const input2 = '0 0 100 200 300';
 
         // Act & Assert
         expect(input1.toSvgViewBox(), isNull);
@@ -44,7 +44,7 @@ void main() {
 
       test('should return null when parameters are not numbers', () {
         // Arrange
-        const String input = '0 0 width height';
+        const input = '0 0 width height';
 
         // Act
         final SvgViewBox? result = input.toSvgViewBox();

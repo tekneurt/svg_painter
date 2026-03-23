@@ -4,13 +4,13 @@ import 'package:test/test.dart';
 void main() {
   group('GeneratorBuffer', () {
     test('should write simple line with initial indent', () {
-      final GeneratorBuffer buffer = GeneratorBuffer(initialIndent: 1);
+      final buffer = GeneratorBuffer(initialIndent: 1);
       buffer.writeln('test');
       expect(buffer.toString(), '  test\n');
     });
 
     test('should indent and outdent correctly', () {
-      final GeneratorBuffer buffer = GeneratorBuffer();
+      final buffer = GeneratorBuffer();
       buffer.writeln('level 0');
       buffer.indent();
       buffer.writeln('level 1');
@@ -32,7 +32,7 @@ void main() {
     });
 
     test('should handle multi-line strings and empty lines (DA:27)', () {
-      final GeneratorBuffer buffer = GeneratorBuffer(initialIndent: 1);
+      final buffer = GeneratorBuffer(initialIndent: 1);
       buffer.writeln('line 1\n\nline 3');
 
       expect(
@@ -44,7 +44,7 @@ void main() {
     });
 
     test('should handle null or whitespace strings in writeln', () {
-      final GeneratorBuffer buffer = GeneratorBuffer();
+      final buffer = GeneratorBuffer();
       buffer.writeln();
       buffer.writeln('   ');
 
@@ -52,7 +52,7 @@ void main() {
     });
 
     test('should writeBlock with indent and footer', () {
-      final GeneratorBuffer buffer = GeneratorBuffer();
+      final buffer = GeneratorBuffer();
       buffer.writeBlock('if (true) {', () {
         buffer.writeln('print("hello");');
       });
@@ -66,7 +66,7 @@ void main() {
     });
 
     test('should write custom header and footer in writeBlock', () {
-      final GeneratorBuffer buffer = GeneratorBuffer();
+      final buffer = GeneratorBuffer();
       buffer.writeBlock('class MyClass {', () {
         buffer.writeln('int x = 0;');
       });
@@ -82,7 +82,7 @@ void main() {
     });
 
     test('should handle custom footer in writeBlock', () {
-      final GeneratorBuffer buffer = GeneratorBuffer();
+      final buffer = GeneratorBuffer();
       buffer.writeBlock('void myMethod() {', () {
         buffer.writeln('// code');
       }, footer: '} // end method');

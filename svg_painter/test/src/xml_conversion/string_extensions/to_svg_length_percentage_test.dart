@@ -11,7 +11,7 @@ void main() {
 
         // Assert
         expect(result, isA<SvgLength>());
-        final SvgLength length = result as SvgLength;
+        final length = result as SvgLength;
         expect(length.value, 10.0);
         expect(length.unit, SvgLengthUnit.none);
       });
@@ -22,7 +22,7 @@ void main() {
 
         // Assert
         expect(result, isA<SvgPercentage>());
-        final SvgPercentage percentage = result as SvgPercentage;
+        final percentage = result as SvgPercentage;
         expect(percentage.value, 50.0);
       });
 
@@ -32,7 +32,7 @@ void main() {
 
         // Assert
         expect(result, isA<SvgLength>());
-        final SvgLength length = result as SvgLength;
+        final length = result as SvgLength;
         expect(length.value, 10.0);
         expect(length.unit, SvgLengthUnit.px);
       });
@@ -43,7 +43,7 @@ void main() {
 
         // Assert
         expect(result, isA<SvgLength>());
-        final SvgLength length = result as SvgLength;
+        final length = result as SvgLength;
         expect(length.value, 2.5);
         expect(length.unit, SvgLengthUnit.cm);
       });
@@ -54,7 +54,7 @@ void main() {
 
         // Assert
         expect(result, isA<SvgLength>());
-        final SvgLength length = result as SvgLength;
+        final length = result as SvgLength;
         expect(length.value, 10.0);
         expect(length.unit, SvgLengthUnit.none);
       });
@@ -65,7 +65,7 @@ void main() {
 
         // Assert
         expect(result, isA<SvgLength>());
-        final SvgLength length = result as SvgLength;
+        final length = result as SvgLength;
         expect(length.value, 0.0);
         expect(length.unit, SvgLengthUnit.none);
       });

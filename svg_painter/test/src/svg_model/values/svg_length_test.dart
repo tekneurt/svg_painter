@@ -5,10 +5,10 @@ void main() {
   group('SvgLength', () {
     test('should return correct string representation for unit none', () {
       // Arrange
-      const SvgLength length = SvgLength(10.0);
+      const length = SvgLength(10.0);
 
       // Act
-      final String result = length.toString();
+      final result = length.toString();
 
       // Assert
       expect(result, '10.0');
@@ -16,10 +16,10 @@ void main() {
 
     test('should return correct string representation for unit px', () {
       // Arrange
-      const SvgLength length = SvgLength(20.0, SvgLengthUnit.px);
+      const length = SvgLength(20.0, SvgLengthUnit.px);
 
       // Act
-      final String result = length.toString();
+      final result = length.toString();
 
       // Assert
       expect(result, '20.0px');
@@ -27,10 +27,10 @@ void main() {
 
     test('should return correct string representation for unit cm', () {
       // Arrange
-      const SvgLength length = SvgLength(2.5, SvgLengthUnit.cm);
+      const length = SvgLength(2.5, SvgLengthUnit.cm);
 
       // Act
-      final String result = length.toString();
+      final result = length.toString();
 
       // Assert
       expect(result, '2.5cm');

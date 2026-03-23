@@ -59,8 +59,9 @@ class _$ViewBox3Painter extends CustomPainter {
       destRect.width / sourceSize.width,
       destRect.height / sourceSize.height,
     );
-    canvas.clipRect(Rect.fromLTWH(0, 0, 10.0, 10.0));
 
+    canvas.save();
+    canvas.clipRect(Rect.fromLTWH(0.0, 0.0, 10.0, 10.0));
     canvas.save();
     canvas.translate(5.0, 5.0);
     {
@@ -75,6 +76,7 @@ class _$ViewBox3Painter extends CustomPainter {
       paint.style = PaintingStyle.fill;
       canvas.drawCircle(const Offset(5.0, 5.0), 4.0, paint);
     }
+    canvas.restore();
     canvas.restore();
     canvas.restore();
   }

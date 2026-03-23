@@ -18,7 +18,7 @@ class CurrentColorPainter extends _$CurrentColorPainter {
 
 void main() {
   testWidgets('Should respect currentColor override', (WidgetTester tester) async {
-    const CurrentColorPainter painter = CurrentColorPainter(color: Colors.red);
+    const painter = CurrentColorPainter(color: Colors.red);
     
     await testSvgPainter(
       tester: tester,

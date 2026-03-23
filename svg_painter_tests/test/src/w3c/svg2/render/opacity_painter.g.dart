@@ -59,7 +59,6 @@ class _$OpacityPainter extends CustomPainter {
       destRect.width / sourceSize.width,
       destRect.height / sourceSize.height,
     );
-    canvas.clipRect(Rect.fromLTWH(0, 0, 600.0, 175.0));
 
     canvas.save();
     canvas.scale(0.5, 0.5);

@@ -59,8 +59,9 @@ class _$PointsExamplePainter extends CustomPainter {
       destRect.width / sourceSize.width,
       destRect.height / sourceSize.height,
     );
-    canvas.clipRect(Rect.fromLTWH(0, 0, 220.0, 120.0));
 
+    canvas.save();
+    canvas.clipRect(Rect.fromLTWH(0.0, 0.0, 220.0, 120.0));
     canvas.save();
     canvas.translate(10.0, 10.0);
     {
@@ -96,6 +97,7 @@ class _$PointsExamplePainter extends CustomPainter {
         canvas.drawPath(path, paint);
       }
     }
+    canvas.restore();
     canvas.restore();
     canvas.restore();
     canvas.restore();

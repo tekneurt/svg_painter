@@ -4,6 +4,7 @@ import '../../base/_base.dart';
 import '../../svg_model/_svg_model.dart';
 import '../../xml_model/_xml_model.dart';
 import '../_xml_conversion.dart';
+import '_xml_element_extensions.dart';
 
 extension ToSvgStop on XmlElement {
   /// Converts this [XmlElement] to an [SvgStop].
@@ -20,10 +21,15 @@ extension ToSvgStop on XmlElement {
       XmlAttributeName.stopOpacity,
     );
 
-    final String? id = toXmlAttributeValue(XmlAttributeName.id);
+    final CommonAttributes common = toCommonAttributes(elementName);
 
     return Success<SvgStop>(
-      SvgStop(offset: offset, stopColor: stopColor, stopOpacity: stopOpacity, id: id),
+      SvgStop(
+        offset: offset,
+        stopColor: stopColor,
+        stopOpacity: stopOpacity,
+        coreAttributes: common.core,
+      ),
     );
   }
 }

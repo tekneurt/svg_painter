@@ -11,8 +11,10 @@ final class SvgLinearGradient extends SvgGradient {
     required this.x2,
     required this.y2,
     required super.stops,
-    super.id,
     super.gradientTransformAttributes,
+    super.gradientUnits,
+    super.spreadMethod,
+    super.coreAttributes,
   });
 
   /// The x-axis coordinate of the start of the gradient vector.
@@ -29,13 +31,15 @@ final class SvgLinearGradient extends SvgGradient {
 
   @override
   String toString() {
-    final List<String> parts = <String>[
+    final parts = <String>[
       'x1: $x1',
       'y1: $y1',
       'x2: $x2',
       'y2: $y2',
       'stops: ${stops.length}',
       if (gradientTransformAttributes != null) 'transform: $gradientTransformAttributes',
+      'units: $gradientUnits',
+      'spread: $spreadMethod',
       if (id != null) 'id: $id',
     ];
     return 'SvgLinearGradient(${parts.join(', ')})';

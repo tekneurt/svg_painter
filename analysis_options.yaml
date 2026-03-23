@@ -1,8 +1,8 @@
 # This analysis_options.yaml file is taken from the official Flutter repository:
 # https://github.com/flutter/flutter/blob/master/analysis_options.yaml
-# Fetched on: Monday, December 15, 2025
+# Last synced: Sunday, March 22, 2026
 # We adhere to the official Flutter repository's rules, but with stricter enforcement
-# regarding deprecated members. Any deviations are documented below.
+# regarding deprecated members and local immutability. Any deviations are documented below.
 
 # Specify analysis options.
 #
@@ -24,13 +24,15 @@ analyzer:
     strict-casts: true
     strict-inference: true
     strict-raw-types: true
-  # OVERRULED: We want to enforce no deprecated member usage in this project.
+  errors:
+    deprecated_lint: ignore
+  # DEVIATION: We want to enforce no deprecated member usage in this project.
   # errors:
   #   # allow deprecated members (we do this because otherwise we have to annotate
   #   # every member in every test, assert, etc, when we or the Dart SDK deprecates
   #   # something (https://github.com/flutter/flutter/issues/143312)
-  #   # deprecated_member_use: ignore
-  #   # deprecated_member_use_from_same_package: ignore
+  #   deprecated_member_use: ignore
+  #   deprecated_member_use_from_same_package: ignore
   exclude:
     - "bin/cache/**"
       # Ignore protoc generated files
@@ -47,11 +49,11 @@ linter:
     - always_declare_return_types
     - always_put_control_body_on_new_line
     # - always_put_required_named_parameters_first # we prefer having parameters in the same order as fields https://github.com/flutter/flutter/issues/10219
-    - always_specify_types
+    # - always_specify_types # conflicts with omit_obvious_local_variable_types
     # - always_use_package_imports # we do this commonly
     - annotate_overrides
     - annotate_redeclares
-    # - avoid_annotating_with_dynamic # conflicts with always_specify_types
+    # - avoid_annotating_with_dynamic # conflicts with type_annotate_public_apis
     - avoid_bool_literals_in_conditional_expressions
     # - avoid_catches_without_on_clauses # blocked on https://github.com/dart-lang/linter/issues/3023
     # - avoid_catching_errors # blocked on https://github.com/dart-lang/linter/issues/4998
@@ -85,7 +87,7 @@ linter:
     - avoid_slow_async_io
     - avoid_type_to_string
     - avoid_types_as_parameter_names
-    # - avoid_types_on_closure_parameters # conflicts with always_specify_types
+    # - avoid_types_on_closure_parameters # not yet tested
     - avoid_unnecessary_containers
     - avoid_unused_constructor_parameters
     - avoid_void_async
@@ -151,9 +153,9 @@ linter:
     - noop_primitive_operations
     - null_check_on_nullable_type_parameter
     - null_closures
-    # - omit_local_variable_types # opposite of always_specify_types
-    # - omit_obvious_local_variable_types # not yet tested
-    # - omit_obvious_property_types # not yet tested
+    # - omit_local_variable_types # superset of omit_obvious_local_variable_types
+    - omit_obvious_local_variable_types # not yet tested
+    # - omit_obvious_property_types # conflicts with type_annotate_public_apis
     # - one_member_abstracts # too many false positives
     - only_throw_errors # this does get disabled in a few places where we have legacy code that uses strings et al
     - overridden_fields
@@ -174,6 +176,9 @@ linter:
     # - prefer_double_quotes # opposite of prefer_single_quotes
     # - prefer_expression_function_bodies # conflicts with ./docs/contributing/Style-guide-for-Flutter-repo.md#consider-using--for-short-functions-and-methods
     - prefer_final_fields
+    # DEVIATION: We enforce final for locals and loop variables to prevent accidental reassignments.
+    # While Flutter favors convention over enforcement for brevity, we prioritize the safety
+    # of explicit immutability.
     - prefer_final_in_for_each
     - prefer_final_locals
     # - prefer_final_parameters # adds too much verbosity
@@ -211,13 +216,13 @@ linter:
     - sort_constructors_first
     # - sort_pub_dependencies # prevents separating pinned transitive dependencies
     - sort_unnamed_constructors_first
-    # - specify_nonobvious_local_variable_types # not yet tested
-    # - specify_nonobvious_property_types # not yet tested
+    - specify_nonobvious_local_variable_types
+    - specify_nonobvious_property_types
     - strict_top_level_inference
     - test_types_in_equals
     - throw_in_finally
     - tighten_type_of_initializing_formals
-    # - type_annotate_public_apis # subset of always_specify_types
+    - type_annotate_public_apis
     - type_init_formals
     - type_literal_in_constant_pattern
     # - unawaited_futures # too many false positives, especially with the way AnimationController works

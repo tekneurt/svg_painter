@@ -222,22 +222,43 @@
 ### Phase 4: Essential Elements (0.3.0)
 *Reaching standard compatibility with essential SVG elements.*
 
-- [ ] **Structural Elements**: `<symbol>`, `<tspan>`, `<defs>`.
+- [x] **Core Refactoring**:only the 
+    - [x] `mixin SvgViewBoxed`: Holds `viewBox` and `preserveAspectRatio` (applied to: `SvgSvg`, `SvgSymbol`, `SvgMarker`).
+    - [x] `mixin SvgBounded`: Holds `x`, `y`, `width`, `height` (applied to: `SvgRect`, `SvgSvg`, `SvgUse`, `SvgImage`).
+    - [x] **Architecture Cleanup (SVG Model)**: Rename `lib/src/svg_model/attributes/` to `attribute_groups/` to clarify that these are DTOs. Audit `lib/src/svg_model/elements/base/` mixins (like `SvgGeometry` holding `pathLength`) to ensure clear boundaries between element traits (mixins) and attribute groupings.
+- [x] **Structural Elements**: `<symbol>` [x],  `<style>` [x], `<tspan>` [x], `<defs>` [x].
+- [x] **Gradients (Polish)**: `spreadMethod` and `gradientUnits` (needed for 2nd MDN `linearGradient` example).
+    - [x] **Proper `userSpaceOnUse` support**: Resolve absolute coordinates for gradients by generating `createShader` calls with absolute offsets instead of relative `Alignment`.
+    - [x] **`gradientTransform` support**: Implement support for arbitrary transformations on gradients using `GradientTransform` and `Matrix4` [x].
+    - [x] **Elliptical Radial Gradients**: Support the `r` radius being stretched by the element's bounding box using `GradientTransform` or `Matrix4` [x].
+### Phase 4: Release 0.3.0 (Maintenance & Polish)
+*Finalizing the current feature set and ensuring high repository quality.*
+
+- [x] **Release Preparation**:
+    - [x] **Golden Hardening**: Update and verify all golden tests on both macOS and Linux.
+    - [x] **Dependency Refresh**: Update all package dependencies to their latest versions to ensure a 160/160 pub.dev score.
+    - [x] **Test hardening**: Add coverage for latest changes.
+    - [x] **Publishing**: Publish version 0.3.0 of all packages to pub.dev.
+
+### Phase 5: Extended Elements (0.4.0)
+*Reaching standard compatibility with more complex SVG elements.*
+
 - [ ] **Referencing & External Assets**: `<image>`, `<use>`.
 - [ ] **Clipping & Masking**: `<clipPath>`, `<mask >`.
 - [ ] **Accessibility (Semantic Mapping)**: Map `<title>` and `<desc>` automatically to Flutter's `Semantics` widget in the generated code.
-- [ ] **Essential Attributes**: `text-anchor`, `fill-rule`, `stroke-dashoffset`, `stroke-miterlimit`, `paint-order`, `vector-effect`, `dx`, `dy`, `preserveAspectRatio`.
+- [ ] **MDN Compliance**: Add 2nd example from [MDN fill](https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/fill) once `<marker>`, `context-stroke`, and `context-fill` are implemented.
+- [ ] **Essential Attributes**: `text-anchor`, `fill-rule`, `stroke-dashoffset`, `stroke-miterlimit`, `paint-order`, `vector-effect`, `dx`, `dy`, `preserveAspectRatio` [x].
 - [ ] **Font Management (Release Ready)**: Implement `AssetExporter` to automatically handle bundled fonts for the user.
 - [ ] **Release Preparation**:
     - [ ] **Documentation**: Write comprehensive READMEs and full API documentation.
     - [ ] **Validation**: Add comprehensive tests for all `BoxFit` values.
-    - [ ] **Publishing**: Publish 0.3.0 to pub.dev.
+    - [ ] **Publishing**: Publish version 0.4.0 of all packages to pub.dev.
 
 ---
 
 ## Post-MVP Roadmap
 
-### Phase 5: Recommended "Wise-to-Have" Features (0.4.0)
+### Phase 6: Recommended "Wise-to-Have" Features (0.5.0)
 - [ ] **Configurable Color Generation**: Add `colorMapping` option to `@SvgPainter`.
     - `material` (default): Use Flutter's `Colors.red`, `Colors.amber.shade200`.
     - `svg`: Use SVG constants like `Color(0xFFFF0000)` but potentially aliased to a generated `SvgColors` class for readability.
@@ -252,16 +273,13 @@
 - [ ] Support `gradientTransform` properly using `Matrix4` from `vector_math_64` (see: https://api.flutter.dev/flutter/package-vector_math_vector_math_64/Matrix4-class.html).
 - [ ] Support complex nested transformations in gradients.
 
-### Phase 6: Advanced Units & Path Syntax (0.5.0)
+### Phase 7: Advanced Units & Path Syntax (0.6.0)
 - [ ] **SVG 2 Path Syntax**: Robust tokenizer for compact arc syntax (concatenated flags).
 - [ ] **Relative Units**: Support for `em`, `ex`, and other CSS relative units.
 - [x] **Result Ergonomics**: Add ergonomic extensions (e.g., `combine()`) to simplify list folding and result aggregation in `Result`.
 
-### Phase 7: Niche & Future Roadmap (1.0.0+)
+### Phase 8: Niche & Future Roadmap (1.0.0+)
 - [ ] **SMIL Animation**: `<animate>`, `<animateMotion>`, etc.
 - [ ] **Complex Filter Primitives**: Lighting, turbulence, displacement maps, color matrices.
 - [ ] **Interactive Elements**: Event handling (taps, hovers) for SVG shapes.
 - [ ] **Misc Attributes**: Rendering hints and CSS interpolation properties.
-- [ ] **Future Refactoring**:
-    - [ ] `mixin SvgViewBoxed`: Holds `viewBox` and `preserveAspectRatio` (applied to: `SvgSvg`, `SvgSymbol`, `SvgMarker`).
-    - [ ] `mixin SvgBounded`: Holds `x`, `y`, `width`, `height` (applied to: `SvgRect`, `SvgSvg`, `SvgUse`, `SvgImage`).

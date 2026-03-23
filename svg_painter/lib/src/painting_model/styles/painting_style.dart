@@ -3,8 +3,23 @@ import 'package:meta/meta.dart';
 import '../../svg_model/_svg_model.dart';
 
 part 'painting_fill_style.dart';
+part 'painting_gradient_units.dart';
 part 'painting_stroke_style.dart';
 part 'painting_text_style.dart';
+
+/// A simple rect representation to avoid importing dart:ui in the painting model.
+@immutable
+class PaintingRect {
+  const PaintingRect(this.left, this.top, this.width, this.height);
+
+  final double left;
+  final double top;
+  final double width;
+  final double height;
+
+  @override
+  String toString() => 'PaintingRect($left, $top, $width, $height)';
+}
 
 /// Common interface for styles that can be applied to a [Paint] object (Fill or Stroke).
 abstract interface class PaintingPaintStyle {
@@ -13,6 +28,9 @@ abstract interface class PaintingPaintStyle {
 
   /// The ID of the shader (e.g., gradient) to use.
   String? get shaderId;
+
+  /// The coordinate system used for the shader coordinates.
+  PaintingGradientUnits? get shaderUnits;
 
   /// The opacity of the paint (0.0 to 1.0).
   double get opacity;
@@ -33,6 +51,7 @@ final class PaintingStyle {
     this.text,
     this.groupOpacity = 1.0,
     this.transformAttributes,
+    this.clipRect,
   });
 
   /// The filling style, or null if the element is not filled.
@@ -50,8 +69,11 @@ final class PaintingStyle {
   /// The structured transform attributes applied to this element.
   final SvgTransformAttributes? transformAttributes;
 
+  /// An explicit clipping rectangle applied to the canvas before drawing.
+  final PaintingRect? clipRect;
+
   @override
   String toString() {
-    return 'PaintingStyle(fill: $fill, stroke: $stroke, text: $text, groupOpacity: $groupOpacity, transform: $transformAttributes)';
+    return 'PaintingStyle(fill: $fill, stroke: $stroke, text: $text, groupOpacity: $groupOpacity, transform: $transformAttributes, clipRect: $clipRect)';
   }
 }

@@ -59,7 +59,6 @@ class _$ExampleCircle01Painter extends CustomPainter {
       destRect.width / sourceSize.width,
       destRect.height / sourceSize.height,
     );
-    canvas.clipRect(Rect.fromLTWH(0, 0, 453.54330708661416, 151.1811023622047));
 
     canvas.save();
     canvas.scale(0.3779527559055118, 0.3779527559055118);

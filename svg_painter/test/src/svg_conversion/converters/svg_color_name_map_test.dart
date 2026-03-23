@@ -5,7 +5,7 @@ import 'package:test/test.dart';
 void main() {
   group('svgColorNameMap Regression', () {
     // Local "truth" map to detect accidental changes in source.
-    const Map<SvgColorName, int> expectedColors = <SvgColorName, int>{
+    const expectedColors = <SvgColorName, int>{
       SvgColorName.aliceblue: 0xFFF0F8FF,
       SvgColorName.antiquewhite: 0xFFFAEBD7,
       SvgColorName.aqua: 0xFF00FFFF,

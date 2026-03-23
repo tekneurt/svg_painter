@@ -59,7 +59,6 @@ class _$StrokeLinecapPainter extends CustomPainter {
       destRect.width / sourceSize.width,
       destRect.height / sourceSize.height,
     );
-    canvas.clipRect(Rect.fromLTWH(0, 0, 6.0, 6.0));
 
     {
       final Paint paint = Paint();
@@ -186,7 +185,6 @@ class _$StrokeLinecapButtPainter extends CustomPainter {
       destRect.width / sourceSize.width,
       destRect.height / sourceSize.height,
     );
-    canvas.clipRect(Rect.fromLTWH(0, 0, 6.0, 4.0));
 
     {
       final Path path = Path()
@@ -340,7 +338,6 @@ class _$StrokeLinecapRoundPainter extends CustomPainter {
       destRect.width / sourceSize.width,
       destRect.height / sourceSize.height,
     );
-    canvas.clipRect(Rect.fromLTWH(0, 0, 6.0, 4.0));
 
     {
       final Path path = Path()
@@ -496,7 +493,6 @@ class _$StrokeLinecapSquarePainter extends CustomPainter {
       destRect.width / sourceSize.width,
       destRect.height / sourceSize.height,
     );
-    canvas.clipRect(Rect.fromLTWH(0, 0, 6.0, 4.0));
 
     {
       final Path path = Path()

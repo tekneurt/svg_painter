@@ -1,4 +1,5 @@
 import 'package:svg_painter/src/base/result.dart';
+import 'package:svg_painter/src/svg_model/attribute_groups/svg_transform_attributes.dart';
 import 'package:svg_painter/src/svg_model/svg_element.dart';
 import 'package:svg_painter/src/svg_model/svg_value.dart';
 import 'package:svg_painter/src/xml_conversion/xml_element_extensions/to_svg_linear_gradient.dart';
@@ -9,7 +10,7 @@ void main() {
   group('ToSvgLinearGradient', () {
     test('should return Success with SvgLinearGradient when valid XML is provided', () {
       // Arrange
-      final XmlDocument document = XmlDocument.parse('''
+      final document = XmlDocument.parse('''
         <linearGradient x1="0%" y1="0%" x2="100%" y2="100%" id="grad1" gradientTransform="rotate(90)">
           <stop offset="0%" stop-color="white" />
           <stop offset="100%" stop-color="black" />
@@ -34,7 +35,7 @@ void main() {
 
     test('should return Success with default values when minimal gradient is provided', () {
       // Arrange
-      final XmlDocument document = XmlDocument.parse('<linearGradient />');
+      final document = XmlDocument.parse('<linearGradient />');
       final XmlElement element = document.rootElement;
 
       // Act

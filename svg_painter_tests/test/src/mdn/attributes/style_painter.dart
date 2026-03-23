@@ -4,7 +4,7 @@ import 'package:svg_painter_fixtures/svg_painter_fixtures.dart';
 
 part 'style_painter.g.dart';
 
-@SvgCodePainter(mdnStyleExample)
+@SvgCodePainter(mdnStyleAttributeExample)
 class StylePainter extends _$StylePainter {
   const StylePainter({super.fit});
 }

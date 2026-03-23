@@ -18,8 +18,10 @@ class PathGenerator extends ShapeGenerator<DrawPath> {
     Map<String, String>? activeStrokeProperties,
     List<InheritedProperty>? inheritedFills,
     List<InheritedProperty>? inheritedStrokes,
+    String? painterClassName,
+    Set<String>? gradientsNeedingStretch,
   }) {
-    wrapWithTransform(buffer, command.style.transformAttributes, () {
+    wrapWithStyle(buffer, command.style, () {
       buffer.writeBlock('{', () {
         buffer.writeln('final Path path = Path()');
         buffer.indent();
@@ -59,7 +61,7 @@ class PathGenerator extends ShapeGenerator<DrawPath> {
         buffer.outdent();
         buffer.writeln(';');
 
-        const String bounds = 'path.getBounds()';
+        const bounds = 'path.getBounds()';
         generatePaintingCode(
           buffer,
           command,

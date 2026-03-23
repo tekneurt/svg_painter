@@ -9,7 +9,7 @@ void main() {
   group('ToSvgPolyline', () {
     test('should return Success with SvgPolyline when valid points attribute is provided', () {
       // Arrange
-      final XmlDocument document = XmlDocument.parse('<polyline points="11,22 55,66 111,222" />');
+      final document = XmlDocument.parse('<polyline points="11,22 55,66 111,222" />');
       final XmlElement element = document.rootElement;
 
       // Act
@@ -28,7 +28,7 @@ void main() {
 
     test('should map common attributes when provided', () {
       // Arrange
-      final XmlDocument document = XmlDocument.parse(
+      final document = XmlDocument.parse(
         '<polyline points="1,2 3,4" stroke="red" stroke-width="5.5" />',
       );
       final XmlElement element = document.rootElement;

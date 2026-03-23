@@ -13,8 +13,10 @@ final class SvgRadialGradient extends SvgGradient {
     required this.fy,
     required this.fr,
     required super.stops,
-    super.id,
     super.gradientTransformAttributes,
+    super.gradientUnits,
+    super.spreadMethod,
+    super.coreAttributes,
   });
 
   /// The x-axis coordinate of the center of the largest circle for the gradient.
@@ -37,7 +39,7 @@ final class SvgRadialGradient extends SvgGradient {
 
   @override
   String toString() {
-    final List<String> parts = <String>[
+    final parts = <String>[
       'cx: $cx',
       'cy: $cy',
       'r: $r',
@@ -46,6 +48,8 @@ final class SvgRadialGradient extends SvgGradient {
       'fr: $fr',
       'stops: ${stops.length}',
       if (gradientTransformAttributes != null) 'transform: $gradientTransformAttributes',
+      'units: $gradientUnits',
+      'spread: $spreadMethod',
       if (id != null) 'id: $id',
     ];
     return 'SvgRadialGradient(${parts.join(', ')})';
