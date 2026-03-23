@@ -1,5 +1,6 @@
 import 'package:svg_painter/src/base/result.dart';
 import 'package:svg_painter/src/painting_model/paint_command.dart';
+import 'package:svg_painter/src/painting_model/styles/painting_style.dart';
 import 'package:svg_painter/src/svg_conversion/converters/svg_painting_context.dart';
 import 'package:svg_painter/src/svg_conversion/svg_element_extensions/svg_text_to_painting.dart';
 import 'package:svg_painter/src/svg_model/svg_element.dart';
@@ -49,14 +50,14 @@ void main() {
         ],
       );
 
-      final result = text.toPaintCommands(context);
-      final cmds = (result as Success<List<PaintCommand>>).value;
+      final Result<List<PaintCommand>> result = text.toPaintCommands(context);
+      final List<PaintCommand> cmds = (result as Success<List<PaintCommand>>).value;
       final drawText = cmds.single as DrawText;
 
       expect(drawText.rootSpan.children, hasLength(2));
       expect(drawText.rootSpan.children[0].text, 'Outer');
 
-      final tspanSpan = drawText.rootSpan.children[1];
+      final PaintingTextSpan tspanSpan = drawText.rootSpan.children[1];
       expect(tspanSpan.text, isNull);
       expect(tspanSpan.children, hasLength(1));
       expect(tspanSpan.children[0].text, 'Inner');

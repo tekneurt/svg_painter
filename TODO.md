@@ -234,11 +234,11 @@
 ### Phase 4: Release 0.3.0 (Maintenance & Polish)
 *Finalizing the current feature set and ensuring high repository quality.*
 
-- [ ] **Release Preparation**:
+- [x] **Release Preparation**:
     - [x] **Golden Hardening**: Update and verify all golden tests on both macOS and Linux.
     - [x] **Dependency Refresh**: Update all package dependencies to their latest versions to ensure a 160/160 pub.dev score.
     - [x] **Test hardening**: Add coverage for latest changes.
-    - [ ] **Publishing**: Publish version 0.3.0 of all packages to pub.dev.
+    - [x] **Publishing**: Publish version 0.3.0 of all packages to pub.dev.
 
 ### Phase 5: Extended Elements (0.4.0)
 *Reaching standard compatibility with more complex SVG elements.*

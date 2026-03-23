@@ -41,7 +41,7 @@ void main() {
         x1: 0, y1: 0, x2: 1, y2: 0,
         stops: [],
         spreadMethod: PaintingSpreadMethod.reflect,
-        transformAttributes: SvgTransformAttributes([const SvgTranslate(10, 10)]),
+        transformAttributes: SvgTransformAttributes([SvgTranslate(10, 10)]),
       );
       
       const LinearGradientGenerator().generate(command, buffer, painterClassName: 'MyPainter');

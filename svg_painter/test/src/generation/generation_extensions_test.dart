@@ -7,14 +7,14 @@ void main() {
   group('GenerationExtensions', () {
     group('SvgTransformAttributesToFlutterMatrix', () {
       test('should handle all transform operations correctly', () {
-        final transform = SvgTransformAttributes(<SvgTransformOperation>[
-          const SvgMatrix(1, 0, 0, 1, 10, 20),
-          const SvgTranslate(5, 5),
-          const SvgScale(2, 2),
-          const SvgRotate(45),
-          const SvgRotate(90, 10, 10), // Centered rotate
-          const SvgSkewX(10),
-          const SvgSkewY(10),
+        const transform = SvgTransformAttributes(<SvgTransformOperation>[
+          SvgMatrix(1, 0, 0, 1, 10, 20),
+          SvgTranslate(5, 5),
+          SvgScale(2, 2),
+          SvgRotate(45),
+          SvgRotate(90, 10, 10), // Centered rotate
+          SvgSkewX(10),
+          SvgSkewY(10),
         ]);
 
         final List<double> matrix = transform.toFlutterMatrix();

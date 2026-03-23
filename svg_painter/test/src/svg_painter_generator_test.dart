@@ -347,7 +347,6 @@ void main() {
 
         test('should throw InvalidGenerationSourceError when root element is not <svg> (internal check)', () {
           // Use a special XML that parses to a non-SvgSvg root element
-          const ignoredRootSvg = '<svg><title>Just a title</title></svg>';
           // We need a way to make the FIRST <svg> element map to something else.
           // This is hard because toSvgElement() logic is fixed.
           // But wait, the toSvgElement() on XmlElement looks at the tag name.
@@ -390,7 +389,7 @@ void main() {
         when(mockObject.type).thenReturn(null);
 
         // Act
-        final result = await generator.loadSvgContent(mockAnnotation, mockBuildStep);
+        final Result<String> result = await generator.loadSvgContent(mockAnnotation, mockBuildStep);
 
         // Assert
         expect(result, isA<Failure<String>>());
@@ -611,7 +610,6 @@ void main() {
             fy: 0.5,
             focalRadius: 0,
             stops: [],
-            units: PaintingGradientUnits.objectBoundingBox,
           ),
           DrawGroup(
             commands: <PaintCommand>[
@@ -631,7 +629,7 @@ void main() {
         ];
 
         // Act
-        final output = generator.generatePainterClass(
+        final String output = generator.generatePainterClass(
           className: 'RecursivePainter',
           viewBoxWidth: 100,
           viewBoxHeight: 100,

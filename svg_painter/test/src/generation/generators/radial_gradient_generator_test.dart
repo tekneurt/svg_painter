@@ -1,6 +1,5 @@
 import 'package:svg_painter/src/generation/_generation.dart';
 import 'package:svg_painter/src/painting_model/_painting_model.dart';
-import 'package:svg_painter/src/svg_model/_svg_model.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -59,7 +58,6 @@ void main() {
         id: 'g',
         cx: 0.5, cy: 0.5, radius: 0.5, fx: 0.5, fy: 0.5, focalRadius: 0,
         stops: [],
-        units: PaintingGradientUnits.objectBoundingBox,
       );
       final buffer = GeneratorBuffer();
       const RadialGradientGenerator().generate(

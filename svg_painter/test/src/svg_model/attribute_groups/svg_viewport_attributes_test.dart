@@ -7,9 +7,7 @@ void main() {
     test('should return correct string representation', () {
       const attr = SvgViewportAttributes(
         viewBox: SvgViewBox(0, 0, 100, 100),
-        preserveAspectRatio: SvgPreserveAspectRatio(
-          alignment: SvgPreserveAspectRatioAlignment.xMidYMid,
-        ),
+        preserveAspectRatio: SvgPreserveAspectRatio.defaults,
       );
       expect(attr.toString(), contains('viewBox: SvgViewBox'));
       expect(attr.toString(), contains('preserveAspectRatio: SvgPreserveAspectRatio'));

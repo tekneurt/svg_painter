@@ -52,12 +52,12 @@ void main() {
           children: [],
         );
         // Defaults to 100x100 if no context, so 50% = 50
-        final result = root.toPaintCommands();
+        final Result<List<PaintCommand>> result = root.toPaintCommands();
         expect(result, isA<Success<List<PaintCommand>>>());
       });
 
       test('should hit all preserveAspectRatio alignment cases', () {
-        final alignments = SvgPreserveAspectRatioAlignment.values;
+        const List<SvgPreserveAspectRatioAlignment> alignments = SvgPreserveAspectRatioAlignment.values;
 
         for (final alignment in alignments) {
           final root = SvgRoot(
@@ -67,16 +67,16 @@ void main() {
             ),
             width: const SvgLength(100),
             height: const SvgLength(100),
-            children: [],
+            children: const [],
           );
 
-          final result = root.toPaintCommands();
+          final Result<List<PaintCommand>> result = root.toPaintCommands();
           expect(result, isA<Success<List<PaintCommand>>>());
         }
       });
 
       test('should hit all preserveAspectRatio alignments with slice scaling', () {
-        for (final alignment in SvgPreserveAspectRatioAlignment.values) {
+        for (final SvgPreserveAspectRatioAlignment alignment in SvgPreserveAspectRatioAlignment.values) {
           final root = SvgRoot(
             viewportAttributes: SvgViewportAttributes(
               viewBox: const SvgViewBox(0, 0, 100, 50), // Wide viewBox
@@ -87,17 +87,17 @@ void main() {
             ),
             width: const SvgLength(100),
             height: const SvgLength(100),
-            children: [],
+            children: const [],
           );
 
-          final result = root.toPaintCommands();
+          final Result<List<PaintCommand>> result = root.toPaintCommands();
           expect(result, isA<Success<List<PaintCommand>>>());
         }
       });
 
       test('should fallback to 100x100 when everything is null', () {
         const root = SvgRoot(children: []);
-        final result = root.toPaintCommands();
+        final Result<List<PaintCommand>> result = root.toPaintCommands();
         expect(result, isA<Success<List<PaintCommand>>>());
       });
     });
@@ -126,7 +126,7 @@ void main() {
       });
 
       test('should hit all alignments in symbol viewport mapping', () {
-        for (final alignment in SvgPreserveAspectRatioAlignment.values) {
+        for (final SvgPreserveAspectRatioAlignment alignment in SvgPreserveAspectRatioAlignment.values) {
           const rect = SvgRect(
             x: SvgLength(0), y: SvgLength(0), width: SvgLength(10), height: SvgLength(10),
             rx: SvgLength(0), ry: SvgLength(0),
@@ -137,12 +137,12 @@ void main() {
               viewBox: const SvgViewBox(0, 0, 50, 50),
               preserveAspectRatio: SvgPreserveAspectRatio(alignment: alignment),
             ),
-            children: [rect],
+            children: const [rect],
           );
-          final use = SvgUse(
+          const use = SvgUse(
             href: '#s',
-            x: const SvgLength(0), y: const SvgLength(0),
-            width: const SvgLength(100), height: const SvgLength(100),
+            x: SvgLength(0), y: SvgLength(0),
+            width: SvgLength(100), height: SvgLength(100),
           );
           final root = SvgRoot(children: [symbol, use]);
 
@@ -404,10 +404,10 @@ void main() {
         );
         const root = SvgRoot(children: [nested]);
 
-        final result = root.toPaintCommands();
-        final cmds = (result as Success<List<PaintCommand>>).value;
+        final Result<List<PaintCommand>> result = root.toPaintCommands();
+        final List<PaintCommand> cmds = (result as Success<List<PaintCommand>>).value;
         final rootGroup = cmds.single as DrawGroup;
-        final nestedViewportGroup = rootGroup.commands.whereType<DrawGroup>().first;
+        final DrawGroup nestedViewportGroup = rootGroup.commands.whereType<DrawGroup>().first;
 
         expect(nestedViewportGroup.style.clipRect, isNotNull);
       });
@@ -417,7 +417,6 @@ void main() {
           viewportAttributes: SvgViewportAttributes(
             viewBox: SvgViewBox(0, 0, 100, 100),
             preserveAspectRatio: SvgPreserveAspectRatio(
-              alignment: SvgPreserveAspectRatioAlignment.xMidYMid,
               scale: SvgPreserveAspectRatioScale.slice,
             ),
           ),
@@ -426,8 +425,8 @@ void main() {
           children: [],
         );
 
-        final result = root.toPaintCommands();
-        final cmds = (result as Success<List<PaintCommand>>).value;
+        final Result<List<PaintCommand>> result = root.toPaintCommands();
+        final List<PaintCommand> cmds = (result as Success<List<PaintCommand>>).value;
         final drawGroup = cmds.single as DrawGroup;
         expect(drawGroup.style.clipRect, isNotNull);
       });
@@ -442,7 +441,7 @@ void main() {
           viewportAttributes: SvgViewportAttributes(viewBox: SvgViewBox(0, 0, 500, 500)),
         );
 
-        final result = root.toPaintCommands();
+        final Result<List<PaintCommand>> result = root.toPaintCommands();
         expect(result, isA<Success<List<PaintCommand>>>());
       });
     });
@@ -520,8 +519,8 @@ void main() {
         );
         const root = SvgRoot(children: [group]);
 
-        final result = root.toPaintCommands();
-        final cmds = (result as Success<List<PaintCommand>>).value;
+        final Result<List<PaintCommand>> result = root.toPaintCommands();
+        final List<PaintCommand> cmds = (result as Success<List<PaintCommand>>).value;
         final rootGroup = cmds.single as DrawGroup;
         final innerGroup = rootGroup.commands.single as DrawGroup;
 

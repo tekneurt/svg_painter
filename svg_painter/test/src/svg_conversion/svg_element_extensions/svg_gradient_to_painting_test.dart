@@ -48,7 +48,7 @@ void main() {
         y1: SvgLength(0),
         x2: SvgLength(0),
         y2: SvgLength(1),
-        gradientTransformAttributes: SvgTransformAttributes(<SvgTransformOperation>[const SvgRotate(90)]),
+        gradientTransformAttributes: SvgTransformAttributes(<SvgTransformOperation>[SvgRotate(90)]),
         stops: <SvgStop>[
           SvgStop(
             offset: SvgLength(0),
@@ -110,7 +110,7 @@ void main() {
         gradientUnits: SvgGradientUnits.userSpaceOnUse,
       );
 
-      final result = grad.toPaintCommand(context);
+      final Result<PaintCommand> result = grad.toPaintCommand(context);
       final cmd = (result as Success<PaintCommand>).value as DefineLinearGradient;
 
       expect(cmd.units, PaintingGradientUnits.userSpaceOnUse);
@@ -118,20 +118,20 @@ void main() {
     });
 
     test('should handle all spreadMethod values', () {
-      final map = {
+      final Map<SvgSpreadMethod, PaintingSpreadMethod> map = {
         SvgSpreadMethod.pad: PaintingSpreadMethod.pad,
         SvgSpreadMethod.reflect: PaintingSpreadMethod.reflect,
         SvgSpreadMethod.repeat: PaintingSpreadMethod.repeat,
       };
 
-      for (final entry in map.entries) {
+      for (final MapEntry<SvgSpreadMethod, PaintingSpreadMethod> entry in map.entries) {
         final grad = SvgLinearGradient(
           coreAttributes: const SvgCoreAttributes(id: 'g'),
           x1: const SvgLength(0),
           y1: const SvgLength(0),
           x2: const SvgLength(1),
           y2: const SvgLength(0),
-          stops: [],
+          stops: const [],
           spreadMethod: entry.key,
         );
         final cmd = (grad.toPaintCommand(context) as Success<PaintCommand>).value as DefineLinearGradient;

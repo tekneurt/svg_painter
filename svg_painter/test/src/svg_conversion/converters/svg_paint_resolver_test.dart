@@ -184,7 +184,7 @@ void main() {
     });
 
     test('should map monospace font family', () {
-      final style = resolvePaint(
+      final PaintingStyle style = resolvePaint(
         emptyContext,
         tagName: 'text',
         coreAttributes: const SvgCoreAttributes(inlineStyle: 'font-family: monospace'),
@@ -193,14 +193,14 @@ void main() {
     });
 
     test('should map intermediate SvgFontWeightNumeric values', () {
-      final weights = {
+      final Map<SvgFontWeightNumeric, PaintingFontWeight> weights = {
         const SvgFontWeightNumeric(150): PaintingFontWeight.w200,
         const SvgFontWeightNumeric(450): PaintingFontWeight.w500,
         const SvgFontWeightNumeric(850): PaintingFontWeight.w900,
       };
 
-      for (final entry in weights.entries) {
-        final style = resolvePaint(
+      for (final MapEntry<SvgFontWeightNumeric, PaintingFontWeight> entry in weights.entries) {
+        final PaintingStyle style = resolvePaint(
           emptyContext,
           tagName: 'text',
           presentationAttributes: SvgPresentationAttributes(
