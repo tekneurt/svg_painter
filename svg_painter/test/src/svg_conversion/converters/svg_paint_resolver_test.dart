@@ -164,6 +164,53 @@ void main() {
       expect(style.fill?.colorArgb, 0xFFFF0000);
     });
 
+    test('should handle malformed inline declarations (missing colon)', () {
+      final PaintingStyle style = resolvePaint(
+        emptyContext,
+        tagName: 'g',
+        coreAttributes: const SvgCoreAttributes(inlineStyle: 'fill: red; malformed; stroke: blue'),
+      );
+      expect(style.fill?.colorArgb, 0xFFFF0000);
+      expect(style.stroke?.colorArgb, 0xFF0000FF);
+    });
+
+    test('should handle empty inline style segments', () {
+      final PaintingStyle style = resolvePaint(
+        emptyContext,
+        tagName: 'g',
+        coreAttributes: const SvgCoreAttributes(inlineStyle: '; ; fill: green; ;'),
+      );
+      expect(style.fill?.colorArgb, 0xFF008000);
+    });
+
+    test('should map monospace font family', () {
+      final style = resolvePaint(
+        emptyContext,
+        tagName: 'text',
+        coreAttributes: const SvgCoreAttributes(inlineStyle: 'font-family: monospace'),
+      );
+      expect(style.text?.fontFamily, 'Roboto Mono');
+    });
+
+    test('should map intermediate SvgFontWeightNumeric values', () {
+      final weights = {
+        const SvgFontWeightNumeric(150): PaintingFontWeight.w200,
+        const SvgFontWeightNumeric(450): PaintingFontWeight.w500,
+        const SvgFontWeightNumeric(850): PaintingFontWeight.w900,
+      };
+
+      for (final entry in weights.entries) {
+        final style = resolvePaint(
+          emptyContext,
+          tagName: 'text',
+          presentationAttributes: SvgPresentationAttributes(
+            font: SvgFontAttributes(weight: entry.key),
+          ),
+        );
+        expect(style.text?.fontWeight, entry.value);
+      }
+    });
+
     test('should resolve complex CSS properties', () {
       final PaintingStyle style = resolvePaint(
         emptyContext,

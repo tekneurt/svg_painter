@@ -31,5 +31,35 @@ void main() {
       expect(drawText.x, 10.0);
       expect(drawText.y, 20.0);
     });
+
+    test('should handle nested tspan with relative dx, dy and rotate', () {
+      const text = SvgText(
+        x: SvgLength(10),
+        y: SvgLength(20),
+        children: [
+          SvgCharacterData('Outer'),
+          SvgTspan(
+            dx: SvgLength(5),
+            dy: SvgLength(5),
+            rotate: SvgGenericNumber(10),
+            children: [
+              SvgCharacterData('Inner'),
+            ],
+          ),
+        ],
+      );
+
+      final result = text.toPaintCommands(context);
+      final cmds = (result as Success<List<PaintCommand>>).value;
+      final drawText = cmds.single as DrawText;
+
+      expect(drawText.rootSpan.children, hasLength(2));
+      expect(drawText.rootSpan.children[0].text, 'Outer');
+
+      final tspanSpan = drawText.rootSpan.children[1];
+      expect(tspanSpan.text, isNull);
+      expect(tspanSpan.children, hasLength(1));
+      expect(tspanSpan.children[0].text, 'Inner');
+    });
   });
 }

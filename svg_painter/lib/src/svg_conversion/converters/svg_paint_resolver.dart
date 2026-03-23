@@ -112,11 +112,10 @@ PaintingStyle resolvePaint(
 
       if (sizeIndex + 1 < allParts.length) {
         final String familyPart = allParts.sublist(sizeIndex + 1).join(' ');
-        final String firstFamily = familyPart
-            .split(',')[0]
-            .trim()
-            .replaceAll(RegExp(r'["' ']'), '');
-        cssFontFamily = firstFamily.toSvgFontFamily();
+        final String firstFamily = familyPart.split(',')[0].trim();
+        // Strip ALL surrounding quotes (single or double)
+        final String cleanFamily = firstFamily.replaceAll(RegExp(r'''^['"]+|['"]+$'''), '');
+        cssFontFamily = cleanFamily.toSvgFontFamily();
       }
     }
 

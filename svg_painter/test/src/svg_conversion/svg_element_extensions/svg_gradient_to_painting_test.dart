@@ -48,7 +48,7 @@ void main() {
         y1: SvgLength(0),
         x2: SvgLength(0),
         y2: SvgLength(1),
-        gradientTransformAttributes: SvgTransformAttributes(<SvgTransformOperation>[SvgRotate(90)]),
+        gradientTransformAttributes: SvgTransformAttributes(<SvgTransformOperation>[const SvgRotate(90)]),
         stops: <SvgStop>[
           SvgStop(
             offset: SvgLength(0),
@@ -63,7 +63,6 @@ void main() {
       expect(result, isA<Success<PaintCommand>>());
       final PaintCommand cmd = (result as Success<PaintCommand>).value;
       final lgrad = cmd as DefineLinearGradient;
-      // Alignments should NOT be baked anymore
       expect(lgrad.x1, closeTo(0, 0.001));
       expect(lgrad.y1, closeTo(0, 0.001));
       expect(lgrad.x2, closeTo(0, 0.001));
@@ -100,28 +99,44 @@ void main() {
       expect(rgrad.cx, 50.0);
     });
 
-    test('SvgRadialGradient should handle focal point defaults correctly', () {
-      const gradient = SvgRadialGradient(
-        coreAttributes: SvgCoreAttributes(id: 'rg2'),
-        cx: SvgPercentage(50),
-        cy: SvgPercentage(50),
-        r: SvgPercentage(50),
-        fx: SvgPercentage(50),
-        fy: SvgPercentage(50),
-        fr: SvgPercentage(0),
-        stops: <SvgStop>[
-          SvgStop(
-            offset: SvgPercentage(0),
-            stopColor: SvgNamedColor(SvgColorName.red),
-            stopOpacity: SvgPercentage(100),
-          )
-        ],
+    test('should handle userSpaceOnUse units', () {
+      const grad = SvgLinearGradient(
+        coreAttributes: SvgCoreAttributes(id: 'g'),
+        x1: SvgLength(10),
+        y1: SvgLength(10),
+        x2: SvgLength(50),
+        y2: SvgLength(10),
+        stops: [],
+        gradientUnits: SvgGradientUnits.userSpaceOnUse,
       );
 
-      final Result<PaintCommand> result = gradient.toPaintCommand(context);
-      expect(result, isA<Success<PaintCommand>>());
-      final PaintCommand cmd = (result as Success<PaintCommand>).value;
-      expect(cmd, isA<DefineRadialGradient>());
+      final result = grad.toPaintCommand(context);
+      final cmd = (result as Success<PaintCommand>).value as DefineLinearGradient;
+
+      expect(cmd.units, PaintingGradientUnits.userSpaceOnUse);
+      expect(cmd.x1, 0.1);
+    });
+
+    test('should handle all spreadMethod values', () {
+      final map = {
+        SvgSpreadMethod.pad: PaintingSpreadMethod.pad,
+        SvgSpreadMethod.reflect: PaintingSpreadMethod.reflect,
+        SvgSpreadMethod.repeat: PaintingSpreadMethod.repeat,
+      };
+
+      for (final entry in map.entries) {
+        final grad = SvgLinearGradient(
+          coreAttributes: const SvgCoreAttributes(id: 'g'),
+          x1: const SvgLength(0),
+          y1: const SvgLength(0),
+          x2: const SvgLength(1),
+          y2: const SvgLength(0),
+          stops: [],
+          spreadMethod: entry.key,
+        );
+        final cmd = (grad.toPaintCommand(context) as Success<PaintCommand>).value as DefineLinearGradient;
+        expect(cmd.spreadMethod, entry.value);
+      }
     });
   });
 }

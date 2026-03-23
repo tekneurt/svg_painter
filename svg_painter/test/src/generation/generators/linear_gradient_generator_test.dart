@@ -1,5 +1,7 @@
 import 'package:svg_painter/src/generation/_generation.dart';
 import 'package:svg_painter/src/painting_model/paint_command.dart';
+import 'package:svg_painter/src/painting_model/styles/painting_style.dart';
+import 'package:svg_painter/src/svg_model/_svg_model.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -30,6 +32,23 @@ void main() {
       expect(result, contains('stops: <double>['));
       expect(result, contains('0.0,'));
       expect(result, contains('1.0,'));
+    });
+
+    test('should handle spread methods and transform', () {
+      final buffer = GeneratorBuffer();
+      const command = DefineLinearGradient(
+        id: 'g',
+        x1: 0, y1: 0, x2: 1, y2: 0,
+        stops: [],
+        spreadMethod: PaintingSpreadMethod.reflect,
+        transformAttributes: SvgTransformAttributes([const SvgTranslate(10, 10)]),
+      );
+      
+      const LinearGradientGenerator().generate(command, buffer, painterClassName: 'MyPainter');
+      final result = buffer.toString();
+      
+      expect(result, contains('tileMode: TileMode.mirror'));
+      expect(result, contains('transform: _SvgGradientTransform_MyPainter'));
     });
   });
 }

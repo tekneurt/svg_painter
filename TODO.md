@@ -236,7 +236,8 @@
 
 - [ ] **Release Preparation**:
     - [x] **Golden Hardening**: Update and verify all golden tests on both macOS and Linux.
-    - [ ] **Dependency Refresh**: Update all package dependencies to their latest versions to ensure a 160/160 pub.dev score.
+    - [x] **Dependency Refresh**: Update all package dependencies to their latest versions to ensure a 160/160 pub.dev score.
+    - [x] **Test hardening**: Add coverage for latest changes.
     - [ ] **Publishing**: Publish version 0.3.0 of all packages to pub.dev.
 
 ### Phase 5: Extended Elements (0.4.0)

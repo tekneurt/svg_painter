@@ -44,5 +44,23 @@ void main() {
         ),
       );
     });
+
+    test('should escape single quotes in text', () {
+      // Arrange
+      const generator = TextGenerator();
+      const command = DrawText(
+        x: 0,
+        y: 0,
+        rootSpan: PaintingTextSpan(text: "It's a test"),
+        style: textStyle,
+      );
+      final buffer = GeneratorBuffer();
+
+      // Act
+      generator.generate(command, buffer);
+
+      // Assert
+      expect(buffer.toString(), contains(r"text: 'It\'s a test'"));
+    });
   });
 }

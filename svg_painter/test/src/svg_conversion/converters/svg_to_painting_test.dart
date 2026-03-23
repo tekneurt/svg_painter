@@ -43,6 +43,112 @@ void main() {
         final Result<List<PaintCommand>> result = root.toPaintCommands();
         expect(result, isA<Success<List<PaintCommand>>>());
       });
+
+      test('should resolve width/height from percentages and auto', () {
+        const root = SvgRoot(
+          width: SvgPercentage(50),
+          height: SvgAuto(),
+          viewportAttributes: SvgViewportAttributes(viewBox: SvgViewBox(0, 0, 100, 100)),
+          children: [],
+        );
+        // Defaults to 100x100 if no context, so 50% = 50
+        final result = root.toPaintCommands();
+        expect(result, isA<Success<List<PaintCommand>>>());
+      });
+
+      test('should hit all preserveAspectRatio alignment cases', () {
+        final alignments = SvgPreserveAspectRatioAlignment.values;
+
+        for (final alignment in alignments) {
+          final root = SvgRoot(
+            viewportAttributes: SvgViewportAttributes(
+              viewBox: const SvgViewBox(0, 0, 50, 50),
+              preserveAspectRatio: SvgPreserveAspectRatio(alignment: alignment),
+            ),
+            width: const SvgLength(100),
+            height: const SvgLength(100),
+            children: [],
+          );
+
+          final result = root.toPaintCommands();
+          expect(result, isA<Success<List<PaintCommand>>>());
+        }
+      });
+
+      test('should hit all preserveAspectRatio alignments with slice scaling', () {
+        for (final alignment in SvgPreserveAspectRatioAlignment.values) {
+          final root = SvgRoot(
+            viewportAttributes: SvgViewportAttributes(
+              viewBox: const SvgViewBox(0, 0, 100, 50), // Wide viewBox
+              preserveAspectRatio: SvgPreserveAspectRatio(
+                alignment: alignment,
+                scale: SvgPreserveAspectRatioScale.slice,
+              ),
+            ),
+            width: const SvgLength(100),
+            height: const SvgLength(100),
+            children: [],
+          );
+
+          final result = root.toPaintCommands();
+          expect(result, isA<Success<List<PaintCommand>>>());
+        }
+      });
+
+      test('should fallback to 100x100 when everything is null', () {
+        const root = SvgRoot(children: []);
+        final result = root.toPaintCommands();
+        expect(result, isA<Success<List<PaintCommand>>>());
+      });
+    });
+
+    group('SvgSymbol', () {
+      test('should convert to definition commands when requested', () {
+        const grad = SvgLinearGradient(
+          coreAttributes: SvgCoreAttributes(id: 'grad1'),
+          x1: SvgLength(0),
+          y1: SvgLength(0),
+          x2: SvgLength(100),
+          y2: SvgLength(0),
+          stops: <SvgStop>[],
+        );
+        const symbol = SvgSymbol(
+          coreAttributes: SvgCoreAttributes(id: 'sym1'),
+          children: <SvgElement>[grad],
+        );
+
+        // We can't directly call _toPaintCommands(onlyDefinitions: true) from outside,
+        // but symbol.toPaintCommands() calls it with true.
+        final Result<List<PaintCommand>> result = symbol.toPaintCommands();
+        final List<PaintCommand> commands = (result as Success<List<PaintCommand>>).value;
+
+        expect(commands.whereType<DefineLinearGradient>().length, 1);
+      });
+
+      test('should hit all alignments in symbol viewport mapping', () {
+        for (final alignment in SvgPreserveAspectRatioAlignment.values) {
+          const rect = SvgRect(
+            x: SvgLength(0), y: SvgLength(0), width: SvgLength(10), height: SvgLength(10),
+            rx: SvgLength(0), ry: SvgLength(0),
+          );
+          final symbol = SvgSymbol(
+            coreAttributes: const SvgCoreAttributes(id: 's'),
+            viewportAttributes: SvgViewportAttributes(
+              viewBox: const SvgViewBox(0, 0, 50, 50),
+              preserveAspectRatio: SvgPreserveAspectRatio(alignment: alignment),
+            ),
+            children: [rect],
+          );
+          final use = SvgUse(
+            href: '#s',
+            x: const SvgLength(0), y: const SvgLength(0),
+            width: const SvgLength(100), height: const SvgLength(100),
+          );
+          final root = SvgRoot(children: [symbol, use]);
+
+          expect(root.toPaintCommands(), isA<Success<List<PaintCommand>>>());
+        }
+      });
     });
 
     group('SvgUse', () {
@@ -69,8 +175,8 @@ void main() {
           href: '#missing',
           x: SvgLength(0),
           y: SvgLength(0),
-          width: SvgLength(10),
-          height: SvgLength(10),
+          width: SvgAuto(),
+          height: SvgAuto(),
         );
         const root = SvgRoot(children: <SvgElement>[use]);
 
@@ -100,8 +206,8 @@ void main() {
           href: '#rect1',
           x: SvgLength(50),
           y: SvgLength(50),
-          width: SvgLength(10),
-          height: SvgLength(10),
+          width: SvgAuto(),
+          height: SvgAuto(),
         );
         const root = SvgRoot(
           children: <SvgElement>[target, use],
@@ -286,10 +392,63 @@ void main() {
         expect(viewBoxOps.length, 1);
         expect(viewBoxOps[0], isA<SvgScale>());
       });
+
+      test('should apply clipRect to nested svg with shifted viewBox', () {
+        const nested = SvgSvg(
+          width: SvgLength(100),
+          height: SvgLength(100),
+          viewportAttributes: SvgViewportAttributes(
+            viewBox: SvgViewBox(10, 10, 50, 50),
+          ),
+          children: [],
+        );
+        const root = SvgRoot(children: [nested]);
+
+        final result = root.toPaintCommands();
+        final cmds = (result as Success<List<PaintCommand>>).value;
+        final rootGroup = cmds.single as DrawGroup;
+        final nestedViewportGroup = rootGroup.commands.whereType<DrawGroup>().first;
+
+        expect(nestedViewportGroup.style.clipRect, isNotNull);
+      });
+
+      test('should apply clipRect to nested svg when scale is slice', () {
+        const root = SvgRoot(
+          viewportAttributes: SvgViewportAttributes(
+            viewBox: SvgViewBox(0, 0, 100, 100),
+            preserveAspectRatio: SvgPreserveAspectRatio(
+              alignment: SvgPreserveAspectRatioAlignment.xMidYMid,
+              scale: SvgPreserveAspectRatioScale.slice,
+            ),
+          ),
+          width: SvgLength(100),
+          height: SvgLength(50),
+          children: [],
+        );
+
+        final result = root.toPaintCommands();
+        final cmds = (result as Success<List<PaintCommand>>).value;
+        final drawGroup = cmds.single as DrawGroup;
+        expect(drawGroup.style.clipRect, isNotNull);
+      });
+
+      test('should resolve width/height to context size when null in nested svg', () {
+        const nested = SvgSvg(
+          children: [],
+          viewportAttributes: SvgViewportAttributes(),
+        );
+        const root = SvgRoot(
+          children: [nested],
+          viewportAttributes: SvgViewportAttributes(viewBox: SvgViewBox(0, 0, 500, 500)),
+        );
+
+        final result = root.toPaintCommands();
+        expect(result, isA<Success<List<PaintCommand>>>());
+      });
     });
 
     group('SvgGroup', () {
-      test('should use DrawGroup when opacity < 1.0 and multiple children', () {
+      test('should use DrawGroup when opacity < 1.0', () {
         const rect1 = SvgRect(
           x: SvgLength(0),
           y: SvgLength(0),
@@ -324,7 +483,7 @@ void main() {
         expect(drawGroup.commands.length, 2);
       });
 
-      test('should flatten group when opacity is 1.0', () {
+      test('should use DrawGroup even when opacity is 1.0', () {
         const rect1 = SvgRect(
           x: SvgLength(0),
           y: SvgLength(0),
@@ -348,6 +507,25 @@ void main() {
         expect(rootGroup.commands.single, isA<DrawGroup>());
         final drawGroup = rootGroup.commands.single as DrawGroup;
         expect(drawGroup.opacity, 1.0);
+      });
+
+      test('should apply group opacity recursively', () {
+        const group = SvgGroup(
+          children: [
+            SvgCircle(cx: SvgLength(0), cy: SvgLength(0), r: SvgLength(5)),
+          ],
+          presentationAttributes: SvgPresentationAttributes(
+            graphics: SvgGraphicsAttributes(opacity: SvgPercentage(50)),
+          ),
+        );
+        const root = SvgRoot(children: [group]);
+
+        final result = root.toPaintCommands();
+        final cmds = (result as Success<List<PaintCommand>>).value;
+        final rootGroup = cmds.single as DrawGroup;
+        final innerGroup = rootGroup.commands.single as DrawGroup;
+
+        expect(innerGroup.opacity, 0.5);
       });
     });
 

@@ -167,11 +167,9 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
         propertyMapping: propertyMapping,
       );
     } else {
-      // coverage:ignore-start
       throw InvalidGenerationSourceError(
         'Root element must be <svg>, but found ${svgRoot.runtimeType}',
       );
-      // coverage:ignore-end
     }
   }
 
@@ -574,7 +572,7 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
       DrawPolyline() => true,
       DrawPolygon() => true,
       DrawText() => true,
-      _ => true,
+      _ => true, // coverage:ignore-line
     };
   }
 
@@ -729,13 +727,11 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
       return const Failure<String>('Annotation object has no type.');
     }
 
-    // coverage:ignore-start
     if (fileChecker.isExactlyType(type)) {
       return loadFromFile(annotation, buildStep);
     } else if (codeChecker.isExactlyType(type)) {
       return Success<String>(annotation.read('code').stringValue);
     }
-    // coverage:ignore-end
 
     return const Failure<String>(
       'Unknown SvgPainter type. Must be SvgFilePainter or SvgCodePainter.',
