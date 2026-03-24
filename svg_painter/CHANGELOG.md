@@ -5,6 +5,33 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.0] - 2026-03-23
+
+### Added
+
+#### Spec Compliance
+- **SVG Text Model**: Full implementation of spec-compliant text hierarchy. Characters and `<tspan>` elements are now represented truthfully without "virtual" nodes.
+- **Whitespace Normalizer**: Added boundary-aware whitespace normalization supporting `xml:space="default"` and `preserve`.
+- **Radial Gradients**: Implemented elliptical radial gradient support with pixel-space centering for `objectBoundingBox` units.
+- **Gradient Transforms**: Added support for `gradientTransform` attribute on both linear and radial gradients.
+
+#### Code Generation
+- **Optimization**: The generator now omits redundant transforms and helper classes for square elements.
+- **Clean Naming**: Helper classes are now named `_SvgGradientTransform_$Name` to avoid collisions in `SharedPartBuilder`.
+- **SDK Support**: Upgraded to **Dart 3.11.3** and **Flutter 3.41.5**.
+
+### Fixed
+
+- **Group Opacity**: Fixed a bug where single-child groups and `<use>` elements ignored `opacity`.
+- **Matrix Transforms**: Migrated from deprecated `Matrix4.translate/scale` to `translateByDouble/scaleByDouble`.
+- **Clipping**: Fixed clipping logic for nested `<svg>` elements with shifted viewboxes or slice scaling.
+
+### Changed
+
+- **Analysis**: Synchronized with official Flutter repository `analysis_options.yaml` (March 2026).
+- **Coding Style**: Adopted idiomatic Flutter type inference (`omit_obvious_local_variable_types`).
+- **Dependency**: Updated `svg_painter_annotation` to `^0.3.0`.
+
 ## [0.2.0] - 2026-01-31
 
 ### Added

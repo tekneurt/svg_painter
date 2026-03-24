@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.0] - 2026-03-23
+
+### Changed
+
+- **SDK Support**: Upgraded to **Dart 3.11.3** and **Flutter 3.41.5**.
+- **Style**: Synchronized with official Flutter repository `analysis_options.yaml`.
+
 ## [0.2.0] - 2026-01-31
 
 ### Added
