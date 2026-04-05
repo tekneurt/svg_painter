@@ -194,6 +194,10 @@ enum XmlAttributeName {
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/rotate
   rotate('rotate'),
 
+  /// The decoding hint for the image.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/decoding
+  decoding('decoding'),
+
   /// The type of the style or script.
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/type
   type('type'),

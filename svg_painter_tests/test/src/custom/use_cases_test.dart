@@ -12,8 +12,7 @@ void main() {
       tester: tester,
       painter: const UseCasesPainter(),
       name: 'use_cases_painter',
-      type: SvgTestType.various,
-      folder: 'custom',
+      type: SvgTestType.custom,
       tests: defaultGoldenTests,
     );
   });

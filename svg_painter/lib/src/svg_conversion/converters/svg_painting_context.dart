@@ -22,6 +22,7 @@ final class SvgPaintingContext {
     ),
     this.styleSheet = const SvgStyleSheet(<String, Map<String, String>>{}),
     this.definitions = const <String, SvgElement>{},
+    this.imageCache = const <String, List<int>>{},
   });
 
   /// The width of the viewport/viewBox.
@@ -81,6 +82,9 @@ final class SvgPaintingContext {
   /// Map of element IDs to SvgElements.
   final Map<String, SvgElement> definitions;
 
+  /// Map of hrefs to image bytes.
+  final Map<String, List<int>> imageCache;
+
   /// Returns the normalized diagonal length of the viewBox for resolving radii.
   /// Formula: sqrt(w*w + h*h) / sqrt(2)
   double get viewBoxNormalizedDiagonal {
@@ -103,6 +107,7 @@ final class SvgPaintingContext {
       inheritedAttributes: inheritedAttributes ?? this.inheritedAttributes,
       styleSheet: styleSheet,
       definitions: definitions,
+      imageCache: imageCache,
     );
   }
 

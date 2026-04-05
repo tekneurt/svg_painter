@@ -6,7 +6,7 @@ void main() {
   group('Index-Based Exposure', () {
     const generator = SvgPainterGenerator();
 
-    test('should generate fill and stroke properties when only one group exists', () {
+    test('should generate fill and stroke properties when only one group exists', () async {
       // Arrange
       const svg = '''
 <svg viewBox="0 0 100 100">
@@ -16,7 +16,7 @@ void main() {
 ''';
 
       // Act
-      final String output = generator.generateFromSvg(
+      final String output = await generator.generateFromSvg(
         elementName: 'SingleGroupPainter',
         svgContent: svg,
         exposureMode: SvgExposureMode.indexed,
@@ -30,7 +30,7 @@ void main() {
       expect(output, contains('final Object? localStroke = stroke;'));
     });
 
-    test('should prioritize most used colors (9 black, 1 yellow)', () {
+    test('should prioritize most used colors (9 black, 1 yellow)', () async {
       // Arrange
       // 9 black lines, 1 yellow line
       final sb = StringBuffer('<svg viewBox="0 0 100 100">');
@@ -41,7 +41,7 @@ void main() {
       sb.writeln('</svg>');
 
       // Act
-      final String output = generator.generateFromSvg(
+      final String output = await generator.generateFromSvg(
         elementName: 'FrequencyPainter',
         svgContent: sb.toString(),
         exposureMode: SvgExposureMode.indexed,
@@ -64,7 +64,7 @@ void main() {
       expect(output, contains('paint.color = const Color(0xFFFFFF00);'));
     });
 
-    test('should respect mixed mode (IDs take precedence)', () {
+    test('should respect mixed mode (IDs take precedence)', () async {
       // Arrange
       const svg = '''
 <svg viewBox="0 0 100 100">
@@ -75,7 +75,7 @@ void main() {
 ''';
 
       // Act
-      final String output = generator.generateFromSvg(
+      final String output = await generator.generateFromSvg(
         elementName: 'MixedPainter',
         svgContent: svg,
         exposureMode: SvgExposureMode.mixed,
@@ -89,7 +89,7 @@ void main() {
       expect(output, contains('final Object? fill2;'));
     });
 
-    test('should generate NO properties when mode is none', () {
+    test('should generate NO properties when mode is none', () async {
       // Arrange
       const svg = '''
 <svg viewBox="0 0 100 100">
@@ -98,7 +98,7 @@ void main() {
 ''';
 
       // Act
-      final String output = generator.generateFromSvg(
+      final String output = await generator.generateFromSvg(
         elementName: 'StaticPainter',
         svgContent: svg,
       );
@@ -108,7 +108,7 @@ void main() {
       expect(output, isNot(contains('Stroke')));
     });
 
-    test('should stable sort groups with same color but different shaders', () {
+    test('should stable sort groups with same color but different shaders', () async {
       // Arrange
       const svg = '''
 <svg viewBox="0 0 100 100">
@@ -122,7 +122,7 @@ void main() {
 ''';
 
       // Act
-      final String output = generator.generateFromSvg(
+      final String output = await generator.generateFromSvg(
         elementName: 'StabilityPainter',
         svgContent: svg,
         exposureMode: SvgExposureMode.indexed,

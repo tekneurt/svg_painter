@@ -7,6 +7,7 @@ import '../../svg_model/_svg_model.dart';
 import '../svg_element_extensions/svg_circle_to_draw_circle.dart';
 import '../svg_element_extensions/svg_ellipse_to_draw_oval.dart';
 import '../svg_element_extensions/svg_gradient_to_painting.dart';
+import '../svg_element_extensions/svg_image_to_draw_image.dart';
 import '../svg_element_extensions/svg_line_to_draw_line.dart';
 import '../svg_element_extensions/svg_path_to_draw_path.dart';
 import '../svg_element_extensions/svg_polygon_to_draw_polygon.dart';
@@ -81,6 +82,7 @@ extension SvgElementToPaintCommands on SvgElement {
       // Basic Shapes (Geometry)
       final SvgCircle circle => circle.toPaintCommands(context),
       final SvgEllipse ellipse => ellipse.toPaintCommands(context),
+      final SvgImage image => image.toPaintCommands(context),
       final SvgRect rect => rect.toPaintCommands(context),
       final SvgLine line => line.toPaintCommands(context),
       final SvgPolyline polyline => polyline.toPaintCommands(context),

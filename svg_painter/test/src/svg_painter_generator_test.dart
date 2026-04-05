@@ -242,34 +242,34 @@ void main() {
 
     group('generateFromSvg', () {
       group('Happy Paths', () {
-        test('should use explicit width and height when provided', () {
+        test('should use explicit width and height when provided', () async {
           // Arrange
           const svg = '<svg width="200" height="300"><circle r="10" /></svg>';
 
           // Act
-          final String output = generator.generateFromSvg(elementName: 'Test', svgContent: svg);
+          final String output = await generator.generateFromSvg(elementName: 'Test', svgContent: svg);
 
           // Assert
           expect(output, contains('const Size(200.0, 300.0)'));
         });
 
-        test('should fall back to viewBox when width/height are missing', () {
+        test('should fall back to viewBox when width/height are missing', () async {
           // Arrange
           const svg = '<svg viewBox="10 20 50 60"><circle r="10" /></svg>';
 
           // Act
-          final String output = generator.generateFromSvg(elementName: 'Test', svgContent: svg);
+          final String output = await generator.generateFromSvg(elementName: 'Test', svgContent: svg);
 
           // Assert
           expect(output, contains('const Size(50.0, 60.0)'));
         });
 
-        test('should fall back to 100x100 when all are missing', () {
+        test('should fall back to 100x100 when all are missing', () async {
           // Arrange
           const svg = '<svg><circle r="10" /></svg>';
 
           // Act
-          final String output = generator.generateFromSvg(elementName: 'Test', svgContent: svg);
+          final String output = await generator.generateFromSvg(elementName: 'Test', svgContent: svg);
 
           // Assert
           expect(output, contains('const Size(100.0, 100.0)'));
@@ -277,13 +277,13 @@ void main() {
       });
 
       group('Unhappy Paths', () {
-        test('should throw InvalidGenerationSourceError when SVG is malformed', () {
+        test('should throw InvalidGenerationSourceError when SVG is malformed', () async {
           // Arrange
           const malformedSvg = '<svg><circle></svg>';
 
           // Act & Assert
           expect(
-            () => generator.generateFromSvg(elementName: 'Test', svgContent: malformedSvg),
+            () async => generator.generateFromSvg(elementName: 'Test', svgContent: malformedSvg),
             throwsA(
               isA<InvalidGenerationSourceError>().having(
                 (InvalidGenerationSourceError e) => e.message,
@@ -294,13 +294,13 @@ void main() {
           );
         });
 
-        test('should throw InvalidGenerationSourceError when root element is not <svg>', () {
+        test('should throw InvalidGenerationSourceError when root element is not <svg>', () async {
           // Arrange
           const nonSvgRoot = '<dummy><circle cx="10" cy="20" r="5" /></dummy>';
 
           // Act & Assert
           expect(
-            () => generator.generateFromSvg(elementName: 'Test', svgContent: nonSvgRoot),
+            () async => generator.generateFromSvg(elementName: 'Test', svgContent: nonSvgRoot),
             throwsA(
               isA<InvalidGenerationSourceError>().having(
                 (InvalidGenerationSourceError e) => e.message,
@@ -312,13 +312,13 @@ void main() {
         });
 
         test('should throw InvalidGenerationSourceError when conversion fails (broken reference)',
-          () {
+          () async {
             // Arrange
             const brokenRefSvg = '<svg><use href="#missing" /></svg>';
 
             // Act & Assert
             expect(
-              () => generator.generateFromSvg(elementName: 'Test', svgContent: brokenRefSvg),
+              () async => generator.generateFromSvg(elementName: 'Test', svgContent: brokenRefSvg),
               throwsA(
                 isA<InvalidGenerationSourceError>().having(
                   (InvalidGenerationSourceError e) => e.message,
@@ -330,11 +330,11 @@ void main() {
           },
         );
 
-        test('should throw InvalidGenerationSourceError when mapping fails', () {
+        test('should throw InvalidGenerationSourceError when mapping fails', () async {
           // Trigger the 'Failed to map SVG content' branch
           const invalidAttrSvg = '<svg><path /></svg>'; // Path missing 'd' attribute
           expect(
-            () => generator.generateFromSvg(elementName: 'Test', svgContent: invalidAttrSvg),
+            () async => generator.generateFromSvg(elementName: 'Test', svgContent: invalidAttrSvg),
             throwsA(
               isA<InvalidGenerationSourceError>().having(
                 (InvalidGenerationSourceError e) => e.message,
@@ -345,7 +345,7 @@ void main() {
           );
         });
 
-        test('should throw InvalidGenerationSourceError when root element is not <svg> (internal check)', () {
+        test('should throw InvalidGenerationSourceError when root element is not <svg> (internal check)', () async {
           // Use a special XML that parses to a non-SvgSvg root element
           // We need a way to make the FIRST <svg> element map to something else.
           // This is hard because toSvgElement() logic is fixed.
@@ -483,7 +483,7 @@ void main() {
 
         // Act & Assert
         expect(
-          () => mockableGenerator.generateForAnnotatedElement(
+          () async => await mockableGenerator.generateForAnnotatedElement(
             mockElement,
             mockAnnotation,
             mockBuildStep,

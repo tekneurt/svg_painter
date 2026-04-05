@@ -28,7 +28,7 @@ dependency_overrides:
   analyzer: ^12.0.0
   # Required to resolve conflict between analyzer 12 (needs meta 1.18)
   # and Flutter SDK 3.41.5 (pins meta to 1.17.0).
-  meta: 1.17.0
+  meta: ^1.18.2
 
 flutter:
   uses-material-design: true

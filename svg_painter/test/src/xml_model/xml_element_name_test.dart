@@ -12,6 +12,7 @@ void main() {
           XmlElementName.ellipse => 'ellipse',
           XmlElementName.rect => 'rect',
           XmlElementName.line => 'line',
+          XmlElementName.image => 'image',
           XmlElementName.path => 'path',
           XmlElementName.polyline => 'polyline',
           XmlElementName.polygon => 'polygon',

@@ -84,9 +84,12 @@ extension ToSvgValue on XmlElement {
         .className ||
         .style ||
         .href ||
+        .decoding ||
         .transform ||
-        .gradientTransform => null, // These are strings or special types handled elsewhere
-      };
+        .gradientTransform =>
+          null, // These are strings or special types handled elsewhere
+        };
+
 
       if (parsedValue == null) {
         return null;

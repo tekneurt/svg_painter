@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-enum SvgTestType { mdn, w3c, various }
+enum SvgTestType { mdn, w3c, various, custom }
 
 /// The type of golden test to run.
 ///
@@ -160,6 +160,81 @@ Future<void> testSvgPainter({
   tester.view.resetPhysicalSize();
 }
 
+Future<void> testSvgWidget({
+  required WidgetTester tester,
+  required Widget widget,
+  required String goldenName,
+  String goldenPath = 'goldens',
+  Size size = const Size(100, 100),
+}) async {
+  tester.view.devicePixelRatio = 1.0;
+  final containerSize = Size(size.width + 20, size.height + 20);
+  tester.view.physicalSize = containerSize;
+
+  await tester.pumpWidget(
+    MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Center(
+        child: Container(
+          width: containerSize.width,
+          height: containerSize.height,
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.red, width: 10),
+            color: Colors.grey[200],
+          ),
+          child: SizedBox(width: size.width, height: size.height, child: widget),
+        ),
+      ),
+    ),
+  );
+
+  // Wait for async image decoding
+  await tester.runAsync(() async {
+    await Future<void>.delayed(const Duration(milliseconds: 500));
+  });
+  await tester.pumpAndSettle();
+
+  await expectLater(find.byType(Container), matchesGoldenFile('$goldenPath/$goldenName'));
+
+  tester.view.resetDevicePixelRatio();
+  tester.view.resetPhysicalSize();
+}
+
+Future<void> testSvgWidgetNative({
+  required WidgetTester tester,
+  required Widget widget,
+  required String goldenName,
+  String goldenPath = 'goldens',
+  required Size size,
+}) async {
+  tester.view.devicePixelRatio = 1.0;
+  tester.view.physicalSize = size;
+
+  await tester.pumpWidget(
+    MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Center(
+        child: SizedBox(
+          width: size.width,
+          height: size.height,
+          child: widget,
+        ),
+      ),
+    ),
+  );
+
+  // Wait for async image decoding
+  await tester.runAsync(() async {
+    await Future<void>.delayed(const Duration(milliseconds: 500));
+  });
+  await tester.pumpAndSettle();
+
+  await expectLater(find.byType(SizedBox), matchesGoldenFile('$goldenPath/$goldenName'));
+
+  tester.view.resetDevicePixelRatio();
+  tester.view.resetPhysicalSize();
+}
+
 /// Tests the painter without a defined size, relying on its "native" resolution
 /// (which in our implementation should correspond to the viewBox).
 Future<void> testSvgPainterNative({
@@ -211,10 +286,7 @@ Future<void> testDualResolutionPainter({
   required Map<GoldenTestType, Set<TargetPlatform>?> tests,
   String? folder,
 }) async {
-  final String goldenPath = switch (type) {
-    .mdn || .w3c => '$folder/goldens',
-    .various => 'goldens',
-  };
+  final String goldenPath = folder != null ? '$folder/goldens' : 'goldens';
 
   if (tests.containsKey(GoldenTestType.fixed)) {
     await testSvgPainter(
@@ -232,6 +304,38 @@ Future<void> testDualResolutionPainter({
       painter: painter,
       goldenName: goldenFileName('${name}_viewBox', tests[GoldenTestType.viewBox]),
       goldenPath: goldenPath,
+    );
+  }
+}
+
+Future<void> testDualResolutionWidget({
+  required WidgetTester tester,
+  required Widget widget,
+  required String name,
+  required SvgTestType type,
+  required Map<GoldenTestType, Set<TargetPlatform>?> tests,
+  required Size nativeSize,
+  String? folder,
+}) async {
+  final String goldenPath = folder != null ? '$folder/goldens' : 'goldens';
+
+  if (tests.containsKey(GoldenTestType.fixed)) {
+    await testSvgWidget(
+      tester: tester,
+      widget: widget,
+      goldenName: goldenFileName('${name}_fixed', tests[GoldenTestType.fixed]),
+      goldenPath: goldenPath,
+      size: const Size(200, 200),
+    );
+  }
+
+  if (tests.containsKey(GoldenTestType.viewBox)) {
+    await testSvgWidgetNative(
+      tester: tester,
+      widget: widget,
+      goldenName: goldenFileName('${name}_viewBox', tests[GoldenTestType.viewBox]),
+      goldenPath: goldenPath,
+      size: nativeSize,
     );
   }
 }

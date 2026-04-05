@@ -2,6 +2,7 @@ export 'circle.dart';
 export 'defs.dart';
 export 'ellipse.dart';
 export 'g.dart';
+export 'image.dart';
 export 'line.dart';
 export 'linear_gradient.dart';
 export 'path.dart';

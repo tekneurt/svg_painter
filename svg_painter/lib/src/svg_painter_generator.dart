@@ -41,6 +41,7 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
         DrawLine: LineGenerator(),
         DrawPolyline: PolyGenerator<DrawPolyline>(),
         DrawPolygon: PolyGenerator<DrawPolygon>(),
+        DrawImage: ImageGenerator(),
         DefineLinearGradient: LinearGradientGenerator(),
         DefineRadialGradient: RadialGradientGenerator(),
       };
@@ -96,18 +97,20 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
       painterClassName: painterClassName,
       exposureMode: exposureMode,
       propertyMapping: propertyMapping,
+      buildStep: buildStep,
     );
   }
 
   /// Generates the painter class from SVG content string.
   @visibleForTesting
-  String generateFromSvg({
+  Future<String> generateFromSvg({
     required String elementName,
     required String svgContent,
     String? painterClassName,
     SvgExposureMode exposureMode = SvgExposureMode.none,
     Map<String, String> propertyMapping = const <String, String>{},
-  }) {
+    BuildStep? buildStep,
+  }) async {
     final Result<XmlDocument> parseResult = svgContent.toXmlDocument();
 
     final XmlDocument document = parseResult.fold(
@@ -124,6 +127,11 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
       );
     }
     final XmlElement svgXmlElement = svgElements.first;
+
+    final imageCache = <String, List<int>>{};
+    if (buildStep != null) {
+      await _preloadImages(svgXmlElement, buildStep, imageCache);
+    }
 
     final Result<SvgElement> mapResult = svgXmlElement.toSvgElement();
 
@@ -148,7 +156,18 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
         viewBoxHeight = hLen?.toDouble() ?? svgRoot.viewBox?.height ?? 100.0;
       }
 
-      final Result<List<PaintCommand>> paintingResult = svgRoot.toPaintCommands();
+      final definitions = <String, SvgElement>{};
+      svgRoot.collectDefinitions(definitions);
+
+      final Result<List<PaintCommand>> paintingResult = svgRoot.toPaintCommands(
+        SvgPaintingContext(
+          viewBoxWidth: viewBoxWidth,
+          viewBoxHeight: viewBoxHeight,
+          styleSheet: svgRoot is SvgRoot ? svgRoot.styleSheet : const SvgStyleSheet.empty(),
+          definitions: definitions,
+          imageCache: imageCache,
+        ),
+      );
       final List<PaintCommand> commands = paintingResult.fold(
         (Failure<List<PaintCommand>> failure) => throw InvalidGenerationSourceError(
           'Failed to convert SVG to painting commands for $elementName: ${failure.message}',
@@ -200,23 +219,20 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
     }
 
     final PaletteResult? palette =
-        (exposureMode == SvgExposureMode.indexed ||
-                exposureMode == SvgExposureMode.mixed)
-            ? const PaletteAnalyzer().analyze(commands, mode: exposureMode)
-            : null;
+        (exposureMode == SvgExposureMode.indexed || exposureMode == SvgExposureMode.mixed)
+        ? const PaletteAnalyzer().analyze(commands, mode: exposureMode)
+        : null;
 
-    final Set<String> gradientsNeedingStretch =
-        _findGradientsNeedingStretch(commands);
+    final Set<String> gradientsNeedingStretch = _findGradientsNeedingStretch(commands);
 
     final List<String> sortedFillIds = fillIds.toList()..sort();
     final List<String> sortedStrokeIds = strokeIds.toList()..sort();
-    final List<String>? sortedFillIndexed =
-        palette?.fillAssignments.values.toSet().toList()?..sort();
-    final List<String>? sortedStrokeIndexed =
-        palette?.strokeAssignments.values.toSet().toList()?..sort();
+    final List<String>? sortedFillIndexed = palette?.fillAssignments.values.toSet().toList()
+      ?..sort();
+    final List<String>? sortedStrokeIndexed = palette?.strokeAssignments.values.toSet().toList()
+      ?..sort();
 
-    String resolveName(String defaultName) =>
-        propertyMapping[defaultName] ?? defaultName;
+    String resolveName(String defaultName) => propertyMapping[defaultName] ?? defaultName;
 
     final activeFillProperties = <String, String>{};
     for (final id in sortedFillIds) {
@@ -242,9 +258,13 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
 
     final bool hasCurrentColor = _hasCurrentColor(commands);
 
+    final imageHrefs = <String>[];
+    _collectImageHrefs(commands, imageHrefs);
+    final List<String> uniqueImageHrefs = imageHrefs.toSet().toList();
+    _populateImageIndices(commands, uniqueImageHrefs);
+
     // Generate the convenience Widget
-    final String publicName =
-        className.startsWith(r'_$') ? className.substring(2) : className;
+    final String publicName = className.startsWith(r'_$') ? className.substring(2) : className;
     final widgetClassName = '${publicName}Widget';
 
     generateWidgetClass(
@@ -256,8 +276,22 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
       viewBoxWidth: viewBoxWidth,
       viewBoxHeight: viewBoxHeight,
       hasCurrentColor: hasCurrentColor,
+      imageHrefs: uniqueImageHrefs,
     );
     buffer.writeln();
+
+    for (var i = 0; i < uniqueImageHrefs.length; i++) {
+      final String href = uniqueImageHrefs[i];
+      final List<int>? bytes = _findBytesForHref(commands, href);
+      if (bytes == null) {
+        throw StateError('Image bytes not found for $href');
+      }
+      buffer.writeln('const List<int> _imageBytes_${className}_$i = <int>[${bytes.join(', ')}];');
+    }
+
+    if (uniqueImageHrefs.isNotEmpty) {
+      buffer.writeln();
+    }
 
     buffer.writeBlock('class $className extends CustomPainter {', () {
       buffer.writeBlock('const $className({', () {
@@ -266,8 +300,7 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
           buffer.writeln('this.color,');
         }
         for (final id in sortedFillIds) {
-          buffer.writeln(
-              'this.${resolveName('${SvgIdFormatter.format(id)}Fill')},');
+          buffer.writeln('this.${resolveName('${SvgIdFormatter.format(id)}Fill')},');
         }
         if (sortedFillIndexed != null) {
           for (final String name in sortedFillIndexed) {
@@ -275,13 +308,15 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
           }
         }
         for (final id in sortedStrokeIds) {
-          buffer.writeln(
-              'this.${resolveName('${SvgIdFormatter.format(id)}Stroke')},');
+          buffer.writeln('this.${resolveName('${SvgIdFormatter.format(id)}Stroke')},');
         }
         if (sortedStrokeIndexed != null) {
           for (final String name in sortedStrokeIndexed) {
             buffer.writeln('this.${resolveName(name)},');
           }
+        }
+        for (var i = 0; i < uniqueImageHrefs.length; i++) {
+          buffer.writeln('this.image$i,');
         }
       }, footer: '});');
       buffer.writeln();
@@ -290,8 +325,7 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
         buffer.writeln('final Color? color;');
       }
       for (final id in sortedFillIds) {
-        buffer.writeln(
-            'final Object? ${resolveName('${SvgIdFormatter.format(id)}Fill')};');
+        buffer.writeln('final Object? ${resolveName('${SvgIdFormatter.format(id)}Fill')};');
       }
       if (sortedFillIndexed != null) {
         for (final String name in sortedFillIndexed) {
@@ -299,17 +333,18 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
         }
       }
       for (final id in sortedStrokeIds) {
-        buffer.writeln(
-            'final Object? ${resolveName('${SvgIdFormatter.format(id)}Stroke')};');
+        buffer.writeln('final Object? ${resolveName('${SvgIdFormatter.format(id)}Stroke')};');
       }
       if (sortedStrokeIndexed != null) {
         for (final String name in sortedStrokeIndexed) {
           buffer.writeln('final Object? ${resolveName(name)};');
         }
       }
+      for (var i = 0; i < uniqueImageHrefs.length; i++) {
+        buffer.writeln('final ui.Image? image$i;');
+      }
       buffer.writeln();
-      buffer.writeln(
-          'Size get viewBox => const Size($viewBoxWidth, $viewBoxHeight);');
+      buffer.writeln('Size get viewBox => const Size($viewBoxWidth, $viewBoxHeight);');
       buffer.writeln();
       buffer.writeln('@override');
       buffer.writeBlock('void paint(Canvas canvas, Size size) {', () {
@@ -325,7 +360,8 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
         final bool needsViewBoxRect = _needsViewBoxRect(commands);
         if (needsViewBoxRect) {
           buffer.writeln(
-              'final Rect viewBoxRect = Rect.fromLTWH(0, 0, $viewBoxWidth, $viewBoxHeight);');
+            'final Rect viewBoxRect = Rect.fromLTWH(0, 0, $viewBoxWidth, $viewBoxHeight);',
+          );
         }
         buffer.writeln();
 
@@ -372,8 +408,7 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
       });
       buffer.writeln();
 
-      buffer.writeBlock('void _applyOverride(Paint paint, Object? override) {',
-          () {
+      buffer.writeBlock('void _applyOverride(Paint paint, Object? override) {', () {
         buffer.writeBlock('switch (override) {', () {
           buffer.writeBlock('case final Color color:', () {
             buffer.writeln('paint.color = color;');
@@ -395,11 +430,9 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
           () {
             buffer.writeln('if (dashArray.isEmpty) return source;');
             buffer.writeln('final Path dest = Path();');
-            buffer.writeBlock('for (final metric in source.computeMetrics()) {',
-                () {
+            buffer.writeBlock('for (final metric in source.computeMetrics()) {', () {
               buffer.writeln('final double scale;');
-              buffer.writeBlock('if (pathLength == null || pathLength <= 0) {',
-                  () {
+              buffer.writeBlock('if (pathLength == null || pathLength <= 0) {', () {
                 buffer.writeln('scale = 1.0;');
               });
               buffer.writeBlock('else {', () {
@@ -415,8 +448,7 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
                     buffer.writeln(
                       'final double end = distance + len < metric.length ? distance + len : metric.length;',
                     );
-                    buffer.writeln(
-                        'dest.addPath(metric.extractPath(distance, end), Offset.zero);');
+                    buffer.writeln('dest.addPath(metric.extractPath(distance, end), Offset.zero);');
                   });
                   buffer.writeln('distance += len;');
                 });
@@ -431,8 +463,7 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
       }
 
       buffer.writeln('@override');
-      buffer.writeBlock('bool shouldRepaint(covariant $className oldDelegate) {',
-          () {
+      buffer.writeBlock('bool shouldRepaint(covariant $className oldDelegate) {', () {
         final checks = <String>['fit == oldDelegate.fit'];
         if (hasCurrentColor) {
           checks.add('color == oldDelegate.color');
@@ -458,6 +489,9 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
             checks.add('$prop == oldDelegate.$prop');
           }
         }
+        for (var i = 0; i < uniqueImageHrefs.length; i++) {
+          checks.add('image$i == oldDelegate.image$i');
+        }
 
         buffer.writeBlock('if (${checks.join(' &&\n          ')}) {', () {
           buffer.writeln('return false;');
@@ -470,51 +504,49 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
     });
 
     if (_needsGradientTransform(commands, gradientsNeedingStretch)) {
-      final String cleanName =
-          publicName.replaceAll(r'$', '').replaceFirst(RegExp(r'^_+'), '');
+      final String cleanName = publicName.replaceAll(r'$', '').replaceFirst(RegExp(r'^_+'), '');
       final helperClassName = '_SvgGradientTransform_$cleanName';
 
       buffer.writeln();
       buffer.writeln(
-          '/// A private helper class to apply arbitrary transformations to SVG gradients.');
+        '/// A private helper class to apply arbitrary transformations to SVG gradients.',
+      );
       buffer.writeBlock('class $helperClassName extends GradientTransform {', () {
         buffer.writeln(
-            'const $helperClassName({this.matrix, this.isElliptical = false, this.centerX = 0.5, this.centerY = 0.5});');
+          'const $helperClassName({this.matrix, this.isElliptical = false, this.centerX = 0.5, this.centerY = 0.5});',
+        );
         buffer.writeln();
         buffer.writeln('/// The 4x4 matrix storage.');
         buffer.writeln('final List<double>? matrix;');
         buffer.writeln();
-        buffer.writeln(
-            '/// Whether to correct the aspect ratio for elliptical gradients.');
+        buffer.writeln('/// Whether to correct the aspect ratio for elliptical gradients.');
         buffer.writeln('final bool isElliptical;');
         buffer.writeln();
         buffer.writeln(
-            '/// The normalized center X coordinate (0..1) for aspect ratio correction.');
+          '/// The normalized center X coordinate (0..1) for aspect ratio correction.',
+        );
         buffer.writeln('final double centerX;');
         buffer.writeln();
         buffer.writeln(
-            '/// The normalized center Y coordinate (0..1) for aspect ratio correction.');
+          '/// The normalized center Y coordinate (0..1) for aspect ratio correction.',
+        );
         buffer.writeln('final double centerY;');
         buffer.writeln();
         buffer.writeln('@override');
-        buffer.writeBlock(
-            'Matrix4? transform(Rect bounds, {TextDirection? textDirection}) {',
-            () {
+        buffer.writeBlock('Matrix4? transform(Rect bounds, {TextDirection? textDirection}) {', () {
           buffer.writeln('Matrix4? m;');
           buffer.writeln('if (matrix != null) {');
           buffer.writeln('  m = Matrix4.fromList(matrix!);');
           buffer.writeln('}');
           buffer.writeln();
-          buffer.writeBlock('if (isElliptical && bounds.width != bounds.height) {',
-              () {
+          buffer.writeBlock('if (isElliptical && bounds.width != bounds.height) {', () {
             buffer.writeln(
-                'final double shortest = bounds.width < bounds.height ? bounds.width : bounds.height;');
+              'final double shortest = bounds.width < bounds.height ? bounds.width : bounds.height;',
+            );
             buffer.writeln('final double sx = bounds.width / shortest;');
             buffer.writeln('final double sy = bounds.height / shortest;');
-            buffer.writeln(
-                'final double px = bounds.left + (centerX * bounds.width);');
-            buffer.writeln(
-                'final double py = bounds.top + (centerY * bounds.height);');
+            buffer.writeln('final double px = bounds.left + (centerX * bounds.width);');
+            buffer.writeln('final double py = bounds.top + (centerY * bounds.height);');
             buffer.writeln();
             buffer.writeln('final Matrix4 scale = Matrix4.identity()');
             buffer.writeln('  ..translateByDouble(px, py, 0.0, 1.0)');
@@ -552,8 +584,7 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
       if (command is DrawGroup) {
         ids.addAll(_findGradientsNeedingStretch(command.commands));
       } else if (command is DrawCommand) {
-        final String? shaderId =
-            command.style.fill?.shaderId ?? command.style.stroke?.shaderId;
+        final String? shaderId = command.style.fill?.shaderId ?? command.style.stroke?.shaderId;
         if (shaderId != null && _isNonSquare(command)) {
           ids.add(shaderId);
         }
@@ -572,14 +603,12 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
       DrawPolyline() => true,
       DrawPolygon() => true,
       DrawText() => true,
+      DrawImage() => true,
       _ => true, // coverage:ignore-line
     };
   }
 
-  bool _needsGradientTransform(
-    List<PaintCommand> commands,
-    Set<String> gradientsNeedingStretch,
-  ) {
+  bool _needsGradientTransform(List<PaintCommand> commands, Set<String> gradientsNeedingStretch) {
     for (final command in commands) {
       if (command is DefineGradient) {
         if (command.transformAttributes != null) {
@@ -608,60 +637,154 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
     required double viewBoxWidth,
     required double viewBoxHeight,
     required bool hasCurrentColor,
+    required List<String> imageHrefs,
   }) {
-    buffer.writeBlock('class $widgetClassName extends StatelessWidget {', () {
-      buffer.writeBlock('const $widgetClassName({', () {
-        buffer.writeln('super.key,');
-        buffer.writeln('this.width,');
-        buffer.writeln('this.height,');
-        buffer.writeln('this.fit = BoxFit.contain,');
-        buffer.writeln('this.alignment = Alignment.center,');
+    if (imageHrefs.isEmpty) {
+      buffer.writeBlock('class $widgetClassName extends StatelessWidget {', () {
+        buffer.writeBlock('const $widgetClassName({', () {
+          buffer.writeln('super.key,');
+          buffer.writeln('this.width,');
+          buffer.writeln('this.height,');
+          buffer.writeln('this.fit = BoxFit.contain,');
+          buffer.writeln('this.alignment = Alignment.center,');
+          if (hasCurrentColor) {
+            buffer.writeln('this.color,');
+          }
+
+          final allProps = <String>{
+            ...activeFillProperties.values,
+            ...activeStrokeProperties.values,
+          };
+          for (final prop in allProps) {
+            buffer.writeln('this.$prop,');
+          }
+        }, footer: '});');
+        buffer.writeln();
+        buffer.writeln('final double? width;');
+        buffer.writeln('final double? height;');
+        buffer.writeln('final BoxFit fit;');
+        buffer.writeln('final AlignmentGeometry alignment;');
         if (hasCurrentColor) {
-          buffer.writeln('this.color,');
+          buffer.writeln('final Color? color;');
         }
 
-        final allProps = <String>{
-          ...activeFillProperties.values,
-          ...activeStrokeProperties.values,
-        };
+        final allProps = <String>{...activeFillProperties.values, ...activeStrokeProperties.values};
         for (final prop in allProps) {
-          buffer.writeln('this.$prop,');
+          buffer.writeln('final Object? $prop;');
         }
-      }, footer: '});');
-      buffer.writeln();
-      buffer.writeln('final double? width;');
-      buffer.writeln('final double? height;');
-      buffer.writeln('final BoxFit fit;');
-      buffer.writeln('final AlignmentGeometry alignment;');
-      if (hasCurrentColor) {
-        buffer.writeln('final Color? color;');
-      }
 
-      final allProps = <String>{
-        ...activeFillProperties.values,
-        ...activeStrokeProperties.values,
-      };
-      for (final prop in allProps) {
-        buffer.writeln('final Object? $prop;');
-      }
-
-      buffer.writeln();
-      buffer.writeln('@override');
-      buffer.writeBlock('Widget build(BuildContext context) {', () {
-        buffer.writeBlock('return CustomPaint(', () {
-          buffer.writeln('size: Size(width ?? $viewBoxWidth, height ?? $viewBoxHeight),');
-          buffer.writeBlock('painter: $painterClassName(', () {
-            buffer.writeln('fit: fit,');
-            if (hasCurrentColor) {
-              buffer.writeln('color: color ?? IconTheme.of(context).color,');
-            }
-            for (final prop in allProps) {
-              buffer.writeln('$prop: $prop,');
-            }
-          }, footer: '),');
-        }, footer: ');');
+        buffer.writeln();
+        buffer.writeln('@override');
+        buffer.writeBlock('Widget build(BuildContext context) {', () {
+          buffer.writeBlock('return CustomPaint(', () {
+            buffer.writeln('size: Size(width ?? $viewBoxWidth, height ?? $viewBoxHeight),');
+            buffer.writeBlock('painter: $painterClassName(', () {
+              buffer.writeln('fit: fit,');
+              if (hasCurrentColor) {
+                buffer.writeln('color: color ?? IconTheme.of(context).color,');
+              }
+              for (final prop in allProps) {
+                buffer.writeln('$prop: $prop,');
+              }
+            }, footer: '),');
+          }, footer: ');');
+        });
       });
-    });
+    } else {
+      // Generate StatefulWidget for async image decoding
+      buffer.writeBlock('class $widgetClassName extends StatefulWidget {', () {
+        buffer.writeBlock('const $widgetClassName({', () {
+          buffer.writeln('super.key,');
+          buffer.writeln('this.width,');
+          buffer.writeln('this.height,');
+          buffer.writeln('this.fit = BoxFit.contain,');
+          buffer.writeln('this.alignment = Alignment.center,');
+          if (hasCurrentColor) {
+            buffer.writeln('this.color,');
+          }
+
+          final allProps = <String>{
+            ...activeFillProperties.values,
+            ...activeStrokeProperties.values,
+          };
+          for (final prop in allProps) {
+            buffer.writeln('this.$prop,');
+          }
+        }, footer: '});');
+        buffer.writeln();
+        buffer.writeln('final double? width;');
+        buffer.writeln('final double? height;');
+        buffer.writeln('final BoxFit fit;');
+        buffer.writeln('final AlignmentGeometry alignment;');
+        if (hasCurrentColor) {
+          buffer.writeln('final Color? color;');
+        }
+
+        final allProps = <String>{...activeFillProperties.values, ...activeStrokeProperties.values};
+        for (final prop in allProps) {
+          buffer.writeln('final Object? $prop;');
+        }
+
+        buffer.writeln();
+        buffer.writeln('@override');
+        buffer.writeln('State<$widgetClassName> createState() => _${widgetClassName}State();');
+      });
+
+      buffer.writeln();
+      buffer.writeBlock('class _${widgetClassName}State extends State<$widgetClassName> {', () {
+        for (var i = 0; i < imageHrefs.length; i++) {
+          buffer.writeln('ui.Image? _image$i;');
+        }
+        buffer.writeln();
+        buffer.writeln('@override');
+        buffer.writeBlock('void initState() {', () {
+          buffer.writeln('super.initState();');
+          buffer.writeln('_decodeImages();');
+        });
+        buffer.writeln();
+        buffer.writeBlock('Future<void> _decodeImages() async {', () {
+          buffer.writeBlock('final images = await Future.wait([', () {
+            for (var i = 0; i < imageHrefs.length; i++) {
+              buffer.writeln(
+                'ui.instantiateImageCodec(Uint8List.fromList(_imageBytes_${painterClassName}_$i)).then((ui.Codec codec) => codec.getNextFrame()).then((ui.FrameInfo fi) => fi.image),',
+              );
+            }
+          }, footer: ']);');
+          buffer.writeBlock('if (mounted) {', () {
+            buffer.writeBlock('setState(() {', () {
+              for (var i = 0; i < imageHrefs.length; i++) {
+                buffer.writeln('_image$i = images[$i];');
+              }
+            }, footer: '});');
+          });
+        });
+        buffer.writeln();
+        buffer.writeln('@override');
+        buffer.writeBlock('Widget build(BuildContext context) {', () {
+          buffer.writeBlock('return CustomPaint(', () {
+            buffer.writeln(
+              'size: Size(widget.width ?? $viewBoxWidth, widget.height ?? $viewBoxHeight),',
+            );
+            buffer.writeBlock('painter: $painterClassName(', () {
+              buffer.writeln('fit: widget.fit,');
+              if (hasCurrentColor) {
+                buffer.writeln('color: widget.color ?? IconTheme.of(context).color,');
+              }
+              final allProps = <String>{
+                ...activeFillProperties.values,
+                ...activeStrokeProperties.values,
+              };
+              for (final prop in allProps) {
+                buffer.writeln('$prop: widget.$prop,');
+              }
+              for (var i = 0; i < imageHrefs.length; i++) {
+                buffer.writeln('image$i: _image$i,');
+              }
+            }, footer: '),');
+          }, footer: ');');
+        });
+      });
+    }
   }
 
   bool _hasDashes(List<PaintCommand> commands) {
@@ -720,6 +843,92 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
     }
   }
 
+  void _collectImageHrefs(List<PaintCommand> commands, List<String> hrefs) {
+    for (final command in commands) {
+      if (command is DrawImage) {
+        hrefs.add(command.href);
+      }
+      if (command is DrawGroup) {
+        _collectImageHrefs(command.commands, hrefs);
+      }
+    }
+  }
+
+  void _populateImageIndices(List<PaintCommand> commands, List<String> uniqueHrefs) {
+    for (var i = 0; i < commands.length; i++) {
+      final PaintCommand command = commands[i];
+      if (command is DrawImage) {
+        final int index = uniqueHrefs.indexOf(command.href);
+        commands[i] = DrawImage(
+          href: command.href,
+          imageIndex: index,
+          x: command.x,
+          y: command.y,
+          width: command.width,
+          height: command.height,
+          bytes: command.bytes,
+          style: command.style,
+          decoding: command.decoding,
+          id: command.id,
+        );
+      }
+      if (command is DrawGroup) {
+        _populateImageIndices(command.commands, uniqueHrefs);
+      }
+    }
+  }
+
+  List<int>? _findBytesForHref(List<PaintCommand> commands, String href) {
+    for (final command in commands) {
+      if (command is DrawImage && command.href == href) {
+        return command.bytes;
+      }
+      if (command is DrawGroup) {
+        final List<int>? bytes = _findBytesForHref(command.commands, href);
+        if (bytes != null) {
+          return bytes;
+        }
+      }
+    }
+    return null;
+  }
+
+  Future<void> _preloadImages(
+    XmlElement root,
+    BuildStep buildStep,
+    Map<String, List<int>> imageCache,
+  ) async {
+    final Iterable<XmlElement> images = root.findAllElements(XmlElementName.image.tagName);
+    for (final image in images) {
+      final String? href =
+          image.getAttribute(XmlAttributeName.href.name) ?? image.getAttribute('xlink:href');
+      if (href == null || href.isEmpty || imageCache.containsKey(href)) {
+        continue;
+      }
+
+      if (href.startsWith('data:')) {
+        try {
+          final Uri uri = Uri.parse(href);
+          imageCache[href] = uri.data!.contentAsBytes();
+        } catch (e) {
+          log.warning('Failed to parse data URI image: $e');
+        }
+      } else if (href.startsWith('package:')) {
+        final Uri uri = Uri.parse(href);
+        final assetId = AssetId(
+          uri.pathSegments.first,
+          'lib/${uri.pathSegments.skip(1).join('/')}',
+        );
+        try {
+          final List<int> bytes = await buildStep.readAsBytes(assetId);
+          imageCache[href] = bytes;
+        } catch (e) {
+          log.warning('Failed to load image asset $href: $e');
+        }
+      }
+    }
+  }
+
   @visibleForTesting
   Future<Result<String>> loadSvgContent(ConstantReader annotation, BuildStep buildStep) async {
     final DartType? type = annotation.objectValue.type;
@@ -746,10 +955,7 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
     }
 
     final Uri uri = Uri.parse(path);
-    final assetId = AssetId(
-      uri.pathSegments.first,
-      'lib/${uri.pathSegments.skip(1).join('/')}',
-    );
+    final assetId = AssetId(uri.pathSegments.first, 'lib/${uri.pathSegments.skip(1).join('/')}');
 
     try {
       final String content = await buildStep.readAsString(assetId);

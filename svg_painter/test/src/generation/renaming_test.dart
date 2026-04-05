@@ -6,7 +6,7 @@ void main() {
   group('Property Renaming', () {
     const generator = SvgPainterGenerator();
 
-    test('should rename ID-based properties', () {
+    test('should rename ID-based properties', () async {
       // Arrange
       const svg = '''
 <svg viewBox="0 0 100 100">
@@ -15,7 +15,7 @@ void main() {
 ''';
 
       // Act
-      final String output = generator.generateFromSvg(
+      final String output = await generator.generateFromSvg(
         elementName: 'RenamedIdPainter',
         svgContent: svg,
         exposureMode: SvgExposureMode.id,
@@ -37,7 +37,7 @@ void main() {
       expect(output, contains('backgroundFill == oldDelegate.backgroundFill'));
     });
 
-    test('should rename Indexed properties', () {
+    test('should rename Indexed properties', () async {
       // Arrange
       const svg = '''
 <svg viewBox="0 0 100 100">
@@ -47,7 +47,7 @@ void main() {
 ''';
 
       // Act
-      final String output = generator.generateFromSvg(
+      final String output = await generator.generateFromSvg(
         elementName: 'RenamedIndexPainter',
         svgContent: svg,
         exposureMode: SvgExposureMode.indexed,
@@ -66,7 +66,7 @@ void main() {
       expect(output, contains('final Object? localFill = secondaryColor;'));
     });
 
-    test('should handle partial renaming', () {
+    test('should handle partial renaming', () async {
       // Arrange
       const svg = '''
 <svg viewBox="0 0 100 100">
@@ -76,7 +76,7 @@ void main() {
 ''';
 
       // Act
-      final String output = generator.generateFromSvg(
+      final String output = await generator.generateFromSvg(
         elementName: 'PartialRenamingPainter',
         svgContent: svg,
         exposureMode: SvgExposureMode.indexed,

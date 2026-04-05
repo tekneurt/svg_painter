@@ -6,7 +6,7 @@ void main() {
   group('Property Exposure', () {
     const generator = SvgPainterGenerator();
 
-    test('should generate a nullable Color property for elements with an id', () {
+    test('should generate a nullable Color property for elements with an id', () async {
       // Arrange
       const svg = '''
 <svg viewBox="0 0 100 100">
@@ -15,7 +15,7 @@ void main() {
 ''';
 
       // Act
-      final String output = generator.generateFromSvg(
+      final String output = await generator.generateFromSvg(
         elementName: 'MyPainter',
         svgContent: svg,
         exposureMode: SvgExposureMode.id,
@@ -37,7 +37,7 @@ void main() {
       expect(output, contains('return true;'));
     });
 
-    test('should sanitize IDs into valid Dart identifiers', () {
+    test('should sanitize IDs into valid Dart identifiers', () async {
       // Arrange
       const svg = '''
 <svg viewBox="0 0 100 100">
@@ -48,7 +48,7 @@ void main() {
 ''';
 
       // Act
-      final String output = generator.generateFromSvg(
+      final String output = await generator.generateFromSvg(
         elementName: 'SanitizedPainter',
         svgContent: svg,
         exposureMode: SvgExposureMode.id,
@@ -60,7 +60,7 @@ void main() {
       expect(output, contains('final Object? classPropertyFill;'));
     });
 
-    test('should preserve camelCase in IDs', () {
+    test('should preserve camelCase in IDs', () async {
       // Arrange
       const svg = '''
 <svg viewBox="0 0 100 100">
@@ -69,7 +69,7 @@ void main() {
 ''';
 
       // Act
-      final String output = generator.generateFromSvg(
+      final String output = await generator.generateFromSvg(
         elementName: 'CamelPainter',
         svgContent: svg,
         exposureMode: SvgExposureMode.id,
@@ -79,7 +79,7 @@ void main() {
       expect(output, contains('final Object? myCircleFill;'));
     });
 
-    test('should NOT generate properties for elements with an id but NO explicit fill/stroke', () {
+    test('should NOT generate properties for elements with an id but NO explicit fill/stroke', () async {
       // Arrange
       const svg = '''
 <svg viewBox="0 0 100 100">
@@ -88,7 +88,7 @@ void main() {
 ''';
 
       // Act
-      final String output = generator.generateFromSvg(
+      final String output = await generator.generateFromSvg(
         elementName: 'ImplicitPainter',
         svgContent: svg,
       );
@@ -97,7 +97,7 @@ void main() {
       expect(output, isNot(contains('implicitCircleFill')));
     });
 
-    test('should generate a nullable Color property for elements with an explicit stroke', () {
+    test('should generate a nullable Color property for elements with an explicit stroke', () async {
       // Arrange
       const svg = '''
 <svg viewBox="0 0 100 100">
@@ -106,7 +106,7 @@ void main() {
 ''';
 
       // Act
-      final String output = generator.generateFromSvg(
+      final String output = await generator.generateFromSvg(
         elementName: 'StrokePainter',
         svgContent: svg,
         exposureMode: SvgExposureMode.id,
@@ -122,7 +122,7 @@ void main() {
       expect(output, contains('_applyOverride(paint, localStroke);'));
     });
 
-    test('should use named Flutter colors (including shades) when a match exists', () {
+    test('should use named Flutter colors (including shades) when a match exists', () async {
       // Arrange
       // 0xFFFFAB91 matches Colors.deepOrange.shade200
       const svg = '''
@@ -132,7 +132,7 @@ void main() {
 ''';
 
       // Act
-      final String output = generator.generateFromSvg(
+      final String output = await generator.generateFromSvg(
         elementName: 'ShadedPainter',
         svgContent: svg,
         exposureMode: SvgExposureMode.id,

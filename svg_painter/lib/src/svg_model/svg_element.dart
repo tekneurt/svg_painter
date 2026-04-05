@@ -39,6 +39,7 @@ part 'elements/containers/svg_use.dart';
 part 'elements/geometry/svg_basic_shape.dart';
 part 'elements/geometry/svg_circle.dart';
 part 'elements/geometry/svg_ellipse.dart';
+part 'elements/geometry/svg_image.dart';
 part 'elements/geometry/svg_line.dart';
 part 'elements/geometry/svg_path.dart';
 part 'elements/geometry/svg_polygon.dart';

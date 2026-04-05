@@ -15,6 +15,9 @@ enum XmlElementName {
   /// The `<line>` element.
   line('line'),
 
+  /// The `<image>` element.
+  image('image'),
+
   /// The `<path>` element.
   path('path'),
 

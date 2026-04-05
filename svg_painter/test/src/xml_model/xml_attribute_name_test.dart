@@ -55,6 +55,7 @@ void main() {
           XmlAttributeName.dx => 'dx',
           XmlAttributeName.dy => 'dy',
           XmlAttributeName.rotate => 'rotate',
+          XmlAttributeName.decoding => 'decoding',
           XmlAttributeName.type => 'type',
           XmlAttributeName.media => 'media',
           XmlAttributeName.title => 'title',

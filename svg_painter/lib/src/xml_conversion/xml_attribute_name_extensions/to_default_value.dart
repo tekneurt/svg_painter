@@ -103,6 +103,7 @@ extension ToDefaultValue on XmlAttributeName {
       case .dx:
       case .dy:
       case .rotate:
+      case .decoding:
       case .type:
       case .media:
       case .title:

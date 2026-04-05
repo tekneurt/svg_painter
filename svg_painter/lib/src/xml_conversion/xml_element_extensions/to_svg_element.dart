@@ -36,6 +36,8 @@ extension ToSvgElement on XmlElement {
           return toSvgRect();
         case .line:
           return toSvgLine();
+        case .image:
+          return toSvgImage();
         case .path:
           return toSvgPath();
         case .polyline:

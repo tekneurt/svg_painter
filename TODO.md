@@ -243,7 +243,8 @@
 ### Phase 5: Extended Elements (0.4.0)
 *Reaching standard compatibility with more complex SVG elements.*
 
-- [ ] **Referencing & External Assets**: `<image>`, `<use>`.
+- [ ] **Referencing & External Assets**: `<image>` [x], `<use>` [ ].
+- [ ] **Generator Refactoring**: Modularize `SvgPainterGenerator` by extracting large logic blocks (like widget and painter class generation) into dedicated helper classes to improve maintainability.
 - [ ] **Clipping & Masking**: `<clipPath>`, `<mask >`.
 - [ ] **Accessibility (Semantic Mapping)**: Map `<title>` and `<desc>` automatically to Flutter's `Semantics` widget in the generated code.
 - [ ] **MDN Compliance**: Add 2nd example from [MDN fill](https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/fill) once `<marker>`, `context-stroke`, and `context-fill` are implemented.

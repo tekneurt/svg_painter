@@ -7,18 +7,18 @@ environment:
   flutter: ">=3.41.5"
 
 dependencies:
-  flutter:
-    sdk: flutter
-  svg_painter_annotation:
-    path: ../svg_painter_annotation
-  svg_painter_fixtures:
-    path: ../svg_painter_fixtures
 
 dev_dependencies:
+  flutter:
+    sdk: flutter
   flutter_test:
     sdk: flutter
   svg_painter:
     path: ../svg_painter
+  svg_painter_annotation:
+    path: ../svg_painter_annotation
+  svg_painter_fixtures:
+    path: ../svg_painter_fixtures
   build_runner: ^2.10.4
 
 dependency_overrides:
@@ -27,6 +27,7 @@ dependency_overrides:
   # Required to resolve conflict between dart_style ^3.1.8 (needs analyzer 12) 
   # and mockito ^5.6.3 (needs analyzer <11).
   analyzer: ^12.0.0
+  dart_style: ^3.1.8
   # Required to resolve conflict between analyzer 12 (needs meta 1.18)
   # and Flutter SDK 3.41.5 (pins meta to 1.17.0).
-  meta: 1.17.0
+  meta: ^1.18.2
