@@ -57,9 +57,11 @@ PaintingStyle resolvePaint(
       if (trimmedDecl.isEmpty) {
         continue;
       }
-      final List<String> parts = trimmedDecl.split(':');
-      if (parts.length == 2) {
-        resolvedRules[parts[0].trim()] = parts[1].trim();
+      final int colonIndex = trimmedDecl.indexOf(':');
+      if (colonIndex != -1) {
+        final String name = trimmedDecl.substring(0, colonIndex).trim();
+        final String value = trimmedDecl.substring(colonIndex + 1).trim();
+        resolvedRules[name] = value;
       }
     }
   }
@@ -73,6 +75,7 @@ PaintingStyle resolvePaint(
   SvgPointList? cssStrokeDasharray;
   SvgStrokeLinecap? cssStrokeLinecap;
   SvgStrokeLinejoin? cssStrokeLinejoin;
+  SvgNumber? cssStrokeMiterlimit;
   SvgLengthPercentage? cssOpacity;
   SvgFontWeight? cssFontWeight;
   SvgFontStyle? cssFontStyle;
@@ -134,6 +137,7 @@ PaintingStyle resolvePaint(
   cssStrokeDasharray = resolvedRules['stroke-dasharray']?.toSvgPointList();
   cssStrokeLinecap = resolvedRules['stroke-linecap']?.toSvgStrokeLinecap();
   cssStrokeLinejoin = resolvedRules['stroke-linejoin']?.toSvgStrokeLinejoin();
+  cssStrokeMiterlimit = resolvedRules['stroke-miterlimit']?.toSvgMiterLimit();
   cssOpacity = resolvedRules['opacity']?.toSvgLengthPercentage();
   cssPathLength = resolvedRules['pathLength']?.toSvgNonNegativeNumber();
 
@@ -149,6 +153,7 @@ PaintingStyle resolvePaint(
       dashArray: cssStrokeDasharray,
       linecap: cssStrokeLinecap,
       linejoin: cssStrokeLinejoin,
+      miterLimit: cssStrokeMiterlimit,
     ),
     font: SvgFontAttributes(
       size: cssFontSize,
@@ -267,6 +272,7 @@ PaintingStyle resolvePaint(
       opacity: finalStrokeOpacity,
       cap: (strokeAttrs?.linecap ?? SvgStrokeLinecap.butt).toStrokeCap(),
       join: (strokeAttrs?.linejoin ?? SvgStrokeLinejoin.miter).toStrokeJoin(),
+      miterLimit: (strokeAttrs?.miterLimit ?? const SvgGenericNumber(4.0)).value,
       dashArray: finalDashArray,
       isExplicit: presentationAttributes?.stroke?.color != null || cssStroke != null,
       isCurrentColor: isCurrentColor,

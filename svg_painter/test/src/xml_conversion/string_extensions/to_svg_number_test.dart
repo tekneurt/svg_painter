@@ -88,5 +88,46 @@ void main() {
         expect(result, isNull);
       });
     });
+
+    group('toSvgMiterLimit', () {
+      test('should return SvgGenericNumber when value is >= 1.0', () {
+        // Arrange
+        const input = '1.0';
+        const input2 = '8.5';
+
+        // Act
+        final SvgNumber? result = input.toSvgMiterLimit();
+        final SvgNumber? result2 = input2.toSvgMiterLimit();
+
+        // Assert
+        expect(result?.value, 1.0);
+        expect(result2?.value, 8.5);
+      });
+
+      test('should return null when value is < 1.0', () {
+        // Arrange
+        const input = '0.9';
+        const input2 = '-5.0';
+
+        // Act
+        final SvgNumber? result = input.toSvgMiterLimit();
+        final SvgNumber? result2 = input2.toSvgMiterLimit();
+
+        // Assert
+        expect(result, isNull);
+        expect(result2, isNull);
+      });
+
+      test('should return null when input is not a number', () {
+        // Arrange
+        const input = 'abc';
+
+        // Act
+        final SvgNumber? result = input.toSvgMiterLimit();
+
+        // Assert
+        expect(result, isNull);
+      });
+    });
   });
 }

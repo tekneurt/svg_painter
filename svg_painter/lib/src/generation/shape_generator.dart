@@ -111,6 +111,9 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
       if (!isFill) {
         final stroke = style as PaintingStrokeStyle;
         buffer.writeln('paint.strokeWidth = ${stroke.width};');
+        if (stroke.miterLimit != 4.0) {
+          buffer.writeln('paint.strokeMiterLimit = ${stroke.miterLimit};');
+        }
         if (stroke.cap != PaintingStrokeCap.butt) {
           buffer.writeln('paint.strokeCap = ${stroke.cap.toFlutterString()};');
         }

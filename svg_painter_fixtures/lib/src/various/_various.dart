@@ -1,4 +1,5 @@
 export 'alpha_transparency_dice.dart';
+export 'ghostscript_tiger.dart';
 export 'lenna.dart';
 
 /// Path to the alpha transparency dice PNG.

@@ -73,5 +73,47 @@ void main() {
         contains('canvas.drawPath(_dashPath(path, dashArray, pathLength: 100.0), paint)'),
       );
     });
+
+    test('should emit strokeMiterLimit when not default (4.0)', () {
+      // Arrange
+      const generator = CircleGenerator();
+      const command = DrawCircle(
+        cx: 10.0,
+        cy: 20.0,
+        radius: 5.0,
+        style: PaintingStyle(
+          stroke: PaintingStrokeStyle(colorArgb: 0xFF000000, miterLimit: 8.5),
+        ),
+      );
+      final buffer = GeneratorBuffer();
+
+      // Act
+      generator.generate(command, buffer);
+
+      // Assert
+      final output = buffer.toString();
+      expect(output, contains('paint.strokeMiterLimit = 8.5;'));
+    });
+
+    test('should NOT emit strokeMiterLimit when default (4.0)', () {
+      // Arrange
+      const generator = CircleGenerator();
+      const command = DrawCircle(
+        cx: 10.0,
+        cy: 20.0,
+        radius: 5.0,
+        style: PaintingStyle(
+          stroke: PaintingStrokeStyle(colorArgb: 0xFF000000),
+        ),
+      );
+      final buffer = GeneratorBuffer();
+
+      // Act
+      generator.generate(command, buffer);
+
+      // Assert
+      final output = buffer.toString();
+      expect(output, isNot(contains('paint.strokeMiterLimit')));
+    });
   });
 }

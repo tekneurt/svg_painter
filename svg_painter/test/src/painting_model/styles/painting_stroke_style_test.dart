@@ -50,7 +50,7 @@ void main() {
       // Assert
       expect(
         result,
-        'PaintingStrokeStyle(color: 4278190080, shader: grad2, units: null, width: 2.0, opacity: 0.8, cap: PaintingStrokeCap.round, join: PaintingStrokeJoin.bevel, explicit: true, currentColor: false)',
+        'PaintingStrokeStyle(color: 4278190080, shader: grad2, units: null, width: 2.0, opacity: 0.8, cap: PaintingStrokeCap.round, join: PaintingStrokeJoin.bevel, miterLimit: 4.0, explicit: true, currentColor: false)',
       );
     });
   });

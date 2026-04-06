@@ -84,6 +84,7 @@ final class SvgPresentationAttributes {
       dashArray: b.dashArray ?? a.dashArray,
       linecap: b.linecap ?? a.linecap,
       linejoin: b.linejoin ?? a.linejoin,
+      miterLimit: b.miterLimit ?? a.miterLimit,
     );
   }
 
@@ -145,6 +146,7 @@ final class SvgPresentationAttributes {
       dashArray: child.dashArray ?? parent.dashArray,
       linecap: child.linecap ?? parent.linecap,
       linejoin: child.linejoin ?? parent.linejoin,
+      miterLimit: child.miterLimit ?? parent.miterLimit,
     );
   }
 

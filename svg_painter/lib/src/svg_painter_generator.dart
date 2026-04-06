@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:analyzer/dart/constant/value.dart';
 import 'package:analyzer/dart/element/element.dart';
@@ -129,8 +130,9 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
     final XmlElement svgXmlElement = svgElements.first;
 
     final imageCache = <String, List<int>>{};
+    final svgCache = <String, SvgRoot>{};
     if (buildStep != null) {
-      await _preloadImages(svgXmlElement, buildStep, imageCache);
+      await _preloadImages(svgXmlElement, buildStep, imageCache, svgCache);
     }
 
     final Result<SvgElement> mapResult = svgXmlElement.toSvgElement();
@@ -166,6 +168,7 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
           styleSheet: svgRoot is SvgRoot ? svgRoot.styleSheet : const SvgStyleSheet.empty(),
           definitions: definitions,
           imageCache: imageCache,
+          svgCache: svgCache,
         ),
       );
       final List<PaintCommand> commands = paintingResult.fold(
@@ -897,19 +900,46 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
     XmlElement root,
     BuildStep buildStep,
     Map<String, List<int>> imageCache,
+    Map<String, SvgRoot> svgCache,
   ) async {
     final Iterable<XmlElement> images = root.findAllElements(XmlElementName.image.tagName);
     for (final image in images) {
       final String? href =
           image.getAttribute(XmlAttributeName.href.name) ?? image.getAttribute('xlink:href');
-      if (href == null || href.isEmpty || imageCache.containsKey(href)) {
+      if (href == null || href.isEmpty || imageCache.containsKey(href) || svgCache.containsKey(href)) {
         continue;
       }
 
       if (href.startsWith('data:')) {
         try {
           final Uri uri = Uri.parse(href);
-          imageCache[href] = uri.data!.contentAsBytes();
+          final List<int> bytes = uri.data!.contentAsBytes();
+          
+          if (href.startsWith('data:image/svg+xml')) {
+            final String svgContent = utf8.decode(bytes);
+            svgContent.toXmlDocument().fold(
+              (Failure<XmlDocument> failure) => log.warning('Failed to parse nested SVG Data URI: ${failure.message}'),
+              (XmlDocument doc) {
+                final Iterable<XmlElement> nestedSvgs = doc.findAllElements(XmlElementName.svg.tagName);
+                if (nestedSvgs.isNotEmpty) {
+                  nestedSvgs.first.toSvgElement().fold(
+                    (Failure<SvgElement> failure) => log.warning('Failed to map nested SVG Element: ${failure.message}'),
+                    (SvgElement nestedSvg) {
+                      if (nestedSvg is SvgRoot) {
+                        svgCache[href] = nestedSvg;
+                      } else {
+                        log.warning('Mapped nested SVG is not SvgRoot, it is ${nestedSvg.runtimeType}');
+                      }
+                    }
+                  );
+                } else {
+                  log.warning('Nested SVG document has no <svg> tag');
+                }
+              }
+            );
+          } else {
+            imageCache[href] = bytes;
+          }
         } catch (e) {
           log.warning('Failed to parse data URI image: $e');
         }
@@ -920,8 +950,20 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
           'lib/${uri.pathSegments.skip(1).join('/')}',
         );
         try {
-          final List<int> bytes = await buildStep.readAsBytes(assetId);
-          imageCache[href] = bytes;
+          if (href.endsWith('.svg')) {
+            final String svgContent = await buildStep.readAsString(assetId);
+            svgContent.toXmlDocument().map((XmlDocument doc) {
+              final Iterable<XmlElement> nestedSvgs = doc.findAllElements(XmlElementName.svg.tagName);
+              if (nestedSvgs.isNotEmpty) {
+                nestedSvgs.first.toSvgRoot().map((SvgRoot nestedSvg) {
+                  svgCache[href] = nestedSvg;
+                });
+              }
+            });
+          } else {
+            final List<int> bytes = await buildStep.readAsBytes(assetId);
+            imageCache[href] = bytes;
+          }
         } catch (e) {
           log.warning('Failed to load image asset $href: $e');
         }

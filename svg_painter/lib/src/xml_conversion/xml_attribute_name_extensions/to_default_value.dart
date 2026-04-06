@@ -65,6 +65,8 @@ extension ToDefaultValue on XmlAttributeName {
         return SvgStrokeLinecap.butt;
       case .strokeLinejoin:
         return SvgStrokeLinejoin.miter;
+      case .strokeMiterlimit:
+        return const SvgGenericNumber(4.0);
       case .offset:
         return const SvgLength(0.0);
       case .stopColor:

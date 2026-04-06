@@ -36,10 +36,12 @@ final class PaintingStrokeStyle implements PaintingPaintStyle {
     this.opacity = 1.0,
     this.cap = PaintingStrokeCap.butt,
     this.join = PaintingStrokeJoin.miter,
+    this.miterLimit = 4.0,
     this.dashArray,
     this.isExplicit = true,
     this.isCurrentColor = false,
-  }) : assert(opacity >= 0.0 && opacity <= 1.0, 'Opacity must be between 0.0 and 1.0');
+  })  : assert(opacity >= 0.0 && opacity <= 1.0, 'Opacity must be between 0.0 and 1.0'),
+        assert(miterLimit >= 1.0, 'Miter limit must be greater than or equal to 1.0');
 
   /// The ARGB integer for the stroke color.
   @override
@@ -69,6 +71,9 @@ final class PaintingStrokeStyle implements PaintingPaintStyle {
   /// The shape to be used at the corners of paths or basic shapes.
   final PaintingStrokeJoin join;
 
+  /// The limit on the ratio of the miter length to the stroke-width.
+  final double miterLimit;
+
   /// The pattern of dashes and gaps used to stroke paths.
   final List<double>? dashArray;
 
@@ -82,5 +87,5 @@ final class PaintingStrokeStyle implements PaintingPaintStyle {
 
   @override
   String toString() =>
-      'PaintingStrokeStyle(color: $colorArgb, shader: $shaderId, units: $shaderUnits, width: $width, opacity: $opacity, cap: $cap, join: $join, explicit: $isExplicit, currentColor: $isCurrentColor)';
+      'PaintingStrokeStyle(color: $colorArgb, shader: $shaderId, units: $shaderUnits, width: $width, opacity: $opacity, cap: $cap, join: $join, miterLimit: $miterLimit, explicit: $isExplicit, currentColor: $isCurrentColor)';
 }

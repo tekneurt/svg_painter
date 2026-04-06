@@ -19,6 +19,7 @@ export 'spread_method.dart';
 export 'stroke.dart';
 export 'stroke_linecap.dart';
 export 'stroke_linejoin.dart';
+export 'stroke_miterlimit.dart';
 export 'stroke_opacity.dart';
 export 'stroke_width.dart';
 export 'style.dart';

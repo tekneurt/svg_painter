@@ -286,7 +286,7 @@ Future<void> testDualResolutionPainter({
   required Map<GoldenTestType, Set<TargetPlatform>?> tests,
   String? folder,
 }) async {
-  final String goldenPath = folder != null ? '$folder/goldens' : 'goldens';
+  final goldenPath = folder != null ? '$folder/goldens' : 'goldens';
 
   if (tests.containsKey(GoldenTestType.fixed)) {
     await testSvgPainter(
@@ -317,7 +317,7 @@ Future<void> testDualResolutionWidget({
   required Size nativeSize,
   String? folder,
 }) async {
-  final String goldenPath = folder != null ? '$folder/goldens' : 'goldens';
+  final goldenPath = folder != null ? '$folder/goldens' : 'goldens';
 
   if (tests.containsKey(GoldenTestType.fixed)) {
     await testSvgWidget(

@@ -154,6 +154,10 @@ enum XmlAttributeName {
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-linejoin
   strokeLinejoin('stroke-linejoin'),
 
+  /// The limit on the ratio of the miter length to the stroke-width.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-miterlimit
+  strokeMiterlimit('stroke-miterlimit'),
+
   /// The transparency of an object or a group of objects.
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/opacity
   opacity('opacity'),

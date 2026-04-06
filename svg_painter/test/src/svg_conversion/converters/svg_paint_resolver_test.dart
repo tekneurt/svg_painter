@@ -400,5 +400,31 @@ void main() {
       );
       expect(style.stroke?.shaderId, 'stroke-grad');
     });
+
+    test('should resolve stroke-miterlimit and default to 4.0', () {
+      // 1. Explicit value
+      final PaintingStyle style = resolvePaint(
+        emptyContext,
+        tagName: 'g',
+        coreAttributes: const SvgCoreAttributes(inlineStyle: 'stroke: black; stroke-miterlimit: 8.5'),
+      );
+      expect(style.stroke?.miterLimit, 8.5);
+
+      // 2. Default value
+      final PaintingStyle style2 = resolvePaint(
+        emptyContext,
+        tagName: 'g',
+        coreAttributes: const SvgCoreAttributes(inlineStyle: 'stroke: black'),
+      );
+      expect(style2.stroke?.miterLimit, 4.0);
+
+      // 3. Invalid value (should fall back to default)
+      final PaintingStyle style3 = resolvePaint(
+        emptyContext,
+        tagName: 'g',
+        coreAttributes: const SvgCoreAttributes(inlineStyle: 'stroke: black; stroke-miterlimit: 0.5'),
+      );
+      expect(style3.stroke?.miterLimit, 4.0);
+    });
   });
 }

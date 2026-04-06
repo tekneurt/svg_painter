@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 import '../../test_utils.dart';
 import 'alpha_transparency_dice/alpha_transparency_dice_painter.dart';
+import 'ghostscript_tiger/ghostscript_tiger_painter.dart';
 import 'lenna/lenna_painter.dart';
 
 final List<({
@@ -60,6 +61,27 @@ final List<({
     name: 'lenna_data_uri',
     tests: defaultGoldenTests
   ),
+  (
+    painter: null,
+    widget: const GhostscriptTigerPainterWidget(),
+    nativeSize: const Size(194, 200.4),
+    name: 'ghostscript_tiger',
+    tests: defaultGoldenTests
+  ),
+  (
+    painter: null,
+    widget: const GhostscriptTigerTransformedPainterWidget(),
+    nativeSize: const Size(200, 200),
+    name: 'ghostscript_tiger_transformed',
+    tests: defaultGoldenTests
+  ),
+  (
+    painter: null,
+    widget: const GhostscriptTigerDataUriPainterWidget(),
+    nativeSize: const Size(200, 200),
+    name: 'ghostscript_tiger_data_uri',
+    tests: defaultGoldenTests
+  ),
 ];
 
 void main() {
@@ -82,6 +104,10 @@ void main() {
           'alpha_transparency_dice_data_uri' =>
             'alpha_transparency_dice',
           'lenna' || 'lenna_transformed' || 'lenna_data_uri' => 'lenna',
+          'ghostscript_tiger' ||
+          'ghostscript_tiger_transformed' ||
+          'ghostscript_tiger_data_uri' =>
+            'ghostscript_tiger',
           _ => fixture.name,
         };
         if (fixture.widget != null) {

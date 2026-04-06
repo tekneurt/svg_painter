@@ -26,6 +26,7 @@ import 'attributes/ry_painter.dart';
 import 'attributes/spread_method_painter.dart';
 import 'attributes/stroke_linecap_painter.dart';
 import 'attributes/stroke_linejoin_painter.dart';
+import 'attributes/stroke_miterlimit_painter.dart';
 import 'attributes/stroke_opacity_painter.dart';
 import 'attributes/stroke_painter.dart';
 import 'attributes/stroke_width_painter.dart';
@@ -125,9 +126,10 @@ final List<({CustomPainter painter, String name, Map<GoldenTestType, Set<TargetP
       GoldenTestType.viewBox: <TargetPlatform>{TargetPlatform.macOS},
     }
   ),
-  (painter: const StrokeLinecapPainter(), name: 'stroke_linecap_painter', tests: defaultGoldenTests),
-  (painter: const StrokeLinejoinPainter(), name: 'stroke_linejoin_painter', tests: defaultGoldenTests),
-  (painter: const StrokeOpacityPainter(), name: 'stroke_opacity_painter', tests: defaultGoldenTests),
+  (painter: const StrokeLinecapPainter(), name: 'stroke_linecap', tests: defaultGoldenTests),
+  (painter: const StrokeLinejoinPainter(), name: 'stroke_linejoin', tests: defaultGoldenTests),
+  (painter: const StrokeMiterlimitPainter(), name: 'stroke_miterlimit', tests: defaultGoldenTests),
+  (painter: const StrokeOpacityPainter(), name: 'stroke_opacity', tests: defaultGoldenTests),
   (painter: const StrokePainter(), name: 'stroke_painter', tests: defaultGoldenTests),
   (painter: const StrokeWidthPainter(), name: 'stroke_width_painter', tests: defaultGoldenTests),
   (painter: const StylePainter(), name: 'style_painter', tests: defaultGoldenTests),
