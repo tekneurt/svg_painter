@@ -118,7 +118,7 @@ void main() {
             'paint.shader = _grad_grad1.createShader(Rect.fromLTWH(5.0, 15.0, 10.0, 10.0));',
           ),
         );
-        expect(output, contains('paint.color = paint.color.withOpacity(0.8);'));
+        expect(output, contains('paint.color = paint.color.withValues(alpha: 0.8);'));
       });
 
       test('should generate dashed stroke code when dashArray is provided', () {
@@ -276,7 +276,7 @@ void main() {
         final output = buffer.toString();
         expect(
           output,
-          contains('paint.color = (color ?? const Color(0xFF000000)).withOpacity(0.7);'),
+          contains('paint.color = (color ?? const Color(0xFF000000)).withValues(alpha: 0.7);'),
         );
       });
 
@@ -295,7 +295,7 @@ void main() {
         final output = buffer.toString();
         expect(
           output,
-          contains('paint.color = (color ?? const Color(0xFF000000)).withOpacity(0.4);'),
+          contains('paint.color = (color ?? const Color(0xFF000000)).withValues(alpha: 0.4);'),
         );
       });
 
@@ -341,7 +341,7 @@ void main() {
         // Assert
         final output = buffer.toString();
         expect(output, contains('paint.shader = _grad_s1.createShader'));
-        expect(output, isNot(contains('withOpacity')));
+        expect(output, isNot(contains('withValues')));
       });
 
       test('should handle shader with full opacity in stroke', () {
@@ -356,7 +356,7 @@ void main() {
         // Assert
         final output = buffer.toString();
         expect(output, contains('paint.shader = _grad_s2.createShader'));
-        expect(output, isNot(contains('withOpacity')));
+        expect(output, isNot(contains('withValues')));
       });
 
       test('should use inherited property for fill if implicit shader match found', () {

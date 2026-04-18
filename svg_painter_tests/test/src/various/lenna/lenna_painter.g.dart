@@ -739720,7 +739720,7 @@ class _$LennaTransformedPainter extends CustomPainter {
       final double srcW = image0!.width.toDouble();
       final double srcH = image0!.height.toDouble();
       final Paint paint = Paint()
-        ..color = const Color(0xFF000000).withOpacity(0.5);
+        ..color = const Color(0xFF000000).withValues(alpha: 0.5);
       canvas.drawImageRect(
         image0!,
         Rect.fromLTWH(0, 0, srcW, srcH),

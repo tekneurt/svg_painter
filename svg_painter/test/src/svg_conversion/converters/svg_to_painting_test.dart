@@ -1,6 +1,7 @@
 import 'package:svg_painter/src/base/result.dart';
 import 'package:svg_painter/src/painting_model/paint_command.dart';
 import 'package:svg_painter/src/svg_conversion/converters/svg_definition_collector.dart';
+import 'package:svg_painter/src/svg_conversion/converters/svg_painting_context.dart';
 import 'package:svg_painter/src/svg_conversion/converters/svg_to_painting.dart';
 import 'package:svg_painter/src/svg_model/_svg_model.dart';
 import 'package:test/test.dart';
@@ -118,8 +119,8 @@ void main() {
         );
 
         // We can't directly call _toPaintCommands(onlyDefinitions: true) from outside,
-        // but symbol.toPaintCommands() calls it with true.
-        final Result<List<PaintCommand>> result = symbol.toPaintCommands();
+        // but symbol.toPaintCommands(const SvgPaintingContext(viewBoxWidth: 100, viewBoxHeight: 100)) calls it with true.
+        final Result<List<PaintCommand>> result = symbol.toPaintCommands(const SvgPaintingContext(viewBoxWidth: 100, viewBoxHeight: 100));
         final List<PaintCommand> commands = (result as Success<List<PaintCommand>>).value;
 
         expect(commands.whereType<DefineLinearGradient>().length, 1);
@@ -245,6 +246,75 @@ void main() {
           ),
           isTrue,
         );
+      });
+
+      group('Precedence (MDN example)', () {
+        test('should inherit fill from <use> when referenced element has no fill', () {
+          const target = SvgCircle(
+            coreAttributes: SvgCoreAttributes(id: 'myCircle'),
+            cx: SvgLength(5),
+            cy: SvgLength(5),
+            r: SvgLength(4),
+            presentationAttributes: SvgPresentationAttributes(
+              stroke: SvgStrokeAttributes(color: SvgNamedColor(SvgColorName.blue)),
+            ),
+          );
+          const use = SvgUse(
+            href: '#myCircle',
+            x: SvgLength(10),
+            y: SvgLength(0),
+            presentationAttributes: SvgPresentationAttributes(
+              fill: SvgFillAttributes(color: SvgNamedColor(SvgColorName.blue)),
+            ),
+          );
+          const root = SvgRoot(children: [target, use]);
+
+          final Result<List<PaintCommand>> result = root.toPaintCommands();
+          final List<PaintCommand> commands = (result as Success<List<PaintCommand>>).value;
+          final rootGroup = commands.single as DrawGroup;
+          final DrawGroup useGroup = rootGroup.commands.whereType<DrawGroup>().single;
+          final DrawCircle circleInUse = useGroup.commands.whereType<DrawCircle>().single;
+
+          // Should have blue fill (from <use>)
+          expect(circleInUse.style.fill?.colorArgb, 0xFF0000FF); // Blue
+          // Should have blue stroke (from original circle)
+          expect(circleInUse.style.stroke?.colorArgb, 0xFF0000FF); // Blue
+        });
+
+        test('should NOT override stroke on referenced element with stroke from <use>', () {
+          const target = SvgCircle(
+            coreAttributes: SvgCoreAttributes(id: 'myCircle'),
+            cx: SvgLength(5),
+            cy: SvgLength(5),
+            r: SvgLength(4),
+            presentationAttributes: SvgPresentationAttributes(
+              stroke: SvgStrokeAttributes(color: SvgNamedColor(SvgColorName.blue)),
+            ),
+          );
+          const use = SvgUse(
+            href: '#myCircle',
+            x: SvgLength(20),
+            y: SvgLength(0),
+            presentationAttributes: SvgPresentationAttributes(
+              fill: SvgFillAttributes(color: SvgNamedColor(SvgColorName.white)),
+              stroke: SvgStrokeAttributes(color: SvgNamedColor(SvgColorName.red)),
+            ),
+          );
+          const root = SvgRoot(children: [target, use]);
+
+          final Result<List<PaintCommand>> result = root.toPaintCommands();
+          final List<PaintCommand> commands = (result as Success<List<PaintCommand>>).value;
+          final rootGroup = commands.single as DrawGroup;
+          // There are two uses now if I'm not careful, but wait, root.children is [target, use].
+          // So rootGroup.commands is [DrawCircle, DrawGroup].
+          final DrawGroup useGroup = rootGroup.commands.whereType<DrawGroup>().single;
+          final DrawCircle circleInUse = useGroup.commands.whereType<DrawCircle>().single;
+
+          // Should have white fill (from <use>)
+          expect(circleInUse.style.fill?.colorArgb, 0xFFFFFFFF); // White
+          // Should STILL have blue stroke (from original circle), NOT red
+          expect(circleInUse.style.stroke?.colorArgb, 0xFF0000FF); // Blue
+        });
       });
     });
 

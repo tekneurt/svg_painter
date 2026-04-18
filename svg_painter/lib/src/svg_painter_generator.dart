@@ -161,16 +161,50 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
       final definitions = <String, SvgElement>{};
       svgRoot.collectDefinitions(definitions);
 
-      final Result<List<PaintCommand>> paintingResult = svgRoot.toPaintCommands(
-        SvgPaintingContext(
-          viewBoxWidth: viewBoxWidth,
-          viewBoxHeight: viewBoxHeight,
-          styleSheet: svgRoot is SvgRoot ? svgRoot.styleSheet : const SvgStyleSheet.empty(),
-          definitions: definitions,
-          imageCache: imageCache,
-          svgCache: svgCache,
+      // Establish initial root context with default SVG styles
+      final rootContext = SvgPaintingContext(
+        viewBoxWidth: viewBoxWidth,
+        viewBoxHeight: viewBoxHeight,
+        viewBoxMinX: svgRoot is SvgRoot ? svgRoot.viewBox?.minX ?? 0.0 : 0.0,
+        viewBoxMinY: svgRoot is SvgRoot ? svgRoot.viewBox?.minY ?? 0.0 : 0.0,
+        inheritedAttributes: SvgPresentationAttributes(
+          fill: SvgFillAttributes(
+            color: (svgRoot is SvgRoot ? svgRoot.fillAttributes?.color : null) ??
+                const SvgNamedColor(SvgColorName.black),
+            opacity: (svgRoot is SvgRoot ? svgRoot.fillAttributes?.opacity : null) ??
+                const SvgLength(1.0),
+          ),
+          stroke: SvgStrokeAttributes(
+            color: (svgRoot is SvgRoot ? svgRoot.strokeAttributes?.color : null) ??
+                const SvgNoneColor(),
+            opacity: (svgRoot is SvgRoot ? svgRoot.strokeAttributes?.opacity : null) ??
+                const SvgLength(1.0),
+            width: (svgRoot is SvgRoot ? svgRoot.strokeAttributes?.width : null) ??
+                const SvgLength(1.0),
+            dashArray: svgRoot is SvgRoot ? svgRoot.strokeAttributes?.dashArray : null,
+            linecap: (svgRoot is SvgRoot ? svgRoot.strokeAttributes?.linecap : null) ??
+                SvgStrokeLinecap.butt,
+            linejoin: (svgRoot is SvgRoot ? svgRoot.strokeAttributes?.linejoin : null) ??
+                SvgStrokeLinejoin.miter,
+          ),
+          font: SvgFontAttributes(
+            size: (svgRoot is SvgRoot ? svgRoot.fontAttributes?.size : null) ??
+                const SvgLength(12.0),
+            weight: (svgRoot is SvgRoot ? svgRoot.fontAttributes?.weight : null) ??
+                const SvgFontWeightNormal(),
+            style: (svgRoot is SvgRoot ? svgRoot.fontAttributes?.style : null) ??
+                SvgFontStyle.normal,
+            family: (svgRoot is SvgRoot ? svgRoot.fontAttributes?.family : null) ??
+                const SvgFontFamily('sans-serif'),
+          ),
         ),
+        styleSheet: svgRoot is SvgRoot ? svgRoot.styleSheet : const SvgStyleSheet.empty(),
+        definitions: definitions,
+        imageCache: imageCache,
+        svgCache: svgCache,
       );
+
+      final Result<List<PaintCommand>> paintingResult = svgRoot.toPaintCommands(rootContext);
       final List<PaintCommand> commands = paintingResult.fold(
         (Failure<List<PaintCommand>> failure) => throw InvalidGenerationSourceError(
           'Failed to convert SVG to painting commands for $elementName: ${failure.message}',

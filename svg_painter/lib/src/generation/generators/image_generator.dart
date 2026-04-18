@@ -32,7 +32,7 @@ class ImageGenerator extends CommandGenerator<DrawImage> {
       buffer.writeln('final double srcW = $imageProp!.width.toDouble();');
       buffer.writeln('final double srcH = $imageProp!.height.toDouble();');
       if (command.style.groupOpacity < 1.0) {
-        buffer.writeln('final Paint paint = Paint()..color = const Color(0xFF000000).withOpacity(${command.style.groupOpacity});');
+        buffer.writeln('final Paint paint = Paint()..color = const Color(0xFF000000).withValues(alpha: ${command.style.groupOpacity});');
       } else {
         buffer.writeln('final Paint paint = Paint();');
       }

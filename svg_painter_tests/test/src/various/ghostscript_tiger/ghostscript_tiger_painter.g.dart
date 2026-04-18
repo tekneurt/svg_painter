@@ -140,6 +140,7 @@ class _$GhostscriptTigerPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.892;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -196,6 +197,7 @@ class _$GhostscriptTigerPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.892;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -224,6 +226,7 @@ class _$GhostscriptTigerPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.892;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -266,6 +269,7 @@ class _$GhostscriptTigerPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.892;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -308,6 +312,7 @@ class _$GhostscriptTigerPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.892;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -364,6 +369,7 @@ class _$GhostscriptTigerPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.892;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -420,6 +426,7 @@ class _$GhostscriptTigerPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.892;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -476,6 +483,7 @@ class _$GhostscriptTigerPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.892;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -532,6 +540,7 @@ class _$GhostscriptTigerPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.892;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -588,6 +597,7 @@ class _$GhostscriptTigerPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.892;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -644,6 +654,7 @@ class _$GhostscriptTigerPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.892;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -700,6 +711,7 @@ class _$GhostscriptTigerPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.892;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -909,6 +921,7 @@ class _$GhostscriptTigerPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 11.0;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -1015,6 +1028,7 @@ class _$GhostscriptTigerPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 11.0;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -1671,6 +1685,7 @@ class _$GhostscriptTigerPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 11.0;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -1703,6 +1718,7 @@ class _$GhostscriptTigerPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 5.5;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -1733,6 +1749,7 @@ class _$GhostscriptTigerPainter extends CustomPainter {
         paint.color = const Color(0xFFA61A26);
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 22.0;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -1761,6 +1778,7 @@ class _$GhostscriptTigerPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 5.5;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -1789,6 +1807,7 @@ class _$GhostscriptTigerPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 5.5;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -1817,6 +1836,7 @@ class _$GhostscriptTigerPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 5.5;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -1845,6 +1865,7 @@ class _$GhostscriptTigerPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 5.5;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -1873,6 +1894,7 @@ class _$GhostscriptTigerPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 5.5;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -1901,6 +1923,7 @@ class _$GhostscriptTigerPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 5.5;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -1915,6 +1938,7 @@ class _$GhostscriptTigerPainter extends CustomPainter {
         paint.color = const Color(0xFFA6264D);
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 22.0;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -1929,6 +1953,7 @@ class _$GhostscriptTigerPainter extends CustomPainter {
         paint.color = const Color(0xFFA6264D);
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 22.0;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -1961,6 +1986,7 @@ class _$GhostscriptTigerPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 5.5;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -1973,6 +1999,7 @@ class _$GhostscriptTigerPainter extends CustomPainter {
         paint.color = const Color(0xFFA6264D);
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 22.0;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -1985,6 +2012,7 @@ class _$GhostscriptTigerPainter extends CustomPainter {
         paint.color = const Color(0xFFA6264D);
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 22.0;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -2031,6 +2059,7 @@ class _$GhostscriptTigerPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 5.5;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -2063,6 +2092,7 @@ class _$GhostscriptTigerPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 5.5;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -2093,6 +2123,7 @@ class _$GhostscriptTigerPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 5.5;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -2141,6 +2172,7 @@ class _$GhostscriptTigerPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 5.5;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -2169,6 +2201,7 @@ class _$GhostscriptTigerPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 5.5;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -2197,6 +2230,7 @@ class _$GhostscriptTigerPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 5.5;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -2225,6 +2259,7 @@ class _$GhostscriptTigerPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 5.5;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -2253,6 +2288,7 @@ class _$GhostscriptTigerPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 5.5;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -3303,6 +3339,7 @@ class _$GhostscriptTigerPainter extends CustomPainter {
         paint.color = const Color(0xFF4D0000);
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 22.0;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -3317,6 +3354,7 @@ class _$GhostscriptTigerPainter extends CustomPainter {
         paint.color = const Color(0xFF4D0000);
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 22.0;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -3332,6 +3370,7 @@ class _$GhostscriptTigerPainter extends CustomPainter {
         paint.color = const Color(0xFF4D0000);
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 22.0;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -3347,6 +3386,7 @@ class _$GhostscriptTigerPainter extends CustomPainter {
         paint.color = const Color(0xFF4D0000);
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 22.0;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -4454,6 +4494,7 @@ class _$GhostscriptTigerPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -4483,6 +4524,7 @@ class _$GhostscriptTigerPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -4512,6 +4554,7 @@ class _$GhostscriptTigerPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -4541,6 +4584,7 @@ class _$GhostscriptTigerPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -4570,6 +4614,7 @@ class _$GhostscriptTigerPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -4599,6 +4644,7 @@ class _$GhostscriptTigerPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -4628,6 +4674,7 @@ class _$GhostscriptTigerPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -4657,6 +4704,7 @@ class _$GhostscriptTigerPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -4841,6 +4889,7 @@ class _$GhostscriptTigerPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -4888,6 +4937,7 @@ class _$GhostscriptTigerPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -4917,6 +4967,7 @@ class _$GhostscriptTigerPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -4946,6 +4997,7 @@ class _$GhostscriptTigerPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -4975,6 +5027,7 @@ class _$GhostscriptTigerPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -5004,6 +5057,7 @@ class _$GhostscriptTigerPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -5033,6 +5087,7 @@ class _$GhostscriptTigerPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -5062,6 +5117,7 @@ class _$GhostscriptTigerPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -5091,6 +5147,7 @@ class _$GhostscriptTigerPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -5120,6 +5177,7 @@ class _$GhostscriptTigerPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -5149,6 +5207,7 @@ class _$GhostscriptTigerPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -5178,6 +5237,7 @@ class _$GhostscriptTigerPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -5207,6 +5267,7 @@ class _$GhostscriptTigerPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -5236,6 +5297,7 @@ class _$GhostscriptTigerPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -5265,6 +5327,7 @@ class _$GhostscriptTigerPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -5294,6 +5357,7 @@ class _$GhostscriptTigerPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -5323,6 +5387,7 @@ class _$GhostscriptTigerPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -5352,6 +5417,7 @@ class _$GhostscriptTigerPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -5381,6 +5447,7 @@ class _$GhostscriptTigerPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -5410,6 +5477,7 @@ class _$GhostscriptTigerPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -5439,6 +5507,7 @@ class _$GhostscriptTigerPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -5468,6 +5537,7 @@ class _$GhostscriptTigerPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -5497,6 +5567,7 @@ class _$GhostscriptTigerPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -5526,6 +5597,7 @@ class _$GhostscriptTigerPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -5555,6 +5627,7 @@ class _$GhostscriptTigerPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -5584,6 +5657,7 @@ class _$GhostscriptTigerPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -6199,6 +6273,7 @@ class _$GhostscriptTigerPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 11.0;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -6212,6 +6287,7 @@ class _$GhostscriptTigerPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 11.0;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -6225,6 +6301,7 @@ class _$GhostscriptTigerPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 11.0;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -6238,6 +6315,7 @@ class _$GhostscriptTigerPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 11.0;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -6421,6 +6499,7 @@ class _$GhostscriptTigerTransformedPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.892;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -6477,6 +6556,7 @@ class _$GhostscriptTigerTransformedPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.892;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -6505,6 +6585,7 @@ class _$GhostscriptTigerTransformedPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.892;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -6547,6 +6628,7 @@ class _$GhostscriptTigerTransformedPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.892;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -6589,6 +6671,7 @@ class _$GhostscriptTigerTransformedPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.892;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -6645,6 +6728,7 @@ class _$GhostscriptTigerTransformedPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.892;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -6701,6 +6785,7 @@ class _$GhostscriptTigerTransformedPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.892;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -6757,6 +6842,7 @@ class _$GhostscriptTigerTransformedPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.892;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -6813,6 +6899,7 @@ class _$GhostscriptTigerTransformedPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.892;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -6869,6 +6956,7 @@ class _$GhostscriptTigerTransformedPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.892;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -6925,6 +7013,7 @@ class _$GhostscriptTigerTransformedPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.892;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -6981,6 +7070,7 @@ class _$GhostscriptTigerTransformedPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.892;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -7190,6 +7280,7 @@ class _$GhostscriptTigerTransformedPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 11.0;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -7296,6 +7387,7 @@ class _$GhostscriptTigerTransformedPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 11.0;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -7952,6 +8044,7 @@ class _$GhostscriptTigerTransformedPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 11.0;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -7984,6 +8077,7 @@ class _$GhostscriptTigerTransformedPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 5.5;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -8014,6 +8108,7 @@ class _$GhostscriptTigerTransformedPainter extends CustomPainter {
         paint.color = const Color(0xFFA61A26);
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 22.0;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -8042,6 +8137,7 @@ class _$GhostscriptTigerTransformedPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 5.5;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -8070,6 +8166,7 @@ class _$GhostscriptTigerTransformedPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 5.5;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -8098,6 +8195,7 @@ class _$GhostscriptTigerTransformedPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 5.5;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -8126,6 +8224,7 @@ class _$GhostscriptTigerTransformedPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 5.5;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -8154,6 +8253,7 @@ class _$GhostscriptTigerTransformedPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 5.5;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -8182,6 +8282,7 @@ class _$GhostscriptTigerTransformedPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 5.5;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -8196,6 +8297,7 @@ class _$GhostscriptTigerTransformedPainter extends CustomPainter {
         paint.color = const Color(0xFFA6264D);
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 22.0;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -8210,6 +8312,7 @@ class _$GhostscriptTigerTransformedPainter extends CustomPainter {
         paint.color = const Color(0xFFA6264D);
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 22.0;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -8242,6 +8345,7 @@ class _$GhostscriptTigerTransformedPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 5.5;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -8254,6 +8358,7 @@ class _$GhostscriptTigerTransformedPainter extends CustomPainter {
         paint.color = const Color(0xFFA6264D);
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 22.0;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -8266,6 +8371,7 @@ class _$GhostscriptTigerTransformedPainter extends CustomPainter {
         paint.color = const Color(0xFFA6264D);
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 22.0;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -8312,6 +8418,7 @@ class _$GhostscriptTigerTransformedPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 5.5;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -8344,6 +8451,7 @@ class _$GhostscriptTigerTransformedPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 5.5;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -8374,6 +8482,7 @@ class _$GhostscriptTigerTransformedPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 5.5;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -8422,6 +8531,7 @@ class _$GhostscriptTigerTransformedPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 5.5;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -8450,6 +8560,7 @@ class _$GhostscriptTigerTransformedPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 5.5;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -8478,6 +8589,7 @@ class _$GhostscriptTigerTransformedPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 5.5;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -8506,6 +8618,7 @@ class _$GhostscriptTigerTransformedPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 5.5;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -8534,6 +8647,7 @@ class _$GhostscriptTigerTransformedPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 5.5;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -9584,6 +9698,7 @@ class _$GhostscriptTigerTransformedPainter extends CustomPainter {
         paint.color = const Color(0xFF4D0000);
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 22.0;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -9598,6 +9713,7 @@ class _$GhostscriptTigerTransformedPainter extends CustomPainter {
         paint.color = const Color(0xFF4D0000);
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 22.0;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -9613,6 +9729,7 @@ class _$GhostscriptTigerTransformedPainter extends CustomPainter {
         paint.color = const Color(0xFF4D0000);
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 22.0;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -9628,6 +9745,7 @@ class _$GhostscriptTigerTransformedPainter extends CustomPainter {
         paint.color = const Color(0xFF4D0000);
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 22.0;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -10735,6 +10853,7 @@ class _$GhostscriptTigerTransformedPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -10764,6 +10883,7 @@ class _$GhostscriptTigerTransformedPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -10793,6 +10913,7 @@ class _$GhostscriptTigerTransformedPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -10822,6 +10943,7 @@ class _$GhostscriptTigerTransformedPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -10851,6 +10973,7 @@ class _$GhostscriptTigerTransformedPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -10880,6 +11003,7 @@ class _$GhostscriptTigerTransformedPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -10909,6 +11033,7 @@ class _$GhostscriptTigerTransformedPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -10938,6 +11063,7 @@ class _$GhostscriptTigerTransformedPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -11122,6 +11248,7 @@ class _$GhostscriptTigerTransformedPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -11169,6 +11296,7 @@ class _$GhostscriptTigerTransformedPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -11198,6 +11326,7 @@ class _$GhostscriptTigerTransformedPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -11227,6 +11356,7 @@ class _$GhostscriptTigerTransformedPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -11256,6 +11386,7 @@ class _$GhostscriptTigerTransformedPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -11285,6 +11416,7 @@ class _$GhostscriptTigerTransformedPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -11314,6 +11446,7 @@ class _$GhostscriptTigerTransformedPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -11343,6 +11476,7 @@ class _$GhostscriptTigerTransformedPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -11372,6 +11506,7 @@ class _$GhostscriptTigerTransformedPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -11401,6 +11536,7 @@ class _$GhostscriptTigerTransformedPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -11430,6 +11566,7 @@ class _$GhostscriptTigerTransformedPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -11459,6 +11596,7 @@ class _$GhostscriptTigerTransformedPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -11488,6 +11626,7 @@ class _$GhostscriptTigerTransformedPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -11517,6 +11656,7 @@ class _$GhostscriptTigerTransformedPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -11546,6 +11686,7 @@ class _$GhostscriptTigerTransformedPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -11575,6 +11716,7 @@ class _$GhostscriptTigerTransformedPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -11604,6 +11746,7 @@ class _$GhostscriptTigerTransformedPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -11633,6 +11776,7 @@ class _$GhostscriptTigerTransformedPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -11662,6 +11806,7 @@ class _$GhostscriptTigerTransformedPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -11691,6 +11836,7 @@ class _$GhostscriptTigerTransformedPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -11720,6 +11866,7 @@ class _$GhostscriptTigerTransformedPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -11749,6 +11896,7 @@ class _$GhostscriptTigerTransformedPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -11778,6 +11926,7 @@ class _$GhostscriptTigerTransformedPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -11807,6 +11956,7 @@ class _$GhostscriptTigerTransformedPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -11836,6 +11986,7 @@ class _$GhostscriptTigerTransformedPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -11865,6 +12016,7 @@ class _$GhostscriptTigerTransformedPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -12480,6 +12632,7 @@ class _$GhostscriptTigerTransformedPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 11.0;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -12493,6 +12646,7 @@ class _$GhostscriptTigerTransformedPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 11.0;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -12506,6 +12660,7 @@ class _$GhostscriptTigerTransformedPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 11.0;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -12519,6 +12674,7 @@ class _$GhostscriptTigerTransformedPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 11.0;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -12696,6 +12852,7 @@ class _$GhostscriptTigerDataUriPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.892;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -12752,6 +12909,7 @@ class _$GhostscriptTigerDataUriPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.892;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -12780,6 +12938,7 @@ class _$GhostscriptTigerDataUriPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.892;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -12822,6 +12981,7 @@ class _$GhostscriptTigerDataUriPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.892;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -12864,6 +13024,7 @@ class _$GhostscriptTigerDataUriPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.892;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -12920,6 +13081,7 @@ class _$GhostscriptTigerDataUriPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.892;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -12976,6 +13138,7 @@ class _$GhostscriptTigerDataUriPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.892;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -13032,6 +13195,7 @@ class _$GhostscriptTigerDataUriPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.892;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -13088,6 +13252,7 @@ class _$GhostscriptTigerDataUriPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.892;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -13144,6 +13309,7 @@ class _$GhostscriptTigerDataUriPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.892;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -13200,6 +13366,7 @@ class _$GhostscriptTigerDataUriPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.892;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -13256,6 +13423,7 @@ class _$GhostscriptTigerDataUriPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.892;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -13465,6 +13633,7 @@ class _$GhostscriptTigerDataUriPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 11.0;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -13571,6 +13740,7 @@ class _$GhostscriptTigerDataUriPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 11.0;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -14227,6 +14397,7 @@ class _$GhostscriptTigerDataUriPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 11.0;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -14259,6 +14430,7 @@ class _$GhostscriptTigerDataUriPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 5.5;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -14289,6 +14461,7 @@ class _$GhostscriptTigerDataUriPainter extends CustomPainter {
         paint.color = const Color(0xFFA61A26);
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 22.0;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -14317,6 +14490,7 @@ class _$GhostscriptTigerDataUriPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 5.5;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -14345,6 +14519,7 @@ class _$GhostscriptTigerDataUriPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 5.5;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -14373,6 +14548,7 @@ class _$GhostscriptTigerDataUriPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 5.5;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -14401,6 +14577,7 @@ class _$GhostscriptTigerDataUriPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 5.5;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -14429,6 +14606,7 @@ class _$GhostscriptTigerDataUriPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 5.5;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -14457,6 +14635,7 @@ class _$GhostscriptTigerDataUriPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 5.5;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -14471,6 +14650,7 @@ class _$GhostscriptTigerDataUriPainter extends CustomPainter {
         paint.color = const Color(0xFFA6264D);
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 22.0;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -14485,6 +14665,7 @@ class _$GhostscriptTigerDataUriPainter extends CustomPainter {
         paint.color = const Color(0xFFA6264D);
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 22.0;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -14517,6 +14698,7 @@ class _$GhostscriptTigerDataUriPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 5.5;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -14529,6 +14711,7 @@ class _$GhostscriptTigerDataUriPainter extends CustomPainter {
         paint.color = const Color(0xFFA6264D);
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 22.0;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -14541,6 +14724,7 @@ class _$GhostscriptTigerDataUriPainter extends CustomPainter {
         paint.color = const Color(0xFFA6264D);
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 22.0;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -14587,6 +14771,7 @@ class _$GhostscriptTigerDataUriPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 5.5;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -14619,6 +14804,7 @@ class _$GhostscriptTigerDataUriPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 5.5;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -14649,6 +14835,7 @@ class _$GhostscriptTigerDataUriPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 5.5;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -14697,6 +14884,7 @@ class _$GhostscriptTigerDataUriPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 5.5;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -14725,6 +14913,7 @@ class _$GhostscriptTigerDataUriPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 5.5;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -14753,6 +14942,7 @@ class _$GhostscriptTigerDataUriPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 5.5;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -14781,6 +14971,7 @@ class _$GhostscriptTigerDataUriPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 5.5;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -14809,6 +15000,7 @@ class _$GhostscriptTigerDataUriPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 5.5;
+        paint.strokeMiterLimit = 10.0;
         canvas.drawPath(path, paint);
       }
     }
@@ -15859,6 +16051,7 @@ class _$GhostscriptTigerDataUriPainter extends CustomPainter {
         paint.color = const Color(0xFF4D0000);
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 22.0;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -15873,6 +16066,7 @@ class _$GhostscriptTigerDataUriPainter extends CustomPainter {
         paint.color = const Color(0xFF4D0000);
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 22.0;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -15888,6 +16082,7 @@ class _$GhostscriptTigerDataUriPainter extends CustomPainter {
         paint.color = const Color(0xFF4D0000);
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 22.0;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -15903,6 +16098,7 @@ class _$GhostscriptTigerDataUriPainter extends CustomPainter {
         paint.color = const Color(0xFF4D0000);
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 22.0;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -17010,6 +17206,7 @@ class _$GhostscriptTigerDataUriPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -17039,6 +17236,7 @@ class _$GhostscriptTigerDataUriPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -17068,6 +17266,7 @@ class _$GhostscriptTigerDataUriPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -17097,6 +17296,7 @@ class _$GhostscriptTigerDataUriPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -17126,6 +17326,7 @@ class _$GhostscriptTigerDataUriPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -17155,6 +17356,7 @@ class _$GhostscriptTigerDataUriPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -17184,6 +17386,7 @@ class _$GhostscriptTigerDataUriPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -17213,6 +17416,7 @@ class _$GhostscriptTigerDataUriPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -17397,6 +17601,7 @@ class _$GhostscriptTigerDataUriPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -17444,6 +17649,7 @@ class _$GhostscriptTigerDataUriPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -17473,6 +17679,7 @@ class _$GhostscriptTigerDataUriPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -17502,6 +17709,7 @@ class _$GhostscriptTigerDataUriPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -17531,6 +17739,7 @@ class _$GhostscriptTigerDataUriPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -17560,6 +17769,7 @@ class _$GhostscriptTigerDataUriPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -17589,6 +17799,7 @@ class _$GhostscriptTigerDataUriPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -17618,6 +17829,7 @@ class _$GhostscriptTigerDataUriPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -17647,6 +17859,7 @@ class _$GhostscriptTigerDataUriPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -17676,6 +17889,7 @@ class _$GhostscriptTigerDataUriPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -17705,6 +17919,7 @@ class _$GhostscriptTigerDataUriPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -17734,6 +17949,7 @@ class _$GhostscriptTigerDataUriPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -17763,6 +17979,7 @@ class _$GhostscriptTigerDataUriPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -17792,6 +18009,7 @@ class _$GhostscriptTigerDataUriPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -17821,6 +18039,7 @@ class _$GhostscriptTigerDataUriPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -17850,6 +18069,7 @@ class _$GhostscriptTigerDataUriPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -17879,6 +18099,7 @@ class _$GhostscriptTigerDataUriPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -17908,6 +18129,7 @@ class _$GhostscriptTigerDataUriPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -17937,6 +18159,7 @@ class _$GhostscriptTigerDataUriPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -17966,6 +18189,7 @@ class _$GhostscriptTigerDataUriPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -17995,6 +18219,7 @@ class _$GhostscriptTigerDataUriPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -18024,6 +18249,7 @@ class _$GhostscriptTigerDataUriPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -18053,6 +18279,7 @@ class _$GhostscriptTigerDataUriPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -18082,6 +18309,7 @@ class _$GhostscriptTigerDataUriPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -18111,6 +18339,7 @@ class _$GhostscriptTigerDataUriPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -18140,6 +18369,7 @@ class _$GhostscriptTigerDataUriPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 1.1;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -18755,6 +18985,7 @@ class _$GhostscriptTigerDataUriPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 11.0;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -18768,6 +18999,7 @@ class _$GhostscriptTigerDataUriPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 11.0;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -18781,6 +19013,7 @@ class _$GhostscriptTigerDataUriPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 11.0;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }
@@ -18794,6 +19027,7 @@ class _$GhostscriptTigerDataUriPainter extends CustomPainter {
         paint.color = Colors.black;
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 11.0;
+        paint.strokeMiterLimit = 10.0;
         paint.strokeCap = StrokeCap.round;
         canvas.drawPath(path, paint);
       }

@@ -154,8 +154,38 @@ extension _SvgUseToPaintCommands on SvgUse {
     if (target is SvgSymbol) {
       // For symbols, we establish a NEW viewport.
       // Width and Height from <use> override those on <symbol>.
+      // We pass 0 for x and y because the <use> element already applies translation.
       return target
-          ._toPaintCommands(context, width: width, height: height)
+          ._toPaintCommands(
+            context,
+            x: const SvgLength(0.0),
+            y: const SvgLength(0.0),
+            width: width,
+            height: height,
+          )
+          .map((List<PaintCommand> childCommands) {
+        return <PaintCommand>[
+          DrawGroup(
+            commands: childCommands,
+            style: style,
+            id: id,
+            opacity: style.groupOpacity,
+          )
+        ];
+      });
+    }
+
+    if (target is SvgSvg) {
+      // For nested <svg>, width and height from <use> override those on <svg>.
+      // We pass 0 for x and y because the <use> element already applies translation.
+      return target
+          ._toPaintCommands(
+            context,
+            x: const SvgLength(0.0),
+            y: const SvgLength(0.0),
+            width: width,
+            height: height,
+          )
           .map((List<PaintCommand> childCommands) {
         return <PaintCommand>[
           DrawGroup(
@@ -185,17 +215,19 @@ extension _SvgUseToPaintCommands on SvgUse {
 extension _SvgSymbolToPaintCommands on SvgSymbol {
   Result<List<PaintCommand>> _toPaintCommands(
     SvgPaintingContext context, {
+    SvgLengthPercentage? x,
+    SvgLengthPercentage? y,
     SvgLengthPercentageAuto? width,
     SvgLengthPercentageAuto? height,
     bool onlyDefinitions = false,
   }) {
     // Note: Symbols usually don't use x/y directly, but if they do, they act as an additional translation
     // inside the viewport established by the <use> element.
-    final double xVal = (x ?? const SvgLength(0.0)).resolve(
+    final double xVal = (x ?? this.x ?? const SvgLength(0.0)).resolve(
       context,
       SvgOrientation.horizontal,
     );
-    final double yVal = (y ?? const SvgLength(0.0)).resolve(
+    final double yVal = (y ?? this.y ?? const SvgLength(0.0)).resolve(
       context,
       SvgOrientation.vertical,
     );
@@ -369,22 +401,31 @@ extension _SvgDefsToPaintCommands on SvgDefs {
 }
 
 extension _SvgSvgToPaintCommands on SvgSvg {
-  Result<List<PaintCommand>> _toPaintCommands(SvgPaintingContext context) {
-    final double xVal = (x ?? const SvgLength(0.0)).resolve(
+  Result<List<PaintCommand>> _toPaintCommands(
+    SvgPaintingContext context, {
+    SvgLengthPercentage? x,
+    SvgLengthPercentage? y,
+    SvgLengthPercentageAuto? width,
+    SvgLengthPercentageAuto? height,
+  }) {
+    final double xVal = (x ?? this.x ?? const SvgLength(0.0)).resolve(
       context,
       SvgOrientation.horizontal,
       defaultValue: 0.0,
     );
-    final double yVal = (y ?? const SvgLength(0.0)).resolve(
+    final double yVal = (y ?? this.y ?? const SvgLength(0.0)).resolve(
       context,
       SvgOrientation.vertical,
       defaultValue: 0.0,
     );
 
+    final SvgLengthPercentageAuto? finalWidth = width ?? this.width;
+    final SvgLengthPercentageAuto? finalHeight = height ?? this.height;
+
     final double wVal =
-        width?.resolveOrNull(context, SvgOrientation.horizontal) ?? context.viewBoxWidth;
+        finalWidth?.resolveOrNull(context, SvgOrientation.horizontal) ?? context.viewBoxWidth;
     final double hVal =
-        height?.resolveOrNull(context, SvgOrientation.vertical) ?? context.viewBoxHeight;
+        finalHeight?.resolveOrNull(context, SvgOrientation.vertical) ?? context.viewBoxHeight;
 
     final double vbW = viewBox?.width ?? wVal;
     final double vbH = viewBox?.height ?? hVal;

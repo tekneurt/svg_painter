@@ -239,7 +239,7 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
         buffer.writeln('paint.color = color ?? const Color(0xFF000000);');
       } else {
         buffer.writeln(
-          'paint.color = (color ?? const Color(0xFF000000)).withOpacity(${style.opacity});',
+          'paint.color = (color ?? const Color(0xFF000000)).withValues(alpha: ${style.opacity});',
         );
       }
     } else if (style.shaderId == null) {
@@ -256,7 +256,7 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
           style.shaderUnits == PaintingGradientUnits.userSpaceOnUse ? 'viewBoxRect' : boundsRect;
       buffer.writeln('paint.shader = _grad_${style.shaderId}.createShader($shaderRect);');
       if (style.opacity != 1.0) {
-        buffer.writeln('paint.color = paint.color.withOpacity(${style.opacity});');
+        buffer.writeln('paint.color = paint.color.withValues(alpha: ${style.opacity});');
       }
     }
   }

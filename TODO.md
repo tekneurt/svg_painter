@@ -243,7 +243,7 @@
 ### Phase 5: Extended Elements (0.4.0)
 *Reaching standard compatibility with more complex SVG elements.*
 
-- [ ] **Referencing & External Assets**: `<image>` [x], `<use>` [ ].
+- [x] **Referencing & External Assets**: `<image>` [x], `<use>` [x].
 - [ ] **Generator Refactoring**: Modularize `SvgPainterGenerator` by extracting large logic blocks (like widget and painter class generation) into dedicated helper classes to improve maintainability.
 - [ ] **Clipping & Masking**: `<clipPath>`, `<mask >`.
 - [ ] **Accessibility (Semantic Mapping)**: Map `<title>` and `<desc>` automatically to Flutter's `Semantics` widget in the generated code.
@@ -254,6 +254,9 @@
     - [ ] **Documentation**: Write comprehensive READMEs and full API documentation.
     - [ ] **Validation**: Add comprehensive tests for all `BoxFit` values.
     - [ ] **Publishing**: Publish version 0.4.0 of all packages to pub.dev.
+
+### Phase 9: Performance & Optimization (1.1.0+)
+- [ ] **Image Compression**: Implement support for compressing embedded images (e.g., using LZ4, Zstd via `es_compression`, or built-in GZip) to reduce generated code size while maintaining fast decompression speeds. Analyze the trade-offs between storage savings and runtime performance.
 
 ---
 
