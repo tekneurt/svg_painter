@@ -1,4 +1,4 @@
-import 'package:svg_painter/src/svg_painter_generator.dart';
+import 'package:svg_painter/src/generation/svg_painter_generator.dart';
 import 'package:svg_painter_annotation/svg_painter_annotation.dart';
 import 'package:test/test.dart';
 

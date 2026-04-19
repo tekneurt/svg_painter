@@ -1,7 +1,11 @@
+export 'defs_to_painting.dart';
 export 'path_data_parser.dart';
 export 'svg_color_name_map.dart';
 export 'svg_definition_collector.dart';
 export 'svg_paint_resolver.dart';
 export 'svg_painting_context.dart';
 export 'svg_radii_resolver.dart';
+export 'svg_root_to_painting.dart';
 export 'svg_to_painting.dart';
+export 'symbol_to_painting.dart';
+export 'use_to_painting.dart';
