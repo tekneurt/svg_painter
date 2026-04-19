@@ -135,8 +135,9 @@ extension SvgRootToPaintCommands on SvgSvg {
         par.alignment == SvgPreserveAspectRatioAlignment.none;
     final bool hasShiftedViewBox = (viewBox?.minX ?? 0) != 0 || (viewBox?.minY ?? 0) != 0;
 
-    final PaintingRect? clipRect =
-        (!isRoot || isSliceOrNone || hasShiftedViewBox) ? PaintingRect(0, 0, wVal, hVal) : null;
+    final PaintingRect? clipRect = (!isRoot || isSliceOrNone || hasShiftedViewBox)
+        ? PaintingRect(0, 0, wVal, hVal)
+        : null;
 
     final PaintingStyle viewportStyle = resolvePaint(
       context,
@@ -162,7 +163,7 @@ extension SvgRootToPaintCommands on SvgSvg {
             style: viewportStyle,
             id: id,
             opacity: viewportStyle.groupOpacity,
-          )
+          ),
         ];
       } else {
         final viewBoxStyle = PaintingStyle(
@@ -175,7 +176,7 @@ extension SvgRootToPaintCommands on SvgSvg {
             style: viewportStyle,
             id: id,
             opacity: viewportStyle.groupOpacity,
-          )
+          ),
         ];
       }
     });

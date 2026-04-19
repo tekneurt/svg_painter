@@ -45,7 +45,10 @@ void main() {
       final result = gradient.toString();
 
       // Assert
-      expect(result, 'SvgRadialGradient(cx: 12.3, cy: 45.6, r: 78.9, fx: 32.1, fy: 65.4, fr: 1.2, stops: 0, units: SvgGradientUnits.objectBoundingBox, spread: SvgSpreadMethod.pad)');
+      expect(
+        result,
+        'SvgRadialGradient(cx: 12.3, cy: 45.6, r: 78.9, fx: 32.1, fy: 65.4, fr: 1.2, stops: 0, units: SvgGradientUnits.objectBoundingBox, spread: SvgSpreadMethod.pad)',
+      );
     });
   });
 }

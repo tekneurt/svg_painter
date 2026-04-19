@@ -42,8 +42,9 @@ class ImagePreloader {
               (Failure<XmlDocument> failure) =>
                   log.warning('Failed to parse nested SVG Data URI: ${failure.message}'),
               (XmlDocument doc) {
-                final Iterable<XmlElement> nestedSvgs =
-                    doc.findAllElements(XmlElementName.svg.tagName);
+                final Iterable<XmlElement> nestedSvgs = doc.findAllElements(
+                  XmlElementName.svg.tagName,
+                );
                 if (nestedSvgs.isNotEmpty) {
                   nestedSvgs.first.toSvgElement().fold(
                     (Failure<SvgElement> failure) =>
@@ -79,8 +80,9 @@ class ImagePreloader {
           if (href.endsWith('.svg')) {
             final String svgContent = await buildStep.readAsString(assetId);
             svgContent.toXmlDocument().map((XmlDocument doc) {
-              final Iterable<XmlElement> nestedSvgs =
-                  doc.findAllElements(XmlElementName.svg.tagName);
+              final Iterable<XmlElement> nestedSvgs = doc.findAllElements(
+                XmlElementName.svg.tagName,
+              );
               if (nestedSvgs.isNotEmpty) {
                 nestedSvgs.first.toSvgRoot().map((SvgRoot nestedSvg) {
                   svgCache[href] = nestedSvg;

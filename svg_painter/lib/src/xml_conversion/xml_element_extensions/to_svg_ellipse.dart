@@ -39,8 +39,9 @@ extension ToSvgEllipse on XmlElement {
         cy: cy,
         rx: rx,
         ry: ry,
-        geometryAttributes:
-            pathLength != null ? SvgGeometryAttributes(pathLength: pathLength) : null,
+        geometryAttributes: pathLength != null
+            ? SvgGeometryAttributes(pathLength: pathLength)
+            : null,
         coreAttributes: common.core,
         presentationAttributes: common.presentation,
       ),

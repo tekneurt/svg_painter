@@ -26,18 +26,20 @@ void main() {
             style: PaintingStyle(),
             imageIndex: 0,
           ),
-          const DrawGroup(commands: <PaintCommand>[
-            DrawImage(
-              href: 'assets/img2.png',
-              x: 0,
-              y: 0,
-              width: 10,
-              height: 10,
-              bytes: <int>[],
-              style: PaintingStyle(),
-              imageIndex: 0,
-            ),
-          ]),
+          const DrawGroup(
+            commands: <PaintCommand>[
+              DrawImage(
+                href: 'assets/img2.png',
+                x: 0,
+                y: 0,
+                width: 10,
+                height: 10,
+                bytes: <int>[],
+                style: PaintingStyle(),
+                imageIndex: 0,
+              ),
+            ],
+          ),
         ];
 
         // Act

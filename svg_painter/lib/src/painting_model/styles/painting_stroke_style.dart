@@ -40,8 +40,8 @@ final class PaintingStrokeStyle implements PaintingPaintStyle {
     this.dashArray,
     this.isExplicit = true,
     this.isCurrentColor = false,
-  })  : assert(opacity >= 0.0 && opacity <= 1.0, 'Opacity must be between 0.0 and 1.0'),
-        assert(miterLimit >= 1.0, 'Miter limit must be greater than or equal to 1.0');
+  }) : assert(opacity >= 0.0 && opacity <= 1.0, 'Opacity must be between 0.0 and 1.0'),
+       assert(miterLimit >= 1.0, 'Miter limit must be greater than or equal to 1.0');
 
   /// The ARGB integer for the stroke color.
   @override

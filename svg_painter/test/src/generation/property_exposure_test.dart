@@ -79,48 +79,54 @@ void main() {
       expect(output, contains('final Object? myCircleFill;'));
     });
 
-    test('should NOT generate properties for elements with an id but NO explicit fill/stroke', () async {
-      // Arrange
-      const svg = '''
+    test(
+      'should NOT generate properties for elements with an id but NO explicit fill/stroke',
+      () async {
+        // Arrange
+        const svg = '''
 <svg viewBox="0 0 100 100">
   <circle id="implicitCircle" cx="50" cy="50" r="40" />
 </svg>
 ''';
 
-      // Act
-      final String output = await generator.generateFromSvg(
-        elementName: 'ImplicitPainter',
-        svgContent: svg,
-      );
+        // Act
+        final String output = await generator.generateFromSvg(
+          elementName: 'ImplicitPainter',
+          svgContent: svg,
+        );
 
-      // Assert
-      expect(output, isNot(contains('implicitCircleFill')));
-    });
+        // Assert
+        expect(output, isNot(contains('implicitCircleFill')));
+      },
+    );
 
-    test('should generate a nullable Color property for elements with an explicit stroke', () async {
-      // Arrange
-      const svg = '''
+    test(
+      'should generate a nullable Color property for elements with an explicit stroke',
+      () async {
+        // Arrange
+        const svg = '''
 <svg viewBox="0 0 100 100">
   <rect id="strokedRect" x="10" y="10" width="80" height="80" stroke="blue" />
 </svg>
 ''';
 
-      // Act
-      final String output = await generator.generateFromSvg(
-        elementName: 'StrokePainter',
-        svgContent: svg,
-        exposureMode: SvgExposureMode.id,
-      );
+        // Act
+        final String output = await generator.generateFromSvg(
+          elementName: 'StrokePainter',
+          svgContent: svg,
+          exposureMode: SvgExposureMode.id,
+        );
 
-      // Assert
-      expect(output, contains('final Object? strokedRectStroke;'));
-      expect(output, contains('this.strokedRectStroke,'));
-      expect(output, contains('final Object? localStroke = strokedRectStroke;'));
-      expect(output, contains('if (localStroke == null)'));
-      expect(output, contains('paint.color = const Color(0xFF0000FF);'));
-      expect(output, contains('else'));
-      expect(output, contains('_applyOverride(paint, localStroke);'));
-    });
+        // Assert
+        expect(output, contains('final Object? strokedRectStroke;'));
+        expect(output, contains('this.strokedRectStroke,'));
+        expect(output, contains('final Object? localStroke = strokedRectStroke;'));
+        expect(output, contains('if (localStroke == null)'));
+        expect(output, contains('paint.color = const Color(0xFF0000FF);'));
+        expect(output, contains('else'));
+        expect(output, contains('_applyOverride(paint, localStroke);'));
+      },
+    );
 
     test('should use named Flutter colors (including shades) when a match exists', () async {
       // Arrange

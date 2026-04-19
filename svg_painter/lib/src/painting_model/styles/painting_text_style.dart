@@ -33,7 +33,8 @@ enum PaintingFontWeight {
   w800,
 
   /// Black weight.
-  w900;
+  w900
+  ;
 
   /// Converts this font weight to its standard string representation.
   String toFlutterString() {
@@ -57,7 +58,8 @@ enum PaintingFontStyle {
   normal,
 
   /// Use the italic font style.
-  italic;
+  italic
+  ;
 
   /// Converts this font style to its standard string representation.
   String toFlutterString() {

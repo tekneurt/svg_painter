@@ -24,8 +24,9 @@ extension ToSvgPath on XmlElement {
     return Success<SvgPath>(
       SvgPath(
         d: d,
-        geometryAttributes:
-            pathLength != null ? SvgGeometryAttributes(pathLength: pathLength) : null,
+        geometryAttributes: pathLength != null
+            ? SvgGeometryAttributes(pathLength: pathLength)
+            : null,
         coreAttributes: common.core,
         presentationAttributes: common.presentation,
       ),

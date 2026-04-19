@@ -16,26 +16,65 @@ void main() {
     });
 
     test('should parse alignments', () {
-      expect('xMinYMin'.toSvgPreserveAspectRatio().alignment, equals(SvgPreserveAspectRatioAlignment.xMinYMin));
-      expect('xMidYMin'.toSvgPreserveAspectRatio().alignment, equals(SvgPreserveAspectRatioAlignment.xMidYMin));
-      expect('xMaxYMin'.toSvgPreserveAspectRatio().alignment, equals(SvgPreserveAspectRatioAlignment.xMaxYMin));
-      expect('xMinYMid'.toSvgPreserveAspectRatio().alignment, equals(SvgPreserveAspectRatioAlignment.xMinYMid));
-      expect('xMidYMid'.toSvgPreserveAspectRatio().alignment, equals(SvgPreserveAspectRatioAlignment.xMidYMid));
-      expect('xMaxYMid'.toSvgPreserveAspectRatio().alignment, equals(SvgPreserveAspectRatioAlignment.xMaxYMid));
-      expect('xMinYMax'.toSvgPreserveAspectRatio().alignment, equals(SvgPreserveAspectRatioAlignment.xMinYMax));
-      expect('xMidYMax'.toSvgPreserveAspectRatio().alignment, equals(SvgPreserveAspectRatioAlignment.xMidYMax));
-      expect('xMaxYMax'.toSvgPreserveAspectRatio().alignment, equals(SvgPreserveAspectRatioAlignment.xMaxYMax));
+      expect(
+        'xMinYMin'.toSvgPreserveAspectRatio().alignment,
+        equals(SvgPreserveAspectRatioAlignment.xMinYMin),
+      );
+      expect(
+        'xMidYMin'.toSvgPreserveAspectRatio().alignment,
+        equals(SvgPreserveAspectRatioAlignment.xMidYMin),
+      );
+      expect(
+        'xMaxYMin'.toSvgPreserveAspectRatio().alignment,
+        equals(SvgPreserveAspectRatioAlignment.xMaxYMin),
+      );
+      expect(
+        'xMinYMid'.toSvgPreserveAspectRatio().alignment,
+        equals(SvgPreserveAspectRatioAlignment.xMinYMid),
+      );
+      expect(
+        'xMidYMid'.toSvgPreserveAspectRatio().alignment,
+        equals(SvgPreserveAspectRatioAlignment.xMidYMid),
+      );
+      expect(
+        'xMaxYMid'.toSvgPreserveAspectRatio().alignment,
+        equals(SvgPreserveAspectRatioAlignment.xMaxYMid),
+      );
+      expect(
+        'xMinYMax'.toSvgPreserveAspectRatio().alignment,
+        equals(SvgPreserveAspectRatioAlignment.xMinYMax),
+      );
+      expect(
+        'xMidYMax'.toSvgPreserveAspectRatio().alignment,
+        equals(SvgPreserveAspectRatioAlignment.xMidYMax),
+      );
+      expect(
+        'xMaxYMax'.toSvgPreserveAspectRatio().alignment,
+        equals(SvgPreserveAspectRatioAlignment.xMaxYMax),
+      );
     });
 
     test('should parse scales', () {
-      expect('xMidYMid meet'.toSvgPreserveAspectRatio().scale, equals(SvgPreserveAspectRatioScale.meet));
-      expect('xMidYMid slice'.toSvgPreserveAspectRatio().scale, equals(SvgPreserveAspectRatioScale.slice));
+      expect(
+        'xMidYMid meet'.toSvgPreserveAspectRatio().scale,
+        equals(SvgPreserveAspectRatioScale.meet),
+      );
+      expect(
+        'xMidYMid slice'.toSvgPreserveAspectRatio().scale,
+        equals(SvgPreserveAspectRatioScale.slice),
+      );
       // Unknown scale defaults to meet
-      expect('xMidYMid unknown'.toSvgPreserveAspectRatio().scale, equals(SvgPreserveAspectRatioScale.meet));
+      expect(
+        'xMidYMid unknown'.toSvgPreserveAspectRatio().scale,
+        equals(SvgPreserveAspectRatioScale.meet),
+      );
     });
 
     test('should handle unknown alignments by defaulting to xMidYMid', () {
-      expect('unknown_align slice'.toSvgPreserveAspectRatio().alignment, equals(SvgPreserveAspectRatioAlignment.xMidYMid));
+      expect(
+        'unknown_align slice'.toSvgPreserveAspectRatio().alignment,
+        equals(SvgPreserveAspectRatioAlignment.xMidYMid),
+      );
     });
   });
 }

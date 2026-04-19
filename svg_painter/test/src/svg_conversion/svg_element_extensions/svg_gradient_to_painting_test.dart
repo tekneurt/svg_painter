@@ -134,7 +134,8 @@ void main() {
           stops: const [],
           spreadMethod: entry.key,
         );
-        final cmd = (grad.toPaintCommand(context) as Success<PaintCommand>).value as DefineLinearGradient;
+        final cmd =
+            (grad.toPaintCommand(context) as Success<PaintCommand>).value as DefineLinearGradient;
         expect(cmd.spreadMethod, entry.value);
       }
     });

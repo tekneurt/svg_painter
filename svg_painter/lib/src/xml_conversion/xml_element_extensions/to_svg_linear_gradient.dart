@@ -35,11 +35,11 @@ extension ToSvgLinearGradient on XmlElement {
         .combine();
 
     final String? gradientTransform = toXmlAttributeValue(XmlAttributeName.gradientTransform);
-    final SvgGradientUnits gradientUnits = toXmlAttributeValue(XmlAttributeName.gradientUnits)
-            ?.toSvgGradientUnits() ??
+    final SvgGradientUnits gradientUnits =
+        toXmlAttributeValue(XmlAttributeName.gradientUnits)?.toSvgGradientUnits() ??
         XmlAttributeName.gradientUnits.toDefaultValue(elementName) as SvgGradientUnits;
-    final SvgSpreadMethod spreadMethod = toXmlAttributeValue(XmlAttributeName.spreadMethod)
-            ?.toSvgSpreadMethod() ??
+    final SvgSpreadMethod spreadMethod =
+        toXmlAttributeValue(XmlAttributeName.spreadMethod)?.toSvgSpreadMethod() ??
         XmlAttributeName.spreadMethod.toDefaultValue(elementName) as SvgSpreadMethod;
 
     final CommonAttributes common = toCommonAttributes(elementName);

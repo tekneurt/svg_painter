@@ -216,7 +216,8 @@ enum XmlAttributeName {
 
   /// The xml:space attribute.
   /// https://www.w3.org/TR/SVG11/styling.html#XMLSpaceAttribute
-  xmlSpace('xml:space');
+  xmlSpace('xml:space')
+  ;
 
   const XmlAttributeName(this.name);
 

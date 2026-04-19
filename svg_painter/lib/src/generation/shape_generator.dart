@@ -252,8 +252,9 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
         buffer.writeln('paint.color = $colorCode;');
       }
     } else {
-      final shaderRect =
-          style.shaderUnits == PaintingGradientUnits.userSpaceOnUse ? 'viewBoxRect' : boundsRect;
+      final shaderRect = style.shaderUnits == PaintingGradientUnits.userSpaceOnUse
+          ? 'viewBoxRect'
+          : boundsRect;
       buffer.writeln('paint.shader = _grad_${style.shaderId}.createShader($shaderRect);');
       if (style.opacity != 1.0) {
         buffer.writeln('paint.color = paint.color.withValues(alpha: ${style.opacity});');
@@ -270,7 +271,8 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
     final SvgTransformAttributes? transformAttributes = style.transformAttributes;
     final PaintingRect? clipRect = style.clipRect;
 
-    final bool hasTransform = transformAttributes != null && transformAttributes.operations.isNotEmpty;
+    final bool hasTransform =
+        transformAttributes != null && transformAttributes.operations.isNotEmpty;
     final hasClip = clipRect != null;
 
     if (!hasTransform && !hasClip) {

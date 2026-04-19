@@ -49,7 +49,8 @@ enum XmlElementName {
 
   /// The `<title>` element.
   title('title'),
-  desc('desc');
+  desc('desc')
+  ;
 
   const XmlElementName(this.tagName);
 

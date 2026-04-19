@@ -128,7 +128,8 @@ class GenerationAnalyzer {
           return true;
         }
       }
-      if (command is DrawGroup && needsGradientTransform(command.commands, gradientsNeedingStretch)) {
+      if (command is DrawGroup &&
+          needsGradientTransform(command.commands, gradientsNeedingStretch)) {
         return true;
       }
     }

@@ -86,7 +86,9 @@ class TextGenerator extends ShapeGenerator<DrawText> {
           final PaintingFillStyle? fill = style.fill;
           if (fill != null) {
             if (fill.shaderId != null) {
-              buffer.writeln('foreground: Paint()..shader = _grad_${fill.shaderId}.createShader(Rect.zero),');
+              buffer.writeln(
+                'foreground: Paint()..shader = _grad_${fill.shaderId}.createShader(Rect.zero),',
+              );
             } else if (fill.colorArgb != null) {
               final String colorCode = FlutterColorMap.getColorCode(fill.colorArgb!);
               buffer.writeln('color: $colorCode,');

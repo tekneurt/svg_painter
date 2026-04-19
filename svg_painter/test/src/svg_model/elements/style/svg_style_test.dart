@@ -18,7 +18,10 @@ void main() {
       final result = style.toString();
 
       // Assert
-      expect(result, 'SvgStyle(content: 19 chars, type: text/css, media: all, title: Main Style, id: style1)');
+      expect(
+        result,
+        'SvgStyle(content: 19 chars, type: text/css, media: all, title: Main Style, id: style1)',
+      );
     });
 
     test('should return compact string representation when optional fields are null', () {

@@ -12,7 +12,7 @@ void main() {
     testWidgets('Should render default colors correctly', (WidgetTester tester) async {
       // Group 1: Red. Group 2: Blue.
       const painter = GroupInheritancePainter();
-      
+
       await testSvgPainter(
         tester: tester,
         painter: painter,
@@ -26,7 +26,7 @@ void main() {
       const painter = GroupInheritancePainter(
         group1Fill: Colors.green,
       );
-      
+
       await testSvgPainter(
         tester: tester,
         painter: painter,
@@ -40,7 +40,7 @@ void main() {
       const painter = GroupInheritancePainter(
         group2Fill: Colors.yellow,
       );
-      
+
       await testSvgPainter(
         tester: tester,
         painter: painter,

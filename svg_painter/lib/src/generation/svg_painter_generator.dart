@@ -47,19 +47,19 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
 
   static const Map<Type, CommandGenerator<PaintCommand>> _generators =
       <Type, CommandGenerator<PaintCommand>>{
-    DrawCircle: CircleGenerator(),
-    DrawOval: OvalGenerator(),
-    DrawRect: RectGenerator(),
-    DrawText: TextGenerator(),
-    DrawGroup: GroupGenerator(),
-    DrawPath: PathGenerator(),
-    DrawLine: LineGenerator(),
-    DrawPolyline: PolyGenerator<DrawPolyline>(),
-    DrawPolygon: PolyGenerator<DrawPolygon>(),
-    DrawImage: ImageGenerator(),
-    DefineLinearGradient: LinearGradientGenerator(),
-    DefineRadialGradient: RadialGradientGenerator(),
-  };
+        DrawCircle: CircleGenerator(),
+        DrawOval: OvalGenerator(),
+        DrawRect: RectGenerator(),
+        DrawText: TextGenerator(),
+        DrawGroup: GroupGenerator(),
+        DrawPath: PathGenerator(),
+        DrawLine: LineGenerator(),
+        DrawPolyline: PolyGenerator<DrawPolyline>(),
+        DrawPolygon: PolyGenerator<DrawPolygon>(),
+        DrawImage: ImageGenerator(),
+        DefineLinearGradient: LinearGradientGenerator(),
+        DefineRadialGradient: RadialGradientGenerator(),
+      };
 
   @override
   FutureOr<String> generateForAnnotatedElement(
@@ -77,8 +77,9 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
       (String content) => content,
     );
 
-    final String? painterClassName =
-        annotation.read('painterClassName').isNull ? null : annotation.read('painterClassName').stringValue;
+    final String? painterClassName = annotation.read('painterClassName').isNull
+        ? null
+        : annotation.read('painterClassName').stringValue;
 
     final ConstantReader exposureReader = annotation.read('exposureMode');
     SvgExposureMode exposureMode = SvgExposureMode.none;
@@ -182,32 +183,41 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
         viewBoxMinY: svgRoot is SvgRoot ? svgRoot.viewBox?.minY ?? 0.0 : 0.0,
         inheritedAttributes: SvgPresentationAttributes(
           fill: SvgFillAttributes(
-            color: (svgRoot is SvgRoot ? svgRoot.fillAttributes?.color : null) ??
+            color:
+                (svgRoot is SvgRoot ? svgRoot.fillAttributes?.color : null) ??
                 const SvgNamedColor(SvgColorName.black),
-            opacity: (svgRoot is SvgRoot ? svgRoot.fillAttributes?.opacity : null) ??
+            opacity:
+                (svgRoot is SvgRoot ? svgRoot.fillAttributes?.opacity : null) ??
                 const SvgLength(1.0),
           ),
           stroke: SvgStrokeAttributes(
-            color: (svgRoot is SvgRoot ? svgRoot.strokeAttributes?.color : null) ??
+            color:
+                (svgRoot is SvgRoot ? svgRoot.strokeAttributes?.color : null) ??
                 const SvgNoneColor(),
-            opacity: (svgRoot is SvgRoot ? svgRoot.strokeAttributes?.opacity : null) ??
+            opacity:
+                (svgRoot is SvgRoot ? svgRoot.strokeAttributes?.opacity : null) ??
                 const SvgLength(1.0),
-            width: (svgRoot is SvgRoot ? svgRoot.strokeAttributes?.width : null) ??
+            width:
+                (svgRoot is SvgRoot ? svgRoot.strokeAttributes?.width : null) ??
                 const SvgLength(1.0),
             dashArray: svgRoot is SvgRoot ? svgRoot.strokeAttributes?.dashArray : null,
-            linecap: (svgRoot is SvgRoot ? svgRoot.strokeAttributes?.linecap : null) ??
+            linecap:
+                (svgRoot is SvgRoot ? svgRoot.strokeAttributes?.linecap : null) ??
                 SvgStrokeLinecap.butt,
-            linejoin: (svgRoot is SvgRoot ? svgRoot.strokeAttributes?.linejoin : null) ??
+            linejoin:
+                (svgRoot is SvgRoot ? svgRoot.strokeAttributes?.linejoin : null) ??
                 SvgStrokeLinejoin.miter,
           ),
           font: SvgFontAttributes(
-            size: (svgRoot is SvgRoot ? svgRoot.fontAttributes?.size : null) ??
-                const SvgLength(12.0),
-            weight: (svgRoot is SvgRoot ? svgRoot.fontAttributes?.weight : null) ??
+            size:
+                (svgRoot is SvgRoot ? svgRoot.fontAttributes?.size : null) ?? const SvgLength(12.0),
+            weight:
+                (svgRoot is SvgRoot ? svgRoot.fontAttributes?.weight : null) ??
                 const SvgFontWeightNormal(),
-            style: (svgRoot is SvgRoot ? svgRoot.fontAttributes?.style : null) ??
-                SvgFontStyle.normal,
-            family: (svgRoot is SvgRoot ? svgRoot.fontAttributes?.family : null) ??
+            style:
+                (svgRoot is SvgRoot ? svgRoot.fontAttributes?.style : null) ?? SvgFontStyle.normal,
+            family:
+                (svgRoot is SvgRoot ? svgRoot.fontAttributes?.family : null) ??
                 const SvgFontFamily('sans-serif'),
           ),
         ),
@@ -252,16 +262,15 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
     required List<PaintCommand> commands,
     SvgExposureMode exposureMode = SvgExposureMode.none,
     Map<String, String> propertyMapping = const <String, String>{},
-  }) =>
-      painterGenerator.generatePainterClass(
-        className: className,
-        viewBoxWidth: viewBoxWidth,
-        viewBoxHeight: viewBoxHeight,
-        commands: commands,
-        generators: _generators,
-        exposureMode: exposureMode,
-        propertyMapping: propertyMapping,
-      );
+  }) => painterGenerator.generatePainterClass(
+    className: className,
+    viewBoxWidth: viewBoxWidth,
+    viewBoxHeight: viewBoxHeight,
+    commands: commands,
+    generators: _generators,
+    exposureMode: exposureMode,
+    propertyMapping: propertyMapping,
+  );
 
   /// Loads SVG content from the given annotation.
   @visibleForTesting

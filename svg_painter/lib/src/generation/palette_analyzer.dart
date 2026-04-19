@@ -115,10 +115,9 @@ class PaletteAnalyzer {
       return false;
     }).toList();
 
-    final List<MapEntry<_StyleKey, List<PaintCommand>>> explicitEntries =
-        sortedEntries
-            .where((MapEntry<_StyleKey, List<PaintCommand>> e) => !defaultEntries.contains(e))
-            .toList();
+    final List<MapEntry<_StyleKey, List<PaintCommand>>> explicitEntries = sortedEntries
+        .where((MapEntry<_StyleKey, List<PaintCommand>> e) => !defaultEntries.contains(e))
+        .toList();
 
     if (defaultEntries.length == 1) {
       final name = 'default${prefix[0].toUpperCase()}${prefix.substring(1)}';

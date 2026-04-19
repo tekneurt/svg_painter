@@ -38,15 +38,18 @@ void main() {
       final buffer = GeneratorBuffer();
       const command = DefineLinearGradient(
         id: 'g',
-        x1: 0, y1: 0, x2: 1, y2: 0,
+        x1: 0,
+        y1: 0,
+        x2: 1,
+        y2: 0,
         stops: [],
         spreadMethod: PaintingSpreadMethod.reflect,
         transformAttributes: SvgTransformAttributes([SvgTranslate(10, 10)]),
       );
-      
+
       const LinearGradientGenerator().generate(command, buffer, painterClassName: 'MyPainter');
       final result = buffer.toString();
-      
+
       expect(result, contains('tileMode: TileMode.mirror'));
       expect(result, contains('transform: _SvgGradientTransform_MyPainter'));
     });

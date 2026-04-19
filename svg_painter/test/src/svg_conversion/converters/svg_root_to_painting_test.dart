@@ -23,8 +23,16 @@ void main() {
       final Result<List<PaintCommand>> result = svg.toPaintCommandsSvg(context);
 
       // Assert
-      expect(result.fold((Failure<List<PaintCommand>> f) => false, (List<PaintCommand> s) => true), isTrue);
-      expect(result.fold((Failure<List<PaintCommand>> f) => <PaintCommand>[], (List<PaintCommand> s) => s).length, equals(1));
+      expect(
+        result.fold((Failure<List<PaintCommand>> f) => false, (List<PaintCommand> s) => true),
+        isTrue,
+      );
+      expect(
+        result
+            .fold((Failure<List<PaintCommand>> f) => <PaintCommand>[], (List<PaintCommand> s) => s)
+            .length,
+        equals(1),
+      );
     });
   });
 }

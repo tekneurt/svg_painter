@@ -103,8 +103,7 @@ extension SvgElementToPaintCommands on SvgElement {
       final SvgStop _ ||
       final SvgMetadataElement _ ||
       final SvgStyle _ ||
-      final SvgIgnoredElement _ =>
-        const Success<List<PaintCommand>>(<PaintCommand>[]),
+      final SvgIgnoredElement _ => const Success<List<PaintCommand>>(<PaintCommand>[]),
       final SvgRadialGradient gradient =>
         gradient.toPaintCommand(childContext).map((PaintCommand cmd) => <PaintCommand>[cmd]),
       final SvgLinearGradient gradient =>

@@ -3,6 +3,14 @@
 # Last synced: Sunday, March 22, 2026
 # We adhere to the official Flutter repository's rules, but with stricter enforcement
 # regarding deprecated members and local immutability. Any deviations are documented below.
+#
+# DEVIATIONS:
+# 1. require_trailing_commas: Enabled to ensure multiline formatting is preserved and
+#    to align with the Flutter team's intended style (which is currently hindered by
+#    migration effort in the main repo).
+# 2. trailing_commas: preserve: Enabled (available in Dart 3.8+) to restore manual control
+#    over multiline formatting, preventing the Dart 3.7+ formatter from automatically
+#    collapsing short constructs.
 
 # Specify analysis options.
 #
@@ -41,6 +49,7 @@ analyzer:
 
 formatter:
   page_width: 100
+  trailing_commas: preserve
 
 linter:
   rules:
@@ -207,6 +216,7 @@ linter:
     - provide_deprecation_message
     # - public_member_api_docs # enabled on a case-by-case basis; see e.g. packages/analysis_options.yaml
     - recursive_getters
+    - require_trailing_commas
     # - require_trailing_commas # would be nice, but requires a lot of manual work: 10,000+ code locations would need to be reformatted by hand after bulk fix is applied
     - secure_pubspec_urls
     - sized_box_for_whitespace

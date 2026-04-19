@@ -34,10 +34,10 @@ extension SvgSymbolToPaintCommands on SvgSymbol {
     final SvgLengthPercentageAuto? finalWidthAttr = width ?? this.width;
     final SvgLengthPercentageAuto? finalHeightAttr = height ?? this.height;
 
-    final double wVal = finalWidthAttr?.resolveOrNull(context, SvgOrientation.horizontal) ??
-        context.viewBoxWidth;
-    final double hVal = finalHeightAttr?.resolveOrNull(context, SvgOrientation.vertical) ??
-        context.viewBoxHeight;
+    final double wVal =
+        finalWidthAttr?.resolveOrNull(context, SvgOrientation.horizontal) ?? context.viewBoxWidth;
+    final double hVal =
+        finalHeightAttr?.resolveOrNull(context, SvgOrientation.vertical) ?? context.viewBoxHeight;
 
     // 2. Resolve ViewBox Mapping
     final double vbW = viewBox?.width ?? wVal;
@@ -160,7 +160,7 @@ extension SvgSymbolToPaintCommands on SvgSymbol {
             style: viewportStyle,
             id: id,
             opacity: viewportStyle.groupOpacity,
-          )
+          ),
         ];
       } else {
         final viewBoxStyle = PaintingStyle(
@@ -173,7 +173,7 @@ extension SvgSymbolToPaintCommands on SvgSymbol {
             style: viewportStyle,
             id: id,
             opacity: viewportStyle.groupOpacity,
-          )
+          ),
         ];
       }
     });

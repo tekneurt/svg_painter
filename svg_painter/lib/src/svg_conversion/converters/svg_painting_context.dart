@@ -12,7 +12,11 @@ final class SvgPaintingContext {
     this.viewBoxMinY = 0.0,
     this.inheritedAttributes = const SvgPresentationAttributes(
       fill: SvgFillAttributes(color: SvgNamedColor(SvgColorName.black), opacity: SvgLength(1.0)),
-      stroke: SvgStrokeAttributes(color: SvgNoneColor(), opacity: SvgLength(1.0), width: SvgLength(1.0)),
+      stroke: SvgStrokeAttributes(
+        color: SvgNoneColor(),
+        opacity: SvgLength(1.0),
+        width: SvgLength(1.0),
+      ),
       font: SvgFontAttributes(
         size: SvgLength(12.0),
         weight: SvgFontWeightNormal(),

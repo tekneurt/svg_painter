@@ -19,7 +19,7 @@ class CurrentColorPainter extends _$CurrentColorPainter {
 void main() {
   testWidgets('Should respect currentColor override', (WidgetTester tester) async {
     const painter = CurrentColorPainter(color: Colors.red);
-    
+
     await testSvgPainter(
       tester: tester,
       painter: painter,
@@ -27,11 +27,13 @@ void main() {
     );
   });
 
-  testWidgets('Should fallback to IconTheme (default black) when color is null', (WidgetTester tester) async {
+  testWidgets('Should fallback to IconTheme (default black) when color is null', (
+    WidgetTester tester,
+  ) async {
     // We test the Widget, because the Painter itself doesn't know about IconTheme.
     // The Generator generates a Widget class `CurrentColorPainterWidget`.
     // Wait, I named the class `CurrentColorPainter`. So generated widget is `CurrentColorPainterWidget`.
-    
+
     await tester.pumpWidget(
       const MaterialApp(
         debugShowCheckedModeBanner: false,

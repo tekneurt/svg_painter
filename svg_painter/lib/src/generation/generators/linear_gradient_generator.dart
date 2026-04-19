@@ -55,10 +55,8 @@ class LinearGradientGenerator extends CommandGenerator<DefineLinearGradient> {
       final helperName = '_SvgGradientTransform_$cleanName';
 
       if (command.transformAttributes != null) {
-        final List<double> matrix =
-            command.transformAttributes!.toFlutterMatrix();
-        buffer.writeln(
-            'transform: $helperName(matrix: <double>[${matrix.join(', ')}]),');
+        final List<double> matrix = command.transformAttributes!.toFlutterMatrix();
+        buffer.writeln('transform: $helperName(matrix: <double>[${matrix.join(', ')}]),');
       }
     }, footer: ');');
   }

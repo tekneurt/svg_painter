@@ -44,7 +44,8 @@ final class DrawImage extends DrawCommand {
   final PaintingStyle style;
 
   @override
-  String toString() => 'DrawImage(x: $x, y: $y, width: $width, height: $height, decoding: $decoding, id: $id)';
+  String toString() =>
+      'DrawImage(x: $x, y: $y, width: $width, height: $height, decoding: $decoding, id: $id)';
 }
 
 /// Enumeration of image decoding hints in the painting model.

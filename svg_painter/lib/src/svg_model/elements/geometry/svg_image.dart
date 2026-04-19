@@ -4,8 +4,7 @@ part of '../../svg_element.dart';
 ///
 /// See: https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Element/image
 @immutable
-final class SvgImage extends SvgGraphicsElement
-    with SvgBounded, SvgViewportAttributable {
+final class SvgImage extends SvgGraphicsElement with SvgBounded, SvgViewportAttributable {
   const SvgImage({
     required this.href,
     this.x,

@@ -51,10 +51,11 @@ enum GoldenTestType { fixed, viewBox }
 /// 3. Add a comment documenting the pixel difference (e.g., "1px gradient diff")
 /// 4. Generate platform-specific golden: `flutter test --update-goldens`
 /// 5. Generate CI golden via Docker: `docker run ... flutter test --update-goldens`
-const Map<GoldenTestType, Set<TargetPlatform>?> defaultGoldenTests = <GoldenTestType, Set<TargetPlatform>?>{
-  GoldenTestType.fixed: null,
-  GoldenTestType.viewBox: null,
-};
+const Map<GoldenTestType, Set<TargetPlatform>?> defaultGoldenTests =
+    <GoldenTestType, Set<TargetPlatform>?>{
+      GoldenTestType.fixed: null,
+      GoldenTestType.viewBox: null,
+    };
 
 /// Returns the current host platform as a [TargetPlatform].
 TargetPlatform get currentPlatform => switch (Platform.operatingSystem) {

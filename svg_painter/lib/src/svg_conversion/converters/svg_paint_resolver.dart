@@ -170,7 +170,8 @@ PaintingStyle resolvePaint(
   // Note: For now we handle Inline Style via resolvedRules above, so we merge element attrs with CSS rules.
   // Actually, resolveRules already includes Inline Style at the highest priority.
   // So we merge: Element Attributes -> CSS rules (which already include Inline Style).
-  final SvgPresentationAttributes combined = (presentationAttributes ?? const SvgPresentationAttributes()).merge(cssPresentation);
+  final SvgPresentationAttributes combined =
+      (presentationAttributes ?? const SvgPresentationAttributes()).merge(cssPresentation);
 
   // 6. Handle inheritance
   final SvgPresentationAttributes resolved = combined.inherit(context.inheritedAttributes);
@@ -246,7 +247,8 @@ PaintingStyle resolvePaint(
       strokeColorArgb = strokePaint.toStrokeArgb();
     }
 
-    final double finalStrokeWidth = strokeAttrs?.width?.resolve(context, SvgOrientation.normalized) ?? 1.0;
+    final double finalStrokeWidth =
+        strokeAttrs?.width?.resolve(context, SvgOrientation.normalized) ?? 1.0;
 
     final SvgPointList? sda = strokeAttrs?.dashArray;
     List<double>? finalDashArray;
@@ -280,10 +282,15 @@ PaintingStyle resolvePaint(
   }
 
   final SvgFontAttributes? fontAttrs = resolved.font;
-  final double finalFontSize = (fontAttrs?.size ?? const SvgLength(12.0)).resolve(context, SvgOrientation.vertical);
+  final double finalFontSize = (fontAttrs?.size ?? const SvgLength(12.0)).resolve(
+    context,
+    SvgOrientation.vertical,
+  );
 
   final PaintingFontWeight finalFontWeight = _toPaintingFontWeight(fontAttrs?.weight);
-  final PaintingFontStyle finalFontStyle = (fontAttrs?.style?.value == 'italic') ? PaintingFontStyle.italic : PaintingFontStyle.normal;
+  final PaintingFontStyle finalFontStyle = (fontAttrs?.style?.value == 'italic')
+      ? PaintingFontStyle.italic
+      : PaintingFontStyle.normal;
 
   final String rawFontFamily = fontAttrs?.family?.value ?? 'sans-serif';
   final String finalFontFamily = switch (rawFontFamily) {
@@ -340,7 +347,9 @@ extension on SvgStrokeLinecap {
 extension on SvgStrokeLinejoin {
   PaintingStrokeJoin toStrokeJoin() {
     return switch (this) {
-      SvgStrokeLinejoin.miter || SvgStrokeLinejoin.miterClip || SvgStrokeLinejoin.arcs => PaintingStrokeJoin.miter,
+      SvgStrokeLinejoin.miter ||
+      SvgStrokeLinejoin.miterClip ||
+      SvgStrokeLinejoin.arcs => PaintingStrokeJoin.miter,
       SvgStrokeLinejoin.round => PaintingStrokeJoin.round,
       SvgStrokeLinejoin.bevel => PaintingStrokeJoin.bevel,
     };

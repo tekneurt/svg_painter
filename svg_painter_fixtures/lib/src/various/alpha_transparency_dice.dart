@@ -1,14 +1,16 @@
 import '_various.dart';
 
 /// Verify image element with alpha transparency.
-const String variousAlphaTransparencyDice = '''
+const String variousAlphaTransparencyDice =
+    '''
 <svg width="200" height="200" xmlns="http://www.w3.org/2000/svg">
   <image href="$alphaTransparencyDicePngPath" height="200" width="200" />
 </svg>
 ''';
 
 /// Verify image element with alpha transparency, transformations, and opacity.
-const String variousAlphaTransparencyDiceTransformed = '''
+const String variousAlphaTransparencyDiceTransformed =
+    '''
 <svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
   <rect x="0" y="0" width="200" height="200" fill="#f0f0f0" />
   <g transform="translate(100, 100) rotate(45) translate(-50, -50)">

@@ -30,11 +30,13 @@ extension ToSvgImage on XmlElement {
     );
 
     final SvgViewBox? viewBox = toXmlAttributeValue(XmlAttributeName.viewBox)?.toSvgViewBox();
-    final SvgPreserveAspectRatio? preserveAspectRatio =
-        toXmlAttributeValue(XmlAttributeName.preserveAspectRatio)?.toSvgPreserveAspectRatio();
+    final SvgPreserveAspectRatio? preserveAspectRatio = toXmlAttributeValue(
+      XmlAttributeName.preserveAspectRatio,
+    )?.toSvgPreserveAspectRatio();
 
     final SvgImageDecoding decoding =
-        toXmlAttributeValue(XmlAttributeName.decoding)?.toSvgImageDecoding() ?? SvgImageDecoding.auto;
+        toXmlAttributeValue(XmlAttributeName.decoding)?.toSvgImageDecoding() ??
+        SvgImageDecoding.auto;
 
     final CommonAttributes common = toCommonAttributes(elementName);
 

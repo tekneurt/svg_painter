@@ -151,7 +151,8 @@ enum SvgColorName {
   whitesmoke,
   yellow,
   yellowgreen,
-  transparent; // CSS3 keyword, widely supported
+  transparent
+  ; // CSS3 keyword, widely supported
 
   /// Parses a string into an [SvgColorName].
   static SvgColorName? fromName(String name) {

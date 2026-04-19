@@ -27,18 +27,15 @@ class RadialGradientGenerator extends CommandGenerator<DefineRadialGradient> {
     final bool needsStretch = gradientsNeedingStretch?.contains(command.id) ?? false;
 
     buffer.writeBlock('final Gradient $varName = RadialGradient(', () {
-      buffer.writeln(
-          'center: Alignment(${command.cx * 2 - 1}, ${command.cy * 2 - 1}),');
+      buffer.writeln('center: Alignment(${command.cx * 2 - 1}, ${command.cy * 2 - 1}),');
       buffer.writeln('radius: ${command.radius},');
-      buffer.writeln(
-          'focal: Alignment(${command.fx * 2 - 1}, ${command.fy * 2 - 1}),');
+      buffer.writeln('focal: Alignment(${command.fx * 2 - 1}, ${command.fy * 2 - 1}),');
       buffer.writeln('focalRadius: ${command.focalRadius},');
 
       buffer.writeBlock('colors: <Color>[', () {
         for (final GradientStop stop in command.stops) {
           final int alpha = (stop.opacity * 255).round().clamp(0, 255);
-          final int combinedColor =
-              (stop.colorArgb & 0x00FFFFFF) | (alpha << 24);
+          final int combinedColor = (stop.colorArgb & 0x00FFFFFF) | (alpha << 24);
           final String colorCode = FlutterColorMap.getColorCode(combinedColor);
           buffer.writeln('$colorCode,');
         }
@@ -62,21 +59,17 @@ class RadialGradientGenerator extends CommandGenerator<DefineRadialGradient> {
       final helperName = '_SvgGradientTransform_$cleanName';
 
       if (command.transformAttributes != null) {
-        final List<double> matrix =
-            command.transformAttributes!.toFlutterMatrix();
-        final extra =
-            command.units == PaintingGradientUnits.objectBoundingBox &&
-                    needsStretch
-                ? ', isElliptical: true, centerX: ${command.cx}, centerY: ${command.cy}'
-                : '';
-        buffer.writeln(
-            'transform: $helperName(matrix: <double>[${matrix.join(', ')}]$extra),');
-      } else if (command.units == PaintingGradientUnits.objectBoundingBox &&
-          needsStretch) {
+        final List<double> matrix = command.transformAttributes!.toFlutterMatrix();
+        final extra = command.units == PaintingGradientUnits.objectBoundingBox && needsStretch
+            ? ', isElliptical: true, centerX: ${command.cx}, centerY: ${command.cy}'
+            : '';
+        buffer.writeln('transform: $helperName(matrix: <double>[${matrix.join(', ')}]$extra),');
+      } else if (command.units == PaintingGradientUnits.objectBoundingBox && needsStretch) {
         // SVG objectBoundingBox radial gradients are elliptical on non-square elements.
         // We use the centerX/centerY to ensure correct aspect-ratio correction.
         buffer.writeln(
-            'transform: $helperName(isElliptical: true, centerX: ${command.cx}, centerY: ${command.cy}),');
+          'transform: $helperName(isElliptical: true, centerX: ${command.cx}, centerY: ${command.cy}),',
+        );
       }
     }, footer: ');');
   }

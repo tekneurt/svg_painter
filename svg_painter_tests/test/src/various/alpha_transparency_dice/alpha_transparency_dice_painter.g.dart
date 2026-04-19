@@ -29,8 +29,7 @@ class AlphaTransparencyDicePainterWidget extends StatefulWidget {
       _AlphaTransparencyDicePainterWidgetState();
 }
 
-class _AlphaTransparencyDicePainterWidgetState
-    extends State<AlphaTransparencyDicePainterWidget> {
+class _AlphaTransparencyDicePainterWidgetState extends State<AlphaTransparencyDicePainterWidget> {
   ui.Image? _image0;
 
   @override
@@ -442228,8 +442227,7 @@ class _$AlphaTransparencyDiceTransformedPainter extends CustomPainter {
     if (image0 != null) {
       final double srcW = image0!.width.toDouble();
       final double srcH = image0!.height.toDouble();
-      final Paint paint = Paint()
-        ..color = const Color(0xFF000000).withValues(alpha: 0.5);
+      final Paint paint = Paint()..color = const Color(0xFF000000).withValues(alpha: 0.5);
       canvas.drawImageRect(
         image0!,
         Rect.fromLTWH(0, 0, srcW, srcH),

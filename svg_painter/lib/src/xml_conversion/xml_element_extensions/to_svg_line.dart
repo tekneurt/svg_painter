@@ -39,8 +39,9 @@ extension ToSvgLine on XmlElement {
         y1: y1,
         x2: x2,
         y2: y2,
-        geometryAttributes:
-            pathLength != null ? SvgGeometryAttributes(pathLength: pathLength) : null,
+        geometryAttributes: pathLength != null
+            ? SvgGeometryAttributes(pathLength: pathLength)
+            : null,
         coreAttributes: common.core,
         presentationAttributes: common.presentation,
       ),

@@ -43,19 +43,24 @@ extension SvgImageToDrawImage on SvgImage {
         viewBoxMinY: 0.0,
       );
 
-      final Result<List<PaintCommand>> nestedCommandsResult = nestedSvg.toPaintCommands(nestedContext);
+      final Result<List<PaintCommand>> nestedCommandsResult = nestedSvg.toPaintCommands(
+        nestedContext,
+      );
 
       return nestedCommandsResult.map((List<PaintCommand> nestedCommands) {
         // The nested SVG draws itself assuming its own width/height or viewBox.
         // We need to fit whatever it draws into our image's widthVal/heightVal
         // using the image's preserveAspectRatio.
-        
+
         // Find what the nested SVG resolved its own size to.
         double nestedW = nestedContext.viewBoxWidth;
         double nestedH = nestedContext.viewBoxHeight;
-        
-        final double resolvedW = (nestedSvg as SvgSvg).width?.resolveOrNull(nestedContext, SvgOrientation.horizontal) ?? 0.0;
-        final double resolvedH = nestedSvg.height?.resolveOrNull(nestedContext, SvgOrientation.vertical) ?? 0.0;
+
+        final double resolvedW =
+            (nestedSvg as SvgSvg).width?.resolveOrNull(nestedContext, SvgOrientation.horizontal) ??
+            0.0;
+        final double resolvedH =
+            nestedSvg.height?.resolveOrNull(nestedContext, SvgOrientation.vertical) ?? 0.0;
         if (resolvedW > 0 && resolvedH > 0) {
           nestedW = resolvedW;
           nestedH = resolvedH;
@@ -65,7 +70,7 @@ extension SvgImageToDrawImage on SvgImage {
         }
 
         final SvgPreserveAspectRatio par = preserveAspectRatio ?? SvgPreserveAspectRatio.defaults;
-        
+
         double sx = nestedW > 0 ? widthVal / nestedW : 1.0;
         double sy = nestedH > 0 ? heightVal / nestedH : 1.0;
         var alignX = 0.0;
@@ -132,7 +137,9 @@ extension SvgImageToDrawImage on SvgImage {
         return <PaintCommand>[
           DrawGroup(
             id: id,
-            opacity: presentationAttributes?.graphics?.opacity?.resolve(context, SvgOrientation.unit) ?? 1.0,
+            opacity:
+                presentationAttributes?.graphics?.opacity?.resolve(context, SvgOrientation.unit) ??
+                1.0,
             commands: nestedCommands,
             style: PaintingStyle(
               transformAttributes: SvgTransformAttributes(imageOps),
@@ -167,7 +174,9 @@ extension SvgImageToDrawImage on SvgImage {
         bytes: bytes,
         decoding: resolvedDecoding,
         style: PaintingStyle(
-          groupOpacity: presentationAttributes?.graphics?.opacity?.resolve(context, SvgOrientation.unit) ?? 1.0,
+          groupOpacity:
+              presentationAttributes?.graphics?.opacity?.resolve(context, SvgOrientation.unit) ??
+              1.0,
           transformAttributes: presentationAttributes?.graphics?.transformAttributes,
         ),
       ),

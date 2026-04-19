@@ -56,13 +56,18 @@ void main() {
     test('should handle elliptical gradients', () {
       const cmd = DefineRadialGradient(
         id: 'g',
-        cx: 0.5, cy: 0.5, radius: 0.5, fx: 0.5, fy: 0.5, focalRadius: 0,
+        cx: 0.5,
+        cy: 0.5,
+        radius: 0.5,
+        fx: 0.5,
+        fy: 0.5,
+        focalRadius: 0,
         stops: [],
       );
       final buffer = GeneratorBuffer();
       const RadialGradientGenerator().generate(
-        cmd, 
-        buffer, 
+        cmd,
+        buffer,
         gradientsNeedingStretch: {'g'},
       );
       expect(buffer.toString(), contains('isElliptical: true, centerX: 0.5, centerY: 0.5'));

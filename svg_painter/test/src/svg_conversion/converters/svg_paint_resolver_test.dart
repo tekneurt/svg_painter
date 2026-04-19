@@ -247,7 +247,9 @@ void main() {
       final PaintingStyle style = resolvePaint(
         emptyContext,
         tagName: 'g',
-        coreAttributes: const SvgCoreAttributes(inlineStyle: 'stroke: black; stroke-dasharray: 5, 5'),
+        coreAttributes: const SvgCoreAttributes(
+          inlineStyle: 'stroke: black; stroke-dasharray: 5, 5',
+        ),
       );
 
       expect(style.stroke?.dashArray, equals(<double>[5.0, 5.0]));
@@ -284,7 +286,9 @@ void main() {
       final PaintingStyle style2 = resolvePaint(
         emptyContext,
         tagName: 'g',
-        coreAttributes: const SvgCoreAttributes(inlineStyle: 'stroke: black; stroke-linejoin: arcs'),
+        coreAttributes: const SvgCoreAttributes(
+          inlineStyle: 'stroke: black; stroke-linejoin: arcs',
+        ),
       );
       expect(style2.stroke?.join, PaintingStrokeJoin.miter);
     });
@@ -406,7 +410,9 @@ void main() {
       final PaintingStyle style = resolvePaint(
         emptyContext,
         tagName: 'g',
-        coreAttributes: const SvgCoreAttributes(inlineStyle: 'stroke: black; stroke-miterlimit: 8.5'),
+        coreAttributes: const SvgCoreAttributes(
+          inlineStyle: 'stroke: black; stroke-miterlimit: 8.5',
+        ),
       );
       expect(style.stroke?.miterLimit, 8.5);
 
@@ -422,7 +428,9 @@ void main() {
       final PaintingStyle style3 = resolvePaint(
         emptyContext,
         tagName: 'g',
-        coreAttributes: const SvgCoreAttributes(inlineStyle: 'stroke: black; stroke-miterlimit: 0.5'),
+        coreAttributes: const SvgCoreAttributes(
+          inlineStyle: 'stroke: black; stroke-miterlimit: 0.5',
+        ),
       );
       expect(style3.stroke?.miterLimit, 4.0);
     });

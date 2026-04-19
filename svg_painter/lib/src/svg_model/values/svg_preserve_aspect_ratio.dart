@@ -43,9 +43,7 @@ final class SvgPreserveAspectRatio extends SvgValue {
     if (identical(this, other)) {
       return true;
     }
-    return other is SvgPreserveAspectRatio &&
-        other.alignment == alignment &&
-        other.scale == scale;
+    return other is SvgPreserveAspectRatio && other.alignment == alignment && other.scale == scale;
   }
 
   @override

@@ -58,15 +58,15 @@ extension SvgUseToPaintCommands on SvgUse {
             height: height,
           )
           .map((List<PaintCommand> childCommands) {
-        return <PaintCommand>[
-          DrawGroup(
-            commands: childCommands,
-            style: style,
-            id: id,
-            opacity: style.groupOpacity,
-          )
-        ];
-      });
+            return <PaintCommand>[
+              DrawGroup(
+                commands: childCommands,
+                style: style,
+                id: id,
+                opacity: style.groupOpacity,
+              ),
+            ];
+          });
     }
 
     if (target is SvgSvg) {
@@ -80,15 +80,15 @@ extension SvgUseToPaintCommands on SvgUse {
             height: height,
           )
           .map((List<PaintCommand> childCommands) {
-        return <PaintCommand>[
-          DrawGroup(
-            commands: childCommands,
-            style: style,
-            id: id,
-            opacity: style.groupOpacity,
-          )
-        ];
-      });
+            return <PaintCommand>[
+              DrawGroup(
+                commands: childCommands,
+                style: style,
+                id: id,
+                opacity: style.groupOpacity,
+              ),
+            ];
+          });
     }
 
     // Context for children inherits styles, but coordinates are now in the <use> local space.
@@ -99,7 +99,7 @@ extension SvgUseToPaintCommands on SvgUse {
           style: style,
           id: id,
           opacity: style.groupOpacity,
-        )
+        ),
       ];
     });
   }

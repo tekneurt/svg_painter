@@ -1,14 +1,16 @@
 import '_various.dart';
 
 /// Verify image element with a JPG source (Lenna).
-const String variousLennaJpg = '''
+const String variousLennaJpg =
+    '''
 <svg width="200" height="200" xmlns="http://www.w3.org/2000/svg">
   <image href="$lennaJpgPath" height="200" width="200" />
 </svg>
 ''';
 
 /// Verify image element with a JPG source, transformations, and opacity.
-const String variousLennaJpgTransformed = '''
+const String variousLennaJpgTransformed =
+    '''
 <svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
   <rect x="0" y="0" width="200" height="200" fill="#f0f0f0" />
   <g transform="translate(100, 100) rotate(45) translate(-50, -50)">

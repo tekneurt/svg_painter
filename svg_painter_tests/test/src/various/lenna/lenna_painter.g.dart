@@ -369893,12 +369893,10 @@ class LennaTransformedPainterWidget extends StatefulWidget {
   final AlignmentGeometry alignment;
 
   @override
-  State<LennaTransformedPainterWidget> createState() =>
-      _LennaTransformedPainterWidgetState();
+  State<LennaTransformedPainterWidget> createState() => _LennaTransformedPainterWidgetState();
 }
 
-class _LennaTransformedPainterWidgetState
-    extends State<LennaTransformedPainterWidget> {
+class _LennaTransformedPainterWidgetState extends State<LennaTransformedPainterWidget> {
   ui.Image? _image0;
 
   @override
@@ -739719,8 +739717,7 @@ class _$LennaTransformedPainter extends CustomPainter {
     if (image0 != null) {
       final double srcW = image0!.width.toDouble();
       final double srcH = image0!.height.toDouble();
-      final Paint paint = Paint()
-        ..color = const Color(0xFF000000).withValues(alpha: 0.5);
+      final Paint paint = Paint()..color = const Color(0xFF000000).withValues(alpha: 0.5);
       canvas.drawImageRect(
         image0!,
         Rect.fromLTWH(0, 0, srcW, srcH),
@@ -739775,8 +739772,7 @@ class LennaDataUriPainterWidget extends StatefulWidget {
   final AlignmentGeometry alignment;
 
   @override
-  State<LennaDataUriPainterWidget> createState() =>
-      _LennaDataUriPainterWidgetState();
+  State<LennaDataUriPainterWidget> createState() => _LennaDataUriPainterWidgetState();
 }
 
 class _LennaDataUriPainterWidgetState extends State<LennaDataUriPainterWidget> {

@@ -34,9 +34,14 @@ class GroupGenerator extends ShapeGenerator<DrawGroup> {
       final bool useLayer = effectiveOpacity < 1.0;
 
       if (useLayer) {
-        final String hexOpacity =
-            (effectiveOpacity * 255).round().toRadixString(16).padLeft(2, '0').toUpperCase();
-        buffer.writeln('canvas.saveLayer(null, Paint()..color = const Color(0x${hexOpacity}FFFFFF));');
+        final String hexOpacity = (effectiveOpacity * 255)
+            .round()
+            .toRadixString(16)
+            .padLeft(2, '0')
+            .toUpperCase();
+        buffer.writeln(
+          'canvas.saveLayer(null, Paint()..color = const Color(0x${hexOpacity}FFFFFF));',
+        );
       }
 
       var nextInheritedFills = List<InheritedProperty>.from(

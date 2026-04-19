@@ -10,7 +10,8 @@ enum SvgImageDecoding with SvgBaseValue {
   sync('sync'),
 
   /// Decode the image asynchronously.
-  async('async');
+  async('async')
+  ;
 
   const SvgImageDecoding(this.value);
 

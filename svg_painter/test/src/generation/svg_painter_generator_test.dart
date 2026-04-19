@@ -171,7 +171,10 @@ void main() {
         );
 
         // Assert
-        expect(output, contains('class _SvgGradientTransform_TransformPainter extends GradientTransform {'));
+        expect(
+          output,
+          contains('class _SvgGradientTransform_TransformPainter extends GradientTransform {'),
+        );
       });
     });
 
@@ -304,7 +307,9 @@ void main() {
         final mockValue = MockDartObject();
         when(mockValue.toStringValue()).thenReturn('rectColor');
 
-        when(mockPropertyMappingReader.mapValue).thenReturn(<DartObject?, DartObject?>{mockKey: mockValue});
+        when(
+          mockPropertyMappingReader.mapValue,
+        ).thenReturn(<DartObject?, DartObject?>{mockKey: mockValue});
 
         // Act
         final String output = await gen.generateForAnnotatedElement(
@@ -340,7 +345,9 @@ void main() {
         // Add an invalid entry (null key/value)
         final mockKey = MockDartObject();
         when(mockKey.toStringValue()).thenReturn(null);
-        when(mockPropertyMappingReader.mapValue).thenReturn(<DartObject?, DartObject?>{mockKey: MockDartObject()});
+        when(
+          mockPropertyMappingReader.mapValue,
+        ).thenReturn(<DartObject?, DartObject?>{mockKey: MockDartObject()});
 
         // Act
         final String output = await gen.generateForAnnotatedElement(

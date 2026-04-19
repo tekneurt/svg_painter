@@ -58,7 +58,8 @@ void main() {
       });
 
       test('should hit all preserveAspectRatio alignment cases', () {
-        const List<SvgPreserveAspectRatioAlignment> alignments = SvgPreserveAspectRatioAlignment.values;
+        const List<SvgPreserveAspectRatioAlignment> alignments =
+            SvgPreserveAspectRatioAlignment.values;
 
         for (final alignment in alignments) {
           final root = SvgRoot(
@@ -77,7 +78,8 @@ void main() {
       });
 
       test('should hit all preserveAspectRatio alignments with slice scaling', () {
-        for (final SvgPreserveAspectRatioAlignment alignment in SvgPreserveAspectRatioAlignment.values) {
+        for (final SvgPreserveAspectRatioAlignment alignment
+            in SvgPreserveAspectRatioAlignment.values) {
           final root = SvgRoot(
             viewportAttributes: SvgViewportAttributes(
               viewBox: const SvgViewBox(0, 0, 100, 50), // Wide viewBox
@@ -120,17 +122,24 @@ void main() {
 
         // We can't directly call _toPaintCommands(onlyDefinitions: true) from outside,
         // but symbol.toPaintCommands(const SvgPaintingContext(viewBoxWidth: 100, viewBoxHeight: 100)) calls it with true.
-        final Result<List<PaintCommand>> result = symbol.toPaintCommands(const SvgPaintingContext(viewBoxWidth: 100, viewBoxHeight: 100));
+        final Result<List<PaintCommand>> result = symbol.toPaintCommands(
+          const SvgPaintingContext(viewBoxWidth: 100, viewBoxHeight: 100),
+        );
         final List<PaintCommand> commands = (result as Success<List<PaintCommand>>).value;
 
         expect(commands.whereType<DefineLinearGradient>().length, 1);
       });
 
       test('should hit all alignments in symbol viewport mapping', () {
-        for (final SvgPreserveAspectRatioAlignment alignment in SvgPreserveAspectRatioAlignment.values) {
+        for (final SvgPreserveAspectRatioAlignment alignment
+            in SvgPreserveAspectRatioAlignment.values) {
           const rect = SvgRect(
-            x: SvgLength(0), y: SvgLength(0), width: SvgLength(10), height: SvgLength(10),
-            rx: SvgLength(0), ry: SvgLength(0),
+            x: SvgLength(0),
+            y: SvgLength(0),
+            width: SvgLength(10),
+            height: SvgLength(10),
+            rx: SvgLength(0),
+            ry: SvgLength(0),
           );
           final symbol = SvgSymbol(
             coreAttributes: const SvgCoreAttributes(id: 's'),
@@ -142,8 +151,10 @@ void main() {
           );
           const use = SvgUse(
             href: '#s',
-            x: SvgLength(0), y: SvgLength(0),
-            width: SvgLength(100), height: SvgLength(100),
+            x: SvgLength(0),
+            y: SvgLength(0),
+            width: SvgLength(100),
+            height: SvgLength(100),
           );
           final root = SvgRoot(children: [symbol, use]);
 
@@ -431,7 +442,9 @@ void main() {
           y: SvgLength(20),
           width: SvgLength(200),
           height: SvgLength(100),
-          viewportAttributes: SvgViewportAttributes(viewBox: SvgViewBox(0, 0, 100, 50)), // sx = 2, sy = 2
+          viewportAttributes: SvgViewportAttributes(
+            viewBox: SvgViewBox(0, 0, 100, 50),
+          ), // sx = 2, sy = 2
           presentationAttributes: SvgPresentationAttributes(
             graphics: SvgGraphicsAttributes(
               transformAttributes: SvgTransformAttributes(<SvgTransformOperation>[SvgRotate(45)]),
@@ -446,18 +459,22 @@ void main() {
         final Result<List<PaintCommand>> result = root.toPaintCommands();
         final List<PaintCommand> commands = (result as Success<List<PaintCommand>>).value;
         final rootGroup = commands.single as DrawGroup;
-        
+
         // The nested SVG is now represented by an outer viewport group and an inner viewBox group.
         final DrawGroup nestedViewportGroup = rootGroup.commands.whereType<DrawGroup>().single;
-        final DrawGroup nestedViewBoxGroup = nestedViewportGroup.commands.whereType<DrawGroup>().single;
+        final DrawGroup nestedViewBoxGroup = nestedViewportGroup.commands
+            .whereType<DrawGroup>()
+            .single;
 
-        final List<SvgTransformOperation> viewportOps = nestedViewportGroup.style.transformAttributes!.operations;
+        final List<SvgTransformOperation> viewportOps =
+            nestedViewportGroup.style.transformAttributes!.operations;
         // For outer <svg> viewport, order is [...transformAttributes, Translate(x,y)]
         expect(viewportOps.length, 2);
         expect(viewportOps[0], isA<SvgRotate>());
         expect(viewportOps[1], isA<SvgTranslate>());
 
-        final List<SvgTransformOperation> viewBoxOps = nestedViewBoxGroup.style.transformAttributes!.operations;
+        final List<SvgTransformOperation> viewBoxOps =
+            nestedViewBoxGroup.style.transformAttributes!.operations;
         // For inner <svg> viewBox, order is [Scale(sx,sy)] (since minX/Y and align are 0 in this test)
         expect(viewBoxOps.length, 1);
         expect(viewBoxOps[0], isA<SvgScale>());
@@ -602,16 +619,31 @@ void main() {
       test('should delegate to all element types', () {
         final elements = <SvgElement>[
           const SvgCircle(cx: SvgLength(10), cy: SvgLength(10), r: SvgLength(10)),
-          const SvgEllipse(cx: SvgLength(10), cy: SvgLength(10), rx: SvgLength(5), ry: SvgLength(5)),
+          const SvgEllipse(
+            cx: SvgLength(10),
+            cy: SvgLength(10),
+            rx: SvgLength(5),
+            ry: SvgLength(5),
+          ),
           const SvgLine(x1: SvgLength(0), y1: SvgLength(0), x2: SvgLength(10), y2: SvgLength(10)),
-          const SvgRect(x: SvgLength(0), y: SvgLength(0), width: SvgLength(10), height: SvgLength(10), rx: SvgLength(2), ry: SvgLength(2)),
+          const SvgRect(
+            x: SvgLength(0),
+            y: SvgLength(0),
+            width: SvgLength(10),
+            height: SvgLength(10),
+            rx: SvgLength(2),
+            ry: SvgLength(2),
+          ),
           const SvgPath(d: 'M0,0 L10,10'),
 
           const SvgPolyline(points: SvgPointList(<double>[0, 0, 10, 10])),
           const SvgPolygon(points: SvgPointList(<double>[0, 0, 10, 10, 0, 10])),
-          const SvgText(x: SvgLength(10), y: SvgLength(10), children: <SvgTextContent>[SvgCharacterData('test')]),
+          const SvgText(
+            x: SvgLength(10),
+            y: SvgLength(10),
+            children: <SvgTextContent>[SvgCharacterData('test')],
+          ),
         ];
-
 
         final root = SvgRoot(children: elements);
         final Result<List<PaintCommand>> result = root.toPaintCommands();

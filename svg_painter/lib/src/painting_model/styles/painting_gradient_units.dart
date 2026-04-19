@@ -6,7 +6,7 @@ enum PaintingGradientUnits {
   objectBoundingBox,
 
   /// Coordinates are in the user coordinate system.
-  userSpaceOnUse;
+  userSpaceOnUse,
 }
 
 /// Enumeration of possible values for gradient spread methods in the painting model.
@@ -18,5 +18,5 @@ enum PaintingSpreadMethod {
   reflect,
 
   /// The gradient is repeated from the beginning.
-  repeat;
+  repeat,
 }

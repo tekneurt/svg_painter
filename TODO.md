@@ -245,7 +245,7 @@
 
 - [x] **Referencing & External Assets**: `<image>` [x], `<use>` [x].
 - [x] **Generator Refactoring**: Modularize `SvgPainterGenerator` by extracting large logic blocks (like widget and painter class generation) into dedicated helper classes to improve maintainability.
-- [ ] **Formatting Cleanup**: Enforce `require_trailing_commas` and `trailing_commas: preserve` and reformat entire monorepo to prevent automatic collapsing of multiline code.
+- [x] **Formatting Cleanup**: Enforce `require_trailing_commas` and `trailing_commas: preserve` and reformat entire monorepo to prevent automatic collapsing of multiline code.
 - [ ] **Clipping & Masking**: `<clipPath>`, `<mask >`.
 - [ ] **Accessibility (Semantic Mapping)**: Map `<title>` and `<desc>` automatically to Flutter's `Semantics` widget in the generated code.
 - [ ] **MDN Compliance**: Add 2nd example from [MDN fill](https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/fill) once `<marker>`, `context-stroke`, and `context-fill` are implemented.

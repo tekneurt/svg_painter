@@ -11,13 +11,19 @@ void main() {
     test('should identify unique strokes based on pathLength', () {
       final commands = <PaintCommand>[
         const DrawLine(
-          x1: 0, y1: 0, x2: 10, y2: 10,
+          x1: 0,
+          y1: 0,
+          x2: 10,
+          y2: 10,
           style: PaintingStyle(
             stroke: PaintingStrokeStyle(colorArgb: 0xFF000000, pathLength: 100.0),
           ),
         ),
         const DrawLine(
-          x1: 0, y1: 0, x2: 10, y2: 10,
+          x1: 0,
+          y1: 0,
+          x2: 10,
+          y2: 10,
           style: PaintingStyle(
             stroke: PaintingStrokeStyle(colorArgb: 0xFF000000, pathLength: 200.0),
           ),
@@ -35,13 +41,19 @@ void main() {
     test('should identify unique strokes based on dashArray', () {
       final commands = <PaintCommand>[
         const DrawLine(
-          x1: 0, y1: 0, x2: 10, y2: 10,
+          x1: 0,
+          y1: 0,
+          x2: 10,
+          y2: 10,
           style: PaintingStyle(
             stroke: PaintingStrokeStyle(colorArgb: 0xFF000000, dashArray: <double>[5.0, 5.0]),
           ),
         ),
         const DrawLine(
-          x1: 0, y1: 0, x2: 10, y2: 10,
+          x1: 0,
+          y1: 0,
+          x2: 10,
+          y2: 10,
           style: PaintingStyle(
             stroke: PaintingStrokeStyle(colorArgb: 0xFF000000, dashArray: <double>[10.0, 10.0]),
           ),
@@ -56,13 +68,19 @@ void main() {
     test('should group identical implicit strokes under defaultStroke', () {
       final commands = <PaintCommand>[
         const DrawLine(
-          x1: 0, y1: 0, x2: 10, y2: 10,
+          x1: 0,
+          y1: 0,
+          x2: 10,
+          y2: 10,
           style: PaintingStyle(
             stroke: PaintingStrokeStyle(colorArgb: 0xFF000000, isExplicit: false),
           ),
         ),
         const DrawLine(
-          x1: 10, y1: 10, x2: 20, y2: 20,
+          x1: 10,
+          y1: 10,
+          x2: 20,
+          y2: 20,
           style: PaintingStyle(
             stroke: PaintingStrokeStyle(colorArgb: 0xFF000000, isExplicit: false),
           ),
@@ -78,21 +96,33 @@ void main() {
     test('should identify unique strokes based on dashArray values', () {
       final commands = <PaintCommand>[
         const DrawLine(
-          x1: 0, y1: 0, x2: 10, y2: 10,
+          x1: 0,
+          y1: 0,
+          x2: 10,
+          y2: 10,
           style: PaintingStyle(
             stroke: PaintingStrokeStyle(colorArgb: 0xFF000000, dashArray: <double>[5.0, 5.0]),
           ),
         ),
         const DrawLine(
-          x1: 0, y1: 0, x2: 10, y2: 10,
+          x1: 0,
+          y1: 0,
+          x2: 10,
+          y2: 10,
           style: PaintingStyle(
             stroke: PaintingStrokeStyle(colorArgb: 0xFF000000, dashArray: <double>[5.0, 10.0]),
           ),
         ),
         const DrawLine(
-          x1: 0, y1: 0, x2: 10, y2: 10,
+          x1: 0,
+          y1: 0,
+          x2: 10,
+          y2: 10,
           style: PaintingStyle(
-            stroke: PaintingStrokeStyle(colorArgb: 0xFF000000, dashArray: <double>[5.0, 5.0, 5.0, 5.0]),
+            stroke: PaintingStrokeStyle(
+              colorArgb: 0xFF000000,
+              dashArray: <double>[5.0, 5.0, 5.0, 5.0],
+            ),
           ),
         ),
       ];

@@ -54,17 +54,17 @@ class PainterClassGenerator {
 
     final PaletteResult? palette =
         (exposureMode == SvgExposureMode.indexed || exposureMode == SvgExposureMode.mixed)
-            ? const PaletteAnalyzer().analyze(commands, mode: exposureMode)
-            : null;
+        ? const PaletteAnalyzer().analyze(commands, mode: exposureMode)
+        : null;
 
     final Set<String> gradientsNeedingStretch = analyzer.findGradientsNeedingStretch(commands);
 
     final List<String> sortedFillIds = fillIds.toList()..sort();
     final List<String> sortedStrokeIds = strokeIds.toList()..sort();
-    final List<String>? sortedFillIndexed =
-        palette?.fillAssignments.values.toSet().toList()?..sort();
-    final List<String>? sortedStrokeIndexed =
-        palette?.strokeAssignments.values.toSet().toList()?..sort();
+    final List<String>? sortedFillIndexed = palette?.fillAssignments.values.toSet().toList()
+      ?..sort();
+    final List<String>? sortedStrokeIndexed = palette?.strokeAssignments.values.toSet().toList()
+      ?..sort();
 
     String resolveName(String defaultName) => propertyMapping[defaultName] ?? defaultName;
 
