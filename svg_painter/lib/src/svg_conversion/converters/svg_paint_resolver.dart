@@ -197,6 +197,8 @@ SvgPresentationAttributes _parseCssPresentation(
       resolvedRules['stroke-width']?.toSvgLengthPercentage();
   final SvgPointList? cssStrokeDasharray =
       resolvedRules['stroke-dasharray']?.toSvgPointList();
+  final SvgLengthPercentage? cssStrokeDashoffset =
+      resolvedRules['stroke-dashoffset']?.toSvgLengthPercentage();
   final SvgStrokeLinecap? cssStrokeLinecap =
       resolvedRules['stroke-linecap']?.toSvgStrokeLinecap();
   final SvgStrokeLinejoin? cssStrokeLinejoin =
@@ -220,6 +222,7 @@ SvgPresentationAttributes _parseCssPresentation(
       opacity: cssStrokeOpacity,
       width: cssStrokeWidth,
       dashArray: cssStrokeDasharray,
+      dashOffset: cssStrokeDashoffset,
       linecap: cssStrokeLinecap,
       linejoin: cssStrokeLinejoin,
       miterLimit: cssStrokeMiterlimit,
@@ -370,6 +373,9 @@ PaintingStrokeStyle _buildStrokeStyle(
   final double? finalPathLength =
       (cssPathLength ?? geometryAttributes?.pathLength)?.value;
 
+  final double? finalDashOffset =
+      strokeAttrs?.dashOffset?.resolve(context, .normalized);
+
   final double finalStrokeOpacity =
       elementOpacity * (strokeAttrs?.opacity?.resolve(context, .unit) ?? 1.0);
 
@@ -384,6 +390,7 @@ PaintingStrokeStyle _buildStrokeStyle(
     join: (strokeAttrs?.linejoin ?? .miter).toStrokeJoin(),
     miterLimit: (strokeAttrs?.miterLimit ?? const SvgGenericNumber(4.0)).value,
     dashArray: finalDashArray,
+    dashOffset: finalDashOffset,
     isExplicit: isExplicit,
     isCurrentColor: isCurrentColor,
   );

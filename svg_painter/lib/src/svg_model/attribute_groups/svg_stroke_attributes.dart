@@ -10,6 +10,7 @@ class SvgStrokeAttributes {
     this.opacity,
     this.width,
     this.dashArray,
+    this.dashOffset,
     this.linecap,
     this.linejoin,
     this.miterLimit,
@@ -27,6 +28,9 @@ class SvgStrokeAttributes {
   /// The dash pattern for the stroke (mapped from `stroke-dasharray` attribute).
   final SvgPointList? dashArray;
 
+  /// The distance into the dash pattern to start the dash (mapped from `stroke-dashoffset` attribute).
+  final SvgLengthPercentage? dashOffset;
+
   /// The shape to be used at the end of open subpaths (mapped from `stroke-linecap` attribute).
   final SvgStrokeLinecap? linecap;
 
@@ -43,6 +47,7 @@ class SvgStrokeAttributes {
       if (opacity != null) 'opacity: $opacity',
       if (width != null) 'width: $width',
       if (dashArray != null) 'dashArray: $dashArray',
+      if (dashOffset != null) 'dashOffset: $dashOffset',
       if (linecap != null) 'linecap: $linecap',
       if (linejoin != null) 'linejoin: $linejoin',
       if (miterLimit != null) 'miterLimit: $miterLimit',

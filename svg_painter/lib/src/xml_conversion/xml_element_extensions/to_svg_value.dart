@@ -49,6 +49,7 @@ extension ToSvgValue on XmlElement {
         .strokeOpacity ||
         .stopOpacity ||
         .fontSize ||
+        .strokeDashoffset ||
         .strokeWidth => attributeValue.toSvgLengthPercentage(),
         .r || .fr || .rx || .ry || .width || .height => () {
           final SvgLengthPercentage val = attributeValue.toSvgLengthPercentage();

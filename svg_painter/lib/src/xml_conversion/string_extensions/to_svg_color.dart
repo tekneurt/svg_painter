@@ -55,10 +55,13 @@ extension ToSvgColor on String {
   }
 
   SvgColor? _parseHsl(String hsl) {
-    final hslRegex = RegExp(
-      r'^hsla?\(\s*([\d.]+)(?:deg)?\s*,\s*([\d.]+)%\s*,\s*([\d.]+)%\s*(?:,\s*([\d.]+)\s*)?\)$',
+    final hslCommaRegex = RegExp(
+      r'^hsla?\(\s*([\d.]+)(?:deg)?\s*,\s*([\d.]+)%\s*,\s*([\d.]+)%\s*(?:,\s*([\d.]+%?)\s*)?\)$',
     );
-    final Match? match = hslRegex.firstMatch(hsl);
+    final hslSpaceRegex = RegExp(
+      r'^hsla?\(\s*([\d.]+)(?:deg)?\s+([\d.]+)%\s+([\d.]+)%\s*(?:\/\s*([\d.]+%?)\s*)?\)$',
+    );
+    final Match? match = hslCommaRegex.firstMatch(hsl) ?? hslSpaceRegex.firstMatch(hsl);
     if (match == null) {
       return null;
     }
@@ -79,16 +82,26 @@ extension ToSvgColor on String {
     final double s = double.parse(sGroup).clamp(0.0, 100.0);
     final double l = double.parse(lGroup).clamp(0.0, 100.0);
     final String? aGroup = match.group(4);
-    final double a = aGroup == null ? 1.0 : double.parse(aGroup).clamp(0.0, 1.0);
+    final double a;
+    if (aGroup == null) {
+      a = 1.0;
+    } else if (aGroup.endsWith('%')) {
+      a = (double.parse(aGroup.substring(0, aGroup.length - 1)) / 100.0).clamp(0.0, 1.0);
+    } else {
+      a = double.parse(aGroup).clamp(0.0, 1.0);
+    }
 
     return SvgHslColor(a, h, s, l);
   }
 
   SvgColor? _parseRgb(String rgb) {
-    final rgbRegex = RegExp(
-      r'^rgba?\(\s*(\d+%?)\s*,\s*(\d+%?)\s*,\s*(\d+%?)\s*(?:,\s*([\d.]+)\s*)?\)$',
+    final rgbCommaRegex = RegExp(
+      r'^rgba?\(\s*(\d+%?)\s*,\s*(\d+%?)\s*,\s*(\d+%?)\s*(?:,\s*([\d.]+%?)\s*)?\)$',
     );
-    final Match? match = rgbRegex.firstMatch(rgb);
+    final rgbSpaceRegex = RegExp(
+      r'^rgba?\(\s*(\d+%?)\s+(\d+%?)\s+(\d+%?)\s*(?:\/\s*([\d.]+%?)\s*)?\)$',
+    );
+    final Match? match = rgbCommaRegex.firstMatch(rgb) ?? rgbSpaceRegex.firstMatch(rgb);
     if (match == null) {
       return null;
     }
@@ -97,8 +110,20 @@ extension ToSvgColor on String {
       if (part.endsWith('%')) {
         final double percentage = double.parse(part.substring(0, part.length - 1));
         return (percentage * 255 / 100).round().clamp(0, 255);
+      } else {
+        return int.parse(part).clamp(0, 255);
       }
-      return int.parse(part).clamp(0, 255);
+    }
+
+    int parseAlpha(String? part) {
+      if (part == null) {
+        return 255;
+      } else if (part.endsWith('%')) {
+        final double percentage = double.parse(part.substring(0, part.length - 1));
+        return (percentage * 255 / 100).round().clamp(0, 255);
+      } else {
+        return (double.parse(part) * 255).round().clamp(0, 255);
+      }
     }
 
     final String? rGroup = match.group(1);
@@ -116,8 +141,7 @@ extension ToSvgColor on String {
     final int r = parsePart(rGroup);
     final int g = parsePart(gGroup);
     final int b = parsePart(bGroup);
-    final String? aGroup = match.group(4);
-    final int a = aGroup == null ? 255 : (double.parse(aGroup) * 255).round().clamp(0, 255);
+    final int a = parseAlpha(match.group(4));
 
     return SvgRgbColor(a, r, g, b);
   }

@@ -150,6 +150,10 @@ enum XmlAttributeName {
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-dasharray
   strokeDasharray('stroke-dasharray'),
 
+  /// The distance into the dash pattern to start the dash.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-dashoffset
+  strokeDashoffset('stroke-dashoffset'),
+
   /// The shape to be used at the end of open subpaths when they are stroked.
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-linecap
   strokeLinecap('stroke-linecap'),

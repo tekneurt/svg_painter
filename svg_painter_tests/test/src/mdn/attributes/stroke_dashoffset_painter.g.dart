@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'path_length_painter.dart';
+part of 'stroke_dashoffset_painter.dart';
 
 // **************************************************************************
 // SvgPainterGenerator
@@ -10,8 +10,8 @@ part of 'path_length_painter.dart';
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
 
-class PathLengthPainterWidget extends StatelessWidget {
-  const PathLengthPainterWidget({
+class StrokeDashoffsetPainterWidget extends StatelessWidget {
+  const StrokeDashoffsetPainterWidget({
     super.key,
     this.width,
     this.height,
@@ -27,24 +27,24 @@ class PathLengthPainterWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomPaint(
-      size: Size(width ?? 100.0, height ?? 60.0),
-      painter: _$PathLengthPainter(fit: fit),
+      size: Size(width ?? 33.0, height ?? 10.0),
+      painter: _$StrokeDashoffsetPainter(fit: fit),
     );
   }
 }
 
-class _$PathLengthPainter extends CustomPainter {
-  const _$PathLengthPainter({this.fit = BoxFit.contain});
+class _$StrokeDashoffsetPainter extends CustomPainter {
+  const _$StrokeDashoffsetPainter({this.fit = BoxFit.contain});
 
   final BoxFit fit;
 
-  Size get viewBox => const Size(100.0, 60.0);
+  Size get viewBox => const Size(33.0, 10.0);
 
   @override
   void paint(Canvas canvas, Size size) {
     final FittedSizes fittedSizes = applyBoxFit(
       fit,
-      const Size(100.0, 60.0),
+      const Size(33.0, 10.0),
       size,
     );
     final Size sourceSize = fittedSizes.source;
@@ -60,71 +60,93 @@ class _$PathLengthPainter extends CustomPainter {
       destRect.height / sourceSize.height,
     );
 
+    canvas.save();
+    canvas.clipRect(Rect.fromLTWH(0.0, 0.0, 33.0, 10.0));
+    canvas.save();
+    canvas.translate(3.0, -0.0);
     {
-      final Path path = Path()
-        ..moveTo(0.0, 10.0)
-        ..lineTo(100.0, 10.0);
+      final Paint paint = Paint();
+      paint.color = Colors.black;
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 1.0;
+      canvas.drawLine(const Offset(0.0, 1.0), const Offset(30.0, 1.0), paint);
+    }
+    {
+      final Paint paint = Paint();
+      paint.color = Colors.black;
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 1.0;
+      final List<double> dashArray = [3.0, 1.0];
       {
-        final Paint paint = Paint();
-        paint.color = Colors.black;
-        paint.style = PaintingStyle.stroke;
-        paint.strokeWidth = 2.0;
-        final List<double> dashArray = [10.0, 10.0];
+        final Path path = Path()
+          ..moveTo(0.0, 3.0)
+          ..lineTo(30.0, 3.0);
         canvas.drawPath(_dashPath(path, dashArray), paint);
       }
     }
     {
-      final Path path = Path()
-        ..moveTo(0.0, 20.0)
-        ..lineTo(100.0, 20.0);
+      final Paint paint = Paint();
+      paint.color = Colors.black;
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 1.0;
+      final List<double> dashArray = [3.0, 1.0];
       {
-        final Paint paint = Paint();
-        paint.color = Colors.black;
-        paint.style = PaintingStyle.stroke;
-        paint.strokeWidth = 2.0;
-        final List<double> dashArray = [10.0, 10.0];
-        canvas.drawPath(_dashPath(path, dashArray, pathLength: 90.0), paint);
+        final Path path = Path()
+          ..moveTo(0.0, 5.0)
+          ..lineTo(30.0, 5.0);
+        canvas.drawPath(_dashPath(path, dashArray, dashOffset: 3.0), paint);
+      }
+    }
+    {
+      final Paint paint = Paint();
+      paint.color = Colors.black;
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 1.0;
+      final List<double> dashArray = [3.0, 1.0];
+      {
+        final Path path = Path()
+          ..moveTo(0.0, 7.0)
+          ..lineTo(30.0, 7.0);
+        canvas.drawPath(_dashPath(path, dashArray, dashOffset: -3.0), paint);
+      }
+    }
+    {
+      final Paint paint = Paint();
+      paint.color = Colors.black;
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 1.0;
+      final List<double> dashArray = [3.0, 1.0];
+      {
+        final Path path = Path()
+          ..moveTo(0.0, 9.0)
+          ..lineTo(30.0, 9.0);
+        canvas.drawPath(_dashPath(path, dashArray, dashOffset: 1.0), paint);
       }
     }
     {
       final Path path = Path()
-        ..moveTo(0.0, 30.0)
-        ..lineTo(100.0, 30.0);
+        ..moveTo(0.0, 5.0)
+        ..lineTo(-3.0, 5.0)
+        ..moveTo(0.0, 7.0)
+        ..lineTo(3.0, 7.0)
+        ..moveTo(0.0, 9.0)
+        ..lineTo(-1.0, 9.0);
       {
         final Paint paint = Paint();
         paint.color = Colors.black;
-        paint.style = PaintingStyle.stroke;
-        paint.strokeWidth = 2.0;
-        final List<double> dashArray = [10.0, 10.0];
-        canvas.drawPath(_dashPath(path, dashArray, pathLength: 50.0), paint);
+        paint.style = PaintingStyle.fill;
+        canvas.drawPath(path, paint);
       }
-    }
-    {
-      final Path path = Path()
-        ..moveTo(0.0, 40.0)
-        ..lineTo(100.0, 40.0);
       {
         final Paint paint = Paint();
-        paint.color = Colors.black;
+        paint.color = const Color(0x80FF0000);
         paint.style = PaintingStyle.stroke;
-        paint.strokeWidth = 2.0;
-        final List<double> dashArray = [10.0, 10.0];
-        canvas.drawPath(_dashPath(path, dashArray, pathLength: 30.0), paint);
+        paint.strokeWidth = 1.0;
+        canvas.drawPath(path, paint);
       }
     }
-    {
-      final Path path = Path()
-        ..moveTo(0.0, 50.0)
-        ..lineTo(100.0, 50.0);
-      {
-        final Paint paint = Paint();
-        paint.color = Colors.black;
-        paint.style = PaintingStyle.stroke;
-        paint.strokeWidth = 2.0;
-        final List<double> dashArray = [10.0, 10.0];
-        canvas.drawPath(_dashPath(path, dashArray, pathLength: 10.0), paint);
-      }
-    }
+    canvas.restore();
+    canvas.restore();
     canvas.restore();
   }
 
@@ -197,7 +219,7 @@ class _$PathLengthPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(covariant _$PathLengthPainter oldDelegate) {
+  bool shouldRepaint(covariant _$StrokeDashoffsetPainter oldDelegate) {
     if (fit == oldDelegate.fit) {
       return false;
     } else {

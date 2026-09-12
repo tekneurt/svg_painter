@@ -29,7 +29,7 @@ class RectGenerator extends ShapeGenerator<DrawRect> {
         command,
         command.style,
         bounds,
-        (String p, {String? dashArray, String? pathLength}) {
+        (String p, {String? dashArray, String? pathLength, String? dashOffset}) {
           if (dashArray == null) {
             if (command.rx != 0 || command.ry != 0) {
               buffer.writeln(
@@ -45,6 +45,12 @@ class RectGenerator extends ShapeGenerator<DrawRect> {
             } else {
               plArg = ', pathLength: $pathLength';
             }
+            final String doArg;
+            if (dashOffset?.isEmpty ?? true) {
+              doArg = '';
+            } else {
+              doArg = ', dashOffset: $dashOffset';
+            }
             buffer.writeBlock('{', () {
               if (command.rx != 0 || command.ry != 0) {
                 buffer.writeln(
@@ -53,7 +59,7 @@ class RectGenerator extends ShapeGenerator<DrawRect> {
               } else {
                 buffer.writeln('final Path path = Path()..addRect($bounds);');
               }
-              buffer.writeln('canvas.drawPath(_dashPath(path, $dashArray$plArg), $p);');
+              buffer.writeln('canvas.drawPath(_dashPath(path, $dashArray$plArg$doArg), $p);');
             });
           }
         },

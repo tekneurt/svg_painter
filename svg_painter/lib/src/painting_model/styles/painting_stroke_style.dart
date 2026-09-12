@@ -38,6 +38,7 @@ final class PaintingStrokeStyle implements PaintingPaintStyle {
     this.join = PaintingStrokeJoin.miter,
     this.miterLimit = 4.0,
     this.dashArray,
+    this.dashOffset,
     this.isExplicit = true,
     this.isCurrentColor = false,
   }) : assert(opacity >= 0.0 && opacity <= 1.0, 'Opacity must be between 0.0 and 1.0'),
@@ -77,6 +78,9 @@ final class PaintingStrokeStyle implements PaintingPaintStyle {
   /// The pattern of dashes and gaps used to stroke paths.
   final List<double>? dashArray;
 
+  /// The distance into the dash pattern to start the dash.
+  final double? dashOffset;
+
   /// Whether this stroke was explicitly defined on the element (not just inherited).
   @override
   final bool isExplicit;
@@ -87,5 +91,5 @@ final class PaintingStrokeStyle implements PaintingPaintStyle {
 
   @override
   String toString() =>
-      'PaintingStrokeStyle(color: $colorArgb, shader: $shaderId, units: $shaderUnits, width: $width, opacity: $opacity, cap: $cap, join: $join, miterLimit: $miterLimit, explicit: $isExplicit, currentColor: $isCurrentColor)';
+      'PaintingStrokeStyle(color: $colorArgb, shader: $shaderId, units: $shaderUnits, width: $width, opacity: $opacity, cap: $cap, join: $join, miterLimit: $miterLimit, dashArray: $dashArray, dashOffset: $dashOffset, explicit: $isExplicit, currentColor: $isCurrentColor)';
 }

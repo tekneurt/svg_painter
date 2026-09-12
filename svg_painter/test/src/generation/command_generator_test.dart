@@ -30,7 +30,7 @@ class TestShapeGenerator extends ShapeGenerator<DrawCircle> {
         command,
         command.style,
         bounds,
-        (String paintVar, {String? dashArray, String? pathLength}) {
+        (String paintVar, {String? dashArray, String? dashOffset, String? pathLength}) {
           if (dashArray == null) {
             buffer.writeln(
               'canvas.drawCircle(const Offset(${command.cx}, ${command.cy}), ${command.radius}, $paintVar);',

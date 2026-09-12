@@ -29,7 +29,7 @@ class LineGenerator extends ShapeGenerator<DrawLine> {
         command,
         command.style,
         bounds,
-        (String p, {String? dashArray, String? pathLength}) {
+        (String p, {String? dashArray, String? pathLength, String? dashOffset}) {
           if (dashArray == null) {
             buffer.writeln(
               'canvas.drawLine(const Offset(${command.x1}, ${command.y1}), const Offset(${command.x2}, ${command.y2}), $p);',
@@ -41,11 +41,17 @@ class LineGenerator extends ShapeGenerator<DrawLine> {
             } else {
               plArg = ', pathLength: $pathLength';
             }
+            final String doArg;
+            if (dashOffset?.isEmpty ?? true) {
+              doArg = '';
+            } else {
+              doArg = ', dashOffset: $dashOffset';
+            }
             buffer.writeBlock('{', () {
               buffer.writeln(
                 'final Path path = Path()..moveTo(${command.x1}, ${command.y1})..lineTo(${command.x2}, ${command.y2});',
               );
-              buffer.writeln('canvas.drawPath(_dashPath(path, $dashArray$plArg), $p);');
+              buffer.writeln('canvas.drawPath(_dashPath(path, $dashArray$plArg$doArg), $p);');
             });
           }
         },

@@ -18,7 +18,7 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
     T command,
     PaintingStyle style,
     String boundsRect,
-    void Function(String paintVar, {String? dashArray, String? pathLength}) drawCall, {
+    void Function(String paintVar, {String? dashArray, String? pathLength, String? dashOffset}) drawCall, {
     PaletteResult? palette,
     Map<String, String>? activeFillProperties,
     Map<String, String>? activeStrokeProperties,
@@ -81,7 +81,7 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
     required PaletteResult? palette,
     required Map<String, String>? activeProperties,
     required List<InheritedProperty>? inheritedProperties,
-    required void Function(String paintVar, {String? dashArray, String? pathLength}) drawCall,
+    required void Function(String paintVar, {String? dashArray, String? pathLength, String? dashOffset}) drawCall,
   }) {
     buffer.writeBlock('{', () {
       buffer.writeln('final Paint paint = Paint();');
@@ -125,7 +125,8 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
         } else {
           buffer.writeln('final List<double> dashArray = [${dashArray.join(', ')}];');
           final pathLength = stroke.pathLength?.toString();
-          drawCall('paint', dashArray: 'dashArray', pathLength: pathLength);
+          final dashOffset = stroke.dashOffset?.toString();
+          drawCall('paint', dashArray: 'dashArray', pathLength: pathLength, dashOffset: dashOffset);
         }
       } else {
         drawCall('paint');

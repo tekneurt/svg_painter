@@ -29,7 +29,7 @@ class CircleGenerator extends ShapeGenerator<DrawCircle> {
         command,
         command.style,
         bounds,
-        (String p, {String? dashArray, String? pathLength}) {
+        (String p, {String? dashArray, String? pathLength, String? dashOffset}) {
           if (dashArray == null) {
             buffer.writeln(
               'canvas.drawCircle(const Offset(${command.cx}, ${command.cy}), ${command.radius}, $p);',
@@ -41,9 +41,15 @@ class CircleGenerator extends ShapeGenerator<DrawCircle> {
             } else {
               plArg = ', pathLength: $pathLength';
             }
+            final String doArg;
+            if (dashOffset?.isEmpty ?? true) {
+              doArg = '';
+            } else {
+              doArg = ', dashOffset: $dashOffset';
+            }
             buffer.writeBlock('{', () {
               buffer.writeln('final Path path = Path()..addOval($bounds);');
-              buffer.writeln('canvas.drawPath(_dashPath(path, $dashArray$plArg), $p);');
+              buffer.writeln('canvas.drawPath(_dashPath(path, $dashArray$plArg$doArg), $p);');
             });
           }
         },

@@ -72,6 +72,7 @@ extension ToDefaultValue on XmlAttributeName {
       case .strokeMiterlimit:
         return const SvgGenericNumber(4.0);
       case .offset:
+      case .strokeDashoffset:
         return const SvgLength(0.0);
       case .stopColor:
         return const SvgNamedColor(SvgColorName.black);

@@ -29,6 +29,7 @@ import 'attributes/preserve_aspect_ratio_5_painter.dart';
 import 'attributes/r_painter.dart';
 import 'attributes/ry_painter.dart';
 import 'attributes/spread_method_painter.dart';
+import 'attributes/stroke_dashoffset_painter.dart';
 import 'attributes/stroke_linecap_painter.dart';
 import 'attributes/stroke_linejoin_painter.dart';
 import 'attributes/stroke_miterlimit_painter.dart';
@@ -169,6 +170,11 @@ _fixtures =
           GoldenTestType.fixed: <TargetPlatform>{TargetPlatform.macOS},
           GoldenTestType.viewBox: <TargetPlatform>{TargetPlatform.macOS},
         },
+      ),
+      (
+        painter: const StrokeDashoffsetPainter(),
+        name: 'stroke_dashoffset_painter',
+        tests: defaultGoldenTests,
       ),
       (painter: const StrokeLinecapPainter(), name: 'stroke_linecap', tests: defaultGoldenTests),
       (painter: const StrokeLinejoinPainter(), name: 'stroke_linejoin', tests: defaultGoldenTests),

@@ -258,5 +258,25 @@ void main() {
       expect(resultPresent, SvgTextAnchor.middle);
       expect(resultAbsent, SvgTextAnchor.start);
     });
+
+    test('toSvgValue should return parsed stroke-dashoffset when present and default when absent', () {
+      // Arrange
+      final docPresent = XmlDocument.parse('<line stroke-dashoffset="15.5" />');
+      final docAbsent = XmlDocument.parse('<line />');
+
+      // Act
+      final SvgLengthPercentage resultPresent = docPresent.rootElement.toSvgValue<SvgLengthPercentage>(
+        XmlElementName.line,
+        XmlAttributeName.strokeDashoffset,
+      );
+      final SvgLengthPercentage resultAbsent = docAbsent.rootElement.toSvgValue<SvgLengthPercentage>(
+        XmlElementName.line,
+        XmlAttributeName.strokeDashoffset,
+      );
+
+      // Assert
+      expect(resultPresent, isA<SvgLength>().having((SvgLength l) => l.value, 'value', 15.5));
+      expect(resultAbsent, isA<SvgLength>().having((SvgLength l) => l.value, 'value', 0.0));
+    });
   });
 }

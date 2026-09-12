@@ -30,7 +30,7 @@ class TextGenerator extends ShapeGenerator<DrawText> {
         command,
         command.style,
         bounds,
-        (String p, {String? dashArray, String? pathLength}) {
+        (String p, {String? dashArray, String? pathLength, String? dashOffset}) {
           buffer.writeBlock('{', () {
             buffer.writeln('final TextPainter tp = TextPainter(');
             buffer.indent();

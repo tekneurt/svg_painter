@@ -14,6 +14,7 @@ void main() {
         cap: PaintingStrokeCap.square,
         join: PaintingStrokeJoin.round,
         dashArray: const <double>[10.0, 5.0],
+        dashOffset: 12.0,
         pathLength: 200.0,
         isExplicit: false,
         isCurrentColor: true,
@@ -27,6 +28,7 @@ void main() {
       expect(style.cap, PaintingStrokeCap.square);
       expect(style.join, PaintingStrokeJoin.round);
       expect(style.dashArray, equals(<double>[10.0, 5.0]));
+      expect(style.dashOffset, 12.0);
       expect(style.pathLength, 200.0);
       expect(style.isExplicit, isFalse);
       expect(style.isCurrentColor, isTrue);
@@ -42,6 +44,8 @@ void main() {
         opacity: 0.8,
         cap: PaintingStrokeCap.round,
         join: PaintingStrokeJoin.bevel,
+        dashArray: const <double>[4.0, 2.0],
+        dashOffset: 1.5,
       );
 
       // Act
@@ -50,7 +54,7 @@ void main() {
       // Assert
       expect(
         result,
-        'PaintingStrokeStyle(color: 4278190080, shader: grad2, units: null, width: 2.0, opacity: 0.8, cap: PaintingStrokeCap.round, join: PaintingStrokeJoin.bevel, miterLimit: 4.0, explicit: true, currentColor: false)',
+        'PaintingStrokeStyle(color: 4278190080, shader: grad2, units: null, width: 2.0, opacity: 0.8, cap: PaintingStrokeCap.round, join: PaintingStrokeJoin.bevel, miterLimit: 4.0, dashArray: [4.0, 2.0], dashOffset: 1.5, explicit: true, currentColor: false)',
       );
     });
   });

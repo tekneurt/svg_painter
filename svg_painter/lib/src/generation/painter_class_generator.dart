@@ -276,7 +276,7 @@ class PainterClassGenerator {
 
       if (analyzer.hasDashes(commands)) {
         buffer.writeBlock(
-          'Path _dashPath(Path source, List<double> dashArray, {double? pathLength}) {',
+          'Path _dashPath(Path source, List<double> dashArray, {double? pathLength, double? dashOffset}) {',
           () {
             buffer.writeln('if (dashArray.isEmpty) return source;');
             buffer.writeln('final Path dest = Path();');
@@ -288,11 +288,27 @@ class PainterClassGenerator {
               buffer.writeBlock('else {', () {
                 buffer.writeln('scale = metric.length / pathLength;');
               });
-              buffer.writeln('double distance = 0.0;');
+              buffer.writeln(
+                'final double totalLength = dashArray.fold(0.0, (final sum, final d) => sum + d * scale);',
+              );
+              buffer.writeln('if (totalLength <= 0) return source;');
+              buffer.writeln('double offset = (dashOffset ?? 0.0) * scale;');
+              buffer.writeln('offset = offset % totalLength;');
+              buffer.writeBlock('if (offset < 0) {', () {
+                buffer.writeln('offset += totalLength;');
+              });
+              buffer.writeln('double remainingPhase = offset;');
               buffer.writeln('int index = 0;');
               buffer.writeln('bool draw = true;');
+              buffer.writeBlock('while (remainingPhase >= dashArray[index] * scale) {', () {
+                buffer.writeln('remainingPhase -= dashArray[index] * scale;');
+                buffer.writeln('draw = !draw;');
+                buffer.writeln('index = (index + 1) % dashArray.length;');
+              });
+              buffer.writeln('double distance = 0.0;');
+              buffer.writeln('double segmentLen = (dashArray[index] * scale) - remainingPhase;');
               buffer.writeBlock('while (distance < metric.length) {', () {
-                buffer.writeln('final double len = dashArray[index] * scale;');
+                buffer.writeln('final double len = segmentLen;');
                 buffer.writeBlock('if (len > 0) {', () {
                   buffer.writeBlock('if (draw) {', () {
                     buffer.writeln(
@@ -304,6 +320,7 @@ class PainterClassGenerator {
                 });
                 buffer.writeln('draw = !draw;');
                 buffer.writeln('index = (index + 1) % dashArray.length;');
+                buffer.writeln('segmentLen = dashArray[index] * scale;');
               });
             });
             buffer.writeln('return dest;');

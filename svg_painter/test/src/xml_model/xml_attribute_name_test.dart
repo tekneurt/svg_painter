@@ -44,6 +44,7 @@ void main() {
           XmlAttributeName.strokeOpacity => 'stroke-opacity',
           XmlAttributeName.strokeWidth => 'stroke-width',
           XmlAttributeName.strokeDasharray => 'stroke-dasharray',
+          XmlAttributeName.strokeDashoffset => 'stroke-dashoffset',
           XmlAttributeName.strokeLinecap => 'stroke-linecap',
           XmlAttributeName.strokeLinejoin => 'stroke-linejoin',
           XmlAttributeName.strokeMiterlimit => 'stroke-miterlimit',
