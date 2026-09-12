@@ -31,26 +31,55 @@ abstract class CommandGenerator<T extends PaintCommand> {
     String boundsRect,
     void Function() body,
   ) {
-    final SvgTransformAttributes? transformAttributes = style.transformAttributes;
-    final PaintingRect? clipRect = style.clipRect;
+    final bool hasCanvasModification = switch (style) {
+      PaintingStyle(
+        transformAttributes: SvgTransformAttributes(:final operations),
+      )
+          when operations.isNotEmpty =>
+        true,
+      PaintingStyle(:final clipRect) when clipRect != null => true,
+      PaintingStyle(:final clipPathId) when clipPathId != null => true,
+      _ => false,
+    };
 
-    final bool hasTransform =
-        transformAttributes != null && transformAttributes.operations.isNotEmpty;
-    final hasClip = clipRect != null;
-    final hasMask = style.maskId != null;
-    final hasClipPath = style.clipPathId != null;
+    final String? maskId = style.maskId;
 
-    if (!hasTransform && !hasClip && !hasMask && !hasClipPath) {
-      body();
-      return;
+    switch ((hasCanvasModification, maskId)) {
+      case (false, null):
+        body();
+      case (true, final String id):
+        _wrapWithCanvasSave(buffer, style, boundsRect, () {
+          _wrapWithMask(buffer, id, boundsRect, body);
+        });
+      case (true, null):
+        _wrapWithCanvasSave(buffer, style, boundsRect, body);
+      case (false, final String id):
+        _wrapWithMask(buffer, id, boundsRect, body);
     }
+  }
 
-    if (hasTransform || hasClip || hasClipPath) {
-      buffer.writeln('canvas.save();');
-    }
+  void _wrapWithCanvasSave(
+    GeneratorBuffer buffer,
+    PaintingStyle style,
+    String boundsRect,
+    void Function() body,
+  ) {
+    buffer.writeln('canvas.save();');
+    _applyTransforms(buffer, style.transformAttributes);
+    _applyClipRect(buffer, style.clipRect);
+    _applyClipPath(buffer, style.clipPathId, boundsRect);
+    body();
+    buffer.writeln('canvas.restore();');
+  }
 
-    if (hasTransform) {
-      for (final SvgTransformOperation op in transformAttributes.operations) {
+  void _applyTransforms(
+    GeneratorBuffer buffer,
+    SvgTransformAttributes? transformAttributes,
+  ) {
+    if (transformAttributes
+        case SvgTransformAttributes(:final operations)
+        when operations.isNotEmpty) {
+      for (final op in operations) {
         switch (op) {
           case SvgTranslate(:final double x, :final double y):
             buffer.writeln('canvas.translate($x, $y);');
@@ -77,49 +106,57 @@ abstract class CommandGenerator<T extends PaintCommand> {
               'canvas.transform(Matrix4.fromList(<double>[$a, $b, 0, 0, $c, $d, 0, 0, 0, 0, 1, 0, $e, $f, 0, 1]).storage);',
             );
           case SvgSkewX(:final double angle):
-            final double tan = angle == 0.0 ? 0.0 : math.tan(angle * (math.pi / 180.0));
+            final double tan =
+                angle == 0.0 ? 0.0 : math.tan(angle * (math.pi / 180.0));
             buffer.writeln('canvas.skew($tan, 0.0);');
           case SvgSkewY(:final double angle):
-            final double tan = angle == 0.0 ? 0.0 : math.tan(angle * (math.pi / 180.0));
+            final double tan =
+                angle == 0.0 ? 0.0 : math.tan(angle * (math.pi / 180.0));
             buffer.writeln('canvas.skew(0.0, $tan);');
         }
       }
     }
+  }
 
-    if (hasClip) {
+  void _applyClipRect(GeneratorBuffer buffer, PaintingRect? clipRect) {
+    if (clipRect
+        case PaintingRect(:final left, :final top, :final width, :final height)) {
       buffer.writeln(
-        'canvas.clipRect(Rect.fromLTWH(${clipRect.left}, ${clipRect.top}, ${clipRect.width}, ${clipRect.height}));',
+        'canvas.clipRect(Rect.fromLTWH($left, $top, $width, $height));',
       );
     }
+  }
 
-    if (hasClipPath) {
-      buffer.writeln('_clipPath_${style.clipPathId}(canvas, size, $boundsRect);');
+  void _applyClipPath(
+    GeneratorBuffer buffer,
+    String? clipPathId,
+    String boundsRect,
+  ) {
+    if (clipPathId case final id?) {
+      buffer.writeln('_clipPath_$id(canvas, size, $boundsRect);');
     }
+  }
 
-    if (hasMask) {
-      buffer.writeln('canvas.saveLayer(null, Paint());');
-    }
-
+  void _wrapWithMask(
+    GeneratorBuffer buffer,
+    String maskId,
+    String boundsRect,
+    void Function() body,
+  ) {
+    buffer.writeln('canvas.saveLayer(null, Paint());');
     body();
-
-    if (hasMask) {
-      buffer.writeBlock(
-        'canvas.saveLayer(null, Paint()..blendMode = BlendMode.dstIn..colorFilter = const ColorFilter.matrix(<double>[',
-        () {
-          buffer.writeln('0, 0, 0, 0, 0,');
-          buffer.writeln('0, 0, 0, 0, 0,');
-          buffer.writeln('0, 0, 0, 0, 0,');
-          buffer.writeln('0.2126, 0.7152, 0.0722, 0, 0,');
-        },
-        footer: ']));',
-      );
-      buffer.writeln('_mask_${style.maskId}(canvas, size, $boundsRect);');
-      buffer.writeln('canvas.restore();');
-      buffer.writeln('canvas.restore();');
-    }
-
-    if (hasTransform || hasClip || hasClipPath) {
-      buffer.writeln('canvas.restore();');
-    }
+    buffer.writeBlock(
+      'canvas.saveLayer(null, Paint()..blendMode = BlendMode.dstIn..colorFilter = const ColorFilter.matrix(<double>[',
+      () {
+        buffer.writeln('0, 0, 0, 0, 0,');
+        buffer.writeln('0, 0, 0, 0, 0,');
+        buffer.writeln('0, 0, 0, 0, 0,');
+        buffer.writeln('0.2126, 0.7152, 0.0722, 0, 0,');
+      },
+      footer: ']));',
+    );
+    buffer.writeln('_mask_$maskId(canvas, size, $boundsRect);');
+    buffer.writeln('canvas.restore();');
+    buffer.writeln('canvas.restore();');
   }
 }

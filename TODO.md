@@ -246,17 +246,19 @@
 - [x] **Referencing & External Assets**: `<image>` [x], `<use>` [x].
 - [x] **Generator Refactoring**: Modularize `SvgPainterGenerator` by extracting large logic blocks (like widget and painter class generation) into dedicated helper classes to improve maintainability.
 - [x] **Formatting Cleanup**: Enforce `require_trailing_commas` and `trailing_commas: preserve` and reformat entire monorepo to prevent automatic collapsing of multiline code.
-- [ ] **Clipping & Masking**: `<clipPath>` [x], `<mask >` [x], `mask` attribute [x], `clip-path` attribute.
-- [ ] **Engine Refactoring & Clean Code**:
-    - [ ] Refactor `CommandGenerator.wrapWithContext` boolean flag chains (`!hasTransform && !hasClip && !hasMask && !hasClipPath`, `hasTransform || hasClip || hasClipPath`) to use clean, readable pattern matching or switch statements.
-    - [ ] Refactor `SvgPaintResolver` into modular, single-responsibility helpers for easier maintenance.
+- [x] **Clipping & Masking**: `<clipPath>` [x], `<mask >` [x], `mask` attribute [x], `clip-path` attribute [x].
+- [x] **Engine Refactoring & Clean Code**:
+    - [x] Refactor `CommandGenerator.wrapWithStyle` boolean flag chains (`!hasTransform && !hasClip && !hasMask && !hasClipPath`, `hasTransform || hasClip || hasClipPath`) to use clean, readable pattern matching or switch statements.
+    - [x] Refactor `SvgPaintResolver` into modular, single-responsibility helpers for easier maintenance.
+    - [ ] Systematic code audit for similar patterns: Identify and refactor remaining complex boolean flag cascades, negated conditions, and monolithic methods across generators and converters into clean switch/pattern-matching helpers.
 - [ ] **Accessibility (Semantic Mapping)**: Map `<title>` and `<desc>` automatically to Flutter's `Semantics` widget in the generated code.
 - [ ] **MDN Compliance**: Add 2nd example from [MDN fill](https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/fill) once `<marker>`, `context-stroke`, and `context-fill` are implemented.
 - [ ] **Essential Attributes**: `text-anchor`, `fill-rule`, `stroke-dashoffset`, `stroke-miterlimit` [x], `paint-order`, `vector-effect`, `dx`, `dy`, `preserveAspectRatio` [x].
 - [ ] **Font Management (Release Ready)**: Implement `AssetExporter` to automatically handle bundled fonts for the user.
-- [ ] **Release Preparation**:
+- [ ] **Release Preparation (Mandatory for Every Release)**:
     - [ ] **Documentation**: Write comprehensive READMEs and full API documentation.
     - [ ] **Validation**: Add comprehensive tests for all `BoxFit` values.
+    - [ ] **Dependency Refresh & Pub Score Audit (Final Pre-Release Step)**: Run `dart pub outdated` and update/broaden dependency constraints (e.g. `analyzer`, `xml`) across all packages so all dependencies support latest versions to maintain a 160/160 pub.dev score.
     - [ ] **Publishing**: Publish version 0.4.0 of all packages to pub.dev.
 
 ### Phase 9: Performance & Optimization (1.1.0+)
