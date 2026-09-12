@@ -36,8 +36,8 @@ class ClipPathGenerator extends CommandGenerator<DefineClipPath> {
           buffer.writeBlock('{', () {
             buffer.writeln('final Matrix4 matrix = Matrix4.identity()');
             buffer.indent();
-            buffer.writeln('..translate(targetBounds.left, targetBounds.top)');
-            buffer.writeln('..scale(targetBounds.width, targetBounds.height);');
+            buffer.writeln('..translateByDouble(targetBounds.left, targetBounds.top, 0.0, 1.0)');
+            buffer.writeln('..scaleByDouble(targetBounds.width, targetBounds.height, 1.0, 1.0);');
             buffer.outdent();
             buffer.writeln('canvas.clipPath(path.transform(matrix.storage));');
           });

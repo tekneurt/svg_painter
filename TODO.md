@@ -246,7 +246,10 @@
 - [x] **Referencing & External Assets**: `<image>` [x], `<use>` [x].
 - [x] **Generator Refactoring**: Modularize `SvgPainterGenerator` by extracting large logic blocks (like widget and painter class generation) into dedicated helper classes to improve maintainability.
 - [x] **Formatting Cleanup**: Enforce `require_trailing_commas` and `trailing_commas: preserve` and reformat entire monorepo to prevent automatic collapsing of multiline code.
-- [ ] **Clipping & Masking**: `<clipPath>`, `<mask >`.
+- [ ] **Clipping & Masking**: `<clipPath>` [x], `<mask >` [x], `mask` attribute [x], `clip-path` attribute.
+- [ ] **Engine Refactoring & Clean Code**:
+    - [ ] Refactor `CommandGenerator.wrapWithContext` boolean flag chains (`!hasTransform && !hasClip && !hasMask && !hasClipPath`, `hasTransform || hasClip || hasClipPath`) to use clean, readable pattern matching or switch statements.
+    - [ ] Refactor `SvgPaintResolver` into modular, single-responsibility helpers for easier maintenance.
 - [ ] **Accessibility (Semantic Mapping)**: Map `<title>` and `<desc>` automatically to Flutter's `Semantics` widget in the generated code.
 - [ ] **MDN Compliance**: Add 2nd example from [MDN fill](https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/fill) once `<marker>`, `context-stroke`, and `context-fill` are implemented.
 - [ ] **Essential Attributes**: `text-anchor`, `fill-rule`, `stroke-dashoffset`, `stroke-miterlimit` [x], `paint-order`, `vector-effect`, `dx`, `dy`, `preserveAspectRatio` [x].
@@ -288,3 +291,7 @@
 - [ ] **Complex Filter Primitives**: Lighting, turbulence, displacement maps, color matrices.
 - [ ] **Interactive Elements**: Event handling (taps, hovers) for SVG shapes.
 - [ ] **Misc Attributes**: Rendering hints and CSS interpolation properties.
+- [ ] **SVG 2.0 / CSS Masking Level 1 Basic Shapes**:
+    - [ ] Implement CSS `<basic-shape>` functions in `clip-path`: `circle()`, `ellipse()`, `inset()`, `polygon()`, `path()`, and `rect()`.
+    - [ ] Support geometry box keywords: `fill-box` (objectBoundingBox), `stroke-box` (stroke-expanded box), and `view-box` (viewport).
+    - [ ] *Note on MDN `clip-path` attribute example*: Only 1 of the 4 example rects is currently clipped (`url(#myClip)`); the remaining 3 use SVG 2.0 CSS `circle()` basic shapes which will be activated once this task is completed.

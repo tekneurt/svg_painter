@@ -1,3 +1,4 @@
+export 'clip_path.dart';
 export 'cx.dart';
 export 'cy.dart';
 export 'fill.dart';

@@ -50,8 +50,8 @@ void main() {
       expect(output, contains('void _clipPath_boxClip(Canvas canvas, Size size, Rect targetBounds) {'));
       expect(output, contains('path.addRect(Rect.fromLTWH(0.1, 0.2, 0.8, 0.6));'));
       expect(output, contains('final Matrix4 matrix = Matrix4.identity()'));
-      expect(output, contains('..translate(targetBounds.left, targetBounds.top)'));
-      expect(output, contains('..scale(targetBounds.width, targetBounds.height);'));
+      expect(output, contains('..translateByDouble(targetBounds.left, targetBounds.top, 0.0, 1.0)'));
+      expect(output, contains('..scaleByDouble(targetBounds.width, targetBounds.height, 1.0, 1.0);'));
       expect(output, contains('canvas.clipPath(path.transform(matrix.storage));'));
     });
 

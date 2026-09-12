@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../test_utils.dart';
+import 'attributes/clip_path_painter.dart';
 import 'attributes/cx_painter.dart';
 import 'attributes/cy_painter.dart';
 import 'attributes/fill_opacity_painter.dart';
@@ -46,6 +47,11 @@ import 'attributes/y2_examples_painter.dart';
 final List<({CustomPainter painter, String name, Map<GoldenTestType, Set<TargetPlatform>?> tests})>
 _fixtures =
     <({CustomPainter painter, String name, Map<GoldenTestType, Set<TargetPlatform>?> tests})>[
+      (
+        painter: const ClipPathAttributePainter(),
+        name: 'clip_path_attribute_painter',
+        tests: defaultGoldenTests,
+      ),
       (painter: const CxPainter(), name: 'cx_painter', tests: defaultGoldenTests),
       (
         painter: const CyPainter(),
