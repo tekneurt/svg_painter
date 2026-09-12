@@ -182,6 +182,9 @@ SvgPresentationAttributes _parseCssPresentation(
         resolvedRules['font-family']?.toSvgFontFamily() ?? cssFontFamily;
   }
 
+  final SvgTextAnchor? cssTextAnchor =
+      resolvedRules['text-anchor']?.toSvgTextAnchor();
+
   final SvgColor? cssFill = resolvedRules['fill']?.toSvgColor();
   final SvgLengthPercentage? cssFillOpacity =
       resolvedRules['fill-opacity']?.toSvgLengthPercentage();
@@ -226,6 +229,7 @@ SvgPresentationAttributes _parseCssPresentation(
       weight: cssFontWeight,
       style: cssFontStyle,
       family: cssFontFamily,
+      anchor: cssTextAnchor,
     ),
     graphics:
         (cssOpacity != null ||
@@ -406,11 +410,18 @@ PaintingTextStyle _resolveTextStyle(
     _ => rawFontFamily,
   };
 
+  final PaintingTextAnchor finalAnchor = switch (fontAttrs?.anchor) {
+    SvgTextAnchor.start || null => .start,
+    SvgTextAnchor.middle => .middle,
+    SvgTextAnchor.end => .end,
+  };
+
   return PaintingTextStyle(
     fontSize: finalFontSize,
     fontWeight: finalFontWeight,
     fontStyle: finalFontStyle,
     fontFamily: finalFontFamily,
+    textAnchor: finalAnchor,
   );
 }
 

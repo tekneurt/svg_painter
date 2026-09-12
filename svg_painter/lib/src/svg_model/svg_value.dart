@@ -25,6 +25,7 @@ part 'values/colors/svg_current_color.dart';
 part 'values/colors/svg_paint_reference.dart';
 part 'values/colors/svg_color_name.dart';
 part 'values/svg_fill_rule.dart';
+part 'values/svg_text_anchor.dart';
 part 'values/svg_point_list.dart';
 
 /// Base class for all SVG attribute values.

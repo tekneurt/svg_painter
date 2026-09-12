@@ -26,19 +26,25 @@ void main() {
   });
 
   group('PaintingTextStyle', () {
-    test('toString should contain all relevant properties', () {
+    test('should contain all relevant properties when converted to string', () {
+      // Arrange
       const style = PaintingTextStyle(
         fontSize: 12.0,
         fontWeight: PaintingFontWeight.bold,
         fontStyle: PaintingFontStyle.italic,
         fontFamily: 'Roboto',
+        textAnchor: PaintingTextAnchor.middle,
       );
 
+      // Act
       final str = style.toString();
+
+      // Assert
       expect(str, contains('size: 12.0'));
       expect(str, contains('weight: PaintingFontWeight.bold'));
       expect(str, contains('style: PaintingFontStyle.italic'));
       expect(str, contains('family: Roboto'));
+      expect(str, contains('anchor: PaintingTextAnchor.middle'));
     });
   });
 }

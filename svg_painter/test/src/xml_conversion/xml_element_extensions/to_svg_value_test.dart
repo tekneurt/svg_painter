@@ -238,5 +238,25 @@ void main() {
       expect(resultPresent, SvgFillRule.evenodd);
       expect(resultAbsent, SvgFillRule.nonzero);
     });
+
+    test('toSvgValue should return parsed text-anchor when present and default when absent', () {
+      // Arrange
+      final docPresent = XmlDocument.parse('<text text-anchor="middle" />');
+      final docAbsent = XmlDocument.parse('<text />');
+
+      // Act
+      final SvgTextAnchor resultPresent = docPresent.rootElement.toSvgValue<SvgTextAnchor>(
+        XmlElementName.text,
+        XmlAttributeName.textAnchor,
+      );
+      final SvgTextAnchor resultAbsent = docAbsent.rootElement.toSvgValue<SvgTextAnchor>(
+        XmlElementName.text,
+        XmlAttributeName.textAnchor,
+      );
+
+      // Assert
+      expect(resultPresent, SvgTextAnchor.middle);
+      expect(resultAbsent, SvgTextAnchor.start);
+    });
   });
 }

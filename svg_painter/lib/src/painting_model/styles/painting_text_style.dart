@@ -70,6 +70,18 @@ enum PaintingFontStyle {
   }
 }
 
+/// Enumeration of possible values for text alignment/anchor in the painting model.
+enum PaintingTextAnchor {
+  /// The start of the text is aligned to the anchor point.
+  start,
+
+  /// The middle of the text is aligned to the anchor point.
+  middle,
+
+  /// The end of the text is aligned to the anchor point.
+  end,
+}
+
 /// Represents the text-specific styling for an SVG element.
 @immutable
 final class PaintingTextStyle {
@@ -78,6 +90,7 @@ final class PaintingTextStyle {
     required this.fontWeight,
     required this.fontStyle,
     required this.fontFamily,
+    this.textAnchor = PaintingTextAnchor.start,
   });
 
   /// The size of the font in user units.
@@ -92,9 +105,12 @@ final class PaintingTextStyle {
   /// The family of the font.
   final String fontFamily;
 
+  /// The horizontal alignment / anchor of the text.
+  final PaintingTextAnchor textAnchor;
+
   @override
   String toString() =>
-      'PaintingTextStyle(size: $fontSize, weight: $fontWeight, style: $fontStyle, family: $fontFamily)';
+      'PaintingTextStyle(size: $fontSize, weight: $fontWeight, style: $fontStyle, family: $fontFamily, anchor: $textAnchor)';
 }
 
 /// Represents a node in a hierarchical text structure (TextSpan-like).

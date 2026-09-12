@@ -11,6 +11,7 @@ void main() {
         weight: SvgFontWeightBold(),
         style: SvgFontStyle.italic,
         family: SvgFontFamily('Roboto'),
+        anchor: SvgTextAnchor.middle,
       );
 
       // Act
@@ -19,7 +20,7 @@ void main() {
       // Assert
       expect(
         result,
-        'SvgFontAttributes(size: 16.5, weight: SvgFontWeight(bold), style: SvgFontStyle(italic), family: SvgFontFamily(Roboto))',
+        'SvgFontAttributes(size: 16.5, weight: SvgFontWeight(bold), style: SvgFontStyle(italic), family: SvgFontFamily(Roboto), anchor: SvgTextAnchor.middle)',
       );
     });
 

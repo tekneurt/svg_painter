@@ -50,8 +50,16 @@ class TextGenerator extends ShapeGenerator<DrawText> {
             buffer.writeln('textDirection: TextDirection.ltr,');
             buffer.outdent();
             buffer.writeln(')..layout();');
+
+            final PaintingTextAnchor anchor = command.style.text?.textAnchor ?? PaintingTextAnchor.start;
+            final String xExpr = switch (anchor) {
+              PaintingTextAnchor.middle => '${command.x} - tp.width / 2.0',
+              PaintingTextAnchor.end => '${command.x} - tp.width',
+              PaintingTextAnchor.start => '${command.x}',
+            };
+
             buffer.writeln(
-              'tp.paint(canvas, Offset(${command.x}, ${command.y} - tp.computeDistanceToActualBaseline(TextBaseline.alphabetic)));',
+              'tp.paint(canvas, Offset($xExpr, ${command.y} - tp.computeDistanceToActualBaseline(TextBaseline.alphabetic)));',
             );
           });
         },

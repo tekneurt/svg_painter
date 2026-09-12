@@ -67,6 +67,7 @@ void main() {
           XmlAttributeName.media => 'media',
           XmlAttributeName.title => 'title',
           XmlAttributeName.xmlSpace => 'xml:space',
+          XmlAttributeName.textAnchor => 'text-anchor',
         };
         expect(value.name, expected, reason: 'Enum $value should map to "$expected"');
       }

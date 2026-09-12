@@ -12,6 +12,7 @@ void main() {
         fontWeight: PaintingFontWeight.normal,
         fontStyle: PaintingFontStyle.normal,
         fontFamily: 'Roboto',
+        textAnchor: PaintingTextAnchor.middle,
       );
       const opacity = 0.5;
 
@@ -90,6 +91,7 @@ void main() {
       const fontFamily = 'Roboto';
       const PaintingFontWeight fontWeight = PaintingFontWeight.bold;
       const PaintingFontStyle fontStyle = PaintingFontStyle.italic;
+      const PaintingTextAnchor textAnchor = PaintingTextAnchor.end;
 
       // Act
       const text = PaintingTextStyle(
@@ -97,6 +99,7 @@ void main() {
         fontFamily: fontFamily,
         fontWeight: fontWeight,
         fontStyle: fontStyle,
+        textAnchor: textAnchor,
       );
 
       // Assert
@@ -104,6 +107,7 @@ void main() {
       expect(text.fontFamily, fontFamily);
       expect(text.fontWeight, fontWeight);
       expect(text.fontStyle, fontStyle);
+      expect(text.textAnchor, textAnchor);
     });
 
     test('should return correct string representation when toString() is called', () {
@@ -113,6 +117,7 @@ void main() {
         fontWeight: PaintingFontWeight.bold,
         fontStyle: PaintingFontStyle.italic,
         fontFamily: 'Arial',
+        textAnchor: PaintingTextAnchor.middle,
       );
 
       // Act
@@ -121,7 +126,7 @@ void main() {
       // Assert
       expect(
         result,
-        'PaintingTextStyle(size: 14.0, weight: PaintingFontWeight.bold, style: PaintingFontStyle.italic, family: Arial)',
+        'PaintingTextStyle(size: 14.0, weight: PaintingFontWeight.bold, style: PaintingFontStyle.italic, family: Arial, anchor: PaintingTextAnchor.middle)',
       );
     });
   });

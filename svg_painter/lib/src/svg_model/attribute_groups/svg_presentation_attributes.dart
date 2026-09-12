@@ -104,6 +104,7 @@ final class SvgPresentationAttributes {
       weight: b.weight ?? a.weight,
       style: b.style ?? a.style,
       family: b.family ?? a.family,
+      anchor: b.anchor ?? a.anchor,
     );
   }
 
@@ -169,6 +170,7 @@ final class SvgPresentationAttributes {
       weight: child.weight ?? parent.weight,
       style: child.style ?? parent.style,
       family: child.family ?? parent.family,
+      anchor: child.anchor ?? parent.anchor,
     );
   }
 

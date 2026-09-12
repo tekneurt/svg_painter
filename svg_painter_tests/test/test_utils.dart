@@ -100,6 +100,16 @@ Future<void> loadTestFonts() async {
     'Roboto': '../svg_painter/assets/fonts/roboto',
     'Noto Serif': '../svg_painter/assets/fonts/noto_serif',
     'Roboto Mono': '../svg_painter/assets/fonts/roboto_mono',
+    'Verdana': '../svg_painter/assets/fonts/roboto',
+    'Arial': '../svg_painter/assets/fonts/roboto',
+    'Helvetica': '../svg_painter/assets/fonts/roboto',
+    'sans-serif': '../svg_painter/assets/fonts/roboto',
+    'Times New Roman': '../svg_painter/assets/fonts/noto_serif',
+    'Georgia': '../svg_painter/assets/fonts/noto_serif',
+    'serif': '../svg_painter/assets/fonts/noto_serif',
+    'Courier': '../svg_painter/assets/fonts/roboto_mono',
+    'Courier New': '../svg_painter/assets/fonts/roboto_mono',
+    'monospace': '../svg_painter/assets/fonts/roboto_mono',
   };
 
   for (final MapEntry<String, String> entry in families.entries) {

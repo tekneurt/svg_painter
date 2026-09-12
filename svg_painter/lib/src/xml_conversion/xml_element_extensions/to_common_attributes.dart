@@ -39,6 +39,7 @@ extension ToCommonAttributes on XmlElement {
         weight: toSvgValueOrNull<SvgFontWeight>(elementName, XmlAttributeName.fontWeight),
         style: toSvgValueOrNull<SvgFontStyle>(elementName, XmlAttributeName.fontStyle),
         family: toSvgValueOrNull<SvgFontFamily>(elementName, XmlAttributeName.fontFamily),
+        anchor: toSvgValueOrNull<SvgTextAnchor>(elementName, XmlAttributeName.textAnchor),
       ),
       graphics: SvgGraphicsAttributes(
         opacity: toSvgValueOrNull<SvgLengthPercentage>(elementName, XmlAttributeName.opacity),

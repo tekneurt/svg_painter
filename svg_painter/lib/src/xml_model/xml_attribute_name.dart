@@ -240,7 +240,11 @@ enum XmlAttributeName {
 
   /// The xml:space attribute.
   /// https://www.w3.org/TR/SVG11/styling.html#XMLSpaceAttribute
-  xmlSpace('xml:space')
+  xmlSpace('xml:space'),
+
+  /// The alignment of text relative to a given point.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/text-anchor
+  textAnchor('text-anchor')
   ;
 
   const XmlAttributeName(this.name);
