@@ -11,6 +11,7 @@ import 'attributes/fy_painter.dart';
 import 'attributes/gradient_transform_painter.dart';
 import 'attributes/height_painter.dart';
 import 'attributes/id_painter.dart';
+import 'attributes/mask_painter.dart';
 import 'attributes/opacity_painter.dart';
 import 'attributes/path_length_painter.dart';
 import 'attributes/points_example_painter.dart';
@@ -79,6 +80,11 @@ _fixtures =
       ),
       (painter: const HeightPainter(), name: 'height_painter', tests: defaultGoldenTests),
       (painter: const IdPainter(), name: 'id_painter', tests: defaultGoldenTests),
+      (
+        painter: const MaskAttributePainter(),
+        name: 'mask_attribute_painter',
+        tests: defaultGoldenTests,
+      ),
       (painter: const OpacityPainter(), name: 'opacity_painter', tests: defaultGoldenTests),
       (painter: const PathLengthPainter(), name: 'path_length_painter', tests: defaultGoldenTests),
       (

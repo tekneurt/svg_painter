@@ -8,6 +8,7 @@ export 'gradient_transform.dart';
 export 'gradient_units.dart';
 export 'height.dart';
 export 'id.dart';
+export 'mask.dart';
 export 'opacity.dart';
 export 'path_length.dart';
 export 'points.dart';
