@@ -80,6 +80,14 @@ void main() {
       );
     });
 
+    test('paintOrder should return SvgPaintOrder.normal', () {
+      // Arrange & Act & Assert
+      expect(
+        XmlAttributeName.paintOrder.toDefaultValue(XmlElementName.path),
+        SvgPaintOrder.normal,
+      );
+    });
+
     test('fill should return none for line and black for others', () {
       // Arrange & Act & Assert
       expect(XmlAttributeName.fill.toDefaultValue(XmlElementName.line), const SvgNoneColor());

@@ -1,5 +1,6 @@
 import 'package:meta/meta.dart';
 
+import '../svg_value.dart';
 import 'svg_fill_attributes.dart';
 import 'svg_font_attributes.dart';
 import 'svg_graphics_attributes.dart';
@@ -12,7 +13,13 @@ import 'svg_stroke_attributes.dart';
 /// inheritance as defined by the SVG specification.
 @immutable
 final class SvgPresentationAttributes {
-  const SvgPresentationAttributes({this.fill, this.stroke, this.font, this.graphics});
+  const SvgPresentationAttributes({
+    this.fill,
+    this.stroke,
+    this.font,
+    this.graphics,
+    this.paintOrder,
+  });
 
   /// Fill-related attributes.
   final SvgFillAttributes? fill;
@@ -25,6 +32,9 @@ final class SvgPresentationAttributes {
 
   /// Graphics-related presentation attributes (e.g., opacity, transform).
   final SvgGraphicsAttributes? graphics;
+
+  /// The order that the fill, stroke, and markers of a shape or text element are painted.
+  final SvgPaintOrder? paintOrder;
 
   /// Merges this set of attributes with another set.
   ///
@@ -39,6 +49,7 @@ final class SvgPresentationAttributes {
       stroke: _mergeStroke(stroke, other.stroke),
       font: _mergeFont(font, other.font),
       graphics: _mergeGraphics(graphics, other.graphics),
+      paintOrder: other.paintOrder ?? paintOrder,
     );
   }
 
@@ -55,6 +66,7 @@ final class SvgPresentationAttributes {
       fill: _inheritFill(fill, parent.fill),
       stroke: _inheritStroke(stroke, parent.stroke),
       font: _inheritFont(font, parent.font),
+      paintOrder: paintOrder ?? parent.paintOrder,
       // Non-inherited groups (opacity, transform, etc. do NOT inherit)
       graphics: graphics,
     );
@@ -183,6 +195,7 @@ final class SvgPresentationAttributes {
       if (stroke != null) 'stroke: $stroke',
       if (font != null) 'font: $font',
       if (graphics != null) 'graphics: $graphics',
+      if (paintOrder != null) 'paint-order: $paintOrder',
     ];
     return 'SvgPresentationAttributes(${parts.join(', ')})';
   }

@@ -2,6 +2,7 @@ import 'package:svg_painter/src/generation/generator_buffer.dart';
 import 'package:svg_painter/src/generation/generators/text_generator.dart';
 import 'package:svg_painter/src/painting_model/paint_command.dart';
 import 'package:svg_painter/src/painting_model/styles/painting_style.dart';
+import 'package:svg_painter/src/svg_model/svg_value.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -130,6 +131,44 @@ void main() {
           'tp.paint(canvas, Offset(60.0 - tp.width, 110.0 - tp.computeDistanceToActualBaseline(TextBaseline.alphabetic)))',
         ),
       );
+    });
+
+    test('should emit stroke pass before fill pass when paintOrder is stroke first', () {
+      // Arrange
+      const generator = TextGenerator();
+      const strokeFirstStyle = PaintingStyle(
+        fill: PaintingFillStyle(colorArgb: 0xFFDC143C),
+        stroke: PaintingStrokeStyle(colorArgb: 0xFFFFFFFF, width: 6.0),
+        paintOrder: SvgPaintOrder(<SvgPaintOrderComponent>[
+          SvgPaintOrderComponent.stroke,
+          SvgPaintOrderComponent.fill,
+          SvgPaintOrderComponent.markers,
+        ]),
+        text: PaintingTextStyle(
+          fontSize: 50.0,
+          fontWeight: PaintingFontWeight.bold,
+          fontStyle: PaintingFontStyle.normal,
+          fontFamily: 'sans-serif',
+        ),
+      );
+      const command = DrawText(
+        x: 200.0,
+        y: 150.0,
+        rootSpan: PaintingTextSpan(text: 'stroke under'),
+        style: strokeFirstStyle,
+      );
+      final buffer = GeneratorBuffer();
+
+      // Act
+      generator.generate(command, buffer);
+
+      // Assert
+      final output = buffer.toString();
+      final int strokeIndex = output.indexOf('PaintingStyle.stroke');
+      final int fillIndex = output.indexOf('PaintingStyle.fill');
+      expect(strokeIndex, isNot(-1));
+      expect(fillIndex, isNot(-1));
+      expect(strokeIndex, lessThan(fillIndex));
     });
   });
 }

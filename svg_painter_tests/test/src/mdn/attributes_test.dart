@@ -17,6 +17,7 @@ import 'attributes/height_painter.dart';
 import 'attributes/id_painter.dart';
 import 'attributes/mask_painter.dart';
 import 'attributes/opacity_painter.dart';
+import 'attributes/paint_order_painter.dart';
 import 'attributes/path_length_painter.dart';
 import 'attributes/points_example_painter.dart';
 import 'attributes/points_polygon_painter.dart';
@@ -108,6 +109,7 @@ _fixtures =
         tests: defaultGoldenTests,
       ),
       (painter: const OpacityPainter(), name: 'opacity_painter', tests: defaultGoldenTests),
+      (painter: const PaintOrderPainter(), name: 'paint_order_painter', tests: defaultGoldenTests),
       (painter: const PathLengthPainter(), name: 'path_length_painter', tests: defaultGoldenTests),
       (
         painter: const PointsExamplePainter(),

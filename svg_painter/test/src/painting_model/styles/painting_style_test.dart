@@ -1,4 +1,5 @@
 import 'package:svg_painter/src/painting_model/styles/painting_style.dart';
+import 'package:svg_painter/src/svg_model/svg_value.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -15,6 +16,11 @@ void main() {
         textAnchor: PaintingTextAnchor.middle,
       );
       const opacity = 0.5;
+      const paintOrder = SvgPaintOrder(<SvgPaintOrderComponent>[
+        SvgPaintOrderComponent.stroke,
+        SvgPaintOrderComponent.fill,
+        SvgPaintOrderComponent.markers,
+      ]);
 
       // Act
       const style = PaintingStyle(
@@ -22,6 +28,7 @@ void main() {
         stroke: stroke,
         text: text,
         groupOpacity: opacity,
+        paintOrder: paintOrder,
       );
 
       // Assert
@@ -29,6 +36,7 @@ void main() {
       expect(style.stroke, stroke);
       expect(style.text, text);
       expect(style.groupOpacity, opacity);
+      expect(style.paintOrder, paintOrder);
     });
 
     test('should return correct string representation when toString() is called', () {
@@ -44,7 +52,7 @@ void main() {
       // Assert
       expect(
         result,
-        'PaintingStyle(fill: PaintingFillStyle(color: 4294901760, shader: null, units: null, opacity: 1.0, explicit: true, currentColor: false, fillRule: SvgFillRule.nonzero), stroke: null, text: null, groupOpacity: 0.8, transform: null, clipRect: null, maskId: null, clipPathId: null)',
+        'PaintingStyle(fill: PaintingFillStyle(color: 4294901760, shader: null, units: null, opacity: 1.0, explicit: true, currentColor: false, fillRule: SvgFillRule.nonzero), stroke: null, text: null, groupOpacity: 0.8, transform: null, clipRect: null, maskId: null, clipPathId: null, paintOrder: SvgPaintOrder(fill stroke markers))',
       );
     });
   });

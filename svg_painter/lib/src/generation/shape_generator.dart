@@ -19,56 +19,67 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
     PaintingStyle style,
     String boundsRect,
     void Function(String paintVar, {String? dashArray, String? pathLength, String? dashOffset}) drawCall, {
+    void Function(String paintVar, {String? dashArray, String? pathLength, String? dashOffset})? drawStrokeCall,
     PaletteResult? palette,
     Map<String, String>? activeFillProperties,
     Map<String, String>? activeStrokeProperties,
     List<InheritedProperty>? inheritedFills,
     List<InheritedProperty>? inheritedStrokes,
   }) {
-    // 1. Fill
-    final PaintingFillStyle? fill = style.fill;
-    if (fill != null) {
-      // Logic to skip implicit fills for non-closed shapes.
-      // SVG spec says they default to black, but in practice, users rarely want
-      // an implicit black fill on a single straight line.
-      // NOTE: We DO NOT skip for Polyline, as it is treated like a Path.
-      bool shouldDrawFill = fill.isExplicit;
-      if (!shouldDrawFill) {
-        // If not explicit, only draw if it's NOT a simple straight Line.
-        if (command is! DrawLine) {
-          shouldDrawFill = true;
+    void drawFill() {
+      final PaintingFillStyle? fill = style.fill;
+      if (fill != null) {
+        // Logic to skip implicit fills for non-closed shapes.
+        // SVG spec says they default to black, but in practice, users rarely want
+        // an implicit black fill on a single straight line.
+        // NOTE: We DO NOT skip for Polyline, as it is treated like a Path.
+        bool shouldDrawFill = fill.isExplicit;
+        if (!shouldDrawFill) {
+          // If not explicit, only draw if it's NOT a simple straight Line.
+          if (command is! DrawLine) {
+            shouldDrawFill = true;
+          }
+        }
+
+        if (shouldDrawFill) {
+          _generateStyleBlock(
+            buffer: buffer,
+            command: command,
+            style: fill,
+            boundsRect: boundsRect,
+            isFill: true,
+            palette: palette,
+            activeProperties: activeFillProperties,
+            inheritedProperties: inheritedFills,
+            drawCall: drawCall,
+          );
         }
       }
+    }
 
-      if (shouldDrawFill) {
+    void drawStroke() {
+      final PaintingStrokeStyle? stroke = style.stroke;
+      if (stroke != null) {
         _generateStyleBlock(
           buffer: buffer,
           command: command,
-          style: fill,
+          style: stroke,
           boundsRect: boundsRect,
-          isFill: true,
+          isFill: false,
           palette: palette,
-          activeProperties: activeFillProperties,
-          inheritedProperties: inheritedFills,
-          drawCall: drawCall,
+          activeProperties: activeStrokeProperties,
+          inheritedProperties: inheritedStrokes,
+          drawCall: drawStrokeCall ?? drawCall,
         );
       }
     }
 
-    // 2. Stroke
-    final PaintingStrokeStyle? stroke = style.stroke;
-    if (stroke != null) {
-      _generateStyleBlock(
-        buffer: buffer,
-        command: command,
-        style: stroke,
-        boundsRect: boundsRect,
-        isFill: false,
-        palette: palette,
-        activeProperties: activeStrokeProperties,
-        inheritedProperties: inheritedStrokes,
-        drawCall: drawCall,
-      );
+    if (style.paintOrder.isStrokeFirst) {
+      drawStroke();
+      drawFill();
+    } else {
+      drawFill();
+      drawStroke();
     }
   }
 

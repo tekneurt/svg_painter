@@ -56,6 +56,8 @@ extension ToDefaultValue on XmlAttributeName {
         return SvgFillRule.nonzero;
       case .textAnchor:
         return SvgTextAnchor.start;
+      case .paintOrder:
+        return SvgPaintOrder.normal;
       case .fill:
         return switch (elementName) {
           .line => const SvgNoneColor(),

@@ -154,6 +154,10 @@ enum XmlAttributeName {
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-dashoffset
   strokeDashoffset('stroke-dashoffset'),
 
+  /// The order that the fill, stroke, and markers of a shape or text element are painted.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/paint-order
+  paintOrder('paint-order'),
+
   /// The shape to be used at the end of open subpaths when they are stroked.
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-linecap
   strokeLinecap('stroke-linecap'),

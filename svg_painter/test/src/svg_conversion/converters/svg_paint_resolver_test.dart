@@ -473,5 +473,43 @@ void main() {
       );
       expect(styleDefault.fill?.fillRule, SvgFillRule.nonzero);
     });
+
+    test('should resolve paint-order correctly from attribute, inline style, and default', () {
+      // 1. From attribute
+      final PaintingStyle styleAttr = resolvePaint(
+        emptyContext,
+        tagName: 'path',
+        presentationAttributes: const SvgPresentationAttributes(
+          paintOrder: SvgPaintOrder(<SvgPaintOrderComponent>[
+            SvgPaintOrderComponent.stroke,
+            SvgPaintOrderComponent.fill,
+            SvgPaintOrderComponent.markers,
+          ]),
+        ),
+      );
+      expect(styleAttr.paintOrder.isStrokeFirst, isTrue);
+
+      // 2. From inline styles overriding attribute
+      final PaintingStyle styleInline = resolvePaint(
+        emptyContext,
+        tagName: 'path',
+        presentationAttributes: const SvgPresentationAttributes(
+          paintOrder: SvgPaintOrder(<SvgPaintOrderComponent>[
+            SvgPaintOrderComponent.stroke,
+            SvgPaintOrderComponent.fill,
+            SvgPaintOrderComponent.markers,
+          ]),
+        ),
+        coreAttributes: const SvgCoreAttributes(inlineStyle: 'paint-order: normal'),
+      );
+      expect(styleInline.paintOrder, SvgPaintOrder.normal);
+
+      // 3. Default when unspecified
+      final PaintingStyle styleDefault = resolvePaint(
+        emptyContext,
+        tagName: 'path',
+      );
+      expect(styleDefault.paintOrder, SvgPaintOrder.normal);
+    });
   });
 }

@@ -50,6 +50,7 @@ extension ToCommonAttributes on XmlElement {
         mask: getAttribute(XmlAttributeName.mask.name),
         clipPath: getAttribute(XmlAttributeName.clipPath.name),
       ),
+      paintOrder: toSvgValueOrNull<SvgPaintOrder>(elementName, XmlAttributeName.paintOrder),
     );
 
     return (core: core, presentation: presentation);

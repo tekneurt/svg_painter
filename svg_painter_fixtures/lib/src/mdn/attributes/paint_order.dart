@@ -1,0 +1,26 @@
+/// MDN SVG `paint-order` attribute example.
+///
+/// https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/paint-order
+const String mdnPaintOrderExample = '''
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="200">
+  <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+    <stop stop-color="#888888" />
+    <stop stop-color="#cccccc" offset="1" />
+  </linearGradient>
+  <rect width="400" height="200" fill="url(#g)" />
+  <g
+    fill="crimson"
+    stroke="white"
+    stroke-width="6"
+    stroke-linejoin="round"
+    text-anchor="middle"
+    font-family="sans-serif"
+    font-size="50px"
+    font-weight="bold">
+    <text x="200" y="75">stroke over</text>
+    <text x="200" y="150" paint-order="stroke" id="stroke-under">
+      stroke under
+    </text>
+  </g>
+</svg>
+''';

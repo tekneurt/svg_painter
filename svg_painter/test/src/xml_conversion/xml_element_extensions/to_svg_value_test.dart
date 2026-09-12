@@ -278,5 +278,32 @@ void main() {
       expect(resultPresent, isA<SvgLength>().having((SvgLength l) => l.value, 'value', 15.5));
       expect(resultAbsent, isA<SvgLength>().having((SvgLength l) => l.value, 'value', 0.0));
     });
+
+    test('toSvgValue should return parsed paint-order when present and default when absent', () {
+      // Arrange
+      final docPresent = XmlDocument.parse('<path paint-order="stroke" />');
+      final docAbsent = XmlDocument.parse('<path />');
+
+      // Act
+      final SvgPaintOrder resultPresent = docPresent.rootElement.toSvgValue<SvgPaintOrder>(
+        XmlElementName.path,
+        XmlAttributeName.paintOrder,
+      );
+      final SvgPaintOrder resultAbsent = docAbsent.rootElement.toSvgValue<SvgPaintOrder>(
+        XmlElementName.path,
+        XmlAttributeName.paintOrder,
+      );
+
+      // Assert
+      expect(
+        resultPresent,
+        const SvgPaintOrder(<SvgPaintOrderComponent>[
+          SvgPaintOrderComponent.stroke,
+          SvgPaintOrderComponent.fill,
+          SvgPaintOrderComponent.markers,
+        ]),
+      );
+      expect(resultAbsent, SvgPaintOrder.normal);
+    });
   });
 }

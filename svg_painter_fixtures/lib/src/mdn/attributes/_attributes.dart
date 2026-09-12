@@ -12,6 +12,7 @@ export 'height.dart';
 export 'id.dart';
 export 'mask.dart';
 export 'opacity.dart';
+export 'paint_order.dart';
 export 'path_length.dart';
 export 'points.dart';
 export 'preserve_aspect_ratio.dart';
