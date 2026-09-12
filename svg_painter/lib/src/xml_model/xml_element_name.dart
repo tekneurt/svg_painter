@@ -47,6 +47,9 @@ enum XmlElementName {
   /// The `<tspan>` element.
   tspan('tspan'),
 
+  /// The `<mask>` element.
+  mask('mask'),
+
   /// The `<title>` element.
   title('title'),
   desc('desc')

@@ -52,6 +52,7 @@ final class PaintingStyle {
     this.groupOpacity = 1.0,
     this.transformAttributes,
     this.clipRect,
+    this.maskId,
   });
 
   /// The filling style, or null if the element is not filled.
@@ -72,8 +73,11 @@ final class PaintingStyle {
   /// An explicit clipping rectangle applied to the canvas before drawing.
   final PaintingRect? clipRect;
 
+  /// The ID of the mask to apply to this element.
+  final String? maskId;
+
   @override
   String toString() {
-    return 'PaintingStyle(fill: $fill, stroke: $stroke, text: $text, groupOpacity: $groupOpacity, transform: $transformAttributes, clipRect: $clipRect)';
+    return 'PaintingStyle(fill: $fill, stroke: $stroke, text: $text, groupOpacity: $groupOpacity, transform: $transformAttributes, clipRect: $clipRect, maskId: $maskId)';
   }
 }

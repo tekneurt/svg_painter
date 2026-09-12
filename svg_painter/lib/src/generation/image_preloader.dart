@@ -18,16 +18,12 @@ class ImagePreloader {
     XmlElement root,
     BuildStep buildStep,
     Map<String, List<int>> imageCache,
-    Map<String, SvgRoot> svgCache,
+    Map<String, SvgSvg> svgCache,
   ) async {
     final Iterable<XmlElement> images = root.findAllElements(XmlElementName.image.tagName);
     for (final image in images) {
-      final String? href =
-          image.getAttribute(XmlAttributeName.href.name) ?? image.getAttribute('xlink:href');
-      if (href == null ||
-          href.isEmpty ||
-          imageCache.containsKey(href) ||
-          svgCache.containsKey(href)) {
+      final String? href = image.getAttribute(XmlAttributeName.href.name) ?? image.getAttribute('xlink:href');
+      if (href == null || href.isEmpty || imageCache.containsKey(href) || svgCache.containsKey(href)) {
         continue;
       }
 
@@ -39,22 +35,20 @@ class ImagePreloader {
           if (href.startsWith('data:image/svg+xml')) {
             final String svgContent = utf8.decode(bytes);
             svgContent.toXmlDocument().fold(
-              (Failure<XmlDocument> failure) =>
-                  log.warning('Failed to parse nested SVG Data URI: ${failure.message}'),
+              (Failure<XmlDocument> failure) => log.warning('Failed to parse nested SVG Data URI: ${failure.message}'),
               (XmlDocument doc) {
                 final Iterable<XmlElement> nestedSvgs = doc.findAllElements(
                   XmlElementName.svg.tagName,
                 );
                 if (nestedSvgs.isNotEmpty) {
                   nestedSvgs.first.toSvgElement().fold(
-                    (Failure<SvgElement> failure) =>
-                        log.warning('Failed to map nested SVG Element: ${failure.message}'),
+                    (Failure<SvgElement> failure) => log.warning('Failed to map nested SVG Element: ${failure.message}'),
                     (SvgElement nestedSvg) {
-                      if (nestedSvg is SvgRoot) {
+                      if (nestedSvg is SvgSvg) {
                         svgCache[href] = nestedSvg;
                       } else {
                         log.warning(
-                          'Mapped nested SVG is not SvgRoot, it is ${nestedSvg.runtimeType}',
+                          'Mapped nested SVG is not SvgSvg, it is ${nestedSvg.runtimeType}',
                         );
                       }
                     },
@@ -84,8 +78,10 @@ class ImagePreloader {
                 XmlElementName.svg.tagName,
               );
               if (nestedSvgs.isNotEmpty) {
-                nestedSvgs.first.toSvgRoot().map((SvgRoot nestedSvg) {
-                  svgCache[href] = nestedSvg;
+                nestedSvgs.first.toSvgElement().map((SvgElement nestedSvg) {
+                  if (nestedSvg is SvgSvg) {
+                    svgCache[href] = nestedSvg;
+                  }
                 });
               }
             });

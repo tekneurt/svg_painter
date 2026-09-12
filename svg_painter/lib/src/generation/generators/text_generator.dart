@@ -22,9 +22,10 @@ class TextGenerator extends ShapeGenerator<DrawText> {
     String? painterClassName,
     Set<String>? gradientsNeedingStretch,
   }) {
-    wrapWithStyle(buffer, command.style, () {
-      final bounds = 'Rect.fromLTWH(${command.x}, ${command.y}, 100, 100)'; // Approximation
+    final bounds = 'Rect.fromLTWH(${command.x}, ${command.y}, 100, 100)'; // Approximation
+    wrapWithStyle(buffer, command.style, 'Offset.zero & viewBox', () {
       generatePaintingCode(
+
         buffer,
         command,
         command.style,

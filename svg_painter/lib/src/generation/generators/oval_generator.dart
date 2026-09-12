@@ -21,9 +21,9 @@ class OvalGenerator extends ShapeGenerator<DrawOval> {
     String? painterClassName,
     Set<String>? gradientsNeedingStretch,
   }) {
-    wrapWithStyle(buffer, command.style, () {
-      final bounds =
-          'Rect.fromLTWH(${command.cx - command.rx}, ${command.cy - command.ry}, ${command.rx * 2}, ${command.ry * 2})';
+    final bounds =
+        'Rect.fromLTWH(${command.cx - command.rx}, ${command.cy - command.ry}, ${command.rx * 2}, ${command.ry * 2})';
+    wrapWithStyle(buffer, command.style, bounds, () {
       generatePaintingCode(
         buffer,
         command,

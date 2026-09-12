@@ -34,7 +34,7 @@ extension SvgImageToDrawImage on SvgImage {
     );
 
     // Support recursive SVG sources here.
-    final SvgRoot? nestedSvg = context.svgCache[href];
+    final SvgSvg? nestedSvg = context.svgCache[href];
     if (nestedSvg != null) {
       final SvgPaintingContext nestedContext = context.derive(
         viewBoxWidth: widthVal,
@@ -57,16 +57,15 @@ extension SvgImageToDrawImage on SvgImage {
         double nestedH = nestedContext.viewBoxHeight;
 
         final double resolvedW =
-            (nestedSvg as SvgSvg).width?.resolveOrNull(nestedContext, SvgOrientation.horizontal) ??
-            0.0;
+            nestedSvg.width?.resolveOrNull(nestedContext, SvgOrientation.horizontal) ?? 0.0;
         final double resolvedH =
             nestedSvg.height?.resolveOrNull(nestedContext, SvgOrientation.vertical) ?? 0.0;
         if (resolvedW > 0 && resolvedH > 0) {
           nestedW = resolvedW;
           nestedH = resolvedH;
-        } else if (nestedSvg.viewBox != null) {
-          nestedW = nestedSvg.viewBox!.width;
-          nestedH = nestedSvg.viewBox!.height;
+        } else if (nestedSvg.viewportAttributes?.viewBox != null) {
+          nestedW = nestedSvg.viewportAttributes!.viewBox!.width;
+          nestedH = nestedSvg.viewportAttributes!.viewBox!.height;
         }
 
         final SvgPreserveAspectRatio par = preserveAspectRatio ?? SvgPreserveAspectRatio.defaults;

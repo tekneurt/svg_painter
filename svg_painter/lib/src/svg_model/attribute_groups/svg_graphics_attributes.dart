@@ -6,7 +6,7 @@ import 'svg_transform_attributes.dart';
 /// Represents the grouped presentation attributes that apply to graphics elements.
 @immutable
 final class SvgGraphicsAttributes {
-  const SvgGraphicsAttributes({this.opacity, this.transformAttributes});
+  const SvgGraphicsAttributes({this.opacity, this.transformAttributes, this.mask});
 
   /// The transparency of the element (mapped from `opacity` attribute).
   final SvgLengthPercentage? opacity;
@@ -14,11 +14,15 @@ final class SvgGraphicsAttributes {
   /// The transformation(s) applied to the element (mapped from `transform` attribute).
   final SvgTransformAttributes? transformAttributes;
 
+  /// The reference to a mask element (mapped from `mask` attribute).
+  final String? mask;
+
   @override
   String toString() {
     final parts = <String>[
       if (opacity != null) 'opacity: $opacity',
       if (transformAttributes != null) 'transform: $transformAttributes',
+      if (mask != null) 'mask: $mask',
     ];
     return 'SvgGraphicsAttributes(${parts.join(', ')})';
   }

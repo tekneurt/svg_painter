@@ -9,6 +9,7 @@ import 'elements/g_painter.dart';
 import 'elements/image_painter.dart';
 import 'elements/line_painter.dart';
 import 'elements/linear_gradient_painter.dart';
+import 'elements/mask_painter.dart';
 import 'elements/path_painter.dart';
 import 'elements/polygon_painter.dart';
 import 'elements/polyline_painter.dart';
@@ -196,6 +197,27 @@ _fixtures =
       (
         painter: const UseElementPainter(),
         name: 'use_element_painter',
+        tests: defaultGoldenTests,
+        widget: null,
+        nativeSize: null,
+      ),
+      (
+        painter: const MaskPainter(),
+        name: 'mask_painter',
+        tests: defaultGoldenTests,
+        widget: null,
+        nativeSize: null,
+      ),
+      (
+        painter: const MaskUnitsPainter(),
+        name: 'mask_units_painter',
+        tests: defaultGoldenTests,
+        widget: null,
+        nativeSize: null,
+      ),
+      (
+        painter: const MaskContentUnitsPainter(),
+        name: 'mask_content_units_painter',
         tests: defaultGoldenTests,
         widget: null,
         nativeSize: null,

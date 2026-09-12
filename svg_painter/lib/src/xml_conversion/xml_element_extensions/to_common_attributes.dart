@@ -44,6 +44,7 @@ extension ToCommonAttributes on XmlElement {
         transformAttributes: SvgTransformParser.parse(
           toXmlAttributeValue(XmlAttributeName.transform),
         ),
+        mask: getAttribute(XmlAttributeName.mask.name),
       ),
     );
 

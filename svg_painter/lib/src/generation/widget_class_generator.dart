@@ -116,7 +116,7 @@ class WidgetClassGenerator {
       buffer.writeln();
       buffer.writeBlock('class _${widgetClassName}State extends State<$widgetClassName> {', () {
         for (var i = 0; i < imageHrefs.length; i++) {
-          buffer.writeln('ui.Image? _image$i;');
+          buffer.writeln('Object? _image$i;');
         }
         buffer.writeln();
         buffer.writeln('@override');
@@ -126,10 +126,10 @@ class WidgetClassGenerator {
         });
         buffer.writeln();
         buffer.writeBlock('Future<void> _decodeImages() async {', () {
-          buffer.writeBlock('final images = await Future.wait([', () {
+          buffer.writeBlock('final images = await Future.wait<dynamic>([', () {
             for (var i = 0; i < imageHrefs.length; i++) {
               buffer.writeln(
-                'ui.instantiateImageCodec(Uint8List.fromList(_imageBytes_${painterClassName}_$i)).then((ui.Codec codec) => codec.getNextFrame()).then((ui.FrameInfo fi) => fi.image),',
+                'decodeImageFromList(Uint8List.fromList(_imageBytes_${painterClassName}_$i)),',
               );
             }
           }, footer: ']);');

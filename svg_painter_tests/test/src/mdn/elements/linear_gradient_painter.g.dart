@@ -151,7 +151,9 @@ class _SvgGradientTransform_LinearGradient1Painter extends GradientTransform {
     }
 
     if (isElliptical && bounds.width != bounds.height) {
-      final double shortest = bounds.width < bounds.height ? bounds.width : bounds.height;
+      final double shortest = bounds.width < bounds.height
+          ? bounds.width
+          : bounds.height;
       final double sx = bounds.width / shortest;
       final double sy = bounds.height / shortest;
       final double px = bounds.left + (centerX * bounds.width);

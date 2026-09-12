@@ -175,7 +175,7 @@ class PainterClassGenerator {
         }
       }
       for (var i = 0; i < uniqueImageHrefs.length; i++) {
-        buffer.writeln('final ui.Image? image$i;');
+        buffer.writeln('final Object? image$i;');
       }
       buffer.writeln();
       buffer.writeln('Size get viewBox => const Size($viewBoxWidth, $viewBoxHeight);');
@@ -206,9 +206,9 @@ class PainterClassGenerator {
         );
         buffer.writeln();
 
-        // 1st pass: Gradient definitions (DefineCommand)
+        // 1st pass: Mask definitions (DefineMask)
         for (final command in commands) {
-          if (command is DefineCommand) {
+          if (command is DefineMask) {
             generators[command.runtimeType]?.generate(
               command,
               buffer,
@@ -222,7 +222,23 @@ class PainterClassGenerator {
           }
         }
 
-        // 2nd pass: Drawing commands (DrawCommand)
+        // 2nd pass: Gradient definitions (DefineGradient)
+        for (final command in commands) {
+          if (command is DefineGradient && command is! DefineMask) {
+            generators[command.runtimeType]?.generate(
+              command,
+              buffer,
+              generators: generators,
+              palette: palette,
+              activeFillProperties: activeFillProperties,
+              activeStrokeProperties: activeStrokeProperties,
+              painterClassName: className,
+              gradientsNeedingStretch: gradientsNeedingStretch,
+            );
+          }
+        }
+
+        // 3rd pass: Drawing commands (DrawCommand)
         for (final command in commands) {
           if (command is DrawCommand) {
             generators[command.runtimeType]?.generate(

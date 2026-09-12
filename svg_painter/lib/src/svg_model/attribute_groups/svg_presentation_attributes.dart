@@ -113,6 +113,7 @@ final class SvgPresentationAttributes {
     return SvgGraphicsAttributes(
       opacity: b.opacity ?? a.opacity,
       transformAttributes: b.transformAttributes ?? a.transformAttributes,
+      mask: b.mask ?? a.mask,
     );
   }
 

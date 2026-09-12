@@ -161,8 +161,12 @@ PaintingStyle resolvePaint(
       style: cssFontStyle,
       family: cssFontFamily,
     ),
-    graphics: (cssOpacity != null || cssTransform != null)
-        ? SvgGraphicsAttributes(opacity: cssOpacity, transformAttributes: cssTransform)
+    graphics: (cssOpacity != null || cssTransform != null || resolvedRules['mask'] != null)
+        ? SvgGraphicsAttributes(
+            opacity: cssOpacity,
+            transformAttributes: cssTransform,
+            mask: resolvedRules['mask'],
+          )
         : null,
   );
 
@@ -300,6 +304,12 @@ PaintingStyle resolvePaint(
     _ => rawFontFamily,
   };
 
+  final String? maskAttr = graphics?.mask;
+  String? maskId;
+  if (maskAttr != null && maskAttr.startsWith('url(#') && maskAttr.endsWith(')')) {
+    maskId = maskAttr.substring(5, maskAttr.length - 1);
+  }
+
   return PaintingStyle(
     fill: fillStyle,
     stroke: strokeStyle,
@@ -312,6 +322,7 @@ PaintingStyle resolvePaint(
     groupOpacity: elementOpacity,
     transformAttributes: graphics?.transformAttributes,
     clipRect: clipRect,
+    maskId: maskId,
   );
 }
 

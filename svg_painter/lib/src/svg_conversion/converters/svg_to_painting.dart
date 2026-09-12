@@ -99,6 +99,7 @@ extension SvgElementToPaintCommands on SvgElement {
 
       // Definitions
       final SvgSymbol symbol => symbol.toPaintCommandsSymbol(childContext, onlyDefinitions: true),
+      final SvgMask mask => _toDefineMask(mask, childContext),
       final SvgDefs defs => defs.toPaintCommandsDefs(childContext),
       final SvgStop _ ||
       final SvgMetadataElement _ ||
@@ -112,6 +113,36 @@ extension SvgElementToPaintCommands on SvgElement {
       // Safety fallback
       _ => const Success<List<PaintCommand>>(<PaintCommand>[]),
     };
+  }
+
+  Result<List<PaintCommand>> _toDefineMask(SvgMask mask, SvgPaintingContext context) {
+    final SvgPaintingContext childrenContext =
+        (mask.maskContentUnits == SvgMaskUnits.objectBoundingBox)
+            ? context.derive(viewBoxWidth: 1.0, viewBoxHeight: 1.0, viewBoxMinX: 0, viewBoxMinY: 0)
+            : context;
+
+    return mask.children.map((SvgElement child) => child.toPaintCommands(childrenContext)).combine().map((
+      List<PaintCommand> childCommands,
+    ) {
+      return <PaintCommand>[
+        DefineMask(
+          id: mask.id ?? '',
+          commands: childCommands,
+          x: mask.x ?? const SvgPercentage(0),
+          y: mask.y ?? const SvgPercentage(0),
+          width: mask.width ?? const SvgPercentage(100),
+          height: mask.height ?? const SvgPercentage(100),
+          maskUnits: switch (mask.maskUnits) {
+            SvgMaskUnits.objectBoundingBox => PaintingGradientUnits.objectBoundingBox,
+            SvgMaskUnits.userSpaceOnUse => PaintingGradientUnits.userSpaceOnUse,
+          },
+          maskContentUnits: switch (mask.maskContentUnits) {
+            SvgMaskUnits.objectBoundingBox => PaintingGradientUnits.objectBoundingBox,
+            SvgMaskUnits.userSpaceOnUse => PaintingGradientUnits.userSpaceOnUse,
+          },
+        ),
+      ];
+    });
   }
 }
 

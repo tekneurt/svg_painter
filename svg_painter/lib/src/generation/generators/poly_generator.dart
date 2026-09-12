@@ -32,7 +32,7 @@ class PolyGenerator<T extends DrawCommand> extends ShapeGenerator<T> {
       return;
     }
 
-    wrapWithStyle(buffer, command.style, () {
+    wrapWithStyle(buffer, command.style, 'Offset.zero & viewBox', () {
       if (points.isEmpty) {
         return;
       }

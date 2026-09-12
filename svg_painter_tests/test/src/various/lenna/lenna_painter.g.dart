@@ -29,7 +29,7 @@ class LennaPainterWidget extends StatefulWidget {
 }
 
 class _LennaPainterWidgetState extends State<LennaPainterWidget> {
-  ui.Image? _image0;
+  Object? _image0;
 
   @override
   void initState() {
@@ -38,13 +38,8 @@ class _LennaPainterWidgetState extends State<LennaPainterWidget> {
   }
 
   Future<void> _decodeImages() async {
-    final images = await Future.wait([
-      ui
-          .instantiateImageCodec(
-            Uint8List.fromList(_imageBytes__$LennaPainter_0),
-          )
-          .then((ui.Codec codec) => codec.getNextFrame())
-          .then((ui.FrameInfo fi) => fi.image),
+    final images = await Future.wait<dynamic>([
+      decodeImageFromList(Uint8List.fromList(_imageBytes__$LennaPainter_0)),
     ]);
     if (mounted) {
       setState(() {
@@ -369812,7 +369807,7 @@ class _$LennaPainter extends CustomPainter {
   const _$LennaPainter({this.fit = BoxFit.contain, this.image0});
 
   final BoxFit fit;
-  final ui.Image? image0;
+  final Object? image0;
 
   Size get viewBox => const Size(200.0, 200.0);
 
@@ -369837,11 +369832,12 @@ class _$LennaPainter extends CustomPainter {
     );
 
     if (image0 != null) {
-      final double srcW = image0!.width.toDouble();
-      final double srcH = image0!.height.toDouble();
+      final dynamic img = image0;
+      final double srcW = (img.width as int).toDouble();
+      final double srcH = (img.height as int).toDouble();
       final Paint paint = Paint();
-      canvas.drawImageRect(
-        image0!,
+      (canvas as dynamic).drawImageRect(
+        img,
         Rect.fromLTWH(0, 0, srcW, srcH),
         Rect.fromLTWH(0.0, 0.0, 200.0, 200.0),
         paint,
@@ -369893,11 +369889,13 @@ class LennaTransformedPainterWidget extends StatefulWidget {
   final AlignmentGeometry alignment;
 
   @override
-  State<LennaTransformedPainterWidget> createState() => _LennaTransformedPainterWidgetState();
+  State<LennaTransformedPainterWidget> createState() =>
+      _LennaTransformedPainterWidgetState();
 }
 
-class _LennaTransformedPainterWidgetState extends State<LennaTransformedPainterWidget> {
-  ui.Image? _image0;
+class _LennaTransformedPainterWidgetState
+    extends State<LennaTransformedPainterWidget> {
+  Object? _image0;
 
   @override
   void initState() {
@@ -369906,13 +369904,10 @@ class _LennaTransformedPainterWidgetState extends State<LennaTransformedPainterW
   }
 
   Future<void> _decodeImages() async {
-    final images = await Future.wait([
-      ui
-          .instantiateImageCodec(
-            Uint8List.fromList(_imageBytes__$LennaTransformedPainter_0),
-          )
-          .then((ui.Codec codec) => codec.getNextFrame())
-          .then((ui.FrameInfo fi) => fi.image),
+    final images = await Future.wait<dynamic>([
+      decodeImageFromList(
+        Uint8List.fromList(_imageBytes__$LennaTransformedPainter_0),
+      ),
     ]);
     if (mounted) {
       setState(() {
@@ -739680,7 +739675,7 @@ class _$LennaTransformedPainter extends CustomPainter {
   const _$LennaTransformedPainter({this.fit = BoxFit.contain, this.image0});
 
   final BoxFit fit;
-  final ui.Image? image0;
+  final Object? image0;
 
   Size get viewBox => const Size(200.0, 200.0);
 
@@ -739715,11 +739710,13 @@ class _$LennaTransformedPainter extends CustomPainter {
     canvas.rotate(0.7853981633974483);
     canvas.translate(-50.0, -50.0);
     if (image0 != null) {
-      final double srcW = image0!.width.toDouble();
-      final double srcH = image0!.height.toDouble();
-      final Paint paint = Paint()..color = const Color(0xFF000000).withValues(alpha: 0.5);
-      canvas.drawImageRect(
-        image0!,
+      final dynamic img = image0;
+      final double srcW = (img.width as int).toDouble();
+      final double srcH = (img.height as int).toDouble();
+      final Paint paint = Paint()
+        ..color = const Color(0xFF000000).withValues(alpha: 0.5);
+      (canvas as dynamic).drawImageRect(
+        img,
         Rect.fromLTWH(0, 0, srcW, srcH),
         Rect.fromLTWH(0.0, 0.0, 100.0, 100.0),
         paint,
@@ -739772,11 +739769,12 @@ class LennaDataUriPainterWidget extends StatefulWidget {
   final AlignmentGeometry alignment;
 
   @override
-  State<LennaDataUriPainterWidget> createState() => _LennaDataUriPainterWidgetState();
+  State<LennaDataUriPainterWidget> createState() =>
+      _LennaDataUriPainterWidgetState();
 }
 
 class _LennaDataUriPainterWidgetState extends State<LennaDataUriPainterWidget> {
-  ui.Image? _image0;
+  Object? _image0;
 
   @override
   void initState() {
@@ -739785,13 +739783,10 @@ class _LennaDataUriPainterWidgetState extends State<LennaDataUriPainterWidget> {
   }
 
   Future<void> _decodeImages() async {
-    final images = await Future.wait([
-      ui
-          .instantiateImageCodec(
-            Uint8List.fromList(_imageBytes__$LennaDataUriPainter_0),
-          )
-          .then((ui.Codec codec) => codec.getNextFrame())
-          .then((ui.FrameInfo fi) => fi.image),
+    final images = await Future.wait<dynamic>([
+      decodeImageFromList(
+        Uint8List.fromList(_imageBytes__$LennaDataUriPainter_0),
+      ),
     ]);
     if (mounted) {
       setState(() {
@@ -1109559,7 +1109554,7 @@ class _$LennaDataUriPainter extends CustomPainter {
   const _$LennaDataUriPainter({this.fit = BoxFit.contain, this.image0});
 
   final BoxFit fit;
-  final ui.Image? image0;
+  final Object? image0;
 
   Size get viewBox => const Size(100.0, 100.0);
 
@@ -1109584,11 +1109579,12 @@ class _$LennaDataUriPainter extends CustomPainter {
     );
 
     if (image0 != null) {
-      final double srcW = image0!.width.toDouble();
-      final double srcH = image0!.height.toDouble();
+      final dynamic img = image0;
+      final double srcW = (img.width as int).toDouble();
+      final double srcH = (img.height as int).toDouble();
       final Paint paint = Paint();
-      canvas.drawImageRect(
-        image0!,
+      (canvas as dynamic).drawImageRect(
+        img,
         Rect.fromLTWH(0, 0, srcW, srcH),
         Rect.fromLTWH(25.0, 25.0, 50.0, 50.0),
         paint,

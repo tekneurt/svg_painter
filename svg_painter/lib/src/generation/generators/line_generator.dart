@@ -21,9 +21,9 @@ class LineGenerator extends ShapeGenerator<DrawLine> {
     String? painterClassName,
     Set<String>? gradientsNeedingStretch,
   }) {
-    wrapWithStyle(buffer, command.style, () {
-      final bounds =
-          'Rect.fromPoints(const Offset(${command.x1}, ${command.y1}), const Offset(${command.x2}, ${command.y2}))';
+    final bounds =
+        'Rect.fromPoints(const Offset(${command.x1}, ${command.y1}), const Offset(${command.x2}, ${command.y2}))';
+    wrapWithStyle(buffer, command.style, bounds, () {
       generatePaintingCode(
         buffer,
         command,

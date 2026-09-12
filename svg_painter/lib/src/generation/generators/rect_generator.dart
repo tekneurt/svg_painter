@@ -21,10 +21,10 @@ class RectGenerator extends ShapeGenerator<DrawRect> {
     String? painterClassName,
     Set<String>? gradientsNeedingStretch,
   }) {
-    wrapWithStyle(buffer, command.style, () {
-      final bounds =
-          'Rect.fromLTWH(${command.x}, ${command.y}, ${command.width}, ${command.height})';
+    final bounds = 'Rect.fromLTWH(${command.x}, ${command.y}, ${command.width}, ${command.height})';
+    wrapWithStyle(buffer, command.style, bounds, () {
       generatePaintingCode(
+
         buffer,
         command,
         command.style,

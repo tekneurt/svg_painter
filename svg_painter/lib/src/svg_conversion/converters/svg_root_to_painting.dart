@@ -21,12 +21,10 @@ extension SvgRootToPaintCommands on SvgSvg {
     final double xVal = (x ?? this.x ?? const SvgLength(0.0)).resolve(
       context,
       SvgOrientation.horizontal,
-      defaultValue: 0.0,
     );
     final double yVal = (y ?? this.y ?? const SvgLength(0.0)).resolve(
       context,
       SvgOrientation.vertical,
-      defaultValue: 0.0,
     );
 
     final SvgLengthPercentageAuto? finalWidth = width ?? this.width;

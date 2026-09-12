@@ -194,9 +194,21 @@ enum XmlAttributeName {
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/dy
   dy('dy'),
 
-  /// The supplemental rotation applied to characters.
+  /// Thesupplemental rotation applied to characters.
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/rotate
   rotate('rotate'),
+
+  /// The reference to a mask element.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/mask
+  mask('mask'),
+
+  /// The coordinate system for the mask.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/maskUnits
+  maskUnits('maskUnits'),
+
+  /// The coordinate system for the mask content.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/maskContentUnits
+  maskContentUnits('maskContentUnits'),
 
   /// The decoding hint for the image.
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/decoding

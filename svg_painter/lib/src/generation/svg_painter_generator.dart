@@ -27,40 +27,6 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
     this.painterGenerator = const PainterClassGenerator(),
   });
 
-  @visibleForTesting
-  static const TypeChecker fileChecker = TypeChecker.fromUrl(
-    'package:svg_painter_annotation/src/svg_painter.dart#SvgFilePainter',
-  );
-  @visibleForTesting
-  static const TypeChecker codeChecker = TypeChecker.fromUrl(
-    'package:svg_painter_annotation/src/svg_painter.dart#SvgCodePainter',
-  );
-
-  /// Helper to load SVG content.
-  final AssetLoader assetLoader;
-
-  /// Helper to preload images.
-  final ImagePreloader imagePreloader;
-
-  /// Helper to generate the painter class code.
-  final PainterClassGenerator painterGenerator;
-
-  static const Map<Type, CommandGenerator<PaintCommand>> _generators =
-      <Type, CommandGenerator<PaintCommand>>{
-        DrawCircle: CircleGenerator(),
-        DrawOval: OvalGenerator(),
-        DrawRect: RectGenerator(),
-        DrawText: TextGenerator(),
-        DrawGroup: GroupGenerator(),
-        DrawPath: PathGenerator(),
-        DrawLine: LineGenerator(),
-        DrawPolyline: PolyGenerator<DrawPolyline>(),
-        DrawPolygon: PolyGenerator<DrawPolygon>(),
-        DrawImage: ImageGenerator(),
-        DefineLinearGradient: LinearGradientGenerator(),
-        DefineRadialGradient: RadialGradientGenerator(),
-      };
-
   @override
   FutureOr<String> generateForAnnotatedElement(
     Element element,
@@ -116,6 +82,41 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
     );
   }
 
+  @visibleForTesting
+  static const TypeChecker fileChecker = TypeChecker.fromUrl(
+    'package:svg_painter_annotation/src/svg_painter.dart#SvgFilePainter',
+  );
+  @visibleForTesting
+  static const TypeChecker codeChecker = TypeChecker.fromUrl(
+    'package:svg_painter_annotation/src/svg_painter.dart#SvgCodePainter',
+  );
+
+  /// Helper to load SVG content.
+  final AssetLoader assetLoader;
+
+  /// Helper to preload images.
+  final ImagePreloader imagePreloader;
+
+  /// Helper to generate the painter class code.
+  final PainterClassGenerator painterGenerator;
+
+  static const Map<Type, CommandGenerator<PaintCommand>> _generators =
+      <Type, CommandGenerator<PaintCommand>>{
+    DrawCircle: CircleGenerator(),
+    DrawOval: OvalGenerator(),
+    DrawRect: RectGenerator(),
+    DrawText: TextGenerator(),
+    DrawGroup: GroupGenerator(),
+    DrawPath: PathGenerator(),
+    DrawLine: LineGenerator(),
+    DrawPolyline: PolyGenerator<DrawPolyline>(),
+    DrawPolygon: PolyGenerator<DrawPolygon>(),
+    DrawImage: ImageGenerator(),
+    DefineLinearGradient: LinearGradientGenerator(),
+    DefineRadialGradient: RadialGradientGenerator(),
+    DefineMask: MaskGenerator(),
+  };
+
   /// Generates the painter class from SVG content string.
   @visibleForTesting
   Future<String> generateFromSvg({
@@ -144,90 +145,68 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
     final XmlElement svgXmlElement = svgElements.first;
 
     final imageCache = <String, List<int>>{};
-    final svgCache = <String, SvgRoot>{};
+    final svgCache = <String, SvgSvg>{};
     if (buildStep != null) {
       await imagePreloader.preloadImages(svgXmlElement, buildStep, imageCache, svgCache);
     }
 
     final Result<SvgElement> mapResult = svgXmlElement.toSvgElement();
 
-    final SvgElement svgRoot = mapResult.fold(
+    final SvgElement svgRootElement = mapResult.fold(
       (Failure<SvgElement> failure) => throw InvalidGenerationSourceError(
         'Failed to map SVG content for $elementName: ${failure.message}',
       ),
       (SvgElement value) => value,
     );
 
-    if (svgRoot is SvgSvg) {
+    if (svgRootElement is SvgSvg) {
       var viewBoxWidth = 100.0;
       var viewBoxHeight = 100.0;
 
-      if (svgRoot is SvgRoot) {
-        final SvgLengthPercentageAuto? w = svgRoot.width;
-        final SvgLength? wLen = w is SvgLength ? w : null;
-        final SvgLengthPercentageAuto? h = svgRoot.height;
-        final SvgLength? hLen = h is SvgLength ? h : null;
+      final SvgLengthPercentageAuto? w = svgRootElement.width;
+      final SvgLength? wLen = w is SvgLength ? w : null;
+      final SvgLengthPercentageAuto? h = svgRootElement.height;
+      final SvgLength? hLen = h is SvgLength ? h : null;
 
-        viewBoxWidth = wLen?.toDouble() ?? svgRoot.viewBox?.width ?? 100.0;
-        viewBoxHeight = hLen?.toDouble() ?? svgRoot.viewBox?.height ?? 100.0;
-      }
+      viewBoxWidth = wLen?.toDouble() ?? svgRootElement.viewBox?.width ?? 100.0;
+      viewBoxHeight = hLen?.toDouble() ?? svgRootElement.viewBox?.height ?? 100.0;
 
       final definitions = <String, SvgElement>{};
-      svgRoot.collectDefinitions(definitions);
+      svgRootElement.collectDefinitions(definitions);
 
       // Establish initial root context with default SVG styles
       final rootContext = SvgPaintingContext(
         viewBoxWidth: viewBoxWidth,
         viewBoxHeight: viewBoxHeight,
-        viewBoxMinX: svgRoot is SvgRoot ? svgRoot.viewBox?.minX ?? 0.0 : 0.0,
-        viewBoxMinY: svgRoot is SvgRoot ? svgRoot.viewBox?.minY ?? 0.0 : 0.0,
+        viewBoxMinX: svgRootElement.viewBox?.minX ?? 0.0,
+        viewBoxMinY: svgRootElement.viewBox?.minY ?? 0.0,
         inheritedAttributes: SvgPresentationAttributes(
           fill: SvgFillAttributes(
-            color:
-                (svgRoot is SvgRoot ? svgRoot.fillAttributes?.color : null) ??
-                const SvgNamedColor(SvgColorName.black),
-            opacity:
-                (svgRoot is SvgRoot ? svgRoot.fillAttributes?.opacity : null) ??
-                const SvgLength(1.0),
+            color: svgRootElement.fillAttributes?.color ?? const SvgNamedColor(SvgColorName.black),
+            opacity: svgRootElement.fillAttributes?.opacity ?? const SvgLength(1.0),
           ),
           stroke: SvgStrokeAttributes(
-            color:
-                (svgRoot is SvgRoot ? svgRoot.strokeAttributes?.color : null) ??
-                const SvgNoneColor(),
-            opacity:
-                (svgRoot is SvgRoot ? svgRoot.strokeAttributes?.opacity : null) ??
-                const SvgLength(1.0),
-            width:
-                (svgRoot is SvgRoot ? svgRoot.strokeAttributes?.width : null) ??
-                const SvgLength(1.0),
-            dashArray: svgRoot is SvgRoot ? svgRoot.strokeAttributes?.dashArray : null,
-            linecap:
-                (svgRoot is SvgRoot ? svgRoot.strokeAttributes?.linecap : null) ??
-                SvgStrokeLinecap.butt,
-            linejoin:
-                (svgRoot is SvgRoot ? svgRoot.strokeAttributes?.linejoin : null) ??
-                SvgStrokeLinejoin.miter,
+            color: svgRootElement.strokeAttributes?.color ?? const SvgNoneColor(),
+            opacity: svgRootElement.strokeAttributes?.opacity ?? const SvgLength(1.0),
+            width: svgRootElement.strokeAttributes?.width ?? const SvgLength(1.0),
+            dashArray: svgRootElement.strokeAttributes?.dashArray,
+            linecap: svgRootElement.strokeAttributes?.linecap ?? SvgStrokeLinecap.butt,
+            linejoin: svgRootElement.strokeAttributes?.linejoin ?? SvgStrokeLinejoin.miter,
           ),
           font: SvgFontAttributes(
-            size:
-                (svgRoot is SvgRoot ? svgRoot.fontAttributes?.size : null) ?? const SvgLength(12.0),
-            weight:
-                (svgRoot is SvgRoot ? svgRoot.fontAttributes?.weight : null) ??
-                const SvgFontWeightNormal(),
-            style:
-                (svgRoot is SvgRoot ? svgRoot.fontAttributes?.style : null) ?? SvgFontStyle.normal,
-            family:
-                (svgRoot is SvgRoot ? svgRoot.fontAttributes?.family : null) ??
-                const SvgFontFamily('sans-serif'),
+            size: svgRootElement.fontAttributes?.size ?? const SvgLength(12.0),
+            weight: svgRootElement.fontAttributes?.weight ?? const SvgFontWeightNormal(),
+            style: svgRootElement.fontAttributes?.style ?? SvgFontStyle.normal,
+            family: svgRootElement.fontAttributes?.family ?? const SvgFontFamily('sans-serif'),
           ),
         ),
-        styleSheet: svgRoot is SvgRoot ? svgRoot.styleSheet : const SvgStyleSheet.empty(),
+        styleSheet: (svgRootElement is SvgRoot) ? svgRootElement.styleSheet : const SvgStyleSheet.empty(),
         definitions: definitions,
         imageCache: imageCache,
         svgCache: svgCache,
       );
 
-      final Result<List<PaintCommand>> paintingResult = svgRoot.toPaintCommands(rootContext);
+      final Result<List<PaintCommand>> paintingResult = svgRootElement.toPaintCommands(rootContext);
       final List<PaintCommand> commands = paintingResult.fold(
         (Failure<List<PaintCommand>> failure) => throw InvalidGenerationSourceError(
           'Failed to convert SVG to painting commands for $elementName: ${failure.message}',
@@ -248,7 +227,7 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
       );
     } else {
       throw InvalidGenerationSourceError(
-        'Root element must be <svg>, but found ${svgRoot.runtimeType}',
+        'Root element must be <svg>, but found ${svgRootElement.runtimeType}',
       );
     }
   }
@@ -262,15 +241,16 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
     required List<PaintCommand> commands,
     SvgExposureMode exposureMode = SvgExposureMode.none,
     Map<String, String> propertyMapping = const <String, String>{},
-  }) => painterGenerator.generatePainterClass(
-    className: className,
-    viewBoxWidth: viewBoxWidth,
-    viewBoxHeight: viewBoxHeight,
-    commands: commands,
-    generators: _generators,
-    exposureMode: exposureMode,
-    propertyMapping: propertyMapping,
-  );
+  }) =>
+      painterGenerator.generatePainterClass(
+        className: className,
+        viewBoxWidth: viewBoxWidth,
+        viewBoxHeight: viewBoxHeight,
+        commands: commands,
+        generators: _generators,
+        exposureMode: exposureMode,
+        propertyMapping: propertyMapping,
+      );
 
   /// Loads SVG content from the given annotation.
   @visibleForTesting

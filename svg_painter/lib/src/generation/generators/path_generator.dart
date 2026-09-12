@@ -21,7 +21,7 @@ class PathGenerator extends ShapeGenerator<DrawPath> {
     String? painterClassName,
     Set<String>? gradientsNeedingStretch,
   }) {
-    wrapWithStyle(buffer, command.style, () {
+    wrapWithStyle(buffer, command.style, 'Offset.zero & viewBox', () {
       buffer.writeBlock('{', () {
         buffer.writeln('final Path path = Path()');
         buffer.indent();

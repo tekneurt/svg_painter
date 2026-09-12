@@ -26,6 +26,7 @@ void main() {
           XmlElementName.style => 'style',
           XmlElementName.text => 'text',
           XmlElementName.tspan => 'tspan',
+          XmlElementName.mask => 'mask',
           XmlElementName.title => 'title',
           XmlElementName.desc => 'desc',
         };

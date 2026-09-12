@@ -29,8 +29,9 @@ class AlphaTransparencyDicePainterWidget extends StatefulWidget {
       _AlphaTransparencyDicePainterWidgetState();
 }
 
-class _AlphaTransparencyDicePainterWidgetState extends State<AlphaTransparencyDicePainterWidget> {
-  ui.Image? _image0;
+class _AlphaTransparencyDicePainterWidgetState
+    extends State<AlphaTransparencyDicePainterWidget> {
+  Object? _image0;
 
   @override
   void initState() {
@@ -39,13 +40,10 @@ class _AlphaTransparencyDicePainterWidgetState extends State<AlphaTransparencyDi
   }
 
   Future<void> _decodeImages() async {
-    final images = await Future.wait([
-      ui
-          .instantiateImageCodec(
-            Uint8List.fromList(_imageBytes__$AlphaTransparencyDicePainter_0),
-          )
-          .then((ui.Codec codec) => codec.getNextFrame())
-          .then((ui.FrameInfo fi) => fi.image),
+    final images = await Future.wait<dynamic>([
+      decodeImageFromList(
+        Uint8List.fromList(_imageBytes__$AlphaTransparencyDicePainter_0),
+      ),
     ]);
     if (mounted) {
       setState(() {
@@ -221064,7 +221062,7 @@ class _$AlphaTransparencyDicePainter extends CustomPainter {
   });
 
   final BoxFit fit;
-  final ui.Image? image0;
+  final Object? image0;
 
   Size get viewBox => const Size(200.0, 200.0);
 
@@ -221089,11 +221087,12 @@ class _$AlphaTransparencyDicePainter extends CustomPainter {
     );
 
     if (image0 != null) {
-      final double srcW = image0!.width.toDouble();
-      final double srcH = image0!.height.toDouble();
+      final dynamic img = image0;
+      final double srcW = (img.width as int).toDouble();
+      final double srcH = (img.height as int).toDouble();
       final Paint paint = Paint();
-      canvas.drawImageRect(
-        image0!,
+      (canvas as dynamic).drawImageRect(
+        img,
         Rect.fromLTWH(0, 0, srcW, srcH),
         Rect.fromLTWH(0.0, 0.0, 200.0, 200.0),
         paint,
@@ -221151,7 +221150,7 @@ class AlphaTransparencyDiceTransformedPainterWidget extends StatefulWidget {
 
 class _AlphaTransparencyDiceTransformedPainterWidgetState
     extends State<AlphaTransparencyDiceTransformedPainterWidget> {
-  ui.Image? _image0;
+  Object? _image0;
 
   @override
   void initState() {
@@ -221160,15 +221159,12 @@ class _AlphaTransparencyDiceTransformedPainterWidgetState
   }
 
   Future<void> _decodeImages() async {
-    final images = await Future.wait([
-      ui
-          .instantiateImageCodec(
-            Uint8List.fromList(
-              _imageBytes__$AlphaTransparencyDiceTransformedPainter_0,
-            ),
-          )
-          .then((ui.Codec codec) => codec.getNextFrame())
-          .then((ui.FrameInfo fi) => fi.image),
+    final images = await Future.wait<dynamic>([
+      decodeImageFromList(
+        Uint8List.fromList(
+          _imageBytes__$AlphaTransparencyDiceTransformedPainter_0,
+        ),
+      ),
     ]);
     if (mounted) {
       setState(() {
@@ -442190,7 +442186,7 @@ class _$AlphaTransparencyDiceTransformedPainter extends CustomPainter {
   });
 
   final BoxFit fit;
-  final ui.Image? image0;
+  final Object? image0;
 
   Size get viewBox => const Size(200.0, 200.0);
 
@@ -442225,11 +442221,13 @@ class _$AlphaTransparencyDiceTransformedPainter extends CustomPainter {
     canvas.rotate(0.7853981633974483);
     canvas.translate(-50.0, -50.0);
     if (image0 != null) {
-      final double srcW = image0!.width.toDouble();
-      final double srcH = image0!.height.toDouble();
-      final Paint paint = Paint()..color = const Color(0xFF000000).withValues(alpha: 0.5);
-      canvas.drawImageRect(
-        image0!,
+      final dynamic img = image0;
+      final double srcW = (img.width as int).toDouble();
+      final double srcH = (img.height as int).toDouble();
+      final Paint paint = Paint()
+        ..color = const Color(0xFF000000).withValues(alpha: 0.5);
+      (canvas as dynamic).drawImageRect(
+        img,
         Rect.fromLTWH(0, 0, srcW, srcH),
         Rect.fromLTWH(0.0, 0.0, 100.0, 100.0),
         paint,
@@ -442290,7 +442288,7 @@ class AlphaTransparencyDiceDataUriPainterWidget extends StatefulWidget {
 
 class _AlphaTransparencyDiceDataUriPainterWidgetState
     extends State<AlphaTransparencyDiceDataUriPainterWidget> {
-  ui.Image? _image0;
+  Object? _image0;
 
   @override
   void initState() {
@@ -442299,15 +442297,10 @@ class _AlphaTransparencyDiceDataUriPainterWidgetState
   }
 
   Future<void> _decodeImages() async {
-    final images = await Future.wait([
-      ui
-          .instantiateImageCodec(
-            Uint8List.fromList(
-              _imageBytes__$AlphaTransparencyDiceDataUriPainter_0,
-            ),
-          )
-          .then((ui.Codec codec) => codec.getNextFrame())
-          .then((ui.FrameInfo fi) => fi.image),
+    final images = await Future.wait<dynamic>([
+      decodeImageFromList(
+        Uint8List.fromList(_imageBytes__$AlphaTransparencyDiceDataUriPainter_0),
+      ),
     ]);
     if (mounted) {
       setState(() {
@@ -663329,7 +663322,7 @@ class _$AlphaTransparencyDiceDataUriPainter extends CustomPainter {
   });
 
   final BoxFit fit;
-  final ui.Image? image0;
+  final Object? image0;
 
   Size get viewBox => const Size(100.0, 100.0);
 
@@ -663354,11 +663347,12 @@ class _$AlphaTransparencyDiceDataUriPainter extends CustomPainter {
     );
 
     if (image0 != null) {
-      final double srcW = image0!.width.toDouble();
-      final double srcH = image0!.height.toDouble();
+      final dynamic img = image0;
+      final double srcW = (img.width as int).toDouble();
+      final double srcH = (img.height as int).toDouble();
       final Paint paint = Paint();
-      canvas.drawImageRect(
-        image0!,
+      (canvas as dynamic).drawImageRect(
+        img,
         Rect.fromLTWH(0, 0, srcW, srcH),
         Rect.fromLTWH(25.0, 25.0, 50.0, 50.0),
         paint,

@@ -29,7 +29,7 @@ class MdnImagePainterWidget extends StatefulWidget {
 }
 
 class _MdnImagePainterWidgetState extends State<MdnImagePainterWidget> {
-  ui.Image? _image0;
+  Object? _image0;
 
   @override
   void initState() {
@@ -38,13 +38,8 @@ class _MdnImagePainterWidgetState extends State<MdnImagePainterWidget> {
   }
 
   Future<void> _decodeImages() async {
-    final images = await Future.wait([
-      ui
-          .instantiateImageCodec(
-            Uint8List.fromList(_imageBytes__$MdnImagePainter_0),
-          )
-          .then((ui.Codec codec) => codec.getNextFrame())
-          .then((ui.FrameInfo fi) => fi.image),
+    final images = await Future.wait<dynamic>([
+      decodeImageFromList(Uint8List.fromList(_imageBytes__$MdnImagePainter_0)),
     ]);
     if (mounted) {
       setState(() {
@@ -9627,7 +9622,7 @@ class _$MdnImagePainter extends CustomPainter {
   const _$MdnImagePainter({this.fit = BoxFit.contain, this.image0});
 
   final BoxFit fit;
-  final ui.Image? image0;
+  final Object? image0;
 
   Size get viewBox => const Size(200.0, 200.0);
 
@@ -9652,11 +9647,12 @@ class _$MdnImagePainter extends CustomPainter {
     );
 
     if (image0 != null) {
-      final double srcW = image0!.width.toDouble();
-      final double srcH = image0!.height.toDouble();
+      final dynamic img = image0;
+      final double srcW = (img.width as int).toDouble();
+      final double srcH = (img.height as int).toDouble();
       final Paint paint = Paint();
-      canvas.drawImageRect(
-        image0!,
+      (canvas as dynamic).drawImageRect(
+        img,
         Rect.fromLTWH(0, 0, srcW, srcH),
         Rect.fromLTWH(0.0, 0.0, 200.0, 200.0),
         paint,

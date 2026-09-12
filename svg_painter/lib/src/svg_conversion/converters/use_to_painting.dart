@@ -47,6 +47,15 @@ extension SvgUseToPaintCommands on SvgUse {
       ),
     );
 
+    PaintingRect? targetBounds;
+    if (target is SvgBounded) {
+      final double tx = target.x?.resolveOrNull(context, SvgOrientation.horizontal) ?? 0.0;
+      final double ty = target.y?.resolveOrNull(context, SvgOrientation.vertical) ?? 0.0;
+      final double tw = target.width?.resolveOrNull(context, SvgOrientation.horizontal) ?? 100.0;
+      final double th = target.height?.resolveOrNull(context, SvgOrientation.vertical) ?? 100.0;
+      targetBounds = PaintingRect(tx, ty, tw, th);
+    }
+
     if (target is SvgSymbol) {
       // For symbols, we establish a NEW viewport.
       return target
@@ -58,15 +67,16 @@ extension SvgUseToPaintCommands on SvgUse {
             height: height,
           )
           .map((List<PaintCommand> childCommands) {
-            return <PaintCommand>[
-              DrawGroup(
-                commands: childCommands,
-                style: style,
-                id: id,
-                opacity: style.groupOpacity,
-              ),
-            ];
-          });
+        return <PaintCommand>[
+          DrawGroup(
+            commands: childCommands,
+            style: style,
+            id: id,
+            opacity: style.groupOpacity,
+            bounds: targetBounds,
+          )
+        ];
+      });
     }
 
     if (target is SvgSvg) {
@@ -80,15 +90,16 @@ extension SvgUseToPaintCommands on SvgUse {
             height: height,
           )
           .map((List<PaintCommand> childCommands) {
-            return <PaintCommand>[
-              DrawGroup(
-                commands: childCommands,
-                style: style,
-                id: id,
-                opacity: style.groupOpacity,
-              ),
-            ];
-          });
+        return <PaintCommand>[
+          DrawGroup(
+            commands: childCommands,
+            style: style,
+            id: id,
+            opacity: style.groupOpacity,
+            bounds: targetBounds,
+          )
+        ];
+      });
     }
 
     // Context for children inherits styles, but coordinates are now in the <use> local space.
@@ -99,8 +110,10 @@ extension SvgUseToPaintCommands on SvgUse {
           style: style,
           id: id,
           opacity: style.groupOpacity,
-        ),
+          bounds: targetBounds,
+        )
       ];
     });
+
   }
 }

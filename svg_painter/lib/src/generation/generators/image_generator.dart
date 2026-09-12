@@ -28,19 +28,25 @@ class ImageGenerator extends CommandGenerator<DrawImage> {
 
     // Draw the image using the corresponding field from the painter.
     final imageProp = 'image${command.imageIndex}';
-    buffer.writeBlock('if ($imageProp != null) {', () {
-      buffer.writeln('final double srcW = $imageProp!.width.toDouble();');
-      buffer.writeln('final double srcH = $imageProp!.height.toDouble();');
-      if (command.style.groupOpacity < 1.0) {
+    final bounds =
+        'Rect.fromLTWH(${command.x}, ${command.y}, ${command.width}, ${command.height})';
+
+    wrapWithStyle(buffer, command.style, bounds, () {
+      buffer.writeBlock('if ($imageProp != null) {', () {
+        buffer.writeln('final dynamic img = $imageProp;');
+        buffer.writeln('final double srcW = (img.width as int).toDouble();');
+        buffer.writeln('final double srcH = (img.height as int).toDouble();');
+        if (command.style.groupOpacity < 1.0) {
+          buffer.writeln(
+            'final Paint paint = Paint()..color = const Color(0xFF000000).withValues(alpha: ${command.style.groupOpacity});',
+          );
+        } else {
+          buffer.writeln('final Paint paint = Paint();');
+        }
         buffer.writeln(
-          'final Paint paint = Paint()..color = const Color(0xFF000000).withValues(alpha: ${command.style.groupOpacity});',
+          '(canvas as dynamic).drawImageRect(img, Rect.fromLTWH(0, 0, srcW, srcH), $bounds, paint);',
         );
-      } else {
-        buffer.writeln('final Paint paint = Paint();');
-      }
-      buffer.writeln(
-        'canvas.drawImageRect($imageProp!, Rect.fromLTWH(0, 0, srcW, srcH), Rect.fromLTWH(${command.x}, ${command.y}, ${command.width}, ${command.height}), paint);',
-      );
+      });
     });
   }
 }
