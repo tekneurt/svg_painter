@@ -7,6 +7,7 @@ part 'values/svg_percentage.dart';
 part 'values/svg_gradient_units.dart';
 part 'values/svg_image_decoding.dart';
 part 'values/svg_mask_units.dart';
+part 'values/svg_clip_path_units.dart';
 part 'values/svg_spread_method.dart';
 part 'values/svg_view_box.dart';
 part 'values/svg_preserve_aspect_ratio.dart';

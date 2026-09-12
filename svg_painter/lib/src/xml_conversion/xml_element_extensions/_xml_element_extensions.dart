@@ -1,5 +1,6 @@
 export 'to_common_attributes.dart';
 export 'to_svg_circle.dart';
+export 'to_svg_clip_path.dart';
 export 'to_svg_defs.dart';
 export 'to_svg_element.dart';
 export 'to_svg_ellipse.dart';

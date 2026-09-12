@@ -210,6 +210,14 @@ enum XmlAttributeName {
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/maskContentUnits
   maskContentUnits('maskContentUnits'),
 
+  /// The reference to a clipPath element.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/clip-path
+  clipPath('clip-path'),
+
+  /// The coordinate system for the clipPath content.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/clipPathUnits
+  clipPathUnits('clipPathUnits'),
+
   /// The decoding hint for the image.
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/decoding
   decoding('decoding'),

@@ -50,9 +50,12 @@ enum XmlElementName {
   /// The `<mask>` element.
   mask('mask'),
 
+  /// The `<clipPath>` element.
+  clipPath('clipPath'),
+
   /// The `<title>` element.
   title('title'),
-  desc('desc')
+  desc('desc'),
   ;
 
   const XmlElementName(this.tagName);

@@ -18,7 +18,7 @@ void main() {
       // Assert
       expect(
         result,
-        'DrawText(x: 10.0, y: 20.0, span: PaintingTextSpan(text: Hello, children: 0, style: null), style: PaintingStyle(fill: null, stroke: null, text: null, groupOpacity: 1.0, transform: null, clipRect: null, maskId: null), id: null)',
+        'DrawText(x: 10.0, y: 20.0, span: PaintingTextSpan(text: Hello, children: 0, style: null), style: PaintingStyle(fill: null, stroke: null, text: null, groupOpacity: 1.0, transform: null, clipRect: null, maskId: null, clipPathId: null), id: null)',
       );
     });
   });

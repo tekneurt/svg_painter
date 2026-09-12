@@ -27,6 +27,7 @@ void main() {
           XmlElementName.text => 'text',
           XmlElementName.tspan => 'tspan',
           XmlElementName.mask => 'mask',
+          XmlElementName.clipPath => 'clipPath',
           XmlElementName.title => 'title',
           XmlElementName.desc => 'desc',
         };

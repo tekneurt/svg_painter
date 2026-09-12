@@ -1,4 +1,5 @@
 export 'circle.dart';
+export 'clip_path.dart';
 export 'defs.dart';
 export 'ellipse.dart';
 export 'g.dart';

@@ -87,6 +87,8 @@ extension ToSvgValue on XmlElement {
         .mask ||
         .maskUnits ||
         .maskContentUnits ||
+        .clipPath ||
+        .clipPathUnits ||
         .decoding ||
         .transform ||
         .gradientTransform => null, // These are strings or special types handled elsewhere

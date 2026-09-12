@@ -66,6 +66,8 @@ extension ToSvgElement on XmlElement {
           return toSvgTspan();
         case .mask:
           return toSvgMask();
+        case .clipPath:
+          return toSvgClipPath();
         case .title:
           final CommonAttributes common = toCommonAttributes(elementName);
           return Success<SvgTitle>(

@@ -103,7 +103,8 @@ extension SvgUseToPaintCommands on SvgUse {
     }
 
     // Context for children inherits styles, but coordinates are now in the <use> local space.
-    return target.toPaintCommands(context).map((List<PaintCommand> childCommands) {
+    final SvgPaintingContext childContext = context.deriveWith(this);
+    return target.toPaintCommands(childContext).map((List<PaintCommand> childCommands) {
       return <PaintCommand>[
         DrawGroup(
           commands: childCommands,

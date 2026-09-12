@@ -1,5 +1,6 @@
 import 'package:svg_painter/src/base/result.dart';
 import 'package:svg_painter/src/painting_model/paint_command.dart';
+import 'package:svg_painter/src/painting_model/styles/painting_style.dart';
 import 'package:svg_painter/src/svg_conversion/converters/svg_definition_collector.dart';
 import 'package:svg_painter/src/svg_conversion/converters/svg_painting_context.dart';
 import 'package:svg_painter/src/svg_conversion/converters/svg_to_painting.dart';
@@ -678,6 +679,75 @@ void main() {
         final rootGroup = commands.single as DrawGroup;
 
         expect(rootGroup.commands, isEmpty);
+      });
+
+      test('should convert SvgClipPath to DefineClipPath when present in root', () {
+        // Arrange
+        const clipPath = SvgClipPath(
+          coreAttributes: SvgCoreAttributes(id: 'clip-test'),
+          clipPathUnits: SvgClipPathUnits.objectBoundingBox,
+          children: <SvgElement>[
+            SvgCircle(
+              cx: SvgLength(15),
+              cy: SvgLength(25),
+              r: SvgLength(35),
+            ),
+          ],
+        );
+        const root = SvgRoot(
+          children: <SvgElement>[clipPath],
+        );
+
+        // Act
+        final Result<List<PaintCommand>> result = root.toPaintCommands();
+
+        // Assert
+        expect(result, isA<Success<List<PaintCommand>>>());
+        final List<PaintCommand> commands = (result as Success<List<PaintCommand>>).value;
+        final rootGroup = commands.single as DrawGroup;
+        expect(rootGroup.commands, hasLength(1));
+        final defineClip = rootGroup.commands.single as DefineClipPath;
+        expect(defineClip.id, 'clip-test');
+        expect(defineClip.clipPathUnits, PaintingGradientUnits.objectBoundingBox);
+        expect(defineClip.commands, hasLength(1));
+        expect(defineClip.commands.single, isA<DrawCircle>());
+      });
+
+      test('should convert SvgMask to DefineMask when present in root', () {
+        // Arrange
+        const mask = SvgMask(
+          coreAttributes: SvgCoreAttributes(id: 'mask-test'),
+          maskUnits: SvgMaskUnits.userSpaceOnUse,
+          maskContentUnits: SvgMaskUnits.objectBoundingBox,
+          children: <SvgElement>[
+            SvgRect(
+              x: SvgLength(5),
+              y: SvgLength(10),
+              width: SvgLength(100),
+              height: SvgLength(50),
+              rx: SvgLength(0),
+              ry: SvgLength(0),
+            ),
+          ],
+        );
+        const root = SvgRoot(
+          children: <SvgElement>[mask],
+        );
+
+        // Act
+        final Result<List<PaintCommand>> result = root.toPaintCommands();
+
+        // Assert
+        expect(result, isA<Success<List<PaintCommand>>>());
+        final List<PaintCommand> commands = (result as Success<List<PaintCommand>>).value;
+        final rootGroup = commands.single as DrawGroup;
+        expect(rootGroup.commands, hasLength(1));
+        final defineMask = rootGroup.commands.single as DefineMask;
+        expect(defineMask.id, 'mask-test');
+        expect(defineMask.maskUnits, PaintingGradientUnits.userSpaceOnUse);
+        expect(defineMask.maskContentUnits, PaintingGradientUnits.objectBoundingBox);
+        expect(defineMask.commands, hasLength(1));
+        expect(defineMask.commands.single, isA<DrawRect>());
       });
     });
   });

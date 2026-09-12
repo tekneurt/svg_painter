@@ -43,7 +43,7 @@ void main() {
       // Assert
       expect(
         result,
-        'PaintingStyle(fill: PaintingFillStyle(color: 4294901760, shader: null, units: null, opacity: 1.0, explicit: true, currentColor: false), stroke: null, text: null, groupOpacity: 0.8, transform: null, clipRect: null, maskId: null)',
+        'PaintingStyle(fill: PaintingFillStyle(color: 4294901760, shader: null, units: null, opacity: 1.0, explicit: true, currentColor: false), stroke: null, text: null, groupOpacity: 0.8, transform: null, clipRect: null, maskId: null, clipPathId: null)',
       );
     });
   });

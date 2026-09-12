@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 import '../../test_utils.dart';
 import 'elements/circle_painter.dart';
+import 'elements/clip_path_painter.dart';
 import 'elements/defs_painter.dart';
 import 'elements/ellipse_painter.dart';
 import 'elements/g_painter.dart';
@@ -45,6 +46,13 @@ _fixtures =
       (
         painter: const CirclePainter(),
         name: 'circle_painter',
+        tests: defaultGoldenTests,
+        widget: null,
+        nativeSize: null,
+      ),
+      (
+        painter: const ClipPathPainter(),
+        name: 'clip_path_painter',
         tests: defaultGoldenTests,
         widget: null,
         nativeSize: null,

@@ -161,11 +161,15 @@ PaintingStyle resolvePaint(
       style: cssFontStyle,
       family: cssFontFamily,
     ),
-    graphics: (cssOpacity != null || cssTransform != null || resolvedRules['mask'] != null)
+    graphics: (cssOpacity != null ||
+            cssTransform != null ||
+            resolvedRules['mask'] != null ||
+            resolvedRules['clip-path'] != null)
         ? SvgGraphicsAttributes(
             opacity: cssOpacity,
             transformAttributes: cssTransform,
             mask: resolvedRules['mask'],
+            clipPath: resolvedRules['clip-path'],
           )
         : null,
   );
@@ -310,6 +314,12 @@ PaintingStyle resolvePaint(
     maskId = maskAttr.substring(5, maskAttr.length - 1);
   }
 
+  final String? clipPathAttr = graphics?.clipPath;
+  String? clipPathId;
+  if (clipPathAttr != null && clipPathAttr.startsWith('url(#') && clipPathAttr.endsWith(')')) {
+    clipPathId = clipPathAttr.substring(5, clipPathAttr.length - 1);
+  }
+
   return PaintingStyle(
     fill: fillStyle,
     stroke: strokeStyle,
@@ -323,6 +333,7 @@ PaintingStyle resolvePaint(
     transformAttributes: graphics?.transformAttributes,
     clipRect: clipRect,
     maskId: maskId,
+    clipPathId: clipPathId,
   );
 }
 

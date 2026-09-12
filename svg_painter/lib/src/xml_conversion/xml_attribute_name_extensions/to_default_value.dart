@@ -109,6 +109,8 @@ extension ToDefaultValue on XmlAttributeName {
       case .mask:
       case .maskUnits:
       case .maskContentUnits:
+      case .clipPath:
+      case .clipPathUnits:
       case .type:
       case .media:
       case .title:

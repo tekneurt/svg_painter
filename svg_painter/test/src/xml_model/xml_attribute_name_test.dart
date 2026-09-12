@@ -59,6 +59,8 @@ void main() {
           XmlAttributeName.mask => 'mask',
           XmlAttributeName.maskUnits => 'maskUnits',
           XmlAttributeName.maskContentUnits => 'maskContentUnits',
+          XmlAttributeName.clipPath => 'clip-path',
+          XmlAttributeName.clipPathUnits => 'clipPathUnits',
           XmlAttributeName.decoding => 'decoding',
           XmlAttributeName.type => 'type',
           XmlAttributeName.media => 'media',

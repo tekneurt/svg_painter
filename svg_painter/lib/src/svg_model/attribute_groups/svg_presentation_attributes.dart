@@ -114,6 +114,7 @@ final class SvgPresentationAttributes {
       opacity: b.opacity ?? a.opacity,
       transformAttributes: b.transformAttributes ?? a.transformAttributes,
       mask: b.mask ?? a.mask,
+      clipPath: b.clipPath ?? a.clipPath,
     );
   }
 

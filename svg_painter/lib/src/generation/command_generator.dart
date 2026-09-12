@@ -38,13 +38,14 @@ abstract class CommandGenerator<T extends PaintCommand> {
         transformAttributes != null && transformAttributes.operations.isNotEmpty;
     final hasClip = clipRect != null;
     final hasMask = style.maskId != null;
+    final hasClipPath = style.clipPathId != null;
 
-    if (!hasTransform && !hasClip && !hasMask) {
+    if (!hasTransform && !hasClip && !hasMask && !hasClipPath) {
       body();
       return;
     }
 
-    if (hasTransform || hasClip) {
+    if (hasTransform || hasClip || hasClipPath) {
       buffer.writeln('canvas.save();');
     }
 
@@ -91,6 +92,10 @@ abstract class CommandGenerator<T extends PaintCommand> {
       );
     }
 
+    if (hasClipPath) {
+      buffer.writeln('_clipPath_${style.clipPathId}(canvas, size, $boundsRect);');
+    }
+
     if (hasMask) {
       buffer.writeln('canvas.saveLayer(null, Paint());');
     }
@@ -113,7 +118,7 @@ abstract class CommandGenerator<T extends PaintCommand> {
       buffer.writeln('canvas.restore();');
     }
 
-    if (hasTransform || hasClip) {
+    if (hasTransform || hasClip || hasClipPath) {
       buffer.writeln('canvas.restore();');
     }
   }

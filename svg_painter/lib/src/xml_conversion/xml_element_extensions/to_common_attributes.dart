@@ -45,6 +45,7 @@ extension ToCommonAttributes on XmlElement {
           toXmlAttributeValue(XmlAttributeName.transform),
         ),
         mask: getAttribute(XmlAttributeName.mask.name),
+        clipPath: getAttribute(XmlAttributeName.clipPath.name),
       ),
     );
 

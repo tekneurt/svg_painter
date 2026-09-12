@@ -32,6 +32,7 @@ part 'elements/containers/svg_container_element.dart';
 part 'elements/containers/svg_defs.dart';
 part 'elements/containers/svg_group.dart';
 part 'elements/containers/svg_mask.dart';
+part 'elements/containers/svg_clip_path.dart';
 part 'elements/containers/svg_root.dart';
 part 'elements/containers/svg_svg.dart';
 

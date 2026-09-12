@@ -100,6 +100,7 @@ extension SvgElementToPaintCommands on SvgElement {
       // Definitions
       final SvgSymbol symbol => symbol.toPaintCommandsSymbol(childContext, onlyDefinitions: true),
       final SvgMask mask => _toDefineMask(mask, childContext),
+      final SvgClipPath clipPath => _toDefineClipPath(clipPath, childContext),
       final SvgDefs defs => defs.toPaintCommandsDefs(childContext),
       final SvgStop _ ||
       final SvgMetadataElement _ ||
@@ -113,6 +114,29 @@ extension SvgElementToPaintCommands on SvgElement {
       // Safety fallback
       _ => const Success<List<PaintCommand>>(<PaintCommand>[]),
     };
+  }
+
+  Result<List<PaintCommand>> _toDefineClipPath(SvgClipPath clipPath, SvgPaintingContext context) {
+    final SvgPaintingContext childrenContext =
+        (clipPath.clipPathUnits == SvgClipPathUnits.objectBoundingBox)
+            ? context.derive(viewBoxWidth: 1.0, viewBoxHeight: 1.0, viewBoxMinX: 0, viewBoxMinY: 0)
+            : context;
+
+    return clipPath.children
+        .map((SvgElement child) => child.toPaintCommands(childrenContext))
+        .combine()
+        .map((List<PaintCommand> childCommands) {
+      return <PaintCommand>[
+        DefineClipPath(
+          id: clipPath.id ?? '',
+          commands: childCommands,
+          clipPathUnits: switch (clipPath.clipPathUnits) {
+            SvgClipPathUnits.objectBoundingBox => PaintingGradientUnits.objectBoundingBox,
+            SvgClipPathUnits.userSpaceOnUse => PaintingGradientUnits.userSpaceOnUse,
+          },
+        ),
+      ];
+    });
   }
 
   Result<List<PaintCommand>> _toDefineMask(SvgMask mask, SvgPaintingContext context) {

@@ -53,6 +53,7 @@ final class PaintingStyle {
     this.transformAttributes,
     this.clipRect,
     this.maskId,
+    this.clipPathId,
   });
 
   /// The filling style, or null if the element is not filled.
@@ -76,8 +77,11 @@ final class PaintingStyle {
   /// The ID of the mask to apply to this element.
   final String? maskId;
 
+  /// The ID of the clipPath to apply to this element.
+  final String? clipPathId;
+
   @override
   String toString() {
-    return 'PaintingStyle(fill: $fill, stroke: $stroke, text: $text, groupOpacity: $groupOpacity, transform: $transformAttributes, clipRect: $clipRect, maskId: $maskId)';
+    return 'PaintingStyle(fill: $fill, stroke: $stroke, text: $text, groupOpacity: $groupOpacity, transform: $transformAttributes, clipRect: $clipRect, maskId: $maskId, clipPathId: $clipPathId)';
   }
 }

@@ -165,6 +165,8 @@ void main() {
         XmlAttributeName.fontFamily,
         XmlAttributeName.pathLength,
         XmlAttributeName.strokeDasharray,
+        XmlAttributeName.clipPath,
+        XmlAttributeName.clipPathUnits,
       ];
 
       for (final attr in noDefaultAttrs) {
