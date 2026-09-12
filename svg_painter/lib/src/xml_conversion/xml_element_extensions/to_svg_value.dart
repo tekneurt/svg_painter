@@ -63,6 +63,7 @@ extension ToSvgValue on XmlElement {
         .pathLength => attributeValue.toSvgNonNegativeNumber(),
         .strokeMiterlimit => attributeValue.toSvgMiterLimit(),
         .points || .strokeDasharray => attributeValue.toSvgPointList(),
+        .fillRule => attributeValue.toSvgFillRule(),
         .fill || .stroke || .stopColor => attributeValue.toSvgColor(),
         .strokeLinecap => attributeValue.toSvgStrokeLinecap(),
         .strokeLinejoin => attributeValue.toSvgStrokeLinejoin(),

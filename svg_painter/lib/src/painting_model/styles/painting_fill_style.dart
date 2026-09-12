@@ -10,6 +10,7 @@ final class PaintingFillStyle implements PaintingPaintStyle {
     this.opacity = 1.0,
     this.isExplicit = true,
     this.isCurrentColor = false,
+    this.fillRule = SvgFillRule.nonzero,
   }) : assert(opacity >= 0.0 && opacity <= 1.0, 'Opacity must be between 0.0 and 1.0');
 
   /// The ARGB integer for the fill color.
@@ -36,7 +37,10 @@ final class PaintingFillStyle implements PaintingPaintStyle {
   @override
   final bool isCurrentColor;
 
+  /// The fill rule (nonzero or evenodd).
+  final SvgFillRule fillRule;
+
   @override
   String toString() =>
-      'PaintingFillStyle(color: $colorArgb, shader: $shaderId, units: $shaderUnits, opacity: $opacity, explicit: $isExplicit, currentColor: $isCurrentColor)';
+      'PaintingFillStyle(color: $colorArgb, shader: $shaderId, units: $shaderUnits, opacity: $opacity, explicit: $isExplicit, currentColor: $isCurrentColor, fillRule: $fillRule)';
 }

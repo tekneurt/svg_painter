@@ -1,4 +1,5 @@
 export 'to_svg_color.dart';
+export 'to_svg_fill_rule.dart';
 export 'to_svg_font_family.dart';
 export 'to_svg_font_style.dart';
 export 'to_svg_font_weight.dart';

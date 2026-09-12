@@ -185,6 +185,8 @@ SvgPresentationAttributes _parseCssPresentation(
   final SvgColor? cssFill = resolvedRules['fill']?.toSvgColor();
   final SvgLengthPercentage? cssFillOpacity =
       resolvedRules['fill-opacity']?.toSvgLengthPercentage();
+  final SvgFillRule? cssFillRule =
+      resolvedRules['fill-rule']?.toSvgFillRule();
   final SvgColor? cssStroke = resolvedRules['stroke']?.toSvgColor();
   final SvgLengthPercentage? cssStrokeOpacity =
       resolvedRules['stroke-opacity']?.toSvgLengthPercentage();
@@ -205,7 +207,11 @@ SvgPresentationAttributes _parseCssPresentation(
   );
 
   return SvgPresentationAttributes(
-    fill: SvgFillAttributes(color: cssFill, opacity: cssFillOpacity),
+    fill: SvgFillAttributes(
+      color: cssFill,
+      opacity: cssFillOpacity,
+      rule: cssFillRule,
+    ),
     stroke: SvgStrokeAttributes(
       color: cssStroke,
       opacity: cssStrokeOpacity,
@@ -290,6 +296,7 @@ PaintingFillStyle _buildFillStyle(
     opacity: finalFillOpacity,
     isExplicit: isExplicit,
     isCurrentColor: isCurrentColor,
+    fillRule: fillAttrs?.rule ?? .nonzero,
   );
 }
 

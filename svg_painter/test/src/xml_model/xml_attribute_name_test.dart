@@ -39,6 +39,7 @@ void main() {
           XmlAttributeName.style => 'style',
           XmlAttributeName.fill => 'fill',
           XmlAttributeName.fillOpacity => 'fill-opacity',
+          XmlAttributeName.fillRule => 'fill-rule',
           XmlAttributeName.stroke => 'stroke',
           XmlAttributeName.strokeOpacity => 'stroke-opacity',
           XmlAttributeName.strokeWidth => 'stroke-width',

@@ -130,6 +130,10 @@ enum XmlAttributeName {
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/fill-opacity
   fillOpacity('fill-opacity'),
 
+  /// The algorithm to use to determine the inside part of a shape.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/fill-rule
+  fillRule('fill-rule'),
+
   /// The stroke color of the element.
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke
   stroke('stroke'),

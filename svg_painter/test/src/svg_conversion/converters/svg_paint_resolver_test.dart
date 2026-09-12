@@ -434,5 +434,44 @@ void main() {
       );
       expect(style3.stroke?.miterLimit, 4.0);
     });
+
+    test('should resolve fill-rule from attributes and styles', () {
+      // 1. From presentation attributes
+      final PaintingStyle styleAttr = resolvePaint(
+        emptyContext,
+        tagName: 'path',
+        presentationAttributes: const SvgPresentationAttributes(
+          fill: SvgFillAttributes(
+            color: SvgNamedColor(SvgColorName.red),
+            rule: SvgFillRule.evenodd,
+          ),
+        ),
+      );
+      expect(styleAttr.fill?.fillRule, SvgFillRule.evenodd);
+
+      // 2. From inline styles overriding attribute
+      final PaintingStyle styleInline = resolvePaint(
+        emptyContext,
+        tagName: 'path',
+        presentationAttributes: const SvgPresentationAttributes(
+          fill: SvgFillAttributes(
+            color: SvgNamedColor(SvgColorName.red),
+            rule: SvgFillRule.evenodd,
+          ),
+        ),
+        coreAttributes: const SvgCoreAttributes(inlineStyle: 'fill-rule: nonzero'),
+      );
+      expect(styleInline.fill?.fillRule, SvgFillRule.nonzero);
+
+      // 3. Default when unspecified
+      final PaintingStyle styleDefault = resolvePaint(
+        emptyContext,
+        tagName: 'path',
+        presentationAttributes: const SvgPresentationAttributes(
+          fill: SvgFillAttributes(color: SvgNamedColor(SvgColorName.red)),
+        ),
+      );
+      expect(styleDefault.fill?.fillRule, SvgFillRule.nonzero);
+    });
   });
 }

@@ -218,5 +218,25 @@ void main() {
         expect(result, isNull, reason: 'Failed for ${attr.name}');
       }
     });
+
+    test('toSvgValue should return parsed fill-rule when present and default when absent', () {
+      // Arrange
+      final docPresent = XmlDocument.parse('<path fill-rule="evenodd" />');
+      final docAbsent = XmlDocument.parse('<path />');
+
+      // Act
+      final SvgFillRule resultPresent = docPresent.rootElement.toSvgValue<SvgFillRule>(
+        XmlElementName.path,
+        XmlAttributeName.fillRule,
+      );
+      final SvgFillRule resultAbsent = docAbsent.rootElement.toSvgValue<SvgFillRule>(
+        XmlElementName.path,
+        XmlAttributeName.fillRule,
+      );
+
+      // Assert
+      expect(resultPresent, SvgFillRule.evenodd);
+      expect(resultAbsent, SvgFillRule.nonzero);
+    });
   });
 }

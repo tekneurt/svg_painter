@@ -1,4 +1,5 @@
 import '../../painting_model/_painting_model.dart';
+import '../../svg_model/_svg_model.dart';
 import '../command_generator.dart';
 import '../generator_buffer.dart';
 import '../models.dart';
@@ -49,6 +50,9 @@ class PolyGenerator<T extends DrawCommand> extends ShapeGenerator<T> {
         }
         buffer.outdent();
         buffer.writeln(';');
+        if (command.style.fill?.fillRule == SvgFillRule.evenodd) {
+          buffer.writeln('path.fillType = PathFillType.evenOdd;');
+        }
 
         const bounds = 'path.getBounds()';
         generatePaintingCode(

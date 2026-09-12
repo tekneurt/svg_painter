@@ -67,7 +67,11 @@ final class SvgPresentationAttributes {
     if (b == null) {
       return a;
     }
-    return SvgFillAttributes(color: b.color ?? a.color, opacity: b.opacity ?? a.opacity);
+    return SvgFillAttributes(
+      color: b.color ?? a.color,
+      opacity: b.opacity ?? a.opacity,
+      rule: b.rule ?? a.rule,
+    );
   }
 
   static SvgStrokeAttributes? _mergeStroke(SvgStrokeAttributes? a, SvgStrokeAttributes? b) {
@@ -128,6 +132,7 @@ final class SvgPresentationAttributes {
     return SvgFillAttributes(
       color: child.color ?? parent.color,
       opacity: child.opacity ?? parent.opacity,
+      rule: child.rule ?? parent.rule,
     );
   }
 

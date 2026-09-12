@@ -9,13 +9,17 @@ void main() {
       const attrs = SvgFillAttributes(
         color: SvgNamedColor(SvgColorName.red),
         opacity: SvgPercentage(55.0),
+        rule: SvgFillRule.evenodd,
       );
 
       // Act
       final result = attrs.toString();
 
       // Assert
-      expect(result, 'SvgFillAttributes(color: SvgNamedColor(red), opacity: 55.0%)');
+      expect(
+        result,
+        'SvgFillAttributes(color: SvgNamedColor(red), opacity: 55.0%, rule: SvgFillRule.evenodd)',
+      );
     });
 
     test('should return compact string representation when optional fields are null', () {

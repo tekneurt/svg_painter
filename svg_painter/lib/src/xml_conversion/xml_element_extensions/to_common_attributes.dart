@@ -24,6 +24,7 @@ extension ToCommonAttributes on XmlElement {
       fill: SvgFillAttributes(
         color: toSvgValueOrNull<SvgColor>(elementName, XmlAttributeName.fill),
         opacity: toSvgValueOrNull<SvgLengthPercentage>(elementName, XmlAttributeName.fillOpacity),
+        rule: toSvgValueOrNull<SvgFillRule>(elementName, XmlAttributeName.fillRule),
       ),
       stroke: SvgStrokeAttributes(
         color: toSvgValueOrNull<SvgColor>(elementName, XmlAttributeName.stroke),

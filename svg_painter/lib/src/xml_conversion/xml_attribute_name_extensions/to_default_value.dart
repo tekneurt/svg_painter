@@ -52,6 +52,8 @@ extension ToDefaultValue on XmlAttributeName {
         };
       case .points:
         return const SvgPointList(<double>[]);
+      case .fillRule:
+        return SvgFillRule.nonzero;
       case .fill:
         return switch (elementName) {
           .line => const SvgNoneColor(),

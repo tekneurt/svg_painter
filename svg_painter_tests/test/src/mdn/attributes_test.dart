@@ -7,6 +7,9 @@ import 'attributes/cx_painter.dart';
 import 'attributes/cy_painter.dart';
 import 'attributes/fill_opacity_painter.dart';
 import 'attributes/fill_painter.dart';
+import 'attributes/fill_rule_evenodd_painter.dart';
+import 'attributes/fill_rule_nonzero_painter.dart';
+import 'attributes/fill_rule_painter.dart';
 import 'attributes/fx_painter.dart';
 import 'attributes/fy_painter.dart';
 import 'attributes/gradient_transform_painter.dart';
@@ -67,6 +70,17 @@ _fixtures =
         tests: defaultGoldenTests,
       ),
       (painter: const FillPainter(), name: 'fill_painter', tests: defaultGoldenTests),
+      (painter: const FillRulePainter(), name: 'fill_rule_painter', tests: defaultGoldenTests),
+      (
+        painter: const FillRuleNonzeroPainter(),
+        name: 'fill_rule_nonzero_painter',
+        tests: defaultGoldenTests,
+      ),
+      (
+        painter: const FillRuleEvenoddPainter(),
+        name: 'fill_rule_evenodd_painter',
+        tests: defaultGoldenTests,
+      ),
       (painter: const FxPainter(), name: 'fx_painter', tests: defaultGoldenTests),
       (
         painter: const Fy1Painter(),
