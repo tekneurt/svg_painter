@@ -55,6 +55,7 @@ final class PaintingStyle {
     this.maskId,
     this.clipPathId,
     this.paintOrder = SvgPaintOrder.normal,
+    this.vectorEffect = SvgVectorEffect.none,
   });
 
   /// The filling style, or null if the element is not filled.
@@ -84,8 +85,11 @@ final class PaintingStyle {
   /// The order that the fill, stroke, and markers of a shape or text element are painted.
   final SvgPaintOrder paintOrder;
 
+  /// The vector effect to use when drawing an object.
+  final SvgVectorEffect vectorEffect;
+
   @override
   String toString() {
-    return 'PaintingStyle(fill: $fill, stroke: $stroke, text: $text, groupOpacity: $groupOpacity, transform: $transformAttributes, clipRect: $clipRect, maskId: $maskId, clipPathId: $clipPathId, paintOrder: $paintOrder)';
+    return 'PaintingStyle(fill: $fill, stroke: $stroke, text: $text, groupOpacity: $groupOpacity, transform: $transformAttributes, clipRect: $clipRect, maskId: $maskId, clipPathId: $clipPathId, paintOrder: $paintOrder, vectorEffect: $vectorEffect)';
   }
 }

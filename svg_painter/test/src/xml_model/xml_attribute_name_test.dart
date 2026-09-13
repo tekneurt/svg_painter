@@ -70,6 +70,7 @@ void main() {
           XmlAttributeName.title => 'title',
           XmlAttributeName.xmlSpace => 'xml:space',
           XmlAttributeName.textAnchor => 'text-anchor',
+          XmlAttributeName.vectorEffect => 'vector-effect',
         };
         expect(value.name, expected, reason: 'Enum $value should map to "$expected"');
       }

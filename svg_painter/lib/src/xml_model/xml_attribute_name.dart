@@ -158,6 +158,10 @@ enum XmlAttributeName {
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/paint-order
   paintOrder('paint-order'),
 
+  /// The vector effect to use when drawing an object.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/vector-effect
+  vectorEffect('vector-effect'),
+
   /// The shape to be used at the end of open subpaths when they are stroked.
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-linecap
   strokeLinecap('stroke-linecap'),

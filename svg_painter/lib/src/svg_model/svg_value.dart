@@ -28,6 +28,7 @@ part 'values/svg_fill_rule.dart';
 part 'values/svg_text_anchor.dart';
 part 'values/svg_point_list.dart';
 part 'values/svg_paint_order.dart';
+part 'values/svg_vector_effect.dart';
 
 /// Base class for all SVG attribute values.
 @immutable

@@ -511,5 +511,35 @@ void main() {
       );
       expect(styleDefault.paintOrder, SvgPaintOrder.normal);
     });
+
+    test('should resolve vector-effect correctly from attribute, inline style, and default', () {
+      // 1. From attribute
+      final PaintingStyle styleAttr = resolvePaint(
+        emptyContext,
+        tagName: 'path',
+        presentationAttributes: const SvgPresentationAttributes(
+          vectorEffect: SvgVectorEffect.nonScalingStroke,
+        ),
+      );
+      expect(styleAttr.vectorEffect, SvgVectorEffect.nonScalingStroke);
+
+      // 2. From inline styles overriding attribute
+      final PaintingStyle styleInline = resolvePaint(
+        emptyContext,
+        tagName: 'path',
+        presentationAttributes: const SvgPresentationAttributes(
+          vectorEffect: SvgVectorEffect.nonScalingStroke,
+        ),
+        coreAttributes: const SvgCoreAttributes(inlineStyle: 'vector-effect: none'),
+      );
+      expect(styleInline.vectorEffect, SvgVectorEffect.none);
+
+      // 3. Default when unspecified
+      final PaintingStyle styleDefault = resolvePaint(
+        emptyContext,
+        tagName: 'path',
+      );
+      expect(styleDefault.vectorEffect, SvgVectorEffect.none);
+    });
   });
 }

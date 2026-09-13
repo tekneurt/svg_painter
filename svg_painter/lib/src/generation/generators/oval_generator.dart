@@ -30,24 +30,18 @@ class OvalGenerator extends ShapeGenerator<DrawOval> {
         command.style,
         bounds,
         (String p, {String? dashArray, String? pathLength, String? dashOffset}) {
-          if (dashArray == null) {
+          buffer.writeln('canvas.drawOval($bounds, $p);');
+        },
+        drawStrokeCall: (String p, {String? dashArray, String? pathLength, String? dashOffset}) {
+          if (dashArray == null && command.style.vectorEffect == .none) {
             buffer.writeln('canvas.drawOval($bounds, $p);');
           } else {
-            final String plArg;
-            if (pathLength?.isEmpty ?? true) {
-              plArg = '';
-            } else {
-              plArg = ', pathLength: $pathLength';
-            }
-            final String doArg;
-            if (dashOffset?.isEmpty ?? true) {
-              doArg = '';
-            } else {
-              doArg = ', dashOffset: $dashOffset';
-            }
+            final plArg = (pathLength?.isEmpty ?? true) ? '' : ', pathLength: $pathLength';
+            final doArg = (dashOffset?.isEmpty ?? true) ? '' : ', dashOffset: $dashOffset';
             buffer.writeBlock('{', () {
               buffer.writeln('final Path path = Path()..addOval($bounds);');
-              buffer.writeln('canvas.drawPath(_dashPath(path, $dashArray$plArg$doArg), $p);');
+              final pathExpr = dashArray == null ? 'path' : '_dashPath(path, $dashArray$plArg$doArg)';
+              emitDrawStrokePath(buffer, pathExpr, p, style: command.style);
             });
           }
         },

@@ -271,6 +271,25 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
       }
     }
   }
+
+  /// Emits code to draw [pathVar] with stroke [paintVar], taking into account [PaintingStyle.vectorEffect].
+  void emitDrawStrokePath(
+    GeneratorBuffer buffer,
+    String pathVar,
+    String paintVar, {
+    required PaintingStyle style,
+  }) {
+    if (style.vectorEffect == .nonScalingStroke) {
+      buffer.writeln('final Matrix4 ctm = Matrix4.fromFloat64List(canvas.getTransform());');
+      buffer.writeln('final Path nonScalingPath = $pathVar.transform(ctm.storage);');
+      buffer.writeln('canvas.save();');
+      buffer.writeln('canvas.transform(Matrix4.inverted(ctm).storage);');
+      buffer.writeln('canvas.drawPath(nonScalingPath, $paintVar);');
+      buffer.writeln('canvas.restore();');
+    } else {
+      buffer.writeln('canvas.drawPath($pathVar, $paintVar);');
+    }
+  }
 }
 
 class StyleResolution {

@@ -51,6 +51,7 @@ extension ToCommonAttributes on XmlElement {
         clipPath: getAttribute(XmlAttributeName.clipPath.name),
       ),
       paintOrder: toSvgValueOrNull<SvgPaintOrder>(elementName, XmlAttributeName.paintOrder),
+      vectorEffect: toSvgValueOrNull<SvgVectorEffect>(elementName, XmlAttributeName.vectorEffect),
     );
 
     return (core: core, presentation: presentation);

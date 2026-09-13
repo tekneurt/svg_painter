@@ -73,6 +73,7 @@ extension ToSvgValue on XmlElement {
         .fontFamily => attributeValue.toSvgFontFamily(),
         .textAnchor => attributeValue.toSvgTextAnchor(),
         .paintOrder => attributeValue.toSvgPaintOrder(),
+        .vectorEffect => attributeValue.toSvgVectorEffect(),
         .dx || .dy => attributeValue.toSvgLengthPercentage(),
         .rotate => attributeValue.toSvgNumber(),
         .gradientUnits => attributeValue.toSvgGradientUnits(),

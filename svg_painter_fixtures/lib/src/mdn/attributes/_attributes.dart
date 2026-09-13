@@ -29,6 +29,7 @@ export 'stroke_opacity.dart';
 export 'stroke_width.dart';
 export 'style.dart';
 export 'text_anchor.dart';
+export 'vector_effect.dart';
 export 'view_box.dart';
 export 'width.dart';
 export 'x1.dart';

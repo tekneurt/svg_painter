@@ -30,8 +30,18 @@ class RectGenerator extends ShapeGenerator<DrawRect> {
         command.style,
         bounds,
         (String p, {String? dashArray, String? pathLength, String? dashOffset}) {
-          if (dashArray == null) {
-            if (command.rx != 0 || command.ry != 0) {
+          if (command.rx != 0 || command.ry != 0) {
+            buffer.writeln(
+              'canvas.drawRRect(RRect.fromRectAndRadius($bounds, const Radius.elliptical(${command.rx}, ${command.ry})), $p);',
+            );
+          } else {
+            buffer.writeln('canvas.drawRect($bounds, $p);');
+          }
+        },
+        drawStrokeCall: (String p, {String? dashArray, String? pathLength, String? dashOffset}) {
+          final bool isRounded = command.rx != 0 || command.ry != 0;
+          if (dashArray == null && command.style.vectorEffect == .none) {
+            if (isRounded) {
               buffer.writeln(
                 'canvas.drawRRect(RRect.fromRectAndRadius($bounds, const Radius.elliptical(${command.rx}, ${command.ry})), $p);',
               );
@@ -39,27 +49,18 @@ class RectGenerator extends ShapeGenerator<DrawRect> {
               buffer.writeln('canvas.drawRect($bounds, $p);');
             }
           } else {
-            final String plArg;
-            if (pathLength?.isEmpty ?? true) {
-              plArg = '';
-            } else {
-              plArg = ', pathLength: $pathLength';
-            }
-            final String doArg;
-            if (dashOffset?.isEmpty ?? true) {
-              doArg = '';
-            } else {
-              doArg = ', dashOffset: $dashOffset';
-            }
+            final plArg = (pathLength?.isEmpty ?? true) ? '' : ', pathLength: $pathLength';
+            final doArg = (dashOffset?.isEmpty ?? true) ? '' : ', dashOffset: $dashOffset';
             buffer.writeBlock('{', () {
-              if (command.rx != 0 || command.ry != 0) {
+              if (isRounded) {
                 buffer.writeln(
                   'final Path path = Path()..addRRect(RRect.fromRectAndRadius($bounds, const Radius.elliptical(${command.rx}, ${command.ry})));',
                 );
               } else {
                 buffer.writeln('final Path path = Path()..addRect($bounds);');
               }
-              buffer.writeln('canvas.drawPath(_dashPath(path, $dashArray$plArg$doArg), $p);');
+              final pathExpr = dashArray == null ? 'path' : '_dashPath(path, $dashArray$plArg$doArg)';
+              emitDrawStrokePath(buffer, pathExpr, p, style: command.style);
             });
           }
         },

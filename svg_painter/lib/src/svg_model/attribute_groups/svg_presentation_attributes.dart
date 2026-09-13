@@ -19,6 +19,7 @@ final class SvgPresentationAttributes {
     this.font,
     this.graphics,
     this.paintOrder,
+    this.vectorEffect,
   });
 
   /// Fill-related attributes.
@@ -36,6 +37,9 @@ final class SvgPresentationAttributes {
   /// The order that the fill, stroke, and markers of a shape or text element are painted.
   final SvgPaintOrder? paintOrder;
 
+  /// The vector effect to use when drawing an object (e.g., non-scaling-stroke).
+  final SvgVectorEffect? vectorEffect;
+
   /// Merges this set of attributes with another set.
   ///
   /// This is used to resolve attribute priority (e.g., Inline Style > CSS > Attribute).
@@ -50,6 +54,7 @@ final class SvgPresentationAttributes {
       font: _mergeFont(font, other.font),
       graphics: _mergeGraphics(graphics, other.graphics),
       paintOrder: other.paintOrder ?? paintOrder,
+      vectorEffect: other.vectorEffect ?? vectorEffect,
     );
   }
 
@@ -67,8 +72,9 @@ final class SvgPresentationAttributes {
       stroke: _inheritStroke(stroke, parent.stroke),
       font: _inheritFont(font, parent.font),
       paintOrder: paintOrder ?? parent.paintOrder,
-      // Non-inherited groups (opacity, transform, etc. do NOT inherit)
+      // Non-inherited groups (opacity, transform, vector-effect, etc. do NOT inherit)
       graphics: graphics,
+      vectorEffect: vectorEffect,
     );
   }
 
@@ -196,6 +202,7 @@ final class SvgPresentationAttributes {
       if (font != null) 'font: $font',
       if (graphics != null) 'graphics: $graphics',
       if (paintOrder != null) 'paint-order: $paintOrder',
+      if (vectorEffect != null) 'vector-effect: $vectorEffect',
     ];
     return 'SvgPresentationAttributes(${parts.join(', ')})';
   }

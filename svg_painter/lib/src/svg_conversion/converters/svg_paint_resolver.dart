@@ -66,6 +66,7 @@ PaintingStyle resolvePaint(
     maskId: _extractUrlId(graphics?.mask),
     clipPathId: _extractUrlId(graphics?.clipPath),
     paintOrder: resolved.paintOrder ?? SvgPaintOrder.normal,
+    vectorEffect: resolved.vectorEffect ?? SvgVectorEffect.none,
   );
 }
 
@@ -213,6 +214,8 @@ SvgPresentationAttributes _parseCssPresentation(
   );
   final SvgPaintOrder? cssPaintOrder =
       resolvedRules['paint-order']?.toSvgPaintOrder();
+  final SvgVectorEffect? cssVectorEffect =
+      resolvedRules['vector-effect']?.toSvgVectorEffect();
 
   return SvgPresentationAttributes(
     fill: SvgFillAttributes(
@@ -250,6 +253,7 @@ SvgPresentationAttributes _parseCssPresentation(
             )
             : null,
     paintOrder: cssPaintOrder,
+    vectorEffect: cssVectorEffect,
   );
 }
 

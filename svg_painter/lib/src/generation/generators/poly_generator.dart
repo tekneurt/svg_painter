@@ -61,23 +61,18 @@ class PolyGenerator<T extends DrawCommand> extends ShapeGenerator<T> {
           command.style,
           bounds,
           (String p, {String? dashArray, String? pathLength, String? dashOffset}) {
+            buffer.writeln('canvas.drawPath(path, $p);');
+          },
+          drawStrokeCall: (String p, {String? dashArray, String? pathLength, String? dashOffset}) {
+            final String pathExpr;
             if (dashArray == null) {
-              buffer.writeln('canvas.drawPath(path, $p);');
+              pathExpr = 'path';
             } else {
-              final String plArg;
-              if (pathLength?.isEmpty ?? true) {
-                plArg = '';
-              } else {
-                plArg = ', pathLength: $pathLength';
-              }
-              final String doArg;
-              if (dashOffset?.isEmpty ?? true) {
-                doArg = '';
-              } else {
-                doArg = ', dashOffset: $dashOffset';
-              }
-              buffer.writeln('canvas.drawPath(_dashPath(path, $dashArray$plArg$doArg), $p);');
+              final plArg = (pathLength?.isEmpty ?? true) ? '' : ', pathLength: $pathLength';
+              final doArg = (dashOffset?.isEmpty ?? true) ? '' : ', dashOffset: $dashOffset';
+              pathExpr = '_dashPath(path, $dashArray$plArg$doArg)';
             }
+            emitDrawStrokePath(buffer, pathExpr, p, style: command.style);
           },
           palette: palette,
           activeFillProperties: activeFillProperties,

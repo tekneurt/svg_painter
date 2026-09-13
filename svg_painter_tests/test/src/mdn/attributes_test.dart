@@ -39,6 +39,7 @@ import 'attributes/stroke_painter.dart';
 import 'attributes/stroke_width_painter.dart';
 import 'attributes/style_painter.dart';
 import 'attributes/text_anchor_painter.dart';
+import 'attributes/vector_effect_painter.dart';
 import 'attributes/view_box_1_painter.dart';
 import 'attributes/view_box_2_painter.dart';
 import 'attributes/view_box_3_painter.dart';
@@ -194,6 +195,11 @@ _fixtures =
       ),
       (painter: const StylePainter(), name: 'style_painter', tests: defaultGoldenTests),
       (painter: const TextAnchorPainter(), name: 'text_anchor_painter', tests: defaultGoldenTests),
+      (
+        painter: const VectorEffectPainter(),
+        name: 'vector_effect_painter',
+        tests: defaultGoldenTests,
+      ),
       (painter: const ViewBox1Painter(), name: 'view_box_1_painter', tests: defaultGoldenTests),
       (painter: const ViewBox2Painter(), name: 'view_box_2_painter', tests: defaultGoldenTests),
       (painter: const ViewBox3Painter(), name: 'view_box_3_painter', tests: defaultGoldenTests),

@@ -88,6 +88,14 @@ void main() {
       );
     });
 
+    test('vectorEffect should return SvgVectorEffect.none', () {
+      // Arrange & Act & Assert
+      expect(
+        XmlAttributeName.vectorEffect.toDefaultValue(XmlElementName.path),
+        SvgVectorEffect.none,
+      );
+    });
+
     test('fill should return none for line and black for others', () {
       // Arrange & Act & Assert
       expect(XmlAttributeName.fill.toDefaultValue(XmlElementName.line), const SvgNoneColor());

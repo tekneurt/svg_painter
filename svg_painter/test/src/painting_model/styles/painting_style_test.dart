@@ -21,6 +21,7 @@ void main() {
         SvgPaintOrderComponent.fill,
         SvgPaintOrderComponent.markers,
       ]);
+      const SvgVectorEffect vectorEffect = SvgVectorEffect.nonScalingStroke;
 
       // Act
       const style = PaintingStyle(
@@ -29,6 +30,7 @@ void main() {
         text: text,
         groupOpacity: opacity,
         paintOrder: paintOrder,
+        vectorEffect: vectorEffect,
       );
 
       // Assert
@@ -37,6 +39,7 @@ void main() {
       expect(style.text, text);
       expect(style.groupOpacity, opacity);
       expect(style.paintOrder, paintOrder);
+      expect(style.vectorEffect, vectorEffect);
     });
 
     test('should return correct string representation when toString() is called', () {
@@ -52,7 +55,7 @@ void main() {
       // Assert
       expect(
         result,
-        'PaintingStyle(fill: PaintingFillStyle(color: 4294901760, shader: null, units: null, opacity: 1.0, explicit: true, currentColor: false, fillRule: SvgFillRule.nonzero), stroke: null, text: null, groupOpacity: 0.8, transform: null, clipRect: null, maskId: null, clipPathId: null, paintOrder: SvgPaintOrder(fill stroke markers))',
+        'PaintingStyle(fill: PaintingFillStyle(color: 4294901760, shader: null, units: null, opacity: 1.0, explicit: true, currentColor: false, fillRule: SvgFillRule.nonzero), stroke: null, text: null, groupOpacity: 0.8, transform: null, clipRect: null, maskId: null, clipPathId: null, paintOrder: SvgPaintOrder(fill stroke markers), vectorEffect: SvgVectorEffect.none)',
       );
     });
   });

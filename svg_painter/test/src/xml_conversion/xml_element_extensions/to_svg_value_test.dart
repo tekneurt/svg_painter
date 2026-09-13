@@ -305,5 +305,25 @@ void main() {
       );
       expect(resultAbsent, SvgPaintOrder.normal);
     });
+
+    test('toSvgValue should return parsed vector-effect when present and default when absent', () {
+      // Arrange
+      final docPresent = XmlDocument.parse('<path vector-effect="non-scaling-stroke" />');
+      final docAbsent = XmlDocument.parse('<path />');
+
+      // Act
+      final SvgVectorEffect resultPresent = docPresent.rootElement.toSvgValue<SvgVectorEffect>(
+        XmlElementName.path,
+        XmlAttributeName.vectorEffect,
+      );
+      final SvgVectorEffect resultAbsent = docAbsent.rootElement.toSvgValue<SvgVectorEffect>(
+        XmlElementName.path,
+        XmlAttributeName.vectorEffect,
+      );
+
+      // Assert
+      expect(resultPresent, SvgVectorEffect.nonScalingStroke);
+      expect(resultAbsent, SvgVectorEffect.none);
+    });
   });
 }
