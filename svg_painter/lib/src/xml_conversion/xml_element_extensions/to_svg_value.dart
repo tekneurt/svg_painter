@@ -49,6 +49,7 @@ extension ToSvgValue on XmlElement {
         .strokeOpacity ||
         .stopOpacity ||
         .fontSize ||
+        .strokeDashoffset ||
         .strokeWidth => attributeValue.toSvgLengthPercentage(),
         .r || .fr || .rx || .ry || .width || .height => () {
           final SvgLengthPercentage val = attributeValue.toSvgLengthPercentage();
@@ -61,15 +62,19 @@ extension ToSvgValue on XmlElement {
           return val;
         }(),
         .pathLength => attributeValue.toSvgNonNegativeNumber(),
+        .strokeMiterlimit => attributeValue.toSvgMiterLimit(),
         .points || .strokeDasharray => attributeValue.toSvgPointList(),
+        .fillRule => attributeValue.toSvgFillRule(),
         .fill || .stroke || .stopColor => attributeValue.toSvgColor(),
         .strokeLinecap => attributeValue.toSvgStrokeLinecap(),
         .strokeLinejoin => attributeValue.toSvgStrokeLinejoin(),
         .fontWeight => attributeValue.toSvgFontWeight(),
         .fontStyle => attributeValue.toSvgFontStyle(),
         .fontFamily => attributeValue.toSvgFontFamily(),
-        .dx ||
-        .dy => attributeValue.toSvgLengthPercentage(),
+        .textAnchor => attributeValue.toSvgTextAnchor(),
+        .paintOrder => attributeValue.toSvgPaintOrder(),
+        .vectorEffect => attributeValue.toSvgVectorEffect(),
+        .dx || .dy => attributeValue.toSvgLengthPercentage(),
         .rotate => attributeValue.toSvgNumber(),
         .gradientUnits => attributeValue.toSvgGradientUnits(),
         .spreadMethod => throw UnimplementedError('spreadMethod is not yet implemented'),
@@ -84,6 +89,12 @@ extension ToSvgValue on XmlElement {
         .className ||
         .style ||
         .href ||
+        .mask ||
+        .maskUnits ||
+        .maskContentUnits ||
+        .clipPath ||
+        .clipPathUnits ||
+        .decoding ||
         .transform ||
         .gradientTransform => null, // These are strings or special types handled elsewhere
       };

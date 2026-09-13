@@ -73,6 +73,7 @@ class _$TspanPainter extends CustomPainter {
               fontWeight: FontWeight.normal,
               fontStyle: FontStyle.italic,
               fontFamily: 'Noto Serif',
+              package: 'svg_painter',
             ),
             children: <InlineSpan>[
               TextSpan(text: 'You are '),
@@ -83,6 +84,7 @@ class _$TspanPainter extends CustomPainter {
                   fontWeight: FontWeight.bold,
                   fontStyle: FontStyle.normal,
                   fontFamily: 'Roboto',
+                  package: 'svg_painter',
                 ),
                 children: <InlineSpan>[TextSpan(text: 'not')],
               ),

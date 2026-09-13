@@ -15,6 +15,9 @@ enum XmlElementName {
   /// The `<line>` element.
   line('line'),
 
+  /// The `<image>` element.
+  image('image'),
+
   /// The `<path>` element.
   path('path'),
 
@@ -44,9 +47,16 @@ enum XmlElementName {
   /// The `<tspan>` element.
   tspan('tspan'),
 
+  /// The `<mask>` element.
+  mask('mask'),
+
+  /// The `<clipPath>` element.
+  clipPath('clipPath'),
+
   /// The `<title>` element.
   title('title'),
-  desc('desc');
+  desc('desc'),
+  ;
 
   const XmlElementName(this.tagName);
 

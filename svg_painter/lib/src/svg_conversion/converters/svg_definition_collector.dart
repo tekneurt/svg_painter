@@ -12,12 +12,8 @@ extension SvgElementToDefinitions on SvgElement {
       map[elementId] = self;
     }
 
-    if (self is SvgSvg) {
-      for (final SvgElement child in self.children) {
-        child.collectDefinitions(map);
-      }
-    } else if (self is SvgDefs) {
-      for (final SvgElement child in self.children) {
+    if (self case SvgParent(:final List<SvgElement> children)) {
+      for (final child in children) {
         child.collectDefinitions(map);
       }
     }

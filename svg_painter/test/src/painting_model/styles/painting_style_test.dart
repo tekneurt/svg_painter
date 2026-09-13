@@ -1,4 +1,5 @@
 import 'package:svg_painter/src/painting_model/styles/painting_style.dart';
+import 'package:svg_painter/src/svg_model/svg_value.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -12,8 +13,15 @@ void main() {
         fontWeight: PaintingFontWeight.normal,
         fontStyle: PaintingFontStyle.normal,
         fontFamily: 'Roboto',
+        textAnchor: PaintingTextAnchor.middle,
       );
       const opacity = 0.5;
+      const paintOrder = SvgPaintOrder(<SvgPaintOrderComponent>[
+        SvgPaintOrderComponent.stroke,
+        SvgPaintOrderComponent.fill,
+        SvgPaintOrderComponent.markers,
+      ]);
+      const SvgVectorEffect vectorEffect = SvgVectorEffect.nonScalingStroke;
 
       // Act
       const style = PaintingStyle(
@@ -21,6 +29,8 @@ void main() {
         stroke: stroke,
         text: text,
         groupOpacity: opacity,
+        paintOrder: paintOrder,
+        vectorEffect: vectorEffect,
       );
 
       // Assert
@@ -28,6 +38,8 @@ void main() {
       expect(style.stroke, stroke);
       expect(style.text, text);
       expect(style.groupOpacity, opacity);
+      expect(style.paintOrder, paintOrder);
+      expect(style.vectorEffect, vectorEffect);
     });
 
     test('should return correct string representation when toString() is called', () {
@@ -43,7 +55,7 @@ void main() {
       // Assert
       expect(
         result,
-        'PaintingStyle(fill: PaintingFillStyle(color: 4294901760, shader: null, units: null, opacity: 1.0, explicit: true, currentColor: false), stroke: null, text: null, groupOpacity: 0.8, transform: null, clipRect: null)',
+        'PaintingStyle(fill: PaintingFillStyle(color: 4294901760), groupOpacity: 0.8)',
       );
     });
   });
@@ -78,7 +90,7 @@ void main() {
       // Assert
       expect(
         fill.toString(),
-        'PaintingFillStyle(color: 4294901760, shader: null, units: null, opacity: 0.8, explicit: true, currentColor: false)',
+        'PaintingFillStyle(color: 4294901760, opacity: 0.8)',
       );
     });
   });
@@ -90,6 +102,7 @@ void main() {
       const fontFamily = 'Roboto';
       const PaintingFontWeight fontWeight = PaintingFontWeight.bold;
       const PaintingFontStyle fontStyle = PaintingFontStyle.italic;
+      const PaintingTextAnchor textAnchor = PaintingTextAnchor.end;
 
       // Act
       const text = PaintingTextStyle(
@@ -97,6 +110,7 @@ void main() {
         fontFamily: fontFamily,
         fontWeight: fontWeight,
         fontStyle: fontStyle,
+        textAnchor: textAnchor,
       );
 
       // Assert
@@ -104,6 +118,7 @@ void main() {
       expect(text.fontFamily, fontFamily);
       expect(text.fontWeight, fontWeight);
       expect(text.fontStyle, fontStyle);
+      expect(text.textAnchor, textAnchor);
     });
 
     test('should return correct string representation when toString() is called', () {
@@ -113,6 +128,7 @@ void main() {
         fontWeight: PaintingFontWeight.bold,
         fontStyle: PaintingFontStyle.italic,
         fontFamily: 'Arial',
+        textAnchor: PaintingTextAnchor.middle,
       );
 
       // Act
@@ -121,7 +137,7 @@ void main() {
       // Assert
       expect(
         result,
-        'PaintingTextStyle(size: 14.0, weight: PaintingFontWeight.bold, style: PaintingFontStyle.italic, family: Arial)',
+        'PaintingTextStyle(size: 14.0, weight: PaintingFontWeight.bold, style: PaintingFontStyle.italic, family: Arial, anchor: PaintingTextAnchor.middle)',
       );
     });
   });

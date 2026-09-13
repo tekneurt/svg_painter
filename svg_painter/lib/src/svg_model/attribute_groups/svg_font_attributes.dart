@@ -5,7 +5,7 @@ import '../svg_value.dart';
 /// Represents the grouped font attributes of an SVG element.
 @immutable
 class SvgFontAttributes {
-  const SvgFontAttributes({this.size, this.weight, this.style, this.family});
+  const SvgFontAttributes({this.size, this.weight, this.style, this.family, this.anchor});
 
   /// The size of the font (mapped from `font-size` attribute).
   final SvgLengthPercentage? size;
@@ -19,6 +19,9 @@ class SvgFontAttributes {
   /// The family of the font (mapped from `font-family` attribute).
   final SvgFontFamily? family;
 
+  /// The horizontal alignment of the text (mapped from `text-anchor` attribute).
+  final SvgTextAnchor? anchor;
+
   @override
   String toString() {
     final parts = <String>[
@@ -26,6 +29,7 @@ class SvgFontAttributes {
       if (weight != null) 'weight: $weight',
       if (style != null) 'style: $style',
       if (family != null) 'family: $family',
+      if (anchor != null) 'anchor: $anchor',
     ];
     return 'SvgFontAttributes(${parts.join(', ')})';
   }

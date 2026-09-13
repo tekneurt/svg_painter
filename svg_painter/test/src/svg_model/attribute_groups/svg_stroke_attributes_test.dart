@@ -11,8 +11,10 @@ void main() {
         opacity: SvgPercentage(55.0),
         width: SvgLength(2.5),
         dashArray: SvgPointList(<double>[1.0, 2.0]),
+        dashOffset: SvgLength(4.5),
         linecap: SvgStrokeLinecap.round,
         linejoin: SvgStrokeLinejoin.bevel,
+        miterLimit: SvgGenericNumber(5.0),
       );
 
       // Act
@@ -21,7 +23,7 @@ void main() {
       // Assert
       expect(
         result,
-        'SvgStrokeAttributes(color: SvgNamedColor(red), opacity: 55.0%, width: 2.5, dashArray: SvgPointList([1.0, 2.0]), linecap: SvgStrokeLinecap.round, linejoin: SvgStrokeLinejoin.bevel)',
+        'SvgStrokeAttributes(color: SvgNamedColor(red), opacity: 55.0%, width: 2.5, dashArray: SvgPointList([1.0, 2.0]), dashOffset: 4.5, linecap: SvgStrokeLinecap.round, linejoin: SvgStrokeLinejoin.bevel, miterLimit: SvgNumber(5.0))',
       );
     });
 

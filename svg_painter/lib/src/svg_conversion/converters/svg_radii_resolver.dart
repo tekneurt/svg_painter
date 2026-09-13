@@ -16,18 +16,10 @@ import 'svg_painting_context.dart';
   final double? rxVal = rx.resolveOrNull(context, .horizontal);
   final double? ryVal = ry.resolveOrNull(context, .vertical);
 
-  if (rxVal == null && ryVal == null) {
-    return (0.0, 0.0);
-  }
-
-  if (rxVal != null && ryVal == null) {
-    return (rxVal, rxVal);
-  }
-
-  if (rxVal == null && ryVal != null) {
-    return (ryVal, ryVal);
-  }
-
-  // Both are non-null
-  return (rxVal ?? 0.0, ryVal ?? 0.0);
+  return switch ((rxVal, ryVal)) {
+    (null, null) => (0.0, 0.0),
+    (final double r, null) => (r, r),
+    (null, final double r) => (r, r),
+    (final double x, final double y) => (x, y),
+  };
 }

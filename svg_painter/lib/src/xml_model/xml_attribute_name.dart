@@ -130,6 +130,10 @@ enum XmlAttributeName {
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/fill-opacity
   fillOpacity('fill-opacity'),
 
+  /// The algorithm to use to determine the inside part of a shape.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/fill-rule
+  fillRule('fill-rule'),
+
   /// The stroke color of the element.
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke
   stroke('stroke'),
@@ -146,6 +150,18 @@ enum XmlAttributeName {
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-dasharray
   strokeDasharray('stroke-dasharray'),
 
+  /// The distance into the dash pattern to start the dash.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-dashoffset
+  strokeDashoffset('stroke-dashoffset'),
+
+  /// The order that the fill, stroke, and markers of a shape or text element are painted.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/paint-order
+  paintOrder('paint-order'),
+
+  /// The vector effect to use when drawing an object.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/vector-effect
+  vectorEffect('vector-effect'),
+
   /// The shape to be used at the end of open subpaths when they are stroked.
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-linecap
   strokeLinecap('stroke-linecap'),
@@ -153,6 +169,10 @@ enum XmlAttributeName {
   /// The shape to be used at the corners of paths or basic shapes.
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-linejoin
   strokeLinejoin('stroke-linejoin'),
+
+  /// The limit on the ratio of the miter length to the stroke-width.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-miterlimit
+  strokeMiterlimit('stroke-miterlimit'),
 
   /// The transparency of an object or a group of objects.
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/opacity
@@ -190,9 +210,33 @@ enum XmlAttributeName {
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/dy
   dy('dy'),
 
-  /// The supplemental rotation applied to characters.
+  /// Thesupplemental rotation applied to characters.
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/rotate
   rotate('rotate'),
+
+  /// The reference to a mask element.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/mask
+  mask('mask'),
+
+  /// The coordinate system for the mask.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/maskUnits
+  maskUnits('maskUnits'),
+
+  /// The coordinate system for the mask content.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/maskContentUnits
+  maskContentUnits('maskContentUnits'),
+
+  /// The reference to a clipPath element.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/clip-path
+  clipPath('clip-path'),
+
+  /// The coordinate system for the clipPath content.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/clipPathUnits
+  clipPathUnits('clipPathUnits'),
+
+  /// The decoding hint for the image.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/decoding
+  decoding('decoding'),
 
   /// The type of the style or script.
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/type
@@ -208,7 +252,12 @@ enum XmlAttributeName {
 
   /// The xml:space attribute.
   /// https://www.w3.org/TR/SVG11/styling.html#XMLSpaceAttribute
-  xmlSpace('xml:space');
+  xmlSpace('xml:space'),
+
+  /// The alignment of text relative to a given point.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/text-anchor
+  textAnchor('text-anchor')
+  ;
 
   const XmlAttributeName(this.name);
 

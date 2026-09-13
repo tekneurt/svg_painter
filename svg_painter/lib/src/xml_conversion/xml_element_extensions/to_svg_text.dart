@@ -14,6 +14,14 @@ extension ToSvgText on XmlElement {
 
     final SvgLengthPercentage x = toSvgValue<SvgLengthPercentage>(elementName, XmlAttributeName.x);
     final SvgLengthPercentage y = toSvgValue<SvgLengthPercentage>(elementName, XmlAttributeName.y);
+    final SvgLengthPercentage? dx = toSvgValueOrNull<SvgLengthPercentage>(
+      elementName,
+      XmlAttributeName.dx,
+    );
+    final SvgLengthPercentage? dy = toSvgValueOrNull<SvgLengthPercentage>(
+      elementName,
+      XmlAttributeName.dy,
+    );
 
     final CommonAttributes common = toCommonAttributes(elementName);
 
@@ -67,6 +75,8 @@ extension ToSvgText on XmlElement {
       SvgText(
         x: x,
         y: y,
+        dx: dx,
+        dy: dy,
         children: textChildren,
         coreAttributes: common.core,
         presentationAttributes: common.presentation,

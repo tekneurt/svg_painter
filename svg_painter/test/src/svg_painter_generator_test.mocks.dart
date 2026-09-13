@@ -40,45 +40,37 @@ import 'package:source_gen/src/type_checker.dart' as _i13;
 // ignore_for_file: invalid_use_of_internal_member
 
 class _FakeDartObject_0 extends _i1.SmartFake implements _i2.DartObject {
-  _FakeDartObject_0(Object parent, Invocation parentInvocation)
-    : super(parent, parentInvocation);
+  _FakeDartObject_0(Object parent, Invocation parentInvocation) : super(parent, parentInvocation);
 }
 
 class _FakeSymbol_1 extends _i1.SmartFake implements Symbol {
-  _FakeSymbol_1(Object parent, Invocation parentInvocation)
-    : super(parent, parentInvocation);
+  _FakeSymbol_1(Object parent, Invocation parentInvocation) : super(parent, parentInvocation);
 }
 
 class _FakeDartType_2 extends _i1.SmartFake implements _i3.DartType {
-  _FakeDartType_2(Object parent, Invocation parentInvocation)
-    : super(parent, parentInvocation);
+  _FakeDartType_2(Object parent, Invocation parentInvocation) : super(parent, parentInvocation);
 }
 
-class _FakeConstantReader_3 extends _i1.SmartFake
-    implements _i4.ConstantReader {
+class _FakeConstantReader_3 extends _i1.SmartFake implements _i4.ConstantReader {
   _FakeConstantReader_3(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
 class _FakeRevivable_4 extends _i1.SmartFake implements _i5.Revivable {
-  _FakeRevivable_4(Object parent, Invocation parentInvocation)
-    : super(parent, parentInvocation);
+  _FakeRevivable_4(Object parent, Invocation parentInvocation) : super(parent, parentInvocation);
 }
 
 class _FakeAssetId_5 extends _i1.SmartFake implements _i6.AssetId {
-  _FakeAssetId_5(Object parent, Invocation parentInvocation)
-    : super(parent, parentInvocation);
+  _FakeAssetId_5(Object parent, Invocation parentInvocation) : super(parent, parentInvocation);
 }
 
-class _FakeLibraryElement_6 extends _i1.SmartFake
-    implements _i7.LibraryElement {
+class _FakeLibraryElement_6 extends _i1.SmartFake implements _i7.LibraryElement {
   _FakeLibraryElement_6(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
 class _FakeResolver_7 extends _i1.SmartFake implements _i8.Resolver {
-  _FakeResolver_7(Object parent, Invocation parentInvocation)
-    : super(parent, parentInvocation);
+  _FakeResolver_7(Object parent, Invocation parentInvocation) : super(parent, parentInvocation);
 }
 
 class _FakePackageConfig_8 extends _i1.SmartFake implements _i9.PackageConfig {
@@ -87,33 +79,27 @@ class _FakePackageConfig_8 extends _i1.SmartFake implements _i9.PackageConfig {
 }
 
 class _FakeFuture_9<T1> extends _i1.SmartFake implements _i10.Future<T1> {
-  _FakeFuture_9(Object parent, Invocation parentInvocation)
-    : super(parent, parentInvocation);
+  _FakeFuture_9(Object parent, Invocation parentInvocation) : super(parent, parentInvocation);
 }
 
 class _FakeDigest_10 extends _i1.SmartFake implements _i11.Digest {
-  _FakeDigest_10(Object parent, Invocation parentInvocation)
-    : super(parent, parentInvocation);
+  _FakeDigest_10(Object parent, Invocation parentInvocation) : super(parent, parentInvocation);
 }
 
 class _FakeElement_11 extends _i1.SmartFake implements _i7.Element {
-  _FakeElement_11(Object parent, Invocation parentInvocation)
-    : super(parent, parentInvocation);
+  _FakeElement_11(Object parent, Invocation parentInvocation) : super(parent, parentInvocation);
 }
 
 class _FakeFragment_12 extends _i1.SmartFake implements _i7.Fragment {
-  _FakeFragment_12(Object parent, Invocation parentInvocation)
-    : super(parent, parentInvocation);
+  _FakeFragment_12(Object parent, Invocation parentInvocation) : super(parent, parentInvocation);
 }
 
 class _FakeElementKind_13 extends _i1.SmartFake implements _i7.ElementKind {
-  _FakeElementKind_13(Object parent, Invocation parentInvocation)
-    : super(parent, parentInvocation);
+  _FakeElementKind_13(Object parent, Invocation parentInvocation) : super(parent, parentInvocation);
 }
 
 class _FakeMetadata_14 extends _i1.SmartFake implements _i7.Metadata {
-  _FakeMetadata_14(Object parent, Invocation parentInvocation)
-    : super(parent, parentInvocation);
+  _FakeMetadata_14(Object parent, Invocation parentInvocation) : super(parent, parentInvocation);
 }
 
 /// A class which mocks [ConstantReader].

@@ -5,6 +5,9 @@ part 'values/svg_length.dart';
 part 'values/svg_number.dart';
 part 'values/svg_percentage.dart';
 part 'values/svg_gradient_units.dart';
+part 'values/svg_image_decoding.dart';
+part 'values/svg_mask_units.dart';
+part 'values/svg_clip_path_units.dart';
 part 'values/svg_spread_method.dart';
 part 'values/svg_view_box.dart';
 part 'values/svg_preserve_aspect_ratio.dart';
@@ -21,7 +24,11 @@ part 'values/colors/svg_none_color.dart';
 part 'values/colors/svg_current_color.dart';
 part 'values/colors/svg_paint_reference.dart';
 part 'values/colors/svg_color_name.dart';
+part 'values/svg_fill_rule.dart';
+part 'values/svg_text_anchor.dart';
 part 'values/svg_point_list.dart';
+part 'values/svg_paint_order.dart';
+part 'values/svg_vector_effect.dart';
 
 /// Base class for all SVG attribute values.
 @immutable

@@ -1,4 +1,5 @@
 import '../../painting_model/_painting_model.dart';
+import '../../svg_model/_svg_model.dart';
 import '../command_generator.dart';
 import '../generator_buffer.dart';
 import '../models.dart';
@@ -32,7 +33,7 @@ class PolyGenerator<T extends DrawCommand> extends ShapeGenerator<T> {
       return;
     }
 
-    wrapWithStyle(buffer, command.style, () {
+    wrapWithStyle(buffer, command.style, 'Offset.zero & viewBox', () {
       if (points.isEmpty) {
         return;
       }
@@ -49,6 +50,9 @@ class PolyGenerator<T extends DrawCommand> extends ShapeGenerator<T> {
         }
         buffer.outdent();
         buffer.writeln(';');
+        if (command.style.fill?.fillRule == SvgFillRule.evenodd) {
+          buffer.writeln('path.fillType = PathFillType.evenOdd;');
+        }
 
         const bounds = 'path.getBounds()';
         generatePaintingCode(
@@ -56,18 +60,19 @@ class PolyGenerator<T extends DrawCommand> extends ShapeGenerator<T> {
           command,
           command.style,
           bounds,
-          (String p, {String? dashArray, String? pathLength}) {
+          (String p, {String? dashArray, String? pathLength, String? dashOffset}) {
+            buffer.writeln('canvas.drawPath(path, $p);');
+          },
+          drawStrokeCall: (String p, {String? dashArray, String? pathLength, String? dashOffset}) {
+            final String pathExpr;
             if (dashArray == null) {
-              buffer.writeln('canvas.drawPath(path, $p);');
+              pathExpr = 'path';
             } else {
-              final String plArg;
-              if (pathLength?.isEmpty ?? true) {
-                plArg = '';
-              } else {
-                plArg = ', pathLength: $pathLength';
-              }
-              buffer.writeln('canvas.drawPath(_dashPath(path, $dashArray$plArg), $p);');
+              final plArg = (pathLength?.isEmpty ?? true) ? '' : ', pathLength: $pathLength';
+              final doArg = (dashOffset?.isEmpty ?? true) ? '' : ', dashOffset: $dashOffset';
+              pathExpr = '_dashPath(path, $dashArray$plArg$doArg)';
             }
+            emitDrawStrokePath(buffer, pathExpr, p, style: command.style);
           },
           palette: palette,
           activeFillProperties: activeFillProperties,

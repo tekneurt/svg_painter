@@ -52,6 +52,10 @@ final class PaintingStyle {
     this.groupOpacity = 1.0,
     this.transformAttributes,
     this.clipRect,
+    this.maskId,
+    this.clipPathId,
+    this.paintOrder = SvgPaintOrder.normal,
+    this.vectorEffect = SvgVectorEffect.none,
   });
 
   /// The filling style, or null if the element is not filled.
@@ -72,8 +76,36 @@ final class PaintingStyle {
   /// An explicit clipping rectangle applied to the canvas before drawing.
   final PaintingRect? clipRect;
 
+  /// The ID of the mask to apply to this element.
+  final String? maskId;
+
+  /// The ID of the clipPath to apply to this element.
+  final String? clipPathId;
+
+  /// The order that the fill, stroke, and markers of a shape or text element are painted.
+  final SvgPaintOrder paintOrder;
+
+  /// The vector effect to use when drawing an object.
+  final SvgVectorEffect vectorEffect;
+
   @override
   String toString() {
-    return 'PaintingStyle(fill: $fill, stroke: $stroke, text: $text, groupOpacity: $groupOpacity, transform: $transformAttributes, clipRect: $clipRect)';
+    final parts = <String>[
+      if (fill != null) 'fill: $fill',
+      if (stroke != null) 'stroke: $stroke',
+      if (text != null) 'text: $text',
+      if (groupOpacity != 1.0) 'groupOpacity: $groupOpacity',
+      if (transformAttributes != null) 'transform: $transformAttributes',
+      if (clipRect != null) 'clipRect: $clipRect',
+      if (maskId != null) 'maskId: $maskId',
+      if (clipPathId != null) 'clipPathId: $clipPathId',
+      if (paintOrder != SvgPaintOrder.normal) 'paintOrder: $paintOrder',
+      if (vectorEffect != SvgVectorEffect.none) 'vectorEffect: $vectorEffect',
+    ];
+    if (parts.isEmpty) {
+      return 'PaintingStyle()';
+    } else {
+      return 'PaintingStyle(${parts.join(', ')})';
+    }
   }
 }

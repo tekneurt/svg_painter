@@ -21,27 +21,27 @@ class OvalGenerator extends ShapeGenerator<DrawOval> {
     String? painterClassName,
     Set<String>? gradientsNeedingStretch,
   }) {
-    wrapWithStyle(buffer, command.style, () {
-      final bounds =
-          'Rect.fromLTWH(${command.cx - command.rx}, ${command.cy - command.ry}, ${command.rx * 2}, ${command.ry * 2})';
+    final bounds =
+        'Rect.fromLTWH(${command.cx - command.rx}, ${command.cy - command.ry}, ${command.rx * 2}, ${command.ry * 2})';
+    wrapWithStyle(buffer, command.style, bounds, () {
       generatePaintingCode(
         buffer,
         command,
         command.style,
         bounds,
-        (String p, {String? dashArray, String? pathLength}) {
-          if (dashArray == null) {
+        (String p, {String? dashArray, String? pathLength, String? dashOffset}) {
+          buffer.writeln('canvas.drawOval($bounds, $p);');
+        },
+        drawStrokeCall: (String p, {String? dashArray, String? pathLength, String? dashOffset}) {
+          if (dashArray == null && command.style.vectorEffect == .none) {
             buffer.writeln('canvas.drawOval($bounds, $p);');
           } else {
-            final String plArg;
-            if (pathLength?.isEmpty ?? true) {
-              plArg = '';
-            } else {
-              plArg = ', pathLength: $pathLength';
-            }
+            final plArg = (pathLength?.isEmpty ?? true) ? '' : ', pathLength: $pathLength';
+            final doArg = (dashOffset?.isEmpty ?? true) ? '' : ', dashOffset: $dashOffset';
             buffer.writeBlock('{', () {
               buffer.writeln('final Path path = Path()..addOval($bounds);');
-              buffer.writeln('canvas.drawPath(_dashPath(path, $dashArray$plArg), $p);');
+              final pathExpr = dashArray == null ? 'path' : '_dashPath(path, $dashArray$plArg$doArg)';
+              emitDrawStrokePath(buffer, pathExpr, p, style: command.style);
             });
           }
         },

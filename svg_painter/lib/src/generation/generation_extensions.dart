@@ -32,10 +32,22 @@ extension SvgTransformToFlutterMatrix on SvgTransformAttributes {
   List<double> toFlutterMatrix() {
     // Start with identity matrix
     var matrix = <double>[
-      1, 0, 0, 0,
-      0, 1, 0, 0,
-      0, 0, 1, 0,
-      0, 0, 0, 1,
+      1,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      1,
     ];
 
     for (final SvgTransformOperation op in operations) {
@@ -48,37 +60,92 @@ extension SvgTransformToFlutterMatrix on SvgTransformAttributes {
 
   List<double> _opToMatrix(SvgTransformOperation op) {
     switch (op) {
-      case SvgMatrix(:final double a, :final double b, :final double c, :final double d, :final double e, :final double f):
+      case SvgMatrix(
+        :final double a,
+        :final double b,
+        :final double c,
+        :final double d,
+        :final double e,
+        :final double f,
+      ):
         return <double>[
-          a, b, 0, 0,
-          c, d, 0, 0,
-          0, 0, 1, 0,
-          e, f, 0, 1,
+          a,
+          b,
+          0,
+          0,
+          c,
+          d,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          e,
+          f,
+          0,
+          1,
         ];
       case SvgTranslate(:final double x, :final double y):
         return <double>[
-          1, 0, 0, 0,
-          0, 1, 0, 0,
-          0, 0, 1, 0,
-          x, y, 0, 1,
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          x,
+          y,
+          0,
+          1,
         ];
       case SvgScale(:final double x, :final double y):
         return <double>[
-          x, 0, 0, 0,
-          0, y, 0, 0,
-          0, 0, 1, 0,
-          0, 0, 0, 1,
+          x,
+          0,
+          0,
+          0,
+          0,
+          y,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
         ];
       case SvgRotate(:final double angle, :final double? cx, :final double? cy):
         final double rad = angle * (math.pi / 180.0);
         final double cos = math.cos(rad);
         final double sin = math.sin(rad);
-        
+
         final rotate = <double>[
-          cos, sin, 0, 0,
-          -sin, cos, 0, 0,
-          0, 0, 1, 0,
-          0, 0, 0, 1,
+          cos,
+          sin,
+          0,
+          0,
+          -sin,
+          cos,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
         ];
 
         if (cx != null && cy != null) {
@@ -90,18 +157,42 @@ extension SvgTransformToFlutterMatrix on SvgTransformAttributes {
       case SvgSkewX(:final double angle):
         final double tan = math.tan(angle * (math.pi / 180.0));
         return <double>[
-          1, 0, 0, 0,
-          tan, 1, 0, 0,
-          0, 0, 1, 0,
-          0, 0, 0, 1,
+          1,
+          0,
+          0,
+          0,
+          tan,
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
         ];
       case SvgSkewY(:final double angle):
         final double tan = math.tan(angle * (math.pi / 180.0));
         return <double>[
-          1, tan, 0, 0,
-          0, 1, 0, 0,
-          0, 0, 1, 0,
-          0, 0, 0, 1,
+          1,
+          tan,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
         ];
     }
   }

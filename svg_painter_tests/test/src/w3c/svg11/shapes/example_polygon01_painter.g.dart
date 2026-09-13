@@ -26,9 +26,12 @@ class ExamplePolygon01PainterWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CustomPaint(
-      size: Size(width ?? 453.54330708661416, height ?? 151.1811023622047),
-      painter: _$ExamplePolygon01Painter(fit: fit),
+    return Semantics(
+      hint: 'Example polygon01 - star and hexagon',
+      child: CustomPaint(
+        size: Size(width ?? 453.54330708661416, height ?? 151.1811023622047),
+        painter: _$ExamplePolygon01Painter(fit: fit),
+      ),
     );
   }
 }

@@ -56,6 +56,19 @@ void main() {
         // Arrange & Act & Assert
         expect('hsla(0, 100%, 50%, 0.5)'.toSvgColor().toArgb(), 0x80FF0000);
       });
+
+      test('should parse rgb() space and slash notation correctly', () {
+        // Arrange & Act & Assert
+        expect('rgb(255 0 0 / 50%)'.toSvgColor().toArgb(), 0x80FF0000);
+        expect('rgb(0 255 0 / 0.5)'.toSvgColor().toArgb(), 0x8000FF00);
+        expect('rgb(0 0 255)'.toSvgColor().toArgb(), 0xFF0000FF);
+      });
+
+      test('should parse hsl() space and slash notation correctly', () {
+        // Arrange & Act & Assert
+        expect('hsl(0 100% 50% / 50%)'.toSvgColor().toArgb(), 0x80FF0000);
+        expect('hsl(120 100% 50% / 0.5)'.toSvgColor().toArgb(), 0x8000FF00);
+      });
     });
   });
 }

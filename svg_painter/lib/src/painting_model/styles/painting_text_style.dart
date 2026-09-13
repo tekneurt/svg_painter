@@ -33,7 +33,8 @@ enum PaintingFontWeight {
   w800,
 
   /// Black weight.
-  w900;
+  w900
+  ;
 
   /// Converts this font weight to its standard string representation.
   String toFlutterString() {
@@ -57,7 +58,8 @@ enum PaintingFontStyle {
   normal,
 
   /// Use the italic font style.
-  italic;
+  italic
+  ;
 
   /// Converts this font style to its standard string representation.
   String toFlutterString() {
@@ -68,6 +70,18 @@ enum PaintingFontStyle {
   }
 }
 
+/// Enumeration of possible values for text alignment/anchor in the painting model.
+enum PaintingTextAnchor {
+  /// The start of the text is aligned to the anchor point.
+  start,
+
+  /// The middle of the text is aligned to the anchor point.
+  middle,
+
+  /// The end of the text is aligned to the anchor point.
+  end,
+}
+
 /// Represents the text-specific styling for an SVG element.
 @immutable
 final class PaintingTextStyle {
@@ -76,6 +90,8 @@ final class PaintingTextStyle {
     required this.fontWeight,
     required this.fontStyle,
     required this.fontFamily,
+    this.textAnchor = PaintingTextAnchor.start,
+    this.fontPackage,
   });
 
   /// The size of the font in user units.
@@ -90,9 +106,28 @@ final class PaintingTextStyle {
   /// The family of the font.
   final String fontFamily;
 
+  /// The horizontal alignment / anchor of the text.
+  final PaintingTextAnchor textAnchor;
+
+  /// The package containing the font asset, or null if the font is in the app root.
+  final String? fontPackage;
+
   @override
-  String toString() =>
-      'PaintingTextStyle(size: $fontSize, weight: $fontWeight, style: $fontStyle, family: $fontFamily)';
+  String toString() {
+    final buffer = StringBuffer('PaintingTextStyle(')
+      ..write('size: $fontSize, ')
+      ..write('weight: $fontWeight, ')
+      ..write('style: $fontStyle, ')
+      ..write('family: $fontFamily');
+    if (textAnchor != PaintingTextAnchor.start) {
+      buffer.write(', anchor: $textAnchor');
+    }
+    if (fontPackage != null) {
+      buffer.write(', package: $fontPackage');
+    }
+    buffer.write(')');
+    return buffer.toString();
+  }
 }
 
 /// Represents a node in a hierarchical text structure (TextSpan-like).

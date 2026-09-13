@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-enum SvgTestType { mdn, w3c, various }
+enum SvgTestType { mdn, w3c, various, custom }
 
 /// The type of golden test to run.
 ///
@@ -51,10 +51,11 @@ enum GoldenTestType { fixed, viewBox }
 /// 3. Add a comment documenting the pixel difference (e.g., "1px gradient diff")
 /// 4. Generate platform-specific golden: `flutter test --update-goldens`
 /// 5. Generate CI golden via Docker: `docker run ... flutter test --update-goldens`
-const Map<GoldenTestType, Set<TargetPlatform>?> defaultGoldenTests = <GoldenTestType, Set<TargetPlatform>?>{
-  GoldenTestType.fixed: null,
-  GoldenTestType.viewBox: null,
-};
+const Map<GoldenTestType, Set<TargetPlatform>?> defaultGoldenTests =
+    <GoldenTestType, Set<TargetPlatform>?>{
+      GoldenTestType.fixed: null,
+      GoldenTestType.viewBox: null,
+    };
 
 /// Returns the current host platform as a [TargetPlatform].
 TargetPlatform get currentPlatform => switch (Platform.operatingSystem) {
@@ -99,6 +100,16 @@ Future<void> loadTestFonts() async {
     'Roboto': '../svg_painter/assets/fonts/roboto',
     'Noto Serif': '../svg_painter/assets/fonts/noto_serif',
     'Roboto Mono': '../svg_painter/assets/fonts/roboto_mono',
+    'Verdana': '../svg_painter/assets/fonts/roboto',
+    'Arial': '../svg_painter/assets/fonts/roboto',
+    'Helvetica': '../svg_painter/assets/fonts/roboto',
+    'sans-serif': '../svg_painter/assets/fonts/roboto',
+    'Times New Roman': '../svg_painter/assets/fonts/noto_serif',
+    'Georgia': '../svg_painter/assets/fonts/noto_serif',
+    'serif': '../svg_painter/assets/fonts/noto_serif',
+    'Courier': '../svg_painter/assets/fonts/roboto_mono',
+    'Courier New': '../svg_painter/assets/fonts/roboto_mono',
+    'monospace': '../svg_painter/assets/fonts/roboto_mono',
   };
 
   for (final MapEntry<String, String> entry in families.entries) {
@@ -110,17 +121,18 @@ Future<void> loadTestFonts() async {
     }
 
     final loader = FontLoader(familyName);
+    final packageLoader = FontLoader('packages/svg_painter/$familyName');
     final List<FileSystemEntity> files = dir.listSync();
 
     for (final file in files) {
       if (file is File && file.path.endsWith('.ttf')) {
-        final ByteData data = await file.readAsBytes().then((Uint8List bytes) {
-          return ByteData.view(Uint8List.fromList(bytes).buffer);
-        });
-        loader.addFont(Future<ByteData>.value(data));
+        final Uint8List bytes = await file.readAsBytes();
+        loader.addFont(Future<ByteData>.value(ByteData.view(bytes.buffer)));
+        packageLoader.addFont(Future<ByteData>.value(ByteData.view(bytes.buffer)));
       }
     }
     await loader.load();
+    await packageLoader.load();
   }
 }
 
@@ -156,6 +168,81 @@ Future<void> testSvgPainter({
   await expectLater(find.byType(Container), matchesGoldenFile('$goldenPath/$goldenName'));
 
   // Reset for next test
+  tester.view.resetDevicePixelRatio();
+  tester.view.resetPhysicalSize();
+}
+
+Future<void> testSvgWidget({
+  required WidgetTester tester,
+  required Widget widget,
+  required String goldenName,
+  String goldenPath = 'goldens',
+  Size size = const Size(100, 100),
+}) async {
+  tester.view.devicePixelRatio = 1.0;
+  final containerSize = Size(size.width + 20, size.height + 20);
+  tester.view.physicalSize = containerSize;
+
+  await tester.pumpWidget(
+    MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Center(
+        child: Container(
+          width: containerSize.width,
+          height: containerSize.height,
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.red, width: 10),
+            color: Colors.grey[200],
+          ),
+          child: SizedBox(width: size.width, height: size.height, child: widget),
+        ),
+      ),
+    ),
+  );
+
+  // Wait for async image decoding
+  await tester.runAsync(() async {
+    await Future<void>.delayed(const Duration(milliseconds: 500));
+  });
+  await tester.pumpAndSettle();
+
+  await expectLater(find.byType(Container), matchesGoldenFile('$goldenPath/$goldenName'));
+
+  tester.view.resetDevicePixelRatio();
+  tester.view.resetPhysicalSize();
+}
+
+Future<void> testSvgWidgetNative({
+  required WidgetTester tester,
+  required Widget widget,
+  required String goldenName,
+  String goldenPath = 'goldens',
+  required Size size,
+}) async {
+  tester.view.devicePixelRatio = 1.0;
+  tester.view.physicalSize = size;
+
+  await tester.pumpWidget(
+    MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Center(
+        child: SizedBox(
+          width: size.width,
+          height: size.height,
+          child: widget,
+        ),
+      ),
+    ),
+  );
+
+  // Wait for async image decoding
+  await tester.runAsync(() async {
+    await Future<void>.delayed(const Duration(milliseconds: 500));
+  });
+  await tester.pumpAndSettle();
+
+  await expectLater(find.byType(SizedBox), matchesGoldenFile('$goldenPath/$goldenName'));
+
   tester.view.resetDevicePixelRatio();
   tester.view.resetPhysicalSize();
 }
@@ -211,10 +298,7 @@ Future<void> testDualResolutionPainter({
   required Map<GoldenTestType, Set<TargetPlatform>?> tests,
   String? folder,
 }) async {
-  final String goldenPath = switch (type) {
-    .mdn || .w3c => '$folder/goldens',
-    .various => 'goldens',
-  };
+  final goldenPath = folder != null ? '$folder/goldens' : 'goldens';
 
   if (tests.containsKey(GoldenTestType.fixed)) {
     await testSvgPainter(
@@ -232,6 +316,38 @@ Future<void> testDualResolutionPainter({
       painter: painter,
       goldenName: goldenFileName('${name}_viewBox', tests[GoldenTestType.viewBox]),
       goldenPath: goldenPath,
+    );
+  }
+}
+
+Future<void> testDualResolutionWidget({
+  required WidgetTester tester,
+  required Widget widget,
+  required String name,
+  required SvgTestType type,
+  required Map<GoldenTestType, Set<TargetPlatform>?> tests,
+  required Size nativeSize,
+  String? folder,
+}) async {
+  final goldenPath = folder != null ? '$folder/goldens' : 'goldens';
+
+  if (tests.containsKey(GoldenTestType.fixed)) {
+    await testSvgWidget(
+      tester: tester,
+      widget: widget,
+      goldenName: goldenFileName('${name}_fixed', tests[GoldenTestType.fixed]),
+      goldenPath: goldenPath,
+      size: const Size(200, 200),
+    );
+  }
+
+  if (tests.containsKey(GoldenTestType.viewBox)) {
+    await testSvgWidgetNative(
+      tester: tester,
+      widget: widget,
+      goldenName: goldenFileName('${name}_viewBox', tests[GoldenTestType.viewBox]),
+      goldenPath: goldenPath,
+      size: nativeSize,
     );
   }
 }

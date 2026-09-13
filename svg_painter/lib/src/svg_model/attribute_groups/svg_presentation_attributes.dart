@@ -1,5 +1,6 @@
 import 'package:meta/meta.dart';
 
+import '../svg_value.dart';
 import 'svg_fill_attributes.dart';
 import 'svg_font_attributes.dart';
 import 'svg_graphics_attributes.dart';
@@ -12,7 +13,14 @@ import 'svg_stroke_attributes.dart';
 /// inheritance as defined by the SVG specification.
 @immutable
 final class SvgPresentationAttributes {
-  const SvgPresentationAttributes({this.fill, this.stroke, this.font, this.graphics});
+  const SvgPresentationAttributes({
+    this.fill,
+    this.stroke,
+    this.font,
+    this.graphics,
+    this.paintOrder,
+    this.vectorEffect,
+  });
 
   /// Fill-related attributes.
   final SvgFillAttributes? fill;
@@ -25,6 +33,12 @@ final class SvgPresentationAttributes {
 
   /// Graphics-related presentation attributes (e.g., opacity, transform).
   final SvgGraphicsAttributes? graphics;
+
+  /// The order that the fill, stroke, and markers of a shape or text element are painted.
+  final SvgPaintOrder? paintOrder;
+
+  /// The vector effect to use when drawing an object (e.g., non-scaling-stroke).
+  final SvgVectorEffect? vectorEffect;
 
   /// Merges this set of attributes with another set.
   ///
@@ -39,6 +53,8 @@ final class SvgPresentationAttributes {
       stroke: _mergeStroke(stroke, other.stroke),
       font: _mergeFont(font, other.font),
       graphics: _mergeGraphics(graphics, other.graphics),
+      paintOrder: other.paintOrder ?? paintOrder,
+      vectorEffect: other.vectorEffect ?? vectorEffect,
     );
   }
 
@@ -55,8 +71,10 @@ final class SvgPresentationAttributes {
       fill: _inheritFill(fill, parent.fill),
       stroke: _inheritStroke(stroke, parent.stroke),
       font: _inheritFont(font, parent.font),
-      // Non-inherited groups (opacity, transform, etc. do NOT inherit)
+      paintOrder: paintOrder ?? parent.paintOrder,
+      // Non-inherited groups (opacity, transform, vector-effect, etc. do NOT inherit)
       graphics: graphics,
+      vectorEffect: vectorEffect,
     );
   }
 
@@ -67,7 +85,11 @@ final class SvgPresentationAttributes {
     if (b == null) {
       return a;
     }
-    return SvgFillAttributes(color: b.color ?? a.color, opacity: b.opacity ?? a.opacity);
+    return SvgFillAttributes(
+      color: b.color ?? a.color,
+      opacity: b.opacity ?? a.opacity,
+      rule: b.rule ?? a.rule,
+    );
   }
 
   static SvgStrokeAttributes? _mergeStroke(SvgStrokeAttributes? a, SvgStrokeAttributes? b) {
@@ -82,8 +104,10 @@ final class SvgPresentationAttributes {
       opacity: b.opacity ?? a.opacity,
       width: b.width ?? a.width,
       dashArray: b.dashArray ?? a.dashArray,
+      dashOffset: b.dashOffset ?? a.dashOffset,
       linecap: b.linecap ?? a.linecap,
       linejoin: b.linejoin ?? a.linejoin,
+      miterLimit: b.miterLimit ?? a.miterLimit,
     );
   }
 
@@ -99,6 +123,7 @@ final class SvgPresentationAttributes {
       weight: b.weight ?? a.weight,
       style: b.style ?? a.style,
       family: b.family ?? a.family,
+      anchor: b.anchor ?? a.anchor,
     );
   }
 
@@ -112,6 +137,8 @@ final class SvgPresentationAttributes {
     return SvgGraphicsAttributes(
       opacity: b.opacity ?? a.opacity,
       transformAttributes: b.transformAttributes ?? a.transformAttributes,
+      mask: b.mask ?? a.mask,
+      clipPath: b.clipPath ?? a.clipPath,
     );
   }
 
@@ -125,6 +152,7 @@ final class SvgPresentationAttributes {
     return SvgFillAttributes(
       color: child.color ?? parent.color,
       opacity: child.opacity ?? parent.opacity,
+      rule: child.rule ?? parent.rule,
     );
   }
 
@@ -143,8 +171,10 @@ final class SvgPresentationAttributes {
       opacity: child.opacity ?? parent.opacity,
       width: child.width ?? parent.width,
       dashArray: child.dashArray ?? parent.dashArray,
+      dashOffset: child.dashOffset ?? parent.dashOffset,
       linecap: child.linecap ?? parent.linecap,
       linejoin: child.linejoin ?? parent.linejoin,
+      miterLimit: child.miterLimit ?? parent.miterLimit,
     );
   }
 
@@ -160,6 +190,7 @@ final class SvgPresentationAttributes {
       weight: child.weight ?? parent.weight,
       style: child.style ?? parent.style,
       family: child.family ?? parent.family,
+      anchor: child.anchor ?? parent.anchor,
     );
   }
 
@@ -170,6 +201,8 @@ final class SvgPresentationAttributes {
       if (stroke != null) 'stroke: $stroke',
       if (font != null) 'font: $font',
       if (graphics != null) 'graphics: $graphics',
+      if (paintOrder != null) 'paint-order: $paintOrder',
+      if (vectorEffect != null) 'vector-effect: $vectorEffect',
     ];
     return 'SvgPresentationAttributes(${parts.join(', ')})';
   }

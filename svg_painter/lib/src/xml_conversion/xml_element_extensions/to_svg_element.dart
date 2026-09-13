@@ -36,6 +36,8 @@ extension ToSvgElement on XmlElement {
           return toSvgRect();
         case .line:
           return toSvgLine();
+        case .image:
+          return toSvgImage();
         case .path:
           return toSvgPath();
         case .polyline:
@@ -62,6 +64,10 @@ extension ToSvgElement on XmlElement {
           return toSvgText();
         case .tspan:
           return toSvgTspan();
+        case .mask:
+          return toSvgMask();
+        case .clipPath:
+          return toSvgClipPath();
         case .title:
           final CommonAttributes common = toCommonAttributes(elementName);
           return Success<SvgTitle>(
@@ -107,8 +113,9 @@ extension ToSvgElement on XmlElement {
       XmlAttributeName.y,
     );
     final SvgViewBox? viewBox = toXmlAttributeValue(XmlAttributeName.viewBox)?.toSvgViewBox();
-    final SvgPreserveAspectRatio? preserveAspectRatio =
-        toXmlAttributeValue(XmlAttributeName.preserveAspectRatio)?.toSvgPreserveAspectRatio();
+    final SvgPreserveAspectRatio? preserveAspectRatio = toXmlAttributeValue(
+      XmlAttributeName.preserveAspectRatio,
+    )?.toSvgPreserveAspectRatio();
 
     final CommonAttributes common = toCommonAttributes(elementName);
 

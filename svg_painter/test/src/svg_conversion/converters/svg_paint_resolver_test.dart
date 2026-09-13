@@ -183,13 +183,50 @@ void main() {
       expect(style.fill?.colorArgb, 0xFF008000);
     });
 
-    test('should map monospace font family', () {
+    test('should map monospace font family with svg_painter package', () {
+      // Arrange & Act
       final PaintingStyle style = resolvePaint(
         emptyContext,
         tagName: 'text',
         coreAttributes: const SvgCoreAttributes(inlineStyle: 'font-family: monospace'),
       );
+
+      // Assert
       expect(style.text?.fontFamily, 'Roboto Mono');
+      expect(style.text?.fontPackage, 'svg_painter');
+    });
+
+    test('should map sans-serif and serif font families with svg_painter package', () {
+      // Arrange & Act
+      final PaintingStyle sansStyle = resolvePaint(
+        emptyContext,
+        tagName: 'text',
+        coreAttributes: const SvgCoreAttributes(inlineStyle: 'font-family: sans-serif'),
+      );
+      final PaintingStyle serifStyle = resolvePaint(
+        emptyContext,
+        tagName: 'text',
+        coreAttributes: const SvgCoreAttributes(inlineStyle: 'font-family: serif'),
+      );
+
+      // Assert
+      expect(sansStyle.text?.fontFamily, 'Roboto');
+      expect(sansStyle.text?.fontPackage, 'svg_painter');
+      expect(serifStyle.text?.fontFamily, 'Noto Serif');
+      expect(serifStyle.text?.fontPackage, 'svg_painter');
+    });
+
+    test('should preserve custom font family without fontPackage', () {
+      // Arrange & Act
+      final PaintingStyle style = resolvePaint(
+        emptyContext,
+        tagName: 'text',
+        coreAttributes: const SvgCoreAttributes(inlineStyle: 'font-family: CustomBrandFont'),
+      );
+
+      // Assert
+      expect(style.text?.fontFamily, 'CustomBrandFont');
+      expect(style.text?.fontPackage, isNull);
     });
 
     test('should map intermediate SvgFontWeightNumeric values', () {
@@ -247,7 +284,9 @@ void main() {
       final PaintingStyle style = resolvePaint(
         emptyContext,
         tagName: 'g',
-        coreAttributes: const SvgCoreAttributes(inlineStyle: 'stroke: black; stroke-dasharray: 5, 5'),
+        coreAttributes: const SvgCoreAttributes(
+          inlineStyle: 'stroke: black; stroke-dasharray: 5, 5',
+        ),
       );
 
       expect(style.stroke?.dashArray, equals(<double>[5.0, 5.0]));
@@ -284,7 +323,9 @@ void main() {
       final PaintingStyle style2 = resolvePaint(
         emptyContext,
         tagName: 'g',
-        coreAttributes: const SvgCoreAttributes(inlineStyle: 'stroke: black; stroke-linejoin: arcs'),
+        coreAttributes: const SvgCoreAttributes(
+          inlineStyle: 'stroke: black; stroke-linejoin: arcs',
+        ),
       );
       expect(style2.stroke?.join, PaintingStrokeJoin.miter);
     });
@@ -399,6 +440,143 @@ void main() {
         ),
       );
       expect(style.stroke?.shaderId, 'stroke-grad');
+    });
+
+    test('should resolve stroke-miterlimit and default to 4.0', () {
+      // 1. Explicit value
+      final PaintingStyle style = resolvePaint(
+        emptyContext,
+        tagName: 'g',
+        coreAttributes: const SvgCoreAttributes(
+          inlineStyle: 'stroke: black; stroke-miterlimit: 8.5',
+        ),
+      );
+      expect(style.stroke?.miterLimit, 8.5);
+
+      // 2. Default value
+      final PaintingStyle style2 = resolvePaint(
+        emptyContext,
+        tagName: 'g',
+        coreAttributes: const SvgCoreAttributes(inlineStyle: 'stroke: black'),
+      );
+      expect(style2.stroke?.miterLimit, 4.0);
+
+      // 3. Invalid value (should fall back to default)
+      final PaintingStyle style3 = resolvePaint(
+        emptyContext,
+        tagName: 'g',
+        coreAttributes: const SvgCoreAttributes(
+          inlineStyle: 'stroke: black; stroke-miterlimit: 0.5',
+        ),
+      );
+      expect(style3.stroke?.miterLimit, 4.0);
+    });
+
+    test('should resolve fill-rule from attributes and styles', () {
+      // 1. From presentation attributes
+      final PaintingStyle styleAttr = resolvePaint(
+        emptyContext,
+        tagName: 'path',
+        presentationAttributes: const SvgPresentationAttributes(
+          fill: SvgFillAttributes(
+            color: SvgNamedColor(SvgColorName.red),
+            rule: SvgFillRule.evenodd,
+          ),
+        ),
+      );
+      expect(styleAttr.fill?.fillRule, SvgFillRule.evenodd);
+
+      // 2. From inline styles overriding attribute
+      final PaintingStyle styleInline = resolvePaint(
+        emptyContext,
+        tagName: 'path',
+        presentationAttributes: const SvgPresentationAttributes(
+          fill: SvgFillAttributes(
+            color: SvgNamedColor(SvgColorName.red),
+            rule: SvgFillRule.evenodd,
+          ),
+        ),
+        coreAttributes: const SvgCoreAttributes(inlineStyle: 'fill-rule: nonzero'),
+      );
+      expect(styleInline.fill?.fillRule, SvgFillRule.nonzero);
+
+      // 3. Default when unspecified
+      final PaintingStyle styleDefault = resolvePaint(
+        emptyContext,
+        tagName: 'path',
+        presentationAttributes: const SvgPresentationAttributes(
+          fill: SvgFillAttributes(color: SvgNamedColor(SvgColorName.red)),
+        ),
+      );
+      expect(styleDefault.fill?.fillRule, SvgFillRule.nonzero);
+    });
+
+    test('should resolve paint-order correctly from attribute, inline style, and default', () {
+      // 1. From attribute
+      final PaintingStyle styleAttr = resolvePaint(
+        emptyContext,
+        tagName: 'path',
+        presentationAttributes: const SvgPresentationAttributes(
+          paintOrder: SvgPaintOrder(<SvgPaintOrderComponent>[
+            SvgPaintOrderComponent.stroke,
+            SvgPaintOrderComponent.fill,
+            SvgPaintOrderComponent.markers,
+          ]),
+        ),
+      );
+      expect(styleAttr.paintOrder.isStrokeFirst, isTrue);
+
+      // 2. From inline styles overriding attribute
+      final PaintingStyle styleInline = resolvePaint(
+        emptyContext,
+        tagName: 'path',
+        presentationAttributes: const SvgPresentationAttributes(
+          paintOrder: SvgPaintOrder(<SvgPaintOrderComponent>[
+            SvgPaintOrderComponent.stroke,
+            SvgPaintOrderComponent.fill,
+            SvgPaintOrderComponent.markers,
+          ]),
+        ),
+        coreAttributes: const SvgCoreAttributes(inlineStyle: 'paint-order: normal'),
+      );
+      expect(styleInline.paintOrder, SvgPaintOrder.normal);
+
+      // 3. Default when unspecified
+      final PaintingStyle styleDefault = resolvePaint(
+        emptyContext,
+        tagName: 'path',
+      );
+      expect(styleDefault.paintOrder, SvgPaintOrder.normal);
+    });
+
+    test('should resolve vector-effect correctly from attribute, inline style, and default', () {
+      // 1. From attribute
+      final PaintingStyle styleAttr = resolvePaint(
+        emptyContext,
+        tagName: 'path',
+        presentationAttributes: const SvgPresentationAttributes(
+          vectorEffect: SvgVectorEffect.nonScalingStroke,
+        ),
+      );
+      expect(styleAttr.vectorEffect, SvgVectorEffect.nonScalingStroke);
+
+      // 2. From inline styles overriding attribute
+      final PaintingStyle styleInline = resolvePaint(
+        emptyContext,
+        tagName: 'path',
+        presentationAttributes: const SvgPresentationAttributes(
+          vectorEffect: SvgVectorEffect.nonScalingStroke,
+        ),
+        coreAttributes: const SvgCoreAttributes(inlineStyle: 'vector-effect: none'),
+      );
+      expect(styleInline.vectorEffect, SvgVectorEffect.none);
+
+      // 3. Default when unspecified
+      final PaintingStyle styleDefault = resolvePaint(
+        emptyContext,
+        tagName: 'path',
+      );
+      expect(styleDefault.vectorEffect, SvgVectorEffect.none);
     });
   });
 }

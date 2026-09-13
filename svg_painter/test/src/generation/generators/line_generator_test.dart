@@ -1,5 +1,7 @@
-import 'package:svg_painter/src/generation/_generation.dart';
-import 'package:svg_painter/src/painting_model/_painting_model.dart';
+import 'package:svg_painter/src/generation/generator_buffer.dart';
+import 'package:svg_painter/src/generation/generators/line_generator.dart';
+import 'package:svg_painter/src/painting_model/paint_command.dart';
+import 'package:svg_painter/src/painting_model/styles/painting_style.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -36,11 +38,16 @@ void main() {
       // Arrange
       const generator = LineGenerator();
       const command = DrawLine(
-        x1: 0,
-        y1: 0,
-        x2: 10,
-        y2: 10,
-        style: PaintingStyle(stroke: PaintingStrokeStyle(colorArgb: 0, dashArray: <double>[5, 5])),
+        x1: 10.0,
+        y1: 20.0,
+        x2: 30.0,
+        y2: 40.0,
+        style: PaintingStyle(
+          stroke: PaintingStrokeStyle(
+            colorArgb: 0xFF000000,
+            dashArray: <double>[5.0, 5.0],
+          ),
+        ),
       );
       final buffer = GeneratorBuffer();
 
@@ -49,7 +56,7 @@ void main() {
 
       // Assert
       final output = buffer.toString();
-      expect(output, contains('final Path path = Path()..moveTo(0.0, 0.0)..lineTo(10.0, 10.0);'));
+      expect(output, contains('final Path path = Path()..moveTo(10.0, 20.0)..lineTo(30.0, 40.0);'));
       expect(output, contains('canvas.drawPath(_dashPath(path, dashArray), paint);'));
     });
 
@@ -57,12 +64,16 @@ void main() {
       // Arrange
       const generator = LineGenerator();
       const command = DrawLine(
-        x1: 0,
-        y1: 0,
-        x2: 10,
-        y2: 10,
+        x1: 10.0,
+        y1: 20.0,
+        x2: 30.0,
+        y2: 40.0,
         style: PaintingStyle(
-          stroke: PaintingStrokeStyle(colorArgb: 0, dashArray: <double>[5, 5], pathLength: 100),
+          stroke: PaintingStrokeStyle(
+            colorArgb: 0xFF000000,
+            dashArray: <double>[5.0, 5.0],
+            pathLength: 100.0,
+          ),
         ),
       );
       final buffer = GeneratorBuffer();
@@ -75,6 +86,35 @@ void main() {
       expect(
         output,
         contains('canvas.drawPath(_dashPath(path, dashArray, pathLength: 100.0), paint);'),
+      );
+    });
+
+    test('should generate dashed path with dashOffset when provided', () {
+      // Arrange
+      const generator = LineGenerator();
+      const command = DrawLine(
+        x1: 10.0,
+        y1: 20.0,
+        x2: 30.0,
+        y2: 40.0,
+        style: PaintingStyle(
+          stroke: PaintingStrokeStyle(
+            colorArgb: 0xFF000000,
+            dashArray: <double>[3.0, 1.0],
+            dashOffset: 2.5,
+          ),
+        ),
+      );
+      final buffer = GeneratorBuffer();
+
+      // Act
+      generator.generate(command, buffer);
+
+      // Assert
+      final output = buffer.toString();
+      expect(
+        output,
+        contains('canvas.drawPath(_dashPath(path, dashArray, dashOffset: 2.5), paint);'),
       );
     });
   });

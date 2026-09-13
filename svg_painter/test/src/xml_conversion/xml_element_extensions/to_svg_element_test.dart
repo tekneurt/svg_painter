@@ -227,6 +227,32 @@ void main() {
       expect((result as Success<SvgElement>).value, isA<SvgText>());
     });
 
+    test('should return SvgMask when <mask> is provided', () {
+      // Arrange
+      final document = XmlDocument.parse('<mask id="mask1" />');
+      final XmlElement element = document.rootElement;
+
+      // Act
+      final Result<SvgElement> result = element.toSvgElement();
+
+      // Assert
+      expect(result, isA<Success<SvgElement>>());
+      expect((result as Success<SvgElement>).value, isA<SvgMask>());
+    });
+
+    test('should return SvgClipPath when <clipPath> is provided', () {
+      // Arrange
+      final document = XmlDocument.parse('<clipPath id="clip1" />');
+      final XmlElement element = document.rootElement;
+
+      // Act
+      final Result<SvgElement> result = element.toSvgElement();
+
+      // Assert
+      expect(result, isA<Success<SvgElement>>());
+      expect((result as Success<SvgElement>).value, isA<SvgClipPath>());
+    });
+
     test('should return SvgTitle with content and id when <title> is provided', () {
       // Arrange
       const content = '  Sample Title  ';

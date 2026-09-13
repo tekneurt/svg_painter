@@ -5,7 +5,12 @@ part of '../../svg_element.dart';
 /// See: https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Element/defs
 @immutable
 final class SvgDefs extends SvgDefinitionElement
-    with SvgParent, SvgPresentable, SvgFontAttributable, SvgFillAttributable, SvgStrokeAttributable {
+    with
+        SvgParent,
+        SvgPresentable,
+        SvgFontAttributable,
+        SvgFillAttributable,
+        SvgStrokeAttributable {
   const SvgDefs({
     required this.children,
     this.presentationAttributes,

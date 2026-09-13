@@ -1,9 +1,16 @@
+export 'asset_exporter.dart';
+export 'asset_loader.dart';
 export 'command_generator.dart';
 export 'flutter_color_map.dart';
+export 'generation_analyzer.dart';
 export 'generation_extensions.dart';
 export 'generator_buffer.dart';
 export 'generators/_generators.dart';
+export 'image_preloader.dart';
 export 'models.dart';
+export 'painter_class_generator.dart';
 export 'palette_analyzer.dart';
 export 'shape_generator.dart';
 export 'svg_id_formatter.dart';
+export 'svg_painter_generator.dart';
+export 'widget_class_generator.dart';

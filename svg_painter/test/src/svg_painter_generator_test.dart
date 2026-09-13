@@ -8,9 +8,9 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:source_gen/source_gen.dart';
 import 'package:svg_painter/src/base/result.dart';
+import 'package:svg_painter/src/generation/svg_painter_generator.dart';
 import 'package:svg_painter/src/painting_model/paint_command.dart';
 import 'package:svg_painter/src/painting_model/styles/painting_style.dart';
-import 'package:svg_painter/src/svg_painter_generator.dart';
 import 'package:svg_painter_annotation/svg_painter_annotation.dart';
 import 'package:test/test.dart';
 
@@ -242,34 +242,43 @@ void main() {
 
     group('generateFromSvg', () {
       group('Happy Paths', () {
-        test('should use explicit width and height when provided', () {
+        test('should use explicit width and height when provided', () async {
           // Arrange
           const svg = '<svg width="200" height="300"><circle r="10" /></svg>';
 
           // Act
-          final String output = generator.generateFromSvg(elementName: 'Test', svgContent: svg);
+          final String output = await generator.generateFromSvg(
+            elementName: 'Test',
+            svgContent: svg,
+          );
 
           // Assert
           expect(output, contains('const Size(200.0, 300.0)'));
         });
 
-        test('should fall back to viewBox when width/height are missing', () {
+        test('should fall back to viewBox when width/height are missing', () async {
           // Arrange
           const svg = '<svg viewBox="10 20 50 60"><circle r="10" /></svg>';
 
           // Act
-          final String output = generator.generateFromSvg(elementName: 'Test', svgContent: svg);
+          final String output = await generator.generateFromSvg(
+            elementName: 'Test',
+            svgContent: svg,
+          );
 
           // Assert
           expect(output, contains('const Size(50.0, 60.0)'));
         });
 
-        test('should fall back to 100x100 when all are missing', () {
+        test('should fall back to 100x100 when all are missing', () async {
           // Arrange
           const svg = '<svg><circle r="10" /></svg>';
 
           // Act
-          final String output = generator.generateFromSvg(elementName: 'Test', svgContent: svg);
+          final String output = await generator.generateFromSvg(
+            elementName: 'Test',
+            svgContent: svg,
+          );
 
           // Assert
           expect(output, contains('const Size(100.0, 100.0)'));
@@ -277,13 +286,13 @@ void main() {
       });
 
       group('Unhappy Paths', () {
-        test('should throw InvalidGenerationSourceError when SVG is malformed', () {
+        test('should throw InvalidGenerationSourceError when SVG is malformed', () async {
           // Arrange
           const malformedSvg = '<svg><circle></svg>';
 
           // Act & Assert
           expect(
-            () => generator.generateFromSvg(elementName: 'Test', svgContent: malformedSvg),
+            () async => generator.generateFromSvg(elementName: 'Test', svgContent: malformedSvg),
             throwsA(
               isA<InvalidGenerationSourceError>().having(
                 (InvalidGenerationSourceError e) => e.message,
@@ -294,13 +303,13 @@ void main() {
           );
         });
 
-        test('should throw InvalidGenerationSourceError when root element is not <svg>', () {
+        test('should throw InvalidGenerationSourceError when root element is not <svg>', () async {
           // Arrange
           const nonSvgRoot = '<dummy><circle cx="10" cy="20" r="5" /></dummy>';
 
           // Act & Assert
           expect(
-            () => generator.generateFromSvg(elementName: 'Test', svgContent: nonSvgRoot),
+            () async => generator.generateFromSvg(elementName: 'Test', svgContent: nonSvgRoot),
             throwsA(
               isA<InvalidGenerationSourceError>().having(
                 (InvalidGenerationSourceError e) => e.message,
@@ -311,14 +320,15 @@ void main() {
           );
         });
 
-        test('should throw InvalidGenerationSourceError when conversion fails (broken reference)',
-          () {
+        test(
+          'should throw InvalidGenerationSourceError when conversion fails (broken reference)',
+          () async {
             // Arrange
             const brokenRefSvg = '<svg><use href="#missing" /></svg>';
 
             // Act & Assert
             expect(
-              () => generator.generateFromSvg(elementName: 'Test', svgContent: brokenRefSvg),
+              () async => generator.generateFromSvg(elementName: 'Test', svgContent: brokenRefSvg),
               throwsA(
                 isA<InvalidGenerationSourceError>().having(
                   (InvalidGenerationSourceError e) => e.message,
@@ -330,11 +340,11 @@ void main() {
           },
         );
 
-        test('should throw InvalidGenerationSourceError when mapping fails', () {
+        test('should throw InvalidGenerationSourceError when mapping fails', () async {
           // Trigger the 'Failed to map SVG content' branch
           const invalidAttrSvg = '<svg><path /></svg>'; // Path missing 'd' attribute
           expect(
-            () => generator.generateFromSvg(elementName: 'Test', svgContent: invalidAttrSvg),
+            () async => generator.generateFromSvg(elementName: 'Test', svgContent: invalidAttrSvg),
             throwsA(
               isA<InvalidGenerationSourceError>().having(
                 (InvalidGenerationSourceError e) => e.message,
@@ -345,17 +355,20 @@ void main() {
           );
         });
 
-        test('should throw InvalidGenerationSourceError when root element is not <svg> (internal check)', () {
-          // Use a special XML that parses to a non-SvgSvg root element
-          // We need a way to make the FIRST <svg> element map to something else.
-          // This is hard because toSvgElement() logic is fixed.
-          // But wait, the toSvgElement() on XmlElement looks at the tag name.
-          // If the tag is <svg>, it ALWAYS returns SvgRoot or SvgSvg.
-          
-          // Actually, I can just use a manual call to generateFromSvg with 
-          // a mocked or specially crafted SvgElement tree if I could.
-          // But generateFromSvg is high level.
-        });
+        test(
+          'should throw InvalidGenerationSourceError when root element is not <svg> (internal check)',
+          () async {
+            // Use a special XML that parses to a non-SvgSvg root element
+            // We need a way to make the FIRST <svg> element map to something else.
+            // This is hard because toSvgElement() logic is fixed.
+            // But wait, the toSvgElement() on XmlElement looks at the tag name.
+            // If the tag is <svg>, it ALWAYS returns SvgRoot or SvgSvg.
+
+            // Actually, I can just use a manual call to generateFromSvg with
+            // a mocked or specially crafted SvgElement tree if I could.
+            // But generateFromSvg is high level.
+          },
+        );
       });
     });
 
@@ -483,7 +496,7 @@ void main() {
 
         // Act & Assert
         expect(
-          () => mockableGenerator.generateForAnnotatedElement(
+          () async => await mockableGenerator.generateForAnnotatedElement(
             mockElement,
             mockAnnotation,
             mockBuildStep,
@@ -598,49 +611,57 @@ void main() {
     });
 
     group('Recursion & Logic Branches', () {
-      test('should handle nested groups in _hasDashes, _hasCurrentColor, and _findGradientsNeedingStretch', () {
-        // Arrange
-        const commands = <PaintCommand>[
-          DefineRadialGradient(
-            id: 'g1',
-            cx: 0.5,
-            cy: 0.5,
-            radius: 0.5,
-            fx: 0.5,
-            fy: 0.5,
-            focalRadius: 0,
-            stops: [],
-          ),
-          DrawGroup(
-            commands: <PaintCommand>[
-              DrawGroup(
-                commands: <PaintCommand>[
-                  DrawRect(
-                    x: 0, y: 0, width: 100, height: 50, rx: 0, ry: 0, // Non-square
-                    style: PaintingStyle(
-                      stroke: PaintingStrokeStyle(colorArgb: 0, dashArray: [1, 1]),
-                      fill: PaintingFillStyle(shaderId: 'g1', isCurrentColor: true),
+      test(
+        'should handle nested groups in _hasDashes, _hasCurrentColor, and _findGradientsNeedingStretch',
+        () {
+          // Arrange
+          const commands = <PaintCommand>[
+            DefineRadialGradient(
+              id: 'g1',
+              cx: 0.5,
+              cy: 0.5,
+              radius: 0.5,
+              fx: 0.5,
+              fy: 0.5,
+              focalRadius: 0,
+              stops: [],
+            ),
+            DrawGroup(
+              commands: <PaintCommand>[
+                DrawGroup(
+                  commands: <PaintCommand>[
+                    DrawRect(
+                      x: 0,
+                      y: 0,
+                      width: 100,
+                      height: 50,
+                      rx: 0,
+                      ry: 0, // Non-square
+                      style: PaintingStyle(
+                        stroke: PaintingStrokeStyle(colorArgb: 0, dashArray: [1, 1]),
+                        fill: PaintingFillStyle(shaderId: 'g1', isCurrentColor: true),
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ];
+                  ],
+                ),
+              ],
+            ),
+          ];
 
-        // Act
-        final String output = generator.generatePainterClass(
-          className: 'RecursivePainter',
-          viewBoxWidth: 100,
-          viewBoxHeight: 100,
-          commands: commands,
-        );
+          // Act
+          final String output = generator.generatePainterClass(
+            className: 'RecursivePainter',
+            viewBoxWidth: 100,
+            viewBoxHeight: 100,
+            commands: commands,
+          );
 
-        // Assert
-        expect(output, contains('Path _dashPath'));
-        expect(output, contains('color: color ?? IconTheme.of(context).color'));
-        expect(output, contains('isElliptical: true'));
-      });
+          // Assert
+          expect(output, contains('Path _dashPath'));
+          expect(output, contains('color: color ?? IconTheme.of(context).color'));
+          expect(output, contains('isElliptical: true'));
+        },
+      );
     });
   });
 }

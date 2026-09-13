@@ -31,8 +31,9 @@ extension ToSvgCircle on XmlElement {
         cx: cx,
         cy: cy,
         r: r,
-        geometryAttributes:
-            pathLength != null ? SvgGeometryAttributes(pathLength: pathLength) : null,
+        geometryAttributes: pathLength != null
+            ? SvgGeometryAttributes(pathLength: pathLength)
+            : null,
         coreAttributes: common.core,
         presentationAttributes: common.presentation,
       ),

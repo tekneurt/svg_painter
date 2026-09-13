@@ -80,6 +80,22 @@ void main() {
       );
     });
 
+    test('paintOrder should return SvgPaintOrder.normal', () {
+      // Arrange & Act & Assert
+      expect(
+        XmlAttributeName.paintOrder.toDefaultValue(XmlElementName.path),
+        SvgPaintOrder.normal,
+      );
+    });
+
+    test('vectorEffect should return SvgVectorEffect.none', () {
+      // Arrange & Act & Assert
+      expect(
+        XmlAttributeName.vectorEffect.toDefaultValue(XmlElementName.path),
+        SvgVectorEffect.none,
+      );
+    });
+
     test('fill should return none for line and black for others', () {
       // Arrange & Act & Assert
       expect(XmlAttributeName.fill.toDefaultValue(XmlElementName.line), const SvgNoneColor());
@@ -165,6 +181,8 @@ void main() {
         XmlAttributeName.fontFamily,
         XmlAttributeName.pathLength,
         XmlAttributeName.strokeDasharray,
+        XmlAttributeName.clipPath,
+        XmlAttributeName.clipPathUnits,
       ];
 
       for (final attr in noDefaultAttrs) {

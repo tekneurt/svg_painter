@@ -26,7 +26,7 @@ void main() {
       expect(context.inheritedFontWeight, isA<SvgFontWeightNormal>());
       expect(context.inheritedFontStyle, SvgFontStyle.normal);
       expect(context.inheritedFontFamily, const SvgFontFamily('sans-serif'));
-      
+
       expect(context.inheritedFillOpacity, const SvgLength(1.0));
       expect(context.inheritedStrokeOpacity, const SvgLength(1.0));
       expect(context.inheritedStrokeDasharray, isNull);
@@ -35,7 +35,9 @@ void main() {
     });
 
     test('derive should keep styleSheet and definitions', () {
-      const sheet = SvgStyleSheet({'c1': {'fill': 'red'}});
+      const sheet = SvgStyleSheet({
+        'c1': {'fill': 'red'},
+      });
       final defs = {'r1': const SvgIgnoredElement()};
       final ctx = SvgPaintingContext(
         viewBoxWidth: 100,

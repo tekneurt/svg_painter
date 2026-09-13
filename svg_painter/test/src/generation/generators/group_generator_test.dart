@@ -8,11 +8,10 @@ void main() {
   group('GroupGenerator', () {
     const generator = GroupGenerator();
 
-    final generators =
-        <Type, CommandGenerator<PaintCommand>>{
-          DrawCircle: const CircleGenerator(),
-          DrawGroup: const GroupGenerator(),
-        };
+    final generators = <Type, CommandGenerator<PaintCommand>>{
+      DrawCircle: const CircleGenerator(),
+      DrawGroup: const GroupGenerator(),
+    };
 
     test('should return early when generators map is null', () {
       // Arrange
@@ -75,8 +74,7 @@ void main() {
     test('should pass inherited properties to children when group has style but no ID', () {
       // Arrange
       final spy = _SpyGenerator();
-      final spyGenerators =
-          <Type, CommandGenerator<PaintCommand>>{DrawCircle: spy};
+      final spyGenerators = <Type, CommandGenerator<PaintCommand>>{DrawCircle: spy};
 
       final initialFills = <InheritedProperty>[
         const InheritedProperty('fillProp', colorArgb: 0xFF112233),
@@ -109,8 +107,7 @@ void main() {
       () {
         // Arrange
         final spy = _SpyGenerator();
-        final spyGenerators =
-            <Type, CommandGenerator<PaintCommand>>{DrawCircle: spy};
+        final spyGenerators = <Type, CommandGenerator<PaintCommand>>{DrawCircle: spy};
 
         const command = DrawGroup(
           id: 'test-group',
@@ -139,8 +136,7 @@ void main() {
       () {
         // Arrange
         final spy = _SpyGenerator();
-        final spyGenerators =
-            <Type, CommandGenerator<PaintCommand>>{DrawCircle: spy};
+        final spyGenerators = <Type, CommandGenerator<PaintCommand>>{DrawCircle: spy};
 
         const command = DrawGroup(
           id: 'test-group',
@@ -167,8 +163,10 @@ void main() {
     test('should reuse existing inherited properties when group style matches parent', () {
       // Arrange
       final spy = _SpyGenerator();
-      final spyGenerators =
-          <Type, CommandGenerator<PaintCommand>>{DrawCircle: spy, DrawGroup: generator};
+      final spyGenerators = <Type, CommandGenerator<PaintCommand>>{
+        DrawCircle: spy,
+        DrawGroup: generator,
+      };
 
       const color = 0xFFABCDEF;
       const shader = 'grad1';
@@ -206,8 +204,10 @@ void main() {
     test('should stop inheriting when group style differs from parent and is not mapped', () {
       // Arrange
       final spy = _SpyGenerator();
-      final spyGenerators =
-          <Type, CommandGenerator<PaintCommand>>{DrawCircle: spy, DrawGroup: generator};
+      final spyGenerators = <Type, CommandGenerator<PaintCommand>>{
+        DrawCircle: spy,
+        DrawGroup: generator,
+      };
 
       final initialFills = <InheritedProperty>[
         const InheritedProperty('fillProp', colorArgb: 0xFF111111),
@@ -243,8 +243,10 @@ void main() {
     test('should use indexed property for inheritance when mapped', () {
       // Arrange
       final spy = _SpyGenerator();
-      final spyGenerators =
-          <Type, CommandGenerator<PaintCommand>>{DrawCircle: spy, DrawGroup: generator};
+      final spyGenerators = <Type, CommandGenerator<PaintCommand>>{
+        DrawCircle: spy,
+        DrawGroup: generator,
+      };
 
       const command = DrawGroup(
         style: PaintingStyle(stroke: PaintingStrokeStyle(colorArgb: 0xFF123456)),

@@ -41,7 +41,10 @@ void main() {
       final result = gradient.toString();
 
       // Assert
-      expect(result, 'SvgLinearGradient(x1: 1.1, y1: 2.2, x2: 33.3, y2: 44.4, stops: 0, units: SvgGradientUnits.objectBoundingBox, spread: SvgSpreadMethod.pad)');
+      expect(
+        result,
+        'SvgLinearGradient(x1: 1.1, y1: 2.2, x2: 33.3, y2: 44.4, stops: 0, units: SvgGradientUnits.objectBoundingBox, spread: SvgSpreadMethod.pad)',
+      );
     });
   });
 }

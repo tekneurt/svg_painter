@@ -142,7 +142,12 @@ class _$PathLengthPainter extends CustomPainter {
     }
   }
 
-  Path _dashPath(Path source, List<double> dashArray, {double? pathLength}) {
+  Path _dashPath(
+    Path source,
+    List<double> dashArray, {
+    double? pathLength,
+    double? dashOffset,
+  }) {
     if (dashArray.isEmpty) return source;
     final Path dest = Path();
     for (final metric in source.computeMetrics()) {
@@ -152,11 +157,28 @@ class _$PathLengthPainter extends CustomPainter {
       } else {
         scale = metric.length / pathLength;
       }
-      double distance = 0.0;
+      final double totalLength = dashArray.fold(
+        0.0,
+        (final sum, final d) => sum + d * scale,
+      );
+      if (totalLength <= 0) return source;
+      double offset = (dashOffset ?? 0.0) * scale;
+      offset = offset % totalLength;
+      if (offset < 0) {
+        offset += totalLength;
+      }
+      double remainingPhase = offset;
       int index = 0;
       bool draw = true;
+      while (remainingPhase >= dashArray[index] * scale) {
+        remainingPhase -= dashArray[index] * scale;
+        draw = !draw;
+        index = (index + 1) % dashArray.length;
+      }
+      double distance = 0.0;
+      double segmentLen = (dashArray[index] * scale) - remainingPhase;
       while (distance < metric.length) {
-        final double len = dashArray[index] * scale;
+        final double len = segmentLen;
         if (len > 0) {
           if (draw) {
             final double end = distance + len < metric.length
@@ -168,6 +190,7 @@ class _$PathLengthPainter extends CustomPainter {
         }
         draw = !draw;
         index = (index + 1) % dashArray.length;
+        segmentLen = dashArray[index] * scale;
       }
     }
     return dest;

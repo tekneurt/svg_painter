@@ -10,7 +10,8 @@ enum SvgFontStyle with SvgBaseValue {
   italic('italic'),
 
   /// Oblique text.
-  oblique('oblique');
+  oblique('oblique')
+  ;
 
   const SvgFontStyle(this.value);
 

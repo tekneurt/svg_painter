@@ -52,6 +52,14 @@ extension ToDefaultValue on XmlAttributeName {
         };
       case .points:
         return const SvgPointList(<double>[]);
+      case .fillRule:
+        return SvgFillRule.nonzero;
+      case .textAnchor:
+        return SvgTextAnchor.start;
+      case .paintOrder:
+        return SvgPaintOrder.normal;
+      case .vectorEffect:
+        return SvgVectorEffect.none;
       case .fill:
         return switch (elementName) {
           .line => const SvgNoneColor(),
@@ -65,7 +73,10 @@ extension ToDefaultValue on XmlAttributeName {
         return SvgStrokeLinecap.butt;
       case .strokeLinejoin:
         return SvgStrokeLinejoin.miter;
+      case .strokeMiterlimit:
+        return const SvgGenericNumber(4.0);
       case .offset:
+      case .strokeDashoffset:
         return const SvgLength(0.0);
       case .stopColor:
         return const SvgNamedColor(SvgColorName.black);
@@ -103,6 +114,12 @@ extension ToDefaultValue on XmlAttributeName {
       case .dx:
       case .dy:
       case .rotate:
+      case .decoding:
+      case .mask:
+      case .maskUnits:
+      case .maskContentUnits:
+      case .clipPath:
+      case .clipPathUnits:
       case .type:
       case .media:
       case .title:

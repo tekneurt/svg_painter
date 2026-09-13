@@ -8,7 +8,8 @@ enum SvgGradientUnits with SvgBaseValue {
   objectBoundingBox('objectBoundingBox'),
 
   /// Coordinates are in the user coordinate system.
-  userSpaceOnUse('userSpaceOnUse');
+  userSpaceOnUse('userSpaceOnUse')
+  ;
 
   const SvgGradientUnits(this.value);
 

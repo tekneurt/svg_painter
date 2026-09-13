@@ -1,9 +1,12 @@
 export 'circle.dart';
+export 'clip_path.dart';
 export 'defs.dart';
 export 'ellipse.dart';
 export 'g.dart';
+export 'image.dart';
 export 'line.dart';
 export 'linear_gradient.dart';
+export 'mask.dart';
 export 'path.dart';
 export 'polygon.dart';
 export 'polyline.dart';

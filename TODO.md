@@ -243,22 +243,35 @@
 ### Phase 5: Extended Elements (0.4.0)
 *Reaching standard compatibility with more complex SVG elements.*
 
-- [ ] **Referencing & External Assets**: `<image>`, `<use>`.
-- [ ] **Clipping & Masking**: `<clipPath>`, `<mask >`.
-- [ ] **Accessibility (Semantic Mapping)**: Map `<title>` and `<desc>` automatically to Flutter's `Semantics` widget in the generated code.
+- [x] **Referencing & External Assets**: `<image>` [x], `<use>` [x].
+- [x] **Generator Refactoring**: Modularize `SvgPainterGenerator` by extracting large logic blocks (like widget and painter class generation) into dedicated helper classes to improve maintainability.
+- [x] **Formatting Cleanup**: Enforce `require_trailing_commas` and `trailing_commas: preserve` and reformat entire monorepo to prevent automatic collapsing of multiline code.
+- [x] **Clipping & Masking**: `<clipPath>` [x], `<mask >` [x], `mask` attribute [x], `clip-path` attribute [x].
+- [x] **Engine Refactoring & Clean Code**:
+    - [x] Refactor `CommandGenerator.wrapWithStyle` boolean flag chains (`!hasTransform && !hasClip && !hasMask && !hasClipPath`, `hasTransform || hasClip || hasClipPath`) to use clean, readable pattern matching or switch statements.
+    - [x] Refactor `SvgPaintResolver` into modular, single-responsibility helpers for easier maintenance.
+    - [x] Systematic code audit for similar patterns: Identify and refactor remaining complex boolean flag cascades, negated conditions, and monolithic methods across generators and converters into clean switch/pattern-matching helpers.
+- [x] **Accessibility (Semantic Mapping)**: Map `<title>` and `<desc>` automatically to Flutter's `Semantics` widget in the generated code.
 - [ ] **MDN Compliance**: Add 2nd example from [MDN fill](https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/fill) once `<marker>`, `context-stroke`, and `context-fill` are implemented.
-- [ ] **Essential Attributes**: `text-anchor`, `fill-rule`, `stroke-dashoffset`, `stroke-miterlimit`, `paint-order`, `vector-effect`, `dx`, `dy`, `preserveAspectRatio` [x].
-- [ ] **Font Management (Release Ready)**: Implement `AssetExporter` to automatically handle bundled fonts for the user.
-- [ ] **Release Preparation**:
-    - [ ] **Documentation**: Write comprehensive READMEs and full API documentation.
-    - [ ] **Validation**: Add comprehensive tests for all `BoxFit` values.
-    - [ ] **Publishing**: Publish version 0.4.0 of all packages to pub.dev.
+- [x] **Essential Attributes**: `text-anchor` [x], `fill-rule` [x], `stroke-dashoffset` [x], `stroke-miterlimit` [x], `paint-order` [x], `preserveAspectRatio` [x].
+- [x] **Remaining Attributes**: `vector-effect` [x], `dx` [x], `dy` [x].
+- [x] **Concise Model toString()**: Refactor `PaintingStyle.toString()` and `DrawCommand` subclasses to omit `null` and default values, reducing test verbosity and cognitive load.
+- [x] **Font Management (Release Ready)**: Implement `AssetExporter` to automatically handle bundled fonts for the user.
+- [x] **Release Preparation (Mandatory for Every Release)**:
+    - [x] **Documentation**: Write comprehensive READMEs and full API documentation.
+    - [x] **Validation**: Add comprehensive tests for all `BoxFit` values.
+    - [x] **Dependency Refresh & Pub Score Audit (Final Pre-Release Step)**: Run `dart pub outdated` and update/broaden dependency constraints (e.g. `analyzer`, `xml`) across all packages so all dependencies support latest versions to maintain a 160/160 pub.dev score.
+    - [x] **Publishing**: Publish version 0.4.0 of all packages to pub.dev.
+
+### Phase 9: Performance & Optimization (1.1.0+)
+- [ ] **Image Compression**: Implement support for compressing embedded images (e.g., using LZ4, Zstd via `es_compression`, or built-in GZip) to reduce generated code size while maintaining fast decompression speeds. Analyze the trade-offs between storage savings and runtime performance.
 
 ---
 
 ## Post-MVP Roadmap
 
 ### Phase 6: Recommended "Wise-to-Have" Features (0.5.0)
+- [ ] **Dual-Platform Golden Hardening**: Systematize macOS and Linux golden testing. For tests subject to platform font/anti-aliasing variance, configure platform-specific golden overrides (`TargetPlatform.macOS` / `TargetPlatform.linux`) in `test_utils.dart` so both local macOS and CI Linux pass with 100% reliability.
 - [ ] **Configurable Color Generation**: Add `colorMapping` option to `@SvgPainter`.
     - `material` (default): Use Flutter's `Colors.red`, `Colors.amber.shade200`.
     - `svg`: Use SVG constants like `Color(0xFFFF0000)` but potentially aliased to a generated `SvgColors` class for readability.
@@ -283,3 +296,7 @@
 - [ ] **Complex Filter Primitives**: Lighting, turbulence, displacement maps, color matrices.
 - [ ] **Interactive Elements**: Event handling (taps, hovers) for SVG shapes.
 - [ ] **Misc Attributes**: Rendering hints and CSS interpolation properties.
+- [ ] **SVG 2.0 / CSS Masking Level 1 Basic Shapes**:
+    - [ ] Implement CSS `<basic-shape>` functions in `clip-path`: `circle()`, `ellipse()`, `inset()`, `polygon()`, `path()`, and `rect()`.
+    - [ ] Support geometry box keywords: `fill-box` (objectBoundingBox), `stroke-box` (stroke-expanded box), and `view-box` (viewport).
+    - [ ] *Note on MDN `clip-path` attribute example*: Only 1 of the 4 example rects is currently clipped (`url(#myClip)`); the remaining 3 use SVG 2.0 CSS `circle()` basic shapes which will be activated once this task is completed.

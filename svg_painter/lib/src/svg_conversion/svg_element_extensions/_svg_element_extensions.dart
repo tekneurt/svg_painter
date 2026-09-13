@@ -1,6 +1,7 @@
 export 'svg_circle_to_draw_circle.dart';
 export 'svg_ellipse_to_draw_oval.dart';
 export 'svg_gradient_to_painting.dart';
+export 'svg_image_to_draw_image.dart';
 export 'svg_line_to_draw_line.dart';
 export 'svg_path_to_draw_path.dart';
 export 'svg_polygon_to_draw_polygon.dart';

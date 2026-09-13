@@ -218,5 +218,112 @@ void main() {
         expect(result, isNull, reason: 'Failed for ${attr.name}');
       }
     });
+
+    test('toSvgValue should return parsed fill-rule when present and default when absent', () {
+      // Arrange
+      final docPresent = XmlDocument.parse('<path fill-rule="evenodd" />');
+      final docAbsent = XmlDocument.parse('<path />');
+
+      // Act
+      final SvgFillRule resultPresent = docPresent.rootElement.toSvgValue<SvgFillRule>(
+        XmlElementName.path,
+        XmlAttributeName.fillRule,
+      );
+      final SvgFillRule resultAbsent = docAbsent.rootElement.toSvgValue<SvgFillRule>(
+        XmlElementName.path,
+        XmlAttributeName.fillRule,
+      );
+
+      // Assert
+      expect(resultPresent, SvgFillRule.evenodd);
+      expect(resultAbsent, SvgFillRule.nonzero);
+    });
+
+    test('toSvgValue should return parsed text-anchor when present and default when absent', () {
+      // Arrange
+      final docPresent = XmlDocument.parse('<text text-anchor="middle" />');
+      final docAbsent = XmlDocument.parse('<text />');
+
+      // Act
+      final SvgTextAnchor resultPresent = docPresent.rootElement.toSvgValue<SvgTextAnchor>(
+        XmlElementName.text,
+        XmlAttributeName.textAnchor,
+      );
+      final SvgTextAnchor resultAbsent = docAbsent.rootElement.toSvgValue<SvgTextAnchor>(
+        XmlElementName.text,
+        XmlAttributeName.textAnchor,
+      );
+
+      // Assert
+      expect(resultPresent, SvgTextAnchor.middle);
+      expect(resultAbsent, SvgTextAnchor.start);
+    });
+
+    test('toSvgValue should return parsed stroke-dashoffset when present and default when absent', () {
+      // Arrange
+      final docPresent = XmlDocument.parse('<line stroke-dashoffset="15.5" />');
+      final docAbsent = XmlDocument.parse('<line />');
+
+      // Act
+      final SvgLengthPercentage resultPresent = docPresent.rootElement.toSvgValue<SvgLengthPercentage>(
+        XmlElementName.line,
+        XmlAttributeName.strokeDashoffset,
+      );
+      final SvgLengthPercentage resultAbsent = docAbsent.rootElement.toSvgValue<SvgLengthPercentage>(
+        XmlElementName.line,
+        XmlAttributeName.strokeDashoffset,
+      );
+
+      // Assert
+      expect(resultPresent, isA<SvgLength>().having((SvgLength l) => l.value, 'value', 15.5));
+      expect(resultAbsent, isA<SvgLength>().having((SvgLength l) => l.value, 'value', 0.0));
+    });
+
+    test('toSvgValue should return parsed paint-order when present and default when absent', () {
+      // Arrange
+      final docPresent = XmlDocument.parse('<path paint-order="stroke" />');
+      final docAbsent = XmlDocument.parse('<path />');
+
+      // Act
+      final SvgPaintOrder resultPresent = docPresent.rootElement.toSvgValue<SvgPaintOrder>(
+        XmlElementName.path,
+        XmlAttributeName.paintOrder,
+      );
+      final SvgPaintOrder resultAbsent = docAbsent.rootElement.toSvgValue<SvgPaintOrder>(
+        XmlElementName.path,
+        XmlAttributeName.paintOrder,
+      );
+
+      // Assert
+      expect(
+        resultPresent,
+        const SvgPaintOrder(<SvgPaintOrderComponent>[
+          SvgPaintOrderComponent.stroke,
+          SvgPaintOrderComponent.fill,
+          SvgPaintOrderComponent.markers,
+        ]),
+      );
+      expect(resultAbsent, SvgPaintOrder.normal);
+    });
+
+    test('toSvgValue should return parsed vector-effect when present and default when absent', () {
+      // Arrange
+      final docPresent = XmlDocument.parse('<path vector-effect="non-scaling-stroke" />');
+      final docAbsent = XmlDocument.parse('<path />');
+
+      // Act
+      final SvgVectorEffect resultPresent = docPresent.rootElement.toSvgValue<SvgVectorEffect>(
+        XmlElementName.path,
+        XmlAttributeName.vectorEffect,
+      );
+      final SvgVectorEffect resultAbsent = docAbsent.rootElement.toSvgValue<SvgVectorEffect>(
+        XmlElementName.path,
+        XmlAttributeName.vectorEffect,
+      );
+
+      // Assert
+      expect(resultPresent, SvgVectorEffect.nonScalingStroke);
+      expect(resultAbsent, SvgVectorEffect.none);
+    });
   });
 }

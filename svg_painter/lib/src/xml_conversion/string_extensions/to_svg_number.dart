@@ -20,4 +20,15 @@ extension ToSvgNumber on String {
     }
     return SvgNonNegativeNumber(parsed);
   }
+
+  /// Parses the string as an [SvgNumber] for miter limit.
+  ///
+  /// Returns null if the string is missing, not a valid number, or less than 1.0.
+  SvgNumber? toSvgMiterLimit() {
+    final double? parsed = double.tryParse(trim());
+    if (parsed == null || parsed < 1.0) {
+      return null;
+    }
+    return SvgGenericNumber(parsed);
+  }
 }

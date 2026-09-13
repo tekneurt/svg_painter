@@ -1,6 +1,7 @@
 import 'package:svg_painter/src/generation/_generation.dart';
 import 'package:svg_painter/src/painting_model/paint_command.dart';
 import 'package:svg_painter/src/painting_model/styles/painting_style.dart';
+import 'package:svg_painter/src/svg_model/svg_value.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -12,6 +13,27 @@ void main() {
 
   group('PolyGenerator', () {
     const generator = PolyGenerator<DrawCommand>();
+
+    test('should set path.fillType to evenOdd when fillRule is evenodd', () {
+      // Arrange
+      const command = DrawPolygon(
+        points: <double>[1.0, 2.0, 10.0, 11.0, 20.0, 22.0],
+        style: PaintingStyle(
+          fill: PaintingFillStyle(
+            colorArgb: 0xFFFF0000,
+            fillRule: SvgFillRule.evenodd,
+          ),
+        ),
+      );
+      final buffer = GeneratorBuffer();
+
+      // Act
+      generator.generate(command, buffer, painterClassName: 'TestPainter');
+
+      // Assert
+      final output = buffer.toString();
+      expect(output, contains('path.fillType = PathFillType.evenOdd;'));
+    });
 
     test('should generate moveTo/lineTo when DrawPolyline is provided', () {
       // Arrange

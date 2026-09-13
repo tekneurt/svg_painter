@@ -1,11 +1,14 @@
 export 'to_common_attributes.dart';
 export 'to_svg_circle.dart';
+export 'to_svg_clip_path.dart';
 export 'to_svg_defs.dart';
 export 'to_svg_element.dart';
 export 'to_svg_ellipse.dart';
 export 'to_svg_group.dart';
+export 'to_svg_image.dart';
 export 'to_svg_line.dart';
 export 'to_svg_linear_gradient.dart';
+export 'to_svg_mask.dart';
 export 'to_svg_path.dart';
 export 'to_svg_polygon.dart';
 export 'to_svg_polyline.dart';

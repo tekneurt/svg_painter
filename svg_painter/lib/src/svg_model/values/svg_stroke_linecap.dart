@@ -10,7 +10,8 @@ enum SvgStrokeLinecap with SvgBaseValue {
   round('round'),
 
   /// The stroke is terminated with a square end.
-  square('square');
+  square('square')
+  ;
 
   const SvgStrokeLinecap(this.value);
 

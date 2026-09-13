@@ -11,7 +11,8 @@ enum SvgSpreadMethod with SvgBaseValue {
   reflect('reflect'),
 
   /// The gradient is repeated from the beginning.
-  repeat('repeat');
+  repeat('repeat')
+  ;
 
   const SvgSpreadMethod(this.value);
 

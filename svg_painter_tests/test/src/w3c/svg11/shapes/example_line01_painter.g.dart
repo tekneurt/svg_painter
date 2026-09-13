@@ -26,9 +26,12 @@ class ExampleLine01PainterWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CustomPaint(
-      size: Size(width ?? 453.54330708661416, height ?? 151.1811023622047),
-      painter: _$ExampleLine01Painter(fit: fit),
+    return Semantics(
+      hint: 'Example line01 - lines expressed in user coordinates',
+      child: CustomPaint(
+        size: Size(width ?? 453.54330708661416, height ?? 151.1811023622047),
+        painter: _$ExampleLine01Painter(fit: fit),
+      ),
     );
   }
 }

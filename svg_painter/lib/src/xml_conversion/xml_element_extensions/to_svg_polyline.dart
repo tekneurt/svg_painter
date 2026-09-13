@@ -21,8 +21,9 @@ extension ToSvgPolyline on XmlElement {
     return Success<SvgPolyline>(
       SvgPolyline(
         points: points,
-        geometryAttributes:
-            pathLength != null ? SvgGeometryAttributes(pathLength: pathLength) : null,
+        geometryAttributes: pathLength != null
+            ? SvgGeometryAttributes(pathLength: pathLength)
+            : null,
         coreAttributes: common.core,
         presentationAttributes: common.presentation,
       ),

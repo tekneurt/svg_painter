@@ -115,10 +115,9 @@ class PaletteAnalyzer {
       return false;
     }).toList();
 
-    final List<MapEntry<_StyleKey, List<PaintCommand>>> explicitEntries =
-        sortedEntries
-            .where((MapEntry<_StyleKey, List<PaintCommand>> e) => !defaultEntries.contains(e))
-            .toList();
+    final List<MapEntry<_StyleKey, List<PaintCommand>>> explicitEntries = sortedEntries
+        .where((MapEntry<_StyleKey, List<PaintCommand>> e) => !defaultEntries.contains(e))
+        .toList();
 
     if (defaultEntries.length == 1) {
       final name = 'default${prefix[0].toUpperCase()}${prefix.substring(1)}';
@@ -151,20 +150,27 @@ class PaletteAnalyzer {
 
 @immutable
 class _StyleKey implements Comparable<_StyleKey> {
-  const _StyleKey(this.colorArgb, this.shaderId, this.dashArray, this.pathLength);
+  const _StyleKey(this.colorArgb, this.shaderId, this.dashArray, this.pathLength, this.dashOffset);
 
   factory _StyleKey.fromFill(PaintingFillStyle fill) {
-    return _StyleKey(fill.colorArgb, fill.shaderId, null, null);
+    return _StyleKey(fill.colorArgb, fill.shaderId, null, null, null);
   }
 
   factory _StyleKey.fromStroke(PaintingStrokeStyle stroke) {
-    return _StyleKey(stroke.colorArgb, stroke.shaderId, stroke.dashArray, stroke.pathLength);
+    return _StyleKey(
+      stroke.colorArgb,
+      stroke.shaderId,
+      stroke.dashArray,
+      stroke.pathLength,
+      stroke.dashOffset,
+    );
   }
 
   final int? colorArgb;
   final String? shaderId;
   final List<double>? dashArray;
   final double? pathLength;
+  final double? dashOffset;
 
   @override
   bool operator ==(Object other) {
@@ -182,6 +188,9 @@ class _StyleKey implements Comparable<_StyleKey> {
       return false;
     }
     if (pathLength != other.pathLength) {
+      return false;
+    }
+    if (dashOffset != other.dashOffset) {
       return false;
     }
 
@@ -209,7 +218,8 @@ class _StyleKey implements Comparable<_StyleKey> {
       colorArgb.hashCode ^
       shaderId.hashCode ^
       (dashArray?.length ?? 0).hashCode ^
-      pathLength.hashCode;
+      pathLength.hashCode ^
+      dashOffset.hashCode;
 
   @override
   int compareTo(_StyleKey other) {
@@ -221,6 +231,9 @@ class _StyleKey implements Comparable<_StyleKey> {
     }
     if (pathLength != other.pathLength) {
       return (pathLength ?? 0).compareTo(other.pathLength ?? 0);
+    }
+    if (dashOffset != other.dashOffset) {
+      return (dashOffset ?? 0).compareTo(other.dashOffset ?? 0);
     }
 
     // Dash array comparison

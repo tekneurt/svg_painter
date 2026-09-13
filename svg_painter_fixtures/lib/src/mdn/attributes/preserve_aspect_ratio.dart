@@ -13,7 +13,8 @@ const String _smileyStyle = '''
   </style>
 ''';
 
-const String mdnPreserveAspectRatioExample1 = '''
+const String mdnPreserveAspectRatioExample1 =
+    '''
 <svg viewBox="-1 -1 202 40" xmlns="http://www.w3.org/2000/svg">
 $_smileyStyle
   <defs>
@@ -40,7 +41,8 @@ $_smileyStyle
 </svg>
 ''';
 
-const String mdnPreserveAspectRatioExample2 = '''
+const String mdnPreserveAspectRatioExample2 =
+    '''
 <svg viewBox="-1 -1 202 57" xmlns="http://www.w3.org/2000/svg">
 $_smileyStyle
   <defs>
@@ -67,7 +69,8 @@ $_smileyStyle
 </svg>
 ''';
 
-const String mdnPreserveAspectRatioExample3 = '''
+const String mdnPreserveAspectRatioExample3 =
+    '''
 <svg viewBox="-1 -1 202 80" xmlns="http://www.w3.org/2000/svg">
 $_smileyStyle
   <defs>
@@ -94,7 +97,8 @@ $_smileyStyle
 </svg>
 ''';
 
-const String mdnPreserveAspectRatioExample4 = '''
+const String mdnPreserveAspectRatioExample4 =
+    '''
 <svg viewBox="-1 -1 202 80" xmlns="http://www.w3.org/2000/svg">
 $_smileyStyle
   <defs>
@@ -121,7 +125,8 @@ $_smileyStyle
 </svg>
 ''';
 
-const String mdnPreserveAspectRatioExample5 = '''
+const String mdnPreserveAspectRatioExample5 =
+    '''
 <svg viewBox="-1 -1 192 62" xmlns="http://www.w3.org/2000/svg">
 $_smileyStyle
   <defs>

@@ -33,6 +33,30 @@ void main() {
       expect(drawText.y, 20.0);
     });
 
+    test('should shift x and y coordinates when dx and dy are provided', () {
+      // Arrange
+      const text = SvgText(
+        x: SvgLength(10.0),
+        y: SvgLength(20.0),
+        dx: SvgLength(5.0),
+        dy: SvgLength(15.0),
+        children: <SvgTextContent>[SvgCharacterData('Offset')],
+      );
+
+      // Act
+      final Result<List<PaintCommand>> result = text.toPaintCommands(context);
+
+      // Assert
+      expect(result, isA<Success<List<PaintCommand>>>());
+      final List<PaintCommand> commands = (result as Success<List<PaintCommand>>).value;
+      expect(commands, hasLength(1));
+      expect(commands.first, isA<DrawText>());
+      final drawText = commands.first as DrawText;
+      expect(drawText.rootSpan.children.first.text, 'Offset');
+      expect(drawText.x, 15.0);
+      expect(drawText.y, 35.0);
+    });
+
     test('should handle nested tspan with relative dx, dy and rotate', () {
       const text = SvgText(
         x: SvgLength(10),

@@ -13,8 +13,7 @@ void main() {
       tester: tester,
       painter: const WhitespacePainter(),
       name: 'whitespace_painter',
-      type: SvgTestType.various,
-      folder: 'custom',
+      type: SvgTestType.custom,
       tests: <GoldenTestType, Set<TargetPlatform>?>{
         GoldenTestType.fixed: <TargetPlatform>{TargetPlatform.macOS},
         GoldenTestType.viewBox: <TargetPlatform>{TargetPlatform.macOS},

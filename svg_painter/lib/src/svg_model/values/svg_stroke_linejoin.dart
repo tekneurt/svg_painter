@@ -18,7 +18,8 @@ enum SvgStrokeLinejoin with SvgBaseValue {
 
   /// A corner is created by extending the outer edges with arcs.
   /// SVG 2 value. Falls back to miter in current implementation.
-  arcs('arcs');
+  arcs('arcs')
+  ;
 
   const SvgStrokeLinejoin(this.value);
 

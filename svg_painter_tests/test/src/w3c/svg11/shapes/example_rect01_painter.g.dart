@@ -26,9 +26,12 @@ class ExampleRect01PainterWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CustomPaint(
-      size: Size(width ?? 453.54330708661416, height ?? 151.1811023622047),
-      painter: _$ExampleRect01Painter(fit: fit),
+    return Semantics(
+      hint: 'Example rect01 - rectangle with sharp corners',
+      child: CustomPaint(
+        size: Size(width ?? 453.54330708661416, height ?? 151.1811023622047),
+        painter: _$ExampleRect01Painter(fit: fit),
+      ),
     );
   }
 }

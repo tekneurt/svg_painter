@@ -1,7 +1,5 @@
-import 'dart:math' as math;
 
 import '../painting_model/_painting_model.dart';
-import '../svg_model/_svg_model.dart';
 import 'command_generator.dart';
 import 'flutter_color_map.dart';
 import 'generation_extensions.dart';
@@ -20,57 +18,62 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
     T command,
     PaintingStyle style,
     String boundsRect,
-    void Function(String paintVar, {String? dashArray, String? pathLength}) drawCall, {
+    void Function(String paintVar, {String? dashArray, String? pathLength, String? dashOffset}) drawCall, {
+    void Function(String paintVar, {String? dashArray, String? pathLength, String? dashOffset})? drawStrokeCall,
     PaletteResult? palette,
     Map<String, String>? activeFillProperties,
     Map<String, String>? activeStrokeProperties,
     List<InheritedProperty>? inheritedFills,
     List<InheritedProperty>? inheritedStrokes,
   }) {
-    // 1. Fill
-    final PaintingFillStyle? fill = style.fill;
-    if (fill != null) {
-      // Logic to skip implicit fills for non-closed shapes.
-      // SVG spec says they default to black, but in practice, users rarely want
-      // an implicit black fill on a single straight line.
-      // NOTE: We DO NOT skip for Polyline, as it is treated like a Path.
-      bool shouldDrawFill = fill.isExplicit;
-      if (!shouldDrawFill) {
-        // If not explicit, only draw if it's NOT a simple straight Line.
-        if (command is! DrawLine) {
-          shouldDrawFill = true;
+    void drawFill() {
+      final PaintingFillStyle? fill = style.fill;
+      if (fill != null) {
+        // Logic to skip implicit fills for non-closed shapes.
+        // SVG spec says they default to black, but in practice, users rarely want
+        // an implicit black fill on a single straight line.
+        // NOTE: We DO NOT skip for Polyline, as it is treated like a Path.
+        final bool shouldDrawFill = fill.isExplicit || command is! DrawLine;
+
+        if (shouldDrawFill) {
+          _generateStyleBlock(
+            buffer: buffer,
+            command: command,
+            style: fill,
+            boundsRect: boundsRect,
+            isFill: true,
+            palette: palette,
+            activeProperties: activeFillProperties,
+            inheritedProperties: inheritedFills,
+            drawCall: drawCall,
+          );
         }
       }
+    }
 
-      if (shouldDrawFill) {
+    void drawStroke() {
+      final PaintingStrokeStyle? stroke = style.stroke;
+      if (stroke != null) {
         _generateStyleBlock(
           buffer: buffer,
           command: command,
-          style: fill,
+          style: stroke,
           boundsRect: boundsRect,
-          isFill: true,
+          isFill: false,
           palette: palette,
-          activeProperties: activeFillProperties,
-          inheritedProperties: inheritedFills,
-          drawCall: drawCall,
+          activeProperties: activeStrokeProperties,
+          inheritedProperties: inheritedStrokes,
+          drawCall: drawStrokeCall ?? drawCall,
         );
       }
     }
 
-    // 2. Stroke
-    final PaintingStrokeStyle? stroke = style.stroke;
-    if (stroke != null) {
-      _generateStyleBlock(
-        buffer: buffer,
-        command: command,
-        style: stroke,
-        boundsRect: boundsRect,
-        isFill: false,
-        palette: palette,
-        activeProperties: activeStrokeProperties,
-        inheritedProperties: inheritedStrokes,
-        drawCall: drawCall,
-      );
+    if (style.paintOrder.isStrokeFirst) {
+      drawStroke();
+      drawFill();
+    } else {
+      drawFill();
+      drawStroke();
     }
   }
 
@@ -83,7 +86,7 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
     required PaletteResult? palette,
     required Map<String, String>? activeProperties,
     required List<InheritedProperty>? inheritedProperties,
-    required void Function(String paintVar, {String? dashArray, String? pathLength}) drawCall,
+    required void Function(String paintVar, {String? dashArray, String? pathLength, String? dashOffset}) drawCall,
   }) {
     buffer.writeBlock('{', () {
       buffer.writeln('final Paint paint = Paint();');
@@ -111,6 +114,9 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
       if (!isFill) {
         final stroke = style as PaintingStrokeStyle;
         buffer.writeln('paint.strokeWidth = ${stroke.width};');
+        if (stroke.miterLimit != 4.0) {
+          buffer.writeln('paint.strokeMiterLimit = ${stroke.miterLimit};');
+        }
         if (stroke.cap != PaintingStrokeCap.butt) {
           buffer.writeln('paint.strokeCap = ${stroke.cap.toFlutterString()};');
         }
@@ -124,7 +130,8 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
         } else {
           buffer.writeln('final List<double> dashArray = [${dashArray.join(', ')}];');
           final pathLength = stroke.pathLength?.toString();
-          drawCall('paint', dashArray: 'dashArray', pathLength: pathLength);
+          final dashOffset = stroke.dashOffset?.toString();
+          drawCall('paint', dashArray: 'dashArray', pathLength: pathLength, dashOffset: dashOffset);
         }
       } else {
         drawCall('paint');
@@ -236,7 +243,7 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
         buffer.writeln('paint.color = color ?? const Color(0xFF000000);');
       } else {
         buffer.writeln(
-          'paint.color = (color ?? const Color(0xFF000000)).withOpacity(${style.opacity});',
+          'paint.color = (color ?? const Color(0xFF000000)).withValues(alpha: ${style.opacity});',
         );
       }
     } else if (style.shaderId == null) {
@@ -249,79 +256,33 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
         buffer.writeln('paint.color = $colorCode;');
       }
     } else {
-      final shaderRect =
-          style.shaderUnits == PaintingGradientUnits.userSpaceOnUse ? 'viewBoxRect' : boundsRect;
+      final shaderRect = style.shaderUnits == PaintingGradientUnits.userSpaceOnUse
+          ? 'viewBoxRect'
+          : boundsRect;
       buffer.writeln('paint.shader = _grad_${style.shaderId}.createShader($shaderRect);');
       if (style.opacity != 1.0) {
-        buffer.writeln('paint.color = paint.color.withOpacity(${style.opacity});');
+        buffer.writeln('paint.color = paint.color.withValues(alpha: ${style.opacity});');
       }
     }
   }
 
-  /// Helper to wrap a block of code with styling features like transforms or clips.
-  void wrapWithStyle(
+  /// Emits code to draw [pathVar] with stroke [paintVar], taking into account [PaintingStyle.vectorEffect].
+  void emitDrawStrokePath(
     GeneratorBuffer buffer,
-    PaintingStyle style,
-    void Function() body,
-  ) {
-    final SvgTransformAttributes? transformAttributes = style.transformAttributes;
-    final PaintingRect? clipRect = style.clipRect;
-
-    final bool hasTransform = transformAttributes != null && transformAttributes.operations.isNotEmpty;
-    final hasClip = clipRect != null;
-
-    if (!hasTransform && !hasClip) {
-      body();
-      return;
+    String pathVar,
+    String paintVar, {
+    required PaintingStyle style,
+  }) {
+    if (style.vectorEffect == .nonScalingStroke) {
+      buffer.writeln('final Matrix4 ctm = Matrix4.fromFloat64List(canvas.getTransform());');
+      buffer.writeln('final Path nonScalingPath = $pathVar.transform(ctm.storage);');
+      buffer.writeln('canvas.save();');
+      buffer.writeln('canvas.transform(Matrix4.inverted(ctm).storage);');
+      buffer.writeln('canvas.drawPath(nonScalingPath, $paintVar);');
+      buffer.writeln('canvas.restore();');
+    } else {
+      buffer.writeln('canvas.drawPath($pathVar, $paintVar);');
     }
-
-    buffer.writeln('canvas.save();');
-
-    if (hasTransform) {
-      for (final SvgTransformOperation op in transformAttributes.operations) {
-        switch (op) {
-          case SvgTranslate(:final double x, :final double y):
-            buffer.writeln('canvas.translate($x, $y);');
-          case SvgRotate(:final double angle, :final double? cx, :final double? cy):
-            final double radians = angle * 0.017453292519943295;
-            if (cx != null && cy != null) {
-              buffer.writeln('canvas.translate($cx, $cy);');
-              buffer.writeln('canvas.rotate($radians);');
-              buffer.writeln('canvas.translate(${-cx}, ${-cy});');
-            } else {
-              buffer.writeln('canvas.rotate($radians);');
-            }
-          case SvgScale(:final double x, :final double y):
-            buffer.writeln('canvas.scale($x, $y);');
-          case SvgMatrix(
-            :final double a,
-            :final double b,
-            :final double c,
-            :final double d,
-            :final double e,
-            :final double f,
-          ):
-            buffer.writeln(
-              'canvas.transform(Matrix4.fromList(<double>[$a, $b, 0, 0, $c, $d, 0, 0, 0, 0, 1, 0, $e, $f, 0, 1]).storage);',
-            );
-          case SvgSkewX(:final double angle):
-            final double tan = angle == 0.0 ? 0.0 : math.tan(angle * (math.pi / 180.0));
-            buffer.writeln('canvas.skew($tan, 0.0);');
-          case SvgSkewY(:final double angle):
-            final double tan = angle == 0.0 ? 0.0 : math.tan(angle * (math.pi / 180.0));
-            buffer.writeln('canvas.skew(0.0, $tan);');
-        }
-      }
-    }
-
-    if (hasClip) {
-      buffer.writeln(
-        'canvas.clipRect(Rect.fromLTWH(${clipRect.left}, ${clipRect.top}, ${clipRect.width}, ${clipRect.height}));',
-      );
-    }
-
-    body();
-    buffer.writeln('canvas.restore();');
   }
 }
 

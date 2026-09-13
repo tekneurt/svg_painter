@@ -23,13 +23,14 @@ class TestShapeGenerator extends ShapeGenerator<DrawCircle> {
     String? painterClassName,
     Set<String>? gradientsNeedingStretch,
   }) {
-    wrapWithStyle(buffer, command.style, () {
+    final bounds = 'Rect.fromLTWH(${command.cx - command.radius}, ${command.cy - command.radius}, ${command.radius * 2}, ${command.radius * 2})';
+    wrapWithStyle(buffer, command.style, bounds, () {
       generatePaintingCode(
         buffer,
         command,
         command.style,
-        'Rect.fromLTWH(${command.cx - command.radius}, ${command.cy - command.radius}, ${command.radius * 2}, ${command.radius * 2})',
-        (String paintVar, {String? dashArray, String? pathLength}) {
+        bounds,
+        (String paintVar, {String? dashArray, String? dashOffset, String? pathLength}) {
           if (dashArray == null) {
             buffer.writeln(
               'canvas.drawCircle(const Offset(${command.cx}, ${command.cy}), ${command.radius}, $paintVar);',
@@ -118,7 +119,7 @@ void main() {
             'paint.shader = _grad_grad1.createShader(Rect.fromLTWH(5.0, 15.0, 10.0, 10.0));',
           ),
         );
-        expect(output, contains('paint.color = paint.color.withOpacity(0.8);'));
+        expect(output, contains('paint.color = paint.color.withValues(alpha: 0.8);'));
       });
 
       test('should generate dashed stroke code when dashArray is provided', () {
@@ -276,7 +277,7 @@ void main() {
         final output = buffer.toString();
         expect(
           output,
-          contains('paint.color = (color ?? const Color(0xFF000000)).withOpacity(0.7);'),
+          contains('paint.color = (color ?? const Color(0xFF000000)).withValues(alpha: 0.7);'),
         );
       });
 
@@ -295,7 +296,7 @@ void main() {
         final output = buffer.toString();
         expect(
           output,
-          contains('paint.color = (color ?? const Color(0xFF000000)).withOpacity(0.4);'),
+          contains('paint.color = (color ?? const Color(0xFF000000)).withValues(alpha: 0.4);'),
         );
       });
 
@@ -341,7 +342,7 @@ void main() {
         // Assert
         final output = buffer.toString();
         expect(output, contains('paint.shader = _grad_s1.createShader'));
-        expect(output, isNot(contains('withOpacity')));
+        expect(output, isNot(contains('withValues')));
       });
 
       test('should handle shader with full opacity in stroke', () {
@@ -356,7 +357,7 @@ void main() {
         // Assert
         final output = buffer.toString();
         expect(output, contains('paint.shader = _grad_s2.createShader'));
-        expect(output, isNot(contains('withOpacity')));
+        expect(output, isNot(contains('withValues')));
       });
 
       test('should use inherited property for fill if implicit shader match found', () {
@@ -388,77 +389,71 @@ void main() {
     group('wrapWithStyle', () {
       test('should do nothing if transform is null', () {
         // Arrange
-        const command = DrawCircle(cx: 0, cy: 0, radius: 5, style: PaintingStyle());
+        const style = PaintingStyle();
         final buffer = GeneratorBuffer();
 
         // Act
-        generator.generate(command, buffer);
+        generator.wrapWithStyle(buffer, style, 'viewBoxRect', () {
+          buffer.writeln('draw();');
+        });
 
         // Assert
         final output = buffer.toString();
-        expect(output, isEmpty);
+        expect(output, equals('draw();\n'));
       });
 
       test('should do nothing if transform attributes are empty', () {
         // Arrange
-        const command = DrawCircle(
-          cx: 0,
-          cy: 0,
-          radius: 5,
-          style: PaintingStyle(
-            transformAttributes: SvgTransformAttributes(<SvgTransformOperation>[]),
-          ),
+        const style = PaintingStyle(
+          transformAttributes: SvgTransformAttributes(<SvgTransformOperation>[]),
         );
         final buffer = GeneratorBuffer();
 
         // Act
-        generator.generate(command, buffer);
+        generator.wrapWithStyle(buffer, style, 'viewBoxRect', () {
+          buffer.writeln('draw();');
+        });
 
         // Assert
         final output = buffer.toString();
-        expect(output, isEmpty);
+        expect(output, equals('draw();\n'));
       });
 
       test('should wrap with translate when provided', () {
         // Arrange
-        const command = DrawCircle(
-          cx: 0,
-          cy: 0,
-          radius: 5,
-          style: PaintingStyle(
-            transformAttributes: SvgTransformAttributes(<SvgTransformOperation>[
-              SvgTranslate(10, 20),
-            ]),
-          ),
+        const style = PaintingStyle(
+          transformAttributes: SvgTransformAttributes(<SvgTransformOperation>[
+            SvgTranslate(10, 20),
+          ]),
         );
         final buffer = GeneratorBuffer();
 
         // Act
-        generator.generate(command, buffer);
+        generator.wrapWithStyle(buffer, style, 'viewBoxRect', () {
+          buffer.writeln('draw();');
+        });
 
         // Assert
         final output = buffer.toString();
         expect(output, contains('canvas.save();'));
         expect(output, contains('canvas.translate(10.0, 20.0);'));
+        expect(output, contains('draw();'));
         expect(output, contains('canvas.restore();'));
       });
 
       test('should wrap with scale when provided', () {
         // Arrange
-        const command = DrawCircle(
-          cx: 0,
-          cy: 0,
-          radius: 5,
-          style: PaintingStyle(
-            transformAttributes: SvgTransformAttributes(<SvgTransformOperation>[
-              SvgScale(2.5, 2.5),
-            ]),
-          ),
+        const style = PaintingStyle(
+          transformAttributes: SvgTransformAttributes(<SvgTransformOperation>[
+            SvgScale(2.5, 2.5),
+          ]),
         );
         final buffer = GeneratorBuffer();
 
         // Act
-        generator.generate(command, buffer);
+        generator.wrapWithStyle(buffer, style, 'viewBoxRect', () {
+          buffer.writeln('draw();');
+        });
 
         // Assert
         final output = buffer.toString();
@@ -467,18 +462,15 @@ void main() {
 
       test('should wrap with asymmetric scale', () {
         // Arrange
-        const command = DrawCircle(
-          cx: 0,
-          cy: 0,
-          radius: 5,
-          style: PaintingStyle(
-            transformAttributes: SvgTransformAttributes(<SvgTransformOperation>[SvgScale(2, 3)]),
-          ),
+        const style = PaintingStyle(
+          transformAttributes: SvgTransformAttributes(<SvgTransformOperation>[SvgScale(2, 3)]),
         );
         final buffer = GeneratorBuffer();
 
         // Act
-        generator.generate(command, buffer);
+        generator.wrapWithStyle(buffer, style, 'viewBoxRect', () {
+          buffer.writeln('draw();');
+        });
 
         // Assert
         final output = buffer.toString();
@@ -487,18 +479,15 @@ void main() {
 
       test('should wrap with rotate when provided', () {
         // Arrange
-        const command = DrawCircle(
-          cx: 0,
-          cy: 0,
-          radius: 5,
-          style: PaintingStyle(
-            transformAttributes: SvgTransformAttributes(<SvgTransformOperation>[SvgRotate(45)]),
-          ),
+        const style = PaintingStyle(
+          transformAttributes: SvgTransformAttributes(<SvgTransformOperation>[SvgRotate(45)]),
         );
         final buffer = GeneratorBuffer();
 
         // Act
-        generator.generate(command, buffer);
+        generator.wrapWithStyle(buffer, style, 'viewBoxRect', () {
+          buffer.writeln('draw();');
+        });
 
         // Assert
         final output = buffer.toString();
@@ -507,20 +496,17 @@ void main() {
 
       test('should wrap with rotate and pivot point when provided', () {
         // Arrange
-        const command = DrawCircle(
-          cx: 0,
-          cy: 0,
-          radius: 5,
-          style: PaintingStyle(
-            transformAttributes: SvgTransformAttributes(<SvgTransformOperation>[
-              SvgRotate(45, 10, 10),
-            ]),
-          ),
+        const style = PaintingStyle(
+          transformAttributes: SvgTransformAttributes(<SvgTransformOperation>[
+            SvgRotate(45, 10, 10),
+          ]),
         );
         final buffer = GeneratorBuffer();
 
         // Act
-        generator.generate(command, buffer);
+        generator.wrapWithStyle(buffer, style, 'viewBoxRect', () {
+          buffer.writeln('draw();');
+        });
 
         // Assert
         final output = buffer.toString();
@@ -531,21 +517,18 @@ void main() {
 
       test('should handle multiple transforms', () {
         // Arrange
-        const command = DrawCircle(
-          cx: 0,
-          cy: 0,
-          radius: 5,
-          style: PaintingStyle(
-            transformAttributes: SvgTransformAttributes(<SvgTransformOperation>[
-              SvgTranslate(10, 10),
-              SvgScale(2, 2),
-            ]),
-          ),
+        const style = PaintingStyle(
+          transformAttributes: SvgTransformAttributes(<SvgTransformOperation>[
+            SvgTranslate(10, 10),
+            SvgScale(2, 2),
+          ]),
         );
         final buffer = GeneratorBuffer();
 
         // Act
-        generator.generate(command, buffer);
+        generator.wrapWithStyle(buffer, style, 'viewBoxRect', () {
+          buffer.writeln('draw();');
+        });
 
         // Assert
         final output = buffer.toString();
@@ -555,70 +538,55 @@ void main() {
 
       test('should wrap with skewX when provided', () {
         // Arrange
-        const command = DrawCircle(
-          cx: 0,
-          cy: 0,
-          radius: 5,
-          style: PaintingStyle(
-            transformAttributes: SvgTransformAttributes(<SvgTransformOperation>[SvgSkewX(30)]),
-          ),
+        const style = PaintingStyle(
+          transformAttributes: SvgTransformAttributes(<SvgTransformOperation>[SvgSkewX(30)]),
         );
         final buffer = GeneratorBuffer();
 
         // Act
-        generator.generate(command, buffer);
+        generator.wrapWithStyle(buffer, style, 'viewBoxRect', () {
+          buffer.writeln('draw();');
+        });
 
         // Assert
         final output = buffer.toString();
         // Calculate tangent dynamically to avoid false-positive test failures on CI.
-        // Floating-point precision for math.tan differs slightly between architectures:
-        // macOS (ARM): 0.5773502691896256
-        // Linux (x86): 0.5773502691896257
         final double tanValue = math.tan(30 * (math.pi / 180.0));
         expect(output, contains('canvas.skew($tanValue, 0.0);'));
       });
 
       test('should wrap with skewY when provided', () {
         // Arrange
-        const command = DrawCircle(
-          cx: 0,
-          cy: 0,
-          radius: 5,
-          style: PaintingStyle(
-            transformAttributes: SvgTransformAttributes(<SvgTransformOperation>[SvgSkewY(30)]),
-          ),
+        const style = PaintingStyle(
+          transformAttributes: SvgTransformAttributes(<SvgTransformOperation>[SvgSkewY(30)]),
         );
         final buffer = GeneratorBuffer();
 
         // Act
-        generator.generate(command, buffer);
+        generator.wrapWithStyle(buffer, style, 'viewBoxRect', () {
+          buffer.writeln('draw();');
+        });
 
         // Assert
         final output = buffer.toString();
         // Calculate tangent dynamically to avoid false-positive test failures on CI.
-        // Floating-point precision for math.tan differs slightly between architectures:
-        // macOS (ARM): 0.5773502691896256
-        // Linux (x86): 0.5773502691896257
         final double tanValue = math.tan(30 * (math.pi / 180.0));
         expect(output, contains('canvas.skew(0.0, $tanValue);'));
       });
 
       test('should wrap with matrix transform when provided', () {
         // Arrange
-        const command = DrawCircle(
-          cx: 0,
-          cy: 0,
-          radius: 5,
-          style: PaintingStyle(
-            transformAttributes: SvgTransformAttributes(<SvgTransformOperation>[
-              SvgMatrix(1, 2, 3, 4, 5, 6),
-            ]),
-          ),
+        const style = PaintingStyle(
+          transformAttributes: SvgTransformAttributes(<SvgTransformOperation>[
+            SvgMatrix(1, 2, 3, 4, 5, 6),
+          ]),
         );
         final buffer = GeneratorBuffer();
 
         // Act
-        generator.generate(command, buffer);
+        generator.wrapWithStyle(buffer, style, 'viewBoxRect', () {
+          buffer.writeln('draw();');
+        });
 
         // Assert
         final output = buffer.toString();

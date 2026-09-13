@@ -24,12 +24,14 @@ extension ToCommonAttributes on XmlElement {
       fill: SvgFillAttributes(
         color: toSvgValueOrNull<SvgColor>(elementName, XmlAttributeName.fill),
         opacity: toSvgValueOrNull<SvgLengthPercentage>(elementName, XmlAttributeName.fillOpacity),
+        rule: toSvgValueOrNull<SvgFillRule>(elementName, XmlAttributeName.fillRule),
       ),
       stroke: SvgStrokeAttributes(
         color: toSvgValueOrNull<SvgColor>(elementName, XmlAttributeName.stroke),
         opacity: toSvgValueOrNull<SvgLengthPercentage>(elementName, XmlAttributeName.strokeOpacity),
         width: toSvgValueOrNull<SvgLengthPercentage>(elementName, XmlAttributeName.strokeWidth),
         dashArray: toSvgValueOrNull<SvgPointList>(elementName, XmlAttributeName.strokeDasharray),
+        dashOffset: toSvgValueOrNull<SvgLengthPercentage>(elementName, XmlAttributeName.strokeDashoffset),
         linecap: toSvgValueOrNull<SvgStrokeLinecap>(elementName, XmlAttributeName.strokeLinecap),
         linejoin: toSvgValueOrNull<SvgStrokeLinejoin>(elementName, XmlAttributeName.strokeLinejoin),
       ),
@@ -38,13 +40,18 @@ extension ToCommonAttributes on XmlElement {
         weight: toSvgValueOrNull<SvgFontWeight>(elementName, XmlAttributeName.fontWeight),
         style: toSvgValueOrNull<SvgFontStyle>(elementName, XmlAttributeName.fontStyle),
         family: toSvgValueOrNull<SvgFontFamily>(elementName, XmlAttributeName.fontFamily),
+        anchor: toSvgValueOrNull<SvgTextAnchor>(elementName, XmlAttributeName.textAnchor),
       ),
       graphics: SvgGraphicsAttributes(
         opacity: toSvgValueOrNull<SvgLengthPercentage>(elementName, XmlAttributeName.opacity),
         transformAttributes: SvgTransformParser.parse(
           toXmlAttributeValue(XmlAttributeName.transform),
         ),
+        mask: getAttribute(XmlAttributeName.mask.name),
+        clipPath: getAttribute(XmlAttributeName.clipPath.name),
       ),
+      paintOrder: toSvgValueOrNull<SvgPaintOrder>(elementName, XmlAttributeName.paintOrder),
+      vectorEffect: toSvgValueOrNull<SvgVectorEffect>(elementName, XmlAttributeName.vectorEffect),
     );
 
     return (core: core, presentation: presentation);

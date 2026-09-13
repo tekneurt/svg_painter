@@ -25,7 +25,11 @@ class GroupGenerator extends ShapeGenerator<DrawGroup> {
     if (generators == null) {
       return;
     }
-    wrapWithStyle(buffer, command.style, () {
+    final boundsRect = command.bounds != null
+        ? 'Rect.fromLTWH(${command.bounds!.left}, ${command.bounds!.top}, ${command.bounds!.width}, ${command.bounds!.height})'
+        : 'Offset.zero & viewBox';
+
+    wrapWithStyle(buffer, command.style, boundsRect, () {
       // Use command.opacity (calculated during conversion) for saveLayer.
       // We DO NOT multiply with command.style.groupOpacity here because the group's
       // resolved opacity is already accounted for in the DrawGroup command's opacity field
@@ -34,9 +38,14 @@ class GroupGenerator extends ShapeGenerator<DrawGroup> {
       final bool useLayer = effectiveOpacity < 1.0;
 
       if (useLayer) {
-        final String hexOpacity =
-            (effectiveOpacity * 255).round().toRadixString(16).padLeft(2, '0').toUpperCase();
-        buffer.writeln('canvas.saveLayer(null, Paint()..color = const Color(0x${hexOpacity}FFFFFF));');
+        final String hexOpacity = (effectiveOpacity * 255)
+            .round()
+            .toRadixString(16)
+            .padLeft(2, '0')
+            .toUpperCase();
+        buffer.writeln(
+          'canvas.saveLayer(null, Paint()..color = const Color(0x${hexOpacity}FFFFFF));',
+        );
       }
 
       var nextInheritedFills = List<InheritedProperty>.from(
