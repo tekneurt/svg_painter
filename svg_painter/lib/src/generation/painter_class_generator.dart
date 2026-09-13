@@ -293,7 +293,7 @@ class PainterClassGenerator {
                 buffer.writeln('scale = metric.length / pathLength;');
               });
               buffer.writeln(
-                'final double totalLength = dashArray.fold(0.0, (final sum, final d) => sum + d * scale);',
+                'final double totalLength = dashArray.fold(0.0, (sum, d) => sum + d * scale);',
               );
               buffer.writeln('if (totalLength <= 0) return source;');
               buffer.writeln('double offset = (dashOffset ?? 0.0) * scale;');

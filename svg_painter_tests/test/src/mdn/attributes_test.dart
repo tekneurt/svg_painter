@@ -70,8 +70,8 @@ _fixtures =
           GoldenTestType.viewBox: <TargetPlatform>{TargetPlatform.macOS},
         },
       ),
-      (painter: const DxPainter(), name: 'dx_painter', tests: defaultGoldenTests),
-      (painter: const DyPainter(), name: 'dy_painter', tests: defaultGoldenTests),
+      (painter: const DxPainter(), name: 'dx_painter', tests: macOsOverrideGoldenTests),
+      (painter: const DyPainter(), name: 'dy_painter', tests: macOsOverrideGoldenTests),
       (
         painter: const FillOpacityPainter(),
         name: 'fill_opacity_painter',
@@ -93,28 +93,26 @@ _fixtures =
       (
         painter: const Fy1Painter(),
         name: 'fy_1_painter',
-        tests: <GoldenTestType, Set<TargetPlatform>?>{
-          GoldenTestType.fixed: null,
-          GoldenTestType.viewBox: <TargetPlatform>{TargetPlatform.macOS},
-        },
+        tests: macOsViewBoxOverrideGoldenTests,
       ),
       (
         painter: const Fy2Painter(),
         name: 'fy_2_painter',
-        tests: <GoldenTestType, Set<TargetPlatform>?>{
-          GoldenTestType.fixed: <TargetPlatform>{TargetPlatform.macOS},
-          GoldenTestType.viewBox: <TargetPlatform>{TargetPlatform.macOS},
-        },
+        tests: macOsOverrideGoldenTests,
       ),
       (painter: const HeightPainter(), name: 'height_painter', tests: defaultGoldenTests),
       (painter: const IdPainter(), name: 'id_painter', tests: defaultGoldenTests),
       (
         painter: const MaskAttributePainter(),
         name: 'mask_attribute_painter',
-        tests: defaultGoldenTests,
+        tests: macOsOverrideGoldenTests,
       ),
       (painter: const OpacityPainter(), name: 'opacity_painter', tests: defaultGoldenTests),
-      (painter: const PaintOrderPainter(), name: 'paint_order_painter', tests: defaultGoldenTests),
+      (
+        painter: const PaintOrderPainter(),
+        name: 'paint_order_painter',
+        tests: macOsOverrideGoldenTests,
+      ),
       (painter: const PathLengthPainter(), name: 'path_length_painter', tests: defaultGoldenTests),
       (
         painter: const PointsExamplePainter(),
@@ -198,7 +196,11 @@ _fixtures =
         tests: defaultGoldenTests,
       ),
       (painter: const StylePainter(), name: 'style_painter', tests: defaultGoldenTests),
-      (painter: const TextAnchorPainter(), name: 'text_anchor_painter', tests: defaultGoldenTests),
+      (
+        painter: const TextAnchorPainter(),
+        name: 'text_anchor_painter',
+        tests: macOsOverrideGoldenTests,
+      ),
       (
         painter: const VectorEffectPainter(),
         name: 'vector_effect_painter',
@@ -210,10 +212,7 @@ _fixtures =
       (
         painter: const GradientTransformPainter(),
         name: 'gradient_transform_painter',
-        tests: <GoldenTestType, Set<TargetPlatform>?>{
-          GoldenTestType.fixed: null,
-          GoldenTestType.viewBox: <TargetPlatform>{TargetPlatform.macOS},
-        },
+        tests: macOsViewBoxOverrideGoldenTests,
       ),
       (painter: const WidthPainter(), name: 'width_painter', tests: defaultGoldenTests),
       (painter: const X1ExamplesPainter(), name: 'x1_examples_painter', tests: defaultGoldenTests),

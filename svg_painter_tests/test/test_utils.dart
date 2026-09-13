@@ -57,6 +57,28 @@ const Map<GoldenTestType, Set<TargetPlatform>?> defaultGoldenTests =
       GoldenTestType.viewBox: null,
     };
 
+/// Convenient preset for tests where both fixed and viewBox rendering differs on macOS
+/// (e.g., text rasterization, sub-pixel antialiasing, or raster filtering).
+const Map<GoldenTestType, Set<TargetPlatform>?> macOsOverrideGoldenTests =
+    <GoldenTestType, Set<TargetPlatform>?>{
+      GoldenTestType.fixed: <TargetPlatform>{TargetPlatform.macOS},
+      GoldenTestType.viewBox: <TargetPlatform>{TargetPlatform.macOS},
+    };
+
+/// Convenient preset for tests where only the viewBox rendering differs on macOS.
+const Map<GoldenTestType, Set<TargetPlatform>?> macOsViewBoxOverrideGoldenTests =
+    <GoldenTestType, Set<TargetPlatform>?>{
+      GoldenTestType.fixed: null,
+      GoldenTestType.viewBox: <TargetPlatform>{TargetPlatform.macOS},
+    };
+
+/// Convenient preset for tests where only the fixed-size rendering differs on macOS.
+const Map<GoldenTestType, Set<TargetPlatform>?> macOsFixedOverrideGoldenTests =
+    <GoldenTestType, Set<TargetPlatform>?>{
+      GoldenTestType.fixed: <TargetPlatform>{TargetPlatform.macOS},
+      GoldenTestType.viewBox: null,
+    };
+
 /// Returns the current host platform as a [TargetPlatform].
 TargetPlatform get currentPlatform => switch (Platform.operatingSystem) {
   'macos' => TargetPlatform.macOS,

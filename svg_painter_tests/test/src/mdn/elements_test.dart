@@ -53,7 +53,7 @@ _fixtures =
       (
         painter: const ClipPathPainter(),
         name: 'clip_path_painter',
-        tests: defaultGoldenTests,
+        tests: macOsViewBoxOverrideGoldenTests,
         widget: null,
         nativeSize: null,
       ),
@@ -184,10 +184,7 @@ _fixtures =
       (
         painter: const TspanPainter(),
         name: 'tspan_painter',
-        tests: <GoldenTestType, Set<TargetPlatform>?>{
-          GoldenTestType.fixed: <TargetPlatform>{TargetPlatform.macOS},
-          GoldenTestType.viewBox: <TargetPlatform>{TargetPlatform.macOS},
-        },
+        tests: macOsOverrideGoldenTests,
         widget: null,
         nativeSize: null,
       ),
@@ -195,10 +192,7 @@ _fixtures =
       (
         painter: const MdnTextExamplePainter(),
         name: 'text_painter',
-        tests: <GoldenTestType, Set<TargetPlatform>?>{
-          GoldenTestType.fixed: <TargetPlatform>{TargetPlatform.macOS},
-          GoldenTestType.viewBox: <TargetPlatform>{TargetPlatform.macOS},
-        },
+        tests: macOsOverrideGoldenTests,
         widget: null,
         nativeSize: null,
       ),
@@ -212,7 +206,7 @@ _fixtures =
       (
         painter: const MaskPainter(),
         name: 'mask_painter',
-        tests: defaultGoldenTests,
+        tests: macOsOverrideGoldenTests,
         widget: null,
         nativeSize: null,
       ),

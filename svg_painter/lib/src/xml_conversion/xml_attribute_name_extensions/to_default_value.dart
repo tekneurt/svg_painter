@@ -3,7 +3,7 @@ import '../../xml_model/_xml_model.dart';
 
 /// Extension to provide default values for [XmlAttributeName]s based on the element.
 extension ToDefaultValue on XmlAttributeName {
-  SvgBaseValue toDefaultValue(final XmlElementName elementName) {
+  SvgBaseValue toDefaultValue(XmlElementName elementName) {
     switch (this) {
       case .x:
       case .y:
