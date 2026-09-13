@@ -1,3 +1,4 @@
+export 'asset_exporter.dart';
 export 'asset_loader.dart';
 export 'command_generator.dart';
 export 'flutter_color_map.dart';

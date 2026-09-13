@@ -153,6 +153,9 @@ class TextGenerator extends ShapeGenerator<DrawText> {
             buffer.writeln('fontWeight: ${textStyle.fontWeight.toFlutterString()},');
             buffer.writeln('fontStyle: ${textStyle.fontStyle.toFlutterString()},');
             buffer.writeln("fontFamily: '${textStyle.fontFamily}',");
+            if (textStyle.fontPackage != null) {
+              buffer.writeln("package: '${textStyle.fontPackage}',");
+            }
           }
         }, footer: '),');
       }

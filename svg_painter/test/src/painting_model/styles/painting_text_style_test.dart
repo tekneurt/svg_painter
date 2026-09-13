@@ -29,22 +29,43 @@ void main() {
     test('should contain all relevant properties when converted to string', () {
       // Arrange
       const style = PaintingTextStyle(
-        fontSize: 12.0,
-        fontWeight: PaintingFontWeight.bold,
+        fontSize: 14.5,
+        fontWeight: PaintingFontWeight.w600,
         fontStyle: PaintingFontStyle.italic,
-        fontFamily: 'Roboto',
+        fontFamily: 'Noto Serif',
         textAnchor: PaintingTextAnchor.middle,
+        fontPackage: 'svg_painter',
       );
 
       // Act
       final str = style.toString();
 
       // Assert
-      expect(str, contains('size: 12.0'));
-      expect(str, contains('weight: PaintingFontWeight.bold'));
+      expect(str, contains('size: 14.5'));
+      expect(str, contains('weight: PaintingFontWeight.w600'));
       expect(str, contains('style: PaintingFontStyle.italic'));
-      expect(str, contains('family: Roboto'));
+      expect(str, contains('family: Noto Serif'));
       expect(str, contains('anchor: PaintingTextAnchor.middle'));
+      expect(str, contains('package: svg_painter'));
+    });
+
+    test('should omit anchor and package when default or null', () {
+      // Arrange
+      const style = PaintingTextStyle(
+        fontSize: 16.0,
+        fontWeight: PaintingFontWeight.w400,
+        fontStyle: PaintingFontStyle.normal,
+        fontFamily: 'Roboto',
+      );
+
+      // Act
+      final str = style.toString();
+
+      // Assert
+      expect(str, contains('size: 16.0'));
+      expect(str, contains('family: Roboto'));
+      expect(str, isNot(contains('anchor')));
+      expect(str, isNot(contains('package')));
     });
   });
 }

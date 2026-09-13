@@ -183,13 +183,50 @@ void main() {
       expect(style.fill?.colorArgb, 0xFF008000);
     });
 
-    test('should map monospace font family', () {
+    test('should map monospace font family with svg_painter package', () {
+      // Arrange & Act
       final PaintingStyle style = resolvePaint(
         emptyContext,
         tagName: 'text',
         coreAttributes: const SvgCoreAttributes(inlineStyle: 'font-family: monospace'),
       );
+
+      // Assert
       expect(style.text?.fontFamily, 'Roboto Mono');
+      expect(style.text?.fontPackage, 'svg_painter');
+    });
+
+    test('should map sans-serif and serif font families with svg_painter package', () {
+      // Arrange & Act
+      final PaintingStyle sansStyle = resolvePaint(
+        emptyContext,
+        tagName: 'text',
+        coreAttributes: const SvgCoreAttributes(inlineStyle: 'font-family: sans-serif'),
+      );
+      final PaintingStyle serifStyle = resolvePaint(
+        emptyContext,
+        tagName: 'text',
+        coreAttributes: const SvgCoreAttributes(inlineStyle: 'font-family: serif'),
+      );
+
+      // Assert
+      expect(sansStyle.text?.fontFamily, 'Roboto');
+      expect(sansStyle.text?.fontPackage, 'svg_painter');
+      expect(serifStyle.text?.fontFamily, 'Noto Serif');
+      expect(serifStyle.text?.fontPackage, 'svg_painter');
+    });
+
+    test('should preserve custom font family without fontPackage', () {
+      // Arrange & Act
+      final PaintingStyle style = resolvePaint(
+        emptyContext,
+        tagName: 'text',
+        coreAttributes: const SvgCoreAttributes(inlineStyle: 'font-family: CustomBrandFont'),
+      );
+
+      // Assert
+      expect(style.text?.fontFamily, 'CustomBrandFont');
+      expect(style.text?.fontPackage, isNull);
     });
 
     test('should map intermediate SvgFontWeightNumeric values', () {

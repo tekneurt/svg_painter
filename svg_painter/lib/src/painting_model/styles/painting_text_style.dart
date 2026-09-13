@@ -91,6 +91,7 @@ final class PaintingTextStyle {
     required this.fontStyle,
     required this.fontFamily,
     this.textAnchor = PaintingTextAnchor.start,
+    this.fontPackage,
   });
 
   /// The size of the font in user units.
@@ -108,9 +109,25 @@ final class PaintingTextStyle {
   /// The horizontal alignment / anchor of the text.
   final PaintingTextAnchor textAnchor;
 
+  /// The package containing the font asset, or null if the font is in the app root.
+  final String? fontPackage;
+
   @override
-  String toString() =>
-      'PaintingTextStyle(size: $fontSize, weight: $fontWeight, style: $fontStyle, family: $fontFamily, anchor: $textAnchor)';
+  String toString() {
+    final buffer = StringBuffer('PaintingTextStyle(')
+      ..write('size: $fontSize, ')
+      ..write('weight: $fontWeight, ')
+      ..write('style: $fontStyle, ')
+      ..write('family: $fontFamily');
+    if (textAnchor != PaintingTextAnchor.start) {
+      buffer.write(', anchor: $textAnchor');
+    }
+    if (fontPackage != null) {
+      buffer.write(', package: $fontPackage');
+    }
+    buffer.write(')');
+    return buffer.toString();
+  }
 }
 
 /// Represents a node in a hierarchical text structure (TextSpan-like).

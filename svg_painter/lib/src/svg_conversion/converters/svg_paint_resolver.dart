@@ -418,11 +418,11 @@ PaintingTextStyle _resolveTextStyle(
       (fontAttrs?.style?.value == 'italic') ? .italic : .normal;
 
   final String rawFontFamily = fontAttrs?.family?.value ?? 'sans-serif';
-  final String finalFontFamily = switch (rawFontFamily) {
-    'sans-serif' => 'Roboto',
-    'serif' => 'Noto Serif',
-    'monospace' => 'Roboto Mono',
-    _ => rawFontFamily,
+  final (String finalFontFamily, String? fontPackage) = switch (rawFontFamily) {
+    'sans-serif' || 'Roboto' => ('Roboto', 'svg_painter'),
+    'serif' || 'Noto Serif' => ('Noto Serif', 'svg_painter'),
+    'monospace' || 'Roboto Mono' => ('Roboto Mono', 'svg_painter'),
+    _ => (rawFontFamily, null),
   };
 
   final PaintingTextAnchor finalAnchor = switch (fontAttrs?.anchor) {
@@ -437,6 +437,7 @@ PaintingTextStyle _resolveTextStyle(
     fontStyle: finalFontStyle,
     fontFamily: finalFontFamily,
     textAnchor: finalAnchor,
+    fontPackage: fontPackage,
   );
 }
 

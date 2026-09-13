@@ -121,17 +121,18 @@ Future<void> loadTestFonts() async {
     }
 
     final loader = FontLoader(familyName);
+    final packageLoader = FontLoader('packages/svg_painter/$familyName');
     final List<FileSystemEntity> files = dir.listSync();
 
     for (final file in files) {
       if (file is File && file.path.endsWith('.ttf')) {
-        final ByteData data = await file.readAsBytes().then((Uint8List bytes) {
-          return ByteData.view(Uint8List.fromList(bytes).buffer);
-        });
-        loader.addFont(Future<ByteData>.value(data));
+        final Uint8List bytes = await file.readAsBytes();
+        loader.addFont(Future<ByteData>.value(ByteData.view(bytes.buffer)));
+        packageLoader.addFont(Future<ByteData>.value(ByteData.view(bytes.buffer)));
       }
     }
     await loader.load();
+    await packageLoader.load();
   }
 }
 

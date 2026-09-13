@@ -73,6 +73,7 @@ class _$WhitespacePainter extends CustomPainter {
               fontWeight: FontWeight.normal,
               fontStyle: FontStyle.normal,
               fontFamily: 'Roboto Mono',
+              package: 'svg_painter',
             ),
             children: <InlineSpan>[
               TextSpan(text: 'Preserve:          (10 spaces)'),
@@ -102,6 +103,7 @@ class _$WhitespacePainter extends CustomPainter {
               fontWeight: FontWeight.normal,
               fontStyle: FontStyle.normal,
               fontFamily: 'Roboto',
+              package: 'svg_painter',
             ),
             children: <InlineSpan>[
               TextSpan(text: 'Collapse: multiple spaces and tabs.'),

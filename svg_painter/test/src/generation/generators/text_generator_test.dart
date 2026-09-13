@@ -170,5 +170,35 @@ void main() {
       expect(fillIndex, isNot(-1));
       expect(strokeIndex, lessThan(fillIndex));
     });
+
+    test('should emit package parameter when fontPackage is specified on textStyle', () {
+      // Arrange
+      const generator = TextGenerator();
+      const packagedStyle = PaintingStyle(
+        fill: PaintingFillStyle(colorArgb: 0xFF123456),
+        text: PaintingTextStyle(
+          fontSize: 18.0,
+          fontWeight: PaintingFontWeight.w500,
+          fontStyle: PaintingFontStyle.normal,
+          fontFamily: 'Noto Serif',
+          fontPackage: 'svg_painter',
+        ),
+      );
+      const command = DrawText(
+        x: 30.0,
+        y: 40.0,
+        rootSpan: PaintingTextSpan(text: 'Packaged Font'),
+        style: packagedStyle,
+      );
+      final buffer = GeneratorBuffer();
+
+      // Act
+      generator.generate(command, buffer);
+
+      // Assert
+      final output = buffer.toString();
+      expect(output, contains("fontFamily: 'Noto Serif',"));
+      expect(output, contains("package: 'svg_painter',"));
+    });
   });
 }
