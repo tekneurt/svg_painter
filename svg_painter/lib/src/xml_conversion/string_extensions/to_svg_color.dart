@@ -66,32 +66,23 @@ extension ToSvgColor on String {
       return null;
     }
 
-    final String? hGroup = match.group(1);
-    final String? sGroup = match.group(2);
-    final String? lGroup = match.group(3);
-
-    assert(
-      hGroup != null && sGroup != null && lGroup != null,
-      'Regex match guaranteed HSL groups 1, 2 and 3',
-    );
-    if (hGroup == null || sGroup == null || lGroup == null) {
-      return null;
-    }
-
-    final double h = double.parse(hGroup) % 360;
-    final double s = double.parse(sGroup).clamp(0.0, 100.0);
-    final double l = double.parse(lGroup).clamp(0.0, 100.0);
     final String? aGroup = match.group(4);
-    final double a;
-    if (aGroup == null) {
-      a = 1.0;
-    } else if (aGroup.endsWith('%')) {
-      a = (double.parse(aGroup.substring(0, aGroup.length - 1)) / 100.0).clamp(0.0, 1.0);
-    } else {
-      a = double.parse(aGroup).clamp(0.0, 1.0);
-    }
+    final double a = switch (aGroup) {
+      null => 1.0,
+      final String s when s.endsWith('%') =>
+        (double.parse(s.substring(0, s.length - 1)) / 100.0).clamp(0.0, 1.0),
+      final String s => double.parse(s).clamp(0.0, 1.0),
+    };
 
-    return SvgHslColor(a, h, s, l);
+    return switch ((match.group(1), match.group(2), match.group(3))) {
+      (final String hStr, final String sStr, final String lStr) => SvgHslColor(
+          a,
+          double.parse(hStr) % 360,
+          double.parse(sStr).clamp(0.0, 100.0),
+          double.parse(lStr).clamp(0.0, 100.0),
+        ),
+      _ => null,
+    };
   }
 
   SvgColor? _parseRgb(String rgb) {
@@ -126,24 +117,17 @@ extension ToSvgColor on String {
       }
     }
 
-    final String? rGroup = match.group(1);
-    final String? gGroup = match.group(2);
-    final String? bGroup = match.group(3);
-
-    assert(
-      rGroup != null && gGroup != null && bGroup != null,
-      'Regex match guaranteed RGB groups 1, 2 and 3',
-    );
-    if (rGroup == null || gGroup == null || bGroup == null) {
-      return null;
-    }
-
-    final int r = parsePart(rGroup);
-    final int g = parsePart(gGroup);
-    final int b = parsePart(bGroup);
     final int a = parseAlpha(match.group(4));
 
-    return SvgRgbColor(a, r, g, b);
+    return switch ((match.group(1), match.group(2), match.group(3))) {
+      (final String rStr, final String gStr, final String bStr) => SvgRgbColor(
+          a,
+          parsePart(rStr),
+          parsePart(gStr),
+          parsePart(bStr),
+        ),
+      _ => null,
+    };
   }
 
   SvgColor? _parseHex(String hex) {

@@ -26,13 +26,11 @@ extension ToSvgLengthPercentage on String {
     final Match? match = unitRegex.firstMatch(trimmed);
 
     if (match != null) {
-      final String? numberPart = match.group(1);
-      final String? unitSuffix = match.group(2);
-
-      if (numberPart != null && unitSuffix != null) {
+      if ((match.group(1), match.group(2))
+          case (final String numberPart, final String unitSuffix)) {
         final double? parsedNumber = double.tryParse(numberPart);
         if (parsedNumber != null) {
-          final SvgLengthUnit unit = unitSuffix.toSvgLengthUnit(); // Use new extension
+          final SvgLengthUnit unit = unitSuffix.toSvgLengthUnit();
           return SvgLength(parsedNumber, unit);
         }
       }

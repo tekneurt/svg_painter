@@ -22,32 +22,30 @@ class RectGenerator extends ShapeGenerator<DrawRect> {
     Set<String>? gradientsNeedingStretch,
   }) {
     final bounds = 'Rect.fromLTWH(${command.x}, ${command.y}, ${command.width}, ${command.height})';
+    final bool isRounded = command.rx != 0 || command.ry != 0;
+
+    void emitDirectDraw(String p) {
+      if (isRounded) {
+        buffer.writeln(
+          'canvas.drawRRect(RRect.fromRectAndRadius($bounds, const Radius.elliptical(${command.rx}, ${command.ry})), $p);',
+        );
+      } else {
+        buffer.writeln('canvas.drawRect($bounds, $p);');
+      }
+    }
+
     wrapWithStyle(buffer, command.style, bounds, () {
       generatePaintingCode(
-
         buffer,
         command,
         command.style,
         bounds,
         (String p, {String? dashArray, String? pathLength, String? dashOffset}) {
-          if (command.rx != 0 || command.ry != 0) {
-            buffer.writeln(
-              'canvas.drawRRect(RRect.fromRectAndRadius($bounds, const Radius.elliptical(${command.rx}, ${command.ry})), $p);',
-            );
-          } else {
-            buffer.writeln('canvas.drawRect($bounds, $p);');
-          }
+          emitDirectDraw(p);
         },
         drawStrokeCall: (String p, {String? dashArray, String? pathLength, String? dashOffset}) {
-          final bool isRounded = command.rx != 0 || command.ry != 0;
           if (dashArray == null && command.style.vectorEffect == .none) {
-            if (isRounded) {
-              buffer.writeln(
-                'canvas.drawRRect(RRect.fromRectAndRadius($bounds, const Radius.elliptical(${command.rx}, ${command.ry})), $p);',
-              );
-            } else {
-              buffer.writeln('canvas.drawRect($bounds, $p);');
-            }
+            emitDirectDraw(p);
           } else {
             final plArg = (pathLength?.isEmpty ?? true) ? '' : ', pathLength: $pathLength';
             final doArg = (dashOffset?.isEmpty ?? true) ? '' : ', dashOffset: $dashOffset';

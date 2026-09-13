@@ -33,13 +33,7 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
         // SVG spec says they default to black, but in practice, users rarely want
         // an implicit black fill on a single straight line.
         // NOTE: We DO NOT skip for Polyline, as it is treated like a Path.
-        bool shouldDrawFill = fill.isExplicit;
-        if (!shouldDrawFill) {
-          // If not explicit, only draw if it's NOT a simple straight Line.
-          if (command is! DrawLine) {
-            shouldDrawFill = true;
-          }
-        }
+        final bool shouldDrawFill = fill.isExplicit || command is! DrawLine;
 
         if (shouldDrawFill) {
           _generateStyleBlock(
