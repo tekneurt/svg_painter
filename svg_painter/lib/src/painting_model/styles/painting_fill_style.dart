@@ -41,6 +41,20 @@ final class PaintingFillStyle implements PaintingPaintStyle {
   final SvgFillRule fillRule;
 
   @override
-  String toString() =>
-      'PaintingFillStyle(color: $colorArgb, shader: $shaderId, units: $shaderUnits, opacity: $opacity, explicit: $isExplicit, currentColor: $isCurrentColor, fillRule: $fillRule)';
+  String toString() {
+    final parts = <String>[
+      if (colorArgb != null) 'color: $colorArgb',
+      if (shaderId != null) 'shader: $shaderId',
+      if (shaderUnits != null) 'units: $shaderUnits',
+      if (opacity != 1.0) 'opacity: $opacity',
+      if (!isExplicit) 'explicit: $isExplicit',
+      if (isCurrentColor) 'currentColor: $isCurrentColor',
+      if (fillRule != SvgFillRule.nonzero) 'fillRule: $fillRule',
+    ];
+    if (parts.isEmpty) {
+      return 'PaintingFillStyle()';
+    } else {
+      return 'PaintingFillStyle(${parts.join(', ')})';
+    }
+  }
 }

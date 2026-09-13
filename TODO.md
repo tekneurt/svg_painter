@@ -254,8 +254,8 @@
 - [ ] **Accessibility (Semantic Mapping)**: Map `<title>` and `<desc>` automatically to Flutter's `Semantics` widget in the generated code.
 - [ ] **MDN Compliance**: Add 2nd example from [MDN fill](https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/fill) once `<marker>`, `context-stroke`, and `context-fill` are implemented.
 - [x] **Essential Attributes**: `text-anchor` [x], `fill-rule` [x], `stroke-dashoffset` [x], `stroke-miterlimit` [x], `paint-order` [x], `preserveAspectRatio` [x].
-- [ ] **Remaining Attributes**: `vector-effect`, `dx`, `dy`.
-- [ ] **Concise Model toString()**: Refactor `PaintingStyle.toString()` and `DrawCommand` subclasses to omit `null` and default values, reducing test verbosity and cognitive load.
+- [x] **Remaining Attributes**: `vector-effect` [x], `dx` [x], `dy` [x].
+- [x] **Concise Model toString()**: Refactor `PaintingStyle.toString()` and `DrawCommand` subclasses to omit `null` and default values, reducing test verbosity and cognitive load.
 - [ ] **Font Management (Release Ready)**: Implement `AssetExporter` to automatically handle bundled fonts for the user.
 - [ ] **Release Preparation (Mandatory for Every Release)**:
     - [ ] **Documentation**: Write comprehensive READMEs and full API documentation.

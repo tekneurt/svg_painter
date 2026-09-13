@@ -90,6 +90,22 @@ final class PaintingStyle {
 
   @override
   String toString() {
-    return 'PaintingStyle(fill: $fill, stroke: $stroke, text: $text, groupOpacity: $groupOpacity, transform: $transformAttributes, clipRect: $clipRect, maskId: $maskId, clipPathId: $clipPathId, paintOrder: $paintOrder, vectorEffect: $vectorEffect)';
+    final parts = <String>[
+      if (fill != null) 'fill: $fill',
+      if (stroke != null) 'stroke: $stroke',
+      if (text != null) 'text: $text',
+      if (groupOpacity != 1.0) 'groupOpacity: $groupOpacity',
+      if (transformAttributes != null) 'transform: $transformAttributes',
+      if (clipRect != null) 'clipRect: $clipRect',
+      if (maskId != null) 'maskId: $maskId',
+      if (clipPathId != null) 'clipPathId: $clipPathId',
+      if (paintOrder != SvgPaintOrder.normal) 'paintOrder: $paintOrder',
+      if (vectorEffect != SvgVectorEffect.none) 'vectorEffect: $vectorEffect',
+    ];
+    if (parts.isEmpty) {
+      return 'PaintingStyle()';
+    } else {
+      return 'PaintingStyle(${parts.join(', ')})';
+    }
   }
 }

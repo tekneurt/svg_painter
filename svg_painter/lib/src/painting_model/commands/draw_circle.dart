@@ -25,5 +25,14 @@ final class DrawCircle extends DrawCommand {
   final PaintingStyle style;
 
   @override
-  String toString() => 'DrawCircle(cx: $cx, cy: $cy, radius: $radius, style: $style, id: $id)';
+  String toString() {
+    final parts = <String>[
+      'cx: $cx',
+      'cy: $cy',
+      'radius: $radius',
+      'style: $style',
+      if (id != null) 'id: $id',
+    ];
+    return 'DrawCircle(${parts.join(', ')})';
+  }
 }

@@ -25,5 +25,14 @@ final class DrawText extends DrawCommand {
   final PaintingStyle style;
 
   @override
-  String toString() => 'DrawText(x: $x, y: $y, span: $rootSpan, style: $style, id: $id)';
+  String toString() {
+    final parts = <String>[
+      'x: $x',
+      'y: $y',
+      'span: $rootSpan',
+      'style: $style',
+      if (id != null) 'id: $id',
+    ];
+    return 'DrawText(${parts.join(', ')})';
+  }
 }

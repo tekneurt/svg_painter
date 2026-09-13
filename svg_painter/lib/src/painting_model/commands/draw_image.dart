@@ -44,8 +44,18 @@ final class DrawImage extends DrawCommand {
   final PaintingStyle style;
 
   @override
-  String toString() =>
-      'DrawImage(x: $x, y: $y, width: $width, height: $height, decoding: $decoding, id: $id)';
+  String toString() {
+    final parts = <String>[
+      'x: $x',
+      'y: $y',
+      'width: $width',
+      'height: $height',
+      if (decoding != PaintingImageDecoding.async) 'decoding: $decoding',
+      'style: $style',
+      if (id != null) 'id: $id',
+    ];
+    return 'DrawImage(${parts.join(', ')})';
+  }
 }
 
 /// Enumeration of image decoding hints in the painting model.

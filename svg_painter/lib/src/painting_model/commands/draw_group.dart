@@ -25,5 +25,14 @@ final class DrawGroup extends DrawCommand {
   final PaintingRect? bounds;
 
   @override
-  String toString() => 'DrawGroup(cmds: ${commands.length}, style: $style, opacity: $opacity, bounds: $bounds)';
+  String toString() {
+    final parts = <String>[
+      'cmds: ${commands.length}',
+      'style: $style',
+      if (opacity != 1.0) 'opacity: $opacity',
+      if (bounds != null) 'bounds: $bounds',
+      if (id != null) 'id: $id',
+    ];
+    return 'DrawGroup(${parts.join(', ')})';
+  }
 }

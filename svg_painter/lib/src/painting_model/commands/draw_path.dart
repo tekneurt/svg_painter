@@ -12,7 +12,14 @@ final class DrawPath extends DrawCommand {
   final PaintingStyle style;
 
   @override
-  String toString() => 'DrawPath(ops: ${operations.length}, style: $style, id: $id)';
+  String toString() {
+    final parts = <String>[
+      'ops: ${operations.length}',
+      'style: $style',
+      if (id != null) 'id: $id',
+    ];
+    return 'DrawPath(${parts.join(', ')})';
+  }
 }
 
 /// Base class for path operations.

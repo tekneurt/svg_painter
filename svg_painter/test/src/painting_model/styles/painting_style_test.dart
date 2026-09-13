@@ -55,7 +55,7 @@ void main() {
       // Assert
       expect(
         result,
-        'PaintingStyle(fill: PaintingFillStyle(color: 4294901760, shader: null, units: null, opacity: 1.0, explicit: true, currentColor: false, fillRule: SvgFillRule.nonzero), stroke: null, text: null, groupOpacity: 0.8, transform: null, clipRect: null, maskId: null, clipPathId: null, paintOrder: SvgPaintOrder(fill stroke markers), vectorEffect: SvgVectorEffect.none)',
+        'PaintingStyle(fill: PaintingFillStyle(color: 4294901760), groupOpacity: 0.8)',
       );
     });
   });
@@ -90,7 +90,7 @@ void main() {
       // Assert
       expect(
         fill.toString(),
-        'PaintingFillStyle(color: 4294901760, shader: null, units: null, opacity: 0.8, explicit: true, currentColor: false, fillRule: SvgFillRule.nonzero)',
+        'PaintingFillStyle(color: 4294901760, opacity: 0.8)',
       );
     });
   });

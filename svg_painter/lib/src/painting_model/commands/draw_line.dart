@@ -22,5 +22,15 @@ final class DrawLine extends DrawCommand {
   final PaintingStyle style;
 
   @override
-  String toString() => 'DrawLine(x1: $x1, y1: $y1, x2: $x2, y2: $y2, style: $style, id: $id)';
+  String toString() {
+    final parts = <String>[
+      'x1: $x1',
+      'y1: $y1',
+      'x2: $x2',
+      'y2: $y2',
+      'style: $style',
+      if (id != null) 'id: $id',
+    ];
+    return 'DrawLine(${parts.join(', ')})';
+  }
 }

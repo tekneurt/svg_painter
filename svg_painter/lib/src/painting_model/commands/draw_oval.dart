@@ -29,5 +29,15 @@ final class DrawOval extends DrawCommand {
   final PaintingStyle style;
 
   @override
-  String toString() => 'DrawOval(cx: $cx, cy: $cy, rx: $rx, ry: $ry, style: $style, id: $id)';
+  String toString() {
+    final parts = <String>[
+      'cx: $cx',
+      'cy: $cy',
+      'rx: $rx',
+      'ry: $ry',
+      'style: $style',
+      if (id != null) 'id: $id',
+    ];
+    return 'DrawOval(${parts.join(', ')})';
+  }
 }

@@ -30,6 +30,17 @@ final class DrawRect extends DrawCommand {
   final PaintingStyle style;
 
   @override
-  String toString() =>
-      'DrawRect(x: $x, y: $y, w: $width, h: $height, rx: $rx, ry: $ry, style: $style, id: $id)';
+  String toString() {
+    final parts = <String>[
+      'x: $x',
+      'y: $y',
+      'w: $width',
+      'h: $height',
+      'rx: $rx',
+      'ry: $ry',
+      'style: $style',
+      if (id != null) 'id: $id',
+    ];
+    return 'DrawRect(${parts.join(', ')})';
+  }
 }

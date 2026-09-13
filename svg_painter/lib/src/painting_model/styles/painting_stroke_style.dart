@@ -90,6 +90,26 @@ final class PaintingStrokeStyle implements PaintingPaintStyle {
   final bool isCurrentColor;
 
   @override
-  String toString() =>
-      'PaintingStrokeStyle(color: $colorArgb, shader: $shaderId, units: $shaderUnits, width: $width, opacity: $opacity, cap: $cap, join: $join, miterLimit: $miterLimit, dashArray: $dashArray, dashOffset: $dashOffset, explicit: $isExplicit, currentColor: $isCurrentColor)';
+  String toString() {
+    final parts = <String>[
+      if (colorArgb != null) 'color: $colorArgb',
+      if (shaderId != null) 'shader: $shaderId',
+      if (shaderUnits != null) 'units: $shaderUnits',
+      if (width != 1.0) 'width: $width',
+      if (pathLength != null) 'pathLength: $pathLength',
+      if (opacity != 1.0) 'opacity: $opacity',
+      if (cap != PaintingStrokeCap.butt) 'cap: $cap',
+      if (join != PaintingStrokeJoin.miter) 'join: $join',
+      if (miterLimit != 4.0) 'miterLimit: $miterLimit',
+      if (dashArray != null) 'dashArray: $dashArray',
+      if (dashOffset != null) 'dashOffset: $dashOffset',
+      if (!isExplicit) 'explicit: $isExplicit',
+      if (isCurrentColor) 'currentColor: $isCurrentColor',
+    ];
+    if (parts.isEmpty) {
+      return 'PaintingStrokeStyle()';
+    } else {
+      return 'PaintingStrokeStyle(${parts.join(', ')})';
+    }
+  }
 }
