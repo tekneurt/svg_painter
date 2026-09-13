@@ -1,13 +1,28 @@
-# Example
+# SvgPainter Example
 
-This is a web-based Flutter application demonstrating the capabilities of the `svg_painter` package. It showcases how to use the generated `CustomPainter` from SVG sources.
+A Flutter application demonstrating compile-time SVG generation with `svg_painter` and `svg_painter_annotation`.
 
-## How to run
+---
 
-1.  Navigate to the example directory: `cd example`
-2.  Run the application on web: `flutter run -d chrome` (or your preferred web browser)
+## How to Run
 
-## What it demonstrates
+1. Navigate to the example directory:
+   ```bash
+   cd example
+   ```
+2. (Optional) Re-run code generation:
+   ```bash
+   dart run build_runner build --delete-conflicting-outputs
+   ```
+3. Run the application:
+   ```bash
+   flutter run -d chrome # or macos, linux, windows, etc.
+   ```
 
-*   Usage of the `@SvgPainter.code` annotation to generate a `CustomPainter` from inline SVG code.
-*   Basic rendering of the generated `CustomPainter`.
+---
+
+## What It Demonstrates
+
+* **Compile-Time Code Generation**: Uses `@SvgCodePainter` with an SVG fixture to generate a dedicated `CustomPainter` and `StatelessWidget`.
+* **Zero Runtime Overhead**: The SVG is compiled to native Flutter Canvas operations at build time with no runtime XML parsing.
+* **Component Usage**: Demonstrates rendering the generated painter and widget directly in a standard Flutter UI hierarchy.
