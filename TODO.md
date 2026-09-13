@@ -251,7 +251,7 @@
     - [x] Refactor `CommandGenerator.wrapWithStyle` boolean flag chains (`!hasTransform && !hasClip && !hasMask && !hasClipPath`, `hasTransform || hasClip || hasClipPath`) to use clean, readable pattern matching or switch statements.
     - [x] Refactor `SvgPaintResolver` into modular, single-responsibility helpers for easier maintenance.
     - [ ] Systematic code audit for similar patterns: Identify and refactor remaining complex boolean flag cascades, negated conditions, and monolithic methods across generators and converters into clean switch/pattern-matching helpers.
-- [ ] **Accessibility (Semantic Mapping)**: Map `<title>` and `<desc>` automatically to Flutter's `Semantics` widget in the generated code.
+- [x] **Accessibility (Semantic Mapping)**: Map `<title>` and `<desc>` automatically to Flutter's `Semantics` widget in the generated code.
 - [ ] **MDN Compliance**: Add 2nd example from [MDN fill](https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/fill) once `<marker>`, `context-stroke`, and `context-fill` are implemented.
 - [x] **Essential Attributes**: `text-anchor` [x], `fill-rule` [x], `stroke-dashoffset` [x], `stroke-miterlimit` [x], `paint-order` [x], `preserveAspectRatio` [x].
 - [x] **Remaining Attributes**: `vector-effect` [x], `dx` [x], `dy` [x].

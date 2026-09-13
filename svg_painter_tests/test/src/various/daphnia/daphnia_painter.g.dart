@@ -26,9 +26,12 @@ class DaphniaPainterWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CustomPaint(
-      size: Size(width ?? 48.0, height ?? 48.0),
-      painter: _$DaphniaPainter(fit: fit),
+    return Semantics(
+      label: 'daphnia',
+      child: CustomPaint(
+        size: Size(width ?? 48.0, height ?? 48.0),
+        painter: _$DaphniaPainter(fit: fit),
+      ),
     );
   }
 }

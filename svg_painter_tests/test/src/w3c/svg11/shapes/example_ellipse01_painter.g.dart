@@ -26,9 +26,12 @@ class ExampleEllipse01PainterWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CustomPaint(
-      size: Size(width ?? 453.54330708661416, height ?? 151.1811023622047),
-      painter: _$ExampleEllipse01Painter(fit: fit),
+    return Semantics(
+      hint: 'Example ellipse01 - examples of ellipses',
+      child: CustomPaint(
+        size: Size(width ?? 453.54330708661416, height ?? 151.1811023622047),
+        painter: _$ExampleEllipse01Painter(fit: fit),
+      ),
     );
   }
 }

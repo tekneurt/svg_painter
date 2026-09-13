@@ -34,14 +34,17 @@ class DaphniaMixedPainterWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CustomPaint(
-      size: Size(width ?? 48.0, height ?? 48.0),
-      painter: _$DaphniaMixedPainter(
-        fit: fit,
-        defaultFill: defaultFill,
-        fill1: fill1,
-        fill2: fill2,
-        fill3: fill3,
+    return Semantics(
+      label: 'daphnia',
+      child: CustomPaint(
+        size: Size(width ?? 48.0, height ?? 48.0),
+        painter: _$DaphniaMixedPainter(
+          fit: fit,
+          defaultFill: defaultFill,
+          fill1: fill1,
+          fill2: fill2,
+          fill3: fill3,
+        ),
       ),
     );
   }

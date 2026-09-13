@@ -54,6 +54,67 @@ void main() {
         // Assert
         expect(output, contains(r'class _$TestPainter extends CustomPainter {'));
         expect(output, contains('canvas.drawRect(Rect.fromLTWH(10.0, 10.0, 80.0, 80.0), paint)'));
+        expect(output, isNot(contains('Semantics(')));
+      });
+
+      test('should generate Semantics widget when SVG contains title and desc', () async {
+        // Arrange
+        const svgContent = '''
+<svg width="100" height="100">
+  <title>A Red Square</title>
+  <desc>A square filled with red color</desc>
+  <rect x="10" y="10" width="80" height="80" fill="red" />
+</svg>
+''';
+
+        // Act
+        final String output = await generator.generateFromSvg(
+          elementName: 'AccessiblePainter',
+          svgContent: svgContent,
+        );
+
+        // Assert
+        expect(output, contains("return Semantics(\n      label: 'A Red Square',\n      hint: 'A square filled with red color',\n      child: CustomPaint("));
+      });
+
+      test('should generate Semantics widget when SVG contains only title', () async {
+        // Arrange
+        const svgContent = '''
+<svg width="100" height="100">
+  <title>Only Title</title>
+  <rect x="10" y="10" width="80" height="80" fill="red" />
+</svg>
+''';
+
+        // Act
+        final String output = await generator.generateFromSvg(
+          elementName: 'TitleOnlyPainter',
+          svgContent: svgContent,
+        );
+
+        // Assert
+        expect(output, contains("return Semantics(\n      label: 'Only Title',\n      child: CustomPaint("));
+        expect(output, isNot(contains('hint:')));
+      });
+
+      test('should generate Semantics widget when SVG contains only desc', () async {
+        // Arrange
+        const svgContent = '''
+<svg width="100" height="100">
+  <desc>Only Description</desc>
+  <rect x="10" y="10" width="80" height="80" fill="red" />
+</svg>
+''';
+
+        // Act
+        final String output = await generator.generateFromSvg(
+          elementName: 'DescOnlyPainter',
+          svgContent: svgContent,
+        );
+
+        // Assert
+        expect(output, contains("return Semantics(\n      hint: 'Only Description',\n      child: CustomPaint("));
+        expect(output, isNot(contains('label:')));
       });
 
       test('should throw InvalidGenerationSourceError for invalid XML', () async {

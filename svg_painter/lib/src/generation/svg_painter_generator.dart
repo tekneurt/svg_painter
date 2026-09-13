@@ -217,6 +217,15 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
 
       final String className = painterClassName ?? r'_$' + elementName;
 
+      final String? semanticLabel = svgRootElement.children
+          .whereType<SvgTitle>()
+          .firstOrNull
+          ?.content;
+      final String? semanticHint = svgRootElement.children
+          .whereType<SvgDesc>()
+          .firstOrNull
+          ?.content;
+
       return painterGenerator.generatePainterClass(
         className: className,
         viewBoxWidth: viewBoxWidth,
@@ -225,6 +234,8 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
         generators: _generators,
         exposureMode: exposureMode,
         propertyMapping: propertyMapping,
+        semanticLabel: semanticLabel,
+        semanticHint: semanticHint,
       );
     } else {
       throw InvalidGenerationSourceError(
@@ -242,6 +253,8 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
     required List<PaintCommand> commands,
     SvgExposureMode exposureMode = SvgExposureMode.none,
     Map<String, String> propertyMapping = const <String, String>{},
+    String? semanticLabel,
+    String? semanticHint,
   }) =>
       painterGenerator.generatePainterClass(
         className: className,
@@ -251,6 +264,8 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
         generators: _generators,
         exposureMode: exposureMode,
         propertyMapping: propertyMapping,
+        semanticLabel: semanticLabel,
+        semanticHint: semanticHint,
       );
 
   /// Loads SVG content from the given annotation.

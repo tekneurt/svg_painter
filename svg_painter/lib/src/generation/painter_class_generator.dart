@@ -35,6 +35,8 @@ class PainterClassGenerator {
     required Map<Type, CommandGenerator<PaintCommand>> generators,
     SvgExposureMode exposureMode = SvgExposureMode.none,
     Map<String, String> propertyMapping = const <String, String>{},
+    String? semanticLabel,
+    String? semanticHint,
   }) {
     final buffer = GeneratorBuffer();
 
@@ -111,6 +113,8 @@ class PainterClassGenerator {
       viewBoxHeight: viewBoxHeight,
       hasCurrentColor: hasCurrentColor,
       imageHrefs: uniqueImageHrefs,
+      semanticLabel: semanticLabel,
+      semanticHint: semanticHint,
     );
     buffer.writeln();
 

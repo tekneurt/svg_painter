@@ -15,7 +15,11 @@ class WidgetClassGenerator {
     required double viewBoxHeight,
     required bool hasCurrentColor,
     required List<String> imageHrefs,
+    String? semanticLabel,
+    String? semanticHint,
   }) {
+    final bool hasSemantics = semanticLabel != null || semanticHint != null;
+
     if (imageHrefs.isEmpty) {
       buffer.writeBlock('class $widgetClassName extends StatelessWidget {', () {
         buffer.writeBlock('const $widgetClassName({', () {
@@ -56,18 +60,41 @@ class WidgetClassGenerator {
         buffer.writeln();
         buffer.writeln('@override');
         buffer.writeBlock('Widget build(BuildContext context) {', () {
-          buffer.writeBlock('return CustomPaint(', () {
-            buffer.writeln('size: Size(width ?? $viewBoxWidth, height ?? $viewBoxHeight),');
-            buffer.writeBlock('painter: $painterClassName(', () {
-              buffer.writeln('fit: fit,');
-              if (hasCurrentColor) {
-                buffer.writeln('color: color ?? IconTheme.of(context).color,');
+          if (hasSemantics) {
+            buffer.writeBlock('return Semantics(', () {
+              if (semanticLabel != null) {
+                buffer.writeln('label: ${escapeString(semanticLabel)},');
               }
-              for (final prop in allProps) {
-                buffer.writeln('$prop: $prop,');
+              if (semanticHint != null) {
+                buffer.writeln('hint: ${escapeString(semanticHint)},');
               }
-            }, footer: '),');
-          }, footer: ');');
+              buffer.writeBlock('child: CustomPaint(', () {
+                buffer.writeln('size: Size(width ?? $viewBoxWidth, height ?? $viewBoxHeight),');
+                buffer.writeBlock('painter: $painterClassName(', () {
+                  buffer.writeln('fit: fit,');
+                  if (hasCurrentColor) {
+                    buffer.writeln('color: color ?? IconTheme.of(context).color,');
+                  }
+                  for (final prop in allProps) {
+                    buffer.writeln('$prop: $prop,');
+                  }
+                }, footer: '),');
+              }, footer: '),');
+            }, footer: ');');
+          } else {
+            buffer.writeBlock('return CustomPaint(', () {
+              buffer.writeln('size: Size(width ?? $viewBoxWidth, height ?? $viewBoxHeight),');
+              buffer.writeBlock('painter: $painterClassName(', () {
+                buffer.writeln('fit: fit,');
+                if (hasCurrentColor) {
+                  buffer.writeln('color: color ?? IconTheme.of(context).color,');
+                }
+                for (final prop in allProps) {
+                  buffer.writeln('$prop: $prop,');
+                }
+              }, footer: '),');
+            }, footer: ');');
+          }
         });
       });
     } else {
@@ -144,29 +171,72 @@ class WidgetClassGenerator {
         buffer.writeln();
         buffer.writeln('@override');
         buffer.writeBlock('Widget build(BuildContext context) {', () {
-          buffer.writeBlock('return CustomPaint(', () {
-            buffer.writeln(
-              'size: Size(widget.width ?? $viewBoxWidth, widget.height ?? $viewBoxHeight),',
-            );
-            buffer.writeBlock('painter: $painterClassName(', () {
-              buffer.writeln('fit: widget.fit,');
-              if (hasCurrentColor) {
-                buffer.writeln('color: widget.color ?? IconTheme.of(context).color,');
+          if (hasSemantics) {
+            buffer.writeBlock('return Semantics(', () {
+              if (semanticLabel != null) {
+                buffer.writeln('label: ${escapeString(semanticLabel)},');
               }
-              final allProps = <String>{
-                ...activeFillProperties.values,
-                ...activeStrokeProperties.values,
-              };
-              for (final prop in allProps) {
-                buffer.writeln('$prop: widget.$prop,');
+              if (semanticHint != null) {
+                buffer.writeln('hint: ${escapeString(semanticHint)},');
               }
-              for (var i = 0; i < imageHrefs.length; i++) {
-                buffer.writeln('image$i: _image$i,');
-              }
-            }, footer: '),');
-          }, footer: ');');
+              buffer.writeBlock('child: CustomPaint(', () {
+                buffer.writeln(
+                  'size: Size(widget.width ?? $viewBoxWidth, widget.height ?? $viewBoxHeight),',
+                );
+                buffer.writeBlock('painter: $painterClassName(', () {
+                  buffer.writeln('fit: widget.fit,');
+                  if (hasCurrentColor) {
+                    buffer.writeln('color: widget.color ?? IconTheme.of(context).color,');
+                  }
+                  final allProps = <String>{
+                    ...activeFillProperties.values,
+                    ...activeStrokeProperties.values,
+                  };
+                  for (final prop in allProps) {
+                    buffer.writeln('$prop: widget.$prop,');
+                  }
+                  for (var i = 0; i < imageHrefs.length; i++) {
+                    buffer.writeln('image$i: _image$i,');
+                  }
+                }, footer: '),');
+              }, footer: '),');
+            }, footer: ');');
+          } else {
+            buffer.writeBlock('return CustomPaint(', () {
+              buffer.writeln(
+                'size: Size(widget.width ?? $viewBoxWidth, widget.height ?? $viewBoxHeight),',
+              );
+              buffer.writeBlock('painter: $painterClassName(', () {
+                buffer.writeln('fit: widget.fit,');
+                if (hasCurrentColor) {
+                  buffer.writeln('color: widget.color ?? IconTheme.of(context).color,');
+                }
+                final allProps = <String>{
+                  ...activeFillProperties.values,
+                  ...activeStrokeProperties.values,
+                };
+                for (final prop in allProps) {
+                  buffer.writeln('$prop: widget.$prop,');
+                }
+                for (var i = 0; i < imageHrefs.length; i++) {
+                  buffer.writeln('image$i: _image$i,');
+                }
+              }, footer: '),');
+            }, footer: ');');
+          }
         });
       });
     }
+  }
+
+  /// Helper to escape a string literal for Dart code generation.
+  static String escapeString(String string) {
+    final String escaped = string
+        .replaceAll(r'\', r'\\')
+        .replaceAll("'", r"\'")
+        .replaceAll(r'$', r'\$')
+        .replaceAll('\n', r'\n')
+        .replaceAll('\r', r'\r');
+    return "'$escaped'";
   }
 }

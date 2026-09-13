@@ -26,9 +26,12 @@ class ExampleCircle01PainterWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CustomPaint(
-      size: Size(width ?? 453.54330708661416, height ?? 151.1811023622047),
-      painter: _$ExampleCircle01Painter(fit: fit),
+    return Semantics(
+      hint: 'Example circle01 - circle filled with red and stroked with blue',
+      child: CustomPaint(
+        size: Size(width ?? 453.54330708661416, height ?? 151.1811023622047),
+        painter: _$ExampleCircle01Painter(fit: fit),
+      ),
     );
   }
 }

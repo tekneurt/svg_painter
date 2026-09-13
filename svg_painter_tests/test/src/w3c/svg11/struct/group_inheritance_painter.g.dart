@@ -30,12 +30,15 @@ class GroupInheritancePainterWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CustomPaint(
-      size: Size(width ?? 188.9763779527559, height ?? 188.9763779527559),
-      painter: _$GroupInheritancePainter(
-        fit: fit,
-        group1Fill: group1Fill,
-        group2Fill: group2Fill,
+    return Semantics(
+      hint: 'Two groups, each of two rectangles',
+      child: CustomPaint(
+        size: Size(width ?? 188.9763779527559, height ?? 188.9763779527559),
+        painter: _$GroupInheritancePainter(
+          fit: fit,
+          group1Fill: group1Fill,
+          group2Fill: group2Fill,
+        ),
       ),
     );
   }
