@@ -9,6 +9,8 @@ final class SvgText extends SvgGraphicsElement with SvgFontAttributable, SvgText
     required this.x,
     required this.y,
     required this.children,
+    this.dx,
+    this.dy,
     super.presentationAttributes,
     super.coreAttributes,
   });
@@ -19,6 +21,12 @@ final class SvgText extends SvgGraphicsElement with SvgFontAttributable, SvgText
   /// The y-axis coordinate of the starting point of the text.
   final SvgLengthPercentage y;
 
+  /// The relative x-axis shift for the text.
+  final SvgLengthPercentage? dx;
+
+  /// The relative y-axis shift for the text.
+  final SvgLengthPercentage? dy;
+
   /// The child elements or character data contained within this text element.
   final List<SvgTextContent> children;
 
@@ -26,5 +34,5 @@ final class SvgText extends SvgGraphicsElement with SvgFontAttributable, SvgText
   SvgFontAttributes? get fontAttributes => presentationAttributes?.font;
 
   @override
-  String toString() => 'SvgText(x: $x, y: $y, children: ${children.length}, id: $id)';
+  String toString() => 'SvgText(x: $x, y: $y, dx: $dx, dy: $dy, children: ${children.length}, id: $id)';
 }

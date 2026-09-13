@@ -5,6 +5,8 @@ import '../../test_utils.dart';
 import 'attributes/clip_path_painter.dart';
 import 'attributes/cx_painter.dart';
 import 'attributes/cy_painter.dart';
+import 'attributes/dx_painter.dart';
+import 'attributes/dy_painter.dart';
 import 'attributes/fill_opacity_painter.dart';
 import 'attributes/fill_painter.dart';
 import 'attributes/fill_rule_evenodd_painter.dart';
@@ -68,6 +70,8 @@ _fixtures =
           GoldenTestType.viewBox: <TargetPlatform>{TargetPlatform.macOS},
         },
       ),
+      (painter: const DxPainter(), name: 'dx_painter', tests: defaultGoldenTests),
+      (painter: const DyPainter(), name: 'dy_painter', tests: defaultGoldenTests),
       (
         painter: const FillOpacityPainter(),
         name: 'fill_opacity_painter',

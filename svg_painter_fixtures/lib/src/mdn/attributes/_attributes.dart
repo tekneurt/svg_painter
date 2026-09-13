@@ -1,6 +1,8 @@
 export 'clip_path.dart';
 export 'cx.dart';
 export 'cy.dart';
+export 'dx.dart';
+export 'dy.dart';
 export 'fill.dart';
 export 'fill_opacity.dart';
 export 'fill_rule.dart';

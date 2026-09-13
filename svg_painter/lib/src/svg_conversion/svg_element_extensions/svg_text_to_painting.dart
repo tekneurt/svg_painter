@@ -8,8 +8,10 @@ import '../svg_value_extensions/_svg_value_extensions.dart';
 extension SvgTextToPaintCommands on SvgText {
   /// Converts this [SvgText] to a list of [PaintCommand]s.
   Result<List<PaintCommand>> toPaintCommands(SvgPaintingContext context) {
-    final double finalX = x.resolve(context, .horizontal);
-    final double finalY = y.resolve(context, .vertical);
+    final double resolvedDx = dx?.resolve(context, .horizontal) ?? 0.0;
+    final double resolvedDy = dy?.resolve(context, .vertical) ?? 0.0;
+    final double finalX = x.resolve(context, .horizontal) + resolvedDx;
+    final double finalY = y.resolve(context, .vertical) + resolvedDy;
 
     final PaintingStyle style = resolvePaint(
       context,

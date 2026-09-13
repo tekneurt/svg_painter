@@ -18,7 +18,23 @@ void main() {
       final result = text.toString();
 
       // Assert
-      expect(result, 'SvgText(x: 10.0, y: 20.0, children: 1, id: t1)');
+      expect(result, 'SvgText(x: 10.0, y: 20.0, dx: null, dy: null, children: 1, id: t1)');
+    });
+
+    test('should hold all optional properties (dx, dy)', () {
+      // Arrange & Act
+      const text = SvgText(
+        x: SvgLength(10),
+        y: SvgLength(20),
+        dx: SvgLength(5),
+        dy: SvgLength(15),
+        children: <SvgTextContent>[],
+      );
+
+      // Assert
+      expect(text.dx, const SvgLength(5));
+      expect(text.dy, const SvgLength(15));
+      expect(text.toString(), 'SvgText(x: 10.0, y: 20.0, dx: 5.0, dy: 15.0, children: 0, id: null)');
     });
 
     test('should return font attributes when presentation attributes are provided', () {
