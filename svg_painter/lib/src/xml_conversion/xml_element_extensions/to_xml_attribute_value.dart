@@ -10,7 +10,7 @@ extension ToXmlAttributeValue on XmlElement {
     final String? value = getAttribute(attribute.name);
 
     if ((value == null) && (attribute == XmlAttributeName.href)) {
-      return getAttribute('href', namespace: 'http://www.w3.org/1999/xlink');
+      return getAttribute('href', namespaceUri: 'http://www.w3.org/1999/xlink');
     } else {
       return value;
     }

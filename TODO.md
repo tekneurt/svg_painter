@@ -257,11 +257,11 @@
 - [x] **Remaining Attributes**: `vector-effect` [x], `dx` [x], `dy` [x].
 - [x] **Concise Model toString()**: Refactor `PaintingStyle.toString()` and `DrawCommand` subclasses to omit `null` and default values, reducing test verbosity and cognitive load.
 - [x] **Font Management (Release Ready)**: Implement `AssetExporter` to automatically handle bundled fonts for the user.
-- [ ] **Release Preparation (Mandatory for Every Release)**:
+- [x] **Release Preparation (Mandatory for Every Release)**:
     - [x] **Documentation**: Write comprehensive READMEs and full API documentation.
     - [x] **Validation**: Add comprehensive tests for all `BoxFit` values.
-    - [ ] **Dependency Refresh & Pub Score Audit (Final Pre-Release Step)**: Run `dart pub outdated` and update/broaden dependency constraints (e.g. `analyzer`, `xml`) across all packages so all dependencies support latest versions to maintain a 160/160 pub.dev score.
-    - [ ] **Publishing**: Publish version 0.4.0 of all packages to pub.dev.
+    - [x] **Dependency Refresh & Pub Score Audit (Final Pre-Release Step)**: Run `dart pub outdated` and update/broaden dependency constraints (e.g. `analyzer`, `xml`) across all packages so all dependencies support latest versions to maintain a 160/160 pub.dev score.
+    - [x] **Publishing**: Publish version 0.4.0 of all packages to pub.dev.
 
 ### Phase 9: Performance & Optimization (1.1.0+)
 - [ ] **Image Compression**: Implement support for compressing embedded images (e.g., using LZ4, Zstd via `es_compression`, or built-in GZip) to reduce generated code size while maintaining fast decompression speeds. Analyze the trade-offs between storage savings and runtime performance.

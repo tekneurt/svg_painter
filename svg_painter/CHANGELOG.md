@@ -5,6 +5,32 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.0] - 2026-09-13
+
+### Added
+
+#### Spec Compliance
+- **Images**: Added `<image>` element support for embedded (base64 data URI) and linked PNG and JPEG assets.
+- **Element Reuse**: Implemented `<use>` element referencing for shared definitions and symbols with transform translations.
+- **Masking**: Added `<mask >` element and `mask` presentation attribute with alpha mask rendering.
+- **Clipping**: Added `<clipPath>` element and `clip-path` presentation attribute for SVG 1.1 shapes.
+- **Text Attributes**: Implemented `text-anchor` (`start`, `middle`, `end`), `dx`, and `dy` attributes.
+- **Presentation Attributes**: Implemented `vector-effect` (`non-scaling-stroke`), `paint-order` (`fill`, `stroke`, `markers`), `fill-rule` (`nonzero`, `evenodd`), `stroke-dashoffset`, and `stroke-miterlimit`.
+- **ViewBox & Aspect Ratio**: Full `preserveAspectRatio` support matching all Flutter `BoxFit` modes with dual-resolution widget tests.
+- **Accessibility**: Automatic `Semantics` widget mapping from SVG `<title>` and `<desc>` elements.
+- **Font Management**: Added `AssetExporter` to automatically handle bundled font dependencies.
+
+#### Code Generation & Architecture
+- **Generator Modularization**: Refactored `SvgPainterGenerator` into dedicated helper classes for painter and widget class generation.
+- **Clean Code & Pattern Matching**: Refactored `CommandGenerator` and `SvgPaintResolver` to use clean Dart 3 pattern matching and eliminated complex boolean flag cascades.
+- **Concise Debugging**: Streamlined `PaintingStyle` and `DrawCommand` `toString()` outputs to omit default values.
+
+### Changed
+
+- **Dependencies**: Broadened package constraints for `xml` (`>=6.6.1 <8.0.0`), `meta` (`>=1.17.0 <2.0.0`), `path` (`^1.9.0`), and `svg_painter_annotation` (`^0.4.0`). Upgraded to `xml 7.0.1` and migrated deprecated namespace usage to `namespaceUri`.
+- **Documentation**: Comprehensive README documentation overhaul covering architecture, usage, dynamic property exposure, and configuration options.
+- **Formatting**: Enforced trailing comma formatting across the entire monorepo.
+
 ## [0.3.0] - 2026-03-23
 
 ### Added
