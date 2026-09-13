@@ -259,7 +259,7 @@
 - [x] **Font Management (Release Ready)**: Implement `AssetExporter` to automatically handle bundled fonts for the user.
 - [ ] **Release Preparation (Mandatory for Every Release)**:
     - [ ] **Documentation**: Write comprehensive READMEs and full API documentation.
-    - [ ] **Validation**: Add comprehensive tests for all `BoxFit` values.
+    - [x] **Validation**: Add comprehensive tests for all `BoxFit` values.
     - [ ] **Dependency Refresh & Pub Score Audit (Final Pre-Release Step)**: Run `dart pub outdated` and update/broaden dependency constraints (e.g. `analyzer`, `xml`) across all packages so all dependencies support latest versions to maintain a 160/160 pub.dev score.
     - [ ] **Publishing**: Publish version 0.4.0 of all packages to pub.dev.
 
