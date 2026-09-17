@@ -1,3 +1,5 @@
+import 'package:svg_painter_annotation/svg_painter_annotation.dart';
+
 import '../../painting_model/_painting_model.dart';
 import '../_generation.dart';
 
@@ -17,6 +19,7 @@ class ImageGenerator extends CommandGenerator<DrawImage> {
     Set<String>? gradientsNeedingStretch,
     List<InheritedProperty>? inheritedFills,
     List<InheritedProperty>? inheritedStrokes,
+    SvgColorMapping colorMapping = SvgColorMapping.material,
   }) {
     // Note: We use a private field name based on the ID or a hash of the bytes
     // to store the bytes in the generated class.

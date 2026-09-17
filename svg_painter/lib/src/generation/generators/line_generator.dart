@@ -1,3 +1,5 @@
+import 'package:svg_painter_annotation/svg_painter_annotation.dart';
+
 import '../../painting_model/_painting_model.dart';
 import '../command_generator.dart';
 import '../generator_buffer.dart';
@@ -20,6 +22,7 @@ class LineGenerator extends ShapeGenerator<DrawLine> {
     List<InheritedProperty>? inheritedStrokes,
     String? painterClassName,
     Set<String>? gradientsNeedingStretch,
+    SvgColorMapping colorMapping = SvgColorMapping.material,
   }) {
     final bounds =
         'Rect.fromPoints(const Offset(${command.x1}, ${command.y1}), const Offset(${command.x2}, ${command.y2}))';
@@ -29,6 +32,12 @@ class LineGenerator extends ShapeGenerator<DrawLine> {
         command,
         command.style,
         bounds,
+        colorMapping: colorMapping,
+        palette: palette,
+        activeFillProperties: activeFillProperties,
+        activeStrokeProperties: activeStrokeProperties,
+        inheritedFills: inheritedFills,
+        inheritedStrokes: inheritedStrokes,
         (String p, {String? dashArray, String? pathLength, String? dashOffset}) {
           buffer.writeln(
             'canvas.drawLine(const Offset(${command.x1}, ${command.y1}), const Offset(${command.x2}, ${command.y2}), $p);',
@@ -51,11 +60,6 @@ class LineGenerator extends ShapeGenerator<DrawLine> {
             });
           }
         },
-        palette: palette,
-        activeFillProperties: activeFillProperties,
-        activeStrokeProperties: activeStrokeProperties,
-        inheritedFills: inheritedFills,
-        inheritedStrokes: inheritedStrokes,
       );
     });
   }

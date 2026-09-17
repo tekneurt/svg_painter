@@ -1,5 +1,7 @@
 import 'dart:math' as math;
 
+import 'package:svg_painter_annotation/svg_painter_annotation.dart';
+
 import '../painting_model/_painting_model.dart';
 import '../svg_model/_svg_model.dart';
 import 'generator_buffer.dart';
@@ -22,6 +24,7 @@ abstract class CommandGenerator<T extends PaintCommand> {
     List<InheritedProperty>? inheritedStrokes,
     String? painterClassName,
     Set<String>? gradientsNeedingStretch,
+    SvgColorMapping colorMapping = SvgColorMapping.material,
   });
 
   /// Helper to wrap a block of code with styling features like transforms or clips.

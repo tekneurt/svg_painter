@@ -1,3 +1,5 @@
+import 'package:svg_painter_annotation/svg_painter_annotation.dart';
+
 import '../../painting_model/_painting_model.dart';
 import '../command_generator.dart';
 import '../generator_buffer.dart';
@@ -20,6 +22,7 @@ class ClipPathGenerator extends CommandGenerator<DefineClipPath> {
     List<InheritedProperty>? inheritedStrokes,
     String? painterClassName,
     Set<String>? gradientsNeedingStretch,
+    SvgColorMapping colorMapping = SvgColorMapping.material,
   }) {
     buffer.writeBlock(
       'void _clipPath_${command.id}(Canvas canvas, Size size, Rect targetBounds) {',

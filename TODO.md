@@ -272,11 +272,10 @@
 
 ### Phase 6: Recommended "Wise-to-Have" Features (0.5.0)
 - [x] **Dual-Platform Golden Hardening**: Systematize macOS and Linux golden testing. For tests subject to platform font/anti-aliasing variance, configure platform-specific golden overrides (`TargetPlatform.macOS` / `TargetPlatform.linux`) in `test_utils.dart` so both local macOS and CI Linux pass with 100% reliability.
-- [ ] **Configurable Color Generation**: Add `colorMapping` option to `@SvgPainter`.
+- [x] **Configurable Color Generation**: Add `colorMapping` option to `@SvgPainter`.
     - `material` (default): Use Flutter's `Colors.red`, `Colors.amber.shade200`.
-    - `svg`: Use SVG constants like `Color(0xFFFF0000)` but potentially aliased to a generated `SvgColors` class for readability.
     - `hex`: Strict `Color(0xAARRGGBB)` usage.
-- [ ] **Token-Based Global Coloring**: Allow a single property to control all occurrences of a specific color across the entire SVG, including both solid fills/strokes AND individual gradient stops (e.g., changing `red` to `yellow` globally).
+- [x] **Token-Based Global Coloring**: Allow a single property to control all occurrences of a specific color across the entire SVG, including both solid fills/strokes AND individual gradient stops (e.g., changing `red` to `yellow` globally).
 - [ ] **Advanced Pathing**: `<marker>` support and `context-fill`/`context-stroke` keywords.
 - [ ] **Text along Curves**: `<textPath>` implementation.
 - [ ] **Containers**: `<switch>` for conditional rendering.

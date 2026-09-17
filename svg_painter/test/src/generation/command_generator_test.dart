@@ -4,6 +4,7 @@ import 'package:svg_painter/src/generation/_generation.dart';
 import 'package:svg_painter/src/painting_model/paint_command.dart';
 import 'package:svg_painter/src/painting_model/styles/painting_style.dart';
 import 'package:svg_painter/src/svg_model/_svg_model.dart';
+import 'package:svg_painter_annotation/svg_painter_annotation.dart';
 import 'package:test/test.dart';
 
 // Concrete implementation for testing abstract ShapeGenerator
@@ -22,6 +23,7 @@ class TestShapeGenerator extends ShapeGenerator<DrawCircle> {
     List<InheritedProperty>? inheritedStrokes,
     String? painterClassName,
     Set<String>? gradientsNeedingStretch,
+    SvgColorMapping colorMapping = SvgColorMapping.material,
   }) {
     final bounds = 'Rect.fromLTWH(${command.cx - command.radius}, ${command.cy - command.radius}, ${command.radius * 2}, ${command.radius * 2})';
     wrapWithStyle(buffer, command.style, bounds, () {

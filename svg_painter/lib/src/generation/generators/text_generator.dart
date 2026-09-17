@@ -1,3 +1,5 @@
+import 'package:svg_painter_annotation/svg_painter_annotation.dart';
+
 import '../../painting_model/_painting_model.dart';
 import '../command_generator.dart';
 import '../flutter_color_map.dart';
@@ -21,6 +23,7 @@ class TextGenerator extends ShapeGenerator<DrawText> {
     List<InheritedProperty>? inheritedStrokes,
     String? painterClassName,
     Set<String>? gradientsNeedingStretch,
+    SvgColorMapping colorMapping = SvgColorMapping.material,
   }) {
     final bounds = 'Rect.fromLTWH(${command.x}, ${command.y}, 100, 100)'; // Approximation
     wrapWithStyle(buffer, command.style, 'Offset.zero & viewBox', () {
@@ -29,6 +32,12 @@ class TextGenerator extends ShapeGenerator<DrawText> {
         command,
         command.style,
         bounds,
+        colorMapping: colorMapping,
+        palette: palette,
+        activeFillProperties: activeFillProperties,
+        activeStrokeProperties: activeStrokeProperties,
+        inheritedFills: inheritedFills,
+        inheritedStrokes: inheritedStrokes,
         (String p, {String? dashArray, String? pathLength, String? dashOffset}) {
           _generateTextPainter(
             buffer,
@@ -40,6 +49,7 @@ class TextGenerator extends ShapeGenerator<DrawText> {
             activeStrokeProperties: activeStrokeProperties,
             inheritedFills: inheritedFills,
             inheritedStrokes: inheritedStrokes,
+            colorMapping: colorMapping,
           );
         },
         drawStrokeCall: (String p, {String? dashArray, String? pathLength, String? dashOffset}) {
@@ -49,17 +59,9 @@ class TextGenerator extends ShapeGenerator<DrawText> {
             p,
             isStroke: true,
             palette: palette,
-            activeFillProperties: activeFillProperties,
-            activeStrokeProperties: activeStrokeProperties,
-            inheritedFills: inheritedFills,
-            inheritedStrokes: inheritedStrokes,
+            colorMapping: colorMapping,
           );
         },
-        palette: palette,
-        activeFillProperties: activeFillProperties,
-        activeStrokeProperties: activeStrokeProperties,
-        inheritedFills: inheritedFills,
-        inheritedStrokes: inheritedStrokes,
       );
     });
   }
@@ -74,6 +76,7 @@ class TextGenerator extends ShapeGenerator<DrawText> {
     Map<String, String>? activeStrokeProperties,
     List<InheritedProperty>? inheritedFills,
     List<InheritedProperty>? inheritedStrokes,
+    SvgColorMapping colorMapping = SvgColorMapping.material,
   }) {
     buffer.writeBlock('{', () {
       buffer.writeln('final TextPainter tp = TextPainter(');
@@ -90,6 +93,7 @@ class TextGenerator extends ShapeGenerator<DrawText> {
           activeStrokeProperties: activeStrokeProperties,
           inheritedFills: inheritedFills,
           inheritedStrokes: inheritedStrokes,
+          colorMapping: colorMapping,
         );
       }, footer: ',');
       buffer.writeln('textDirection: TextDirection.ltr,');
@@ -120,6 +124,7 @@ class TextGenerator extends ShapeGenerator<DrawText> {
     Map<String, String>? activeStrokeProperties,
     List<InheritedProperty>? inheritedFills,
     List<InheritedProperty>? inheritedStrokes,
+    SvgColorMapping colorMapping = SvgColorMapping.material,
   }) {
     buffer.writeBlock('TextSpan(', () {
       if (span.text != null) {
@@ -141,8 +146,16 @@ class TextGenerator extends ShapeGenerator<DrawText> {
                   'foreground: Paint()..shader = _grad_${fill.shaderId}.createShader(Rect.zero),',
                 );
               } else if (fill.colorArgb != null) {
-                final String colorCode = FlutterColorMap.getColorCode(fill.colorArgb!);
-                buffer.writeln('color: $colorCode,');
+                final String colorCode = FlutterColorMap.getColorCode(
+                  fill.colorArgb!,
+                  colorMapping: colorMapping,
+                );
+                final String? tokenName = palette?.colorTokens[fill.colorArgb!];
+                if (tokenName != null) {
+                  buffer.writeln('color: $tokenName ?? $colorCode,');
+                } else {
+                  buffer.writeln('color: $colorCode,');
+                }
               }
             }
           }
@@ -173,6 +186,7 @@ class TextGenerator extends ShapeGenerator<DrawText> {
               activeStrokeProperties: activeStrokeProperties,
               inheritedFills: inheritedFills,
               inheritedStrokes: inheritedStrokes,
+              colorMapping: colorMapping,
             );
             buffer.writeln(',');
           }

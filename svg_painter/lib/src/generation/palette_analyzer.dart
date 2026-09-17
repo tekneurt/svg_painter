@@ -2,16 +2,24 @@ import 'package:meta/meta.dart';
 import 'package:svg_painter_annotation/svg_painter_annotation.dart';
 
 import '../painting_model/_painting_model.dart';
+import 'flutter_color_map.dart';
 
 /// Result of the palette analysis.
 class PaletteResult {
-  const PaletteResult(this.fillAssignments, this.strokeAssignments);
+  const PaletteResult(
+    this.fillAssignments,
+    this.strokeAssignments, {
+    this.colorTokens = const <int, String>{},
+  });
 
   /// Mapping of commands to their assigned fill property name (e.g., 'fill1').
   final Map<PaintCommand, String> fillAssignments;
 
   /// Mapping of commands to their assigned stroke property name (e.g., 'stroke1').
   final Map<PaintCommand, String> strokeAssignments;
+
+  /// Mapping of ARGB integers to their assigned color token name (e.g., 0xFF000000 -> 'black').
+  final Map<int, String> colorTokens;
 }
 
 /// Analyzes a list of paint commands to group and name shared styles.
@@ -22,6 +30,7 @@ class PaletteAnalyzer {
   PaletteResult analyze(
     List<PaintCommand> commands, {
     SvgExposureMode mode = SvgExposureMode.none,
+    bool tokenColors = false,
   }) {
     final fillAssignments = <PaintCommand, String>{};
     final strokeAssignments = <PaintCommand, String>{};
@@ -34,8 +43,62 @@ class PaletteAnalyzer {
     _assignNames(fillGroups, fillAssignments, 'fill');
     _assignNames(strokeGroups, strokeAssignments, 'stroke');
 
-    return PaletteResult(fillAssignments, strokeAssignments);
+    final Map<int, String> colorTokens =
+        tokenColors ? collectColorTokens(commands) : const <int, String>{};
+
+    return PaletteResult(fillAssignments, strokeAssignments, colorTokens: colorTokens);
   }
+
+  /// Collects all unique ARGB color values across fills, strokes, and gradients,
+  /// assigning each a unique Dart identifier token.
+  Map<int, String> collectColorTokens(List<PaintCommand> commands) {
+    final colors = <int>{};
+    _collectColors(commands, colors);
+
+    final List<int> sortedColors = colors.toList()..sort();
+    final result = <int, String>{};
+    final usedNames = <String>{};
+
+    for (final color in sortedColors) {
+      final String baseName = FlutterColorMap.colorToTokenName(color);
+      var uniqueName = baseName;
+      var counter = 2;
+      while (usedNames.contains(uniqueName)) {
+        uniqueName = '$baseName$counter';
+        counter++;
+      }
+      usedNames.add(uniqueName);
+      result[color] = uniqueName;
+    }
+
+    return result;
+  }
+
+  void _collectColors(List<PaintCommand> commands, Set<int> colors) {
+    for (final command in commands) {
+      if (command is DrawGroup) {
+        _collectColors(command.commands, colors);
+      } else if (command is DrawCommand) {
+        final PaintingFillStyle? fill = command.style.fill;
+        if (fill != null && fill.colorArgb != null) {
+          colors.add(fill.colorArgb!);
+        }
+        final PaintingStrokeStyle? stroke = command.style.stroke;
+        if (stroke != null && stroke.colorArgb != null) {
+          colors.add(stroke.colorArgb!);
+        }
+      } else if (command is DefineLinearGradient) {
+        for (final GradientStop stop in command.stops) {
+          colors.add(stop.colorArgb);
+        }
+      } else if (command is DefineRadialGradient) {
+        for (final GradientStop stop in command.stops) {
+          colors.add(stop.colorArgb);
+        }
+      }
+    }
+  }
+
 
   void _collectGroups(
     List<PaintCommand> commands,

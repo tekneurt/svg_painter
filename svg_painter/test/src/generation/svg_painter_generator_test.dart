@@ -246,6 +246,14 @@ void main() {
       setUp(() {
         mockAnnotation = MockConstantReader();
         mockBuildStep = MockBuildStep();
+
+        final mockColorMappingReader = MockConstantReader();
+        when(mockAnnotation.read('colorMapping')).thenReturn(mockColorMappingReader);
+        when(mockColorMappingReader.isNull).thenReturn(true);
+
+        final mockTokenColorsReader = MockConstantReader();
+        when(mockAnnotation.read('tokenColors')).thenReturn(mockTokenColorsReader);
+        when(mockTokenColorsReader.isNull).thenReturn(true);
       });
 
       test('should throw InvalidGenerationSourceError when loadSvgContent fails', () async {

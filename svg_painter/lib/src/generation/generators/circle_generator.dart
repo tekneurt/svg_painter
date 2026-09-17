@@ -1,3 +1,5 @@
+import 'package:svg_painter_annotation/svg_painter_annotation.dart';
+
 import '../../painting_model/_painting_model.dart';
 import '../command_generator.dart';
 import '../generator_buffer.dart';
@@ -20,6 +22,7 @@ class CircleGenerator extends ShapeGenerator<DrawCircle> {
     List<InheritedProperty>? inheritedStrokes,
     String? painterClassName,
     Set<String>? gradientsNeedingStretch,
+    SvgColorMapping colorMapping = SvgColorMapping.material,
   }) {
     final bounds =
         'Rect.fromCircle(center: const Offset(${command.cx}, ${command.cy}), radius: ${command.radius})';
@@ -29,6 +32,12 @@ class CircleGenerator extends ShapeGenerator<DrawCircle> {
         command,
         command.style,
         bounds,
+        colorMapping: colorMapping,
+        palette: palette,
+        activeFillProperties: activeFillProperties,
+        activeStrokeProperties: activeStrokeProperties,
+        inheritedFills: inheritedFills,
+        inheritedStrokes: inheritedStrokes,
         (String p, {String? dashArray, String? pathLength, String? dashOffset}) {
           buffer.writeln(
             'canvas.drawCircle(const Offset(${command.cx}, ${command.cy}), ${command.radius}, $p);',
@@ -49,11 +58,6 @@ class CircleGenerator extends ShapeGenerator<DrawCircle> {
             });
           }
         },
-        palette: palette,
-        activeFillProperties: activeFillProperties,
-        activeStrokeProperties: activeStrokeProperties,
-        inheritedFills: inheritedFills,
-        inheritedStrokes: inheritedStrokes,
       );
     });
   }

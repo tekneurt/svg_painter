@@ -488,6 +488,14 @@ void main() {
         final mockPropertyMapping = MockConstantReader();
         when(mockAnnotation.read('propertyMapping')).thenReturn(mockPropertyMapping);
         when(mockPropertyMapping.isNull).thenReturn(true);
+
+        final mockColorMapping = MockConstantReader();
+        when(mockAnnotation.read('colorMapping')).thenReturn(mockColorMapping);
+        when(mockColorMapping.isNull).thenReturn(true);
+
+        final mockTokenColors = MockConstantReader();
+        when(mockAnnotation.read('tokenColors')).thenReturn(mockTokenColors);
+        when(mockTokenColors.isNull).thenReturn(true);
       });
 
       test('should throw InvalidGenerationSourceError when loadSvgContent fails', () async {
@@ -660,6 +668,98 @@ void main() {
           expect(output, contains('Path _dashPath'));
           expect(output, contains('color: color ?? IconTheme.of(context).color'));
           expect(output, contains('isElliptical: true'));
+        },
+      );
+
+      test(
+        'should emit const Color hex literals when colorMapping is hex',
+        () {
+          // Arrange
+          const commands = <PaintCommand>[
+            DrawRect(
+              x: 10,
+              y: 20,
+              width: 100,
+              height: 50,
+              rx: 0,
+              ry: 0,
+              style: PaintingStyle(
+                fill: PaintingFillStyle(colorArgb: 0xFF000000),
+                stroke: PaintingStrokeStyle(colorArgb: 0xFFF44336),
+              ),
+            ),
+          ];
+
+          // Act
+          final String output = generator.generatePainterClass(
+            className: 'HexPainter',
+            viewBoxWidth: 100,
+            viewBoxHeight: 50,
+            commands: commands,
+            colorMapping: SvgColorMapping.hex,
+          );
+
+          // Assert
+          expect(output, contains('const Color(0xFF000000)'));
+          expect(output, contains('const Color(0xFFF44336)'));
+          expect(output, isNot(contains('Colors.black')));
+          expect(output, isNot(contains('Colors.red')));
+        },
+      );
+
+      test(
+        'should expose color token parameters, fields, and shouldRepaint checks when tokenColors is true',
+        () {
+          // Arrange
+          const commands = <PaintCommand>[
+            DrawRect(
+              x: 10,
+              y: 20,
+              width: 100,
+              height: 50,
+              rx: 0,
+              ry: 0,
+              style: PaintingStyle(
+                fill: PaintingFillStyle(colorArgb: 0xFF000000),
+                stroke: PaintingStrokeStyle(colorArgb: 0xFFF44336),
+              ),
+            ),
+          ];
+
+          // Act
+          final String output = generator.generatePainterClass(
+            className: 'TokenPainter',
+            viewBoxWidth: 100,
+            viewBoxHeight: 50,
+            commands: commands,
+            tokenColors: true,
+          );
+
+          // Assert - Painter class
+          expect(output, contains('class TokenPainter extends CustomPainter {'));
+          expect(output, contains('this.black,'));
+          expect(output, contains('this.red,'));
+          expect(output, contains('final Color? black;'));
+          expect(output, contains('final Color? red;'));
+          expect(output, contains('black == oldDelegate.black'));
+          expect(output, contains('red == oldDelegate.red'));
+          expect(output, contains('final Color? localBlack = black;'));
+          expect(output, contains('if (localBlack == null) {'));
+          expect(output, contains('paint.color = Colors.black;'));
+          expect(output, contains('paint.color = localBlack;'));
+          expect(output, contains('final Color? localRed = red;'));
+          expect(output, contains('if (localRed == null) {'));
+          expect(output, contains('paint.color = Colors.red;'));
+          expect(output, contains('paint.color = localRed;'));
+
+          // Assert - Widget class
+          expect(output, contains('class TokenPainterWidget extends StatelessWidget {'));
+          expect(output, contains('this.black,'));
+          expect(output, contains('this.red,'));
+          expect(output, contains('final Color? black;'));
+          expect(output, contains('final Color? red;'));
+          expect(output, contains('black: black,'));
+          expect(output, contains('red: red,'));
         },
       );
     });

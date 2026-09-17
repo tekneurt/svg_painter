@@ -1,4 +1,6 @@
 
+import 'package:svg_painter_annotation/svg_painter_annotation.dart';
+
 import '../painting_model/_painting_model.dart';
 import 'command_generator.dart';
 import 'flutter_color_map.dart';
@@ -25,6 +27,7 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
     Map<String, String>? activeStrokeProperties,
     List<InheritedProperty>? inheritedFills,
     List<InheritedProperty>? inheritedStrokes,
+    SvgColorMapping colorMapping = SvgColorMapping.material,
   }) {
     void drawFill() {
       final PaintingFillStyle? fill = style.fill;
@@ -46,6 +49,7 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
             activeProperties: activeFillProperties,
             inheritedProperties: inheritedFills,
             drawCall: drawCall,
+            colorMapping: colorMapping,
           );
         }
       }
@@ -64,6 +68,7 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
           activeProperties: activeStrokeProperties,
           inheritedProperties: inheritedStrokes,
           drawCall: drawStrokeCall ?? drawCall,
+          colorMapping: colorMapping,
         );
       }
     }
@@ -87,6 +92,7 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
     required Map<String, String>? activeProperties,
     required List<InheritedProperty>? inheritedProperties,
     required void Function(String paintVar, {String? dashArray, String? pathLength, String? dashOffset}) drawCall,
+    required SvgColorMapping colorMapping,
   }) {
     buffer.writeBlock('{', () {
       buffer.writeln('final Paint paint = Paint();');
@@ -107,6 +113,8 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
         resolution: resolution,
         boundsRect: boundsRect,
         suffix: suffix,
+        palette: palette,
+        colorMapping: colorMapping,
       );
 
       buffer.writeln('paint.style = PaintingStyle.${isFill ? 'fill' : 'stroke'};');
@@ -191,6 +199,8 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
     required StyleResolution resolution,
     required String boundsRect,
     required String suffix,
+    required PaletteResult? palette,
+    required SvgColorMapping colorMapping,
   }) {
     if (resolution.localActiveProperty != null) {
       buffer.writeln('final Object? local$suffix = ${resolution.localActiveProperty};');
@@ -201,6 +211,8 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
           resolution: resolution,
           boundsRect: boundsRect,
           suffix: suffix,
+          palette: palette,
+          colorMapping: colorMapping,
         );
       });
       buffer.writeBlock('else {', () {
@@ -213,6 +225,8 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
         resolution: resolution,
         boundsRect: boundsRect,
         suffix: suffix,
+        palette: palette,
+        colorMapping: colorMapping,
       );
     }
   }
@@ -223,21 +237,41 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
     required StyleResolution resolution,
     required String boundsRect,
     required String suffix,
+    required PaletteResult? palette,
+    required SvgColorMapping colorMapping,
   }) {
     if (resolution.inheritedPropertyName != null) {
       buffer.writeln('final Object? inherited$suffix = ${resolution.inheritedPropertyName};');
       buffer.writeBlock('if (inherited$suffix == null) {', () {
-        _generateOriginalStyle(buffer, style, boundsRect);
+        _generateOriginalStyle(
+          buffer,
+          style,
+          boundsRect,
+          palette: palette,
+          colorMapping: colorMapping,
+        );
       });
       buffer.writeBlock('else {', () {
         buffer.writeln('_applyOverride(paint, inherited$suffix);');
       });
     } else {
-      _generateOriginalStyle(buffer, style, boundsRect);
+      _generateOriginalStyle(
+        buffer,
+        style,
+        boundsRect,
+        palette: palette,
+        colorMapping: colorMapping,
+      );
     }
   }
 
-  void _generateOriginalStyle(GeneratorBuffer buffer, PaintingPaintStyle style, String boundsRect) {
+  void _generateOriginalStyle(
+    GeneratorBuffer buffer,
+    PaintingPaintStyle style,
+    String boundsRect, {
+    PaletteResult? palette,
+    SvgColorMapping colorMapping = SvgColorMapping.material,
+  }) {
     if (style.isCurrentColor) {
       if (style.opacity == 1.0) {
         buffer.writeln('paint.color = color ?? const Color(0xFF000000);');
@@ -252,8 +286,28 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
         final double finalOpacity = ((argb >> 24) & 0xFF) / 255.0 * style.opacity;
         final int alpha = (finalOpacity * 255).round().clamp(0, 255);
         final int colorWithOpacity = (argb & 0x00FFFFFF) | (alpha << 24);
-        final String colorCode = FlutterColorMap.getColorCode(colorWithOpacity);
-        buffer.writeln('paint.color = $colorCode;');
+        final String colorCode = FlutterColorMap.getColorCode(
+          colorWithOpacity,
+          colorMapping: colorMapping,
+        );
+
+        final String? tokenName = palette?.colorTokens[argb];
+        if (tokenName != null) {
+          final localToken = 'local${tokenName[0].toUpperCase()}${tokenName.substring(1)}';
+          buffer.writeln('final Color? $localToken = $tokenName;');
+          buffer.writeBlock('if ($localToken == null) {', () {
+            buffer.writeln('paint.color = $colorCode;');
+          });
+          buffer.writeBlock('else {', () {
+            if (style.opacity == 1.0) {
+              buffer.writeln('paint.color = $localToken;');
+            } else {
+              buffer.writeln('paint.color = $localToken.withValues(alpha: ${style.opacity});');
+            }
+          });
+        } else {
+          buffer.writeln('paint.color = $colorCode;');
+        }
       }
     } else {
       final shaderRect = style.shaderUnits == PaintingGradientUnits.userSpaceOnUse

@@ -1,3 +1,5 @@
+import 'package:svg_painter_annotation/svg_painter_annotation.dart';
+
 import '../../painting_model/_painting_model.dart';
 import '../command_generator.dart';
 import '../generator_buffer.dart';
@@ -22,6 +24,7 @@ class UseGenerator extends CommandGenerator<DrawGroup> {
     List<InheritedProperty>? inheritedStrokes,
     String? painterClassName,
     Set<String>? gradientsNeedingStretch,
+    SvgColorMapping colorMapping = SvgColorMapping.material,
   }) {
     if (generators == null) {
       return;
@@ -41,6 +44,7 @@ class UseGenerator extends CommandGenerator<DrawGroup> {
           inheritedStrokes: inheritedStrokes,
           painterClassName: painterClassName,
           gradientsNeedingStretch: gradientsNeedingStretch,
+          colorMapping: colorMapping,
         );
       }
     });

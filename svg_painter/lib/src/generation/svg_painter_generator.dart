@@ -56,6 +56,18 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
       }
     }
 
+    final ConstantReader colorMappingReader = annotation.read('colorMapping');
+    SvgColorMapping colorMapping = SvgColorMapping.material;
+    if (!colorMappingReader.isNull) {
+      final int? index = colorMappingReader.objectValue.getField('index')?.toIntValue();
+      if (index != null && index >= 0 && index < SvgColorMapping.values.length) {
+        colorMapping = SvgColorMapping.values[index];
+      }
+    }
+
+    final ConstantReader tokenColorsReader = annotation.read('tokenColors');
+    final bool tokenColors = tokenColorsReader.isBool && tokenColorsReader.boolValue;
+
     final propertyMapping = <String, String>{};
     if (annotation.read('propertyMapping').isNull) {
       // No mapping provided
@@ -78,6 +90,8 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
       painterClassName: painterClassName,
       exposureMode: exposureMode,
       propertyMapping: propertyMapping,
+      colorMapping: colorMapping,
+      tokenColors: tokenColors,
       buildStep: buildStep,
     );
   }
@@ -126,6 +140,8 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
     String? painterClassName,
     SvgExposureMode exposureMode = SvgExposureMode.none,
     Map<String, String> propertyMapping = const <String, String>{},
+    SvgColorMapping colorMapping = SvgColorMapping.material,
+    bool tokenColors = false,
     BuildStep? buildStep,
   }) async {
     final Result<XmlDocument> parseResult = svgContent.toXmlDocument();
@@ -236,6 +252,8 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
         propertyMapping: propertyMapping,
         semanticLabel: semanticLabel,
         semanticHint: semanticHint,
+        colorMapping: colorMapping,
+        tokenColors: tokenColors,
       );
     } else {
       throw InvalidGenerationSourceError(
@@ -255,6 +273,8 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
     Map<String, String> propertyMapping = const <String, String>{},
     String? semanticLabel,
     String? semanticHint,
+    SvgColorMapping colorMapping = SvgColorMapping.material,
+    bool tokenColors = false,
   }) =>
       painterGenerator.generatePainterClass(
         className: className,
@@ -266,6 +286,8 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
         propertyMapping: propertyMapping,
         semanticLabel: semanticLabel,
         semanticHint: semanticHint,
+        colorMapping: colorMapping,
+        tokenColors: tokenColors,
       );
 
   /// Loads SVG content from the given annotation.

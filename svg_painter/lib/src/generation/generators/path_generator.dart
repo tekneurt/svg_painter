@@ -1,3 +1,5 @@
+import 'package:svg_painter_annotation/svg_painter_annotation.dart';
+
 import '../../painting_model/_painting_model.dart';
 import '../../svg_model/_svg_model.dart';
 import '../command_generator.dart';
@@ -21,6 +23,7 @@ class PathGenerator extends ShapeGenerator<DrawPath> {
     List<InheritedProperty>? inheritedStrokes,
     String? painterClassName,
     Set<String>? gradientsNeedingStretch,
+    SvgColorMapping colorMapping = SvgColorMapping.material,
   }) {
     wrapWithStyle(buffer, command.style, 'Offset.zero & viewBox', () {
       buffer.writeBlock('{', () {
@@ -76,6 +79,12 @@ class PathGenerator extends ShapeGenerator<DrawPath> {
           command,
           command.style,
           bounds,
+          colorMapping: colorMapping,
+          palette: palette,
+          activeFillProperties: activeFillProperties,
+          activeStrokeProperties: activeStrokeProperties,
+          inheritedFills: inheritedFills,
+          inheritedStrokes: inheritedStrokes,
           (String p, {String? dashArray, String? pathLength, String? dashOffset}) {
             buffer.writeln('canvas.drawPath(path, $p);');
           },
@@ -90,11 +99,6 @@ class PathGenerator extends ShapeGenerator<DrawPath> {
             }
             emitDrawStrokePath(buffer, pathExpr, p, style: command.style);
           },
-          palette: palette,
-          activeFillProperties: activeFillProperties,
-          activeStrokeProperties: activeStrokeProperties,
-          inheritedFills: inheritedFills,
-          inheritedStrokes: inheritedStrokes,
         );
       });
     });

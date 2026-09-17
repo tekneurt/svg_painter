@@ -37,6 +37,8 @@ class PainterClassGenerator {
     Map<String, String> propertyMapping = const <String, String>{},
     String? semanticLabel,
     String? semanticHint,
+    SvgColorMapping colorMapping = SvgColorMapping.material,
+    bool tokenColors = false,
   }) {
     final buffer = GeneratorBuffer();
 
@@ -55,8 +57,8 @@ class PainterClassGenerator {
     }
 
     final PaletteResult? palette =
-        (exposureMode == SvgExposureMode.indexed || exposureMode == SvgExposureMode.mixed)
-        ? const PaletteAnalyzer().analyze(commands, mode: exposureMode)
+        (exposureMode == SvgExposureMode.indexed || exposureMode == SvgExposureMode.mixed || tokenColors)
+        ? const PaletteAnalyzer().analyze(commands, mode: exposureMode, tokenColors: tokenColors)
         : null;
 
     final Set<String> gradientsNeedingStretch = analyzer.findGradientsNeedingStretch(commands);
@@ -92,6 +94,13 @@ class PainterClassGenerator {
       }
     }
 
+    final activeColorTokens = <String, String>{};
+    if (tokenColors && palette != null) {
+      for (final String tokenName in palette.colorTokens.values.toSet()) {
+        activeColorTokens[tokenName] = resolveName(tokenName);
+      }
+    }
+
     final bool hasCurrentColor = analyzer.hasCurrentColor(commands);
 
     final imageHrefs = <String>[];
@@ -109,6 +118,7 @@ class PainterClassGenerator {
       painterClassName: className,
       activeFillProperties: activeFillProperties,
       activeStrokeProperties: activeStrokeProperties,
+      activeColorTokens: activeColorTokens,
       viewBoxWidth: viewBoxWidth,
       viewBoxHeight: viewBoxHeight,
       hasCurrentColor: hasCurrentColor,
@@ -153,6 +163,9 @@ class PainterClassGenerator {
             buffer.writeln('this.${resolveName(name)},');
           }
         }
+        for (final String token in activeColorTokens.values) {
+          buffer.writeln('this.$token,');
+        }
         for (var i = 0; i < uniqueImageHrefs.length; i++) {
           buffer.writeln('this.image$i,');
         }
@@ -177,6 +190,9 @@ class PainterClassGenerator {
         for (final String name in sortedStrokeIndexed) {
           buffer.writeln('final Object? ${resolveName(name)};');
         }
+      }
+      for (final String token in activeColorTokens.values) {
+        buffer.writeln('final Color? $token;');
       }
       for (var i = 0; i < uniqueImageHrefs.length; i++) {
         buffer.writeln('final Object? image$i;');
@@ -222,6 +238,7 @@ class PainterClassGenerator {
               activeStrokeProperties: activeStrokeProperties,
               painterClassName: className,
               gradientsNeedingStretch: gradientsNeedingStretch,
+              colorMapping: colorMapping,
             );
           }
         }
@@ -238,6 +255,7 @@ class PainterClassGenerator {
               activeStrokeProperties: activeStrokeProperties,
               painterClassName: className,
               gradientsNeedingStretch: gradientsNeedingStretch,
+              colorMapping: colorMapping,
             );
           }
         }
@@ -254,6 +272,7 @@ class PainterClassGenerator {
               activeStrokeProperties: activeStrokeProperties,
               painterClassName: className,
               gradientsNeedingStretch: gradientsNeedingStretch,
+              colorMapping: colorMapping,
             );
           }
         }
@@ -359,6 +378,9 @@ class PainterClassGenerator {
             final String prop = resolveName(name);
             checks.add('$prop == oldDelegate.$prop');
           }
+        }
+        for (final String token in activeColorTokens.values) {
+          checks.add('$token == oldDelegate.$token');
         }
         for (var i = 0; i < uniqueImageHrefs.length; i++) {
           checks.add('image$i == oldDelegate.image$i');

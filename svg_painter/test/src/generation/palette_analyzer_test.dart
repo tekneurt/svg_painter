@@ -130,5 +130,88 @@ void main() {
       final PaletteResult result = analyzer.analyze(commands, mode: SvgExposureMode.indexed);
       expect(result.strokeAssignments.values.toSet().length, equals(3));
     });
+
+    test('should collect unique color tokens across fills and strokes when tokenColors is true', () {
+      // Arrange
+      final commands = <PaintCommand>[
+        const DrawCircle(
+          cx: 10,
+          cy: 20,
+          radius: 15,
+          style: PaintingStyle(
+            fill: PaintingFillStyle(colorArgb: 0xFF000000),
+            stroke: PaintingStrokeStyle(colorArgb: 0xFFF44336),
+          ),
+        ),
+        const DrawLine(
+          x1: 5,
+          y1: 10,
+          x2: 25,
+          y2: 30,
+          style: PaintingStyle(
+            stroke: PaintingStrokeStyle(colorArgb: 0xFF123456),
+          ),
+        ),
+      ];
+
+      // Act
+      final PaletteResult result = analyzer.analyze(commands, tokenColors: true);
+
+      // Assert
+      expect(result.colorTokens, hasLength(3));
+      expect(result.colorTokens[0xFF000000], equals('black'));
+      expect(result.colorTokens[0xFFF44336], equals('red'));
+      expect(result.colorTokens[0xFF123456], equals('cFF123456'));
+    });
+
+    test('should resolve name collisions with numeric suffixes when color tokens collide', () {
+      // Arrange - simulate two colors that produce the same token name (e.g. manually with collectColorTokens)
+      // or duplicate colors:
+      final commands = <PaintCommand>[
+        const DrawCircle(
+          cx: 10,
+          cy: 20,
+          radius: 15,
+          style: PaintingStyle(
+            fill: PaintingFillStyle(colorArgb: 0xFF000000),
+          ),
+        ),
+        const DrawCircle(
+          cx: 30,
+          cy: 40,
+          radius: 25,
+          style: PaintingStyle(
+            fill: PaintingFillStyle(colorArgb: 0xFF000000),
+          ),
+        ),
+      ];
+
+      // Act
+      final PaletteResult result = analyzer.analyze(commands, tokenColors: true);
+
+      // Assert
+      expect(result.colorTokens, hasLength(1));
+      expect(result.colorTokens[0xFF000000], equals('black'));
+    });
+
+    test('should return empty colorTokens map when tokenColors is false', () {
+      // Arrange
+      final commands = <PaintCommand>[
+        const DrawCircle(
+          cx: 10,
+          cy: 20,
+          radius: 15,
+          style: PaintingStyle(
+            fill: PaintingFillStyle(colorArgb: 0xFF000000),
+          ),
+        ),
+      ];
+
+      // Act
+      final PaletteResult result = analyzer.analyze(commands);
+
+      // Assert
+      expect(result.colorTokens, isEmpty);
+    });
   });
 }

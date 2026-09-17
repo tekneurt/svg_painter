@@ -1,3 +1,5 @@
+import 'package:svg_painter_annotation/svg_painter_annotation.dart';
+
 import '../../painting_model/_painting_model.dart';
 import '../command_generator.dart';
 import '../generator_buffer.dart';
@@ -20,6 +22,7 @@ class OvalGenerator extends ShapeGenerator<DrawOval> {
     List<InheritedProperty>? inheritedStrokes,
     String? painterClassName,
     Set<String>? gradientsNeedingStretch,
+    SvgColorMapping colorMapping = SvgColorMapping.material,
   }) {
     final bounds =
         'Rect.fromLTWH(${command.cx - command.rx}, ${command.cy - command.ry}, ${command.rx * 2}, ${command.ry * 2})';
@@ -29,6 +32,12 @@ class OvalGenerator extends ShapeGenerator<DrawOval> {
         command,
         command.style,
         bounds,
+        colorMapping: colorMapping,
+        palette: palette,
+        activeFillProperties: activeFillProperties,
+        activeStrokeProperties: activeStrokeProperties,
+        inheritedFills: inheritedFills,
+        inheritedStrokes: inheritedStrokes,
         (String p, {String? dashArray, String? pathLength, String? dashOffset}) {
           buffer.writeln('canvas.drawOval($bounds, $p);');
         },
@@ -45,11 +54,6 @@ class OvalGenerator extends ShapeGenerator<DrawOval> {
             });
           }
         },
-        palette: palette,
-        activeFillProperties: activeFillProperties,
-        activeStrokeProperties: activeStrokeProperties,
-        inheritedFills: inheritedFills,
-        inheritedStrokes: inheritedStrokes,
       );
     });
   }
