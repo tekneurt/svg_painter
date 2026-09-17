@@ -281,7 +281,8 @@
 - [ ] **Containers**: `<switch>` for conditional rendering.
 - [ ] **Basic Filters**: `<filter>`, `<feGaussianBlur>`, `<feOffset>`, `<feDropShadow>`, `<feMerge>`, `<feFlood>`.
 - [ ] **Patterns**: `<pattern>` for repeating fills.
-- [ ] **Gradients (Polish)**: `objectBoundingBox` and `spreadMethod`.
+- [x] **Gradients (Polish)**: `objectBoundingBox` and `spreadMethod`.
+- [ ] **Standard Test Suite & Reference Audit**: Update MDN references, validate test completeness for all currently supported SVG features, verify and update links, and add official W3C test suite fixtures with reference images to ensure complete, ground-truth test coverage.
 - [ ] Support `gradientTransform` properly using `Matrix4` from `vector_math_64` (see: https://api.flutter.dev/flutter/package-vector_math_vector_math_64/Matrix4-class.html).
 - [ ] Support complex nested transformations in gradients.
 

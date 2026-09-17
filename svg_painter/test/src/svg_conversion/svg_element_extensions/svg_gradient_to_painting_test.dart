@@ -10,11 +10,12 @@ void main() {
     const context = SvgPaintingContext(viewBoxWidth: 100, viewBoxHeight: 100);
 
     test('SvgLinearGradient should convert to DefineLinearGradient', () {
+      // Arrange
       const grad = SvgLinearGradient(
         coreAttributes: SvgCoreAttributes(id: 'g1'),
         x1: SvgLength(0),
         y1: SvgLength(0),
-        x2: SvgLength(100),
+        x2: SvgLength(1),
         y2: SvgLength(0),
         stops: <SvgStop>[
           SvgStop(
@@ -30,15 +31,43 @@ void main() {
         ],
       );
 
+      // Act
       final Result<PaintCommand> result = grad.toPaintCommand(context);
 
+      // Assert
       expect(result, isA<Success<PaintCommand>>());
       final PaintCommand cmd = (result as Success<PaintCommand>).value;
       expect(cmd, isA<DefineLinearGradient>());
       final lgrad = cmd as DefineLinearGradient;
       expect(lgrad.id, 'g1');
+      expect(lgrad.x1, 0.0);
+      expect(lgrad.x2, 1.0);
       expect(lgrad.stops, hasLength(2));
       expect(lgrad.stops[1].opacity, 0.5);
+    });
+
+    test('should resolve unitless numbers as fractions under objectBoundingBox', () {
+      // Arrange
+      const grad = SvgRadialGradient(
+        coreAttributes: SvgCoreAttributes(id: 'rg-fraction'),
+        cx: SvgLength(0.5),
+        cy: SvgLength(0.5),
+        r: SvgLength(0.5),
+        fx: SvgLength(0.5),
+        fy: SvgLength(0.5),
+        fr: SvgLength(0.0),
+        stops: <SvgStop>[],
+      );
+
+      // Act
+      final Result<PaintCommand> result = grad.toPaintCommand(context);
+
+      // Assert
+      expect(result, isA<Success<PaintCommand>>());
+      final cmd = (result as Success<PaintCommand>).value as DefineRadialGradient;
+      expect(cmd.cx, 0.5);
+      expect(cmd.cy, 0.5);
+      expect(cmd.radius, 0.5);
     });
 
     test('SvgLinearGradient should preserve gradientTransformAttributes', () {
