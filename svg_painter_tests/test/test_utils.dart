@@ -1,4 +1,6 @@
 import 'dart:io';
+import 'dart:ui' as ui;
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -132,6 +134,8 @@ Future<void> loadTestFonts() async {
     'Courier': '../svg_painter/assets/fonts/roboto_mono',
     'Courier New': '../svg_painter/assets/fonts/roboto_mono',
     'monospace': '../svg_painter/assets/fonts/roboto_mono',
+    'SVGFreeSansASCII': '../svg_painter/assets/fonts/free_sans',
+    'SVGFreeSansASCII,sans-serif': '../svg_painter/assets/fonts/free_sans',
   };
 
   for (final MapEntry<String, String> entry in families.entries) {
@@ -298,6 +302,93 @@ Future<void> testSvgPainterNative({
   );
 
   await expectLater(find.byType(SizedBox), matchesGoldenFile('$goldenPath/$goldenName'));
+
+  tester.view.resetDevicePixelRatio();
+  tester.view.resetPhysicalSize();
+}
+
+/// Tests a W3C SVG painter against its Flutter golden file, and compares
+/// it against the official W3C reference image to isolate and verify the stroke
+/// antialiasing difference.
+Future<void> testSvgPainterWithW3cDiff({
+  required WidgetTester tester,
+  required CustomPainter painter,
+  required String testName,
+  String folder = 'shapes',
+  double maxDiffPercent = 0.06,
+}) async {
+  tester.view.devicePixelRatio = 1.0;
+
+  final size = (painter as dynamic).viewBox as Size;
+  tester.view.physicalSize = size;
+
+  final GlobalKey repaintBoundaryKey = GlobalKey();
+
+  await tester.pumpWidget(
+    MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Center(
+        child: RepaintBoundary(
+          key: repaintBoundaryKey,
+          child: SizedBox(
+            width: size.width,
+            height: size.height,
+            child: CustomPaint(painter: painter),
+          ),
+        ),
+      ),
+    ),
+  );
+
+  // 1. Primary Regression Test: Test against Flutter golden (0.00% diff).
+  await expectLater(
+    find.byKey(repaintBoundaryKey),
+    matchesGoldenFile('$folder/goldens/$testName.png'),
+  );
+
+  // 2. W3C Reference Comparison & Diff Isolation:
+  await tester.runAsync(() async {
+    final goldenFile = File(
+      'test/src/w3c/svg11/test_suite/$folder/goldens/$testName.png',
+    );
+    final w3cReferenceFile = File(
+      'test/src/w3c/svg11/test_suite/$folder/w3c_reference/$testName.png',
+    );
+
+    if (goldenFile.existsSync() && w3cReferenceFile.existsSync()) {
+      final Uint8List renderedBytes = await goldenFile.readAsBytes();
+      final Uint8List w3cBytes = await w3cReferenceFile.readAsBytes();
+
+      final ComparisonResult comparison = await GoldenFileComparator.compareLists(
+        renderedBytes,
+        w3cBytes,
+      );
+
+      final ui.Image? isolatedDiff = comparison.diffs?['isolatedDiff'];
+      if (isolatedDiff != null) {
+        final ByteData? diffByteData = await isolatedDiff.toByteData(
+          format: ui.ImageByteFormat.png,
+        );
+        if (diffByteData != null) {
+          final diffFile = File(
+            'test/src/w3c/svg11/test_suite/$folder/w3c_reference/${testName}_diff.png',
+          );
+          await diffFile.parent.create(recursive: true);
+          await diffFile.writeAsBytes(diffByteData.buffer.asUint8List());
+        }
+      }
+
+      expect(
+        comparison.diffPercent,
+        lessThanOrEqualTo(maxDiffPercent),
+        reason:
+            'W3C pixel diff of ${(comparison.diffPercent * 100).toStringAsFixed(2)}% '
+            'exceeded expected maximum AA tolerance of ${(maxDiffPercent * 100).toStringAsFixed(2)}%',
+      );
+
+      comparison.dispose();
+    }
+  });
 
   tester.view.resetDevicePixelRatio();
   tester.view.resetPhysicalSize();

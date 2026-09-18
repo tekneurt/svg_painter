@@ -127,8 +127,10 @@ class TextGenerator extends ShapeGenerator<DrawText> {
     SvgColorMapping colorMapping = SvgColorMapping.material,
   }) {
     buffer.writeBlock('TextSpan(', () {
-      if (span.text != null) {
-        buffer.writeln("text: '${span.text!.replaceAll("'", r"\'")}',");
+      final String? spanText = span.text;
+      if (spanText != null) {
+        final String escapedText = escapeDartStringLiteral(spanText);
+        buffer.writeln("text: '$escapedText',");
       }
 
       final PaintingStyle? style = span.style ?? initialStyle;
@@ -194,4 +196,27 @@ class TextGenerator extends ShapeGenerator<DrawText> {
       }
     }, footer: ')');
   }
+}
+
+/// Escapes raw text so it can be safely emitted inside a single-quoted Dart string literal.
+String escapeDartStringLiteral(String text) {
+  final buffer = StringBuffer();
+  for (var i = 0; i < text.length; i++) {
+    final String char = text[i];
+    switch (char) {
+      case r'\':
+        buffer.write(r'\\');
+      case "'":
+        buffer.write(r"\'");
+      case r'$':
+        buffer.write(r'\$');
+      case '\n':
+        buffer.write(r'\n');
+      case '\r':
+        buffer.write(r'\r');
+      default:
+        buffer.write(char);
+    }
+  }
+  return buffer.toString();
 }

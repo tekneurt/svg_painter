@@ -282,7 +282,13 @@
 - [ ] **Basic Filters**: `<filter>`, `<feGaussianBlur>`, `<feOffset>`, `<feDropShadow>`, `<feMerge>`, `<feFlood>`.
 - [ ] **Patterns**: `<pattern>` for repeating fills.
 - [x] **Gradients (Polish)**: `objectBoundingBox` and `spreadMethod`.
-- [ ] **Standard Test Suite & Reference Audit**: Update MDN references, validate test completeness for all currently supported SVG features, verify and update links, and add official W3C test suite fixtures with reference images to ensure complete, ground-truth test coverage.
+- [ ] **Standard Test Suite & Reference Audit**:
+    - [ ] **W3C SVG 1.1 Second Edition Test Suite**: Incrementally add approved test fixtures with exact source SVGs, dynamic reference revision substitution, Flutter goldens, and automated isolated AA diff tracking against official W3C PNGs.
+    - [ ] **Modern SVG Test Suites Evaluation**:
+        - [ ] **`resvg-test-suite` (Linebender)**: Evaluate integration of the ~1,600 standalone SVG tests for granular spec conformance.
+        - [ ] **Web Platform Tests (WPT)**: Evaluate standalone SVG reftest subsets from `wpt/svg/`.
+        - [ ] **SVG Native Test Suite (Adobe / W3C)**: Explore static SVG test fixtures and modern Skia reference comparisons.
+    - [ ] **MDN Examples Audit**: Update MDN references, validate test completeness for all currently supported SVG features, verify and update links.
 - [ ] Support `gradientTransform` properly using `Matrix4` from `vector_math_64` (see: https://api.flutter.dev/flutter/package-vector_math_vector_math_64/Matrix4-class.html).
 - [ ] Support complex nested transformations in gradients.
 
