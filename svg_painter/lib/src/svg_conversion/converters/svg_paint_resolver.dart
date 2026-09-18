@@ -32,7 +32,7 @@ PaintingStyle resolvePaint(
 
   final SvgGraphicsAttributes? graphics = resolved.graphics;
   final double elementOpacity =
-      graphics?.opacity?.resolve(context, .unit) ?? 1.0;
+      (graphics?.opacity?.resolve(context, .unit) ?? 1.0).clamp(0.0, 1.0);
 
   final PaintingFillStyle? fillStyle = _resolveFillStyle(
     context,
@@ -41,6 +41,7 @@ PaintingStyle resolvePaint(
         presentationAttributes?.fill?.color != null ||
         resolvedRules['fill'] != null,
     elementOpacity: elementOpacity,
+    currentColor: resolved.color,
   );
 
   final PaintingStrokeStyle? strokeStyle = _resolveStrokeStyle(
@@ -52,6 +53,7 @@ PaintingStyle resolvePaint(
         presentationAttributes?.stroke?.color != null ||
         resolvedRules['stroke'] != null,
     elementOpacity: elementOpacity,
+    currentColor: resolved.color,
   );
 
   final PaintingTextStyle textStyle = _resolveTextStyle(context, resolved.font);
@@ -216,8 +218,10 @@ SvgPresentationAttributes _parseCssPresentation(
       resolvedRules['paint-order']?.toSvgPaintOrder();
   final SvgVectorEffect? cssVectorEffect =
       resolvedRules['vector-effect']?.toSvgVectorEffect();
+  final SvgColor? cssColor = resolvedRules['color']?.toSvgColor();
 
   return SvgPresentationAttributes(
+    color: cssColor,
     fill: SvgFillAttributes(
       color: cssFill,
       opacity: cssFillOpacity,
@@ -262,6 +266,7 @@ PaintingFillStyle? _resolveFillStyle(
   required SvgFillAttributes? fillAttrs,
   required bool isExplicit,
   required double elementOpacity,
+  required SvgColor? currentColor,
 }) {
   final SvgColor? fillPaint = fillAttrs?.color;
   return switch (fillPaint) {
@@ -272,6 +277,7 @@ PaintingFillStyle? _resolveFillStyle(
       fillAttrs: fillAttrs,
       isExplicit: isExplicit,
       elementOpacity: elementOpacity,
+      currentColor: currentColor,
     ),
   };
 }
@@ -282,11 +288,12 @@ PaintingFillStyle _buildFillStyle(
   required SvgFillAttributes? fillAttrs,
   required bool isExplicit,
   required double elementOpacity,
+  required SvgColor? currentColor,
 }) {
   int? fillColorArgb;
   String? fillShaderId;
   PaintingGradientUnits? shaderUnits;
-  final isCurrentColor = fillPaint is SvgCurrentColor;
+  var isCurrentColor = false;
 
   if (fillPaint is SvgPaintReference) {
     fillShaderId = fillPaint.id;
@@ -297,12 +304,19 @@ PaintingFillStyle _buildFillStyle(
         SvgGradientUnits.userSpaceOnUse => .userSpaceOnUse,
       };
     }
-  } else if (!isCurrentColor) {
+  } else if (fillPaint is SvgCurrentColor) {
+    if (currentColor != null && currentColor is! SvgCurrentColor) {
+      fillColorArgb = currentColor.toFillArgb();
+    } else {
+      isCurrentColor = true;
+    }
+  } else {
     fillColorArgb = fillPaint.toFillArgb();
   }
 
-  final double finalFillOpacity =
-      elementOpacity * (fillAttrs?.opacity?.resolve(context, .unit) ?? 1.0);
+  final double fillOpacity =
+      (fillAttrs?.opacity?.resolve(context, .unit) ?? 1.0).clamp(0.0, 1.0);
+  final double finalFillOpacity = (elementOpacity * fillOpacity).clamp(0.0, 1.0);
 
   return PaintingFillStyle(
     colorArgb: fillColorArgb,
@@ -322,6 +336,7 @@ PaintingStrokeStyle? _resolveStrokeStyle(
   required SvgGeometryAttributes? geometryAttributes,
   required bool isExplicit,
   required double elementOpacity,
+  required SvgColor? currentColor,
 }) {
   final SvgColor? strokePaint = strokeAttrs?.color;
   return switch (strokePaint) {
@@ -334,6 +349,7 @@ PaintingStrokeStyle? _resolveStrokeStyle(
       geometryAttributes: geometryAttributes,
       isExplicit: isExplicit,
       elementOpacity: elementOpacity,
+      currentColor: currentColor,
     ),
   };
 }
@@ -346,11 +362,12 @@ PaintingStrokeStyle _buildStrokeStyle(
   required SvgGeometryAttributes? geometryAttributes,
   required bool isExplicit,
   required double elementOpacity,
+  required SvgColor? currentColor,
 }) {
   int? strokeColorArgb;
   String? strokeShaderId;
   PaintingGradientUnits? shaderUnits;
-  final isCurrentColor = strokePaint is SvgCurrentColor;
+  var isCurrentColor = false;
 
   if (strokePaint is SvgPaintReference) {
     strokeShaderId = strokePaint.id;
@@ -361,7 +378,13 @@ PaintingStrokeStyle _buildStrokeStyle(
         SvgGradientUnits.userSpaceOnUse => .userSpaceOnUse,
       };
     }
-  } else if (!isCurrentColor) {
+  } else if (strokePaint is SvgCurrentColor) {
+    if (currentColor != null && currentColor is! SvgCurrentColor) {
+      strokeColorArgb = currentColor.toStrokeArgb();
+    } else {
+      isCurrentColor = true;
+    }
+  } else {
     strokeColorArgb = strokePaint.toStrokeArgb();
   }
 
@@ -384,8 +407,9 @@ PaintingStrokeStyle _buildStrokeStyle(
   final double? finalDashOffset =
       strokeAttrs?.dashOffset?.resolve(context, .normalized);
 
-  final double finalStrokeOpacity =
-      elementOpacity * (strokeAttrs?.opacity?.resolve(context, .unit) ?? 1.0);
+  final double strokeOpacity =
+      (strokeAttrs?.opacity?.resolve(context, .unit) ?? 1.0).clamp(0.0, 1.0);
+  final double finalStrokeOpacity = (elementOpacity * strokeOpacity).clamp(0.0, 1.0);
 
   return PaintingStrokeStyle(
     colorArgb: strokeColorArgb,

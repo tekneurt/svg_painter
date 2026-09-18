@@ -122,6 +122,10 @@ enum XmlAttributeName {
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/style
   style('style'),
 
+  /// The color property used as an indirect value for currentColor.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/color
+  color('color'),
+
   /// The fill color of the element.
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/fill
   fill('fill'),

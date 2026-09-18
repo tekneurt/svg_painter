@@ -289,6 +289,7 @@
         - [ ] **Web Platform Tests (WPT)**: Evaluate standalone SVG reftest subsets from `wpt/svg/`.
         - [ ] **SVG Native Test Suite (Adobe / W3C)**: Explore static SVG test fixtures and modern Skia reference comparisons.
     - [ ] **MDN Examples Audit**: Update MDN references, validate test completeness for all currently supported SVG features, verify and update links.
+        - [ ] **MDN `color` Attribute**: Implement and add tests for [MDN color](https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/color) when updating MDN tests.
 - [ ] Support `gradientTransform` properly using `Matrix4` from `vector_math_64` (see: https://api.flutter.dev/flutter/package-vector_math_vector_math_64/Matrix4-class.html).
 - [ ] Support complex nested transformations in gradients.
 

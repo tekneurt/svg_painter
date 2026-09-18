@@ -21,6 +21,7 @@ extension ToCommonAttributes on XmlElement {
     );
 
     final presentation = SvgPresentationAttributes(
+      color: toSvgValueOrNull<SvgColor>(elementName, XmlAttributeName.color),
       fill: SvgFillAttributes(
         color: toSvgValueOrNull<SvgColor>(elementName, XmlAttributeName.fill),
         opacity: toSvgValueOrNull<SvgLengthPercentage>(elementName, XmlAttributeName.fillOpacity),

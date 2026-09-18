@@ -37,6 +37,7 @@ void main() {
           XmlAttributeName.spreadMethod => 'spreadMethod',
           XmlAttributeName.className => 'class',
           XmlAttributeName.style => 'style',
+          XmlAttributeName.color => 'color',
           XmlAttributeName.fill => 'fill',
           XmlAttributeName.fillOpacity => 'fill-opacity',
           XmlAttributeName.fillRule => 'fill-rule',

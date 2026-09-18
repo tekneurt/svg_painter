@@ -60,6 +60,8 @@ extension ToDefaultValue on XmlAttributeName {
         return SvgPaintOrder.normal;
       case .vectorEffect:
         return SvgVectorEffect.none;
+      case .color:
+        return const SvgNamedColor(SvgColorName.black);
       case .fill:
         return switch (elementName) {
           .line => const SvgNoneColor(),

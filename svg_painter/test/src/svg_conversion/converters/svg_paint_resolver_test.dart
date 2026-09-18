@@ -38,6 +38,57 @@ void main() {
       expect(style.fill?.colorArgb, isNull);
     });
 
+    test('should resolve currentColor to inherited color when color is inherited', () {
+      // Arrange
+      const inheritedContext = SvgPaintingContext(
+        viewBoxWidth: 150,
+        viewBoxHeight: 250,
+        inheritedAttributes: SvgPresentationAttributes(
+          color: SvgRgbColor(255, 0, 128, 0),
+        ),
+      );
+      const presentationAttributes = SvgPresentationAttributes(
+        fill: SvgFillAttributes(color: SvgCurrentColor()),
+      );
+
+      // Act
+      final PaintingStyle style = resolvePaint(
+        inheritedContext,
+        tagName: 'rect',
+        presentationAttributes: presentationAttributes,
+      );
+
+      // Assert
+      expect(style.fill?.isCurrentColor, isFalse);
+      expect(style.fill?.colorArgb, 0xFF008000);
+    });
+
+    test('should resolve currentColor to element color when color attribute is defined on element', () {
+      // Arrange
+      const inheritedContext = SvgPaintingContext(
+        viewBoxWidth: 160,
+        viewBoxHeight: 260,
+        inheritedAttributes: SvgPresentationAttributes(
+          color: SvgRgbColor(255, 0, 128, 0),
+        ),
+      );
+      const presentationAttributes = SvgPresentationAttributes(
+        color: SvgRgbColor(255, 0, 0, 255),
+        fill: SvgFillAttributes(color: SvgCurrentColor()),
+      );
+
+      // Act
+      final PaintingStyle style = resolvePaint(
+        inheritedContext,
+        tagName: 'rect',
+        presentationAttributes: presentationAttributes,
+      );
+
+      // Assert
+      expect(style.fill?.isCurrentColor, isFalse);
+      expect(style.fill?.colorArgb, 0xFF0000FF);
+    });
+
     test('should parse font shorthand', () {
       final PaintingStyle style = resolvePaint(
         emptyContext,
@@ -577,6 +628,70 @@ void main() {
         tagName: 'path',
       );
       expect(styleDefault.vectorEffect, SvgVectorEffect.none);
+    });
+
+    test('should clamp fill and stroke opacity to 0.0 when negative', () {
+      // Arrange
+      const context = SvgPaintingContext(
+        viewBoxWidth: 120,
+        viewBoxHeight: 180,
+      );
+      const presentationAttributes = SvgPresentationAttributes(
+        fill: SvgFillAttributes(
+          color: SvgRgbColor(10, 20, 30, 0),
+          opacity: SvgLength(-15.0),
+        ),
+        stroke: SvgStrokeAttributes(
+          color: SvgRgbColor(40, 50, 60, 0),
+          opacity: SvgLength(-25.0),
+        ),
+        graphics: SvgGraphicsAttributes(
+          opacity: SvgLength(-5.0),
+        ),
+      );
+
+      // Act
+      final PaintingStyle style = resolvePaint(
+        context,
+        tagName: 'rect',
+        presentationAttributes: presentationAttributes,
+      );
+
+      // Assert
+      expect(style.fill?.opacity, 0.0);
+      expect(style.stroke?.opacity, 0.0);
+    });
+
+    test('should clamp fill and stroke opacity to 1.0 when exceeding 1.0', () {
+      // Arrange
+      const context = SvgPaintingContext(
+        viewBoxWidth: 140,
+        viewBoxHeight: 220,
+      );
+      const presentationAttributes = SvgPresentationAttributes(
+        fill: SvgFillAttributes(
+          color: SvgRgbColor(15, 25, 35, 0),
+          opacity: SvgLength(15.0),
+        ),
+        stroke: SvgStrokeAttributes(
+          color: SvgRgbColor(45, 55, 65, 0),
+          opacity: SvgLength(25.0),
+        ),
+        graphics: SvgGraphicsAttributes(
+          opacity: SvgLength(5.0),
+        ),
+      );
+
+      // Act
+      final PaintingStyle style = resolvePaint(
+        context,
+        tagName: 'rect',
+        presentationAttributes: presentationAttributes,
+      );
+
+      // Assert
+      expect(style.fill?.opacity, 1.0);
+      expect(style.stroke?.opacity, 1.0);
     });
   });
 }

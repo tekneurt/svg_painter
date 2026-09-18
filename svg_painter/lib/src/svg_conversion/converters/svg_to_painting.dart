@@ -173,7 +173,8 @@ extension SvgElementToPaintCommands on SvgElement {
 extension _SvgGroupToPaintCommands on SvgGroup {
   Result<List<PaintCommand>> _toPaintCommandsGroup(SvgPaintingContext context) {
     // Determine if we should use saveLayer (group opacity).
-    final double resolvedOpacity = opacity?.resolve(context, SvgOrientation.unit) ?? 1.0;
+    final double resolvedOpacity =
+        (opacity?.resolve(context, .unit) ?? 1.0).clamp(0.0, 1.0);
 
     final PaintingStyle style = resolvePaint(
       context,
