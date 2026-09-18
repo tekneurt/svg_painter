@@ -218,7 +218,7 @@ _fixtures =
       (
         painter: const GradientUnitsPainter(),
         name: 'gradient_units_painter',
-        tests: defaultGoldenTests,
+        tests: macOsFixedOverrideGoldenTests,
       ),
       (painter: const WidthPainter(), name: 'width_painter', tests: defaultGoldenTests),
       (painter: const X1ExamplesPainter(), name: 'x1_examples_painter', tests: defaultGoldenTests),

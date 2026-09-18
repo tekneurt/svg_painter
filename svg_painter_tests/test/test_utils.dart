@@ -316,6 +316,7 @@ Future<void> testSvgPainterWithW3cDiff({
   required String testName,
   String folder = 'shapes',
   double maxDiffPercent = 0.06,
+  Set<TargetPlatform>? platformOverrides = const <TargetPlatform>{TargetPlatform.macOS},
 }) async {
   tester.view.devicePixelRatio = 1.0;
 
@@ -340,16 +341,18 @@ Future<void> testSvgPainterWithW3cDiff({
     ),
   );
 
+  final String goldenName = goldenFileName(testName, platformOverrides);
+
   // 1. Primary Regression Test: Test against Flutter golden (0.00% diff).
   await expectLater(
     find.byKey(repaintBoundaryKey),
-    matchesGoldenFile('$folder/goldens/$testName.png'),
+    matchesGoldenFile('$folder/goldens/$goldenName'),
   );
 
   // 2. W3C Reference Comparison & Diff Isolation:
   await tester.runAsync(() async {
     final goldenFile = File(
-      'test/src/w3c/svg11/test_suite/$folder/goldens/$testName.png',
+      'test/src/w3c/svg11/test_suite/$folder/goldens/$goldenName',
     );
     final w3cReferenceFile = File(
       'test/src/w3c/svg11/test_suite/$folder/w3c_reference/$testName.png',
