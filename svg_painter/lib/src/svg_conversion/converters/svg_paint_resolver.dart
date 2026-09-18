@@ -31,8 +31,7 @@ PaintingStyle resolvePaint(
       combined.inherit(context.inheritedAttributes);
 
   final SvgGraphicsAttributes? graphics = resolved.graphics;
-  final double elementOpacity =
-      (graphics?.opacity?.resolve(context, .unit) ?? 1.0).clamp(0.0, 1.0);
+  final double elementOpacity = (graphics?.opacity).resolveOpacity(context);
 
   final PaintingFillStyle? fillStyle = _resolveFillStyle(
     context,
@@ -314,9 +313,8 @@ PaintingFillStyle _buildFillStyle(
     fillColorArgb = fillPaint.toFillArgb();
   }
 
-  final double fillOpacity =
-      (fillAttrs?.opacity?.resolve(context, .unit) ?? 1.0).clamp(0.0, 1.0);
-  final double finalFillOpacity = (elementOpacity * fillOpacity).clamp(0.0, 1.0);
+  final double fillOpacity = (fillAttrs?.opacity).resolveOpacity(context);
+  final double finalFillOpacity = elementOpacity * fillOpacity;
 
   return PaintingFillStyle(
     colorArgb: fillColorArgb,
@@ -407,9 +405,8 @@ PaintingStrokeStyle _buildStrokeStyle(
   final double? finalDashOffset =
       strokeAttrs?.dashOffset?.resolve(context, .normalized);
 
-  final double strokeOpacity =
-      (strokeAttrs?.opacity?.resolve(context, .unit) ?? 1.0).clamp(0.0, 1.0);
-  final double finalStrokeOpacity = (elementOpacity * strokeOpacity).clamp(0.0, 1.0);
+  final double strokeOpacity = (strokeAttrs?.opacity).resolveOpacity(context);
+  final double finalStrokeOpacity = elementOpacity * strokeOpacity;
 
   return PaintingStrokeStyle(
     colorArgb: strokeColorArgb,

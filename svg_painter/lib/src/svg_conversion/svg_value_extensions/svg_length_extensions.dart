@@ -92,3 +92,21 @@ extension SvgAutoToDouble on SvgLengthPercentageAuto {
     return null;
   }
 }
+
+/// Extension to resolve [SvgLengthPercentage] as an opacity value.
+extension SvgOpacityResolutionExtension on SvgLengthPercentage? {
+  /// Resolves this length percentage as an opacity value in [0.0, 1.0].
+  ///
+  /// Defaults to 1.0 if null, and clamps out-of-range values to [0.0, 1.0]
+  /// per the SVG specification.
+  double resolveOpacity([SvgPaintingContext? context]) {
+    final self = this;
+    if (self == null) {
+      return 1.0;
+    } else {
+      final SvgPaintingContext ctx =
+          context ?? const SvgPaintingContext(viewBoxWidth: 100.0, viewBoxHeight: 100.0);
+      return self.resolve(ctx, .unit).clamp(0.0, 1.0);
+    }
+  }
+}

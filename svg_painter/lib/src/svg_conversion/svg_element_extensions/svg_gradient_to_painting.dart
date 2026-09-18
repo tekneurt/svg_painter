@@ -121,8 +121,7 @@ extension on List<SvgStop> {
   List<GradientStop> toPaintingStops(SvgPaintingContext context) {
     return map((SvgStop stop) {
       final double offset = stop.offset.resolve(context, SvgOrientation.unit);
-      final double opacity =
-          stop.stopOpacity.resolve(context, .unit).clamp(0.0, 1.0);
+      final double opacity = stop.stopOpacity.resolveOpacity(context);
 
       return GradientStop(offset: offset, colorArgb: stop.stopColor.toFillArgb(), opacity: opacity);
     }).toList();
