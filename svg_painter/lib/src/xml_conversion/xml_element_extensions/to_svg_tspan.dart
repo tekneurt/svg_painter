@@ -90,6 +90,8 @@ extension ToSvgTspan on XmlElement {
         dx: dx,
         dy: dy,
         rotate: rotate,
+        title: common.title,
+        desc: common.desc,
         coreAttributes: common.core,
         presentationAttributes: common.presentation,
       ),

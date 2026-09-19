@@ -12,6 +12,8 @@ final class SvgTspan extends SvgGraphicsElement with SvgFontAttributable, SvgTex
     this.dx,
     this.dy,
     this.rotate,
+    super.title,
+    super.desc,
     super.presentationAttributes,
     super.coreAttributes,
   });

@@ -56,6 +56,8 @@ extension ToSvgRoot on XmlElement {
       (List<SvgElement> childElements) => SvgRoot(
         children: childElements,
         styleSheet: styleSheet,
+        title: common.title,
+        desc: common.desc,
         x: x,
         y: y,
         width: width,

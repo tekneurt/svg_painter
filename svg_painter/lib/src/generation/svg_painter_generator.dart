@@ -233,14 +233,10 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
 
       final String className = painterClassName ?? r'_$' + elementName;
 
-      final String? semanticLabel = svgRootElement.children
-          .whereType<SvgTitle>()
-          .firstOrNull
-          ?.content;
-      final String? semanticHint = svgRootElement.children
-          .whereType<SvgDesc>()
-          .firstOrNull
-          ?.content;
+      final String? semanticLabel = svgRootElement.title?.content ??
+          svgRootElement.children.whereType<SvgTitle>().firstOrNull?.content;
+      final String? semanticHint = svgRootElement.desc?.content ??
+          svgRootElement.children.whereType<SvgDesc>().firstOrNull?.content;
 
       return painterGenerator.generatePainterClass(
         className: className,

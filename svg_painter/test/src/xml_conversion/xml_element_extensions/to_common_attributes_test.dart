@@ -29,6 +29,23 @@ void main() {
       expect(attrs.presentation.graphics?.transformAttributes?.operations.first, isA<SvgScale>());
     });
 
+    test('should extract title and desc when child elements are present', () {
+      // Arrange
+      final document = XmlDocument.parse(
+        '<circle id="c1"><title id="t1">A Circle</title><desc id="d1">Detailed description</desc></circle>',
+      );
+      final XmlElement element = document.rootElement;
+
+      // Act
+      final CommonAttributes attrs = element.toCommonAttributes(XmlElementName.circle);
+
+      // Assert
+      expect(attrs.title?.content, 'A Circle');
+      expect(attrs.title?.id, 't1');
+      expect(attrs.desc?.content, 'Detailed description');
+      expect(attrs.desc?.id, 'd1');
+    });
+
     test('should return empty attribute groups when attributes are missing', () {
       // Arrange
       final document = XmlDocument.parse('<circle />');
@@ -43,6 +60,8 @@ void main() {
       expect(attrs.presentation.stroke?.color, isNull);
       expect(attrs.presentation.font?.size, isNull);
       expect(attrs.presentation.graphics?.opacity, isNull);
+      expect(attrs.title, isNull);
+      expect(attrs.desc, isNull);
     });
   });
 }

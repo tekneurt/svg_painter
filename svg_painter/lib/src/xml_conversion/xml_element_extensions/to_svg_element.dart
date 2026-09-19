@@ -122,6 +122,8 @@ extension ToSvgElement on XmlElement {
     return childrenResult.map(
       (List<SvgElement> childElements) => SvgSvg(
         children: childElements,
+        title: common.title,
+        desc: common.desc,
         x: x,
         y: y,
         width: width,

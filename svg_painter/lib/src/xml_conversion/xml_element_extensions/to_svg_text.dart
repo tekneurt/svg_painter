@@ -78,6 +78,8 @@ extension ToSvgText on XmlElement {
         dx: dx,
         dy: dy,
         children: textChildren,
+        title: common.title,
+        desc: common.desc,
         coreAttributes: common.core,
         presentationAttributes: common.presentation,
       ),

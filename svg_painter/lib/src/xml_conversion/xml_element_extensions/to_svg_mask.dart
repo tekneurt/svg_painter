@@ -52,6 +52,8 @@ extension ToSvgMask on XmlElement {
         height: height,
         maskUnits: maskUnits,
         maskContentUnits: maskContentUnits,
+        title: common.title,
+        desc: common.desc,
         presentationAttributes: common.presentation,
         coreAttributes: common.core,
       ),

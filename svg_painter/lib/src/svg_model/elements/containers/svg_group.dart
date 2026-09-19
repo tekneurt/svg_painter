@@ -5,6 +5,8 @@ part of '../../svg_element.dart';
 final class SvgGroup extends SvgContainerElement {
   const SvgGroup({
     required super.children,
+    super.title,
+    super.desc,
     super.presentationAttributes,
     super.coreAttributes,
   });

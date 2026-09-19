@@ -11,6 +11,8 @@ final class SvgText extends SvgGraphicsElement with SvgFontAttributable, SvgText
     required this.children,
     this.dx,
     this.dy,
+    super.title,
+    super.desc,
     super.presentationAttributes,
     super.coreAttributes,
   });

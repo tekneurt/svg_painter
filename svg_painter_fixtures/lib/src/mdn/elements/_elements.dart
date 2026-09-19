@@ -1,6 +1,7 @@
 export 'circle.dart';
 export 'clip_path.dart';
 export 'defs.dart';
+export 'desc.dart';
 export 'ellipse.dart';
 export 'g.dart';
 export 'image.dart';
@@ -17,5 +18,6 @@ export 'style.dart';
 export 'svg.dart';
 export 'symbol.dart';
 export 'text.dart';
+export 'title.dart';
 export 'tspan.dart';
 export 'use.dart';

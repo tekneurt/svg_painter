@@ -31,6 +31,8 @@ extension ToSvgClipPath on XmlElement {
       SvgClipPath(
         children: svgChildren,
         clipPathUnits: clipPathUnits,
+        title: common.title,
+        desc: common.desc,
         presentationAttributes: common.presentation,
         coreAttributes: common.core,
       ),

@@ -9,6 +9,8 @@ import '_xml_element_extensions.dart';
 typedef CommonAttributes = ({
   SvgCoreAttributes core,
   SvgPresentationAttributes presentation,
+  SvgTitle? title,
+  SvgDesc? desc,
 });
 
 extension ToCommonAttributes on XmlElement {
@@ -19,6 +21,33 @@ extension ToCommonAttributes on XmlElement {
       cssClass: toXmlAttributeValue(XmlAttributeName.className),
       inlineStyle: toXmlAttributeValue(XmlAttributeName.style),
     );
+
+    final XmlElement? titleElement = children
+        .whereType<XmlElement>()
+        .where((XmlElement e) => e.name.local == 'title')
+        .firstOrNull;
+    final XmlElement? descElement = children
+        .whereType<XmlElement>()
+        .where((XmlElement e) => e.name.local == 'desc')
+        .firstOrNull;
+
+    final SvgTitle? title = titleElement != null
+        ? SvgTitle(
+            content: titleElement.innerText.trim(),
+            coreAttributes: SvgCoreAttributes(
+              id: titleElement.getAttribute(XmlAttributeName.id.name),
+            ),
+          )
+        : null;
+
+    final SvgDesc? desc = descElement != null
+        ? SvgDesc(
+            content: descElement.innerText.trim(),
+            coreAttributes: SvgCoreAttributes(
+              id: descElement.getAttribute(XmlAttributeName.id.name),
+            ),
+          )
+        : null;
 
     final presentation = SvgPresentationAttributes(
       color: toSvgValueOrNull<SvgColor>(elementName, XmlAttributeName.color),
@@ -55,6 +84,11 @@ extension ToCommonAttributes on XmlElement {
       vectorEffect: toSvgValueOrNull<SvgVectorEffect>(elementName, XmlAttributeName.vectorEffect),
     );
 
-    return (core: core, presentation: presentation);
+    return (
+      core: core,
+      presentation: presentation,
+      title: title,
+      desc: desc,
+    );
   }
 }

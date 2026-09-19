@@ -14,6 +14,7 @@ import 'svg_value.dart';
 
 // Base
 part 'elements/base/svg_definition_element.dart';
+part 'elements/base/svg_descriptive.dart';
 part 'elements/base/svg_fill_attributable.dart';
 part 'elements/base/svg_font_attributable.dart';
 part 'elements/base/svg_geometry_attributable.dart';
