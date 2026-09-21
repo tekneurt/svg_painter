@@ -34,7 +34,7 @@ extension ToSvgValue on XmlElement {
     } else {
       final SvgBaseValue? parsedValue = switch (attributeName) {
         .x ||
-        .y ||
+        .y => attributeValue.toSvgLengthPercentageOrList(),
         .x1 ||
         .y1 ||
         .x2 ||

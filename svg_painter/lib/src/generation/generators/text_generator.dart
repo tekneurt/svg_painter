@@ -78,6 +78,59 @@ class TextGenerator extends ShapeGenerator<DrawText> {
     List<InheritedProperty>? inheritedStrokes,
     SvgColorMapping colorMapping = SvgColorMapping.material,
   }) {
+    if (command.chunks case final List<PaintingTextChunk> chunks when chunks.isNotEmpty) {
+      buffer.writeBlock('{', () {
+        buffer.writeln('double currentX = ${command.x};');
+        buffer.writeln('double currentY = ${command.y};');
+        buffer.writeln('TextPainter tp;');
+        for (final chunk in chunks) {
+          if (chunk.x != null) {
+            buffer.writeln('currentX = ${chunk.x!};');
+          }
+          if (chunk.y != null) {
+            buffer.writeln('currentY = ${chunk.y!};');
+          }
+          final PaintingStyle chunkStyle = chunk.style ?? command.style;
+          final PaintingTextAnchor anchor = chunkStyle.text?.textAnchor ??
+              command.style.text?.textAnchor ??
+              PaintingTextAnchor.start;
+
+          buffer.writeln('tp = TextPainter(');
+          buffer.indent();
+          buffer.writeBlock('text:', () {
+            _generateTextSpan(
+              buffer,
+              PaintingTextSpan(text: chunk.text, style: chunk.style),
+              paintVar,
+              isStroke: isStroke,
+              initialStyle: command.style,
+              palette: palette,
+              activeFillProperties: activeFillProperties,
+              activeStrokeProperties: activeStrokeProperties,
+              inheritedFills: inheritedFills,
+              inheritedStrokes: inheritedStrokes,
+              colorMapping: colorMapping,
+            );
+          }, footer: ',');
+          buffer.writeln('textDirection: TextDirection.ltr,');
+          buffer.outdent();
+          buffer.writeln(')..layout();');
+
+          final String xExpr = switch (anchor) {
+            PaintingTextAnchor.middle => 'currentX - tp.width / 2.0',
+            PaintingTextAnchor.end => 'currentX - tp.width',
+            PaintingTextAnchor.start => 'currentX',
+          };
+
+          buffer.writeln(
+            'tp.paint(canvas, Offset($xExpr, currentY - tp.computeDistanceToActualBaseline(TextBaseline.alphabetic)));',
+          );
+          buffer.writeln('currentX += tp.width;');
+        }
+      });
+      return;
+    }
+
     buffer.writeBlock('{', () {
       buffer.writeln('final TextPainter tp = TextPainter(');
       buffer.indent();

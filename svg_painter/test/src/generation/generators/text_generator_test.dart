@@ -47,6 +47,35 @@ void main() {
       );
     });
 
+    test('should generate sequential text painters with currentX advancement when chunks are provided', () {
+      // Arrange
+      const generator = TextGenerator();
+      const command = DrawText(
+        x: 50.0,
+        y: 90.0,
+        rootSpan: PaintingTextSpan(text: 'SVG'),
+        style: textStyle,
+        chunks: <PaintingTextChunk>[
+          PaintingTextChunk(text: 'S', x: 50.0, y: 90.0),
+          PaintingTextChunk(text: 'V', x: 100.0),
+          PaintingTextChunk(text: 'G', x: 150.0),
+        ],
+      );
+      final buffer = GeneratorBuffer();
+
+      // Act
+      generator.generate(command, buffer, painterClassName: 'TestPainter');
+
+      // Assert
+      final output = buffer.toString();
+      expect(output, contains('double currentX = 50.0;'));
+      expect(output, contains('double currentY = 90.0;'));
+      expect(output, contains('currentX += tp.width;'));
+      expect(output, contains("text: 'S'"));
+      expect(output, contains("text: 'V'"));
+      expect(output, contains("text: 'G'"));
+    });
+
     test('should escape single quotes in text', () {
       // Arrange
       const generator = TextGenerator();

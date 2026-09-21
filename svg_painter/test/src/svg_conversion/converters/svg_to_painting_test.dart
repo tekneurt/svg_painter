@@ -641,7 +641,7 @@ void main() {
           const SvgPolygon(points: SvgPointList(<double>[0, 0, 10, 10, 0, 10])),
           const SvgText(
             x: SvgLength(10),
-            y: SvgLength(10),
+            y: SvgLength(20),
             children: <SvgTextContent>[SvgCharacterData('test')],
           ),
         ];

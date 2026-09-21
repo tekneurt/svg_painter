@@ -53,12 +53,18 @@ import 'attributes/x1_linear_gradient_painter.dart';
 import 'attributes/x2_examples_painter.dart';
 import 'attributes/x2_line_painter.dart';
 import 'attributes/x2_linear_gradient_painter.dart';
+import 'attributes/x_examples_painter.dart';
+import 'attributes/x_text_painter.dart';
+import 'attributes/x_tspan_painter.dart';
 import 'attributes/y1_examples_painter.dart';
 import 'attributes/y1_line_painter.dart';
 import 'attributes/y1_linear_gradient_painter.dart';
 import 'attributes/y2_examples_painter.dart';
 import 'attributes/y2_line_painter.dart';
 import 'attributes/y2_linear_gradient_painter.dart';
+import 'attributes/y_examples_painter.dart';
+import 'attributes/y_text_painter.dart';
+import 'attributes/y_tspan_painter.dart';
 
 final List<({CustomPainter painter, String name, Map<GoldenTestType, Set<TargetPlatform>?> tests})>
 _fixtures =
@@ -248,6 +254,12 @@ _fixtures =
         name: 'y1_linear_gradient_painter',
         tests: defaultGoldenTests,
       ),
+      (painter: const XExamplesPainter(), name: 'x_examples_painter', tests: defaultGoldenTests),
+      (painter: const XTextPainter(), name: 'x_text_painter', tests: defaultGoldenTests),
+      (painter: const XTspanPainter(), name: 'x_tspan_painter', tests: defaultGoldenTests),
+      (painter: const YExamplesPainter(), name: 'y_examples_painter', tests: defaultGoldenTests),
+      (painter: const YTextPainter(), name: 'y_text_painter', tests: defaultGoldenTests),
+      (painter: const YTspanPainter(), name: 'y_tspan_painter', tests: defaultGoldenTests),
       (painter: const Y2ExamplesPainter(), name: 'y2_examples_painter', tests: defaultGoldenTests),
       (painter: const Y2LinePainter(), name: 'y2_line_painter', tests: defaultGoldenTests),
       (

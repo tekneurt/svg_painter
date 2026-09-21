@@ -5,6 +5,29 @@ import '../../xml_conversion/parsers/svg_transform_parser.dart';
 import '../svg_value_extensions/_svg_value_extensions.dart';
 import 'svg_painting_context.dart';
 
+/// Resolves the unified presentation attributes for an element, combining inline presentation attributes,
+/// CSS rules, and inheritance from the parent context.
+SvgPresentationAttributes resolvePresentation(
+  SvgPaintingContext context, {
+  required String tagName,
+  SvgCoreAttributes? coreAttributes,
+  SvgPresentationAttributes? presentationAttributes,
+}) {
+  final Map<String, String> resolvedRules = _resolveCssRules(
+    context,
+    tagName,
+    coreAttributes,
+  );
+  final SvgPresentationAttributes cssPresentation = _parseCssPresentation(
+    resolvedRules,
+  );
+
+  final SvgPresentationAttributes combined =
+      (presentationAttributes ?? const SvgPresentationAttributes())
+          .merge(cssPresentation);
+  return combined.inherit(context.inheritedAttributes);
+}
+
 /// Resolves the final [PaintingStyle] for an element, handling CSS classes,
 /// inline styles, inheritance, and scaling.
 PaintingStyle resolvePaint(
@@ -20,15 +43,12 @@ PaintingStyle resolvePaint(
     tagName,
     coreAttributes,
   );
-  final SvgPresentationAttributes cssPresentation = _parseCssPresentation(
-    resolvedRules,
+  final SvgPresentationAttributes resolved = resolvePresentation(
+    context,
+    tagName: tagName,
+    coreAttributes: coreAttributes,
+    presentationAttributes: presentationAttributes,
   );
-
-  final SvgPresentationAttributes combined =
-      (presentationAttributes ?? const SvgPresentationAttributes())
-          .merge(cssPresentation);
-  final SvgPresentationAttributes resolved =
-      combined.inherit(context.inheritedAttributes);
 
   final SvgGraphicsAttributes? graphics = resolved.graphics;
   final double elementOpacity = (graphics?.opacity).resolveOpacity(context);
@@ -141,6 +161,9 @@ SvgPresentationAttributes _parseCssPresentation(
     cssFontFamily = resolvedRules['font-family']?.toSvgFontFamily();
   } else {
     // Handle font shorthand
+    cssFontStyle = SvgFontStyle.normal;
+    cssFontWeight = const SvgFontWeightNormal();
+
     final List<String> allParts = fontValue.split(RegExp(r'\s+'));
     var sizeIndex = -1;
     for (var i = 0; i < allParts.length; i++) {

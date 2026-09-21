@@ -59,8 +59,8 @@ void main() {
 
     test('should handle nested tspan with relative dx, dy and rotate', () {
       const text = SvgText(
-        x: SvgLength(10),
-        y: SvgLength(20),
+        x: SvgLength(10.0),
+        y: SvgLength(20.0),
         children: [
           SvgCharacterData('Outer'),
           SvgTspan(

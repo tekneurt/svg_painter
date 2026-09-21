@@ -59,11 +59,11 @@ extension ToSvgTspan on XmlElement {
       }
     }
 
-    final SvgLengthPercentage? x = toSvgValueOrNull<SvgLengthPercentage>(
+    final SvgLengthPercentageOrList? x = toSvgValueOrNull<SvgLengthPercentageOrList>(
       elementName,
       XmlAttributeName.x,
     );
-    final SvgLengthPercentage? y = toSvgValueOrNull<SvgLengthPercentage>(
+    final SvgLengthPercentageOrList? y = toSvgValueOrNull<SvgLengthPercentageOrList>(
       elementName,
       XmlAttributeName.y,
     );

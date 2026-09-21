@@ -43,10 +43,28 @@ sealed class SvgLengthPercentageAuto extends SvgValue with SvgBaseValue {
   const SvgLengthPercentageAuto();
 }
 
+/// Represents a value that can be either a single length/percentage or a list of lengths/percentages.
+@immutable
+sealed class SvgLengthPercentageOrList extends SvgValue with SvgBaseValue {
+  const SvgLengthPercentageOrList();
+
+  /// The primary coordinate.
+  SvgLengthPercentage get primary;
+
+  /// All coordinates as a list of [SvgLengthPercentage].
+  List<SvgLengthPercentage> toList();
+}
+
 /// Represents a value that can be either a length or a percentage.
 @immutable
-sealed class SvgLengthPercentage extends SvgLengthPercentageAuto {
+sealed class SvgLengthPercentage extends SvgLengthPercentageAuto implements SvgLengthPercentageOrList {
   const SvgLengthPercentage();
+
+  @override
+  SvgLengthPercentage get primary => this;
+
+  @override
+  List<SvgLengthPercentage> toList() => <SvgLengthPercentage>[this];
 }
 
 /// Mixin that defines SVG base value types.

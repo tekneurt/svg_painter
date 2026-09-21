@@ -23,8 +23,8 @@ void main() {
         expect(result, isA<Success<SvgText>>());
         final SvgText text = (result as Success<SvgText>).value;
         expect(text.id, 't1');
-        expect((text.x as SvgLength).value, 10.0);
-        expect((text.y as SvgLength).value, 20.0);
+        expect((text.primaryX as SvgLength).value, 10.0);
+        expect((text.primaryY as SvgLength).value, 20.0);
         expect(text.children.length, 1);
         expect(text.children.first, isA<SvgCharacterData>());
         expect((text.children.first as SvgCharacterData).text, 'Hello World');
@@ -44,12 +44,35 @@ void main() {
       // Assert
       expect(result, isA<Success<SvgText>>());
       final SvgText text = (result as Success<SvgText>).value;
-      expect((text.x as SvgPercentage).value, 10.0);
-      expect((text.y as SvgPercentage).value, 30.0);
+      expect((text.primaryX as SvgPercentage).value, 10.0);
+      expect((text.primaryY as SvgPercentage).value, 30.0);
       expect(text.dx, isA<SvgPercentage>());
       expect((text.dx as SvgPercentage?)?.value, 50.0);
       expect(text.dy, isA<SvgLength>());
       expect((text.dy as SvgLength?)?.value, 20.0);
+    });
+
+    test('should parse list of coordinates for x and y attributes', () {
+      // Arrange
+      final document = XmlDocument.parse(
+        '<text x="25%, 50%, 75%" y="40%, 60%, 80%">SVG</text>',
+      );
+      final XmlElement element = document.rootElement;
+
+      // Act
+      final Result<SvgText> result = element.toSvgText();
+
+      // Assert
+      expect(result, isA<Success<SvgText>>());
+      final SvgText text = (result as Success<SvgText>).value;
+      expect(
+        text.x.toList().map((SvgLengthPercentage c) => (c as SvgPercentage).value),
+        <double>[25.0, 50.0, 75.0],
+      );
+      expect(
+        text.y.toList().map((SvgLengthPercentage c) => (c as SvgPercentage).value),
+        <double>[40.0, 60.0, 80.0],
+      );
     });
   });
 }
