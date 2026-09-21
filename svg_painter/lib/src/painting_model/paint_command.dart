@@ -3,6 +3,11 @@ import 'package:meta/meta.dart';
 import '../svg_model/_svg_model.dart';
 import 'styles/painting_style.dart';
 
+part 'commands/define_clip_path.dart';
+part 'commands/define_gradient.dart';
+part 'commands/define_linear_gradient.dart';
+part 'commands/define_mask.dart';
+part 'commands/define_radial_gradient.dart';
 part 'commands/draw_circle.dart';
 part 'commands/draw_group.dart';
 part 'commands/draw_image.dart';
@@ -13,11 +18,7 @@ part 'commands/draw_polygon.dart';
 part 'commands/draw_polyline.dart';
 part 'commands/draw_rect.dart';
 part 'commands/draw_text.dart';
-part 'commands/define_mask.dart';
-part 'commands/define_clip_path.dart';
-part 'commands/define_gradient.dart';
-part 'commands/define_radial_gradient.dart';
-part 'commands/define_linear_gradient.dart';
+part 'commands/painting_text_chunk.dart';
 
 /// A command that represents a painting operation on a canvas.
 @immutable
