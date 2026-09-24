@@ -6,6 +6,7 @@ export 'dy.dart';
 export 'fill.dart';
 export 'fill_opacity.dart';
 export 'fill_rule.dart';
+export 'fr.dart';
 export 'fx.dart';
 export 'fy.dart';
 export 'gradient_transform.dart';

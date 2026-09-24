@@ -12,6 +12,7 @@ import 'attributes/fill_painter.dart';
 import 'attributes/fill_rule_evenodd_painter.dart';
 import 'attributes/fill_rule_nonzero_painter.dart';
 import 'attributes/fill_rule_painter.dart';
+import 'attributes/fr_painter.dart';
 import 'attributes/fx_painter.dart';
 import 'attributes/fy_painter.dart';
 import 'attributes/gradient_transform_painter.dart';
@@ -102,6 +103,16 @@ _fixtures =
       (
         painter: const FillRuleEvenoddPainter(),
         name: 'fill_rule_evenodd_painter',
+        tests: defaultGoldenTests,
+      ),
+      (
+        painter: const Fr1Painter(),
+        name: 'fr_1_painter',
+        tests: defaultGoldenTests,
+      ),
+      (
+        painter: const Fr2Painter(),
+        name: 'fr_2_painter',
         tests: defaultGoldenTests,
       ),
       (painter: const FxPainter(), name: 'fx_painter', tests: defaultGoldenTests),
