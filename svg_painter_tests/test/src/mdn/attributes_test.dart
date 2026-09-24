@@ -5,6 +5,7 @@ import '../../test_utils.dart';
 import 'attributes/clip_path_painter.dart';
 import 'attributes/cx_painter.dart';
 import 'attributes/cy_painter.dart';
+import 'attributes/decoding_painter.dart';
 import 'attributes/dx_painter.dart';
 import 'attributes/dy_painter.dart';
 import 'attributes/fill_opacity_painter.dart';
@@ -350,6 +351,18 @@ void main() {
         goldenName: 'media_painter_w800.png',
         goldenPath: 'attributes/goldens',
         size: const Size(800, 600),
+      );
+    });
+
+    testWidgets('decoding_painter', (WidgetTester tester) async {
+      await testDualResolutionWidget(
+        tester: tester,
+        widget: const DecodingPainterWidget(),
+        name: 'decoding_painter',
+        type: SvgTestType.mdn,
+        folder: 'attributes',
+        tests: defaultGoldenTests,
+        nativeSize: const Size(200, 200),
       );
     });
   });

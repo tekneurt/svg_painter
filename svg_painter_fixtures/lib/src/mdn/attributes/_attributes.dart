@@ -1,6 +1,7 @@
 export 'clip_path.dart';
 export 'cx.dart';
 export 'cy.dart';
+export 'decoding.dart';
 export 'dx.dart';
 export 'dy.dart';
 export 'fill.dart';
