@@ -15,7 +15,6 @@ import 'attributes/fill_rule_painter.dart';
 import 'attributes/fx_painter.dart';
 import 'attributes/fy_painter.dart';
 import 'attributes/gradient_transform_painter.dart';
-import 'attributes/gradient_units_painter.dart';
 import 'attributes/height_painter.dart';
 import 'attributes/id_painter.dart';
 import 'attributes/mask_content_units_painter.dart';
@@ -239,12 +238,7 @@ _fixtures =
       (
         painter: const GradientTransformPainter(),
         name: 'gradient_transform_painter',
-        tests: macOsViewBoxOverrideGoldenTests,
-      ),
-      (
-        painter: const GradientUnitsPainter(),
-        name: 'gradient_units_painter',
-        tests: macOsFixedOverrideGoldenTests,
+        tests: defaultGoldenTests,
       ),
       (painter: const WidthPainter(), name: 'width_painter', tests: defaultGoldenTests),
       (painter: const X1ExamplesPainter(), name: 'x1_examples_painter', tests: defaultGoldenTests),

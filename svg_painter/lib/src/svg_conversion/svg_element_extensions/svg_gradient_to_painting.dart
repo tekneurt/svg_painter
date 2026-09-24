@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import '../../base/_base.dart';
 import '../../painting_model/_painting_model.dart';
 import '../../svg_model/_svg_model.dart';
@@ -85,13 +87,11 @@ extension SvgGradientToPainting on SvgGradient {
         // Normalize absolute user units to 0..1 relative to viewBox.
         cx /= context.viewBoxWidth;
         cy /= context.viewBoxHeight;
-        // Radius resolution for radial gradients relative to a non-square viewBox is complex.
-        // For now we use the normalized diagonal factor which matches our radial resolution logic.
-        final double diag = context.viewBoxNormalizedDiagonal;
-        r /= diag;
+        final double shortestSide = math.min(context.viewBoxWidth, context.viewBoxHeight);
+        r /= shortestSide;
         fx /= context.viewBoxWidth;
         fy /= context.viewBoxHeight;
-        fr /= diag;
+        fr /= shortestSide;
       }
 
       return Success<PaintCommand>(

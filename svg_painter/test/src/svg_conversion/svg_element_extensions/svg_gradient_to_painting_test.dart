@@ -146,6 +146,32 @@ void main() {
       expect(cmd.x1, 0.1);
     });
 
+    test('should normalize radial gradient radius by shortest side under userSpaceOnUse', () {
+      // Arrange
+      const asymmetricContext = SvgPaintingContext(viewBoxWidth: 420, viewBoxHeight: 200);
+      const grad = SvgRadialGradient(
+        coreAttributes: SvgCoreAttributes(id: 'rg-user'),
+        cx: SvgLength(100),
+        cy: SvgLength(100),
+        r: SvgLength(100),
+        fx: SvgLength(100),
+        fy: SvgLength(100),
+        fr: SvgLength(0),
+        stops: <SvgStop>[],
+        gradientUnits: SvgGradientUnits.userSpaceOnUse,
+      );
+
+      // Act
+      final Result<PaintCommand> result = grad.toPaintCommand(asymmetricContext);
+
+      // Assert
+      expect(result, isA<Success<PaintCommand>>());
+      final cmd = (result as Success<PaintCommand>).value as DefineRadialGradient;
+      expect(cmd.cx, closeTo(100 / 420, 0.0001));
+      expect(cmd.cy, 0.5);
+      expect(cmd.radius, 0.5);
+    });
+
     test('should handle all spreadMethod values', () {
       final Map<SvgSpreadMethod, PaintingSpreadMethod> map = {
         SvgSpreadMethod.pad: PaintingSpreadMethod.pad,

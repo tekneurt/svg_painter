@@ -9,7 +9,6 @@ export 'fill_rule.dart';
 export 'fx.dart';
 export 'fy.dart';
 export 'gradient_transform.dart';
-export 'gradient_units.dart';
 export 'height.dart';
 export 'id.dart';
 export 'mask.dart';
