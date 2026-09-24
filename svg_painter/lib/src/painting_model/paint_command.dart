@@ -18,6 +18,7 @@ part 'commands/draw_polygon.dart';
 part 'commands/draw_polyline.dart';
 part 'commands/draw_rect.dart';
 part 'commands/draw_text.dart';
+part 'commands/draw_text_path.dart';
 part 'commands/painting_text_chunk.dart';
 
 /// A command that represents a painting operation on a canvas.

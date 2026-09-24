@@ -18,6 +18,7 @@ export 'style.dart';
 export 'svg.dart';
 export 'symbol.dart';
 export 'text.dart';
+export 'text_path.dart';
 export 'title.dart';
 export 'tspan.dart';
 export 'use.dart';

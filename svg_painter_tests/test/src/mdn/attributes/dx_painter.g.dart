@@ -108,10 +108,10 @@ class _$DxPainter extends CustomPainter {
           text: TextSpan(
             style: TextStyle(
               color: const Color(0xFF808080),
-              fontSize: 12.0,
+              fontSize: 16.0,
               fontWeight: FontWeight.normal,
               fontStyle: FontStyle.normal,
-              fontFamily: 'Roboto',
+              fontFamily: 'Tinos',
               package: 'svg_painter',
             ),
             children: <InlineSpan>[TextSpan(text: 'SVG')],
@@ -136,10 +136,10 @@ class _$DxPainter extends CustomPainter {
           text: TextSpan(
             style: TextStyle(
               color: Colors.black,
-              fontSize: 12.0,
+              fontSize: 16.0,
               fontWeight: FontWeight.normal,
               fontStyle: FontStyle.normal,
-              fontFamily: 'Roboto',
+              fontFamily: 'Tinos',
               package: 'svg_painter',
             ),
             children: <InlineSpan>[TextSpan(text: 'SVG')],

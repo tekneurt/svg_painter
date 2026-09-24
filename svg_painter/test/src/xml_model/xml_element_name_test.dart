@@ -27,6 +27,7 @@ void main() {
           XmlElementName.svg => 'svg',
           XmlElementName.symbol => 'symbol',
           XmlElementName.text => 'text',
+          XmlElementName.textPath => 'textPath',
           XmlElementName.title => 'title',
           XmlElementName.tspan => 'tspan',
           XmlElementName.use => 'use',

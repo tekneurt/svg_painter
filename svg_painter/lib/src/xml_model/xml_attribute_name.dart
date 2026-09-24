@@ -162,6 +162,10 @@ enum XmlAttributeName {
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/spreadMethod
   spreadMethod('spreadMethod'),
 
+  /// How far the beginning of the text should be offset from the beginning of the path.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/startOffset
+  startOffset('startOffset'),
+
   /// The color of a gradient stop.
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stop-color
   stopColor('stop-color'),

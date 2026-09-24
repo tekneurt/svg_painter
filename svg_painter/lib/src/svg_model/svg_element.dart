@@ -67,6 +67,7 @@ part 'elements/style/svg_style.dart';
 // Text
 part 'elements/text/svg_text.dart';
 part 'elements/text/svg_text_content.dart';
+part 'elements/text/svg_text_path.dart';
 part 'elements/text/svg_tspan.dart';
 
 /// The base class for all SVG elements in the domain model.

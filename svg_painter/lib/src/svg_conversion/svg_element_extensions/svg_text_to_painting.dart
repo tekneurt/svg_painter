@@ -29,6 +29,58 @@ extension SvgTextToPaintCommands on SvgText {
       presentationAttributes: presentationAttributes,
     );
 
+    final SvgTextPath? textPathChild = children.whereType<SvgTextPath>().firstOrNull;
+    if (textPathChild != null) {
+      final List<PathOperation> operations;
+      if (textPathChild.pathData case final String pathData when pathData.isNotEmpty) {
+        final Result<List<PathOperation>> parsed = PathDataParser.parse(pathData, textContext);
+        if (parsed is Failure<List<PathOperation>>) {
+          return Failure<List<PaintCommand>>(parsed.message);
+        }
+        operations = (parsed as Success<List<PathOperation>>).value;
+      } else {
+        final String href = textPathChild.href;
+        final String targetId = href.startsWith('#') ? href.substring(1) : href;
+        final SvgElement? target = context.definitions[targetId];
+        if (target == null) {
+          return Failure<List<PaintCommand>>(
+            'Could not find definition for ID "$targetId" referenced by <textPath>.',
+          );
+        }
+        if (target is! SvgPath) {
+          return Failure<List<PaintCommand>>(
+            'Target "$targetId" referenced by <textPath> is not an SvgPath.',
+          );
+        }
+        final Result<List<PathOperation>> parsed = PathDataParser.parse(target.d, textContext);
+        if (parsed is Failure<List<PathOperation>>) {
+          return Failure<List<PaintCommand>>(parsed.message);
+        }
+        operations = (parsed as Success<List<PathOperation>>).value;
+      }
+
+      final SvgPaintingContext pathContext = textContext.deriveWith(textPathChild);
+      final PaintingStyle pathStyle = resolvePaint(
+        pathContext,
+        tagName: 'textPath',
+        coreAttributes: textPathChild.coreAttributes,
+        presentationAttributes: textPathChild.presentationAttributes,
+      );
+
+      final double startOffset = textPathChild.startOffset?.resolve(pathContext, .horizontal) ?? 0.0;
+      final String text = _extractText(textPathChild.children);
+
+      return Success<List<PaintCommand>>(<PaintCommand>[
+        DrawTextPath(
+          pathOperations: operations,
+          text: text,
+          startOffset: startOffset,
+          style: pathStyle,
+          id: textPathChild.id ?? id,
+        ),
+      ]);
+    }
+
     final bool hasMultiCoordinates =
         x.toList().length > 1 || y.toList().length > 1;
     final bool hasPositionedTspan = children.any(

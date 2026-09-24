@@ -18,10 +18,10 @@ final class SvgPaintingContext {
         width: SvgLength(1.0),
       ),
       font: SvgFontAttributes(
-        size: SvgLength(12.0),
+        size: SvgLength(16.0),
         weight: SvgFontWeightNormal(),
         style: SvgFontStyle.normal,
-        family: SvgFontFamily('sans-serif'),
+        family: SvgFontFamily('serif'),
       ),
     ),
     this.styleSheet = const SvgStyleSheet(<String, Map<String, String>>{}),

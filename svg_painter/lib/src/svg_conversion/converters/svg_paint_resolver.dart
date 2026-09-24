@@ -452,7 +452,7 @@ PaintingTextStyle _resolveTextStyle(
   SvgPaintingContext context,
   SvgFontAttributes? fontAttrs,
 ) {
-  final double finalFontSize = (fontAttrs?.size ?? const SvgLength(12.0))
+  final double finalFontSize = (fontAttrs?.size ?? const SvgLength(16.0))
       .resolve(context, .vertical);
 
   final PaintingFontWeight finalFontWeight = _toPaintingFontWeight(
@@ -461,10 +461,11 @@ PaintingTextStyle _resolveTextStyle(
   final PaintingFontStyle finalFontStyle =
       (fontAttrs?.style?.value == 'italic') ? .italic : .normal;
 
-  final String rawFontFamily = fontAttrs?.family?.value ?? 'sans-serif';
+  final String rawFontFamily = fontAttrs?.family?.value ?? 'serif';
   final (String finalFontFamily, String? fontPackage) = switch (rawFontFamily) {
     'sans-serif' || 'Roboto' => ('Roboto', 'svg_painter'),
-    'serif' || 'Noto Serif' => ('Noto Serif', 'svg_painter'),
+    'serif' || 'Times' || 'Times New Roman' || 'Tinos' => ('Tinos', 'svg_painter'),
+    'Noto Serif' => ('Noto Serif', 'svg_painter'),
     'monospace' || 'Roboto Mono' => ('Roboto Mono', 'svg_painter'),
     _ => (rawFontFamily, null),
   };

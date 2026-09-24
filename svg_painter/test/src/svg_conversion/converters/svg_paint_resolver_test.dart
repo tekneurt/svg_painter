@@ -99,7 +99,7 @@ void main() {
       expect(style.text?.fontWeight, PaintingFontWeight.bold);
       // 16px relative to 100 viewbox height -> depends on logic, but parsing should happen
       expect(style.text?.fontSize, isNotNull);
-      expect(style.text?.fontFamily, 'Noto Serif'); // Mapped from 'serif'
+      expect(style.text?.fontFamily, 'Tinos'); // Mapped from 'serif'
     });
 
     test('should handle robust font shorthand parsing', () {
@@ -259,12 +259,19 @@ void main() {
         tagName: 'text',
         coreAttributes: const SvgCoreAttributes(inlineStyle: 'font-family: serif'),
       );
+      final PaintingStyle notoStyle = resolvePaint(
+        emptyContext,
+        tagName: 'text',
+        coreAttributes: const SvgCoreAttributes(inlineStyle: 'font-family: Noto Serif'),
+      );
 
       // Assert
       expect(sansStyle.text?.fontFamily, 'Roboto');
       expect(sansStyle.text?.fontPackage, 'svg_painter');
-      expect(serifStyle.text?.fontFamily, 'Noto Serif');
+      expect(serifStyle.text?.fontFamily, 'Tinos');
       expect(serifStyle.text?.fontPackage, 'svg_painter');
+      expect(notoStyle.text?.fontFamily, 'Noto Serif');
+      expect(notoStyle.text?.fontPackage, 'svg_painter');
     });
 
     test('should preserve custom font family without fontPackage', () {

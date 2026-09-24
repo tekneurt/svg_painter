@@ -22,6 +22,7 @@ import 'elements/style_painter.dart';
 import 'elements/svg_painter.dart';
 import 'elements/symbol_painter.dart';
 import 'elements/text_painter.dart';
+import 'elements/text_path_painter.dart';
 import 'elements/title_painter.dart';
 import 'elements/tspan_painter.dart';
 import 'elements/use_element_painter.dart';
@@ -201,6 +202,13 @@ _fixtures =
       (
         painter: const MdnTextExamplePainter(),
         name: 'text_painter',
+        tests: macOsOverrideGoldenTests,
+        widget: null,
+        nativeSize: null,
+      ),
+      (
+        painter: const TextPathPainter(),
+        name: 'text_path_painter',
         tests: macOsOverrideGoldenTests,
         widget: null,
         nativeSize: null,

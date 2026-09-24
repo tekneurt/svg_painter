@@ -82,6 +82,10 @@ enum XmlElementName {
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Element/text
   text('text'),
 
+  /// The `<textPath>` element.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Element/textPath
+  textPath('textPath'),
+
   /// The `<title>` element.
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Element/title
   title('title'),

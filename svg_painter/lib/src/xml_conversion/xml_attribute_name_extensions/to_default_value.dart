@@ -58,6 +58,8 @@ extension ToDefaultValue on XmlAttributeName {
         return SvgTextAnchor.start;
       case .paintOrder:
         return SvgPaintOrder.normal;
+      case .startOffset:
+        return const SvgLength(0.0);
       case .vectorEffect:
         return SvgVectorEffect.none;
       case .color:

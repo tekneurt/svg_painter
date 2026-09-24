@@ -47,6 +47,7 @@ void main() {
           XmlAttributeName.rx => 'rx',
           XmlAttributeName.ry => 'ry',
           XmlAttributeName.spreadMethod => 'spreadMethod',
+          XmlAttributeName.startOffset => 'startOffset',
           XmlAttributeName.stopColor => 'stop-color',
           XmlAttributeName.stopOpacity => 'stop-opacity',
           XmlAttributeName.stroke => 'stroke',
