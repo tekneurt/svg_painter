@@ -106,6 +106,7 @@ final class SvgPaintingContext {
     double? viewBoxMinX,
     double? viewBoxMinY,
     SvgPresentationAttributes? inheritedAttributes,
+    SvgStyleSheet? styleSheet,
     Map<String, SvgSvg>? svgCache,
   }) {
     return SvgPaintingContext(
@@ -114,7 +115,7 @@ final class SvgPaintingContext {
       viewBoxMinX: viewBoxMinX ?? this.viewBoxMinX,
       viewBoxMinY: viewBoxMinY ?? this.viewBoxMinY,
       inheritedAttributes: inheritedAttributes ?? this.inheritedAttributes,
-      styleSheet: styleSheet,
+      styleSheet: styleSheet ?? this.styleSheet,
       definitions: definitions,
       imageCache: imageCache,
       svgCache: svgCache ?? this.svgCache,

@@ -10,3 +10,4 @@ export 'package:svg_painter/src/svg_model/attribute_groups/svg_viewport_attribut
 export 'package:svg_painter/src/svg_model/svg_element.dart';
 export 'package:svg_painter/src/svg_model/svg_style_sheet.dart';
 export 'package:svg_painter/src/svg_model/svg_value.dart';
+export 'package:svg_painter/src/svg_model/values/svg_media_query.dart';

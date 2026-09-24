@@ -19,6 +19,7 @@ import 'attributes/gradient_units_painter.dart';
 import 'attributes/height_painter.dart';
 import 'attributes/id_painter.dart';
 import 'attributes/mask_painter.dart';
+import 'attributes/media_painter.dart';
 import 'attributes/opacity_painter.dart';
 import 'attributes/paint_order_painter.dart';
 import 'attributes/path_length_painter.dart';
@@ -120,6 +121,7 @@ _fixtures =
         name: 'mask_attribute_painter',
         tests: macOsOverrideGoldenTests,
       ),
+      (painter: const MediaPainter(), name: 'media_painter', tests: defaultGoldenTests),
       (painter: const OpacityPainter(), name: 'opacity_painter', tests: defaultGoldenTests),
       (
         painter: const PaintOrderPainter(),
@@ -293,5 +295,25 @@ void main() {
         );
       });
     }
+
+    testWidgets('media_painter (width: 600)', (WidgetTester tester) async {
+      await testSvgPainter(
+        tester: tester,
+        painter: const MediaPainter(),
+        goldenName: 'media_painter_w600.png',
+        goldenPath: 'attributes/goldens',
+        size: const Size(600, 550),
+      );
+    });
+
+    testWidgets('media_painter (width: 800)', (WidgetTester tester) async {
+      await testSvgPainter(
+        tester: tester,
+        painter: const MediaPainter(),
+        goldenName: 'media_painter_w800.png',
+        goldenPath: 'attributes/goldens',
+        size: const Size(800, 600),
+      );
+    });
   });
 }

@@ -239,12 +239,35 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
       final String? semanticHint = svgRootElement.desc?.content ??
           svgRootElement.children.whereType<SvgDesc>().firstOrNull?.content;
 
+      final SvgStyleSheet rootSheet = (svgRootElement is SvgRoot)
+          ? svgRootElement.styleSheet
+          : const SvgStyleSheet.empty();
+
+      final conditionalCommands = <SvgMediaQuery, List<PaintCommand>>{};
+      for (final SvgMediaRule mediaRule in rootSheet.mediaRules) {
+        final mergedMediaRules = <String, Map<String, String>>{};
+        for (final MapEntry<String, Map<String, String>> entry in rootSheet.rules.entries) {
+          mergedMediaRules[entry.key] = Map<String, String>.from(entry.value);
+        }
+        for (final MapEntry<String, Map<String, String>> entry in mediaRule.rules.entries) {
+          mergedMediaRules.putIfAbsent(entry.key, () => <String, String>{}).addAll(entry.value);
+        }
+        final mediaSheet = SvgStyleSheet(mergedMediaRules);
+        final SvgPaintingContext mediaContext = rootContext.derive(styleSheet: mediaSheet);
+        final Result<List<PaintCommand>> mediaPaintingResult =
+            svgRootElement.toPaintCommands(mediaContext);
+        if (mediaPaintingResult is Success<List<PaintCommand>>) {
+          conditionalCommands[mediaRule.query] = mediaPaintingResult.value;
+        }
+      }
+
       return painterGenerator.generatePainterClass(
         className: className,
         viewBoxWidth: viewBoxWidth,
         viewBoxHeight: viewBoxHeight,
         commands: commands,
         generators: _generators,
+        conditionalCommands: conditionalCommands,
         exposureMode: exposureMode,
         propertyMapping: propertyMapping,
         semanticLabel: semanticLabel,
