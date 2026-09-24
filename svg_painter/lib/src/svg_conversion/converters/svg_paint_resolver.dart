@@ -462,13 +462,11 @@ PaintingTextStyle _resolveTextStyle(
       (fontAttrs?.style?.value == 'italic') ? .italic : .normal;
 
   final String rawFontFamily = fontAttrs?.family?.value ?? 'serif';
-  final (String finalFontFamily, String? fontPackage) = switch (rawFontFamily) {
-    'sans-serif' || 'Roboto' => ('Roboto', 'svg_painter'),
-    'serif' || 'Times' || 'Times New Roman' || 'Tinos' => ('Tinos', 'svg_painter'),
-    'Noto Serif' => ('Noto Serif', 'svg_painter'),
-    'monospace' || 'Roboto Mono' => ('Roboto Mono', 'svg_painter'),
-    _ => (rawFontFamily, null),
-  };
+  final (
+    String finalFontFamily,
+    List<String> fontFamilyFallback,
+    String? fontPackage,
+  ) = _resolveFontFamily(rawFontFamily);
 
   final PaintingTextAnchor finalAnchor = switch (fontAttrs?.anchor) {
     SvgTextAnchor.start || null => .start,
@@ -481,9 +479,60 @@ PaintingTextStyle _resolveTextStyle(
     fontWeight: finalFontWeight,
     fontStyle: finalFontStyle,
     fontFamily: finalFontFamily,
+    fontFamilyFallback: fontFamilyFallback,
     textAnchor: finalAnchor,
     fontPackage: fontPackage,
   );
+}
+
+String _cleanFontFamily(String raw) {
+  final String trimmed = raw.trim();
+  if ((trimmed.startsWith("'") && trimmed.endsWith("'")) ||
+      (trimmed.startsWith('"') && trimmed.endsWith('"'))) {
+    if (trimmed.length >= 2) {
+      return trimmed.substring(1, trimmed.length - 1).trim();
+    }
+  }
+  return trimmed;
+}
+
+(String, List<String>, String?) _resolveFontFamily(String rawFontFamily) {
+  final List<String> families = rawFontFamily
+      .split(',')
+      .map(_cleanFontFamily)
+      .where((String f) => f.isNotEmpty)
+      .toList();
+
+  if (families.isEmpty) {
+    return ('Tinos', const <String>[], 'svg_painter');
+  }
+
+  final String first = families.first;
+  switch (first) {
+    case 'sans-serif' || 'Roboto' || 'Arial' || 'Helvetica':
+      return ('Roboto', const <String>[], 'svg_painter');
+    case 'serif' || 'Times' || 'Times New Roman' || 'Tinos':
+      return ('Tinos', const <String>[], 'svg_painter');
+    case 'Noto Serif':
+      return ('Noto Serif', const <String>[], 'svg_painter');
+    case 'monospace' || 'Roboto Mono' || 'Courier' || 'Courier New':
+      return ('Roboto Mono', const <String>[], 'svg_painter');
+  }
+
+  final fallbacks = <String>[];
+  for (var i = 1; i < families.length; i++) {
+    final String candidate = families[i];
+    final String resolvedCandidate = switch (candidate) {
+      'sans-serif' || 'Roboto' || 'Arial' || 'Helvetica' => 'Roboto',
+      'serif' || 'Times' || 'Times New Roman' || 'Tinos' => 'Tinos',
+      'monospace' || 'Roboto Mono' || 'Courier' || 'Courier New' =>
+        'Roboto Mono',
+      _ => candidate,
+    };
+    fallbacks.add(resolvedCandidate);
+  }
+
+  return (first, fallbacks, null);
 }
 
 String? _extractUrlId(String? attributeValue) {

@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'shapes_line_02_f_painter.dart';
+part of 'font_family_painter.dart';
 
 // **************************************************************************
 // SvgPainterGenerator
@@ -10,8 +10,8 @@ part of 'shapes_line_02_f_painter.dart';
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
 
-class ShapesLine02FPainterWidget extends StatelessWidget {
-  const ShapesLine02FPainterWidget({
+class FontFamilyPainterWidget extends StatelessWidget {
+  const FontFamilyPainterWidget({
     super.key,
     this.width,
     this.height,
@@ -26,28 +26,25 @@ class ShapesLine02FPainterWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Semantics(
-      label: '\$RCSfile: shapes-line-02-f.svg,v \$',
-      child: CustomPaint(
-        size: Size(width ?? 480.0, height ?? 360.0),
-        painter: _$ShapesLine02FPainter(fit: fit),
-      ),
+    return CustomPaint(
+      size: Size(width ?? 200.0, height ?? 30.0),
+      painter: _$FontFamilyPainter(fit: fit),
     );
   }
 }
 
-class _$ShapesLine02FPainter extends CustomPainter {
-  const _$ShapesLine02FPainter({this.fit = BoxFit.contain});
+class _$FontFamilyPainter extends CustomPainter {
+  const _$FontFamilyPainter({this.fit = BoxFit.contain});
 
   final BoxFit fit;
 
-  Size get viewBox => const Size(480.0, 360.0);
+  Size get viewBox => const Size(200.0, 30.0);
 
   @override
   void paint(Canvas canvas, Size size) {
     final FittedSizes fittedSizes = applyBoxFit(
       fit,
-      const Size(480.0, 360.0),
+      const Size(200.0, 30.0),
       size,
     );
     final Size sourceSize = fittedSizes.source;
@@ -65,49 +62,32 @@ class _$ShapesLine02FPainter extends CustomPainter {
 
     {
       final Paint paint = Paint();
-      paint.color = const Color(0xFFFF0000);
-      paint.style = PaintingStyle.fill;
-      canvas.drawLine(
-        const Offset(100.0, 100.0),
-        const Offset(300.0, 100.0),
-        paint,
-      );
-    }
-    {
-      final Paint paint = Paint();
       paint.color = Colors.black;
-      paint.style = PaintingStyle.stroke;
-      paint.strokeWidth = 10.0;
-      canvas.drawLine(
-        const Offset(100.0, 100.0),
-        const Offset(300.0, 100.0),
-        paint,
-      );
-    }
-    canvas.save();
-    canvas.rotate(0.2617993877991494);
-    {
-      final Paint paint = Paint();
-      paint.color = const Color(0xFFFF0000);
       paint.style = PaintingStyle.fill;
-      canvas.drawLine(
-        const Offset(100.0, 100.0),
-        const Offset(300.0, 100.0),
-        paint,
-      );
+      {
+        final TextPainter tp = TextPainter(
+          text: TextSpan(
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 16.0,
+              fontWeight: FontWeight.normal,
+              fontStyle: FontStyle.normal,
+              fontFamily: 'Roboto',
+              package: 'svg_painter',
+            ),
+            children: <InlineSpan>[TextSpan(text: 'Sans serif')],
+          ),
+          textDirection: TextDirection.ltr,
+        )..layout();
+        tp.paint(
+          canvas,
+          Offset(
+            0.0,
+            20.0 - tp.computeDistanceToActualBaseline(TextBaseline.alphabetic),
+          ),
+        );
+      }
     }
-    {
-      final Paint paint = Paint();
-      paint.color = Colors.black;
-      paint.style = PaintingStyle.stroke;
-      paint.strokeWidth = 10.0;
-      canvas.drawLine(
-        const Offset(100.0, 100.0),
-        const Offset(300.0, 100.0),
-        paint,
-      );
-    }
-    canvas.restore();
     {
       final Paint paint = Paint();
       paint.color = Colors.black;
@@ -117,31 +97,24 @@ class _$ShapesLine02FPainter extends CustomPainter {
           text: TextSpan(
             style: TextStyle(
               color: Colors.black,
-              fontSize: 32.0,
+              fontSize: 16.0,
               fontWeight: FontWeight.normal,
               fontStyle: FontStyle.normal,
-              fontFamily: 'SVGFreeSansASCII',
-              fontFamilyFallback: <String>['Roboto'],
+              fontFamily: 'Roboto Mono',
+              package: 'svg_painter',
             ),
-            children: <InlineSpan>[TextSpan(text: '\$Revision: 1.4 \$')],
+            children: <InlineSpan>[TextSpan(text: 'Monospace')],
           ),
           textDirection: TextDirection.ltr,
         )..layout();
         tp.paint(
           canvas,
           Offset(
-            10.0,
-            340.0 - tp.computeDistanceToActualBaseline(TextBaseline.alphabetic),
+            100.0,
+            20.0 - tp.computeDistanceToActualBaseline(TextBaseline.alphabetic),
           ),
         );
       }
-    }
-    {
-      final Paint paint = Paint();
-      paint.color = Colors.black;
-      paint.style = PaintingStyle.stroke;
-      paint.strokeWidth = 1.0;
-      canvas.drawRect(Rect.fromLTWH(1.0, 1.0, 478.0, 358.0), paint);
     }
     canvas.restore();
   }
@@ -161,7 +134,7 @@ class _$ShapesLine02FPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(covariant _$ShapesLine02FPainter oldDelegate) {
+  bool shouldRepaint(covariant _$FontFamilyPainter oldDelegate) {
     if (fit == oldDelegate.fit) {
       return false;
     } else {

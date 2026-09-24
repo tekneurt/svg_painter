@@ -92,6 +92,7 @@ final class PaintingTextStyle {
     required this.fontFamily,
     this.textAnchor = PaintingTextAnchor.start,
     this.fontPackage,
+    this.fontFamilyFallback = const <String>[],
   });
 
   /// The size of the font in user units.
@@ -112,6 +113,9 @@ final class PaintingTextStyle {
   /// The package containing the font asset, or null if the font is in the app root.
   final String? fontPackage;
 
+  /// The fallback families of the font.
+  final List<String> fontFamilyFallback;
+
   @override
   String toString() {
     final buffer = StringBuffer('PaintingTextStyle(')
@@ -124,6 +128,9 @@ final class PaintingTextStyle {
     }
     if (fontPackage != null) {
       buffer.write(', package: $fontPackage');
+    }
+    if (fontFamilyFallback.isNotEmpty) {
+      buffer.write(', fallback: $fontFamilyFallback');
     }
     buffer.write(')');
     return buffer.toString();

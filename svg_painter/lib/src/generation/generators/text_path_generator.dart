@@ -118,6 +118,12 @@ class TextPathGenerator extends ShapeGenerator<DrawTextPath> {
                   if (textStyle.fontFamily case final String family) {
                     buffer.writeln("fontFamily: '${escapeDartStringLiteral(family)}',");
                   }
+                  if (textStyle.fontFamilyFallback.isNotEmpty) {
+                    final String fallbacks = textStyle.fontFamilyFallback
+                        .map((String f) => "'${escapeDartStringLiteral(f)}'")
+                        .join(', ');
+                    buffer.writeln('fontFamilyFallback: <String>[$fallbacks],');
+                  }
                   if (textStyle.fontPackage != null) {
                     buffer.writeln("package: '${textStyle.fontPackage}',");
                   }

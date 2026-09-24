@@ -287,6 +287,37 @@ void main() {
       expect(style.text?.fontPackage, isNull);
     });
 
+    test('should resolve comma-separated font family list to bundled font when alias matches', () {
+      // Arrange & Act
+      final PaintingStyle style = resolvePaint(
+        emptyContext,
+        tagName: 'text',
+        coreAttributes: const SvgCoreAttributes(
+          inlineStyle: 'font-family: Arial, Helvetica, sans-serif',
+        ),
+      );
+
+      // Assert
+      expect(style.text?.fontFamily, 'Roboto');
+      expect(style.text?.fontPackage, 'svg_painter');
+    });
+
+    test('should preserve custom font family with fallbacks when first family is unknown', () {
+      // Arrange & Act
+      final PaintingStyle style = resolvePaint(
+        emptyContext,
+        tagName: 'text',
+        coreAttributes: const SvgCoreAttributes(
+          inlineStyle: 'font-family: "Custom Brand Font", Helvetica, sans-serif',
+        ),
+      );
+
+      // Assert
+      expect(style.text?.fontFamily, 'Custom Brand Font');
+      expect(style.text?.fontFamilyFallback, <String>['Roboto', 'Roboto']);
+      expect(style.text?.fontPackage, isNull);
+    });
+
     test('should map intermediate SvgFontWeightNumeric values', () {
       final Map<SvgFontWeightNumeric, PaintingFontWeight> weights = {
         const SvgFontWeightNumeric(150): PaintingFontWeight.w200,

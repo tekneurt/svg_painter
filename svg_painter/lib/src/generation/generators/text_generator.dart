@@ -221,6 +221,12 @@ class TextGenerator extends ShapeGenerator<DrawText> {
             buffer.writeln('fontWeight: ${textStyle.fontWeight.toFlutterString()},');
             buffer.writeln('fontStyle: ${textStyle.fontStyle.toFlutterString()},');
             buffer.writeln("fontFamily: '${textStyle.fontFamily}',");
+            if (textStyle.fontFamilyFallback.isNotEmpty) {
+              final String fallbacks = textStyle.fontFamilyFallback
+                  .map((String f) => "'$f'")
+                  .join(', ');
+              buffer.writeln('fontFamilyFallback: <String>[$fallbacks],');
+            }
             if (textStyle.fontPackage != null) {
               buffer.writeln("package: '${textStyle.fontPackage}',");
             }
