@@ -18,7 +18,9 @@ import 'attributes/gradient_transform_painter.dart';
 import 'attributes/gradient_units_painter.dart';
 import 'attributes/height_painter.dart';
 import 'attributes/id_painter.dart';
+import 'attributes/mask_content_units_painter.dart';
 import 'attributes/mask_painter.dart';
+import 'attributes/mask_units_painter.dart';
 import 'attributes/media_painter.dart';
 import 'attributes/opacity_painter.dart';
 import 'attributes/paint_order_painter.dart';
@@ -120,6 +122,16 @@ _fixtures =
         painter: const MaskAttributePainter(),
         name: 'mask_attribute_painter',
         tests: macOsOverrideGoldenTests,
+      ),
+      (
+        painter: const MaskContentUnitsPainter(),
+        name: 'mask_content_units_painter',
+        tests: defaultGoldenTests,
+      ),
+      (
+        painter: const MaskUnitsPainter(),
+        name: 'mask_units_painter',
+        tests: defaultGoldenTests,
       ),
       (painter: const MediaPainter(), name: 'media_painter', tests: defaultGoldenTests),
       (painter: const OpacityPainter(), name: 'opacity_painter', tests: defaultGoldenTests),

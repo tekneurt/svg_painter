@@ -234,20 +234,6 @@ _fixtures =
         widget: null,
         nativeSize: null,
       ),
-      (
-        painter: const MaskUnitsPainter(),
-        name: 'mask_units_painter',
-        tests: defaultGoldenTests,
-        widget: null,
-        nativeSize: null,
-      ),
-      (
-        painter: const MaskContentUnitsPainter(),
-        name: 'mask_content_units_painter',
-        tests: defaultGoldenTests,
-        widget: null,
-        nativeSize: null,
-      ),
     ];
 
 void main() {

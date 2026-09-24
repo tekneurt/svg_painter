@@ -13,6 +13,8 @@ export 'gradient_units.dart';
 export 'height.dart';
 export 'id.dart';
 export 'mask.dart';
+export 'mask_content_units.dart';
+export 'mask_units.dart';
 export 'media.dart';
 export 'opacity.dart';
 export 'paint_order.dart';
