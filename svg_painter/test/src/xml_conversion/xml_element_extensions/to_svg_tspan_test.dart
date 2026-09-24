@@ -56,5 +56,33 @@ void main() {
         <double>[40.0, 60.0, 80.0],
       );
     });
+
+    test('should parse list of coordinates for dx and dy on tspan', () {
+      // Arrange
+      final document = XmlDocument.parse(
+        '<tspan dx="0 10% 20%" dy="10 20 30">SVG</tspan>',
+      );
+      final XmlElement element = document.rootElement;
+
+      // Act
+      final Result<SvgTspan> result = element.toSvgTspan();
+
+      // Assert
+      expect(result, isA<Success<SvgTspan>>());
+      final SvgTspan tspan = (result as Success<SvgTspan>).value;
+      expect(tspan.dx, isA<SvgLengthPercentageList>());
+      final List<SvgLengthPercentage>? dxList = tspan.dx?.toList();
+      expect(dxList, hasLength(3));
+      expect((dxList![0] as SvgLength).value, 0.0);
+      expect((dxList[1] as SvgPercentage).value, 10.0);
+      expect((dxList[2] as SvgPercentage).value, 20.0);
+
+      expect(tspan.dy, isA<SvgLengthPercentageList>());
+      final List<SvgLengthPercentage>? dyList = tspan.dy?.toList();
+      expect(dyList, hasLength(3));
+      expect((dyList![0] as SvgLength).value, 10.0);
+      expect((dyList[1] as SvgLength).value, 20.0);
+      expect((dyList[2] as SvgLength).value, 30.0);
+    });
   });
 }

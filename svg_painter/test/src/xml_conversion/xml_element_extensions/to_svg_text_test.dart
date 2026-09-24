@@ -74,5 +74,33 @@ void main() {
         <double>[40.0, 60.0, 80.0],
       );
     });
+
+    test('should parse list of coordinates for dx and dy attributes', () {
+      // Arrange
+      final document = XmlDocument.parse(
+        '<text dx="0 10% 20%" dy="10 20 30">SVG</text>',
+      );
+      final XmlElement element = document.rootElement;
+
+      // Act
+      final Result<SvgText> result = element.toSvgText();
+
+      // Assert
+      expect(result, isA<Success<SvgText>>());
+      final SvgText text = (result as Success<SvgText>).value;
+      expect(text.dx, isA<SvgLengthPercentageList>());
+      final List<SvgLengthPercentage>? dxList = text.dx?.toList();
+      expect(dxList, hasLength(3));
+      expect((dxList![0] as SvgLength).value, 0.0);
+      expect((dxList[1] as SvgPercentage).value, 10.0);
+      expect((dxList[2] as SvgPercentage).value, 20.0);
+
+      expect(text.dy, isA<SvgLengthPercentageList>());
+      final List<SvgLengthPercentage>? dyList = text.dy?.toList();
+      expect(dyList, hasLength(3));
+      expect((dyList![0] as SvgLength).value, 10.0);
+      expect((dyList[1] as SvgLength).value, 20.0);
+      expect((dyList[2] as SvgLength).value, 30.0);
+    });
   });
 }

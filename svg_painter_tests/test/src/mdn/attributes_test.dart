@@ -90,7 +90,9 @@ _fixtures =
         },
       ),
       (painter: const DxPainter(), name: 'dx_painter', tests: macOsOverrideGoldenTests),
+      (painter: const Dx2Painter(), name: 'dx_2_painter', tests: defaultGoldenTests),
       (painter: const DyPainter(), name: 'dy_painter', tests: macOsOverrideGoldenTests),
+      (painter: const Dy2Painter(), name: 'dy_2_painter', tests: defaultGoldenTests),
       (
         painter: const FillOpacityPainter(),
         name: 'fill_opacity_painter',

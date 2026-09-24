@@ -33,8 +33,7 @@ extension ToSvgValue on XmlElement {
       return null;
     } else {
       final SvgBaseValue? parsedValue = switch (attributeName) {
-        .x ||
-        .y => attributeValue.toSvgLengthPercentageOrList(),
+        .x || .y || .dx || .dy => attributeValue.toSvgLengthPercentageOrList(),
         .x1 ||
         .y1 ||
         .x2 ||
@@ -75,7 +74,6 @@ extension ToSvgValue on XmlElement {
         .textAnchor => attributeValue.toSvgTextAnchor(),
         .paintOrder => attributeValue.toSvgPaintOrder(),
         .vectorEffect => attributeValue.toSvgVectorEffect(),
-        .dx || .dy => attributeValue.toSvgLengthPercentage(),
         .rotate => attributeValue.toSvgNumber(),
         .gradientUnits => attributeValue.toSvgGradientUnits(),
         .spreadMethod => throw UnimplementedError('spreadMethod is not yet implemented'),

@@ -84,14 +84,21 @@ class TextGenerator extends ShapeGenerator<DrawText> {
         buffer.writeln('double currentY = ${command.y};');
         buffer.writeln('TextPainter tp;');
         for (final chunk in chunks) {
-          if (chunk.x != null) {
-            buffer.writeln('currentX = ${chunk.x!};');
+          if (chunk.x case final double x) {
+            buffer.writeln('currentX = $x;');
           }
-          if (chunk.y != null) {
-            buffer.writeln('currentY = ${chunk.y!};');
+          if (chunk.dx case final double dx) {
+            buffer.writeln('currentX += $dx;');
+          }
+          if (chunk.y case final double y) {
+            buffer.writeln('currentY = $y;');
+          }
+          if (chunk.dy case final double dy) {
+            buffer.writeln('currentY += $dy;');
           }
           final PaintingStyle chunkStyle = chunk.style ?? command.style;
-          final PaintingTextAnchor anchor = chunkStyle.text?.textAnchor ??
+          final PaintingTextAnchor anchor =
+              chunkStyle.text?.textAnchor ??
               command.style.text?.textAnchor ??
               PaintingTextAnchor.start;
 

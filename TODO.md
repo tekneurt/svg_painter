@@ -278,6 +278,7 @@
 - [x] **Token-Based Global Coloring**: Allow a single property to control all occurrences of a specific color across the entire SVG, including both solid fills/strokes AND individual gradient stops (e.g., changing `red` to `yellow` globally).
 - [ ] **Advanced Pathing**: `<marker>` support and `context-fill`/`context-stroke` keywords.
 - [ ] **Text along Curves**: `<textPath>` implementation.
+- [ ] **Text Coordinate Architecture**: Replace `hasMultiCoordinates` with a cleaner, unified solution for text and tspan coordinate and shift distribution.
 - [ ] **Containers**: `<switch>` for conditional rendering.
 - [ ] **Basic Filters**: `<filter>`, `<feGaussianBlur>`, `<feOffset>`, `<feDropShadow>`, `<feMerge>`, `<feFlood>`.
 - [ ] **Patterns**: `<pattern>` for repeating fills.

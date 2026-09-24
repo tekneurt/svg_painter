@@ -8,8 +8,8 @@ import '../svg_value_extensions/_svg_value_extensions.dart';
 extension SvgTextToPaintCommands on SvgText {
   /// Converts this [SvgText] to a list of [PaintCommand]s.
   Result<List<PaintCommand>> toPaintCommands(SvgPaintingContext context) {
-    final double resolvedDx = dx?.resolve(context, .horizontal) ?? 0.0;
-    final double resolvedDy = dy?.resolve(context, .vertical) ?? 0.0;
+    final double resolvedDx = primaryDx?.resolve(context, .horizontal) ?? 0.0;
+    final double resolvedDy = primaryDy?.resolve(context, .vertical) ?? 0.0;
     final double finalX = primaryX.resolve(context, .horizontal) + resolvedDx;
     final double finalY = primaryY.resolve(context, .vertical) + resolvedDy;
 
@@ -19,8 +19,7 @@ extension SvgTextToPaintCommands on SvgText {
       coreAttributes: coreAttributes,
       presentationAttributes: presentationAttributes,
     );
-    final SvgPaintingContext textContext =
-        context.derive(inheritedAttributes: textResolvedAttrs);
+    final SvgPaintingContext textContext = context.derive(inheritedAttributes: textResolvedAttrs);
 
     final PaintingStyle style = resolvePaint(
       context,
@@ -67,7 +66,8 @@ extension SvgTextToPaintCommands on SvgText {
         presentationAttributes: textPathChild.presentationAttributes,
       );
 
-      final double startOffset = textPathChild.startOffset?.resolve(pathContext, .horizontal) ?? 0.0;
+      final double startOffset =
+          textPathChild.startOffset?.resolve(pathContext, .horizontal) ?? 0.0;
       final String text = _extractText(textPathChild.children);
 
       return Success<List<PaintCommand>>(<PaintCommand>[
@@ -82,9 +82,17 @@ extension SvgTextToPaintCommands on SvgText {
     }
 
     final bool hasMultiCoordinates =
-        x.toList().length > 1 || y.toList().length > 1;
+        x.toList().length > 1 ||
+        y.toList().length > 1 ||
+        (dx?.toList().length ?? 0) > 1 ||
+        (dy?.toList().length ?? 0) > 1;
     final bool hasPositionedTspan = children.any(
-      (SvgTextContent c) => c is SvgTspan && (c.x != null || c.y != null),
+      (SvgTextContent c) =>
+          c is SvgTspan &&
+          (c.x != null ||
+              c.y != null ||
+              (c.dx?.toList().length ?? 0) > 1 ||
+              (c.dy?.toList().length ?? 0) > 1),
     );
 
     if (hasPositionedTspan) {
@@ -98,10 +106,13 @@ extension SvgTextToPaintCommands on SvgText {
             coreAttributes: child.coreAttributes,
             presentationAttributes: child.presentationAttributes,
           );
-          final double spanDx = child.dx?.resolve(spanContext, .horizontal) ?? 0.0;
-          final double spanDy = child.dy?.resolve(spanContext, .vertical) ?? 0.0;
+          final double spanDx = child.primaryDx?.resolve(spanContext, .horizontal) ?? 0.0;
+          final double spanDy = child.primaryDy?.resolve(spanContext, .vertical) ?? 0.0;
           final bool childHasMulti =
-              (child.x?.toList().length ?? 0) > 1 || (child.y?.toList().length ?? 0) > 1;
+              (child.x?.toList().length ?? 0) > 1 ||
+              (child.y?.toList().length ?? 0) > 1 ||
+              (child.dx?.toList().length ?? 0) > 1 ||
+              (child.dy?.toList().length ?? 0) > 1;
 
           if (childHasMulti) {
             final String childText = _extractText(child.children);
@@ -111,8 +122,8 @@ extension SvgTextToPaintCommands on SvgText {
               style: spanStyle,
               xCoord: child.x,
               yCoord: child.y,
-              baseDx: spanDx,
-              baseDy: spanDy,
+              dxCoord: child.dx,
+              dyCoord: child.dy,
             );
             final double startX =
                 (child.primaryX ?? primaryX).resolve(spanContext, .horizontal) + spanDx;
@@ -166,8 +177,8 @@ extension SvgTextToPaintCommands on SvgText {
         style: style,
         xCoord: x,
         yCoord: y,
-        baseDx: resolvedDx,
-        baseDy: resolvedDy,
+        dxCoord: dx,
+        dyCoord: dy,
       );
       return Success<List<PaintCommand>>(<PaintCommand>[
         DrawText(
@@ -206,30 +217,40 @@ extension SvgTextToPaintCommands on SvgText {
     required PaintingStyle style,
     SvgLengthPercentageOrList? xCoord,
     SvgLengthPercentageOrList? yCoord,
-    double? baseDx,
-    double? baseDy,
+    SvgLengthPercentageOrList? dxCoord,
+    SvgLengthPercentageOrList? dyCoord,
   }) {
     final chunks = <PaintingTextChunk>[];
     final List<SvgLengthPercentage>? xValues = xCoord?.toList();
     final List<SvgLengthPercentage>? yValues = yCoord?.toList();
+    final List<SvgLengthPercentage>? dxValues = dxCoord?.toList();
+    final List<SvgLengthPercentage>? dyValues = dyCoord?.toList();
     final List<String> characters = text.split('');
 
     for (var i = 0; i < characters.length; i++) {
       final String char = characters[i];
       double? chunkX;
       if (xValues != null && i < xValues.length) {
-        chunkX = xValues[i].resolve(context, .horizontal) + (baseDx ?? 0.0);
-      } else if (i == 0) {
-        chunkX = (xCoord?.primary ?? const SvgLength(0.0)).resolve(context, .horizontal) +
-            (baseDx ?? 0.0);
+        chunkX = xValues[i].resolve(context, .horizontal);
+      } else if (i == 0 && xCoord != null) {
+        chunkX = xCoord.primary.resolve(context, .horizontal);
       }
 
       double? chunkY;
       if (yValues != null && i < yValues.length) {
-        chunkY = yValues[i].resolve(context, .vertical) + (baseDy ?? 0.0);
-      } else if (i == 0) {
-        chunkY = (yCoord?.primary ?? const SvgLength(0.0)).resolve(context, .vertical) +
-            (baseDy ?? 0.0);
+        chunkY = yValues[i].resolve(context, .vertical);
+      } else if (i == 0 && yCoord != null) {
+        chunkY = yCoord.primary.resolve(context, .vertical);
+      }
+
+      double? chunkDx;
+      if (dxValues != null && i < dxValues.length) {
+        chunkDx = dxValues[i].resolve(context, .horizontal);
+      }
+
+      double? chunkDy;
+      if (dyValues != null && i < dyValues.length) {
+        chunkDy = dyValues[i].resolve(context, .vertical);
       }
 
       chunks.add(
@@ -237,6 +258,8 @@ extension SvgTextToPaintCommands on SvgText {
           text: char,
           x: chunkX,
           y: chunkY,
+          dx: chunkDx,
+          dy: chunkDy,
           style: style,
         ),
       );

@@ -47,18 +47,50 @@ void main() {
       );
     });
 
-    test('should generate sequential text painters with currentX advancement when chunks are provided', () {
+    test(
+      'should generate sequential text painters with currentX advancement when chunks are provided',
+      () {
+        // Arrange
+        const generator = TextGenerator();
+        const command = DrawText(
+          x: 50.0,
+          y: 90.0,
+          rootSpan: PaintingTextSpan(text: 'SVG'),
+          style: textStyle,
+          chunks: <PaintingTextChunk>[
+            PaintingTextChunk(text: 'S', x: 50.0, y: 90.0),
+            PaintingTextChunk(text: 'V', x: 100.0),
+            PaintingTextChunk(text: 'G', x: 150.0),
+          ],
+        );
+        final buffer = GeneratorBuffer();
+
+        // Act
+        generator.generate(command, buffer, painterClassName: 'TestPainter');
+
+        // Assert
+        final output = buffer.toString();
+        expect(output, contains('double currentX = 50.0;'));
+        expect(output, contains('double currentY = 90.0;'));
+        expect(output, contains('currentX += tp.width;'));
+        expect(output, contains("text: 'S'"));
+        expect(output, contains("text: 'V'"));
+        expect(output, contains("text: 'G'"));
+      },
+    );
+
+    test('should apply dx and dy offsets when chunks contain dx and dy', () {
       // Arrange
       const generator = TextGenerator();
       const command = DrawText(
-        x: 50.0,
-        y: 90.0,
+        x: 10.0,
+        y: 20.0,
         rootSpan: PaintingTextSpan(text: 'SVG'),
         style: textStyle,
         chunks: <PaintingTextChunk>[
-          PaintingTextChunk(text: 'S', x: 50.0, y: 90.0),
-          PaintingTextChunk(text: 'V', x: 100.0),
-          PaintingTextChunk(text: 'G', x: 150.0),
+          PaintingTextChunk(text: 'S', x: 10.0, y: 20.0, dx: 5.0, dy: 6.0),
+          PaintingTextChunk(text: 'V', dx: 15.0, dy: 16.0),
+          PaintingTextChunk(text: 'G', dx: 25.0, dy: 26.0),
         ],
       );
       final buffer = GeneratorBuffer();
@@ -68,12 +100,14 @@ void main() {
 
       // Assert
       final output = buffer.toString();
-      expect(output, contains('double currentX = 50.0;'));
-      expect(output, contains('double currentY = 90.0;'));
-      expect(output, contains('currentX += tp.width;'));
-      expect(output, contains("text: 'S'"));
-      expect(output, contains("text: 'V'"));
-      expect(output, contains("text: 'G'"));
+      expect(output, contains('currentX = 10.0;'));
+      expect(output, contains('currentX += 5.0;'));
+      expect(output, contains('currentY = 20.0;'));
+      expect(output, contains('currentY += 6.0;'));
+      expect(output, contains('currentX += 15.0;'));
+      expect(output, contains('currentY += 16.0;'));
+      expect(output, contains('currentX += 25.0;'));
+      expect(output, contains('currentY += 26.0;'));
     });
 
     test('should escape single quotes in text', () {
