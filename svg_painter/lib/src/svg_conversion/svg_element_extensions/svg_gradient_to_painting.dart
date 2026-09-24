@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import '../../base/_base.dart';
 import '../../painting_model/_painting_model.dart';
 import '../../svg_model/_svg_model.dart';
@@ -30,11 +32,27 @@ extension SvgGradientToPainting on SvgGradient {
     final SvgOrientation yOrient = isUserUnits ? .vertical : .unit;
     final SvgOrientation rOrient = isUserUnits ? .normalized : .unit;
 
+    double resolveCoord(SvgLengthPercentage lp, SvgOrientation orient) {
+      if (isUserUnits) {
+        return lp.resolve(context, orient);
+      } else {
+        if (lp is SvgLength) {
+          if (lp.unit == SvgLengthUnit.none || lp.unit == SvgLengthUnit.px) {
+            return lp.value;
+          } else {
+            return lp.toDouble(context);
+          }
+        } else {
+          return lp.resolve(context, orient);
+        }
+      }
+    }
+
     if (self is SvgLinearGradient) {
-      double x1 = self.x1.resolve(context, xOrient);
-      double y1 = self.y1.resolve(context, yOrient);
-      double x2 = self.x2.resolve(context, xOrient);
-      double y2 = self.y2.resolve(context, yOrient);
+      double x1 = resolveCoord(self.x1, xOrient);
+      double y1 = resolveCoord(self.y1, yOrient);
+      double x2 = resolveCoord(self.x2, xOrient);
+      double y2 = resolveCoord(self.y2, yOrient);
 
       if (isUserUnits) {
         // Normalize absolute user units to 0..1 relative to viewBox.
@@ -58,24 +76,22 @@ extension SvgGradientToPainting on SvgGradient {
         ),
       );
     } else if (self is SvgRadialGradient) {
-      double cx = self.cx.resolve(context, xOrient);
-      double cy = self.cy.resolve(context, yOrient);
-      double r = self.r.resolve(context, rOrient);
-      double fx = self.fx.resolve(context, xOrient);
-      double fy = self.fy.resolve(context, yOrient);
-      double fr = self.fr.resolve(context, rOrient);
+      double cx = resolveCoord(self.cx, xOrient);
+      double cy = resolveCoord(self.cy, yOrient);
+      double r = resolveCoord(self.r, rOrient);
+      double fx = resolveCoord(self.fx, xOrient);
+      double fy = resolveCoord(self.fy, yOrient);
+      double fr = resolveCoord(self.fr, rOrient);
 
       if (isUserUnits) {
         // Normalize absolute user units to 0..1 relative to viewBox.
         cx /= context.viewBoxWidth;
         cy /= context.viewBoxHeight;
-        // Radius resolution for radial gradients relative to a non-square viewBox is complex.
-        // For now we use the normalized diagonal factor which matches our radial resolution logic.
-        final double diag = context.viewBoxNormalizedDiagonal;
-        r /= diag;
+        final double shortestSide = math.min(context.viewBoxWidth, context.viewBoxHeight);
+        r /= shortestSide;
         fx /= context.viewBoxWidth;
         fy /= context.viewBoxHeight;
-        fr /= diag;
+        fr /= shortestSide;
       }
 
       return Success<PaintCommand>(
@@ -105,7 +121,7 @@ extension on List<SvgStop> {
   List<GradientStop> toPaintingStops(SvgPaintingContext context) {
     return map((SvgStop stop) {
       final double offset = stop.offset.resolve(context, SvgOrientation.unit);
-      final double opacity = stop.stopOpacity.resolve(context, SvgOrientation.unit);
+      final double opacity = stop.stopOpacity.resolveOpacity(context);
 
       return GradientStop(offset: offset, colorArgb: stop.stopColor.toFillArgb(), opacity: opacity);
     }).toList();

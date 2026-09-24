@@ -14,6 +14,7 @@ import 'svg_value.dart';
 
 // Base
 part 'elements/base/svg_definition_element.dart';
+part 'elements/base/svg_descriptive.dart';
 part 'elements/base/svg_fill_attributable.dart';
 part 'elements/base/svg_font_attributable.dart';
 part 'elements/base/svg_geometry_attributable.dart';
@@ -66,6 +67,7 @@ part 'elements/style/svg_style.dart';
 // Text
 part 'elements/text/svg_text.dart';
 part 'elements/text/svg_text_content.dart';
+part 'elements/text/svg_text_path.dart';
 part 'elements/text/svg_tspan.dart';
 
 /// The base class for all SVG elements in the domain model.

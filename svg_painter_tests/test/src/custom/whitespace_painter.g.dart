@@ -69,7 +69,7 @@ class _$WhitespacePainter extends CustomPainter {
           text: TextSpan(
             style: TextStyle(
               color: Colors.black,
-              fontSize: 12.0,
+              fontSize: 16.0,
               fontWeight: FontWeight.normal,
               fontStyle: FontStyle.normal,
               fontFamily: 'Roboto Mono',
@@ -99,10 +99,10 @@ class _$WhitespacePainter extends CustomPainter {
           text: TextSpan(
             style: TextStyle(
               color: Colors.black,
-              fontSize: 12.0,
+              fontSize: 16.0,
               fontWeight: FontWeight.normal,
               fontStyle: FontStyle.normal,
-              fontFamily: 'Roboto',
+              fontFamily: 'Tinos',
               package: 'svg_painter',
             ),
             children: <InlineSpan>[

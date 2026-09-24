@@ -11,6 +11,7 @@ class WidgetClassGenerator {
     required String painterClassName,
     required Map<String, String> activeFillProperties,
     required Map<String, String> activeStrokeProperties,
+    Map<String, String> activeColorTokens = const <String, String>{},
     required double viewBoxWidth,
     required double viewBoxHeight,
     required bool hasCurrentColor,
@@ -35,6 +36,7 @@ class WidgetClassGenerator {
           final allProps = <String>{
             ...activeFillProperties.values,
             ...activeStrokeProperties.values,
+            ...activeColorTokens.values,
           };
           for (final prop in allProps) {
             buffer.writeln('this.$prop,');
@@ -52,9 +54,14 @@ class WidgetClassGenerator {
         final allProps = <String>{
           ...activeFillProperties.values,
           ...activeStrokeProperties.values,
+          ...activeColorTokens.values,
         };
         for (final prop in allProps) {
-          buffer.writeln('final Object? $prop;');
+          if (activeColorTokens.values.contains(prop)) {
+            buffer.writeln('final Color? $prop;');
+          } else {
+            buffer.writeln('final Object? $prop;');
+          }
         }
 
         buffer.writeln();
@@ -113,6 +120,7 @@ class WidgetClassGenerator {
           final allProps = <String>{
             ...activeFillProperties.values,
             ...activeStrokeProperties.values,
+            ...activeColorTokens.values,
           };
           for (final prop in allProps) {
             buffer.writeln('this.$prop,');
@@ -130,9 +138,14 @@ class WidgetClassGenerator {
         final allProps = <String>{
           ...activeFillProperties.values,
           ...activeStrokeProperties.values,
+          ...activeColorTokens.values,
         };
         for (final prop in allProps) {
-          buffer.writeln('final Object? $prop;');
+          if (activeColorTokens.values.contains(prop)) {
+            buffer.writeln('final Color? $prop;');
+          } else {
+            buffer.writeln('final Object? $prop;');
+          }
         }
 
         buffer.writeln();
@@ -191,6 +204,7 @@ class WidgetClassGenerator {
                   final allProps = <String>{
                     ...activeFillProperties.values,
                     ...activeStrokeProperties.values,
+                    ...activeColorTokens.values,
                   };
                   for (final prop in allProps) {
                     buffer.writeln('$prop: widget.$prop,');
@@ -214,6 +228,7 @@ class WidgetClassGenerator {
                 final allProps = <String>{
                   ...activeFillProperties.values,
                   ...activeStrokeProperties.values,
+                  ...activeColorTokens.values,
                 };
                 for (final prop in allProps) {
                   buffer.writeln('$prop: widget.$prop,');

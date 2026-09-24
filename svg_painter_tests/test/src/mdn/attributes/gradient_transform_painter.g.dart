@@ -63,7 +63,7 @@ class _$GradientTransformPainter extends CustomPainter {
 
     final Gradient _grad_gradient1 = RadialGradient(
       center: Alignment(-0.5238095238095238, 0.0),
-      radius: 0.3040089501552408,
+      radius: 0.5,
       focal: Alignment(-0.5238095238095238, 0.0),
       focalRadius: 0.0,
       colors: <Color>[
@@ -76,7 +76,7 @@ class _$GradientTransformPainter extends CustomPainter {
     );
     final Gradient _grad_gradient2 = RadialGradient(
       center: Alignment(-0.5238095238095238, 0.0),
-      radius: 0.3040089501552408,
+      radius: 0.5,
       focal: Alignment(-0.5238095238095238, 0.0),
       focalRadius: 0.0,
       colors: <Color>[

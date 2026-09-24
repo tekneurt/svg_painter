@@ -9,13 +9,3 @@ part 'mask_painter.g.dart';
 class MaskPainter extends _$MaskPainter {
   const MaskPainter();
 }
-
-@SvgCodePainter(maskUnitsExample)
-class MaskUnitsPainter extends _$MaskUnitsPainter {
-  const MaskUnitsPainter();
-}
-
-@SvgCodePainter(maskContentUnitsExample)
-class MaskContentUnitsPainter extends _$MaskContentUnitsPainter {
-  const MaskContentUnitsPainter();
-}

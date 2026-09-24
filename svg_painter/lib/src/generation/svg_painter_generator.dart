@@ -56,6 +56,18 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
       }
     }
 
+    final ConstantReader colorMappingReader = annotation.read('colorMapping');
+    SvgColorMapping colorMapping = SvgColorMapping.material;
+    if (!colorMappingReader.isNull) {
+      final int? index = colorMappingReader.objectValue.getField('index')?.toIntValue();
+      if (index != null && index >= 0 && index < SvgColorMapping.values.length) {
+        colorMapping = SvgColorMapping.values[index];
+      }
+    }
+
+    final ConstantReader tokenColorsReader = annotation.read('tokenColors');
+    final bool tokenColors = tokenColorsReader.isBool && tokenColorsReader.boolValue;
+
     final propertyMapping = <String, String>{};
     if (annotation.read('propertyMapping').isNull) {
       // No mapping provided
@@ -78,6 +90,8 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
       painterClassName: painterClassName,
       exposureMode: exposureMode,
       propertyMapping: propertyMapping,
+      colorMapping: colorMapping,
+      tokenColors: tokenColors,
       buildStep: buildStep,
     );
   }
@@ -106,6 +120,7 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
     DrawOval: OvalGenerator(),
     DrawRect: RectGenerator(),
     DrawText: TextGenerator(),
+    DrawTextPath: TextPathGenerator(),
     DrawGroup: GroupGenerator(),
     DrawPath: PathGenerator(),
     DrawLine: LineGenerator(),
@@ -126,6 +141,8 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
     String? painterClassName,
     SvgExposureMode exposureMode = SvgExposureMode.none,
     Map<String, String> propertyMapping = const <String, String>{},
+    SvgColorMapping colorMapping = SvgColorMapping.material,
+    bool tokenColors = false,
     BuildStep? buildStep,
   }) async {
     final Result<XmlDocument> parseResult = svgContent.toXmlDocument();
@@ -195,10 +212,10 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
             linejoin: svgRootElement.strokeAttributes?.linejoin ?? SvgStrokeLinejoin.miter,
           ),
           font: SvgFontAttributes(
-            size: svgRootElement.fontAttributes?.size ?? const SvgLength(12.0),
+            size: svgRootElement.fontAttributes?.size ?? const SvgLength(16.0),
             weight: svgRootElement.fontAttributes?.weight ?? const SvgFontWeightNormal(),
             style: svgRootElement.fontAttributes?.style ?? SvgFontStyle.normal,
-            family: svgRootElement.fontAttributes?.family ?? const SvgFontFamily('sans-serif'),
+            family: svgRootElement.fontAttributes?.family ?? const SvgFontFamily('serif'),
           ),
         ),
         styleSheet: (svgRootElement is SvgRoot) ? svgRootElement.styleSheet : const SvgStyleSheet.empty(),
@@ -217,14 +234,32 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
 
       final String className = painterClassName ?? r'_$' + elementName;
 
-      final String? semanticLabel = svgRootElement.children
-          .whereType<SvgTitle>()
-          .firstOrNull
-          ?.content;
-      final String? semanticHint = svgRootElement.children
-          .whereType<SvgDesc>()
-          .firstOrNull
-          ?.content;
+      final String? semanticLabel = svgRootElement.title?.content ??
+          svgRootElement.children.whereType<SvgTitle>().firstOrNull?.content;
+      final String? semanticHint = svgRootElement.desc?.content ??
+          svgRootElement.children.whereType<SvgDesc>().firstOrNull?.content;
+
+      final SvgStyleSheet rootSheet = (svgRootElement is SvgRoot)
+          ? svgRootElement.styleSheet
+          : const SvgStyleSheet.empty();
+
+      final conditionalCommands = <SvgMediaQuery, List<PaintCommand>>{};
+      for (final SvgMediaRule mediaRule in rootSheet.mediaRules) {
+        final mergedMediaRules = <String, Map<String, String>>{};
+        for (final MapEntry<String, Map<String, String>> entry in rootSheet.rules.entries) {
+          mergedMediaRules[entry.key] = Map<String, String>.from(entry.value);
+        }
+        for (final MapEntry<String, Map<String, String>> entry in mediaRule.rules.entries) {
+          mergedMediaRules.putIfAbsent(entry.key, () => <String, String>{}).addAll(entry.value);
+        }
+        final mediaSheet = SvgStyleSheet(mergedMediaRules);
+        final SvgPaintingContext mediaContext = rootContext.derive(styleSheet: mediaSheet);
+        final Result<List<PaintCommand>> mediaPaintingResult =
+            svgRootElement.toPaintCommands(mediaContext);
+        if (mediaPaintingResult is Success<List<PaintCommand>>) {
+          conditionalCommands[mediaRule.query] = mediaPaintingResult.value;
+        }
+      }
 
       return painterGenerator.generatePainterClass(
         className: className,
@@ -232,10 +267,13 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
         viewBoxHeight: viewBoxHeight,
         commands: commands,
         generators: _generators,
+        conditionalCommands: conditionalCommands,
         exposureMode: exposureMode,
         propertyMapping: propertyMapping,
         semanticLabel: semanticLabel,
         semanticHint: semanticHint,
+        colorMapping: colorMapping,
+        tokenColors: tokenColors,
       );
     } else {
       throw InvalidGenerationSourceError(
@@ -255,6 +293,8 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
     Map<String, String> propertyMapping = const <String, String>{},
     String? semanticLabel,
     String? semanticHint,
+    SvgColorMapping colorMapping = SvgColorMapping.material,
+    bool tokenColors = false,
   }) =>
       painterGenerator.generatePainterClass(
         className: className,
@@ -266,6 +306,8 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
         propertyMapping: propertyMapping,
         semanticLabel: semanticLabel,
         semanticHint: semanticHint,
+        colorMapping: colorMapping,
+        tokenColors: tokenColors,
       );
 
   /// Loads SVG content from the given annotation.

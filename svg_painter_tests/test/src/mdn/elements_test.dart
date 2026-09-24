@@ -5,6 +5,7 @@ import '../../test_utils.dart';
 import 'elements/circle_painter.dart';
 import 'elements/clip_path_painter.dart';
 import 'elements/defs_painter.dart';
+import 'elements/desc_painter.dart';
 import 'elements/ellipse_painter.dart';
 import 'elements/g_painter.dart';
 import 'elements/image_painter.dart';
@@ -21,6 +22,8 @@ import 'elements/style_painter.dart';
 import 'elements/svg_painter.dart';
 import 'elements/symbol_painter.dart';
 import 'elements/text_painter.dart';
+import 'elements/text_path_painter.dart';
+import 'elements/title_painter.dart';
 import 'elements/tspan_painter.dart';
 import 'elements/use_element_painter.dart';
 
@@ -53,13 +56,20 @@ _fixtures =
       (
         painter: const ClipPathPainter(),
         name: 'clip_path_painter',
-        tests: defaultGoldenTests,
+        tests: macOsViewBoxOverrideGoldenTests,
         widget: null,
         nativeSize: null,
       ),
       (
         painter: const DefsPainter(),
         name: 'defs_painter',
+        tests: defaultGoldenTests,
+        widget: null,
+        nativeSize: null,
+      ),
+      (
+        painter: const DescPainter(),
+        name: 'desc_painter',
         tests: defaultGoldenTests,
         widget: null,
         nativeSize: null,
@@ -184,10 +194,7 @@ _fixtures =
       (
         painter: const TspanPainter(),
         name: 'tspan_painter',
-        tests: <GoldenTestType, Set<TargetPlatform>?>{
-          GoldenTestType.fixed: <TargetPlatform>{TargetPlatform.macOS},
-          GoldenTestType.viewBox: <TargetPlatform>{TargetPlatform.macOS},
-        },
+        tests: macOsOverrideGoldenTests,
         widget: null,
         nativeSize: null,
       ),
@@ -195,10 +202,21 @@ _fixtures =
       (
         painter: const MdnTextExamplePainter(),
         name: 'text_painter',
-        tests: <GoldenTestType, Set<TargetPlatform>?>{
-          GoldenTestType.fixed: <TargetPlatform>{TargetPlatform.macOS},
-          GoldenTestType.viewBox: <TargetPlatform>{TargetPlatform.macOS},
-        },
+        tests: macOsOverrideGoldenTests,
+        widget: null,
+        nativeSize: null,
+      ),
+      (
+        painter: const TextPathPainter(),
+        name: 'text_path_painter',
+        tests: macOsOverrideGoldenTests,
+        widget: null,
+        nativeSize: null,
+      ),
+      (
+        painter: const TitlePainter(),
+        name: 'title_painter',
+        tests: defaultGoldenTests,
         widget: null,
         nativeSize: null,
       ),
@@ -212,21 +230,7 @@ _fixtures =
       (
         painter: const MaskPainter(),
         name: 'mask_painter',
-        tests: defaultGoldenTests,
-        widget: null,
-        nativeSize: null,
-      ),
-      (
-        painter: const MaskUnitsPainter(),
-        name: 'mask_units_painter',
-        tests: defaultGoldenTests,
-        widget: null,
-        nativeSize: null,
-      ),
-      (
-        painter: const MaskContentUnitsPainter(),
-        name: 'mask_content_units_painter',
-        tests: defaultGoldenTests,
+        tests: macOsOverrideGoldenTests,
         widget: null,
         nativeSize: null,
       ),
@@ -270,5 +274,35 @@ void main() {
         }
       });
     }
+
+    group('Accessibility (Semantics)', () {
+      testWidgets('should render DescPainterWidget with CustomPaint', (
+        WidgetTester tester,
+      ) async {
+        // Arrange
+        const widget = DescPainterWidget();
+
+        // Act
+        await tester.pumpWidget(const MaterialApp(home: Scaffold(body: widget)));
+
+        // Assert
+        expect(find.byType(DescPainterWidget), findsOneWidget);
+        expect(find.byType(CustomPaint), findsWidgets);
+      });
+
+      testWidgets('should render TitlePainterWidget with CustomPaint', (
+        WidgetTester tester,
+      ) async {
+        // Arrange
+        const widget = TitlePainterWidget();
+
+        // Act
+        await tester.pumpWidget(const MaterialApp(home: Scaffold(body: widget)));
+
+        // Assert
+        expect(find.byType(TitlePainterWidget), findsOneWidget);
+        expect(find.byType(CustomPaint), findsWidgets);
+      });
+    });
   });
 }

@@ -28,6 +28,7 @@ class AssetExporter {
   /// Bundled font families supported by `svg_painter`.
   static const Set<String> bundledFamilies = <String>{
     'Roboto',
+    'Tinos',
     'Noto Serif',
     'Roboto Mono',
   };
@@ -36,6 +37,7 @@ class AssetExporter {
   static String familyToDirectoryName(String family) {
     return switch (family) {
       'Roboto' => 'roboto',
+      'Tinos' => 'tinos',
       'Noto Serif' => 'noto_serif',
       'Roboto Mono' => 'roboto_mono',
       _ => family.toLowerCase().replaceAll(' ', '_'),

@@ -12,12 +12,19 @@ import 'attributes/fill_painter.dart';
 import 'attributes/fill_rule_evenodd_painter.dart';
 import 'attributes/fill_rule_nonzero_painter.dart';
 import 'attributes/fill_rule_painter.dart';
+import 'attributes/font_family_painter.dart';
+import 'attributes/font_style_painter.dart';
+import 'attributes/font_weight_painter.dart';
+import 'attributes/fr_painter.dart';
 import 'attributes/fx_painter.dart';
 import 'attributes/fy_painter.dart';
 import 'attributes/gradient_transform_painter.dart';
 import 'attributes/height_painter.dart';
 import 'attributes/id_painter.dart';
+import 'attributes/mask_content_units_painter.dart';
 import 'attributes/mask_painter.dart';
+import 'attributes/mask_units_painter.dart';
+import 'attributes/media_painter.dart';
 import 'attributes/opacity_painter.dart';
 import 'attributes/paint_order_painter.dart';
 import 'attributes/path_length_painter.dart';
@@ -50,8 +57,20 @@ import 'attributes/x1_examples_painter.dart';
 import 'attributes/x1_line_painter.dart';
 import 'attributes/x1_linear_gradient_painter.dart';
 import 'attributes/x2_examples_painter.dart';
+import 'attributes/x2_line_painter.dart';
+import 'attributes/x2_linear_gradient_painter.dart';
+import 'attributes/x_examples_painter.dart';
+import 'attributes/x_text_painter.dart';
+import 'attributes/x_tspan_painter.dart';
 import 'attributes/y1_examples_painter.dart';
+import 'attributes/y1_line_painter.dart';
+import 'attributes/y1_linear_gradient_painter.dart';
 import 'attributes/y2_examples_painter.dart';
+import 'attributes/y2_line_painter.dart';
+import 'attributes/y2_linear_gradient_painter.dart';
+import 'attributes/y_examples_painter.dart';
+import 'attributes/y_text_painter.dart';
+import 'attributes/y_tspan_painter.dart';
 
 final List<({CustomPainter painter, String name, Map<GoldenTestType, Set<TargetPlatform>?> tests})>
 _fixtures =
@@ -70,8 +89,8 @@ _fixtures =
           GoldenTestType.viewBox: <TargetPlatform>{TargetPlatform.macOS},
         },
       ),
-      (painter: const DxPainter(), name: 'dx_painter', tests: defaultGoldenTests),
-      (painter: const DyPainter(), name: 'dy_painter', tests: defaultGoldenTests),
+      (painter: const DxPainter(), name: 'dx_painter', tests: macOsOverrideGoldenTests),
+      (painter: const DyPainter(), name: 'dy_painter', tests: macOsOverrideGoldenTests),
       (
         painter: const FillOpacityPainter(),
         name: 'fill_opacity_painter',
@@ -89,32 +108,66 @@ _fixtures =
         name: 'fill_rule_evenodd_painter',
         tests: defaultGoldenTests,
       ),
+      (
+        painter: const FontFamilyPainter(),
+        name: 'font_family_painter',
+        tests: macOsOverrideGoldenTests,
+      ),
+      (
+        painter: const FontStylePainter(),
+        name: 'font_style_painter',
+        tests: macOsOverrideGoldenTests,
+      ),
+      (
+        painter: const FontWeightPainter(),
+        name: 'font_weight_painter',
+        tests: macOsOverrideGoldenTests,
+      ),
+      (
+        painter: const Fr1Painter(),
+        name: 'fr_1_painter',
+        tests: defaultGoldenTests,
+      ),
+      (
+        painter: const Fr2Painter(),
+        name: 'fr_2_painter',
+        tests: defaultGoldenTests,
+      ),
       (painter: const FxPainter(), name: 'fx_painter', tests: defaultGoldenTests),
       (
         painter: const Fy1Painter(),
         name: 'fy_1_painter',
-        tests: <GoldenTestType, Set<TargetPlatform>?>{
-          GoldenTestType.fixed: null,
-          GoldenTestType.viewBox: <TargetPlatform>{TargetPlatform.macOS},
-        },
+        tests: macOsViewBoxOverrideGoldenTests,
       ),
       (
         painter: const Fy2Painter(),
         name: 'fy_2_painter',
-        tests: <GoldenTestType, Set<TargetPlatform>?>{
-          GoldenTestType.fixed: <TargetPlatform>{TargetPlatform.macOS},
-          GoldenTestType.viewBox: <TargetPlatform>{TargetPlatform.macOS},
-        },
+        tests: macOsOverrideGoldenTests,
       ),
       (painter: const HeightPainter(), name: 'height_painter', tests: defaultGoldenTests),
       (painter: const IdPainter(), name: 'id_painter', tests: defaultGoldenTests),
       (
         painter: const MaskAttributePainter(),
         name: 'mask_attribute_painter',
+        tests: macOsOverrideGoldenTests,
+      ),
+      (
+        painter: const MaskContentUnitsPainter(),
+        name: 'mask_content_units_painter',
         tests: defaultGoldenTests,
       ),
+      (
+        painter: const MaskUnitsPainter(),
+        name: 'mask_units_painter',
+        tests: defaultGoldenTests,
+      ),
+      (painter: const MediaPainter(), name: 'media_painter', tests: defaultGoldenTests),
       (painter: const OpacityPainter(), name: 'opacity_painter', tests: defaultGoldenTests),
-      (painter: const PaintOrderPainter(), name: 'paint_order_painter', tests: defaultGoldenTests),
+      (
+        painter: const PaintOrderPainter(),
+        name: 'paint_order_painter',
+        tests: macOsOverrideGoldenTests,
+      ),
       (painter: const PathLengthPainter(), name: 'path_length_painter', tests: defaultGoldenTests),
       (
         painter: const PointsExamplePainter(),
@@ -198,7 +251,11 @@ _fixtures =
         tests: defaultGoldenTests,
       ),
       (painter: const StylePainter(), name: 'style_painter', tests: defaultGoldenTests),
-      (painter: const TextAnchorPainter(), name: 'text_anchor_painter', tests: defaultGoldenTests),
+      (
+        painter: const TextAnchorPainter(),
+        name: 'text_anchor_painter',
+        tests: macOsOverrideGoldenTests,
+      ),
       (
         painter: const VectorEffectPainter(),
         name: 'vector_effect_painter',
@@ -210,10 +267,7 @@ _fixtures =
       (
         painter: const GradientTransformPainter(),
         name: 'gradient_transform_painter',
-        tests: <GoldenTestType, Set<TargetPlatform>?>{
-          GoldenTestType.fixed: null,
-          GoldenTestType.viewBox: <TargetPlatform>{TargetPlatform.macOS},
-        },
+        tests: defaultGoldenTests,
       ),
       (painter: const WidthPainter(), name: 'width_painter', tests: defaultGoldenTests),
       (painter: const X1ExamplesPainter(), name: 'x1_examples_painter', tests: defaultGoldenTests),
@@ -224,8 +278,32 @@ _fixtures =
         tests: defaultGoldenTests,
       ),
       (painter: const X2ExamplesPainter(), name: 'x2_examples_painter', tests: defaultGoldenTests),
+      (painter: const X2LinePainter(), name: 'x2_line_painter', tests: defaultGoldenTests),
+      (
+        painter: const X2LinearGradientPainter(),
+        name: 'x2_linear_gradient_painter',
+        tests: defaultGoldenTests,
+      ),
       (painter: const Y1ExamplesPainter(), name: 'y1_examples_painter', tests: defaultGoldenTests),
+      (painter: const Y1LinePainter(), name: 'y1_line_painter', tests: defaultGoldenTests),
+      (
+        painter: const Y1LinearGradientPainter(),
+        name: 'y1_linear_gradient_painter',
+        tests: defaultGoldenTests,
+      ),
+      (painter: const XExamplesPainter(), name: 'x_examples_painter', tests: defaultGoldenTests),
+      (painter: const XTextPainter(), name: 'x_text_painter', tests: defaultGoldenTests),
+      (painter: const XTspanPainter(), name: 'x_tspan_painter', tests: defaultGoldenTests),
+      (painter: const YExamplesPainter(), name: 'y_examples_painter', tests: defaultGoldenTests),
+      (painter: const YTextPainter(), name: 'y_text_painter', tests: defaultGoldenTests),
+      (painter: const YTspanPainter(), name: 'y_tspan_painter', tests: defaultGoldenTests),
       (painter: const Y2ExamplesPainter(), name: 'y2_examples_painter', tests: defaultGoldenTests),
+      (painter: const Y2LinePainter(), name: 'y2_line_painter', tests: defaultGoldenTests),
+      (
+        painter: const Y2LinearGradientPainter(),
+        name: 'y2_linear_gradient_painter',
+        tests: defaultGoldenTests,
+      ),
     ];
 
 void main() {
@@ -252,5 +330,25 @@ void main() {
         );
       });
     }
+
+    testWidgets('media_painter (width: 600)', (WidgetTester tester) async {
+      await testSvgPainter(
+        tester: tester,
+        painter: const MediaPainter(),
+        goldenName: 'media_painter_w600.png',
+        goldenPath: 'attributes/goldens',
+        size: const Size(600, 550),
+      );
+    });
+
+    testWidgets('media_painter (width: 800)', (WidgetTester tester) async {
+      await testSvgPainter(
+        tester: tester,
+        painter: const MediaPainter(),
+        goldenName: 'media_painter_w800.png',
+        goldenPath: 'attributes/goldens',
+        size: const Size(800, 600),
+      );
+    });
   });
 }

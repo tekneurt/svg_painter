@@ -3,11 +3,24 @@ part of '../../svg_element.dart';
 /// Base class for SVG graphics elements (elements that can be rendered).
 @immutable
 sealed class SvgGraphicsElement extends SvgElement
-    with SvgFillAttributable, SvgStrokeAttributable, SvgGraphicsAttributable, SvgPresentable {
+    with
+        SvgFillAttributable,
+        SvgStrokeAttributable,
+        SvgGraphicsAttributable,
+        SvgPresentable,
+        SvgDescriptive {
   const SvgGraphicsElement({
+    this.title,
+    this.desc,
     this.presentationAttributes,
     super.coreAttributes,
   });
+
+  @override
+  final SvgTitle? title;
+
+  @override
+  final SvgDesc? desc;
 
   @override
   final SvgPresentationAttributes? presentationAttributes;

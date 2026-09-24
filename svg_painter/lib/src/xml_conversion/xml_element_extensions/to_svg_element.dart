@@ -62,6 +62,8 @@ extension ToSvgElement on XmlElement {
           return toSvgStyle();
         case .text:
           return toSvgText();
+        case .textPath:
+          return toSvgTextPath();
         case .tspan:
           return toSvgTspan();
         case .mask:
@@ -122,6 +124,8 @@ extension ToSvgElement on XmlElement {
     return childrenResult.map(
       (List<SvgElement> childElements) => SvgSvg(
         children: childElements,
+        title: common.title,
+        desc: common.desc,
         x: x,
         y: y,
         width: width,

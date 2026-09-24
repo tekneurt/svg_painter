@@ -14,6 +14,7 @@ import 'svg_stroke_attributes.dart';
 @immutable
 final class SvgPresentationAttributes {
   const SvgPresentationAttributes({
+    this.color,
     this.fill,
     this.stroke,
     this.font,
@@ -21,6 +22,9 @@ final class SvgPresentationAttributes {
     this.paintOrder,
     this.vectorEffect,
   });
+
+  /// The indirect color value for currentColor.
+  final SvgColor? color;
 
   /// Fill-related attributes.
   final SvgFillAttributes? fill;
@@ -49,6 +53,7 @@ final class SvgPresentationAttributes {
       return this;
     }
     return SvgPresentationAttributes(
+      color: other.color ?? color,
       fill: _mergeFill(fill, other.fill),
       stroke: _mergeStroke(stroke, other.stroke),
       font: _mergeFont(font, other.font),
@@ -68,6 +73,7 @@ final class SvgPresentationAttributes {
     }
     return SvgPresentationAttributes(
       // Inherited groups
+      color: color ?? parent.color,
       fill: _inheritFill(fill, parent.fill),
       stroke: _inheritStroke(stroke, parent.stroke),
       font: _inheritFont(font, parent.font),
@@ -197,6 +203,7 @@ final class SvgPresentationAttributes {
   @override
   String toString() {
     final parts = <String>[
+      if (color != null) 'color: $color',
       if (fill != null) 'fill: $fill',
       if (stroke != null) 'stroke: $stroke',
       if (font != null) 'font: $font',

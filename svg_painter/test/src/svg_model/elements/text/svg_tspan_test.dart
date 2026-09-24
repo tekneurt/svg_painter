@@ -40,9 +40,32 @@ void main() {
       // Assert
       expect(tspan.x, x);
       expect(tspan.y, y);
+      expect(tspan.primaryX, const SvgLength(10));
+      expect(tspan.primaryY, const SvgLength(20));
       expect(tspan.dx, dx);
       expect(tspan.dy, dy);
       expect(tspan.rotate, rotate);
+    });
+
+    test('should support SvgLengthPercentageList for multiple coordinates', () {
+      // Arrange
+      const x = SvgLengthPercentageList(<SvgLengthPercentage>[SvgLength(10), SvgLength(30)]);
+      const y = SvgLengthPercentageList(<SvgLengthPercentage>[SvgLength(20), SvgLength(40)]);
+
+      // Act
+      const tspan = SvgTspan(
+        children: [],
+        x: x,
+        y: y,
+      );
+
+      // Assert
+      expect(tspan.x, x);
+      expect(tspan.y, y);
+      expect(tspan.primaryX, const SvgLength(10));
+      expect(tspan.primaryY, const SvgLength(20));
+      expect(tspan.x?.toList(), const <SvgLengthPercentage>[SvgLength(10), SvgLength(30)]);
+      expect(tspan.y?.toList(), const <SvgLengthPercentage>[SvgLength(20), SvgLength(40)]);
     });
 
     test('should return font attributes when presentation attributes are provided', () {

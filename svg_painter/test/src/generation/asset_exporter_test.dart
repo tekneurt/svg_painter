@@ -19,6 +19,9 @@ void main() {
       File(p.join(robotoDir.path, 'roboto_400.ttf')).writeAsStringSync('dummy roboto 400');
       File(p.join(robotoDir.path, 'roboto_700_italic.ttf')).writeAsStringSync('dummy roboto 700 italic');
 
+      final tinosDir = Directory(p.join(tempSourceDir.path, 'tinos'))..createSync();
+      File(p.join(tinosDir.path, 'tinos_400.ttf')).writeAsStringSync('dummy tinos 400');
+
       final notoDir = Directory(p.join(tempSourceDir.path, 'noto_serif'))..createSync();
       File(p.join(notoDir.path, 'noto_serif_500.ttf')).writeAsStringSync('dummy noto 500');
 
@@ -38,6 +41,7 @@ void main() {
     test('should map family name to snake_case directory name', () {
       // Arrange & Act & Assert
       expect(AssetExporter.familyToDirectoryName('Roboto'), equals('roboto'));
+      expect(AssetExporter.familyToDirectoryName('Tinos'), equals('tinos'));
       expect(AssetExporter.familyToDirectoryName('Noto Serif'), equals('noto_serif'));
       expect(AssetExporter.familyToDirectoryName('Roboto Mono'), equals('roboto_mono'));
       expect(AssetExporter.familyToDirectoryName('Custom Display Font'), equals('custom_display_font'));
@@ -53,15 +57,17 @@ void main() {
       // Assert
       expect(result, isA<Success<List<File>>>());
       final List<File> files = (result as Success<List<File>>).value;
-      expect(files.length, equals(4));
+      expect(files.length, equals(5));
 
       final robotoFile = File(p.join(tempDestDir.path, 'roboto', 'roboto_400.ttf'));
       final robotoBoldFile = File(p.join(tempDestDir.path, 'roboto', 'roboto_700_italic.ttf'));
+      final tinosFile = File(p.join(tempDestDir.path, 'tinos', 'tinos_400.ttf'));
       final notoFile = File(p.join(tempDestDir.path, 'noto_serif', 'noto_serif_500.ttf'));
       final monoFile = File(p.join(tempDestDir.path, 'roboto_mono', 'roboto_mono_300.ttf'));
 
       expect(robotoFile.existsSync(), isTrue);
       expect(robotoBoldFile.existsSync(), isTrue);
+      expect(tinosFile.existsSync(), isTrue);
       expect(notoFile.existsSync(), isTrue);
       expect(monoFile.existsSync(), isTrue);
     });

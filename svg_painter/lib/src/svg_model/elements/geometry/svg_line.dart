@@ -11,6 +11,8 @@ final class SvgLine extends SvgBasicShape {
     required this.x2,
     required this.y2,
     super.geometryAttributes,
+    super.title,
+    super.desc,
     super.presentationAttributes,
     super.coreAttributes,
   });

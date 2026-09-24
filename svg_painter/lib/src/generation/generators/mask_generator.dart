@@ -1,3 +1,5 @@
+import 'package:svg_painter_annotation/svg_painter_annotation.dart';
+
 import '../../base/_base.dart';
 import '../../painting_model/_painting_model.dart';
 import '../../svg_model/_svg_model.dart';
@@ -22,6 +24,7 @@ class MaskGenerator extends CommandGenerator<DefineMask> {
     List<InheritedProperty>? inheritedStrokes,
     String? painterClassName,
     Set<String>? gradientsNeedingStretch,
+    SvgColorMapping colorMapping = SvgColorMapping.material,
   }) {
     if (generators == null) {
       return;
@@ -85,6 +88,7 @@ class MaskGenerator extends CommandGenerator<DefineMask> {
           inheritedStrokes: inheritedStrokes,
           painterClassName: painterClassName,
           gradientsNeedingStretch: gradientsNeedingStretch,
+          colorMapping: colorMapping,
         );
       }
 

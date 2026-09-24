@@ -5,6 +5,29 @@ import '../../xml_conversion/parsers/svg_transform_parser.dart';
 import '../svg_value_extensions/_svg_value_extensions.dart';
 import 'svg_painting_context.dart';
 
+/// Resolves the unified presentation attributes for an element, combining inline presentation attributes,
+/// CSS rules, and inheritance from the parent context.
+SvgPresentationAttributes resolvePresentation(
+  SvgPaintingContext context, {
+  required String tagName,
+  SvgCoreAttributes? coreAttributes,
+  SvgPresentationAttributes? presentationAttributes,
+}) {
+  final Map<String, String> resolvedRules = _resolveCssRules(
+    context,
+    tagName,
+    coreAttributes,
+  );
+  final SvgPresentationAttributes cssPresentation = _parseCssPresentation(
+    resolvedRules,
+  );
+
+  final SvgPresentationAttributes combined =
+      (presentationAttributes ?? const SvgPresentationAttributes())
+          .merge(cssPresentation);
+  return combined.inherit(context.inheritedAttributes);
+}
+
 /// Resolves the final [PaintingStyle] for an element, handling CSS classes,
 /// inline styles, inheritance, and scaling.
 PaintingStyle resolvePaint(
@@ -20,19 +43,15 @@ PaintingStyle resolvePaint(
     tagName,
     coreAttributes,
   );
-  final SvgPresentationAttributes cssPresentation = _parseCssPresentation(
-    resolvedRules,
+  final SvgPresentationAttributes resolved = resolvePresentation(
+    context,
+    tagName: tagName,
+    coreAttributes: coreAttributes,
+    presentationAttributes: presentationAttributes,
   );
 
-  final SvgPresentationAttributes combined =
-      (presentationAttributes ?? const SvgPresentationAttributes())
-          .merge(cssPresentation);
-  final SvgPresentationAttributes resolved =
-      combined.inherit(context.inheritedAttributes);
-
   final SvgGraphicsAttributes? graphics = resolved.graphics;
-  final double elementOpacity =
-      graphics?.opacity?.resolve(context, .unit) ?? 1.0;
+  final double elementOpacity = (graphics?.opacity).resolveOpacity(context);
 
   final PaintingFillStyle? fillStyle = _resolveFillStyle(
     context,
@@ -41,6 +60,7 @@ PaintingStyle resolvePaint(
         presentationAttributes?.fill?.color != null ||
         resolvedRules['fill'] != null,
     elementOpacity: elementOpacity,
+    currentColor: resolved.color,
   );
 
   final PaintingStrokeStyle? strokeStyle = _resolveStrokeStyle(
@@ -52,6 +72,7 @@ PaintingStyle resolvePaint(
         presentationAttributes?.stroke?.color != null ||
         resolvedRules['stroke'] != null,
     elementOpacity: elementOpacity,
+    currentColor: resolved.color,
   );
 
   final PaintingTextStyle textStyle = _resolveTextStyle(context, resolved.font);
@@ -140,6 +161,9 @@ SvgPresentationAttributes _parseCssPresentation(
     cssFontFamily = resolvedRules['font-family']?.toSvgFontFamily();
   } else {
     // Handle font shorthand
+    cssFontStyle = SvgFontStyle.normal;
+    cssFontWeight = const SvgFontWeightNormal();
+
     final List<String> allParts = fontValue.split(RegExp(r'\s+'));
     var sizeIndex = -1;
     for (var i = 0; i < allParts.length; i++) {
@@ -216,8 +240,10 @@ SvgPresentationAttributes _parseCssPresentation(
       resolvedRules['paint-order']?.toSvgPaintOrder();
   final SvgVectorEffect? cssVectorEffect =
       resolvedRules['vector-effect']?.toSvgVectorEffect();
+  final SvgColor? cssColor = resolvedRules['color']?.toSvgColor();
 
   return SvgPresentationAttributes(
+    color: cssColor,
     fill: SvgFillAttributes(
       color: cssFill,
       opacity: cssFillOpacity,
@@ -262,6 +288,7 @@ PaintingFillStyle? _resolveFillStyle(
   required SvgFillAttributes? fillAttrs,
   required bool isExplicit,
   required double elementOpacity,
+  required SvgColor? currentColor,
 }) {
   final SvgColor? fillPaint = fillAttrs?.color;
   return switch (fillPaint) {
@@ -272,6 +299,7 @@ PaintingFillStyle? _resolveFillStyle(
       fillAttrs: fillAttrs,
       isExplicit: isExplicit,
       elementOpacity: elementOpacity,
+      currentColor: currentColor,
     ),
   };
 }
@@ -282,11 +310,12 @@ PaintingFillStyle _buildFillStyle(
   required SvgFillAttributes? fillAttrs,
   required bool isExplicit,
   required double elementOpacity,
+  required SvgColor? currentColor,
 }) {
   int? fillColorArgb;
   String? fillShaderId;
   PaintingGradientUnits? shaderUnits;
-  final isCurrentColor = fillPaint is SvgCurrentColor;
+  var isCurrentColor = false;
 
   if (fillPaint is SvgPaintReference) {
     fillShaderId = fillPaint.id;
@@ -297,12 +326,18 @@ PaintingFillStyle _buildFillStyle(
         SvgGradientUnits.userSpaceOnUse => .userSpaceOnUse,
       };
     }
-  } else if (!isCurrentColor) {
+  } else if (fillPaint is SvgCurrentColor) {
+    if (currentColor != null && currentColor is! SvgCurrentColor) {
+      fillColorArgb = currentColor.toFillArgb();
+    } else {
+      isCurrentColor = true;
+    }
+  } else {
     fillColorArgb = fillPaint.toFillArgb();
   }
 
-  final double finalFillOpacity =
-      elementOpacity * (fillAttrs?.opacity?.resolve(context, .unit) ?? 1.0);
+  final double fillOpacity = (fillAttrs?.opacity).resolveOpacity(context);
+  final double finalFillOpacity = elementOpacity * fillOpacity;
 
   return PaintingFillStyle(
     colorArgb: fillColorArgb,
@@ -322,6 +357,7 @@ PaintingStrokeStyle? _resolveStrokeStyle(
   required SvgGeometryAttributes? geometryAttributes,
   required bool isExplicit,
   required double elementOpacity,
+  required SvgColor? currentColor,
 }) {
   final SvgColor? strokePaint = strokeAttrs?.color;
   return switch (strokePaint) {
@@ -334,6 +370,7 @@ PaintingStrokeStyle? _resolveStrokeStyle(
       geometryAttributes: geometryAttributes,
       isExplicit: isExplicit,
       elementOpacity: elementOpacity,
+      currentColor: currentColor,
     ),
   };
 }
@@ -346,11 +383,12 @@ PaintingStrokeStyle _buildStrokeStyle(
   required SvgGeometryAttributes? geometryAttributes,
   required bool isExplicit,
   required double elementOpacity,
+  required SvgColor? currentColor,
 }) {
   int? strokeColorArgb;
   String? strokeShaderId;
   PaintingGradientUnits? shaderUnits;
-  final isCurrentColor = strokePaint is SvgCurrentColor;
+  var isCurrentColor = false;
 
   if (strokePaint is SvgPaintReference) {
     strokeShaderId = strokePaint.id;
@@ -361,7 +399,13 @@ PaintingStrokeStyle _buildStrokeStyle(
         SvgGradientUnits.userSpaceOnUse => .userSpaceOnUse,
       };
     }
-  } else if (!isCurrentColor) {
+  } else if (strokePaint is SvgCurrentColor) {
+    if (currentColor != null && currentColor is! SvgCurrentColor) {
+      strokeColorArgb = currentColor.toStrokeArgb();
+    } else {
+      isCurrentColor = true;
+    }
+  } else {
     strokeColorArgb = strokePaint.toStrokeArgb();
   }
 
@@ -384,8 +428,8 @@ PaintingStrokeStyle _buildStrokeStyle(
   final double? finalDashOffset =
       strokeAttrs?.dashOffset?.resolve(context, .normalized);
 
-  final double finalStrokeOpacity =
-      elementOpacity * (strokeAttrs?.opacity?.resolve(context, .unit) ?? 1.0);
+  final double strokeOpacity = (strokeAttrs?.opacity).resolveOpacity(context);
+  final double finalStrokeOpacity = elementOpacity * strokeOpacity;
 
   return PaintingStrokeStyle(
     colorArgb: strokeColorArgb,
@@ -408,7 +452,7 @@ PaintingTextStyle _resolveTextStyle(
   SvgPaintingContext context,
   SvgFontAttributes? fontAttrs,
 ) {
-  final double finalFontSize = (fontAttrs?.size ?? const SvgLength(12.0))
+  final double finalFontSize = (fontAttrs?.size ?? const SvgLength(16.0))
       .resolve(context, .vertical);
 
   final PaintingFontWeight finalFontWeight = _toPaintingFontWeight(
@@ -417,13 +461,12 @@ PaintingTextStyle _resolveTextStyle(
   final PaintingFontStyle finalFontStyle =
       (fontAttrs?.style?.value == 'italic') ? .italic : .normal;
 
-  final String rawFontFamily = fontAttrs?.family?.value ?? 'sans-serif';
-  final (String finalFontFamily, String? fontPackage) = switch (rawFontFamily) {
-    'sans-serif' || 'Roboto' => ('Roboto', 'svg_painter'),
-    'serif' || 'Noto Serif' => ('Noto Serif', 'svg_painter'),
-    'monospace' || 'Roboto Mono' => ('Roboto Mono', 'svg_painter'),
-    _ => (rawFontFamily, null),
-  };
+  final String rawFontFamily = fontAttrs?.family?.value ?? 'serif';
+  final (
+    String finalFontFamily,
+    List<String> fontFamilyFallback,
+    String? fontPackage,
+  ) = _resolveFontFamily(rawFontFamily);
 
   final PaintingTextAnchor finalAnchor = switch (fontAttrs?.anchor) {
     SvgTextAnchor.start || null => .start,
@@ -436,9 +479,60 @@ PaintingTextStyle _resolveTextStyle(
     fontWeight: finalFontWeight,
     fontStyle: finalFontStyle,
     fontFamily: finalFontFamily,
+    fontFamilyFallback: fontFamilyFallback,
     textAnchor: finalAnchor,
     fontPackage: fontPackage,
   );
+}
+
+String _cleanFontFamily(String raw) {
+  final String trimmed = raw.trim();
+  if ((trimmed.startsWith("'") && trimmed.endsWith("'")) ||
+      (trimmed.startsWith('"') && trimmed.endsWith('"'))) {
+    if (trimmed.length >= 2) {
+      return trimmed.substring(1, trimmed.length - 1).trim();
+    }
+  }
+  return trimmed;
+}
+
+(String, List<String>, String?) _resolveFontFamily(String rawFontFamily) {
+  final List<String> families = rawFontFamily
+      .split(',')
+      .map(_cleanFontFamily)
+      .where((String f) => f.isNotEmpty)
+      .toList();
+
+  if (families.isEmpty) {
+    return ('Tinos', const <String>[], 'svg_painter');
+  }
+
+  final String first = families.first;
+  switch (first) {
+    case 'sans-serif' || 'Roboto' || 'Arial' || 'Helvetica':
+      return ('Roboto', const <String>[], 'svg_painter');
+    case 'serif' || 'Times' || 'Times New Roman' || 'Tinos':
+      return ('Tinos', const <String>[], 'svg_painter');
+    case 'Noto Serif':
+      return ('Noto Serif', const <String>[], 'svg_painter');
+    case 'monospace' || 'Roboto Mono' || 'Courier' || 'Courier New':
+      return ('Roboto Mono', const <String>[], 'svg_painter');
+  }
+
+  final fallbacks = <String>[];
+  for (var i = 1; i < families.length; i++) {
+    final String candidate = families[i];
+    final String resolvedCandidate = switch (candidate) {
+      'sans-serif' || 'Roboto' || 'Arial' || 'Helvetica' => 'Roboto',
+      'serif' || 'Times' || 'Times New Roman' || 'Tinos' => 'Tinos',
+      'monospace' || 'Roboto Mono' || 'Courier' || 'Courier New' =>
+        'Roboto Mono',
+      _ => candidate,
+    };
+    fallbacks.add(resolvedCandidate);
+  }
+
+  return (first, fallbacks, null);
 }
 
 String? _extractUrlId(String? attributeValue) {

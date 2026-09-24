@@ -8,6 +8,8 @@ final class SvgPolygon extends SvgBasicShape {
   const SvgPolygon({
     required this.points,
     super.geometryAttributes,
+    super.title,
+    super.desc,
     super.presentationAttributes,
     super.coreAttributes,
   });

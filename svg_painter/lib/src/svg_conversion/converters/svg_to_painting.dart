@@ -61,10 +61,10 @@ extension SvgElementToPaintCommands on SvgElement {
             linejoin: self.strokeAttributes?.linejoin ?? SvgStrokeLinejoin.miter,
           ),
           font: SvgFontAttributes(
-            size: self.fontAttributes?.size ?? const SvgLength(12.0),
+            size: self.fontAttributes?.size ?? const SvgLength(16.0),
             weight: self.fontAttributes?.weight ?? const SvgFontWeightNormal(),
             style: self.fontAttributes?.style ?? SvgFontStyle.normal,
-            family: self.fontAttributes?.family ?? const SvgFontFamily('sans-serif'),
+            family: self.fontAttributes?.family ?? const SvgFontFamily('serif'),
           ),
         ),
         styleSheet: self.styleSheet,
@@ -173,7 +173,7 @@ extension SvgElementToPaintCommands on SvgElement {
 extension _SvgGroupToPaintCommands on SvgGroup {
   Result<List<PaintCommand>> _toPaintCommandsGroup(SvgPaintingContext context) {
     // Determine if we should use saveLayer (group opacity).
-    final double resolvedOpacity = opacity?.resolve(context, SvgOrientation.unit) ?? 1.0;
+    final double resolvedOpacity = opacity.resolveOpacity(context);
 
     final PaintingStyle style = resolvePaint(
       context,

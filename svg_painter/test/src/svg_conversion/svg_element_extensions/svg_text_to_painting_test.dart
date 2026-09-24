@@ -3,6 +3,7 @@ import 'package:svg_painter/src/painting_model/paint_command.dart';
 import 'package:svg_painter/src/painting_model/styles/painting_style.dart';
 import 'package:svg_painter/src/svg_conversion/converters/svg_painting_context.dart';
 import 'package:svg_painter/src/svg_conversion/svg_element_extensions/svg_text_to_painting.dart';
+import 'package:svg_painter/src/svg_model/attribute_groups/svg_core_attributes.dart';
 import 'package:svg_painter/src/svg_model/svg_element.dart';
 import 'package:svg_painter/src/svg_model/svg_value.dart';
 import 'package:test/test.dart';
@@ -59,8 +60,8 @@ void main() {
 
     test('should handle nested tspan with relative dx, dy and rotate', () {
       const text = SvgText(
-        x: SvgLength(10),
-        y: SvgLength(20),
+        x: SvgLength(10.0),
+        y: SvgLength(20.0),
         children: [
           SvgCharacterData('Outer'),
           SvgTspan(
@@ -85,6 +86,40 @@ void main() {
       expect(tspanSpan.text, isNull);
       expect(tspanSpan.children, hasLength(1));
       expect(tspanSpan.children[0].text, 'Inner');
+    });
+
+    test('should return Success with DrawTextPath when SvgText contains SvgTextPath', () {
+      // Arrange
+      const path = SvgPath(d: 'M0,0 L100,100', coreAttributes: SvgCoreAttributes(id: 'p1'));
+      const contextWithDef = SvgPaintingContext(
+        viewBoxWidth: 100,
+        viewBoxHeight: 200,
+        definitions: <String, SvgElement>{'p1': path},
+      );
+      const text = SvgText(
+        x: SvgLength(0.0),
+        y: SvgLength(0.0),
+        children: <SvgTextContent>[
+          SvgTextPath(
+            href: '#p1',
+            startOffset: SvgLength(10.0),
+            children: <SvgTextContent>[SvgCharacterData('Path Text')],
+          ),
+        ],
+      );
+
+      // Act
+      final Result<List<PaintCommand>> result = text.toPaintCommands(contextWithDef);
+
+      // Assert
+      expect(result, isA<Success<List<PaintCommand>>>());
+      final List<PaintCommand> cmds = (result as Success<List<PaintCommand>>).value;
+      expect(cmds, hasLength(1));
+      expect(cmds.first, isA<DrawTextPath>());
+      final drawTextPath = cmds.first as DrawTextPath;
+      expect(drawTextPath.text, 'Path Text');
+      expect(drawTextPath.startOffset, 10.0);
+      expect(drawTextPath.pathOperations, hasLength(2));
     });
   });
 }

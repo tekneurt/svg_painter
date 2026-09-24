@@ -34,7 +34,7 @@ extension ToSvgValue on XmlElement {
     } else {
       final SvgBaseValue? parsedValue = switch (attributeName) {
         .x ||
-        .y ||
+        .y => attributeValue.toSvgLengthPercentageOrList(),
         .x1 ||
         .y1 ||
         .x2 ||
@@ -49,6 +49,7 @@ extension ToSvgValue on XmlElement {
         .strokeOpacity ||
         .stopOpacity ||
         .fontSize ||
+        .startOffset ||
         .strokeDashoffset ||
         .strokeWidth => attributeValue.toSvgLengthPercentage(),
         .r || .fr || .rx || .ry || .width || .height => () {
@@ -65,7 +66,7 @@ extension ToSvgValue on XmlElement {
         .strokeMiterlimit => attributeValue.toSvgMiterLimit(),
         .points || .strokeDasharray => attributeValue.toSvgPointList(),
         .fillRule => attributeValue.toSvgFillRule(),
-        .fill || .stroke || .stopColor => attributeValue.toSvgColor(),
+        .fill || .stroke || .stopColor || .color => attributeValue.toSvgColor(),
         .strokeLinecap => attributeValue.toSvgStrokeLinecap(),
         .strokeLinejoin => attributeValue.toSvgStrokeLinejoin(),
         .fontWeight => attributeValue.toSvgFontWeight(),

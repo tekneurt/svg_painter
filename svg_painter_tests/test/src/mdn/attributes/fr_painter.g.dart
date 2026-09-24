@@ -1,0 +1,335 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
+part of 'fr_painter.dart';
+
+// **************************************************************************
+// SvgPainterGenerator
+// **************************************************************************
+
+// coverage:ignore-file
+// ignore_for_file: type=lint
+// ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
+
+class Fr1PainterWidget extends StatelessWidget {
+  const Fr1PainterWidget({
+    super.key,
+    this.width,
+    this.height,
+    this.fit = BoxFit.contain,
+    this.alignment = Alignment.center,
+  });
+
+  final double? width;
+  final double? height;
+  final BoxFit fit;
+  final AlignmentGeometry alignment;
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomPaint(
+      size: Size(width ?? 420.0, height ?? 160.0),
+      painter: _$Fr1Painter(fit: fit),
+    );
+  }
+}
+
+class _$Fr1Painter extends CustomPainter {
+  const _$Fr1Painter({this.fit = BoxFit.contain});
+
+  final BoxFit fit;
+
+  Size get viewBox => const Size(420.0, 160.0);
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final FittedSizes fittedSizes = applyBoxFit(
+      fit,
+      const Size(420.0, 160.0),
+      size,
+    );
+    final Size sourceSize = fittedSizes.source;
+    final Rect destRect = Alignment.center.inscribe(
+      fittedSizes.destination,
+      Offset.zero & size,
+    );
+
+    canvas.save();
+    canvas.translate(destRect.left, destRect.top);
+    canvas.scale(
+      destRect.width / sourceSize.width,
+      destRect.height / sourceSize.height,
+    );
+
+    canvas.save();
+    canvas.translate(18.0, 0.0);
+    canvas.scale(0.8, 0.8);
+    final Gradient _grad_gradient1 = RadialGradient(
+      center: Alignment(0.0, 0.0),
+      radius: 0.5,
+      focal: Alignment(-0.30000000000000004, -0.30000000000000004),
+      focalRadius: 0.05,
+      colors: <Color>[Colors.white, const Color(0xFF8FBC8F)],
+      stops: <double>[0.0, 1.0],
+      tileMode: TileMode.clamp,
+    );
+    final Gradient _grad_gradient2 = RadialGradient(
+      center: Alignment(0.0, 0.0),
+      radius: 0.5,
+      focal: Alignment(-0.30000000000000004, -0.30000000000000004),
+      focalRadius: 0.25,
+      colors: <Color>[Colors.white, const Color(0xFF8FBC8F)],
+      stops: <double>[0.0, 1.0],
+      tileMode: TileMode.clamp,
+    );
+    {
+      final Paint paint = Paint();
+      paint.shader = _grad_gradient1.createShader(
+        Rect.fromCircle(center: const Offset(100.0, 100.0), radius: 100.0),
+      );
+      paint.style = PaintingStyle.fill;
+      canvas.drawCircle(const Offset(100.0, 100.0), 100.0, paint);
+    }
+    {
+      final Paint paint = Paint();
+      paint.shader = _grad_gradient2.createShader(
+        Rect.fromCircle(center: const Offset(340.0, 100.0), radius: 100.0),
+      );
+      paint.style = PaintingStyle.fill;
+      canvas.drawCircle(const Offset(340.0, 100.0), 100.0, paint);
+    }
+    canvas.restore();
+    canvas.restore();
+  }
+
+  void _applyOverride(Paint paint, Object? override) {
+    switch (override) {
+      case final Color color:
+        paint.color = color;
+        paint.shader = null;
+
+      case final Shader shader:
+        paint.shader = shader;
+
+      case null || _:
+        break;
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant _$Fr1Painter oldDelegate) {
+    if (fit == oldDelegate.fit) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+}
+
+// coverage:ignore-file
+// ignore_for_file: type=lint
+// ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
+
+class Fr2PainterWidget extends StatelessWidget {
+  const Fr2PainterWidget({
+    super.key,
+    this.width,
+    this.height,
+    this.fit = BoxFit.contain,
+    this.alignment = Alignment.center,
+  });
+
+  final double? width;
+  final double? height;
+  final BoxFit fit;
+  final AlignmentGeometry alignment;
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomPaint(
+      size: Size(width ?? 165.0, height ?? 165.0),
+      painter: _$Fr2Painter(fit: fit),
+    );
+  }
+}
+
+class _$Fr2Painter extends CustomPainter {
+  const _$Fr2Painter({this.fit = BoxFit.contain});
+
+  final BoxFit fit;
+
+  Size get viewBox => const Size(165.0, 165.0);
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final FittedSizes fittedSizes = applyBoxFit(
+      fit,
+      const Size(165.0, 165.0),
+      size,
+    );
+    final Size sourceSize = fittedSizes.source;
+    final Rect destRect = Alignment.center.inscribe(
+      fittedSizes.destination,
+      Offset.zero & size,
+    );
+
+    canvas.save();
+    canvas.translate(destRect.left, destRect.top);
+    canvas.scale(
+      destRect.width / sourceSize.width,
+      destRect.height / sourceSize.height,
+    );
+
+    canvas.save();
+    canvas.scale(1.375, 1.375);
+    final Gradient _grad_Gradient = RadialGradient(
+      center: Alignment(0.0, 0.0),
+      radius: 0.5,
+      focal: Alignment(-0.30000000000000004, -0.30000000000000004),
+      focalRadius: 0.05,
+      colors: <Color>[const Color(0xFFFF0000), const Color(0xFF0000FF)],
+      stops: <double>[0.0, 1.0],
+      tileMode: TileMode.clamp,
+    );
+    {
+      final Paint paint = Paint();
+      paint.shader = _grad_Gradient.createShader(
+        Rect.fromLTWH(10.0, 10.0, 100.0, 100.0),
+      );
+      paint.style = PaintingStyle.fill;
+      canvas.drawRRect(
+        RRect.fromRectAndRadius(
+          Rect.fromLTWH(10.0, 10.0, 100.0, 100.0),
+          const Radius.elliptical(15.0, 15.0),
+        ),
+        paint,
+      );
+    }
+    {
+      final Paint paint = Paint();
+      paint.color = Colors.black;
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 2.0;
+      canvas.drawRRect(
+        RRect.fromRectAndRadius(
+          Rect.fromLTWH(10.0, 10.0, 100.0, 100.0),
+          const Radius.elliptical(15.0, 15.0),
+        ),
+        paint,
+      );
+    }
+    {
+      final Paint paint = Paint();
+      paint.color = Colors.white;
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 2.0;
+      canvas.drawCircle(const Offset(60.0, 60.0), 50.0, paint);
+    }
+    {
+      final Paint paint = Paint();
+      paint.color = Colors.white;
+      paint.style = PaintingStyle.fill;
+      canvas.drawCircle(const Offset(45.0, 45.0), 2.0, paint);
+    }
+    {
+      final Paint paint = Paint();
+      paint.color = Colors.white;
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 1.0;
+      canvas.drawCircle(const Offset(45.0, 45.0), 2.0, paint);
+    }
+    {
+      final Paint paint = Paint();
+      paint.color = Colors.white;
+      paint.style = PaintingStyle.fill;
+      canvas.drawCircle(const Offset(60.0, 60.0), 2.0, paint);
+    }
+    {
+      final Paint paint = Paint();
+      paint.color = Colors.white;
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 1.0;
+      canvas.drawCircle(const Offset(60.0, 60.0), 2.0, paint);
+    }
+    {
+      final Paint paint = Paint();
+      paint.color = Colors.white;
+      paint.style = PaintingStyle.fill;
+      {
+        final TextPainter tp = TextPainter(
+          text: TextSpan(
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 13.333333333333334,
+              fontWeight: FontWeight.normal,
+              fontStyle: FontStyle.normal,
+              fontFamily: 'Roboto',
+              package: 'svg_painter',
+            ),
+            children: <InlineSpan>[TextSpan(text: '(fx,fy)')],
+          ),
+          textDirection: TextDirection.ltr,
+        )..layout();
+        tp.paint(
+          canvas,
+          Offset(
+            38.0,
+            40.0 - tp.computeDistanceToActualBaseline(TextBaseline.alphabetic),
+          ),
+        );
+      }
+    }
+    {
+      final Paint paint = Paint();
+      paint.color = Colors.white;
+      paint.style = PaintingStyle.fill;
+      {
+        final TextPainter tp = TextPainter(
+          text: TextSpan(
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 13.333333333333334,
+              fontWeight: FontWeight.normal,
+              fontStyle: FontStyle.normal,
+              fontFamily: 'Roboto',
+              package: 'svg_painter',
+            ),
+            children: <InlineSpan>[TextSpan(text: '(cx,cy)')],
+          ),
+          textDirection: TextDirection.ltr,
+        )..layout();
+        tp.paint(
+          canvas,
+          Offset(
+            63.0,
+            63.0 - tp.computeDistanceToActualBaseline(TextBaseline.alphabetic),
+          ),
+        );
+      }
+    }
+    canvas.restore();
+    canvas.restore();
+  }
+
+  void _applyOverride(Paint paint, Object? override) {
+    switch (override) {
+      case final Color color:
+        paint.color = color;
+        paint.shader = null;
+
+      case final Shader shader:
+        paint.shader = shader;
+
+      case null || _:
+        break;
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant _$Fr2Painter oldDelegate) {
+    if (fit == oldDelegate.fit) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+}

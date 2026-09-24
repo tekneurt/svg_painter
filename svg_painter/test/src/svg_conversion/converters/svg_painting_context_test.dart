@@ -22,10 +22,10 @@ void main() {
       expect(context.inheritedFill, isA<SvgNamedColor>());
       expect(context.inheritedStroke, isA<SvgNoneColor>());
       expect(context.inheritedStrokeWidth, const SvgLength(1.0));
-      expect(context.inheritedFontSize, const SvgLength(12.0));
+      expect(context.inheritedFontSize, const SvgLength(16.0));
       expect(context.inheritedFontWeight, isA<SvgFontWeightNormal>());
       expect(context.inheritedFontStyle, SvgFontStyle.normal);
-      expect(context.inheritedFontFamily, const SvgFontFamily('sans-serif'));
+      expect(context.inheritedFontFamily, const SvgFontFamily('serif'));
 
       expect(context.inheritedFillOpacity, const SvgLength(1.0));
       expect(context.inheritedStrokeOpacity, const SvgLength(1.0));

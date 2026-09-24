@@ -11,6 +11,8 @@ final class SvgUse extends SvgGraphicsElement with SvgFontAttributable, SvgBound
     required this.y,
     this.width,
     this.height,
+    super.title,
+    super.desc,
     super.presentationAttributes,
     super.coreAttributes,
   });

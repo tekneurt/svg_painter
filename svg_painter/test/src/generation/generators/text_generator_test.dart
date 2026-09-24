@@ -47,6 +47,35 @@ void main() {
       );
     });
 
+    test('should generate sequential text painters with currentX advancement when chunks are provided', () {
+      // Arrange
+      const generator = TextGenerator();
+      const command = DrawText(
+        x: 50.0,
+        y: 90.0,
+        rootSpan: PaintingTextSpan(text: 'SVG'),
+        style: textStyle,
+        chunks: <PaintingTextChunk>[
+          PaintingTextChunk(text: 'S', x: 50.0, y: 90.0),
+          PaintingTextChunk(text: 'V', x: 100.0),
+          PaintingTextChunk(text: 'G', x: 150.0),
+        ],
+      );
+      final buffer = GeneratorBuffer();
+
+      // Act
+      generator.generate(command, buffer, painterClassName: 'TestPainter');
+
+      // Assert
+      final output = buffer.toString();
+      expect(output, contains('double currentX = 50.0;'));
+      expect(output, contains('double currentY = 90.0;'));
+      expect(output, contains('currentX += tp.width;'));
+      expect(output, contains("text: 'S'"));
+      expect(output, contains("text: 'V'"));
+      expect(output, contains("text: 'G'"));
+    });
+
     test('should escape single quotes in text', () {
       // Arrange
       const generator = TextGenerator();
@@ -63,6 +92,24 @@ void main() {
 
       // Assert
       expect(buffer.toString(), contains(r"text: 'It\'s a test'"));
+    });
+
+    test('should escape dollar signs and backslashes in text', () {
+      // Arrange
+      const generator = TextGenerator();
+      const command = DrawText(
+        x: 18.0,
+        y: 28.0,
+        rootSpan: PaintingTextSpan(text: r'$Revision: 1.1 $\path'),
+        style: textStyle,
+      );
+      final buffer = GeneratorBuffer();
+
+      // Act
+      generator.generate(command, buffer);
+
+      // Assert
+      expect(buffer.toString(), contains(r"text: '\$Revision: 1.1 \$\\path'"));
     });
 
     test('should offset x position by half width when textAnchor is middle', () {
@@ -199,6 +246,74 @@ void main() {
       final output = buffer.toString();
       expect(output, contains("fontFamily: 'Noto Serif',"));
       expect(output, contains("package: 'svg_painter',"));
+    });
+  });
+
+  group('escapeDartStringLiteral', () {
+    test('should return unchanged string when input has no special characters', () {
+      // Arrange
+      const input = 'Simple text 123';
+
+      // Act
+      final String result = escapeDartStringLiteral(input);
+
+      // Assert
+      expect(result, 'Simple text 123');
+    });
+
+    test('should escape backslashes when present', () {
+      // Arrange
+      const input = r'C:\Users\test';
+
+      // Act
+      final String result = escapeDartStringLiteral(input);
+
+      // Assert
+      expect(result, r'C:\\Users\\test');
+    });
+
+    test('should escape single quotes when present', () {
+      // Arrange
+      const input = "It's a test";
+
+      // Act
+      final String result = escapeDartStringLiteral(input);
+
+      // Assert
+      expect(result, r"It\'s a test");
+    });
+
+    test('should escape dollar signs when present', () {
+      // Arrange
+      const input = r'$Revision: 1.7 $';
+
+      // Act
+      final String result = escapeDartStringLiteral(input);
+
+      // Assert
+      expect(result, r'\$Revision: 1.7 \$');
+    });
+
+    test('should escape newlines and carriage returns when present', () {
+      // Arrange
+      const input = 'Line 1\nLine 2\rLine 3';
+
+      // Act
+      final String result = escapeDartStringLiteral(input);
+
+      // Assert
+      expect(result, r'Line 1\nLine 2\rLine 3');
+    });
+
+    test('should escape multiple mixed special characters when combined', () {
+      // Arrange
+      const input = "Path: 'C:\\dir\\\$file'\nDone";
+
+      // Act
+      final String result = escapeDartStringLiteral(input);
+
+      // Assert
+      expect(result, r"Path: \'C:\\dir\\\$file\'\nDone");
     });
   });
 }

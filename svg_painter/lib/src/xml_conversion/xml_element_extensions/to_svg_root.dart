@@ -13,7 +13,8 @@ extension ToSvgRoot on XmlElement {
     // Collect all CSS rules from <style> elements within the current SVG scope.
     // We ignore <style> elements inside nested <svg> elements as those are separate roots.
     final allRules = <Map<String, Map<String, String>>>[];
-    _collectStyles(this, allRules);
+    final mediaRules = <SvgMediaRule>[];
+    _collectStyles(this, allRules, mediaRules);
 
     // Merge rules (later ones override earlier ones)
     final mergedRules = <String, Map<String, String>>{};
@@ -22,7 +23,7 @@ extension ToSvgRoot on XmlElement {
         mergedRules.putIfAbsent(entry.key, () => <String, String>{}).addAll(entry.value);
       }
     }
-    final styleSheet = SvgStyleSheet(mergedRules);
+    final styleSheet = SvgStyleSheet(mergedRules, mediaRules);
 
     final Result<List<SvgElement>> childrenResult = children
         .whereType<XmlElement>()
@@ -56,6 +57,8 @@ extension ToSvgRoot on XmlElement {
       (List<SvgElement> childElements) => SvgRoot(
         children: childElements,
         styleSheet: styleSheet,
+        title: common.title,
+        desc: common.desc,
         x: x,
         y: y,
         width: width,
@@ -70,18 +73,29 @@ extension ToSvgRoot on XmlElement {
     );
   }
 
-  void _collectStyles(XmlNode node, List<Map<String, Map<String, String>>> allRules) {
+  void _collectStyles(
+    XmlNode node,
+    List<Map<String, Map<String, String>>> allRules,
+    List<SvgMediaRule> mediaRules,
+  ) {
     for (final XmlNode child in node.children) {
       if (child is XmlElement) {
         final String localName = child.name.local;
         if (localName == XmlElementName.style.tagName) {
-          allRules.add(SvgStyleParser.parse(child.innerText).rules);
+          final SvgStyleSheet parsedSheet = SvgStyleParser.parse(child.innerText);
+          final String? mediaAttr = child.getAttribute(XmlAttributeName.media.name);
+          final SvgMediaQuery? query = SvgMediaQuery.parse(mediaAttr);
+          if (query == null || query is SvgMediaAll) {
+            allRules.add(parsedSheet.rules);
+          } else {
+            mediaRules.add(SvgMediaRule(query: query, rules: parsedSheet.rules));
+          }
         } else if (localName == XmlElementName.svg.tagName ||
             localName == 'symbol' ||
             localName == 'marker') {
           // Scope boundary reached, do not look inside.
         } else {
-          _collectStyles(child, allRules);
+          _collectStyles(child, allRules, mediaRules);
         }
       }
     }

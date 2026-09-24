@@ -11,15 +11,23 @@ final class SvgText extends SvgGraphicsElement with SvgFontAttributable, SvgText
     required this.children,
     this.dx,
     this.dy,
+    super.title,
+    super.desc,
     super.presentationAttributes,
     super.coreAttributes,
   });
 
-  /// The x-axis coordinate of the starting point of the text.
-  final SvgLengthPercentage x;
+  /// The x-axis coordinate(s) of the text.
+  final SvgLengthPercentageOrList x;
 
-  /// The y-axis coordinate of the starting point of the text.
-  final SvgLengthPercentage y;
+  /// The y-axis coordinate(s) of the text.
+  final SvgLengthPercentageOrList y;
+
+  /// The primary x coordinate.
+  SvgLengthPercentage get primaryX => x.primary;
+
+  /// The primary y coordinate.
+  SvgLengthPercentage get primaryY => y.primary;
 
   /// The relative x-axis shift for the text.
   final SvgLengthPercentage? dx;

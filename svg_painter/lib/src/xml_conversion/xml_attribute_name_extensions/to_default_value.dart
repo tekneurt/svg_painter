@@ -3,12 +3,12 @@ import '../../xml_model/_xml_model.dart';
 
 /// Extension to provide default values for [XmlAttributeName]s based on the element.
 extension ToDefaultValue on XmlAttributeName {
-  SvgBaseValue toDefaultValue(final XmlElementName elementName) {
+  SvgBaseValue toDefaultValue(XmlElementName elementName) {
     switch (this) {
       case .x:
       case .y:
         return switch (elementName) {
-          .rect || .use || .text || .svg => const SvgLength(0.0),
+          .rect || .use || .svg || .text => const SvgLength(0.0),
           (_) => throw UnsupportedError('Invalid combination $this x $elementName '),
         };
       case .x1:
@@ -58,8 +58,12 @@ extension ToDefaultValue on XmlAttributeName {
         return SvgTextAnchor.start;
       case .paintOrder:
         return SvgPaintOrder.normal;
+      case .startOffset:
+        return const SvgLength(0.0);
       case .vectorEffect:
         return SvgVectorEffect.none;
+      case .color:
+        return const SvgNamedColor(SvgColorName.black);
       case .fill:
         return switch (elementName) {
           .line => const SvgNoneColor(),

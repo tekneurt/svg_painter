@@ -20,6 +20,8 @@ extension ToSvgGroup on XmlElement {
     return childrenResult.map(
       (List<SvgElement> childElements) => SvgGroup(
         children: childElements,
+        title: common.title,
+        desc: common.desc,
         coreAttributes: common.core,
         presentationAttributes: common.presentation,
       ),

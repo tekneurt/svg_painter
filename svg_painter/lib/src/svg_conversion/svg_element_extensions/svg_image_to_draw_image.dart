@@ -137,8 +137,7 @@ extension SvgImageToDrawImage on SvgImage {
           DrawGroup(
             id: id,
             opacity:
-                presentationAttributes?.graphics?.opacity?.resolve(context, SvgOrientation.unit) ??
-                1.0,
+                (presentationAttributes?.graphics?.opacity).resolveOpacity(context),
             commands: nestedCommands,
             style: PaintingStyle(
               transformAttributes: SvgTransformAttributes(imageOps),
@@ -174,8 +173,7 @@ extension SvgImageToDrawImage on SvgImage {
         decoding: resolvedDecoding,
         style: PaintingStyle(
           groupOpacity:
-              presentationAttributes?.graphics?.opacity?.resolve(context, SvgOrientation.unit) ??
-              1.0,
+              (presentationAttributes?.graphics?.opacity).resolveOpacity(context),
           transformAttributes: presentationAttributes?.graphics?.transformAttributes,
         ),
       ),

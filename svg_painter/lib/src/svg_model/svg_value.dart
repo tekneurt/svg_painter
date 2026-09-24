@@ -1,34 +1,35 @@
 import 'package:meta/meta.dart';
 
+part 'values/colors/svg_color_name.dart';
+part 'values/colors/svg_current_color.dart';
+part 'values/colors/svg_hsl_color.dart';
+part 'values/colors/svg_named_color.dart';
+part 'values/colors/svg_none_color.dart';
+part 'values/colors/svg_paint_reference.dart';
+part 'values/colors/svg_rgb_color.dart';
 part 'values/svg_auto.dart';
-part 'values/svg_length.dart';
-part 'values/svg_number.dart';
-part 'values/svg_percentage.dart';
-part 'values/svg_gradient_units.dart';
-part 'values/svg_image_decoding.dart';
-part 'values/svg_mask_units.dart';
 part 'values/svg_clip_path_units.dart';
-part 'values/svg_spread_method.dart';
-part 'values/svg_view_box.dart';
-part 'values/svg_preserve_aspect_ratio.dart';
 part 'values/svg_color.dart';
+part 'values/svg_fill_rule.dart';
 part 'values/svg_font_family.dart';
 part 'values/svg_font_style.dart';
 part 'values/svg_font_weight.dart';
+part 'values/svg_gradient_units.dart';
+part 'values/svg_image_decoding.dart';
+part 'values/svg_length.dart';
+part 'values/svg_length_percentage_list.dart';
+part 'values/svg_mask_units.dart';
+part 'values/svg_number.dart';
+part 'values/svg_paint_order.dart';
+part 'values/svg_percentage.dart';
+part 'values/svg_point_list.dart';
+part 'values/svg_preserve_aspect_ratio.dart';
+part 'values/svg_spread_method.dart';
 part 'values/svg_stroke_linecap.dart';
 part 'values/svg_stroke_linejoin.dart';
-part 'values/colors/svg_named_color.dart';
-part 'values/colors/svg_rgb_color.dart';
-part 'values/colors/svg_hsl_color.dart';
-part 'values/colors/svg_none_color.dart';
-part 'values/colors/svg_current_color.dart';
-part 'values/colors/svg_paint_reference.dart';
-part 'values/colors/svg_color_name.dart';
-part 'values/svg_fill_rule.dart';
 part 'values/svg_text_anchor.dart';
-part 'values/svg_point_list.dart';
-part 'values/svg_paint_order.dart';
 part 'values/svg_vector_effect.dart';
+part 'values/svg_view_box.dart';
 
 /// Base class for all SVG attribute values.
 @immutable
@@ -42,10 +43,28 @@ sealed class SvgLengthPercentageAuto extends SvgValue with SvgBaseValue {
   const SvgLengthPercentageAuto();
 }
 
+/// Represents a value that can be either a single length/percentage or a list of lengths/percentages.
+@immutable
+sealed class SvgLengthPercentageOrList extends SvgValue with SvgBaseValue {
+  const SvgLengthPercentageOrList();
+
+  /// The primary coordinate.
+  SvgLengthPercentage get primary;
+
+  /// All coordinates as a list of [SvgLengthPercentage].
+  List<SvgLengthPercentage> toList();
+}
+
 /// Represents a value that can be either a length or a percentage.
 @immutable
-sealed class SvgLengthPercentage extends SvgLengthPercentageAuto {
+sealed class SvgLengthPercentage extends SvgLengthPercentageAuto implements SvgLengthPercentageOrList {
   const SvgLengthPercentage();
+
+  @override
+  SvgLengthPercentage get primary => this;
+
+  @override
+  List<SvgLengthPercentage> toList() => <SvgLengthPercentage>[this];
 }
 
 /// Mixin that defines SVG base value types.

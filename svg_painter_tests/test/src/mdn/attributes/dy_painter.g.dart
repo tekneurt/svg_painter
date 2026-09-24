@@ -108,10 +108,10 @@ class _$DyPainter extends CustomPainter {
           text: TextSpan(
             style: TextStyle(
               color: const Color(0xFF808080),
-              fontSize: 12.0,
+              fontSize: 16.0,
               fontWeight: FontWeight.normal,
               fontStyle: FontStyle.normal,
-              fontFamily: 'Roboto',
+              fontFamily: 'Tinos',
               package: 'svg_painter',
             ),
             children: <InlineSpan>[TextSpan(text: 'SVG')],
@@ -136,10 +136,10 @@ class _$DyPainter extends CustomPainter {
           text: TextSpan(
             style: TextStyle(
               color: Colors.black,
-              fontSize: 12.0,
+              fontSize: 16.0,
               fontWeight: FontWeight.normal,
               fontStyle: FontStyle.normal,
-              fontFamily: 'Roboto',
+              fontFamily: 'Tinos',
               package: 'svg_painter',
             ),
             children: <InlineSpan>[TextSpan(text: 'SVG')],
@@ -189,7 +189,7 @@ class _$DyPainter extends CustomPainter {
       }
       final double totalLength = dashArray.fold(
         0.0,
-        (final sum, final d) => sum + d * scale,
+        (sum, d) => sum + d * scale,
       );
       if (totalLength <= 0) return source;
       double offset = (dashOffset ?? 0.0) * scale;
