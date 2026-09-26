@@ -3,6 +3,8 @@ import 'package:flutter_test/flutter_test.dart';
 
 import '../../test_utils.dart';
 import 'attributes/clip_path_painter.dart';
+import 'attributes/clip_path_units_painter.dart';
+import 'attributes/color_painter.dart';
 import 'attributes/cx_painter.dart';
 import 'attributes/cy_painter.dart';
 import 'attributes/d_painter.dart';
@@ -82,6 +84,12 @@ _fixtures =
         name: 'clip_path_attribute_painter',
         tests: defaultGoldenTests,
       ),
+      (
+        painter: const ClipPathUnitsPainter(),
+        name: 'clip_path_units_painter',
+        tests: defaultGoldenTests,
+      ),
+      (painter: const ColorPainter(), name: 'color_painter', tests: defaultGoldenTests),
       (painter: const CxPainter(), name: 'cx_painter', tests: defaultGoldenTests),
       (
         painter: const CyPainter(),

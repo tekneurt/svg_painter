@@ -1,4 +1,6 @@
 export 'clip_path.dart';
+export 'clip_path_units.dart';
+export 'color.dart';
 export 'cx.dart';
 export 'cy.dart';
 export 'd.dart';
