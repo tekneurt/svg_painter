@@ -5,6 +5,7 @@ import '../../test_utils.dart';
 import 'attributes/clip_path_painter.dart';
 import 'attributes/cx_painter.dart';
 import 'attributes/cy_painter.dart';
+import 'attributes/d_painter.dart';
 import 'attributes/decoding_painter.dart';
 import 'attributes/dx_painter.dart';
 import 'attributes/dy_painter.dart';
@@ -89,6 +90,25 @@ _fixtures =
           GoldenTestType.fixed: null,
           GoldenTestType.viewBox: <TargetPlatform>{TargetPlatform.macOS},
         },
+      ),
+      (painter: const DClosePathPainter(), name: 'd_close_path_painter', tests: defaultGoldenTests),
+      (
+        painter: const DCubicBezierPainter(),
+        name: 'd_cubic_bezier_painter',
+        tests: defaultGoldenTests,
+      ),
+      (
+        painter: const DEllipticalArcPainter(),
+        name: 'd_elliptical_arc_painter',
+        tests: defaultGoldenTests,
+      ),
+      (painter: const DExamplePainter(), name: 'd_example_painter', tests: defaultGoldenTests),
+      (painter: const DLineToPainter(), name: 'd_line_to_painter', tests: defaultGoldenTests),
+      (painter: const DMoveToPainter(), name: 'd_move_to_painter', tests: defaultGoldenTests),
+      (
+        painter: const DQuadraticBezierPainter(),
+        name: 'd_quadratic_bezier_painter',
+        tests: defaultGoldenTests,
       ),
       (painter: const DxPainter(), name: 'dx_painter', tests: macOsOverrideGoldenTests),
       (painter: const Dx2Painter(), name: 'dx_2_painter', tests: defaultGoldenTests),
