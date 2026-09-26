@@ -652,7 +652,9 @@ class _$DCubicBezierPainter extends CustomPainter {
         final double len = segmentLen;
         if (len > 0) {
           if (draw) {
-            final double end = distance + len < metric.length ? distance + len : metric.length;
+            final double end = distance + len < metric.length
+                ? distance + len
+                : metric.length;
             dest.addPath(metric.extractPath(distance, end), Offset.zero);
           }
           distance += len;
@@ -972,7 +974,9 @@ class _$DQuadraticBezierPainter extends CustomPainter {
         final double len = segmentLen;
         if (len > 0) {
           if (draw) {
-            final double end = distance + len < metric.length ? distance + len : metric.length;
+            final double end = distance + len < metric.length
+                ? distance + len
+                : metric.length;
             dest.addPath(metric.extractPath(distance, end), Offset.zero);
           }
           distance += len;
