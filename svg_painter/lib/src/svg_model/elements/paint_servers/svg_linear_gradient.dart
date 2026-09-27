@@ -14,6 +14,7 @@ final class SvgLinearGradient extends SvgGradient {
     super.gradientTransformAttributes,
     super.gradientUnits,
     super.spreadMethod,
+    super.color,
     super.coreAttributes,
   });
 

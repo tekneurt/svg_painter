@@ -8,6 +8,7 @@ sealed class SvgGradient extends SvgDefinitionElement {
     this.gradientTransformAttributes,
     this.gradientUnits = SvgGradientUnits.objectBoundingBox,
     this.spreadMethod = SvgSpreadMethod.pad,
+    this.color,
     super.coreAttributes,
   });
 
@@ -22,4 +23,7 @@ sealed class SvgGradient extends SvgDefinitionElement {
 
   /// The method used to fill the area outside the gradient vector.
   final SvgSpreadMethod spreadMethod;
+
+  /// The indirect color value for currentColor.
+  final SvgColor? color;
 }

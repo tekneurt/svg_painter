@@ -7,6 +7,7 @@ final class SvgStop extends SvgDefinitionElement {
     required this.offset,
     required this.stopColor,
     required this.stopOpacity,
+    this.color,
     super.coreAttributes,
   });
 
@@ -18,6 +19,9 @@ final class SvgStop extends SvgDefinitionElement {
 
   /// The opacity of the stop (0.0 to 1.0).
   final SvgLengthPercentage stopOpacity;
+
+  /// The indirect color value for currentColor.
+  final SvgColor? color;
 
   @override
   String toString() => 'SvgStop(offset: $offset, color: $stopColor, id: $id)';

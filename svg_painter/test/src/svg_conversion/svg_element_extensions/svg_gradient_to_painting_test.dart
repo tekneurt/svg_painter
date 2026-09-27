@@ -194,5 +194,60 @@ void main() {
         expect(cmd.spreadMethod, entry.value);
       }
     });
+
+    test('should resolve stop currentColor from gradient color when gradient defines color', () {
+      // Arrange
+      const grad = SvgLinearGradient(
+        coreAttributes: SvgCoreAttributes(id: 'g-current'),
+        color: SvgNamedColor(SvgColorName.green),
+        x1: SvgLength(0),
+        y1: SvgLength(0),
+        x2: SvgLength(1),
+        y2: SvgLength(0),
+        stops: <SvgStop>[
+          SvgStop(
+            offset: SvgLength(0.5),
+            stopColor: SvgCurrentColor(),
+            stopOpacity: SvgLength(1.0),
+          ),
+        ],
+      );
+
+      // Act
+      final Result<PaintCommand> result = grad.toPaintCommand(context);
+
+      // Assert
+      expect(result, isA<Success<PaintCommand>>());
+      final lgrad = (result as Success<PaintCommand>).value as DefineLinearGradient;
+      expect(lgrad.stops.first.colorArgb, 0xFF008000);
+    });
+
+    test('should resolve stop currentColor from stop color when stop defines color', () {
+      // Arrange
+      const grad = SvgLinearGradient(
+        coreAttributes: SvgCoreAttributes(id: 'g-current-stop'),
+        color: SvgNamedColor(SvgColorName.green),
+        x1: SvgLength(0),
+        y1: SvgLength(0),
+        x2: SvgLength(1),
+        y2: SvgLength(0),
+        stops: <SvgStop>[
+          SvgStop(
+            offset: SvgLength(0.5),
+            stopColor: SvgCurrentColor(),
+            stopOpacity: SvgLength(1.0),
+            color: SvgNamedColor(SvgColorName.blue),
+          ),
+        ],
+      );
+
+      // Act
+      final Result<PaintCommand> result = grad.toPaintCommand(context);
+
+      // Assert
+      expect(result, isA<Success<PaintCommand>>());
+      final lgrad = (result as Success<PaintCommand>).value as DefineLinearGradient;
+      expect(lgrad.stops.first.colorArgb, 0xFF0000FF);
+    });
   });
 }

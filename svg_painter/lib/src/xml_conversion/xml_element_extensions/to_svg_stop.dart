@@ -22,12 +22,16 @@ extension ToSvgStop on XmlElement {
     );
 
     final CommonAttributes common = toCommonAttributes(elementName);
+    final SvgColor? color =
+        common.presentation.color ??
+        toSvgValueOrNull<SvgColor>(elementName, XmlAttributeName.color);
 
     return Success<SvgStop>(
       SvgStop(
         offset: offset,
         stopColor: stopColor,
         stopOpacity: stopOpacity,
+        color: color,
         coreAttributes: common.core,
       ),
     );

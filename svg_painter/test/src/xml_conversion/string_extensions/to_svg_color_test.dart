@@ -33,6 +33,17 @@ void main() {
         expect('transparent'.toSvgColor().toArgb(), 0x00000000);
       });
 
+      test('should return null when input is inherit', () {
+        // Arrange
+        const input = 'inherit';
+
+        // Act
+        final SvgColor? color = input.toSvgColor();
+
+        // Assert
+        expect(color, isNull);
+      });
+
       test('should parse rgb() functional notation correctly', () {
         // Arrange & Act & Assert
         expect('rgb(255, 0, 0)'.toSvgColor().toArgb(), 0xFFFF0000);

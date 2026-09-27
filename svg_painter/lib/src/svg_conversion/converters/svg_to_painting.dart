@@ -48,6 +48,7 @@ extension SvgElementToPaintCommands on SvgElement {
         viewBoxMinX: minX,
         viewBoxMinY: minY,
         inheritedAttributes: SvgPresentationAttributes(
+          color: self.presentationAttributes?.color ?? const SvgNamedColor(SvgColorName.black),
           fill: SvgFillAttributes(
             color: self.fillAttributes?.color ?? const SvgNamedColor(SvgColorName.black),
             opacity: self.fillAttributes?.opacity ?? const SvgLength(1.0),
@@ -119,54 +120,57 @@ extension SvgElementToPaintCommands on SvgElement {
   Result<List<PaintCommand>> _toDefineClipPath(SvgClipPath clipPath, SvgPaintingContext context) {
     final SvgPaintingContext childrenContext =
         (clipPath.clipPathUnits == SvgClipPathUnits.objectBoundingBox)
-            ? context.derive(viewBoxWidth: 1.0, viewBoxHeight: 1.0, viewBoxMinX: 0, viewBoxMinY: 0)
-            : context;
+        ? context.derive(viewBoxWidth: 1.0, viewBoxHeight: 1.0, viewBoxMinX: 0, viewBoxMinY: 0)
+        : context;
 
     return clipPath.children
         .map((SvgElement child) => child.toPaintCommands(childrenContext))
         .combine()
         .map((List<PaintCommand> childCommands) {
-      return <PaintCommand>[
-        DefineClipPath(
-          id: clipPath.id ?? '',
-          commands: childCommands,
-          clipPathUnits: switch (clipPath.clipPathUnits) {
-            SvgClipPathUnits.objectBoundingBox => PaintingGradientUnits.objectBoundingBox,
-            SvgClipPathUnits.userSpaceOnUse => PaintingGradientUnits.userSpaceOnUse,
-          },
-        ),
-      ];
-    });
+          return <PaintCommand>[
+            DefineClipPath(
+              id: clipPath.id ?? '',
+              commands: childCommands,
+              clipPathUnits: switch (clipPath.clipPathUnits) {
+                SvgClipPathUnits.objectBoundingBox => PaintingGradientUnits.objectBoundingBox,
+                SvgClipPathUnits.userSpaceOnUse => PaintingGradientUnits.userSpaceOnUse,
+              },
+            ),
+          ];
+        });
   }
 
   Result<List<PaintCommand>> _toDefineMask(SvgMask mask, SvgPaintingContext context) {
     final SvgPaintingContext childrenContext =
         (mask.maskContentUnits == SvgMaskUnits.objectBoundingBox)
-            ? context.derive(viewBoxWidth: 1.0, viewBoxHeight: 1.0, viewBoxMinX: 0, viewBoxMinY: 0)
-            : context;
+        ? context.derive(viewBoxWidth: 1.0, viewBoxHeight: 1.0, viewBoxMinX: 0, viewBoxMinY: 0)
+        : context;
 
-    return mask.children.map((SvgElement child) => child.toPaintCommands(childrenContext)).combine().map((
-      List<PaintCommand> childCommands,
-    ) {
-      return <PaintCommand>[
-        DefineMask(
-          id: mask.id ?? '',
-          commands: childCommands,
-          x: mask.x ?? const SvgPercentage(0),
-          y: mask.y ?? const SvgPercentage(0),
-          width: mask.width ?? const SvgPercentage(100),
-          height: mask.height ?? const SvgPercentage(100),
-          maskUnits: switch (mask.maskUnits) {
-            SvgMaskUnits.objectBoundingBox => PaintingGradientUnits.objectBoundingBox,
-            SvgMaskUnits.userSpaceOnUse => PaintingGradientUnits.userSpaceOnUse,
-          },
-          maskContentUnits: switch (mask.maskContentUnits) {
-            SvgMaskUnits.objectBoundingBox => PaintingGradientUnits.objectBoundingBox,
-            SvgMaskUnits.userSpaceOnUse => PaintingGradientUnits.userSpaceOnUse,
-          },
-        ),
-      ];
-    });
+    return mask.children
+        .map((SvgElement child) => child.toPaintCommands(childrenContext))
+        .combine()
+        .map((
+          List<PaintCommand> childCommands,
+        ) {
+          return <PaintCommand>[
+            DefineMask(
+              id: mask.id ?? '',
+              commands: childCommands,
+              x: mask.x ?? const SvgPercentage(0),
+              y: mask.y ?? const SvgPercentage(0),
+              width: mask.width ?? const SvgPercentage(100),
+              height: mask.height ?? const SvgPercentage(100),
+              maskUnits: switch (mask.maskUnits) {
+                SvgMaskUnits.objectBoundingBox => PaintingGradientUnits.objectBoundingBox,
+                SvgMaskUnits.userSpaceOnUse => PaintingGradientUnits.userSpaceOnUse,
+              },
+              maskContentUnits: switch (mask.maskContentUnits) {
+                SvgMaskUnits.objectBoundingBox => PaintingGradientUnits.objectBoundingBox,
+                SvgMaskUnits.userSpaceOnUse => PaintingGradientUnits.userSpaceOnUse,
+              },
+            ),
+          ];
+        });
   }
 }
 

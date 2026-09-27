@@ -69,7 +69,7 @@ extension SvgGradientToPainting on SvgGradient {
           y1: y1,
           x2: x2,
           y2: y2,
-          stops: stops.toPaintingStops(context),
+          stops: stops.toPaintingStops(context, gradientColor: self.color),
           transformAttributes: gradientTransformAttributes,
           units: paintingUnits,
           spreadMethod: paintingSpread,
@@ -103,7 +103,7 @@ extension SvgGradientToPainting on SvgGradient {
           fx: fx,
           fy: fy,
           focalRadius: fr,
-          stops: stops.toPaintingStops(context),
+          stops: stops.toPaintingStops(context, gradientColor: self.color),
           transformAttributes: gradientTransformAttributes,
           units: paintingUnits,
           spreadMethod: paintingSpread,
@@ -118,12 +118,28 @@ extension SvgGradientToPainting on SvgGradient {
 }
 
 extension on List<SvgStop> {
-  List<GradientStop> toPaintingStops(SvgPaintingContext context) {
+  List<GradientStop> toPaintingStops(
+    SvgPaintingContext context, {
+    SvgColor? gradientColor,
+  }) {
     return map((SvgStop stop) {
       final double offset = stop.offset.resolve(context, SvgOrientation.unit);
       final double opacity = stop.stopOpacity.resolveOpacity(context);
 
-      return GradientStop(offset: offset, colorArgb: stop.stopColor.toFillArgb(), opacity: opacity);
+      final SvgColor effectiveColor = switch (stop.stopColor) {
+        final SvgCurrentColor _ =>
+          stop.color ??
+              gradientColor ??
+              context.inheritedAttributes.color ??
+              const SvgNamedColor(SvgColorName.black),
+        final SvgColor c => c,
+      };
+
+      return GradientStop(
+        offset: offset,
+        colorArgb: effectiveColor.toFillArgb(),
+        opacity: opacity,
+      );
     }).toList();
   }
 }
