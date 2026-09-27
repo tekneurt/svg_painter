@@ -76,21 +76,21 @@ extension ToSvgColor on String {
 
     return switch ((match.group(1), match.group(2), match.group(3))) {
       (final String hStr, final String sStr, final String lStr) => SvgHslColor(
-          a,
-          double.parse(hStr) % 360,
-          double.parse(sStr).clamp(0.0, 100.0),
-          double.parse(lStr).clamp(0.0, 100.0),
-        ),
+        a,
+        double.parse(hStr) % 360,
+        double.parse(sStr).clamp(0.0, 100.0),
+        double.parse(lStr).clamp(0.0, 100.0),
+      ),
       _ => null,
     };
   }
 
   SvgColor? _parseRgb(String rgb) {
     final rgbCommaRegex = RegExp(
-      r'^rgba?\(\s*(\d+%?)\s*,\s*(\d+%?)\s*,\s*(\d+%?)\s*(?:,\s*([\d.]+%?)\s*)?\)$',
+      r'^rgba?\(\s*([\d.]+%?)\s*,\s*([\d.]+%?)\s*,\s*([\d.]+%?)\s*(?:,\s*([\d.]+%?)\s*)?\)$',
     );
     final rgbSpaceRegex = RegExp(
-      r'^rgba?\(\s*(\d+%?)\s+(\d+%?)\s+(\d+%?)\s*(?:\/\s*([\d.]+%?)\s*)?\)$',
+      r'^rgba?\(\s*([\d.]+%?)\s+([\d.]+%?)\s+([\d.]+%?)\s*(?:\/\s*([\d.]+%?)\s*)?\)$',
     );
     final Match? match = rgbCommaRegex.firstMatch(rgb) ?? rgbSpaceRegex.firstMatch(rgb);
     if (match == null) {
@@ -102,7 +102,7 @@ extension ToSvgColor on String {
         final double percentage = double.parse(part.substring(0, part.length - 1));
         return (percentage * 255 / 100).round().clamp(0, 255);
       } else {
-        return int.parse(part).clamp(0, 255);
+        return (double.tryParse(part)?.round() ?? int.parse(part)).clamp(0, 255);
       }
     }
 
@@ -121,11 +121,11 @@ extension ToSvgColor on String {
 
     return switch ((match.group(1), match.group(2), match.group(3))) {
       (final String rStr, final String gStr, final String bStr) => SvgRgbColor(
-          a,
-          parsePart(rStr),
-          parsePart(gStr),
-          parsePart(bStr),
-        ),
+        a,
+        parsePart(rStr),
+        parsePart(gStr),
+        parsePart(bStr),
+      ),
       _ => null,
     };
   }
