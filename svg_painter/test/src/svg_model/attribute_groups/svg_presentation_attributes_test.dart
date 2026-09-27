@@ -1,5 +1,6 @@
 import 'package:svg_painter/src/svg_model/attribute_groups/svg_fill_attributes.dart';
 import 'package:svg_painter/src/svg_model/attribute_groups/svg_presentation_attributes.dart';
+import 'package:svg_painter/src/svg_model/attribute_groups/svg_stroke_attributes.dart';
 import 'package:svg_painter/src/svg_model/svg_value.dart';
 import 'package:test/test.dart';
 
@@ -60,6 +61,64 @@ void main() {
 
       // Assert
       expect(inherited.paintOrder, parent.paintOrder);
+    });
+
+    test(
+      'should resolve currentColor on fill using effectiveColor when child defines currentColor and color',
+      () {
+        // Arrange
+        const child = SvgPresentationAttributes(
+          color: SvgNamedColor(SvgColorName.lime),
+          fill: SvgFillAttributes(color: SvgCurrentColor()),
+        );
+        const parent = SvgPresentationAttributes(
+          color: SvgNamedColor(SvgColorName.blue),
+        );
+
+        // Act
+        final SvgPresentationAttributes inherited = child.inherit(parent);
+
+        // Assert
+        expect(
+          inherited.fill?.color,
+          isA<SvgNamedColor>().having((SvgNamedColor c) => c.name, 'name', SvgColorName.lime),
+        );
+      },
+    );
+
+    test(
+      'should resolve currentColor on stroke using effectiveColor when child defines currentColor and parent defines color',
+      () {
+        // Arrange
+        const child = SvgPresentationAttributes(
+          stroke: SvgStrokeAttributes(color: SvgCurrentColor()),
+        );
+        const parent = SvgPresentationAttributes(
+          color: SvgNamedColor(SvgColorName.purple),
+        );
+
+        // Act
+        final SvgPresentationAttributes inherited = child.inherit(parent);
+
+        // Assert
+        expect(
+          inherited.stroke?.color,
+          isA<SvgNamedColor>().having((SvgNamedColor c) => c.name, 'name', SvgColorName.purple),
+        );
+      },
+    );
+
+    test('should preserve currentColor on fill when effectiveColor is null', () {
+      // Arrange
+      const child = SvgPresentationAttributes(
+        fill: SvgFillAttributes(color: SvgCurrentColor()),
+      );
+
+      // Act
+      final SvgPresentationAttributes inherited = child.inherit(null);
+
+      // Assert
+      expect(inherited.fill?.color, isA<SvgCurrentColor>());
     });
   });
 }

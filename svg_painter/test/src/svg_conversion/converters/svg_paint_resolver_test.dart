@@ -63,30 +63,61 @@ void main() {
       expect(style.fill?.colorArgb, 0xFF008000);
     });
 
-    test('should resolve currentColor to element color when color attribute is defined on element', () {
+    test(
+      'should resolve currentColor to element color when color attribute is defined on element',
+      () {
+        // Arrange
+        const inheritedContext = SvgPaintingContext(
+          viewBoxWidth: 160,
+          viewBoxHeight: 260,
+          inheritedAttributes: SvgPresentationAttributes(
+            color: SvgRgbColor(255, 0, 128, 0),
+          ),
+        );
+        const presentationAttributes = SvgPresentationAttributes(
+          color: SvgRgbColor(255, 0, 0, 255),
+          fill: SvgFillAttributes(color: SvgCurrentColor()),
+        );
+
+        // Act
+        final PaintingStyle style = resolvePaint(
+          inheritedContext,
+          tagName: 'rect',
+          presentationAttributes: presentationAttributes,
+        );
+
+        // Assert
+        expect(style.fill?.isCurrentColor, isFalse);
+        expect(style.fill?.colorArgb, 0xFF0000FF);
+      },
+    );
+
+    test('should preserve parent computed fill when element defines color but not fill', () {
       // Arrange
-      const inheritedContext = SvgPaintingContext(
-        viewBoxWidth: 160,
-        viewBoxHeight: 260,
-        inheritedAttributes: SvgPresentationAttributes(
-          color: SvgRgbColor(255, 0, 128, 0),
-        ),
-      );
-      const presentationAttributes = SvgPresentationAttributes(
-        color: SvgRgbColor(255, 0, 0, 255),
+      final SvgPresentationAttributes parentAttrs = const SvgPresentationAttributes(
+        color: SvgNamedColor(SvgColorName.lime),
         fill: SvgFillAttributes(color: SvgCurrentColor()),
+      ).inherit(null);
+
+      final inheritedContext = SvgPaintingContext(
+        viewBoxWidth: 170,
+        viewBoxHeight: 270,
+        inheritedAttributes: parentAttrs,
+      );
+      const elementPresentation = SvgPresentationAttributes(
+        color: SvgNamedColor(SvgColorName.red),
       );
 
       // Act
       final PaintingStyle style = resolvePaint(
         inheritedContext,
         tagName: 'rect',
-        presentationAttributes: presentationAttributes,
+        presentationAttributes: elementPresentation,
       );
 
       // Assert
       expect(style.fill?.isCurrentColor, isFalse);
-      expect(style.fill?.colorArgb, 0xFF0000FF);
+      expect(style.fill?.colorArgb, 0xFF00FF00);
     });
 
     test('should parse font shorthand', () {

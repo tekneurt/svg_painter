@@ -68,16 +68,14 @@ final class SvgPresentationAttributes {
   /// This is used to resolve attribute inheritance. Only properties that are
   /// specified as inherited in the SVG spec will be taken from the [parent].
   SvgPresentationAttributes inherit(SvgPresentationAttributes? parent) {
-    if (parent == null) {
-      return this;
-    }
+    final SvgColor? effectiveColor = color ?? parent?.color;
     return SvgPresentationAttributes(
       // Inherited groups
-      color: color ?? parent.color,
-      fill: _inheritFill(fill, parent.fill),
-      stroke: _inheritStroke(stroke, parent.stroke),
-      font: _inheritFont(font, parent.font),
-      paintOrder: paintOrder ?? parent.paintOrder,
+      color: effectiveColor,
+      fill: _inheritFill(fill, parent?.fill, effectiveColor),
+      stroke: _inheritStroke(stroke, parent?.stroke, effectiveColor),
+      font: _inheritFont(font, parent?.font),
+      paintOrder: paintOrder ?? parent?.paintOrder,
       // Non-inherited groups (opacity, transform, vector-effect, etc. do NOT inherit)
       graphics: graphics,
       vectorEffect: vectorEffect,
@@ -148,40 +146,84 @@ final class SvgPresentationAttributes {
     );
   }
 
-  static SvgFillAttributes? _inheritFill(SvgFillAttributes? child, SvgFillAttributes? parent) {
+  static SvgFillAttributes? _inheritFill(
+    SvgFillAttributes? child,
+    SvgFillAttributes? parent,
+    SvgColor? effectiveColor,
+  ) {
     if (parent == null) {
-      return child;
+      if (child == null) {
+        return null;
+      } else {
+        return SvgFillAttributes(
+          color: _resolveInheritedColor(child.color, effectiveColor),
+          opacity: child.opacity,
+          rule: child.rule,
+        );
+      }
+    } else {
+      if (child == null) {
+        return parent;
+      } else {
+        final SvgColor? rawColor = child.color ?? parent.color;
+        return SvgFillAttributes(
+          color: _resolveInheritedColor(rawColor, effectiveColor),
+          opacity: child.opacity ?? parent.opacity,
+          rule: child.rule ?? parent.rule,
+        );
+      }
     }
-    if (child == null) {
-      return parent;
-    }
-    return SvgFillAttributes(
-      color: child.color ?? parent.color,
-      opacity: child.opacity ?? parent.opacity,
-      rule: child.rule ?? parent.rule,
-    );
   }
 
   static SvgStrokeAttributes? _inheritStroke(
     SvgStrokeAttributes? child,
     SvgStrokeAttributes? parent,
+    SvgColor? effectiveColor,
   ) {
     if (parent == null) {
-      return child;
+      if (child == null) {
+        return null;
+      } else {
+        return SvgStrokeAttributes(
+          color: _resolveInheritedColor(child.color, effectiveColor),
+          opacity: child.opacity,
+          width: child.width,
+          dashArray: child.dashArray,
+          dashOffset: child.dashOffset,
+          linecap: child.linecap,
+          linejoin: child.linejoin,
+          miterLimit: child.miterLimit,
+        );
+      }
+    } else {
+      if (child == null) {
+        return parent;
+      } else {
+        final SvgColor? rawColor = child.color ?? parent.color;
+        return SvgStrokeAttributes(
+          color: _resolveInheritedColor(rawColor, effectiveColor),
+          opacity: child.opacity ?? parent.opacity,
+          width: child.width ?? parent.width,
+          dashArray: child.dashArray ?? parent.dashArray,
+          dashOffset: child.dashOffset ?? parent.dashOffset,
+          linecap: child.linecap ?? parent.linecap,
+          linejoin: child.linejoin ?? parent.linejoin,
+          miterLimit: child.miterLimit ?? parent.miterLimit,
+        );
+      }
     }
-    if (child == null) {
-      return parent;
+  }
+
+  static SvgColor? _resolveInheritedColor(SvgColor? color, SvgColor? effectiveColor) {
+    if (color is SvgCurrentColor) {
+      if (effectiveColor != null && effectiveColor is! SvgCurrentColor) {
+        return effectiveColor;
+      } else {
+        return color;
+      }
+    } else {
+      return color;
     }
-    return SvgStrokeAttributes(
-      color: child.color ?? parent.color,
-      opacity: child.opacity ?? parent.opacity,
-      width: child.width ?? parent.width,
-      dashArray: child.dashArray ?? parent.dashArray,
-      dashOffset: child.dashOffset ?? parent.dashOffset,
-      linecap: child.linecap ?? parent.linecap,
-      linejoin: child.linejoin ?? parent.linejoin,
-      miterLimit: child.miterLimit ?? parent.miterLimit,
-    );
   }
 
   static SvgFontAttributes? _inheritFont(SvgFontAttributes? child, SvgFontAttributes? parent) {
