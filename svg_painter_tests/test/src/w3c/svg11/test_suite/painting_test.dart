@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../../../test_utils.dart';
+import 'painting/painting_control_03_f_painter.dart';
+import 'painting/painting_control_04_f_painter.dart';
 import 'painting/painting_fill_01_t_painter.dart';
 import 'painting/painting_fill_02_t_painter.dart';
 import 'painting/painting_fill_03_t_painter.dart';
@@ -20,6 +22,8 @@ import 'painting/painting_stroke_10_t_painter.dart';
 
 final List<({CustomPainter painter, String name, double? maxDiffPercent})>
 _fixtures = <({CustomPainter painter, String name, double? maxDiffPercent})>[
+  (painter: const PaintingControl03FPainter(), name: 'painting_control_03_f', maxDiffPercent: null),
+  (painter: const PaintingControl04FPainter(), name: 'painting_control_04_f', maxDiffPercent: null),
   (painter: const PaintingFill01TPainter(), name: 'painting_fill_01_t', maxDiffPercent: 0.11),
   (painter: const PaintingFill02TPainter(), name: 'painting_fill_02_t', maxDiffPercent: 0.10),
   (painter: const PaintingFill03TPainter(), name: 'painting_fill_03_t', maxDiffPercent: 0.10),
