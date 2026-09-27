@@ -7,6 +7,8 @@ part 'values/colors/svg_named_color.dart';
 part 'values/colors/svg_none_color.dart';
 part 'values/colors/svg_paint_reference.dart';
 part 'values/colors/svg_rgb_color.dart';
+part 'values/colors/svg_system_color.dart';
+part 'values/colors/svg_system_color_name.dart';
 part 'values/svg_auto.dart';
 part 'values/svg_clip_path_units.dart';
 part 'values/svg_color.dart';
@@ -57,7 +59,8 @@ sealed class SvgLengthPercentageOrList extends SvgValue with SvgBaseValue {
 
 /// Represents a value that can be either a length or a percentage.
 @immutable
-sealed class SvgLengthPercentage extends SvgLengthPercentageAuto implements SvgLengthPercentageOrList {
+sealed class SvgLengthPercentage extends SvgLengthPercentageAuto
+    implements SvgLengthPercentageOrList {
   const SvgLengthPercentage();
 
   @override

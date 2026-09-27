@@ -44,6 +44,13 @@ void main() {
       // Assert
       expect(result, 'SvgPaintReference(grad1, fallback: null)');
     });
+
+    test('SvgSystemColor should return correct string', () {
+      // Arrange & Act
+      final result = const SvgSystemColor(SvgSystemColorName.background).toString();
+      // Assert
+      expect(result, 'SvgSystemColor(background)');
+    });
   });
 
   group('SvgColorName', () {
@@ -57,6 +64,20 @@ void main() {
     test('fromName should return null for invalid names', () {
       // Arrange & Act & Assert
       expect(SvgColorName.fromName('blacky'), isNull);
+    });
+  });
+
+  group('SvgSystemColorName', () {
+    test('should return correct enum when name is valid case-insensitively', () {
+      // Arrange & Act & Assert
+      expect(SvgSystemColorName.fromName('Background'), SvgSystemColorName.background);
+      expect(SvgSystemColorName.fromName('WINDOW'), SvgSystemColorName.window);
+      expect(SvgSystemColorName.fromName('ThreeDFace'), SvgSystemColorName.threedface);
+    });
+
+    test('should return null when name is invalid', () {
+      // Arrange & Act & Assert
+      expect(SvgSystemColorName.fromName('InvalidColor'), isNull);
     });
   });
 }

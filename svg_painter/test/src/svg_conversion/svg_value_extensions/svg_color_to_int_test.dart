@@ -29,6 +29,15 @@ void main() {
       expect(const SvgNoneColor().toArgb(), 0x00000000);
     });
 
+    test('should convert SvgSystemColor correctly', () {
+      // Arrange & Act & Assert
+      expect(const SvgSystemColor(SvgSystemColorName.background).toArgb(), 0xFF005C5C);
+      expect(const SvgSystemColor(SvgSystemColorName.window).toArgb(), 0xFFDFDFDF);
+      expect(const SvgSystemColor(SvgSystemColorName.activecaption).toArgb(), 0xFF000080);
+      expect(const SvgSystemColor(SvgSystemColorName.captiontext).toArgb(), 0xFF000000);
+      expect(const SvgSystemColor(SvgSystemColorName.highlighttext).toArgb(), 0xFFC4C4C4);
+    });
+
     test('should use fallback for SvgPaintReference', () {
       // Arrange & Act & Assert
       expect(

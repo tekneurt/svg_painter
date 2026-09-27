@@ -41,6 +41,14 @@ extension ToSvgColor on String {
       return SvgNamedColor(name);
     }
 
+    // System colors
+    final SvgSystemColorName? systemColor = SvgSystemColorName.fromName(normalized);
+    if (systemColor == null) {
+      // Not a system color
+    } else {
+      return SvgSystemColor(systemColor);
+    }
+
     // rgb(r, g, b) or rgba(r, g, b, a)
     if (normalized.startsWith('rgb')) {
       return _parseRgb(normalized);

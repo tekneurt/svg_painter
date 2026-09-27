@@ -106,6 +106,34 @@ void main() {
         expect('hsl(0 100% 50% / 50%)'.toSvgColor().toArgb(), 0x80FF0000);
         expect('hsl(120 100% 50% / 0.5)'.toSvgColor().toArgb(), 0x8000FF00);
       });
+
+      test('should parse system colors correctly case-insensitively', () {
+        // Arrange & Act & Assert
+        expect(
+          'Background'.toSvgColor(),
+          isA<SvgSystemColor>().having(
+            (SvgSystemColor c) => c.name,
+            'name',
+            SvgSystemColorName.background,
+          ),
+        );
+        expect(
+          'window'.toSvgColor(),
+          isA<SvgSystemColor>().having(
+            (SvgSystemColor c) => c.name,
+            'name',
+            SvgSystemColorName.window,
+          ),
+        );
+        expect(
+          'ThreeDFace'.toSvgColor(),
+          isA<SvgSystemColor>().having(
+            (SvgSystemColor c) => c.name,
+            'name',
+            SvgSystemColorName.threedface,
+          ),
+        );
+      });
     });
   });
 }
