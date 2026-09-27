@@ -219,8 +219,7 @@ class _$PathsData18FPainter extends CustomPainter {
     {
       final Path path = Path()
         ..moveTo(20.0, 100.0)
-        ..lineTo(40.0, 100.0)
-        ..lineTo(90.0, 100.0);
+        ..lineTo(40.0, 100.0);
       {
         final Paint paint = Paint();
         paint.color = Colors.black;
@@ -350,8 +349,7 @@ class _$PathsData18FPainter extends CustomPainter {
     {
       final Path path = Path()
         ..moveTo(20.0, 160.0)
-        ..lineTo(40.0, 160.0)
-        ..lineTo(90.0, 160.0);
+        ..lineTo(40.0, 160.0);
       {
         final Paint paint = Paint();
         paint.color = Colors.black;

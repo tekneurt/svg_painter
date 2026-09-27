@@ -20,6 +20,7 @@ import 'paths/paths_data_16_t_painter.dart';
 import 'paths/paths_data_17_f_painter.dart';
 import 'paths/paths_data_18_f_painter.dart';
 import 'paths/paths_data_19_f_painter.dart';
+import 'paths/paths_data_20_f_painter.dart';
 
 final List<({CustomPainter painter, String name, double? maxDiffPercent})> _fixtures =
     <({CustomPainter painter, String name, double? maxDiffPercent})>[
@@ -41,6 +42,7 @@ final List<({CustomPainter painter, String name, double? maxDiffPercent})> _fixt
       (painter: const PathsData17FPainter(), name: 'paths_data_17_f', maxDiffPercent: null),
       (painter: const PathsData18FPainter(), name: 'paths_data_18_f', maxDiffPercent: null),
       (painter: const PathsData19FPainter(), name: 'paths_data_19_f', maxDiffPercent: 0.09),
+      (painter: const PathsData20FPainter(), name: 'paths_data_20_f', maxDiffPercent: null),
     ];
 
 void main() {
