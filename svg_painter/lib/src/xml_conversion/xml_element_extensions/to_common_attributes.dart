@@ -61,7 +61,10 @@ extension ToCommonAttributes on XmlElement {
         opacity: toSvgValueOrNull<SvgLengthPercentage>(elementName, XmlAttributeName.strokeOpacity),
         width: toSvgValueOrNull<SvgLengthPercentage>(elementName, XmlAttributeName.strokeWidth),
         dashArray: toSvgValueOrNull<SvgPointList>(elementName, XmlAttributeName.strokeDasharray),
-        dashOffset: toSvgValueOrNull<SvgLengthPercentage>(elementName, XmlAttributeName.strokeDashoffset),
+        dashOffset: toSvgValueOrNull<SvgLengthPercentage>(
+          elementName,
+          XmlAttributeName.strokeDashoffset,
+        ),
         linecap: toSvgValueOrNull<SvgStrokeLinecap>(elementName, XmlAttributeName.strokeLinecap),
         linejoin: toSvgValueOrNull<SvgStrokeLinejoin>(elementName, XmlAttributeName.strokeLinejoin),
       ),
@@ -82,6 +85,7 @@ extension ToCommonAttributes on XmlElement {
       ),
       paintOrder: toSvgValueOrNull<SvgPaintOrder>(elementName, XmlAttributeName.paintOrder),
       vectorEffect: toSvgValueOrNull<SvgVectorEffect>(elementName, XmlAttributeName.vectorEffect),
+      display: toSvgValueOrNull<SvgDisplay>(elementName, XmlAttributeName.display),
     );
 
     return (

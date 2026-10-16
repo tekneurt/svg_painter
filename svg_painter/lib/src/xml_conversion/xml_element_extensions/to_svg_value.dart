@@ -74,6 +74,7 @@ extension ToSvgValue on XmlElement {
         .textAnchor => attributeValue.toSvgTextAnchor(),
         .paintOrder => attributeValue.toSvgPaintOrder(),
         .vectorEffect => attributeValue.toSvgVectorEffect(),
+        .display => attributeValue.toSvgDisplay(),
         .rotate => attributeValue.toSvgNumber(),
         .gradientUnits => attributeValue.toSvgGradientUnits(),
         .spreadMethod => throw UnimplementedError('spreadMethod is not yet implemented'),

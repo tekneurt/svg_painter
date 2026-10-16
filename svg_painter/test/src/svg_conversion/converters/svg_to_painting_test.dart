@@ -750,5 +750,61 @@ void main() {
         expect(defineMask.commands.single, isA<DrawRect>());
       });
     });
+
+    group('display', () {
+      test('should suppress paint commands when element has display none', () {
+        // Arrange
+        const rect = SvgRect(
+          x: SvgLength(10),
+          y: SvgLength(20),
+          width: SvgLength(100),
+          height: SvgLength(50),
+          rx: SvgLength(2),
+          ry: SvgLength(3),
+          presentationAttributes: SvgPresentationAttributes(
+            display: SvgDisplay.none,
+          ),
+        );
+        const root = SvgRoot(children: <SvgElement>[rect]);
+
+        // Act
+        final Result<List<PaintCommand>> result = root.toPaintCommands();
+
+        // Assert
+        expect(result, isA<Success<List<PaintCommand>>>());
+        final List<PaintCommand> commands = (result as Success<List<PaintCommand>>).value;
+        final rootGroup = commands.single as DrawGroup;
+        expect(rootGroup.commands, isEmpty);
+      });
+
+      test('should suppress entire group when group has display none', () {
+        // Arrange
+        const group = SvgGroup(
+          children: <SvgElement>[
+            SvgRect(
+              x: SvgLength(15),
+              y: SvgLength(25),
+              width: SvgLength(80),
+              height: SvgLength(40),
+              rx: SvgLength(1),
+              ry: SvgLength(1),
+            ),
+          ],
+          presentationAttributes: SvgPresentationAttributes(
+            display: SvgDisplay.none,
+          ),
+        );
+        const root = SvgRoot(children: <SvgElement>[group]);
+
+        // Act
+        final Result<List<PaintCommand>> result = root.toPaintCommands();
+
+        // Assert
+        expect(result, isA<Success<List<PaintCommand>>>());
+        final List<PaintCommand> commands = (result as Success<List<PaintCommand>>).value;
+        final rootGroup = commands.single as DrawGroup;
+        expect(rootGroup.commands, isEmpty);
+      });
+    });
   });
 }

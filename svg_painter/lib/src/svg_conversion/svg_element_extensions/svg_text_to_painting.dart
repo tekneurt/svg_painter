@@ -99,7 +99,16 @@ extension SvgTextToPaintCommands on SvgText {
       final commands = <PaintCommand>[];
       for (final SvgTextContent child in children) {
         if (child is SvgTspan) {
-          final SvgPaintingContext spanContext = textContext.deriveWith(child);
+          final SvgPresentationAttributes spanAttrs = resolvePresentation(
+            textContext,
+            tagName: 'tspan',
+            coreAttributes: child.coreAttributes,
+            presentationAttributes: child.presentationAttributes,
+          );
+          if (spanAttrs.display == SvgDisplay.none) {
+            continue;
+          }
+          final SvgPaintingContext spanContext = textContext.derive(inheritedAttributes: spanAttrs);
           final PaintingStyle spanStyle = resolvePaint(
             spanContext,
             tagName: 'tspan',
@@ -278,7 +287,16 @@ extension SvgTextToPaintCommands on SvgText {
       if (child is SvgCharacterData) {
         childSpans.add(PaintingTextSpan(text: child.text));
       } else if (child is SvgTspan) {
-        final SvgPaintingContext spanContext = context.deriveWith(child);
+        final SvgPresentationAttributes spanAttrs = resolvePresentation(
+          context,
+          tagName: 'tspan',
+          coreAttributes: child.coreAttributes,
+          presentationAttributes: child.presentationAttributes,
+        );
+        if (spanAttrs.display == SvgDisplay.none) {
+          continue;
+        }
+        final SvgPaintingContext spanContext = context.derive(inheritedAttributes: spanAttrs);
         final PaintingStyle spanStyle = resolvePaint(
           spanContext,
           tagName: 'tspan',

@@ -120,5 +120,52 @@ void main() {
       // Assert
       expect(inherited.fill?.color, isA<SvgCurrentColor>());
     });
+
+    test('should merge display when other has display', () {
+      // Arrange
+      const base = SvgPresentationAttributes(display: SvgDisplay.inline);
+      const other = SvgPresentationAttributes(display: SvgDisplay.none);
+
+      // Act
+      final SvgPresentationAttributes merged = base.merge(other);
+
+      // Assert
+      expect(merged.display, SvgDisplay.none);
+    });
+
+    test('should force display to none when parent has display none even if child has inline', () {
+      // Arrange
+      const parent = SvgPresentationAttributes(display: SvgDisplay.none);
+      const child = SvgPresentationAttributes(display: SvgDisplay.inline);
+
+      // Act
+      final SvgPresentationAttributes inherited = child.inherit(parent);
+
+      // Assert
+      expect(inherited.display, SvgDisplay.none);
+    });
+
+    test('should inherit parent display when child display is null', () {
+      // Arrange
+      const parent = SvgPresentationAttributes(display: SvgDisplay.block);
+      const child = SvgPresentationAttributes();
+
+      // Act
+      final SvgPresentationAttributes inherited = child.inherit(parent);
+
+      // Assert
+      expect(inherited.display, SvgDisplay.block);
+    });
+
+    test('should include display in toString when display is set', () {
+      // Arrange
+      const attrs = SvgPresentationAttributes(display: SvgDisplay.none);
+
+      // Act
+      final result = attrs.toString();
+
+      // Assert
+      expect(result, contains('display: SvgDisplay.none'));
+    });
   });
 }

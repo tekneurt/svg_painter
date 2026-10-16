@@ -21,6 +21,7 @@ final class SvgPresentationAttributes {
     this.graphics,
     this.paintOrder,
     this.vectorEffect,
+    this.display,
   });
 
   /// The indirect color value for currentColor.
@@ -44,6 +45,9 @@ final class SvgPresentationAttributes {
   /// The vector effect to use when drawing an object (e.g., non-scaling-stroke).
   final SvgVectorEffect? vectorEffect;
 
+  /// Specifies whether or how an element is rendered.
+  final SvgDisplay? display;
+
   /// Merges this set of attributes with another set.
   ///
   /// This is used to resolve attribute priority (e.g., Inline Style > CSS > Attribute).
@@ -60,6 +64,7 @@ final class SvgPresentationAttributes {
       graphics: _mergeGraphics(graphics, other.graphics),
       paintOrder: other.paintOrder ?? paintOrder,
       vectorEffect: other.vectorEffect ?? vectorEffect,
+      display: other.display ?? display,
     );
   }
 
@@ -69,6 +74,13 @@ final class SvgPresentationAttributes {
   /// specified as inherited in the SVG spec will be taken from the [parent].
   SvgPresentationAttributes inherit(SvgPresentationAttributes? parent) {
     final SvgColor? effectiveColor = color ?? parent?.color;
+    final SvgDisplay? effectiveDisplay;
+    if (parent?.display == SvgDisplay.none) {
+      effectiveDisplay = SvgDisplay.none;
+    } else {
+      effectiveDisplay = display ?? parent?.display;
+    }
+
     return SvgPresentationAttributes(
       // Inherited groups
       color: effectiveColor,
@@ -79,6 +91,7 @@ final class SvgPresentationAttributes {
       // Non-inherited groups (opacity, transform, vector-effect, etc. do NOT inherit)
       graphics: graphics,
       vectorEffect: vectorEffect,
+      display: effectiveDisplay,
     );
   }
 
@@ -252,6 +265,7 @@ final class SvgPresentationAttributes {
       if (graphics != null) 'graphics: $graphics',
       if (paintOrder != null) 'paint-order: $paintOrder',
       if (vectorEffect != null) 'vector-effect: $vectorEffect',
+      if (display != null) 'display: $display',
     ];
     return 'SvgPresentationAttributes(${parts.join(', ')})';
   }

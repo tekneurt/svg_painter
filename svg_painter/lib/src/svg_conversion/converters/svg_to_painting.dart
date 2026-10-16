@@ -75,7 +75,25 @@ extension SvgElementToPaintCommands on SvgElement {
     }
 
     context ??= const SvgPaintingContext(viewBoxWidth: 100.0, viewBoxHeight: 100.0);
-    final SvgPaintingContext childContext = context.deriveWith(self);
+
+    final SvgPresentationAttributes resolved = resolvePresentation(
+      context,
+      tagName: _elementTagName(self),
+      coreAttributes: self.coreAttributes,
+      presentationAttributes: self is SvgPresentable ? self.presentationAttributes : null,
+    );
+
+    if (resolved.display == SvgDisplay.none &&
+        self is! SvgMask &&
+        self is! SvgClipPath &&
+        self is! SvgDefs &&
+        self is! SvgSymbol &&
+        self is! SvgRadialGradient &&
+        self is! SvgLinearGradient) {
+      return const Success<List<PaintCommand>>(<PaintCommand>[]);
+    }
+
+    final SvgPaintingContext childContext = context.derive(inheritedAttributes: resolved);
 
     return switch (self) {
       // Containers
@@ -200,3 +218,26 @@ extension _SvgGroupToPaintCommands on SvgGroup {
     });
   }
 }
+
+String _elementTagName(SvgElement element) => switch (element) {
+  SvgRect _ => 'rect',
+  SvgCircle _ => 'circle',
+  SvgEllipse _ => 'ellipse',
+  SvgLine _ => 'line',
+  SvgPolyline _ => 'polyline',
+  SvgPolygon _ => 'polygon',
+  SvgPath _ => 'path',
+  SvgText _ => 'text',
+  SvgGroup _ => 'g',
+  SvgUse _ => 'use',
+  SvgImage _ => 'image',
+  SvgSvg _ => 'svg',
+  SvgSymbol _ => 'symbol',
+  SvgMask _ => 'mask',
+  SvgClipPath _ => 'clipPath',
+  SvgDefs _ => 'defs',
+  SvgLinearGradient _ => 'linearGradient',
+  SvgRadialGradient _ => 'radialGradient',
+  SvgStop _ => 'stop',
+  _ => '',
+};

@@ -9,6 +9,7 @@ import 'attributes/cx_painter.dart';
 import 'attributes/cy_painter.dart';
 import 'attributes/d_painter.dart';
 import 'attributes/decoding_painter.dart';
+import 'attributes/display_painter.dart';
 import 'attributes/dx_painter.dart';
 import 'attributes/dy_painter.dart';
 import 'attributes/fill_opacity_painter.dart';
@@ -118,6 +119,7 @@ _fixtures =
         name: 'd_quadratic_bezier_painter',
         tests: defaultGoldenTests,
       ),
+      (painter: const DisplayPainter(), name: 'display_painter', tests: defaultGoldenTests),
       (painter: const DxPainter(), name: 'dx_painter', tests: macOsOverrideGoldenTests),
       (painter: const Dx2Painter(), name: 'dx_2_painter', tests: defaultGoldenTests),
       (painter: const DyPainter(), name: 'dy_painter', tests: macOsOverrideGoldenTests),

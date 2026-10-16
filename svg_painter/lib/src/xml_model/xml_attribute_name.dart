@@ -34,6 +34,10 @@ enum XmlAttributeName {
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/decoding
   decoding('decoding'),
 
+  /// Specifies whether or how an element is rendered.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/display
+  display('display'),
+
   /// The relative x-axis shift for text.
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/dx
   dx('dx'),

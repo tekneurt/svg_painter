@@ -62,6 +62,8 @@ extension ToDefaultValue on XmlAttributeName {
         return const SvgLength(0.0);
       case .vectorEffect:
         return SvgVectorEffect.none;
+      case .display:
+        return SvgDisplay.inline;
       case .color:
         return const SvgNamedColor(SvgColorName.black);
       case .fill:

@@ -23,8 +23,7 @@ SvgPresentationAttributes resolvePresentation(
   );
 
   final SvgPresentationAttributes combined =
-      (presentationAttributes ?? const SvgPresentationAttributes())
-          .merge(cssPresentation);
+      (presentationAttributes ?? const SvgPresentationAttributes()).merge(cssPresentation);
   return combined.inherit(context.inheritedAttributes);
 }
 
@@ -56,9 +55,7 @@ PaintingStyle resolvePaint(
   final PaintingFillStyle? fillStyle = _resolveFillStyle(
     context,
     fillAttrs: resolved.fill,
-    isExplicit:
-        presentationAttributes?.fill?.color != null ||
-        resolvedRules['fill'] != null,
+    isExplicit: presentationAttributes?.fill?.color != null || resolvedRules['fill'] != null,
     elementOpacity: elementOpacity,
     currentColor: resolved.color,
   );
@@ -68,9 +65,7 @@ PaintingStyle resolvePaint(
     strokeAttrs: resolved.stroke,
     cssPathLength: resolvedRules['pathLength']?.toSvgNonNegativeNumber(),
     geometryAttributes: geometryAttributes,
-    isExplicit:
-        presentationAttributes?.stroke?.color != null ||
-        resolvedRules['stroke'] != null,
+    isExplicit: presentationAttributes?.stroke?.color != null || resolvedRules['stroke'] != null,
     elementOpacity: elementOpacity,
     currentColor: resolved.color,
   );
@@ -198,52 +193,42 @@ SvgPresentationAttributes _parseCssPresentation(
     }
 
     // Individual font overrides
-    cssFontWeight =
-        resolvedRules['font-weight']?.toSvgFontWeight() ?? cssFontWeight;
-    cssFontStyle =
-        resolvedRules['font-style']?.toSvgFontStyle() ?? cssFontStyle;
-    cssFontSize =
-        resolvedRules['font-size']?.toSvgLengthPercentage() ?? cssFontSize;
-    cssFontFamily =
-        resolvedRules['font-family']?.toSvgFontFamily() ?? cssFontFamily;
+    cssFontWeight = resolvedRules['font-weight']?.toSvgFontWeight() ?? cssFontWeight;
+    cssFontStyle = resolvedRules['font-style']?.toSvgFontStyle() ?? cssFontStyle;
+    cssFontSize = resolvedRules['font-size']?.toSvgLengthPercentage() ?? cssFontSize;
+    cssFontFamily = resolvedRules['font-family']?.toSvgFontFamily() ?? cssFontFamily;
   }
 
-  final SvgTextAnchor? cssTextAnchor =
-      resolvedRules['text-anchor']?.toSvgTextAnchor();
+  final SvgTextAnchor? cssTextAnchor = resolvedRules['text-anchor']?.toSvgTextAnchor();
 
   final SvgColor? cssFill = resolvedRules['fill']?.toSvgColor();
-  final SvgLengthPercentage? cssFillOpacity =
-      resolvedRules['fill-opacity']?.toSvgLengthPercentage();
-  final SvgFillRule? cssFillRule =
-      resolvedRules['fill-rule']?.toSvgFillRule();
+  final SvgLengthPercentage? cssFillOpacity = resolvedRules['fill-opacity']
+      ?.toSvgLengthPercentage();
+  final SvgFillRule? cssFillRule = resolvedRules['fill-rule']?.toSvgFillRule();
   final SvgColor? cssStroke = resolvedRules['stroke']?.toSvgColor();
-  final SvgLengthPercentage? cssStrokeOpacity =
-      resolvedRules['stroke-opacity']?.toSvgLengthPercentage();
-  final SvgLengthPercentage? cssStrokeWidth =
-      resolvedRules['stroke-width']?.toSvgLengthPercentage();
-  final SvgPointList? cssStrokeDasharray =
-      resolvedRules['stroke-dasharray']?.toSvgPointList();
-  final SvgLengthPercentage? cssStrokeDashoffset =
-      resolvedRules['stroke-dashoffset']?.toSvgLengthPercentage();
-  final SvgStrokeLinecap? cssStrokeLinecap =
-      resolvedRules['stroke-linecap']?.toSvgStrokeLinecap();
-  final SvgStrokeLinejoin? cssStrokeLinejoin =
-      resolvedRules['stroke-linejoin']?.toSvgStrokeLinejoin();
-  final SvgNumber? cssStrokeMiterlimit =
-      resolvedRules['stroke-miterlimit']?.toSvgMiterLimit();
-  final SvgLengthPercentage? cssOpacity =
-      resolvedRules['opacity']?.toSvgLengthPercentage();
+  final SvgLengthPercentage? cssStrokeOpacity = resolvedRules['stroke-opacity']
+      ?.toSvgLengthPercentage();
+  final SvgLengthPercentage? cssStrokeWidth = resolvedRules['stroke-width']
+      ?.toSvgLengthPercentage();
+  final SvgPointList? cssStrokeDasharray = resolvedRules['stroke-dasharray']?.toSvgPointList();
+  final SvgLengthPercentage? cssStrokeDashoffset = resolvedRules['stroke-dashoffset']
+      ?.toSvgLengthPercentage();
+  final SvgStrokeLinecap? cssStrokeLinecap = resolvedRules['stroke-linecap']?.toSvgStrokeLinecap();
+  final SvgStrokeLinejoin? cssStrokeLinejoin = resolvedRules['stroke-linejoin']
+      ?.toSvgStrokeLinejoin();
+  final SvgNumber? cssStrokeMiterlimit = resolvedRules['stroke-miterlimit']?.toSvgMiterLimit();
+  final SvgLengthPercentage? cssOpacity = resolvedRules['opacity']?.toSvgLengthPercentage();
   final SvgTransformAttributes? cssTransform = SvgTransformParser.parse(
     resolvedRules['transform'],
   );
-  final SvgPaintOrder? cssPaintOrder =
-      resolvedRules['paint-order']?.toSvgPaintOrder();
-  final SvgVectorEffect? cssVectorEffect =
-      resolvedRules['vector-effect']?.toSvgVectorEffect();
+  final SvgPaintOrder? cssPaintOrder = resolvedRules['paint-order']?.toSvgPaintOrder();
+  final SvgVectorEffect? cssVectorEffect = resolvedRules['vector-effect']?.toSvgVectorEffect();
+  final SvgDisplay? cssDisplay = resolvedRules['display']?.toSvgDisplay();
   final SvgColor? cssColor = resolvedRules['color']?.toSvgColor();
 
   return SvgPresentationAttributes(
     color: cssColor,
+    display: cssDisplay,
     fill: SvgFillAttributes(
       color: cssFill,
       opacity: cssFillOpacity,
@@ -268,16 +253,16 @@ SvgPresentationAttributes _parseCssPresentation(
     ),
     graphics:
         (cssOpacity != null ||
-                cssTransform != null ||
-                resolvedRules['mask'] != null ||
-                resolvedRules['clip-path'] != null)
-            ? SvgGraphicsAttributes(
-              opacity: cssOpacity,
-              transformAttributes: cssTransform,
-              mask: resolvedRules['mask'],
-              clipPath: resolvedRules['clip-path'],
-            )
-            : null,
+            cssTransform != null ||
+            resolvedRules['mask'] != null ||
+            resolvedRules['clip-path'] != null)
+        ? SvgGraphicsAttributes(
+            opacity: cssOpacity,
+            transformAttributes: cssTransform,
+            mask: resolvedRules['mask'],
+            clipPath: resolvedRules['clip-path'],
+          )
+        : null,
     paintOrder: cssPaintOrder,
     vectorEffect: cssVectorEffect,
   );
@@ -409,8 +394,7 @@ PaintingStrokeStyle _buildStrokeStyle(
     strokeColorArgb = strokePaint.toStrokeArgb();
   }
 
-  final double finalStrokeWidth =
-      strokeAttrs?.width?.resolve(context, .normalized) ?? 1.0;
+  final double finalStrokeWidth = strokeAttrs?.width?.resolve(context, .normalized) ?? 1.0;
 
   final SvgPointList? sda = strokeAttrs?.dashArray;
   List<double>? finalDashArray;
@@ -422,11 +406,9 @@ PaintingStrokeStyle _buildStrokeStyle(
     }
   }
 
-  final double? finalPathLength =
-      (cssPathLength ?? geometryAttributes?.pathLength)?.value;
+  final double? finalPathLength = (cssPathLength ?? geometryAttributes?.pathLength)?.value;
 
-  final double? finalDashOffset =
-      strokeAttrs?.dashOffset?.resolve(context, .normalized);
+  final double? finalDashOffset = strokeAttrs?.dashOffset?.resolve(context, .normalized);
 
   final double strokeOpacity = (strokeAttrs?.opacity).resolveOpacity(context);
   final double finalStrokeOpacity = elementOpacity * strokeOpacity;
@@ -452,21 +434,26 @@ PaintingTextStyle _resolveTextStyle(
   SvgPaintingContext context,
   SvgFontAttributes? fontAttrs,
 ) {
-  final double finalFontSize = (fontAttrs?.size ?? const SvgLength(16.0))
-      .resolve(context, .vertical);
+  final double finalFontSize = (fontAttrs?.size ?? const SvgLength(16.0)).resolve(
+    context,
+    .vertical,
+  );
 
   final PaintingFontWeight finalFontWeight = _toPaintingFontWeight(
     fontAttrs?.weight,
   );
-  final PaintingFontStyle finalFontStyle =
-      (fontAttrs?.style?.value == 'italic') ? .italic : .normal;
+  final PaintingFontStyle finalFontStyle = (fontAttrs?.style?.value == 'italic')
+      ? .italic
+      : .normal;
 
   final String rawFontFamily = fontAttrs?.family?.value ?? 'serif';
   final (
     String finalFontFamily,
     List<String> fontFamilyFallback,
     String? fontPackage,
-  ) = _resolveFontFamily(rawFontFamily);
+  ) = _resolveFontFamily(
+    rawFontFamily,
+  );
 
   final PaintingTextAnchor finalAnchor = switch (fontAttrs?.anchor) {
     SvgTextAnchor.start || null => .start,
@@ -525,8 +512,7 @@ String _cleanFontFamily(String raw) {
     final String resolvedCandidate = switch (candidate) {
       'sans-serif' || 'Roboto' || 'Arial' || 'Helvetica' => 'Roboto',
       'serif' || 'Times' || 'Times New Roman' || 'Tinos' => 'Tinos',
-      'monospace' || 'Roboto Mono' || 'Courier' || 'Courier New' =>
-        'Roboto Mono',
+      'monospace' || 'Roboto Mono' || 'Courier' || 'Courier New' => 'Roboto Mono',
       _ => candidate,
     };
     fallbacks.add(resolvedCandidate);

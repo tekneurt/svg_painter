@@ -1,3 +1,4 @@
+export 'painting_control_01_f.dart';
 export 'painting_control_03_f.dart';
 export 'painting_control_04_f.dart';
 export 'painting_fill_01_t.dart';

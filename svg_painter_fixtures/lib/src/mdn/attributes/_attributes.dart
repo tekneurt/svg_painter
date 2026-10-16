@@ -5,6 +5,7 @@ export 'cx.dart';
 export 'cy.dart';
 export 'd.dart';
 export 'decoding.dart';
+export 'display.dart';
 export 'dx.dart';
 export 'dy.dart';
 export 'fill.dart';

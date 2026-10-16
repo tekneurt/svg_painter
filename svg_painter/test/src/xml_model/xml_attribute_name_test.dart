@@ -15,6 +15,7 @@ void main() {
           XmlAttributeName.cy => 'cy',
           XmlAttributeName.d => 'd',
           XmlAttributeName.decoding => 'decoding',
+          XmlAttributeName.display => 'display',
           XmlAttributeName.dx => 'dx',
           XmlAttributeName.dy => 'dy',
           XmlAttributeName.fill => 'fill',

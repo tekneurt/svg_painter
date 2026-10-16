@@ -67,16 +67,16 @@ extension SvgUseToPaintCommands on SvgUse {
             height: height,
           )
           .map((List<PaintCommand> childCommands) {
-        return <PaintCommand>[
-          DrawGroup(
-            commands: childCommands,
-            style: style,
-            id: id,
-            opacity: style.groupOpacity,
-            bounds: targetBounds,
-          )
-        ];
-      });
+            return <PaintCommand>[
+              DrawGroup(
+                commands: childCommands,
+                style: style,
+                id: id,
+                opacity: style.groupOpacity,
+                bounds: targetBounds,
+              ),
+            ];
+          });
     }
 
     if (target is SvgSvg) {
@@ -90,21 +90,24 @@ extension SvgUseToPaintCommands on SvgUse {
             height: height,
           )
           .map((List<PaintCommand> childCommands) {
-        return <PaintCommand>[
-          DrawGroup(
-            commands: childCommands,
-            style: style,
-            id: id,
-            opacity: style.groupOpacity,
-            bounds: targetBounds,
-          )
-        ];
-      });
+            return <PaintCommand>[
+              DrawGroup(
+                commands: childCommands,
+                style: style,
+                id: id,
+                opacity: style.groupOpacity,
+                bounds: targetBounds,
+              ),
+            ];
+          });
     }
 
     // Context for children inherits styles, but coordinates are now in the <use> local space.
     final SvgPaintingContext childContext = context.deriveWith(this);
     return target.toPaintCommands(childContext).map((List<PaintCommand> childCommands) {
+      if (childCommands.isEmpty) {
+        return const <PaintCommand>[];
+      }
       return <PaintCommand>[
         DrawGroup(
           commands: childCommands,
@@ -112,9 +115,8 @@ extension SvgUseToPaintCommands on SvgUse {
           id: id,
           opacity: style.groupOpacity,
           bounds: targetBounds,
-        )
+        ),
       ];
     });
-
   }
 }
