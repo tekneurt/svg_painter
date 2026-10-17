@@ -60,12 +60,6 @@ class _$FillPainter extends CustomPainter {
       destRect.height / sourceSize.height,
     );
 
-    {
-      final Paint paint = Paint();
-      paint.color = const Color(0xFFFFC0CB);
-      paint.style = PaintingStyle.fill;
-      canvas.drawCircle(const Offset(50.0, 50.0), 40.0, paint);
-    }
     final Gradient _grad_myGradient = RadialGradient(
       center: Alignment(0.0, 0.0),
       radius: 0.5,
@@ -75,6 +69,12 @@ class _$FillPainter extends CustomPainter {
       stops: <double>[0.0, 1.0],
       tileMode: TileMode.clamp,
     );
+    {
+      final Paint paint = Paint();
+      paint.color = const Color(0xFFFFC0CB);
+      paint.style = PaintingStyle.fill;
+      canvas.drawCircle(const Offset(50.0, 50.0), 40.0, paint);
+    }
     {
       final Paint paint = Paint();
       paint.shader = _grad_myGradient.createShader(

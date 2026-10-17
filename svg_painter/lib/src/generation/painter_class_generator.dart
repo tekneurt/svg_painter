@@ -65,7 +65,9 @@ class PainterClassGenerator {
     }
 
     final PaletteResult? palette =
-        (exposureMode == SvgExposureMode.indexed || exposureMode == SvgExposureMode.mixed || tokenColors)
+        (exposureMode == SvgExposureMode.indexed ||
+            exposureMode == SvgExposureMode.mixed ||
+            tokenColors)
         ? const PaletteAnalyzer().analyze(allCommands, mode: exposureMode, tokenColors: tokenColors)
         : null;
 
@@ -247,8 +249,9 @@ class PainterClassGenerator {
             colorMapping: colorMapping,
           );
         } else {
-          final List<MapEntry<SvgMediaQuery, List<PaintCommand>>> entries =
-              conditionalCommands.entries.toList();
+          final List<MapEntry<SvgMediaQuery, List<PaintCommand>>> entries = conditionalCommands
+              .entries
+              .toList();
           for (var i = 0; i < entries.length; i++) {
             final MapEntry<SvgMediaQuery, List<PaintCommand>> entry = entries[i];
             final String condition = entry.key.toDartCondition('size');
@@ -464,6 +467,34 @@ class PainterClassGenerator {
     return buffer.toString();
   }
 
+  (List<DefineCommand>, List<PaintCommand>) _extractDefinitions(List<PaintCommand> commands) {
+    final definitions = <DefineCommand>[];
+    final drawingCommands = <PaintCommand>[];
+
+    for (final cmd in commands) {
+      if (cmd is DefineCommand) {
+        definitions.add(cmd);
+      } else if (cmd is DrawGroup) {
+        final (List<DefineCommand> nestedDefs, List<PaintCommand> nestedCommands) =
+            _extractDefinitions(cmd.commands);
+        definitions.addAll(nestedDefs);
+        drawingCommands.add(
+          DrawGroup(
+            commands: nestedCommands,
+            style: cmd.style,
+            id: cmd.id,
+            opacity: cmd.opacity,
+            bounds: cmd.bounds,
+          ),
+        );
+      } else {
+        drawingCommands.add(cmd);
+      }
+    }
+
+    return (definitions, drawingCommands);
+  }
+
   void _generatePasses(
     List<PaintCommand> commandList,
     GeneratorBuffer buffer, {
@@ -475,8 +506,22 @@ class PainterClassGenerator {
     required Set<String> gradientsNeedingStretch,
     required SvgColorMapping colorMapping,
   }) {
+    final (List<DefineCommand> definitions, List<PaintCommand> drawingCommands) =
+        _extractDefinitions(commandList);
+
+    final seenIds = <String>{};
+    final uniqueDefinitions = <DefineCommand>[];
+    for (final def in definitions) {
+      final String? id = def.id;
+      if (id == null || id.isEmpty) {
+        uniqueDefinitions.add(def);
+      } else if (seenIds.add(id)) {
+        uniqueDefinitions.add(def);
+      }
+    }
+
     // 1st pass: Mask definitions (DefineMask)
-    for (final command in commandList) {
+    for (final command in uniqueDefinitions) {
       if (command is DefineMask) {
         generators[command.runtimeType]?.generate(
           command,
@@ -492,9 +537,9 @@ class PainterClassGenerator {
       }
     }
 
-    // 2nd pass: Gradient definitions (DefineGradient)
-    for (final command in commandList) {
-      if (command is DefineGradient && command is! DefineMask) {
+    // 2nd pass: ClipPath definitions (DefineClipPath)
+    for (final command in uniqueDefinitions) {
+      if (command is DefineClipPath) {
         generators[command.runtimeType]?.generate(
           command,
           buffer,
@@ -509,8 +554,25 @@ class PainterClassGenerator {
       }
     }
 
-    // 3rd pass: Drawing commands (DrawCommand)
-    for (final command in commandList) {
+    // 3rd pass: Gradient definitions (DefineGradient)
+    for (final command in uniqueDefinitions) {
+      if (command is DefineGradient) {
+        generators[command.runtimeType]?.generate(
+          command,
+          buffer,
+          generators: generators,
+          palette: palette,
+          activeFillProperties: activeFillProperties,
+          activeStrokeProperties: activeStrokeProperties,
+          painterClassName: className,
+          gradientsNeedingStretch: gradientsNeedingStretch,
+          colorMapping: colorMapping,
+        );
+      }
+    }
+
+    // 4th pass: Drawing commands (DrawCommand)
+    for (final command in drawingCommands) {
       if (command is DrawCommand) {
         generators[command.runtimeType]?.generate(
           command,

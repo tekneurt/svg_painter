@@ -67,12 +67,6 @@ class _$Y1LinearGradientPainter extends CustomPainter {
       stops: <double>[0.05, 0.5, 0.95],
       tileMode: TileMode.clamp,
     );
-    {
-      final Paint paint = Paint();
-      paint.shader = _grad_g0.createShader(Rect.fromLTWH(1.0, 1.0, 8.0, 8.0));
-      paint.style = PaintingStyle.fill;
-      canvas.drawRect(Rect.fromLTWH(1.0, 1.0, 8.0, 8.0), paint);
-    }
     final Gradient _grad_g1 = LinearGradient(
       begin: Alignment(-1.0, 1.0),
       end: Alignment(1.0, -1.0),
@@ -80,6 +74,12 @@ class _$Y1LinearGradientPainter extends CustomPainter {
       stops: <double>[0.05, 0.5, 0.95],
       tileMode: TileMode.clamp,
     );
+    {
+      final Paint paint = Paint();
+      paint.shader = _grad_g0.createShader(Rect.fromLTWH(1.0, 1.0, 8.0, 8.0));
+      paint.style = PaintingStyle.fill;
+      canvas.drawRect(Rect.fromLTWH(1.0, 1.0, 8.0, 8.0), paint);
+    }
     {
       final Paint paint = Paint();
       paint.shader = _grad_g1.createShader(Rect.fromLTWH(11.0, 1.0, 8.0, 8.0));

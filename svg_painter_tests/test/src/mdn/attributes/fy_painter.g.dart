@@ -175,8 +175,6 @@ class _$Fy2Painter extends CustomPainter {
       destRect.height / sourceSize.height,
     );
 
-    canvas.save();
-    canvas.scale(1.6666666666666667, 1.6666666666666667);
     final Gradient _grad_Gradient = RadialGradient(
       center: Alignment(0.0, 0.0),
       radius: 0.5,
@@ -186,6 +184,8 @@ class _$Fy2Painter extends CustomPainter {
       stops: <double>[0.0, 1.0],
       tileMode: TileMode.clamp,
     );
+    canvas.save();
+    canvas.scale(1.6666666666666667, 1.6666666666666667);
     {
       final Paint paint = Paint();
       paint.shader = _grad_Gradient.createShader(

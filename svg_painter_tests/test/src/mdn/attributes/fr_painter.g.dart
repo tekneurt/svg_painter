@@ -60,9 +60,6 @@ class _$Fr1Painter extends CustomPainter {
       destRect.height / sourceSize.height,
     );
 
-    canvas.save();
-    canvas.translate(18.0, 0.0);
-    canvas.scale(0.8, 0.8);
     final Gradient _grad_gradient1 = RadialGradient(
       center: Alignment(0.0, 0.0),
       radius: 0.5,
@@ -81,6 +78,9 @@ class _$Fr1Painter extends CustomPainter {
       stops: <double>[0.0, 1.0],
       tileMode: TileMode.clamp,
     );
+    canvas.save();
+    canvas.translate(18.0, 0.0);
+    canvas.scale(0.8, 0.8);
     {
       final Paint paint = Paint();
       paint.shader = _grad_gradient1.createShader(
@@ -179,8 +179,6 @@ class _$Fr2Painter extends CustomPainter {
       destRect.height / sourceSize.height,
     );
 
-    canvas.save();
-    canvas.scale(1.375, 1.375);
     final Gradient _grad_Gradient = RadialGradient(
       center: Alignment(0.0, 0.0),
       radius: 0.5,
@@ -190,6 +188,8 @@ class _$Fr2Painter extends CustomPainter {
       stops: <double>[0.0, 1.0],
       tileMode: TileMode.clamp,
     );
+    canvas.save();
+    canvas.scale(1.375, 1.375);
     {
       final Paint paint = Paint();
       paint.shader = _grad_Gradient.createShader(

@@ -6,6 +6,8 @@ import 'painting/painting_control_01_f_painter.dart';
 import 'painting/painting_control_02_f_painter.dart';
 import 'painting/painting_control_03_f_painter.dart';
 import 'painting/painting_control_04_f_painter.dart';
+import 'painting/painting_control_05_f_painter.dart';
+import 'painting/painting_control_06_f_painter.dart';
 import 'painting/painting_fill_01_t_painter.dart';
 import 'painting/painting_fill_02_t_painter.dart';
 import 'painting/painting_fill_03_t_painter.dart';
@@ -28,6 +30,8 @@ _fixtures = <({CustomPainter painter, String name, double? maxDiffPercent})>[
   (painter: const PaintingControl02FPainter(), name: 'painting_control_02_f', maxDiffPercent: null),
   (painter: const PaintingControl03FPainter(), name: 'painting_control_03_f', maxDiffPercent: null),
   (painter: const PaintingControl04FPainter(), name: 'painting_control_04_f', maxDiffPercent: null),
+  (painter: const PaintingControl05FPainter(), name: 'painting_control_05_f', maxDiffPercent: 0.07),
+  (painter: const PaintingControl06FPainter(), name: 'painting_control_06_f', maxDiffPercent: null),
   (painter: const PaintingFill01TPainter(), name: 'painting_fill_01_t', maxDiffPercent: 0.11),
   (painter: const PaintingFill02TPainter(), name: 'painting_fill_02_t', maxDiffPercent: 0.10),
   (painter: const PaintingFill03TPainter(), name: 'painting_fill_03_t', maxDiffPercent: 0.10),

@@ -60,16 +60,6 @@ class _$MaskPainter extends CustomPainter {
       destRect.height / sourceSize.height,
     );
 
-    canvas.save();
-    canvas.clipRect(Rect.fromLTWH(0.0, 0.0, 120.0, 120.0));
-    canvas.save();
-    canvas.translate(10.0, 10.0);
-    {
-      final Paint paint = Paint();
-      paint.color = const Color(0xFF0000FF);
-      paint.style = PaintingStyle.fill;
-      canvas.drawRect(Rect.fromLTWH(-10.0, -10.0, 120.0, 120.0), paint);
-    }
     void _mask_myMask(Canvas canvas, Size size, Rect targetBounds) {
       canvas.clipRect(
         Rect.fromLTWH(
@@ -114,6 +104,16 @@ class _$MaskPainter extends CustomPainter {
       }
     }
 
+    canvas.save();
+    canvas.clipRect(Rect.fromLTWH(0.0, 0.0, 120.0, 120.0));
+    canvas.save();
+    canvas.translate(10.0, 10.0);
+    {
+      final Paint paint = Paint();
+      paint.color = const Color(0xFF0000FF);
+      paint.style = PaintingStyle.fill;
+      canvas.drawRect(Rect.fromLTWH(-10.0, -10.0, 120.0, 120.0), paint);
+    }
     {
       final Path path = Path()
         ..moveTo(-10.0, 110.0)

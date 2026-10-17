@@ -11,9 +11,7 @@ extension SvgDefsToPaintCommands on SvgDefs {
     return children.map((SvgElement child) => child.toPaintCommands(context)).combine().map((
       List<PaintCommand> commands,
     ) {
-      return commands
-          .where((PaintCommand cmd) => cmd is DefineLinearGradient || cmd is DefineRadialGradient)
-          .toList();
+      return commands.whereType<DefineCommand>().toList();
     });
   }
 }
