@@ -285,21 +285,30 @@
 - [x] **Gradients (Polish)**: `objectBoundingBox` and `spreadMethod`.
 - [ ] **Standard Test Suite & Reference Audit**:
     - [ ] **W3C SVG 1.1 Second Edition Test Suite**: Incrementally add approved test fixtures with exact source SVGs, dynamic reference revision substitution, Flutter goldens, and automated isolated AA diff tracking against official W3C PNGs.
-        - [ ] **Color Test Suite Conformance (`color-prop-01` to `05`)**:
-            - [ ] **Color Parsing & Map Fixes (Prerequisite for `color-prop-02-f` & `color-prop-03-t`)**:
+        - [x] **Color Test Suite Conformance (`color-prop-01` to `05`)**:
+            - [x] **Color Parsing & Map Fixes (Prerequisite for `color-prop-02-f` & `color-prop-03-t`)**:
                 - Fix fractional percentage parsing in `_parseRgb()` (support floating-point values like `86.2745%` and `66.667%`).
                 - Fix `SvgColorName.lightyellow` ARGB hex in `svgColorNameMap` (`0xFFFFE0` -> `0xFFFFFFE0`).
-            - [ ] **Inheritance & Gradient CurrentColor Support (Prerequisite for `color-prop-01-b`)**:
+            - [x] **Inheritance & Gradient CurrentColor Support (Prerequisite for `color-prop-01-b`)**:
                 - Support `inherit` keyword on presentation attributes (including `color="inherit"`).
                 - Support presentation attribute inheritance and `currentColor` resolution on `<linearGradient>`/`<radialGradient>` and `<stop>` elements.
-            - [ ] **CSS System Colors Evaluation/Support (Prerequisite for `color-prop-04-t`)**:
+            - [x] **CSS System Colors Evaluation/Support (Prerequisite for `color-prop-04-t`)**:
                 - Evaluate and implement CSS system color keyword mappings (`Background`, `Window`, `ThreeDFace`, `ButtonFace`, etc.).
-            - [ ] **Add W3C Color Test Cases**:
-                - [ ] Add `color-prop-01-b` fixture, painter, diff mask, and golden test.
-                - [ ] Add `color-prop-02-f` fixture, painter, diff mask, and golden test.
-                - [ ] Add `color-prop-03-t` fixture, painter, diff mask, and golden test.
-                - [ ] Add `color-prop-04-t` fixture, painter, diff mask, and golden test.
-                - [ ] Add `color-prop-05-t` fixture, painter, diff mask, and golden test.
+            - [x] **Add W3C Color Test Cases**:
+                - [x] Add `color-prop-01-b` fixture, painter, diff mask, and golden test.
+                - [x] Add `color-prop-02-f` fixture, painter, diff mask, and golden test.
+                - [x] Add `color-prop-03-t` fixture, painter, diff mask, and golden test.
+                - [x] Add `color-prop-04-t` fixture, painter, diff mask, and golden test.
+                - [x] Add `color-prop-05-t` fixture, painter, diff mask, and golden test.
+        - [x] **Painting Test Suite Conformance**:
+            - [x] **Painting Control Tests (`painting-control-01` to `06`)**:
+                - [x] Add `painting-control-01-f` (display attribute support).
+                - [x] Add `painting-control-02-f` (stroke-dasharray with length units).
+                - [x] Add `painting-control-03-f` and `painting-control-04-f`.
+                - [x] Add `painting-control-05-f` (display=none in masks and clipPaths).
+                - [x] Add `painting-control-06-f` (visibility inheritance and child overrides).
+            - [x] **Painting Fill Tests (`painting-fill-01` to `05`)**.
+            - [x] **Painting Stroke Tests (`painting-stroke-01` to `10`)**.
     - [ ] **Modern SVG Test Suites Evaluation**:
         - [ ] **`resvg-test-suite` (Linebender)**: Evaluate integration of the ~1,600 standalone SVG tests for granular spec conformance.
         - [ ] **Web Platform Tests (WPT)**: Evaluate standalone SVG reftest subsets from `wpt/svg/`.
