@@ -34,6 +34,7 @@ export 'rx.dart';
 export 'ry.dart';
 export 'spread_method.dart';
 export 'stroke.dart';
+export 'stroke_dasharray.dart';
 export 'stroke_dashoffset.dart';
 export 'stroke_linecap.dart';
 export 'stroke_linejoin.dart';

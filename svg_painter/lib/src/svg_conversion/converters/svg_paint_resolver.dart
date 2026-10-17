@@ -210,7 +210,8 @@ SvgPresentationAttributes _parseCssPresentation(
       ?.toSvgLengthPercentage();
   final SvgLengthPercentage? cssStrokeWidth = resolvedRules['stroke-width']
       ?.toSvgLengthPercentage();
-  final SvgPointList? cssStrokeDasharray = resolvedRules['stroke-dasharray']?.toSvgPointList();
+  final SvgPointList? cssStrokeDasharray = resolvedRules['stroke-dasharray']
+      ?.toSvgStrokeDasharray();
   final SvgLengthPercentage? cssStrokeDashoffset = resolvedRules['stroke-dashoffset']
       ?.toSvgLengthPercentage();
   final SvgStrokeLinecap? cssStrokeLinecap = resolvedRules['stroke-linecap']?.toSvgStrokeLinecap();

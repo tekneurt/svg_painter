@@ -16,6 +16,7 @@ export 'to_svg_paint_order.dart';
 export 'to_svg_point_list.dart';
 export 'to_svg_preserve_aspect_ratio.dart';
 export 'to_svg_spread_method.dart';
+export 'to_svg_stroke_dasharray.dart';
 export 'to_svg_stroke_linecap.dart';
 export 'to_svg_stroke_linejoin.dart';
 export 'to_svg_text_anchor.dart';
