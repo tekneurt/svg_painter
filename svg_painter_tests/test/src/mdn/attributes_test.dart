@@ -57,6 +57,7 @@ import 'attributes/vector_effect_painter.dart';
 import 'attributes/view_box_1_painter.dart';
 import 'attributes/view_box_2_painter.dart';
 import 'attributes/view_box_3_painter.dart';
+import 'attributes/visibility_painter.dart';
 import 'attributes/width_painter.dart';
 import 'attributes/x1_examples_painter.dart';
 import 'attributes/x1_line_painter.dart';
@@ -297,6 +298,7 @@ _fixtures =
       (painter: const ViewBox1Painter(), name: 'view_box_1_painter', tests: defaultGoldenTests),
       (painter: const ViewBox2Painter(), name: 'view_box_2_painter', tests: defaultGoldenTests),
       (painter: const ViewBox3Painter(), name: 'view_box_3_painter', tests: defaultGoldenTests),
+      (painter: const VisibilityPainter(), name: 'visibility_painter', tests: defaultGoldenTests),
       (
         painter: const GradientTransformPainter(),
         name: 'gradient_transform_painter',

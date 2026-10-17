@@ -238,6 +238,10 @@ enum XmlAttributeName {
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/viewBox
   viewBox('viewBox'),
 
+  /// Specifies whether an element is visible.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/visibility
+  visibility('visibility'),
+
   /// The width of the rectangle.
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/width
   width('width'),

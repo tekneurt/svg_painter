@@ -33,6 +33,7 @@ part 'values/svg_stroke_linejoin.dart';
 part 'values/svg_text_anchor.dart';
 part 'values/svg_vector_effect.dart';
 part 'values/svg_view_box.dart';
+part 'values/svg_visibility.dart';
 
 /// Base class for all SVG attribute values.
 @immutable

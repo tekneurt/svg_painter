@@ -44,6 +44,7 @@ export 'style.dart';
 export 'text_anchor.dart';
 export 'vector_effect.dart';
 export 'view_box.dart';
+export 'visibility.dart';
 export 'width.dart';
 export 'x.dart';
 export 'x1.dart';

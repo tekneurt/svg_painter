@@ -224,11 +224,13 @@ SvgPresentationAttributes _parseCssPresentation(
   final SvgPaintOrder? cssPaintOrder = resolvedRules['paint-order']?.toSvgPaintOrder();
   final SvgVectorEffect? cssVectorEffect = resolvedRules['vector-effect']?.toSvgVectorEffect();
   final SvgDisplay? cssDisplay = resolvedRules['display']?.toSvgDisplay();
+  final SvgVisibility? cssVisibility = resolvedRules['visibility']?.toSvgVisibility();
   final SvgColor? cssColor = resolvedRules['color']?.toSvgColor();
 
   return SvgPresentationAttributes(
     color: cssColor,
     display: cssDisplay,
+    visibility: cssVisibility,
     fill: SvgFillAttributes(
       color: cssFill,
       opacity: cssFillOpacity,

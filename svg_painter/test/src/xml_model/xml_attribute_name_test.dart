@@ -66,6 +66,7 @@ void main() {
           XmlAttributeName.type => 'type',
           XmlAttributeName.vectorEffect => 'vector-effect',
           XmlAttributeName.viewBox => 'viewBox',
+          XmlAttributeName.visibility => 'visibility',
           XmlAttributeName.width => 'width',
           XmlAttributeName.x => 'x',
           XmlAttributeName.x1 => 'x1',

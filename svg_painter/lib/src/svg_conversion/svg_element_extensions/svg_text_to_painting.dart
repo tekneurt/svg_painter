@@ -70,6 +70,11 @@ extension SvgTextToPaintCommands on SvgText {
           textPathChild.startOffset?.resolve(pathContext, .horizontal) ?? 0.0;
       final String text = _extractText(textPathChild.children);
 
+      if (textResolvedAttrs.visibility == SvgVisibility.hidden ||
+          textResolvedAttrs.visibility == SvgVisibility.collapse) {
+        return const Success<List<PaintCommand>>(<PaintCommand>[]);
+      }
+
       return Success<List<PaintCommand>>(<PaintCommand>[
         DrawTextPath(
           pathOperations: operations,
@@ -105,7 +110,9 @@ extension SvgTextToPaintCommands on SvgText {
             coreAttributes: child.coreAttributes,
             presentationAttributes: child.presentationAttributes,
           );
-          if (spanAttrs.display == SvgDisplay.none) {
+          if (spanAttrs.display == SvgDisplay.none ||
+              spanAttrs.visibility == SvgVisibility.hidden ||
+              spanAttrs.visibility == SvgVisibility.collapse) {
             continue;
           }
           final SvgPaintingContext spanContext = textContext.derive(inheritedAttributes: spanAttrs);
@@ -165,6 +172,10 @@ extension SvgTextToPaintCommands on SvgText {
             );
           }
         } else if (child is SvgCharacterData) {
+          if (textResolvedAttrs.visibility == SvgVisibility.hidden ||
+              textResolvedAttrs.visibility == SvgVisibility.collapse) {
+            continue;
+          }
           commands.add(
             DrawText(
               x: finalX,
@@ -179,6 +190,10 @@ extension SvgTextToPaintCommands on SvgText {
     }
 
     if (hasMultiCoordinates) {
+      if (textResolvedAttrs.visibility == SvgVisibility.hidden ||
+          textResolvedAttrs.visibility == SvgVisibility.collapse) {
+        return const Success<List<PaintCommand>>(<PaintCommand>[]);
+      }
       final String text = _extractText(children);
       final List<PaintingTextChunk> chunks = _buildChunks(
         text: text,
@@ -202,6 +217,9 @@ extension SvgTextToPaintCommands on SvgText {
     }
 
     final PaintingTextSpan rootSpan = _buildSpan(children, textContext, 'text');
+    if (rootSpan.children.isEmpty && (rootSpan.text == null || rootSpan.text!.isEmpty)) {
+      return const Success<List<PaintCommand>>(<PaintCommand>[]);
+    }
 
     return Success<List<PaintCommand>>(<PaintCommand>[
       DrawText(x: finalX, y: finalY, rootSpan: rootSpan, style: style, id: id),
@@ -285,6 +303,10 @@ extension SvgTextToPaintCommands on SvgText {
 
     for (final child in children) {
       if (child is SvgCharacterData) {
+        if (context.inheritedAttributes.visibility == SvgVisibility.hidden ||
+            context.inheritedAttributes.visibility == SvgVisibility.collapse) {
+          continue;
+        }
         childSpans.add(PaintingTextSpan(text: child.text));
       } else if (child is SvgTspan) {
         final SvgPresentationAttributes spanAttrs = resolvePresentation(
@@ -293,7 +315,9 @@ extension SvgTextToPaintCommands on SvgText {
           coreAttributes: child.coreAttributes,
           presentationAttributes: child.presentationAttributes,
         );
-        if (spanAttrs.display == SvgDisplay.none) {
+        if (spanAttrs.display == SvgDisplay.none ||
+            spanAttrs.visibility == SvgVisibility.hidden ||
+            spanAttrs.visibility == SvgVisibility.collapse) {
           continue;
         }
         final SvgPaintingContext spanContext = context.derive(inheritedAttributes: spanAttrs);

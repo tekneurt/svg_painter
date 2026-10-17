@@ -22,6 +22,7 @@ final class SvgPresentationAttributes {
     this.paintOrder,
     this.vectorEffect,
     this.display,
+    this.visibility,
   });
 
   /// The indirect color value for currentColor.
@@ -48,6 +49,9 @@ final class SvgPresentationAttributes {
   /// Specifies whether or how an element is rendered.
   final SvgDisplay? display;
 
+  /// Specifies whether an element is visible.
+  final SvgVisibility? visibility;
+
   /// Merges this set of attributes with another set.
   ///
   /// This is used to resolve attribute priority (e.g., Inline Style > CSS > Attribute).
@@ -65,6 +69,7 @@ final class SvgPresentationAttributes {
       paintOrder: other.paintOrder ?? paintOrder,
       vectorEffect: other.vectorEffect ?? vectorEffect,
       display: other.display ?? display,
+      visibility: other.visibility ?? visibility,
     );
   }
 
@@ -80,6 +85,7 @@ final class SvgPresentationAttributes {
     } else {
       effectiveDisplay = display ?? parent?.display;
     }
+    final SvgVisibility? effectiveVisibility = visibility ?? parent?.visibility;
 
     return SvgPresentationAttributes(
       // Inherited groups
@@ -88,6 +94,7 @@ final class SvgPresentationAttributes {
       stroke: _inheritStroke(stroke, parent?.stroke, effectiveColor),
       font: _inheritFont(font, parent?.font),
       paintOrder: paintOrder ?? parent?.paintOrder,
+      visibility: effectiveVisibility,
       // Non-inherited groups (opacity, transform, vector-effect, etc. do NOT inherit)
       graphics: graphics,
       vectorEffect: vectorEffect,
@@ -266,6 +273,7 @@ final class SvgPresentationAttributes {
       if (paintOrder != null) 'paint-order: $paintOrder',
       if (vectorEffect != null) 'vector-effect: $vectorEffect',
       if (display != null) 'display: $display',
+      if (visibility != null) 'visibility: $visibility',
     ];
     return 'SvgPresentationAttributes(${parts.join(', ')})';
   }

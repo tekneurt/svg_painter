@@ -86,6 +86,7 @@ extension ToCommonAttributes on XmlElement {
       paintOrder: toSvgValueOrNull<SvgPaintOrder>(elementName, XmlAttributeName.paintOrder),
       vectorEffect: toSvgValueOrNull<SvgVectorEffect>(elementName, XmlAttributeName.vectorEffect),
       display: toSvgValueOrNull<SvgDisplay>(elementName, XmlAttributeName.display),
+      visibility: toSvgValueOrNull<SvgVisibility>(elementName, XmlAttributeName.visibility),
     );
 
     return (

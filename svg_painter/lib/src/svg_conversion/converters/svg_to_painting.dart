@@ -95,6 +95,22 @@ extension SvgElementToPaintCommands on SvgElement {
 
     final SvgPaintingContext childContext = context.derive(inheritedAttributes: resolved);
 
+    final bool isVisibilityHidden =
+        resolved.visibility == SvgVisibility.hidden ||
+        resolved.visibility == SvgVisibility.collapse;
+
+    if (isVisibilityHidden &&
+        (self is SvgRect ||
+            self is SvgCircle ||
+            self is SvgEllipse ||
+            self is SvgLine ||
+            self is SvgPolyline ||
+            self is SvgPolygon ||
+            self is SvgPath ||
+            self is SvgImage)) {
+      return const Success<List<PaintCommand>>(<PaintCommand>[]);
+    }
+
     return switch (self) {
       // Containers
       final SvgSvg container => container.toPaintCommandsSvg(childContext),

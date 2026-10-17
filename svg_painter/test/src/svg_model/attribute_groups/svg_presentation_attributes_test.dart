@@ -167,5 +167,52 @@ void main() {
       // Assert
       expect(result, contains('display: SvgDisplay.none'));
     });
+
+    test('should merge visibility when other has visibility', () {
+      // Arrange
+      const base = SvgPresentationAttributes(visibility: SvgVisibility.visible);
+      const other = SvgPresentationAttributes(visibility: SvgVisibility.hidden);
+
+      // Act
+      final SvgPresentationAttributes merged = base.merge(other);
+
+      // Assert
+      expect(merged.visibility, SvgVisibility.hidden);
+    });
+
+    test('should inherit parent visibility when child visibility is null', () {
+      // Arrange
+      const parent = SvgPresentationAttributes(visibility: SvgVisibility.hidden);
+      const child = SvgPresentationAttributes();
+
+      // Act
+      final SvgPresentationAttributes inherited = child.inherit(parent);
+
+      // Assert
+      expect(inherited.visibility, SvgVisibility.hidden);
+    });
+
+    test('should allow child to override parent visibility hidden with visible', () {
+      // Arrange
+      const parent = SvgPresentationAttributes(visibility: SvgVisibility.hidden);
+      const child = SvgPresentationAttributes(visibility: SvgVisibility.visible);
+
+      // Act
+      final SvgPresentationAttributes inherited = child.inherit(parent);
+
+      // Assert
+      expect(inherited.visibility, SvgVisibility.visible);
+    });
+
+    test('should include visibility in toString when visibility is set', () {
+      // Arrange
+      const attrs = SvgPresentationAttributes(visibility: SvgVisibility.hidden);
+
+      // Act
+      final result = attrs.toString();
+
+      // Assert
+      expect(result, contains('visibility: SvgVisibility.hidden'));
+    });
   });
 }

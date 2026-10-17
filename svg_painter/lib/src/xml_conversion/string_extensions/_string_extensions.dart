@@ -22,3 +22,4 @@ export 'to_svg_text_anchor.dart';
 export 'to_svg_url.dart';
 export 'to_svg_vector_effect.dart';
 export 'to_svg_view_box.dart';
+export 'to_svg_visibility.dart';

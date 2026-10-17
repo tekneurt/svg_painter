@@ -23,6 +23,7 @@ final class SvgPaintingContext {
         style: SvgFontStyle.normal,
         family: SvgFontFamily('serif'),
       ),
+      visibility: SvgVisibility.visible,
     ),
     this.styleSheet = const SvgStyleSheet(<String, Map<String, String>>{}),
     this.definitions = const <String, SvgElement>{},
@@ -80,6 +81,9 @@ final class SvgPaintingContext {
 
   /// Inherited font family.
   SvgFontFamily? get inheritedFontFamily => inheritedAttributes.font?.family;
+
+  /// Inherited visibility.
+  SvgVisibility? get inheritedVisibility => inheritedAttributes.visibility;
 
   /// The CSS rules defined for the document.
   final SvgStyleSheet styleSheet;
