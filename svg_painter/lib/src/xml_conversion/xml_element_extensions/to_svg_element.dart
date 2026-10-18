@@ -66,6 +66,8 @@ extension ToSvgElement on XmlElement {
           return toSvgTextPath();
         case .tspan:
           return toSvgTspan();
+        case .marker:
+          return toSvgMarker();
         case .mask:
           return toSvgMask();
         case .clipPath:

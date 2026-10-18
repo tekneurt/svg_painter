@@ -275,8 +275,8 @@
 - [x] **Configurable Color Generation**: Add `colorMapping` option to `@SvgPainter`.
     - `material` (default): Use Flutter's `Colors.red`, `Colors.amber.shade200`.
     - `hex`: Strict `Color(0xAARRGGBB)` usage.
-- [x] **Token-Based Global Coloring**: Allow a single property to control all occurrences of a specific color across the entire SVG, including both solid fills/strokes AND individual gradient stops (e.g., changing `red` to `yellow` globally).
-- [ ] **Advanced Pathing**: `<marker>` support and `context-fill`/`context-stroke` keywords.
+- [x] **Advanced Pathing (<marker>)**: `<marker>` element, presentation attributes (`marker-start`, `marker-mid`, `marker-end`, `marker`, `refX`, `refY`, `markerWidth`, `markerHeight`, `markerUnits`, `orient`).
+    - [ ] Support `context-fill` and `context-stroke` keywords on markers.
 - [ ] **Text along Curves**: `<textPath>` implementation.
 - [ ] **Text Coordinate Architecture**: Replace `hasMultiCoordinates` with a cleaner, unified solution for text and tspan coordinate and shift distribution.
 - [ ] **Containers**: `<switch>` for conditional rendering.
@@ -309,6 +309,8 @@
                 - [x] Add `painting-control-06-f` (visibility inheritance and child overrides).
             - [x] **Painting Fill Tests (`painting-fill-01` to `05`)**.
             - [x] **Painting Stroke Tests (`painting-stroke-01` to `10`)**.
+            - [ ] **Painting Marker Tests (`painting-marker-01` to `07`)**:
+                - [x] `painting-marker-01-f` (Basic marker orientation, angles, and unit scaling).
     - [ ] **Modern SVG Test Suites Evaluation**:
         - [ ] **`resvg-test-suite` (Linebender)**: Evaluate integration of the ~1,600 standalone SVG tests for granular spec conformance.
         - [ ] **Web Platform Tests (WPT)**: Evaluate standalone SVG reftest subsets from `wpt/svg/`.

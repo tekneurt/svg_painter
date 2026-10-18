@@ -86,6 +86,7 @@ extension SvgElementToPaintCommands on SvgElement {
     if (resolved.display == SvgDisplay.none &&
         self is! SvgMask &&
         self is! SvgClipPath &&
+        self is! SvgMarker &&
         self is! SvgDefs &&
         self is! SvgSymbol &&
         self is! SvgRadialGradient &&
@@ -134,6 +135,7 @@ extension SvgElementToPaintCommands on SvgElement {
 
       // Definitions
       final SvgSymbol symbol => symbol.toPaintCommandsSymbol(childContext, onlyDefinitions: true),
+      final SvgMarker marker => _toDefineMarker(marker, childContext),
       final SvgMask mask => _toDefineMask(mask, childContext),
       final SvgClipPath clipPath => _toDefineClipPath(clipPath, childContext),
       final SvgDefs defs => defs.toPaintCommandsDefs(childContext),
@@ -206,6 +208,58 @@ extension SvgElementToPaintCommands on SvgElement {
           ];
         });
   }
+
+  Result<List<PaintCommand>> _toDefineMarker(SvgMarker marker, SvgPaintingContext context) {
+    final SvgPaintingContext childrenContext = marker.viewBox != null
+        ? context.derive(
+            viewBoxWidth: marker.viewBox!.width,
+            viewBoxHeight: marker.viewBox!.height,
+            viewBoxMinX: marker.viewBox!.minX,
+            viewBoxMinY: marker.viewBox!.minY,
+          )
+        : context;
+
+    return marker.children
+        .map((SvgElement child) => child.toPaintCommands(childrenContext))
+        .combine()
+        .map((List<PaintCommand> childCommands) {
+          final double refX = switch (marker.refX) {
+            final SvgLength l => l.value,
+            final SvgPercentage p => (p.value / 100.0) * (marker.viewBox?.width ?? 100.0),
+            null => 0.0,
+          };
+          final double refY = switch (marker.refY) {
+            final SvgLength l => l.value,
+            final SvgPercentage p => (p.value / 100.0) * (marker.viewBox?.height ?? 100.0),
+            null => 0.0,
+          };
+          final double markerWidth = switch (marker.markerWidth) {
+            final SvgLength l => l.value,
+            final SvgPercentage p => (p.value / 100.0) * 100.0,
+            null => 3.0,
+          };
+          final double markerHeight = switch (marker.markerHeight) {
+            final SvgLength l => l.value,
+            final SvgPercentage p => (p.value / 100.0) * 100.0,
+            null => 3.0,
+          };
+
+          return <PaintCommand>[
+            DefineMarker(
+              id: marker.id ?? '',
+              commands: childCommands,
+              refX: refX,
+              refY: refY,
+              markerWidth: markerWidth,
+              markerHeight: markerHeight,
+              markerUnits: marker.markerUnits,
+              orient: marker.orient,
+              viewBox: marker.viewBox,
+              preserveAspectRatio: marker.preserveAspectRatio,
+            ),
+          ];
+        });
+  }
 }
 
 extension _SvgGroupToPaintCommands on SvgGroup {
@@ -249,6 +303,7 @@ String _elementTagName(SvgElement element) => switch (element) {
   SvgImage _ => 'image',
   SvgSvg _ => 'svg',
   SvgSymbol _ => 'symbol',
+  SvgMarker _ => 'marker',
   SvgMask _ => 'mask',
   SvgClipPath _ => 'clipPath',
   SvgDefs _ => 'defs',

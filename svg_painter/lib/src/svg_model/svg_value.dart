@@ -21,6 +21,8 @@ part 'values/svg_gradient_units.dart';
 part 'values/svg_image_decoding.dart';
 part 'values/svg_length.dart';
 part 'values/svg_length_percentage_list.dart';
+part 'values/svg_marker_orient.dart';
+part 'values/svg_marker_units.dart';
 part 'values/svg_mask_units.dart';
 part 'values/svg_number.dart';
 part 'values/svg_paint_order.dart';

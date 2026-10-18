@@ -6,6 +6,7 @@ import 'styles/painting_style.dart';
 part 'commands/define_clip_path.dart';
 part 'commands/define_gradient.dart';
 part 'commands/define_linear_gradient.dart';
+part 'commands/define_marker.dart';
 part 'commands/define_mask.dart';
 part 'commands/define_radial_gradient.dart';
 part 'commands/draw_circle.dart';

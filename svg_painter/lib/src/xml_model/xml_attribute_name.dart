@@ -106,6 +106,34 @@ enum XmlAttributeName {
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/id
   id('id'),
 
+  /// The marker shorthand attribute.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/marker
+  marker('marker'),
+
+  /// The marker to attach to the last vertex of a path, line, polyline or polygon.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/marker-end
+  markerEnd('marker-end'),
+
+  /// The height of the viewport into which the marker is to be fitted.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/markerHeight
+  markerHeight('markerHeight'),
+
+  /// The marker to attach to all vertices other than the first and last of a path, line, polyline or polygon.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/marker-mid
+  markerMid('marker-mid'),
+
+  /// The marker to attach to the first vertex of a path, line, polyline or polygon.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/marker-start
+  markerStart('marker-start'),
+
+  /// The coordinate system for attributes markerWidth and markerHeight.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/markerUnits
+  markerUnits('markerUnits'),
+
+  /// The width of the viewport into which the marker is to be fitted.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/markerWidth
+  markerWidth('markerWidth'),
+
   /// The reference to a mask element.
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/mask
   mask('mask'),
@@ -130,6 +158,10 @@ enum XmlAttributeName {
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/opacity
   opacity('opacity'),
 
+  /// The orientation of the marker relative to the shape it is attached to.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/orient
+  orient('orient'),
+
   /// The order that the fill, stroke, and markers of a shape or text element are painted.
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/paint-order
   paintOrder('paint-order'),
@@ -149,6 +181,14 @@ enum XmlAttributeName {
   /// The radius of the element.
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/r
   r('r'),
+
+  /// The x-axis coordinate of reference point for the marker.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/refX
+  refX('refX'),
+
+  /// The y-axis coordinate of reference point for the marker.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/refY
+  refY('refY'),
 
   /// The supplemental rotation applied to characters.
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/rotate

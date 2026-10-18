@@ -7,6 +7,7 @@ sealed class SvgGraphicsElement extends SvgElement
         SvgFillAttributable,
         SvgStrokeAttributable,
         SvgGraphicsAttributable,
+        SvgMarkerAttributable,
         SvgPresentable,
         SvgDescriptive {
   const SvgGraphicsElement({
@@ -33,6 +34,9 @@ sealed class SvgGraphicsElement extends SvgElement
 
   @override
   SvgGraphicsAttributes? get graphicsAttributes => presentationAttributes?.graphics;
+
+  @override
+  SvgMarkerAttributes? get markerAttributes => presentationAttributes?.marker;
 
   /// The transparency of the element.
   SvgLengthPercentage? get opacity => graphicsAttributes?.opacity;

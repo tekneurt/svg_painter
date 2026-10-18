@@ -50,8 +50,10 @@ extension ToSvgValue on XmlElement {
         .fontSize ||
         .startOffset ||
         .strokeDashoffset ||
+        .refX ||
+        .refY ||
         .strokeWidth => attributeValue.toSvgLengthPercentage(),
-        .r || .fr || .rx || .ry || .width || .height => () {
+        .r || .fr || .rx || .ry || .width || .height || .markerWidth || .markerHeight => () {
           final SvgLengthPercentage val = attributeValue.toSvgLengthPercentage();
           if (val is SvgLength && val.value < 0) {
             return null;
@@ -79,6 +81,8 @@ extension ToSvgValue on XmlElement {
         .visibility => attributeValue.toSvgVisibility(),
         .rotate => attributeValue.toSvgNumber(),
         .gradientUnits => attributeValue.toSvgGradientUnits(),
+        .markerUnits => attributeValue.toSvgMarkerUnits(),
+        .orient => attributeValue.toSvgMarkerOrient(),
         .spreadMethod => throw UnimplementedError('spreadMethod is not yet implemented'),
         .type ||
         .media ||
@@ -91,6 +95,10 @@ extension ToSvgValue on XmlElement {
         .className ||
         .style ||
         .href ||
+        .marker ||
+        .markerStart ||
+        .markerMid ||
+        .markerEnd ||
         .mask ||
         .maskUnits ||
         .maskContentUnits ||

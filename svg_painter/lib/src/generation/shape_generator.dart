@@ -1,7 +1,7 @@
-
 import 'package:svg_painter_annotation/svg_painter_annotation.dart';
 
 import '../painting_model/_painting_model.dart';
+import '../svg_model/svg_value.dart';
 import 'command_generator.dart';
 import 'flutter_color_map.dart';
 import 'generation_extensions.dart';
@@ -20,8 +20,11 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
     T command,
     PaintingStyle style,
     String boundsRect,
-    void Function(String paintVar, {String? dashArray, String? pathLength, String? dashOffset}) drawCall, {
-    void Function(String paintVar, {String? dashArray, String? pathLength, String? dashOffset})? drawStrokeCall,
+    void Function(String paintVar, {String? dashArray, String? pathLength, String? dashOffset})
+    drawCall, {
+    void Function(String paintVar, {String? dashArray, String? pathLength, String? dashOffset})?
+    drawStrokeCall,
+    void Function()? drawMarkersCall,
     PaletteResult? palette,
     Map<String, String>? activeFillProperties,
     Map<String, String>? activeStrokeProperties,
@@ -73,12 +76,15 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
       }
     }
 
-    if (style.paintOrder.isStrokeFirst) {
-      drawStroke();
-      drawFill();
-    } else {
-      drawFill();
-      drawStroke();
+    for (final SvgPaintOrderComponent component in style.paintOrder.components) {
+      switch (component) {
+        case .fill:
+          drawFill();
+        case .stroke:
+          drawStroke();
+        case .markers:
+          drawMarkersCall?.call();
+      }
     }
   }
 
@@ -91,7 +97,13 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
     required PaletteResult? palette,
     required Map<String, String>? activeProperties,
     required List<InheritedProperty>? inheritedProperties,
-    required void Function(String paintVar, {String? dashArray, String? pathLength, String? dashOffset}) drawCall,
+    required void Function(
+      String paintVar, {
+      String? dashArray,
+      String? pathLength,
+      String? dashOffset,
+    })
+    drawCall,
     required SvgColorMapping colorMapping,
   }) {
     buffer.writeBlock('{', () {

@@ -11,6 +11,8 @@ export 'to_svg_length_percentage.dart';
 export 'to_svg_length_percentage_auto.dart';
 export 'to_svg_length_percentage_list.dart';
 export 'to_svg_length_unit.dart';
+export 'to_svg_marker_orient.dart';
+export 'to_svg_marker_units.dart';
 export 'to_svg_number.dart';
 export 'to_svg_paint_order.dart';
 export 'to_svg_point_list.dart';

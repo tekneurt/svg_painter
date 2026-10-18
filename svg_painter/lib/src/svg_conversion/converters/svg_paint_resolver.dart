@@ -81,6 +81,9 @@ PaintingStyle resolvePaint(
     clipRect: clipRect,
     maskId: _extractUrlId(graphics?.mask),
     clipPathId: _extractUrlId(graphics?.clipPath),
+    markerStartId: _extractUrlId(resolved.marker?.markerStart ?? resolved.marker?.marker),
+    markerMidId: _extractUrlId(resolved.marker?.markerMid ?? resolved.marker?.marker),
+    markerEndId: _extractUrlId(resolved.marker?.markerEnd ?? resolved.marker?.marker),
     paintOrder: resolved.paintOrder ?? SvgPaintOrder.normal,
     vectorEffect: resolved.vectorEffect ?? SvgVectorEffect.none,
   );
@@ -201,6 +204,7 @@ SvgPresentationAttributes _parseCssPresentation(
 
   final SvgTextAnchor? cssTextAnchor = resolvedRules['text-anchor']?.toSvgTextAnchor();
 
+  final SvgColor? cssColor = resolvedRules['color']?.toSvgColor();
   final SvgColor? cssFill = resolvedRules['fill']?.toSvgColor();
   final SvgLengthPercentage? cssFillOpacity = resolvedRules['fill-opacity']
       ?.toSvgLengthPercentage();
@@ -226,7 +230,10 @@ SvgPresentationAttributes _parseCssPresentation(
   final SvgVectorEffect? cssVectorEffect = resolvedRules['vector-effect']?.toSvgVectorEffect();
   final SvgDisplay? cssDisplay = resolvedRules['display']?.toSvgDisplay();
   final SvgVisibility? cssVisibility = resolvedRules['visibility']?.toSvgVisibility();
-  final SvgColor? cssColor = resolvedRules['color']?.toSvgColor();
+  final String? cssMarker = resolvedRules['marker'];
+  final String? cssMarkerStart = resolvedRules['marker-start'];
+  final String? cssMarkerMid = resolvedRules['marker-mid'];
+  final String? cssMarkerEnd = resolvedRules['marker-end'];
 
   return SvgPresentationAttributes(
     color: cssColor,
@@ -264,6 +271,18 @@ SvgPresentationAttributes _parseCssPresentation(
             transformAttributes: cssTransform,
             mask: resolvedRules['mask'],
             clipPath: resolvedRules['clip-path'],
+          )
+        : null,
+    marker:
+        (cssMarker != null ||
+            cssMarkerStart != null ||
+            cssMarkerMid != null ||
+            cssMarkerEnd != null)
+        ? SvgMarkerAttributes(
+            marker: cssMarker,
+            markerStart: cssMarkerStart,
+            markerMid: cssMarkerMid,
+            markerEnd: cssMarkerEnd,
           )
         : null,
     paintOrder: cssPaintOrder,
@@ -525,10 +544,21 @@ String _cleanFontFamily(String raw) {
 }
 
 String? _extractUrlId(String? attributeValue) {
-  if (attributeValue != null &&
-      attributeValue.startsWith('url(#') &&
-      attributeValue.endsWith(')')) {
-    return attributeValue.substring(5, attributeValue.length - 1);
+  if (attributeValue == null) {
+    return null;
+  }
+  final String trimmed = attributeValue.trim();
+  if (trimmed.startsWith('url(') && trimmed.endsWith(')')) {
+    String content = trimmed.substring(4, trimmed.length - 1).trim();
+    if ((content.startsWith('"') && content.endsWith('"')) ||
+        (content.startsWith("'") && content.endsWith("'"))) {
+      content = content.substring(1, content.length - 1).trim();
+    }
+    if (content.startsWith('#')) {
+      return content.substring(1);
+    } else {
+      return content;
+    }
   } else {
     return null;
   }

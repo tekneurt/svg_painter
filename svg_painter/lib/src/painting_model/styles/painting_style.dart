@@ -54,6 +54,9 @@ final class PaintingStyle {
     this.clipRect,
     this.maskId,
     this.clipPathId,
+    this.markerStartId,
+    this.markerMidId,
+    this.markerEndId,
     this.paintOrder = SvgPaintOrder.normal,
     this.vectorEffect = SvgVectorEffect.none,
   });
@@ -82,6 +85,18 @@ final class PaintingStyle {
   /// The ID of the clipPath to apply to this element.
   final String? clipPathId;
 
+  /// The ID of the marker to draw at the start vertex.
+  final String? markerStartId;
+
+  /// The ID of the marker to draw at middle vertices.
+  final String? markerMidId;
+
+  /// The ID of the marker to draw at the end vertex.
+  final String? markerEndId;
+
+  /// Whether this style specifies any markers.
+  bool get hasMarkers => markerStartId != null || markerMidId != null || markerEndId != null;
+
   /// The order that the fill, stroke, and markers of a shape or text element are painted.
   final SvgPaintOrder paintOrder;
 
@@ -99,6 +114,9 @@ final class PaintingStyle {
       if (clipRect != null) 'clipRect: $clipRect',
       if (maskId != null) 'maskId: $maskId',
       if (clipPathId != null) 'clipPathId: $clipPathId',
+      if (markerStartId != null) 'markerStartId: $markerStartId',
+      if (markerMidId != null) 'markerMidId: $markerMidId',
+      if (markerEndId != null) 'markerEndId: $markerEndId',
       if (paintOrder != SvgPaintOrder.normal) 'paintOrder: $paintOrder',
       if (vectorEffect != SvgVectorEffect.none) 'vectorEffect: $vectorEffect',
     ];

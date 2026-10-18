@@ -38,6 +38,10 @@ enum XmlElementName {
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Element/linearGradient
   linearGradient('linearGradient'),
 
+  /// The `<marker>` element.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Element/marker
+  marker('marker'),
+
   /// The `<mask>` element.
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Element/mask
   mask('mask'),

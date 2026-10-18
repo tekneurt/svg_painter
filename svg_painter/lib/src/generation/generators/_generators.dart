@@ -4,6 +4,7 @@ export 'group_generator.dart';
 export 'image_generator.dart';
 export 'line_generator.dart';
 export 'linear_gradient_generator.dart';
+export 'marker_generator.dart';
 export 'mask_generator.dart';
 export 'oval_generator.dart';
 export 'path_generator.dart';

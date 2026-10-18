@@ -3,6 +3,7 @@ export 'package:svg_painter/src/svg_model/attribute_groups/svg_fill_attributes.d
 export 'package:svg_painter/src/svg_model/attribute_groups/svg_font_attributes.dart';
 export 'package:svg_painter/src/svg_model/attribute_groups/svg_geometry_attributes.dart';
 export 'package:svg_painter/src/svg_model/attribute_groups/svg_graphics_attributes.dart';
+export 'package:svg_painter/src/svg_model/attribute_groups/svg_marker_attributes.dart';
 export 'package:svg_painter/src/svg_model/attribute_groups/svg_presentation_attributes.dart';
 export 'package:svg_painter/src/svg_model/attribute_groups/svg_stroke_attributes.dart';
 export 'package:svg_painter/src/svg_model/attribute_groups/svg_transform_attributes.dart';

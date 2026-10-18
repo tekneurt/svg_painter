@@ -116,22 +116,23 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
 
   static const Map<Type, CommandGenerator<PaintCommand>> _generators =
       <Type, CommandGenerator<PaintCommand>>{
-    DrawCircle: CircleGenerator(),
-    DrawOval: OvalGenerator(),
-    DrawRect: RectGenerator(),
-    DrawText: TextGenerator(),
-    DrawTextPath: TextPathGenerator(),
-    DrawGroup: GroupGenerator(),
-    DrawPath: PathGenerator(),
-    DrawLine: LineGenerator(),
-    DrawPolyline: PolyGenerator<DrawPolyline>(),
-    DrawPolygon: PolyGenerator<DrawPolygon>(),
-    DrawImage: ImageGenerator(),
-    DefineLinearGradient: LinearGradientGenerator(),
-    DefineRadialGradient: RadialGradientGenerator(),
-    DefineMask: MaskGenerator(),
-    DefineClipPath: ClipPathGenerator(),
-  };
+        DrawCircle: CircleGenerator(),
+        DrawOval: OvalGenerator(),
+        DrawRect: RectGenerator(),
+        DrawText: TextGenerator(),
+        DrawTextPath: TextPathGenerator(),
+        DrawGroup: GroupGenerator(),
+        DrawPath: PathGenerator(),
+        DrawLine: LineGenerator(),
+        DrawPolyline: PolyGenerator<DrawPolyline>(),
+        DrawPolygon: PolyGenerator<DrawPolygon>(),
+        DrawImage: ImageGenerator(),
+        DefineLinearGradient: LinearGradientGenerator(),
+        DefineRadialGradient: RadialGradientGenerator(),
+        DefineMask: MaskGenerator(),
+        DefineClipPath: ClipPathGenerator(),
+        DefineMarker: MarkerGenerator(),
+      };
 
   /// Generates the painter class from SVG content string.
   @visibleForTesting
@@ -218,7 +219,9 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
             family: svgRootElement.fontAttributes?.family ?? const SvgFontFamily('serif'),
           ),
         ),
-        styleSheet: (svgRootElement is SvgRoot) ? svgRootElement.styleSheet : const SvgStyleSheet.empty(),
+        styleSheet: (svgRootElement is SvgRoot)
+            ? svgRootElement.styleSheet
+            : const SvgStyleSheet.empty(),
         definitions: definitions,
         imageCache: imageCache,
         svgCache: svgCache,
@@ -234,9 +237,11 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
 
       final String className = painterClassName ?? r'_$' + elementName;
 
-      final String? semanticLabel = svgRootElement.title?.content ??
+      final String? semanticLabel =
+          svgRootElement.title?.content ??
           svgRootElement.children.whereType<SvgTitle>().firstOrNull?.content;
-      final String? semanticHint = svgRootElement.desc?.content ??
+      final String? semanticHint =
+          svgRootElement.desc?.content ??
           svgRootElement.children.whereType<SvgDesc>().firstOrNull?.content;
 
       final SvgStyleSheet rootSheet = (svgRootElement is SvgRoot)
@@ -254,8 +259,9 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
         }
         final mediaSheet = SvgStyleSheet(mergedMediaRules);
         final SvgPaintingContext mediaContext = rootContext.derive(styleSheet: mediaSheet);
-        final Result<List<PaintCommand>> mediaPaintingResult =
-            svgRootElement.toPaintCommands(mediaContext);
+        final Result<List<PaintCommand>> mediaPaintingResult = svgRootElement.toPaintCommands(
+          mediaContext,
+        );
         if (mediaPaintingResult is Success<List<PaintCommand>>) {
           conditionalCommands[mediaRule.query] = mediaPaintingResult.value;
         }
@@ -295,20 +301,19 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
     String? semanticHint,
     SvgColorMapping colorMapping = SvgColorMapping.material,
     bool tokenColors = false,
-  }) =>
-      painterGenerator.generatePainterClass(
-        className: className,
-        viewBoxWidth: viewBoxWidth,
-        viewBoxHeight: viewBoxHeight,
-        commands: commands,
-        generators: _generators,
-        exposureMode: exposureMode,
-        propertyMapping: propertyMapping,
-        semanticLabel: semanticLabel,
-        semanticHint: semanticHint,
-        colorMapping: colorMapping,
-        tokenColors: tokenColors,
-      );
+  }) => painterGenerator.generatePainterClass(
+    className: className,
+    viewBoxWidth: viewBoxWidth,
+    viewBoxHeight: viewBoxHeight,
+    commands: commands,
+    generators: _generators,
+    exposureMode: exposureMode,
+    propertyMapping: propertyMapping,
+    semanticLabel: semanticLabel,
+    semanticHint: semanticHint,
+    colorMapping: colorMapping,
+    tokenColors: tokenColors,
+  );
 
   /// Loads SVG content from the given annotation.
   @visibleForTesting

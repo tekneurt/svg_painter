@@ -571,7 +571,24 @@ class PainterClassGenerator {
       }
     }
 
-    // 4th pass: Drawing commands (DrawCommand)
+    // 4th pass: Marker definitions (DefineMarker)
+    for (final command in uniqueDefinitions) {
+      if (command is DefineMarker) {
+        generators[command.runtimeType]?.generate(
+          command,
+          buffer,
+          generators: generators,
+          palette: palette,
+          activeFillProperties: activeFillProperties,
+          activeStrokeProperties: activeStrokeProperties,
+          painterClassName: className,
+          gradientsNeedingStretch: gradientsNeedingStretch,
+          colorMapping: colorMapping,
+        );
+      }
+    }
+
+    // 5th pass: Drawing commands (DrawCommand)
     for (final command in drawingCommands) {
       if (command is DrawCommand) {
         generators[command.runtimeType]?.generate(

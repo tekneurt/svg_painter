@@ -85,7 +85,12 @@ extension ToDefaultValue on XmlAttributeName {
         return const SvgGenericNumber(4.0);
       case .offset:
       case .strokeDashoffset:
+      case .refX:
+      case .refY:
         return const SvgLength(0.0);
+      case .markerWidth:
+      case .markerHeight:
+        return const SvgLength(3.0);
       case .stopColor:
         return const SvgNamedColor(SvgColorName.black);
       case .stopOpacity:
@@ -123,6 +128,12 @@ extension ToDefaultValue on XmlAttributeName {
       case .dy:
       case .rotate:
       case .decoding:
+      case .marker:
+      case .markerStart:
+      case .markerMid:
+      case .markerEnd:
+      case .markerUnits:
+      case .orient:
       case .mask:
       case .maskUnits:
       case .maskContentUnits:

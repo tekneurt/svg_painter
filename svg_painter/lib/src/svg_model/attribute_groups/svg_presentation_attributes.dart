@@ -4,6 +4,7 @@ import '../svg_value.dart';
 import 'svg_fill_attributes.dart';
 import 'svg_font_attributes.dart';
 import 'svg_graphics_attributes.dart';
+import 'svg_marker_attributes.dart';
 import 'svg_stroke_attributes.dart';
 
 /// Represents a unified set of presentation attributes for an SVG element.
@@ -19,6 +20,7 @@ final class SvgPresentationAttributes {
     this.stroke,
     this.font,
     this.graphics,
+    this.marker,
     this.paintOrder,
     this.vectorEffect,
     this.display,
@@ -39,6 +41,9 @@ final class SvgPresentationAttributes {
 
   /// Graphics-related presentation attributes (e.g., opacity, transform).
   final SvgGraphicsAttributes? graphics;
+
+  /// Marker-related presentation attributes (e.g., marker-start, marker-end).
+  final SvgMarkerAttributes? marker;
 
   /// The order that the fill, stroke, and markers of a shape or text element are painted.
   final SvgPaintOrder? paintOrder;
@@ -66,6 +71,7 @@ final class SvgPresentationAttributes {
       stroke: _mergeStroke(stroke, other.stroke),
       font: _mergeFont(font, other.font),
       graphics: _mergeGraphics(graphics, other.graphics),
+      marker: _mergeMarker(marker, other.marker),
       paintOrder: other.paintOrder ?? paintOrder,
       vectorEffect: other.vectorEffect ?? vectorEffect,
       display: other.display ?? display,
@@ -93,6 +99,7 @@ final class SvgPresentationAttributes {
       fill: _inheritFill(fill, parent?.fill, effectiveColor),
       stroke: _inheritStroke(stroke, parent?.stroke, effectiveColor),
       font: _inheritFont(font, parent?.font),
+      marker: _inheritMarker(marker, parent?.marker),
       paintOrder: paintOrder ?? parent?.paintOrder,
       visibility: effectiveVisibility,
       // Non-inherited groups (opacity, transform, vector-effect, etc. do NOT inherit)
@@ -262,6 +269,39 @@ final class SvgPresentationAttributes {
     );
   }
 
+  static SvgMarkerAttributes? _mergeMarker(SvgMarkerAttributes? a, SvgMarkerAttributes? b) {
+    if (a == null) {
+      return b;
+    }
+    if (b == null) {
+      return a;
+    }
+    return SvgMarkerAttributes(
+      marker: b.marker ?? a.marker,
+      markerStart: b.markerStart ?? a.markerStart,
+      markerMid: b.markerMid ?? a.markerMid,
+      markerEnd: b.markerEnd ?? a.markerEnd,
+    );
+  }
+
+  static SvgMarkerAttributes? _inheritMarker(
+    SvgMarkerAttributes? child,
+    SvgMarkerAttributes? parent,
+  ) {
+    if (parent == null) {
+      return child;
+    }
+    if (child == null) {
+      return parent;
+    }
+    return SvgMarkerAttributes(
+      marker: child.marker ?? parent.marker,
+      markerStart: child.markerStart ?? parent.markerStart,
+      markerMid: child.markerMid ?? parent.markerMid,
+      markerEnd: child.markerEnd ?? parent.markerEnd,
+    );
+  }
+
   @override
   String toString() {
     final parts = <String>[
@@ -270,6 +310,7 @@ final class SvgPresentationAttributes {
       if (stroke != null) 'stroke: $stroke',
       if (font != null) 'font: $font',
       if (graphics != null) 'graphics: $graphics',
+      if (marker != null) 'marker: $marker',
       if (paintOrder != null) 'paint-order: $paintOrder',
       if (vectorEffect != null) 'vector-effect: $vectorEffect',
       if (display != null) 'display: $display',

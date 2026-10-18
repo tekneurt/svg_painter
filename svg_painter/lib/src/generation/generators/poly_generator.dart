@@ -6,6 +6,7 @@ import '../command_generator.dart';
 import '../generator_buffer.dart';
 import '../models.dart';
 import '../palette_analyzer.dart';
+import '../path_marker_extractor.dart';
 import '../shape_generator.dart';
 
 class PolyGenerator<T extends DrawCommand> extends ShapeGenerator<T> {
@@ -83,6 +84,39 @@ class PolyGenerator<T extends DrawCommand> extends ShapeGenerator<T> {
             }
             emitDrawStrokePath(buffer, pathExpr, p, style: command.style);
           },
+          drawMarkersCall: command.style.hasMarkers
+              ? () {
+                  final String? markerStart = command.style.markerStartId;
+                  final String? markerMid = command.style.markerMidId;
+                  final String? markerEnd = command.style.markerEndId;
+                  final double strokeWidth = command.style.stroke?.width ?? 1.0;
+                  final List<MarkerVertex> vertices = PathMarkerExtractor.extractFromPoints(
+                    points,
+                    isClosed: isClosed,
+                  );
+                  for (final v in vertices) {
+                    if (v.isStart) {
+                      if (markerStart != null) {
+                        buffer.writeln(
+                          '_marker_$markerStart(canvas, const Offset(${v.x}, ${v.y}), ${v.angle}, $strokeWidth, isStart: true);',
+                        );
+                      }
+                    } else if (v.isEnd) {
+                      if (markerEnd != null) {
+                        buffer.writeln(
+                          '_marker_$markerEnd(canvas, const Offset(${v.x}, ${v.y}), ${v.angle}, $strokeWidth);',
+                        );
+                      }
+                    } else {
+                      if (markerMid != null) {
+                        buffer.writeln(
+                          '_marker_$markerMid(canvas, const Offset(${v.x}, ${v.y}), ${v.angle}, $strokeWidth);',
+                        );
+                      }
+                    }
+                  }
+                }
+              : null,
         );
       });
     });

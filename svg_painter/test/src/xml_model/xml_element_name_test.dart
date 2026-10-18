@@ -16,6 +16,7 @@ void main() {
           XmlElementName.image => 'image',
           XmlElementName.line => 'line',
           XmlElementName.linearGradient => 'linearGradient',
+          XmlElementName.marker => 'marker',
           XmlElementName.mask => 'mask',
           XmlElementName.path => 'path',
           XmlElementName.polygon => 'polygon',

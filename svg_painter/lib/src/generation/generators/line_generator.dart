@@ -5,6 +5,7 @@ import '../command_generator.dart';
 import '../generator_buffer.dart';
 import '../models.dart';
 import '../palette_analyzer.dart';
+import '../path_marker_extractor.dart';
 import '../shape_generator.dart';
 
 class LineGenerator extends ShapeGenerator<DrawLine> {
@@ -55,11 +56,37 @@ class LineGenerator extends ShapeGenerator<DrawLine> {
               buffer.writeln(
                 'final Path path = Path()..moveTo(${command.x1}, ${command.y1})..lineTo(${command.x2}, ${command.y2});',
               );
-              final pathExpr = dashArray == null ? 'path' : '_dashPath(path, $dashArray$plArg$doArg)';
+              final pathExpr = dashArray == null
+                  ? 'path'
+                  : '_dashPath(path, $dashArray$plArg$doArg)';
               emitDrawStrokePath(buffer, pathExpr, p, style: command.style);
             });
           }
         },
+        drawMarkersCall: command.style.hasMarkers
+            ? () {
+                final String? markerStart = command.style.markerStartId;
+                final String? markerEnd = command.style.markerEndId;
+                final double strokeWidth = command.style.stroke?.width ?? 1.0;
+                final List<MarkerVertex> vertices = PathMarkerExtractor.extractFromLine(
+                  command.x1,
+                  command.y1,
+                  command.x2,
+                  command.y2,
+                );
+                for (final v in vertices) {
+                  if (v.isStart && markerStart != null) {
+                    buffer.writeln(
+                      '_marker_$markerStart(canvas, const Offset(${v.x}, ${v.y}), ${v.angle}, $strokeWidth, isStart: true);',
+                    );
+                  } else if (v.isEnd && markerEnd != null) {
+                    buffer.writeln(
+                      '_marker_$markerEnd(canvas, const Offset(${v.x}, ${v.y}), ${v.angle}, $strokeWidth);',
+                    );
+                  }
+                }
+              }
+            : null,
       );
     });
   }
