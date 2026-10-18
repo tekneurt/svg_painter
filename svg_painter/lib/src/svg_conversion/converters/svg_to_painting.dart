@@ -236,8 +236,12 @@ extension SvgElementToPaintCommands on SvgElement {
             viewBoxMinX: marker.viewBox!.minX,
             viewBoxMinY: marker.viewBox!.minY,
             isDefinition: false,
+            resetContextPaint: true,
           )
-        : context.derive(isDefinition: false);
+        : context.derive(
+            isDefinition: false,
+            resetContextPaint: true,
+          );
 
     return marker.children
         .map((SvgElement child) => child.toPaintCommands(childrenContext))

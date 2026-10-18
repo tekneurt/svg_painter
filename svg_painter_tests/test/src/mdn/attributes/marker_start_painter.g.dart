@@ -66,6 +66,8 @@ class _$MarkerStartPainter extends CustomPainter {
       double tangentAngle,
       double strokeWidth, {
       bool isStart = false,
+      Paint? contextFill,
+      Paint? contextStroke,
     }) {
       canvas.save();
       canvas.translate(position.dx, position.dy);
@@ -98,19 +100,22 @@ class _$MarkerStartPainter extends CustomPainter {
         ..lineTo(70.0, 80.0)
         ..lineTo(100.0, 20.0);
       {
-        final Paint paint = Paint();
-        paint.color = Colors.black;
-        paint.style = PaintingStyle.stroke;
-        paint.strokeWidth = 1.0;
-        canvas.drawPath(path, paint);
+        final Paint strokePaint = Paint();
+        {
+          strokePaint.color = Colors.black;
+          strokePaint.style = PaintingStyle.stroke;
+          strokePaint.strokeWidth = 1.0;
+        }
+        canvas.drawPath(path, strokePaint);
+        _marker_triangle(
+          canvas,
+          const Offset(20.0, 100.0),
+          -1.1071487177940904,
+          1.0,
+          isStart: true,
+          contextStroke: strokePaint,
+        );
       }
-      _marker_triangle(
-        canvas,
-        const Offset(20.0, 100.0),
-        -1.1071487177940904,
-        1.0,
-        isStart: true,
-      );
     }
     canvas.restore();
   }

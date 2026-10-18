@@ -24,14 +24,95 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
     drawCall, {
     void Function(String paintVar, {String? dashArray, String? pathLength, String? dashOffset})?
     drawStrokeCall,
-    void Function()? drawMarkersCall,
+    void Function(String? fillPaintVar, String? strokePaintVar)? drawMarkersCall,
     PaletteResult? palette,
     Map<String, String>? activeFillProperties,
     Map<String, String>? activeStrokeProperties,
     List<InheritedProperty>? inheritedFills,
     List<InheritedProperty>? inheritedStrokes,
     SvgColorMapping colorMapping = SvgColorMapping.material,
+    bool isInsideMarker = false,
   }) {
+    if (style.hasMarkers) {
+      buffer.writeBlock('{', () {
+        final PaintingFillStyle? fill = style.fill;
+        final bool hasFill = fill != null && (fill.isExplicit || command is! DrawLine);
+        if (hasFill) {
+          buffer.writeln('final Paint fillPaint = Paint();');
+          _generateStyleBlock(
+            buffer: buffer,
+            command: command,
+            style: fill,
+            boundsRect: boundsRect,
+            isFill: true,
+            palette: palette,
+            activeProperties: activeFillProperties,
+            inheritedProperties: inheritedFills,
+            drawCall: drawCall,
+            colorMapping: colorMapping,
+            paintVar: 'fillPaint',
+            emitDeclaration: false,
+            emitDrawCall: false,
+            isInsideMarker: isInsideMarker,
+          );
+        }
+
+        final PaintingStrokeStyle? stroke = style.stroke;
+        final hasStroke = stroke != null;
+        if (hasStroke) {
+          buffer.writeln('final Paint strokePaint = Paint();');
+          _generateStyleBlock(
+            buffer: buffer,
+            command: command,
+            style: stroke,
+            boundsRect: boundsRect,
+            isFill: false,
+            palette: palette,
+            activeProperties: activeStrokeProperties,
+            inheritedProperties: inheritedStrokes,
+            drawCall: drawStrokeCall ?? drawCall,
+            colorMapping: colorMapping,
+            paintVar: 'strokePaint',
+            emitDeclaration: false,
+            emitDrawCall: false,
+            isInsideMarker: isInsideMarker,
+          );
+        }
+
+        for (final SvgPaintOrderComponent component in style.paintOrder.components) {
+          switch (component) {
+            case .fill:
+              if (hasFill) {
+                drawCall('fillPaint');
+              }
+            case .stroke:
+              if (hasStroke) {
+                final List<double>? dashArray = stroke.dashArray;
+                if (dashArray == null) {
+                  (drawStrokeCall ?? drawCall)('strokePaint');
+                } else {
+                  buffer.writeln('final List<double> dashArray = [${dashArray.join(', ')}];');
+                  final pathLength = stroke.pathLength?.toString();
+                  final dashOffset = stroke.dashOffset?.toString();
+                  (drawStrokeCall ?? drawCall)(
+                    'strokePaint',
+                    dashArray: 'dashArray',
+                    pathLength: pathLength,
+                    dashOffset: dashOffset,
+                  );
+                }
+              }
+            case .markers:
+              drawMarkersCall?.call(
+                hasFill ? 'fillPaint' : null,
+                hasStroke ? 'strokePaint' : null,
+              );
+          }
+        }
+      });
+      return;
+    }
+
     void drawFill() {
       final PaintingFillStyle? fill = style.fill;
       if (fill != null) {
@@ -53,6 +134,7 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
             inheritedProperties: inheritedFills,
             drawCall: drawCall,
             colorMapping: colorMapping,
+            isInsideMarker: isInsideMarker,
           );
         }
       }
@@ -72,6 +154,7 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
           inheritedProperties: inheritedStrokes,
           drawCall: drawStrokeCall ?? drawCall,
           colorMapping: colorMapping,
+          isInsideMarker: isInsideMarker,
         );
       }
     }
@@ -83,7 +166,7 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
         case .stroke:
           drawStroke();
         case .markers:
-          drawMarkersCall?.call();
+          drawMarkersCall?.call(null, null);
       }
     }
   }
@@ -105,9 +188,15 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
     })
     drawCall,
     required SvgColorMapping colorMapping,
+    String paintVar = 'paint',
+    bool emitDeclaration = true,
+    bool emitDrawCall = true,
+    bool isInsideMarker = false,
   }) {
     buffer.writeBlock('{', () {
-      buffer.writeln('final Paint paint = Paint();');
+      if (emitDeclaration) {
+        buffer.writeln('final Paint $paintVar = Paint();');
+      }
 
       final suffix = isFill ? 'Fill' : 'Stroke';
       final StyleResolution resolution = _resolveStyle(
@@ -127,34 +216,43 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
         suffix: suffix,
         palette: palette,
         colorMapping: colorMapping,
+        paintVar: paintVar,
+        isInsideMarker: isInsideMarker,
       );
 
-      buffer.writeln('paint.style = PaintingStyle.${isFill ? 'fill' : 'stroke'};');
+      buffer.writeln('$paintVar.style = PaintingStyle.${isFill ? 'fill' : 'stroke'};');
 
       if (!isFill) {
         final stroke = style as PaintingStrokeStyle;
-        buffer.writeln('paint.strokeWidth = ${stroke.width};');
+        buffer.writeln('$paintVar.strokeWidth = ${stroke.width};');
         if (stroke.miterLimit != 4.0) {
-          buffer.writeln('paint.strokeMiterLimit = ${stroke.miterLimit};');
+          buffer.writeln('$paintVar.strokeMiterLimit = ${stroke.miterLimit};');
         }
         if (stroke.cap != PaintingStrokeCap.butt) {
-          buffer.writeln('paint.strokeCap = ${stroke.cap.toFlutterString()};');
+          buffer.writeln('$paintVar.strokeCap = ${stroke.cap.toFlutterString()};');
         }
         if (stroke.join != PaintingStrokeJoin.miter) {
-          buffer.writeln('paint.strokeJoin = ${stroke.join.toFlutterString()};');
+          buffer.writeln('$paintVar.strokeJoin = ${stroke.join.toFlutterString()};');
         }
 
-        final List<double>? dashArray = stroke.dashArray;
-        if (dashArray == null) {
-          drawCall('paint');
-        } else {
-          buffer.writeln('final List<double> dashArray = [${dashArray.join(', ')}];');
-          final pathLength = stroke.pathLength?.toString();
-          final dashOffset = stroke.dashOffset?.toString();
-          drawCall('paint', dashArray: 'dashArray', pathLength: pathLength, dashOffset: dashOffset);
+        if (emitDrawCall) {
+          final List<double>? dashArray = stroke.dashArray;
+          if (dashArray == null) {
+            drawCall(paintVar);
+          } else {
+            buffer.writeln('final List<double> dashArray = [${dashArray.join(', ')}];');
+            final pathLength = stroke.pathLength?.toString();
+            final dashOffset = stroke.dashOffset?.toString();
+            drawCall(
+              paintVar,
+              dashArray: 'dashArray',
+              pathLength: pathLength,
+              dashOffset: dashOffset,
+            );
+          }
         }
-      } else {
-        drawCall('paint');
+      } else if (emitDrawCall) {
+        drawCall(paintVar);
       }
     });
   }
@@ -213,6 +311,8 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
     required String suffix,
     required PaletteResult? palette,
     required SvgColorMapping colorMapping,
+    String paintVar = 'paint',
+    bool isInsideMarker = false,
   }) {
     if (resolution.localActiveProperty != null) {
       buffer.writeln('final Object? local$suffix = ${resolution.localActiveProperty};');
@@ -225,10 +325,12 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
           suffix: suffix,
           palette: palette,
           colorMapping: colorMapping,
+          paintVar: paintVar,
+          isInsideMarker: isInsideMarker,
         );
       });
       buffer.writeBlock('else {', () {
-        buffer.writeln('_applyOverride(paint, local$suffix);');
+        buffer.writeln('_applyOverride($paintVar, local$suffix);');
       });
     } else {
       _emitInheritedOrOriginal(
@@ -239,6 +341,8 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
         suffix: suffix,
         palette: palette,
         colorMapping: colorMapping,
+        paintVar: paintVar,
+        isInsideMarker: isInsideMarker,
       );
     }
   }
@@ -251,6 +355,8 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
     required String suffix,
     required PaletteResult? palette,
     required SvgColorMapping colorMapping,
+    String paintVar = 'paint',
+    bool isInsideMarker = false,
   }) {
     if (resolution.inheritedPropertyName != null) {
       buffer.writeln('final Object? inherited$suffix = ${resolution.inheritedPropertyName};');
@@ -261,10 +367,12 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
           boundsRect,
           palette: palette,
           colorMapping: colorMapping,
+          paintVar: paintVar,
+          isInsideMarker: isInsideMarker,
         );
       });
       buffer.writeBlock('else {', () {
-        buffer.writeln('_applyOverride(paint, inherited$suffix);');
+        buffer.writeln('_applyOverride($paintVar, inherited$suffix);');
       });
     } else {
       _generateOriginalStyle(
@@ -273,6 +381,8 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
         boundsRect,
         palette: palette,
         colorMapping: colorMapping,
+        paintVar: paintVar,
+        isInsideMarker: isInsideMarker,
       );
     }
   }
@@ -283,13 +393,49 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
     String boundsRect, {
     PaletteResult? palette,
     SvgColorMapping colorMapping = SvgColorMapping.material,
+    String paintVar = 'paint',
+    bool isInsideMarker = false,
   }) {
-    if (style.isCurrentColor) {
+    if (style.isContextFill) {
+      if (isInsideMarker) {
+        buffer.writeBlock('if (contextFill != null) {', () {
+          buffer.writeln('$paintVar.color = contextFill.color;');
+          buffer.writeln('$paintVar.shader = contextFill.shader;');
+          if (style.opacity != 1.0) {
+            buffer.writeln(
+              '$paintVar.color = $paintVar.color.withValues(alpha: $paintVar.color.a * ${style.opacity});',
+            );
+          }
+        });
+        buffer.writeBlock('else {', () {
+          buffer.writeln('$paintVar.color = const Color(0x00000000);');
+        });
+      } else {
+        buffer.writeln('$paintVar.color = const Color(0x00000000);');
+      }
+    } else if (style.isContextStroke) {
+      if (isInsideMarker) {
+        buffer.writeBlock('if (contextStroke != null) {', () {
+          buffer.writeln('$paintVar.color = contextStroke.color;');
+          buffer.writeln('$paintVar.shader = contextStroke.shader;');
+          if (style.opacity != 1.0) {
+            buffer.writeln(
+              '$paintVar.color = $paintVar.color.withValues(alpha: $paintVar.color.a * ${style.opacity});',
+            );
+          }
+        });
+        buffer.writeBlock('else {', () {
+          buffer.writeln('$paintVar.color = const Color(0x00000000);');
+        });
+      } else {
+        buffer.writeln('$paintVar.color = const Color(0x00000000);');
+      }
+    } else if (style.isCurrentColor) {
       if (style.opacity == 1.0) {
-        buffer.writeln('paint.color = color ?? const Color(0xFF000000);');
+        buffer.writeln('$paintVar.color = color ?? const Color(0xFF000000);');
       } else {
         buffer.writeln(
-          'paint.color = (color ?? const Color(0xFF000000)).withValues(alpha: ${style.opacity});',
+          '$paintVar.color = (color ?? const Color(0xFF000000)).withValues(alpha: ${style.opacity});',
         );
       }
     } else if (style.shaderId == null) {
@@ -308,26 +454,26 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
           final localToken = 'local${tokenName[0].toUpperCase()}${tokenName.substring(1)}';
           buffer.writeln('final Color? $localToken = $tokenName;');
           buffer.writeBlock('if ($localToken == null) {', () {
-            buffer.writeln('paint.color = $colorCode;');
+            buffer.writeln('$paintVar.color = $colorCode;');
           });
           buffer.writeBlock('else {', () {
             if (style.opacity == 1.0) {
-              buffer.writeln('paint.color = $localToken;');
+              buffer.writeln('$paintVar.color = $localToken;');
             } else {
-              buffer.writeln('paint.color = $localToken.withValues(alpha: ${style.opacity});');
+              buffer.writeln('$paintVar.color = $localToken.withValues(alpha: ${style.opacity});');
             }
           });
         } else {
-          buffer.writeln('paint.color = $colorCode;');
+          buffer.writeln('$paintVar.color = $colorCode;');
         }
       }
     } else {
       final shaderRect = style.shaderUnits == PaintingGradientUnits.userSpaceOnUse
           ? 'viewBoxRect'
           : boundsRect;
-      buffer.writeln('paint.shader = _grad_${style.shaderId}.createShader($shaderRect);');
+      buffer.writeln('$paintVar.shader = _grad_${style.shaderId}.createShader($shaderRect);');
       if (style.opacity != 1.0) {
-        buffer.writeln('paint.color = paint.color.withValues(alpha: ${style.opacity});');
+        buffer.writeln('$paintVar.color = $paintVar.color.withValues(alpha: ${style.opacity});');
       }
     }
   }

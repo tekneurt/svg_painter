@@ -309,6 +309,7 @@ class _SpyGenerator extends CommandGenerator<DrawCircle> {
     String? painterClassName,
     Set<String>? gradientsNeedingStretch,
     SvgColorMapping colorMapping = SvgColorMapping.material,
+    bool isInsideMarker = false,
   }) {
     lastInheritedFills = inheritedFills;
     lastInheritedStrokes = inheritedStrokes;

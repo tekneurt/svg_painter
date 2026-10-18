@@ -23,6 +23,7 @@ class CircleGenerator extends ShapeGenerator<DrawCircle> {
     String? painterClassName,
     Set<String>? gradientsNeedingStretch,
     SvgColorMapping colorMapping = SvgColorMapping.material,
+    bool isInsideMarker = false,
   }) {
     final bounds =
         'Rect.fromCircle(center: const Offset(${command.cx}, ${command.cy}), radius: ${command.radius})';
@@ -38,6 +39,7 @@ class CircleGenerator extends ShapeGenerator<DrawCircle> {
         activeStrokeProperties: activeStrokeProperties,
         inheritedFills: inheritedFills,
         inheritedStrokes: inheritedStrokes,
+        isInsideMarker: isInsideMarker,
         (String p, {String? dashArray, String? pathLength, String? dashOffset}) {
           buffer.writeln(
             'canvas.drawCircle(const Offset(${command.cx}, ${command.cy}), ${command.radius}, $p);',
@@ -53,7 +55,9 @@ class CircleGenerator extends ShapeGenerator<DrawCircle> {
             final doArg = (dashOffset?.isEmpty ?? true) ? '' : ', dashOffset: $dashOffset';
             buffer.writeBlock('{', () {
               buffer.writeln('final Path path = Path()..addOval($bounds);');
-              final pathExpr = dashArray == null ? 'path' : '_dashPath(path, $dashArray$plArg$doArg)';
+              final pathExpr = dashArray == null
+                  ? 'path'
+                  : '_dashPath(path, $dashArray$plArg$doArg)';
               emitDrawStrokePath(buffer, pathExpr, p, style: command.style);
             });
           }

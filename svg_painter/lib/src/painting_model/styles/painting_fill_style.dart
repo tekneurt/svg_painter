@@ -10,6 +10,8 @@ final class PaintingFillStyle implements PaintingPaintStyle {
     this.opacity = 1.0,
     this.isExplicit = true,
     this.isCurrentColor = false,
+    this.isContextFill = false,
+    this.isContextStroke = false,
     this.fillRule = SvgFillRule.nonzero,
   }) : assert(opacity >= 0.0 && opacity <= 1.0, 'Opacity must be between 0.0 and 1.0');
 
@@ -37,6 +39,14 @@ final class PaintingFillStyle implements PaintingPaintStyle {
   @override
   final bool isCurrentColor;
 
+  /// Whether this fill uses the 'context-fill' keyword.
+  @override
+  final bool isContextFill;
+
+  /// Whether this fill uses the 'context-stroke' keyword.
+  @override
+  final bool isContextStroke;
+
   /// The fill rule (nonzero or evenodd).
   final SvgFillRule fillRule;
 
@@ -49,6 +59,8 @@ final class PaintingFillStyle implements PaintingPaintStyle {
       if (opacity != 1.0) 'opacity: $opacity',
       if (!isExplicit) 'explicit: $isExplicit',
       if (isCurrentColor) 'currentColor: $isCurrentColor',
+      if (isContextFill) 'contextFill: $isContextFill',
+      if (isContextStroke) 'contextStroke: $isContextStroke',
       if (fillRule != SvgFillRule.nonzero) 'fillRule: $fillRule',
     ];
     if (parts.isEmpty) {

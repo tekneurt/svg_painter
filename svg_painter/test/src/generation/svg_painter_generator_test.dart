@@ -74,7 +74,12 @@ void main() {
         );
 
         // Assert
-        expect(output, contains("return Semantics(\n      label: 'A Red Square',\n      hint: 'A square filled with red color',\n      child: CustomPaint("));
+        expect(
+          output,
+          contains(
+            "return Semantics(\n      label: 'A Red Square',\n      hint: 'A square filled with red color',\n      child: CustomPaint(",
+          ),
+        );
       });
 
       test('should generate Semantics widget when SVG contains only title', () async {
@@ -93,7 +98,10 @@ void main() {
         );
 
         // Assert
-        expect(output, contains("return Semantics(\n      label: 'Only Title',\n      child: CustomPaint("));
+        expect(
+          output,
+          contains("return Semantics(\n      label: 'Only Title',\n      child: CustomPaint("),
+        );
         expect(output, isNot(contains('hint:')));
       });
 
@@ -113,7 +121,10 @@ void main() {
         );
 
         // Assert
-        expect(output, contains("return Semantics(\n      hint: 'Only Description',\n      child: CustomPaint("));
+        expect(
+          output,
+          contains("return Semantics(\n      hint: 'Only Description',\n      child: CustomPaint("),
+        );
         expect(output, isNot(contains('label:')));
       });
 

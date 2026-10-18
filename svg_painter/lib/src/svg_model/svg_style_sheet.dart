@@ -30,8 +30,8 @@ final class SvgStyleSheet {
 
   /// Creates an empty style sheet.
   const SvgStyleSheet.empty()
-      : rules = const <String, Map<String, String>>{},
-        mediaRules = const <SvgMediaRule>[];
+    : rules = const <String, Map<String, String>>{},
+      mediaRules = const <SvgMediaRule>[];
 
   /// Map of class names to their associated style properties.
   /// Key: class name (without the dot).

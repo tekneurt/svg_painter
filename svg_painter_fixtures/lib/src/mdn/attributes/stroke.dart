@@ -14,3 +14,26 @@ const String mdnStrokeExample = '''
   <circle cx="15" cy="5" r="4" fill="none" stroke="url(#myGradient)" />
 </svg>
 ''';
+
+/// https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/stroke#context-stroke_example
+const String mdnStrokeContextStrokeExample = '''
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 90">
+  <style>
+    path {
+      stroke-width: 2px;
+      marker: url("#circle");
+    }
+  </style>
+  <path d="M 10 44.64 L 30 10 L 70 10 L 90 44.64 L 70 79.28 L 30 79.28 Z"
+        stroke="red" fill="orange" />
+  <path d="M 100 44.64 L 80 10 L 120 10 L 140 44.64 L 120 79.28 L 80 79.28 Z"
+        stroke="green" fill="lightgreen" />
+  <path d="M 150 44.64 L 130 10 L 170 10 L 190 44.64 L 170 79.28 L 130 79.28 Z"
+        stroke="blue" fill="lightblue" />
+  <marker id="circle" markerWidth="12" markerHeight="12"
+          refX="6" refY="6" markerUnits="userSpaceOnUse">
+    <circle cx="6" cy="6" r="3" stroke-width="2"
+            stroke="context-stroke" fill="context-fill"  />
+  </marker>
+</svg>
+''';

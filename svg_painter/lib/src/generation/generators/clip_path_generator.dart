@@ -23,12 +23,12 @@ class ClipPathGenerator extends CommandGenerator<DefineClipPath> {
     String? painterClassName,
     Set<String>? gradientsNeedingStretch,
     SvgColorMapping colorMapping = SvgColorMapping.material,
+    bool isInsideMarker = false,
   }) {
     buffer.writeBlock(
       'void _clipPath_${command.id}(Canvas canvas, Size size, Rect targetBounds) {',
       () {
-        final isOBox =
-            command.clipPathUnits == PaintingGradientUnits.objectBoundingBox;
+        final isOBox = command.clipPathUnits == PaintingGradientUnits.objectBoundingBox;
         buffer.writeln('final Path path = Path();');
 
         for (final PaintCommand child in command.commands) {

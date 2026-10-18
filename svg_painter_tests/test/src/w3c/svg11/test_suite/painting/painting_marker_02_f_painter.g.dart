@@ -89,6 +89,8 @@ class _$PaintingMarker02FPainter extends CustomPainter {
       double tangentAngle,
       double strokeWidth, {
       bool isStart = false,
+      Paint? contextFill,
+      Paint? contextStroke,
     }) {
       canvas.save();
       canvas.translate(position.dx, position.dy);
@@ -113,6 +115,8 @@ class _$PaintingMarker02FPainter extends CustomPainter {
       double tangentAngle,
       double strokeWidth, {
       bool isStart = false,
+      Paint? contextFill,
+      Paint? contextStroke,
     }) {
       canvas.save();
       canvas.translate(position.dx, position.dy);
@@ -138,6 +142,8 @@ class _$PaintingMarker02FPainter extends CustomPainter {
       double tangentAngle,
       double strokeWidth, {
       bool isStart = false,
+      Paint? contextFill,
+      Paint? contextStroke,
     }) {
       canvas.save();
       canvas.translate(position.dx, position.dy);
@@ -169,6 +175,8 @@ class _$PaintingMarker02FPainter extends CustomPainter {
       double tangentAngle,
       double strokeWidth, {
       bool isStart = false,
+      Paint? contextFill,
+      Paint? contextStroke,
     }) {
       canvas.save();
       canvas.translate(position.dx, position.dy);
@@ -259,36 +267,42 @@ class _$PaintingMarker02FPainter extends CustomPainter {
         ..lineTo(80.0, 110.0)
         ..close();
       {
-        final Paint paint = Paint();
-        paint.color = Colors.black;
-        paint.style = PaintingStyle.fill;
-        canvas.drawPath(path, paint);
+        final Paint fillPaint = Paint();
+        {
+          fillPaint.color = Colors.black;
+          fillPaint.style = PaintingStyle.fill;
+        }
+        canvas.drawPath(path, fillPaint);
+        _marker_marker1(
+          canvas,
+          const Offset(30.0, 60.0),
+          0.0,
+          8.0,
+          isStart: true,
+          contextFill: fillPaint,
+        );
+        _marker_marker1(
+          canvas,
+          const Offset(80.0, 60.0),
+          0.7853981633974483,
+          8.0,
+          contextFill: fillPaint,
+        );
+        _marker_marker1(
+          canvas,
+          const Offset(80.0, 110.0),
+          2.748893571891069,
+          8.0,
+          contextFill: fillPaint,
+        );
+        _marker_marker1(
+          canvas,
+          const Offset(30.0, 60.0),
+          -2.356194490192345,
+          8.0,
+          contextFill: fillPaint,
+        );
       }
-      _marker_marker1(
-        canvas,
-        const Offset(30.0, 60.0),
-        0.0,
-        8.0,
-        isStart: true,
-      );
-      _marker_marker1(
-        canvas,
-        const Offset(80.0, 60.0),
-        0.7853981633974483,
-        8.0,
-      );
-      _marker_marker1(
-        canvas,
-        const Offset(80.0, 110.0),
-        2.748893571891069,
-        8.0,
-      );
-      _marker_marker1(
-        canvas,
-        const Offset(30.0, 60.0),
-        -2.356194490192345,
-        8.0,
-      );
     }
     canvas.save();
     canvas.translate(120.0, 0.0);
@@ -392,37 +406,43 @@ class _$PaintingMarker02FPainter extends CustomPainter {
         ..lineTo(320.0, 110.0)
         ..close();
       {
-        final Paint paint = Paint();
-        paint.color = Colors.black;
-        paint.style = PaintingStyle.stroke;
-        paint.strokeWidth = 4.0;
-        canvas.drawPath(path, paint);
+        final Paint strokePaint = Paint();
+        {
+          strokePaint.color = Colors.black;
+          strokePaint.style = PaintingStyle.stroke;
+          strokePaint.strokeWidth = 4.0;
+        }
+        canvas.drawPath(path, strokePaint);
+        _marker_marker2(
+          canvas,
+          const Offset(270.0, 60.0),
+          0.0,
+          4.0,
+          isStart: true,
+          contextStroke: strokePaint,
+        );
+        _marker_marker2(
+          canvas,
+          const Offset(320.0, 60.0),
+          0.7853981633974483,
+          4.0,
+          contextStroke: strokePaint,
+        );
+        _marker_marker2(
+          canvas,
+          const Offset(320.0, 110.0),
+          2.748893571891069,
+          4.0,
+          contextStroke: strokePaint,
+        );
+        _marker_marker2(
+          canvas,
+          const Offset(270.0, 60.0),
+          -2.356194490192345,
+          4.0,
+          contextStroke: strokePaint,
+        );
       }
-      _marker_marker2(
-        canvas,
-        const Offset(270.0, 60.0),
-        0.0,
-        4.0,
-        isStart: true,
-      );
-      _marker_marker2(
-        canvas,
-        const Offset(320.0, 60.0),
-        0.7853981633974483,
-        4.0,
-      );
-      _marker_marker2(
-        canvas,
-        const Offset(320.0, 110.0),
-        2.748893571891069,
-        4.0,
-      );
-      _marker_marker2(
-        canvas,
-        const Offset(270.0, 60.0),
-        -2.356194490192345,
-        4.0,
-      );
     }
     canvas.save();
     canvas.translate(120.0, 0.0);
@@ -530,43 +550,53 @@ class _$PaintingMarker02FPainter extends CustomPainter {
         ..lineTo(80.0, 240.0)
         ..close();
       {
-        final Paint paint = Paint();
-        paint.color = const Color(0xFFFFA500);
-        paint.style = PaintingStyle.fill;
-        canvas.drawPath(path, paint);
+        final Paint fillPaint = Paint();
+        {
+          fillPaint.color = const Color(0xFFFFA500);
+          fillPaint.style = PaintingStyle.fill;
+        }
+        final Paint strokePaint = Paint();
+        {
+          strokePaint.color = const Color(0xFF800080);
+          strokePaint.style = PaintingStyle.stroke;
+          strokePaint.strokeWidth = 4.0;
+        }
+        canvas.drawPath(path, fillPaint);
+        canvas.drawPath(path, strokePaint);
+        _marker_marker3(
+          canvas,
+          const Offset(30.0, 190.0),
+          0.0,
+          4.0,
+          isStart: true,
+          contextFill: fillPaint,
+          contextStroke: strokePaint,
+        );
+        _marker_marker3(
+          canvas,
+          const Offset(80.0, 190.0),
+          0.7853981633974483,
+          4.0,
+          contextFill: fillPaint,
+          contextStroke: strokePaint,
+        );
+        _marker_marker3(
+          canvas,
+          const Offset(80.0, 240.0),
+          2.748893571891069,
+          4.0,
+          contextFill: fillPaint,
+          contextStroke: strokePaint,
+        );
+        _marker_marker3(
+          canvas,
+          const Offset(30.0, 190.0),
+          -2.356194490192345,
+          4.0,
+          contextFill: fillPaint,
+          contextStroke: strokePaint,
+        );
       }
-      {
-        final Paint paint = Paint();
-        paint.color = const Color(0xFF800080);
-        paint.style = PaintingStyle.stroke;
-        paint.strokeWidth = 4.0;
-        canvas.drawPath(path, paint);
-      }
-      _marker_marker3(
-        canvas,
-        const Offset(30.0, 190.0),
-        0.0,
-        4.0,
-        isStart: true,
-      );
-      _marker_marker3(
-        canvas,
-        const Offset(80.0, 190.0),
-        0.7853981633974483,
-        4.0,
-      );
-      _marker_marker3(
-        canvas,
-        const Offset(80.0, 240.0),
-        2.748893571891069,
-        4.0,
-      );
-      _marker_marker3(
-        canvas,
-        const Offset(30.0, 190.0),
-        -2.356194490192345,
-        4.0,
-      );
     }
     canvas.save();
     canvas.translate(120.0, 0.0);
@@ -698,43 +728,53 @@ class _$PaintingMarker02FPainter extends CustomPainter {
         ..lineTo(320.0, 240.0)
         ..close();
       {
-        final Paint paint = Paint();
-        paint.color = const Color(0xFFFFA500);
-        paint.style = PaintingStyle.fill;
-        canvas.drawPath(path, paint);
+        final Paint fillPaint = Paint();
+        {
+          fillPaint.color = const Color(0xFFFFA500);
+          fillPaint.style = PaintingStyle.fill;
+        }
+        final Paint strokePaint = Paint();
+        {
+          strokePaint.color = const Color(0xFF800080);
+          strokePaint.style = PaintingStyle.stroke;
+          strokePaint.strokeWidth = 4.0;
+        }
+        canvas.drawPath(path, fillPaint);
+        canvas.drawPath(path, strokePaint);
+        _marker_marker4(
+          canvas,
+          const Offset(270.0, 190.0),
+          0.0,
+          4.0,
+          isStart: true,
+          contextFill: fillPaint,
+          contextStroke: strokePaint,
+        );
+        _marker_marker4(
+          canvas,
+          const Offset(320.0, 190.0),
+          0.7853981633974483,
+          4.0,
+          contextFill: fillPaint,
+          contextStroke: strokePaint,
+        );
+        _marker_marker4(
+          canvas,
+          const Offset(320.0, 240.0),
+          2.748893571891069,
+          4.0,
+          contextFill: fillPaint,
+          contextStroke: strokePaint,
+        );
+        _marker_marker4(
+          canvas,
+          const Offset(270.0, 190.0),
+          -2.356194490192345,
+          4.0,
+          contextFill: fillPaint,
+          contextStroke: strokePaint,
+        );
       }
-      {
-        final Paint paint = Paint();
-        paint.color = const Color(0xFF800080);
-        paint.style = PaintingStyle.stroke;
-        paint.strokeWidth = 4.0;
-        canvas.drawPath(path, paint);
-      }
-      _marker_marker4(
-        canvas,
-        const Offset(270.0, 190.0),
-        0.0,
-        4.0,
-        isStart: true,
-      );
-      _marker_marker4(
-        canvas,
-        const Offset(320.0, 190.0),
-        0.7853981633974483,
-        4.0,
-      );
-      _marker_marker4(
-        canvas,
-        const Offset(320.0, 240.0),
-        2.748893571891069,
-        4.0,
-      );
-      _marker_marker4(
-        canvas,
-        const Offset(270.0, 190.0),
-        -2.356194490192345,
-        4.0,
-      );
     }
     canvas.save();
     canvas.translate(120.0, 0.0);

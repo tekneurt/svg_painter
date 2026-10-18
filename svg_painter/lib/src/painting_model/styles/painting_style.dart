@@ -40,6 +40,12 @@ abstract interface class PaintingPaintStyle {
 
   /// Whether this style uses the 'currentColor' keyword.
   bool get isCurrentColor;
+
+  /// Whether this style uses the 'context-fill' keyword.
+  bool get isContextFill;
+
+  /// Whether this style uses the 'context-stroke' keyword.
+  bool get isContextStroke;
 }
 
 /// Represents the visual style (fill and stroke) for a drawing command.

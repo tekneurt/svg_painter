@@ -56,11 +56,25 @@ extension SvgUseToPaintCommands on SvgUse {
       targetBounds = PaintingRect(tx, ty, tw, th);
     }
 
+    final SvgPresentationAttributes resolvedUseAttrs = resolvePresentation(
+      context,
+      tagName: 'use',
+      coreAttributes: coreAttributes,
+      presentationAttributes: presentationAttributes,
+    );
+
+    // Context for children inherits styles, but coordinates are now in the <use> local space.
+    // Elements referenced by <use> inherit context-fill and context-stroke from the <use> element.
+    final SvgPaintingContext childContext = context.deriveWith(this).derive(
+      contextFill: resolvedUseAttrs.fill,
+      contextStroke: resolvedUseAttrs.stroke,
+    );
+
     if (target is SvgSymbol) {
       // For symbols, we establish a NEW viewport.
       return target
           .toPaintCommandsSymbol(
-            context,
+            childContext,
             x: const SvgLength(0.0),
             y: const SvgLength(0.0),
             width: width,
@@ -83,7 +97,7 @@ extension SvgUseToPaintCommands on SvgUse {
       // For nested <svg>, width and height from <use> override those on <svg>.
       return target
           .toPaintCommandsSvg(
-            context,
+            childContext,
             x: const SvgLength(0.0),
             y: const SvgLength(0.0),
             width: width,
@@ -102,8 +116,6 @@ extension SvgUseToPaintCommands on SvgUse {
           });
     }
 
-    // Context for children inherits styles, but coordinates are now in the <use> local space.
-    final SvgPaintingContext childContext = context.deriveWith(this);
     return target.toPaintCommands(childContext).map((List<PaintCommand> childCommands) {
       if (childCommands.isEmpty) {
         return const <PaintCommand>[];

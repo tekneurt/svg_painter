@@ -2,7 +2,9 @@ part of '../svg_value.dart';
 
 /// Represents a list of lengths or percentages (e.g. for `x` or `y` on `<text>` or `<tspan>`).
 @immutable
-final class SvgLengthPercentageList extends SvgValue with SvgBaseValue implements SvgLengthPercentageOrList {
+final class SvgLengthPercentageList extends SvgValue
+    with SvgBaseValue
+    implements SvgLengthPercentageOrList {
   const SvgLengthPercentageList(this.values);
 
   /// Convenient factory for a single length or percentage.
@@ -16,13 +18,11 @@ final class SvgLengthPercentageList extends SvgValue with SvgBaseValue implement
   SvgLengthPercentage get firstOrZero => primary;
 
   @override
-  SvgLengthPercentage get primary =>
-      values.isNotEmpty ? values.first : const SvgLength(0.0);
+  SvgLengthPercentage get primary => values.isNotEmpty ? values.first : const SvgLength(0.0);
 
   @override
   List<SvgLengthPercentage> toList() => values;
 
   @override
-  String toString() =>
-      values.map((SvgLengthPercentage v) => v.toString()).join(', ');
+  String toString() => values.map((SvgLengthPercentage v) => v.toString()).join(', ');
 }

@@ -26,6 +26,7 @@ class MarkerGenerator extends CommandGenerator<DefineMarker> {
     String? painterClassName,
     Set<String>? gradientsNeedingStretch,
     SvgColorMapping colorMapping = SvgColorMapping.material,
+    bool isInsideMarker = false,
   }) {
     if (generators == null) {
       return;
@@ -33,7 +34,7 @@ class MarkerGenerator extends CommandGenerator<DefineMarker> {
 
     final String markerId = command.id ?? '';
     buffer.writeBlock(
-      'void _marker_$markerId(Canvas canvas, Offset position, double tangentAngle, double strokeWidth, {bool isStart = false}) {',
+      'void _marker_$markerId(Canvas canvas, Offset position, double tangentAngle, double strokeWidth, {bool isStart = false, Paint? contextFill, Paint? contextStroke}) {',
       () {
         buffer.writeln('canvas.save();');
         buffer.writeln('canvas.translate(position.dx, position.dy);');
@@ -116,6 +117,7 @@ class MarkerGenerator extends CommandGenerator<DefineMarker> {
             painterClassName: painterClassName,
             gradientsNeedingStretch: gradientsNeedingStretch,
             colorMapping: colorMapping,
+            isInsideMarker: true,
           );
         }
 

@@ -90,7 +90,10 @@ void main() {
 
     test('should return Success with DrawTextPath when SvgText contains SvgTextPath', () {
       // Arrange
-      const path = SvgPath(d: 'M0,0 L100,100', coreAttributes: SvgCoreAttributes(id: 'p1'));
+      const path = SvgPath(
+        d: 'M0,0 L100,100',
+        coreAttributes: SvgCoreAttributes(id: 'p1'),
+      );
       const contextWithDef = SvgPaintingContext(
         viewBoxWidth: 100,
         viewBoxHeight: 200,

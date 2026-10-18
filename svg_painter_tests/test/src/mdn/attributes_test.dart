@@ -12,6 +12,7 @@ import 'attributes/decoding_painter.dart';
 import 'attributes/display_painter.dart';
 import 'attributes/dx_painter.dart';
 import 'attributes/dy_painter.dart';
+import 'attributes/fill_context_fill_painter.dart';
 import 'attributes/fill_opacity_painter.dart';
 import 'attributes/fill_painter.dart';
 import 'attributes/fill_rule_evenodd_painter.dart';
@@ -48,6 +49,7 @@ import 'attributes/preserve_aspect_ratio_5_painter.dart';
 import 'attributes/r_painter.dart';
 import 'attributes/ry_painter.dart';
 import 'attributes/spread_method_painter.dart';
+import 'attributes/stroke_context_stroke_painter.dart';
 import 'attributes/stroke_dasharray_painter.dart';
 import 'attributes/stroke_dashoffset_painter.dart';
 import 'attributes/stroke_linecap_painter.dart';
@@ -136,6 +138,11 @@ _fixtures =
         tests: defaultGoldenTests,
       ),
       (painter: const FillPainter(), name: 'fill_painter', tests: defaultGoldenTests),
+      (
+        painter: const FillContextFillPainter(),
+        name: 'fill_context_fill_painter',
+        tests: defaultGoldenTests,
+      ),
       (painter: const FillRulePainter(), name: 'fill_rule_painter', tests: defaultGoldenTests),
       (
         painter: const FillRuleNonzeroPainter(),
@@ -297,6 +304,11 @@ _fixtures =
       ),
       (painter: const StrokeOpacityPainter(), name: 'stroke_opacity', tests: defaultGoldenTests),
       (painter: const StrokePainter(), name: 'stroke_painter', tests: defaultGoldenTests),
+      (
+        painter: const StrokeContextStrokePainter(),
+        name: 'stroke_context_stroke_painter',
+        tests: defaultGoldenTests,
+      ),
       (
         painter: const StrokeWidthPainter(),
         name: 'stroke_width_painter',

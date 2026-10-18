@@ -69,6 +69,8 @@ class _$PaintingMarker07FPainter extends CustomPainter {
       double tangentAngle,
       double strokeWidth, {
       bool isStart = false,
+      Paint? contextFill,
+      Paint? contextStroke,
     }) {
       canvas.save();
       canvas.translate(position.dx, position.dy);
@@ -85,6 +87,8 @@ class _$PaintingMarker07FPainter extends CustomPainter {
       double tangentAngle,
       double strokeWidth, {
       bool isStart = false,
+      Paint? contextFill,
+      Paint? contextStroke,
     }) {
       canvas.save();
       canvas.translate(position.dx, position.dy);
@@ -100,34 +104,40 @@ class _$PaintingMarker07FPainter extends CustomPainter {
         ..moveTo(0.0, 0.0)
         ..lineTo(25.0, 25.0);
       {
-        final Paint paint = Paint();
-        paint.color = Colors.black;
-        paint.style = PaintingStyle.fill;
-        canvas.drawPath(path, paint);
+        final Paint fillPaint = Paint();
+        {
+          fillPaint.color = Colors.black;
+          fillPaint.style = PaintingStyle.fill;
+        }
+        canvas.drawPath(path, fillPaint);
+        _marker_testMarker(
+          canvas,
+          const Offset(25.0, 25.0),
+          0.7853981633974483,
+          1.0,
+          contextFill: fillPaint,
+        );
       }
-      _marker_testMarker(
-        canvas,
-        const Offset(25.0, 25.0),
-        0.7853981633974483,
-        1.0,
-      );
     }
     {
       final Path path = Path()
         ..moveTo(100.0, 0.0)
         ..lineTo(125.0, 25.0);
       {
-        final Paint paint = Paint();
-        paint.color = Colors.black;
-        paint.style = PaintingStyle.fill;
-        canvas.drawPath(path, paint);
+        final Paint fillPaint = Paint();
+        {
+          fillPaint.color = Colors.black;
+          fillPaint.style = PaintingStyle.fill;
+        }
+        canvas.drawPath(path, fillPaint);
+        _marker_testMarker2(
+          canvas,
+          const Offset(125.0, 25.0),
+          0.7853981633974483,
+          1.0,
+          contextFill: fillPaint,
+        );
       }
-      _marker_testMarker2(
-        canvas,
-        const Offset(125.0, 25.0),
-        0.7853981633974483,
-        1.0,
-      );
     }
     {
       final Paint paint = Paint();

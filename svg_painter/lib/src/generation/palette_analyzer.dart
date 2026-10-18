@@ -43,8 +43,9 @@ class PaletteAnalyzer {
     _assignNames(fillGroups, fillAssignments, 'fill');
     _assignNames(strokeGroups, strokeAssignments, 'stroke');
 
-    final Map<int, String> colorTokens =
-        tokenColors ? collectColorTokens(commands) : const <int, String>{};
+    final Map<int, String> colorTokens = tokenColors
+        ? collectColorTokens(commands)
+        : const <int, String>{};
 
     return PaletteResult(fillAssignments, strokeAssignments, colorTokens: colorTokens);
   }
@@ -98,7 +99,6 @@ class PaletteAnalyzer {
       }
     }
   }
-
 
   void _collectGroups(
     List<PaintCommand> commands,

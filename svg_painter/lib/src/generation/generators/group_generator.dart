@@ -24,6 +24,7 @@ class GroupGenerator extends ShapeGenerator<DrawGroup> {
     String? painterClassName,
     Set<String>? gradientsNeedingStretch,
     SvgColorMapping colorMapping = SvgColorMapping.material,
+    bool isInsideMarker = false,
   }) {
     if (generators == null) {
       return;
@@ -134,6 +135,7 @@ class GroupGenerator extends ShapeGenerator<DrawGroup> {
           painterClassName: painterClassName,
           gradientsNeedingStretch: gradientsNeedingStretch,
           colorMapping: colorMapping,
+          isInsideMarker: isInsideMarker,
         );
       }
 

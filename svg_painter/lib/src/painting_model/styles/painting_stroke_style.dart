@@ -41,6 +41,8 @@ final class PaintingStrokeStyle implements PaintingPaintStyle {
     this.dashOffset,
     this.isExplicit = true,
     this.isCurrentColor = false,
+    this.isContextFill = false,
+    this.isContextStroke = false,
   }) : assert(opacity >= 0.0 && opacity <= 1.0, 'Opacity must be between 0.0 and 1.0'),
        assert(miterLimit >= 1.0, 'Miter limit must be greater than or equal to 1.0');
 
@@ -89,6 +91,14 @@ final class PaintingStrokeStyle implements PaintingPaintStyle {
   @override
   final bool isCurrentColor;
 
+  /// Whether this stroke uses the 'context-fill' keyword.
+  @override
+  final bool isContextFill;
+
+  /// Whether this stroke uses the 'context-stroke' keyword.
+  @override
+  final bool isContextStroke;
+
   @override
   String toString() {
     final parts = <String>[
@@ -105,6 +115,8 @@ final class PaintingStrokeStyle implements PaintingPaintStyle {
       if (dashOffset != null) 'dashOffset: $dashOffset',
       if (!isExplicit) 'explicit: $isExplicit',
       if (isCurrentColor) 'currentColor: $isCurrentColor',
+      if (isContextFill) 'contextFill: $isContextFill',
+      if (isContextStroke) 'contextStroke: $isContextStroke',
     ];
     if (parts.isEmpty) {
       return 'PaintingStrokeStyle()';

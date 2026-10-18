@@ -43,29 +43,35 @@ void main() {
       expect(result.values, isEmpty);
     });
 
-    test('should return single SvgLengthPercentage when toSvgLengthPercentageOrList has 1 value', () {
-      // Arrange
-      const input = '15.5px';
+    test(
+      'should return single SvgLengthPercentage when toSvgLengthPercentageOrList has 1 value',
+      () {
+        // Arrange
+        const input = '15.5px';
 
-      // Act
-      final SvgLengthPercentageOrList result = input.toSvgLengthPercentageOrList();
+        // Act
+        final SvgLengthPercentageOrList result = input.toSvgLengthPercentageOrList();
 
-      // Assert
-      expect(result, isA<SvgLength>());
-      expect((result as SvgLength).value, 15.5);
-      expect(result.unit, SvgLengthUnit.px);
-    });
+        // Assert
+        expect(result, isA<SvgLength>());
+        expect((result as SvgLength).value, 15.5);
+        expect(result.unit, SvgLengthUnit.px);
+      },
+    );
 
-    test('should return SvgLengthPercentageList when toSvgLengthPercentageOrList has multiple values', () {
-      // Arrange
-      const input = '10, 20, 30';
+    test(
+      'should return SvgLengthPercentageList when toSvgLengthPercentageOrList has multiple values',
+      () {
+        // Arrange
+        const input = '10, 20, 30';
 
-      // Act
-      final SvgLengthPercentageOrList result = input.toSvgLengthPercentageOrList();
+        // Act
+        final SvgLengthPercentageOrList result = input.toSvgLengthPercentageOrList();
 
-      // Assert
-      expect(result, isA<SvgLengthPercentageList>());
-      expect((result as SvgLengthPercentageList).values, hasLength(3));
-    });
+        // Assert
+        expect(result, isA<SvgLengthPercentageList>());
+        expect((result as SvgLengthPercentageList).values, hasLength(3));
+      },
+    );
   });
 }

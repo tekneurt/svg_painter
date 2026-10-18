@@ -30,6 +30,8 @@ final class SvgPaintingContext {
     this.imageCache = const <String, List<int>>{},
     this.svgCache = const <String, SvgSvg>{},
     this.isDefinition = false,
+    this.contextFill,
+    this.contextStroke,
   });
 
   /// The width of the viewport/viewBox.
@@ -101,6 +103,12 @@ final class SvgPaintingContext {
   /// Whether this context is within a definition container (<defs>).
   final bool isDefinition;
 
+  /// The fill attributes of the referencing context element (e.g. for <use>).
+  final SvgFillAttributes? contextFill;
+
+  /// The stroke attributes of the referencing context element (e.g. for <use>).
+  final SvgStrokeAttributes? contextStroke;
+
   /// Returns the normalized diagonal length of the viewBox for resolving radii.
   /// Formula: sqrt(w*w + h*h) / sqrt(2)
   double get viewBoxNormalizedDiagonal {
@@ -117,6 +125,9 @@ final class SvgPaintingContext {
     SvgStyleSheet? styleSheet,
     Map<String, SvgSvg>? svgCache,
     bool? isDefinition,
+    SvgFillAttributes? contextFill,
+    SvgStrokeAttributes? contextStroke,
+    bool resetContextPaint = false,
   }) {
     return SvgPaintingContext(
       viewBoxWidth: viewBoxWidth ?? this.viewBoxWidth,
@@ -129,6 +140,8 @@ final class SvgPaintingContext {
       imageCache: imageCache,
       svgCache: svgCache ?? this.svgCache,
       isDefinition: isDefinition ?? this.isDefinition,
+      contextFill: resetContextPaint ? null : (contextFill ?? this.contextFill),
+      contextStroke: resetContextPaint ? null : (contextStroke ?? this.contextStroke),
     );
   }
 

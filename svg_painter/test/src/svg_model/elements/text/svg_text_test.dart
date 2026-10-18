@@ -36,7 +36,10 @@ void main() {
       expect(text.dy, const SvgLength(15));
       expect(text.primaryX, const SvgLength(10));
       expect(text.primaryY, const SvgLength(20));
-      expect(text.toString(), 'SvgText(x: 10.0, y: 20.0, dx: 5.0, dy: 15.0, children: 0, id: null)');
+      expect(
+        text.toString(),
+        'SvgText(x: 10.0, y: 20.0, dx: 5.0, dy: 15.0, children: 0, id: null)',
+      );
     });
 
     test('should support SvgLengthPercentageList for multiple coordinates', () {
@@ -52,7 +55,10 @@ void main() {
       expect(text.primaryY, const SvgLength(20));
       expect(text.x.toList(), const <SvgLengthPercentage>[SvgLength(10), SvgLength(30)]);
       expect(text.y.toList(), const <SvgLengthPercentage>[SvgLength(20), SvgLength(40)]);
-      expect(text.toString(), 'SvgText(x: 10.0, 30.0, y: 20.0, 40.0, dx: null, dy: null, children: 0, id: null)');
+      expect(
+        text.toString(),
+        'SvgText(x: 10.0, 30.0, y: 20.0, 40.0, dx: null, dy: null, children: 0, id: null)',
+      );
     });
 
     test('should return font attributes when presentation attributes are provided', () {

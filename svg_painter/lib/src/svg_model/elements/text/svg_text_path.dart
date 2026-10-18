@@ -32,5 +32,6 @@ final class SvgTextPath extends SvgGraphicsElement with SvgFontAttributable, Svg
   SvgFontAttributes? get fontAttributes => presentationAttributes?.font;
 
   @override
-  String toString() => 'SvgTextPath(href: $href, startOffset: $startOffset, children: ${children.length}, id: $id)';
+  String toString() =>
+      'SvgTextPath(href: $href, startOffset: $startOffset, children: ${children.length}, id: $id)';
 }

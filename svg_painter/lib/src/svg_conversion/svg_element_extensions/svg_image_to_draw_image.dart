@@ -136,8 +136,7 @@ extension SvgImageToDrawImage on SvgImage {
         return <PaintCommand>[
           DrawGroup(
             id: id,
-            opacity:
-                (presentationAttributes?.graphics?.opacity).resolveOpacity(context),
+            opacity: (presentationAttributes?.graphics?.opacity).resolveOpacity(context),
             commands: nestedCommands,
             style: PaintingStyle(
               transformAttributes: SvgTransformAttributes(imageOps),
@@ -172,8 +171,7 @@ extension SvgImageToDrawImage on SvgImage {
         bytes: bytes,
         decoding: resolvedDecoding,
         style: PaintingStyle(
-          groupOpacity:
-              (presentationAttributes?.graphics?.opacity).resolveOpacity(context),
+          groupOpacity: (presentationAttributes?.graphics?.opacity).resolveOpacity(context),
           transformAttributes: presentationAttributes?.graphics?.transformAttributes,
         ),
       ),

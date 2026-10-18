@@ -1,6 +1,8 @@
 import 'package:meta/meta.dart';
 
 part 'values/colors/svg_color_name.dart';
+part 'values/colors/svg_context_fill_color.dart';
+part 'values/colors/svg_context_stroke_color.dart';
 part 'values/colors/svg_current_color.dart';
 part 'values/colors/svg_hsl_color.dart';
 part 'values/colors/svg_named_color.dart';

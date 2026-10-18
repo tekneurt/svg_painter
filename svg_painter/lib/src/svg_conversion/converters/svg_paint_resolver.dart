@@ -300,13 +300,30 @@ PaintingFillStyle? _resolveFillStyle(
   required double elementOpacity,
   required SvgColor? currentColor,
 }) {
-  final SvgColor? fillPaint = fillAttrs?.color;
+  SvgColor? fillPaint = fillAttrs?.color;
+  var effectiveFillAttrs = fillAttrs;
+
+  if (fillPaint is SvgContextFillColor) {
+    if (context.contextFill case final SvgFillAttributes cf) {
+      fillPaint = cf.color;
+      effectiveFillAttrs = cf;
+    }
+  } else if (fillPaint is SvgContextStrokeColor) {
+    if (context.contextStroke case final SvgStrokeAttributes cs) {
+      fillPaint = cs.color;
+      effectiveFillAttrs = SvgFillAttributes(
+        color: cs.color,
+        opacity: cs.opacity,
+      );
+    }
+  }
+
   return switch (fillPaint) {
     null || SvgNoneColor() => null,
     _ => _buildFillStyle(
       context,
       fillPaint: fillPaint,
-      fillAttrs: fillAttrs,
+      fillAttrs: effectiveFillAttrs,
       isExplicit: isExplicit,
       elementOpacity: elementOpacity,
       currentColor: currentColor,
@@ -326,6 +343,8 @@ PaintingFillStyle _buildFillStyle(
   String? fillShaderId;
   PaintingGradientUnits? shaderUnits;
   var isCurrentColor = false;
+  var isContextFill = false;
+  var isContextStroke = false;
 
   if (fillPaint is SvgPaintReference) {
     fillShaderId = fillPaint.id;
@@ -342,6 +361,10 @@ PaintingFillStyle _buildFillStyle(
     } else {
       isCurrentColor = true;
     }
+  } else if (fillPaint is SvgContextFillColor) {
+    isContextFill = true;
+  } else if (fillPaint is SvgContextStrokeColor) {
+    isContextStroke = true;
   } else {
     fillColorArgb = fillPaint.toFillArgb();
   }
@@ -356,6 +379,8 @@ PaintingFillStyle _buildFillStyle(
     opacity: finalFillOpacity,
     isExplicit: isExplicit,
     isCurrentColor: isCurrentColor,
+    isContextFill: isContextFill,
+    isContextStroke: isContextStroke,
     fillRule: fillAttrs?.rule ?? .nonzero,
   );
 }
@@ -369,13 +394,45 @@ PaintingStrokeStyle? _resolveStrokeStyle(
   required double elementOpacity,
   required SvgColor? currentColor,
 }) {
-  final SvgColor? strokePaint = strokeAttrs?.color;
+  SvgColor? strokePaint = strokeAttrs?.color;
+  var effectiveStrokeAttrs = strokeAttrs;
+
+  if (strokePaint is SvgContextStrokeColor) {
+    if (context.contextStroke case final SvgStrokeAttributes cs) {
+      strokePaint = cs.color;
+      effectiveStrokeAttrs = SvgStrokeAttributes(
+        color: cs.color,
+        opacity: cs.opacity ?? strokeAttrs?.opacity,
+        width: strokeAttrs?.width,
+        dashArray: strokeAttrs?.dashArray,
+        dashOffset: strokeAttrs?.dashOffset,
+        linecap: strokeAttrs?.linecap,
+        linejoin: strokeAttrs?.linejoin,
+        miterLimit: strokeAttrs?.miterLimit,
+      );
+    }
+  } else if (strokePaint is SvgContextFillColor) {
+    if (context.contextFill case final SvgFillAttributes cf) {
+      strokePaint = cf.color;
+      effectiveStrokeAttrs = SvgStrokeAttributes(
+        color: cf.color,
+        opacity: cf.opacity ?? strokeAttrs?.opacity,
+        width: strokeAttrs?.width,
+        dashArray: strokeAttrs?.dashArray,
+        dashOffset: strokeAttrs?.dashOffset,
+        linecap: strokeAttrs?.linecap,
+        linejoin: strokeAttrs?.linejoin,
+        miterLimit: strokeAttrs?.miterLimit,
+      );
+    }
+  }
+
   return switch (strokePaint) {
     null || SvgNoneColor() => null,
     _ => _buildStrokeStyle(
       context,
       strokePaint: strokePaint,
-      strokeAttrs: strokeAttrs,
+      strokeAttrs: effectiveStrokeAttrs,
       cssPathLength: cssPathLength,
       geometryAttributes: geometryAttributes,
       isExplicit: isExplicit,
@@ -399,6 +456,8 @@ PaintingStrokeStyle _buildStrokeStyle(
   String? strokeShaderId;
   PaintingGradientUnits? shaderUnits;
   var isCurrentColor = false;
+  var isContextFill = false;
+  var isContextStroke = false;
 
   if (strokePaint is SvgPaintReference) {
     strokeShaderId = strokePaint.id;
@@ -415,6 +474,10 @@ PaintingStrokeStyle _buildStrokeStyle(
     } else {
       isCurrentColor = true;
     }
+  } else if (strokePaint is SvgContextFillColor) {
+    isContextFill = true;
+  } else if (strokePaint is SvgContextStrokeColor) {
+    isContextStroke = true;
   } else {
     strokeColorArgb = strokePaint.toStrokeArgb();
   }
@@ -452,6 +515,8 @@ PaintingStrokeStyle _buildStrokeStyle(
     dashOffset: finalDashOffset,
     isExplicit: isExplicit,
     isCurrentColor: isCurrentColor,
+    isContextFill: isContextFill,
+    isContextStroke: isContextStroke,
   );
 }
 

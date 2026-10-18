@@ -24,8 +24,10 @@ class TestShapeGenerator extends ShapeGenerator<DrawCircle> {
     String? painterClassName,
     Set<String>? gradientsNeedingStretch,
     SvgColorMapping colorMapping = SvgColorMapping.material,
+    bool isInsideMarker = false,
   }) {
-    final bounds = 'Rect.fromLTWH(${command.cx - command.radius}, ${command.cy - command.radius}, ${command.radius * 2}, ${command.radius * 2})';
+    final bounds =
+        'Rect.fromLTWH(${command.cx - command.radius}, ${command.cy - command.radius}, ${command.radius * 2}, ${command.radius * 2})';
     wrapWithStyle(buffer, command.style, bounds, () {
       generatePaintingCode(
         buffer,

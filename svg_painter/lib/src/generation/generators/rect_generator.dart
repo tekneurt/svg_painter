@@ -23,6 +23,7 @@ class RectGenerator extends ShapeGenerator<DrawRect> {
     String? painterClassName,
     Set<String>? gradientsNeedingStretch,
     SvgColorMapping colorMapping = SvgColorMapping.material,
+    bool isInsideMarker = false,
   }) {
     final bounds = 'Rect.fromLTWH(${command.x}, ${command.y}, ${command.width}, ${command.height})';
     final bool isRounded = command.rx != 0 || command.ry != 0;
@@ -49,6 +50,7 @@ class RectGenerator extends ShapeGenerator<DrawRect> {
         activeStrokeProperties: activeStrokeProperties,
         inheritedFills: inheritedFills,
         inheritedStrokes: inheritedStrokes,
+        isInsideMarker: isInsideMarker,
         (String p, {String? dashArray, String? pathLength, String? dashOffset}) {
           emitDirectDraw(p);
         },
@@ -66,7 +68,9 @@ class RectGenerator extends ShapeGenerator<DrawRect> {
               } else {
                 buffer.writeln('final Path path = Path()..addRect($bounds);');
               }
-              final pathExpr = dashArray == null ? 'path' : '_dashPath(path, $dashArray$plArg$doArg)';
+              final pathExpr = dashArray == null
+                  ? 'path'
+                  : '_dashPath(path, $dashArray$plArg$doArg)';
               emitDrawStrokePath(buffer, pathExpr, p, style: command.style);
             });
           }

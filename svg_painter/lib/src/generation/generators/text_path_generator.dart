@@ -26,6 +26,7 @@ class TextPathGenerator extends ShapeGenerator<DrawTextPath> {
     String? painterClassName,
     Set<String>? gradientsNeedingStretch,
     SvgColorMapping colorMapping = SvgColorMapping.material,
+    bool isInsideMarker = false,
   }) {
     wrapWithStyle(buffer, command.style, 'Offset.zero & viewBox', () {
       final double effectiveOpacity = command.style.groupOpacity;

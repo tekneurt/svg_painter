@@ -24,6 +24,7 @@ class LineGenerator extends ShapeGenerator<DrawLine> {
     String? painterClassName,
     Set<String>? gradientsNeedingStretch,
     SvgColorMapping colorMapping = SvgColorMapping.material,
+    bool isInsideMarker = false,
   }) {
     final bounds =
         'Rect.fromPoints(const Offset(${command.x1}, ${command.y1}), const Offset(${command.x2}, ${command.y2}))';
@@ -39,6 +40,7 @@ class LineGenerator extends ShapeGenerator<DrawLine> {
         activeStrokeProperties: activeStrokeProperties,
         inheritedFills: inheritedFills,
         inheritedStrokes: inheritedStrokes,
+        isInsideMarker: isInsideMarker,
         (String p, {String? dashArray, String? pathLength, String? dashOffset}) {
           buffer.writeln(
             'canvas.drawLine(const Offset(${command.x1}, ${command.y1}), const Offset(${command.x2}, ${command.y2}), $p);',
@@ -64,7 +66,7 @@ class LineGenerator extends ShapeGenerator<DrawLine> {
           }
         },
         drawMarkersCall: command.style.hasMarkers
-            ? () {
+            ? (String? fillPaintVar, String? strokePaintVar) {
                 final String? markerStart = command.style.markerStartId;
                 final String? markerEnd = command.style.markerEndId;
                 final double strokeWidth = command.style.strokeWidth;
@@ -74,14 +76,16 @@ class LineGenerator extends ShapeGenerator<DrawLine> {
                   command.x2,
                   command.y2,
                 );
+                final fillArg = fillPaintVar != null ? ', contextFill: $fillPaintVar' : '';
+                final strokeArg = strokePaintVar != null ? ', contextStroke: $strokePaintVar' : '';
                 for (final v in vertices) {
                   if (v.isStart && markerStart != null) {
                     buffer.writeln(
-                      '_marker_$markerStart(canvas, const Offset(${v.x}, ${v.y}), ${v.angle}, $strokeWidth, isStart: true);',
+                      '_marker_$markerStart(canvas, const Offset(${v.x}, ${v.y}), ${v.angle}, $strokeWidth, isStart: true$fillArg$strokeArg);',
                     );
                   } else if (v.isEnd && markerEnd != null) {
                     buffer.writeln(
-                      '_marker_$markerEnd(canvas, const Offset(${v.x}, ${v.y}), ${v.angle}, $strokeWidth);',
+                      '_marker_$markerEnd(canvas, const Offset(${v.x}, ${v.y}), ${v.angle}, $strokeWidth$fillArg$strokeArg);',
                     );
                   }
                 }

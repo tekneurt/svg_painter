@@ -17,8 +17,9 @@ void main() {
 
       // Act
       final SvgClipPathUnits? resultUserSpace = SvgClipPathUnits.from(validUserSpace);
-      final SvgClipPathUnits? resultObjectBoundingBox =
-          SvgClipPathUnits.from(validObjectBoundingBox);
+      final SvgClipPathUnits? resultObjectBoundingBox = SvgClipPathUnits.from(
+        validObjectBoundingBox,
+      );
 
       // Assert
       expect(resultUserSpace, SvgClipPathUnits.userSpaceOnUse);

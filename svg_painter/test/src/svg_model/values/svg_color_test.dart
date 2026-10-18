@@ -51,6 +51,28 @@ void main() {
       // Assert
       expect(result, 'SvgSystemColor(background)');
     });
+
+    test('should return "context-fill" when SvgContextFillColor toString is called', () {
+      // Arrange
+      const color = SvgContextFillColor();
+
+      // Act
+      final result = color.toString();
+
+      // Assert
+      expect(result, 'context-fill');
+    });
+
+    test('should return "context-stroke" when SvgContextStrokeColor toString is called', () {
+      // Arrange
+      const color = SvgContextStrokeColor();
+
+      // Act
+      final result = color.toString();
+
+      // Assert
+      expect(result, 'context-stroke');
+    });
   });
 
   group('SvgColorName', () {

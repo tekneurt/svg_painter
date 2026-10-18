@@ -25,6 +25,7 @@ abstract class CommandGenerator<T extends PaintCommand> {
     String? painterClassName,
     Set<String>? gradientsNeedingStretch,
     SvgColorMapping colorMapping = SvgColorMapping.material,
+    bool isInsideMarker = false,
   });
 
   /// Helper to wrap a block of code with styling features like transforms or clips.
@@ -79,9 +80,9 @@ abstract class CommandGenerator<T extends PaintCommand> {
     GeneratorBuffer buffer,
     SvgTransformAttributes? transformAttributes,
   ) {
-    if (transformAttributes
-        case SvgTransformAttributes(:final operations)
-        when operations.isNotEmpty) {
+    if (transformAttributes case SvgTransformAttributes(
+      :final operations,
+    ) when operations.isNotEmpty) {
       for (final op in operations) {
         switch (op) {
           case SvgTranslate(:final double x, :final double y):
@@ -109,12 +110,10 @@ abstract class CommandGenerator<T extends PaintCommand> {
               'canvas.transform(Matrix4.fromList(<double>[$a, $b, 0, 0, $c, $d, 0, 0, 0, 0, 1, 0, $e, $f, 0, 1]).storage);',
             );
           case SvgSkewX(:final double angle):
-            final double tan =
-                angle == 0.0 ? 0.0 : math.tan(angle * (math.pi / 180.0));
+            final double tan = angle == 0.0 ? 0.0 : math.tan(angle * (math.pi / 180.0));
             buffer.writeln('canvas.skew($tan, 0.0);');
           case SvgSkewY(:final double angle):
-            final double tan =
-                angle == 0.0 ? 0.0 : math.tan(angle * (math.pi / 180.0));
+            final double tan = angle == 0.0 ? 0.0 : math.tan(angle * (math.pi / 180.0));
             buffer.writeln('canvas.skew(0.0, $tan);');
         }
       }
@@ -122,8 +121,7 @@ abstract class CommandGenerator<T extends PaintCommand> {
   }
 
   void _applyClipRect(GeneratorBuffer buffer, PaintingRect? clipRect) {
-    if (clipRect
-        case PaintingRect(:final left, :final top, :final width, :final height)) {
+    if (clipRect case PaintingRect(:final left, :final top, :final width, :final height)) {
       buffer.writeln(
         'canvas.clipRect(Rect.fromLTWH($left, $top, $width, $height));',
       );

@@ -22,6 +22,8 @@ extension SvgColorToArgb on SvgColor? {
       final SvgHslColor hsl => _hslToArgb(hsl),
       final SvgNoneColor _ => 0x00000000,
       final SvgCurrentColor _ => 0xFF000000, // TODO(Gemini): Support currentColor context
+      final SvgContextFillColor _ => 0x00000000,
+      final SvgContextStrokeColor _ => 0x00000000,
       final SvgPaintReference ref => ref.fallback.toArgb(fallback: fallback),
     };
   }

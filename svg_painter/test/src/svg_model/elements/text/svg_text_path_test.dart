@@ -37,7 +37,10 @@ void main() {
       expect(textPath.startOffset, const SvgLength(25.0));
       expect(textPath.pathData, 'M 10 10 L 90 90');
       expect(textPath.id, 'tp2');
-      expect(textPath.toString(), 'SvgTextPath(href: #myPath, startOffset: 25.0, children: 0, id: tp2)');
+      expect(
+        textPath.toString(),
+        'SvgTextPath(href: #myPath, startOffset: 25.0, children: 0, id: tp2)',
+      );
     });
 
     test('should return font attributes when presentation attributes are provided', () {

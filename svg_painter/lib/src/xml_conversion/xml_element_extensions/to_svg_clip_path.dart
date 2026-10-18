@@ -20,7 +20,8 @@ extension ToSvgClipPath on XmlElement {
       }
     }
 
-    final SvgClipPathUnits clipPathUnits = SvgClipPathUnits.from(
+    final SvgClipPathUnits clipPathUnits =
+        SvgClipPathUnits.from(
           getAttribute(XmlAttributeName.clipPathUnits.name),
         ) ??
         SvgClipPathUnits.userSpaceOnUse;

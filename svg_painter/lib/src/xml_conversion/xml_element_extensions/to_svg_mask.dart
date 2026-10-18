@@ -20,20 +20,22 @@ extension ToSvgMask on XmlElement {
       }
     }
 
-    final SvgMaskUnits maskUnits = SvgMaskUnits.from(
+    final SvgMaskUnits maskUnits =
+        SvgMaskUnits.from(
           getAttribute(XmlAttributeName.maskUnits.name),
         ) ??
         SvgMaskUnits.objectBoundingBox;
 
-    final SvgMaskUnits maskContentUnits = SvgMaskUnits.from(
+    final SvgMaskUnits maskContentUnits =
+        SvgMaskUnits.from(
           getAttribute(XmlAttributeName.maskContentUnits.name),
         ) ??
         SvgMaskUnits.userSpaceOnUse;
 
-    final SvgLengthPercentage x = getAttribute(XmlAttributeName.x.name)?.toSvgLengthPercentage() ??
-        const SvgPercentage(-10);
-    final SvgLengthPercentage y = getAttribute(XmlAttributeName.y.name)?.toSvgLengthPercentage() ??
-        const SvgPercentage(-10);
+    final SvgLengthPercentage x =
+        getAttribute(XmlAttributeName.x.name)?.toSvgLengthPercentage() ?? const SvgPercentage(-10);
+    final SvgLengthPercentage y =
+        getAttribute(XmlAttributeName.y.name)?.toSvgLengthPercentage() ?? const SvgPercentage(-10);
     final SvgLengthPercentageAuto width =
         getAttribute(XmlAttributeName.width.name)?.toSvgLengthPercentage() ??
         const SvgPercentage(120);

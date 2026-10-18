@@ -66,6 +66,8 @@ class _$OrientPainter extends CustomPainter {
       double tangentAngle,
       double strokeWidth, {
       bool isStart = false,
+      Paint? contextFill,
+      Paint? contextStroke,
     }) {
       canvas.save();
       canvas.translate(position.dx, position.dy);
@@ -102,6 +104,8 @@ class _$OrientPainter extends CustomPainter {
       double tangentAngle,
       double strokeWidth, {
       bool isStart = false,
+      Paint? contextFill,
+      Paint? contextStroke,
     }) {
       canvas.save();
       canvas.translate(position.dx, position.dy);
@@ -134,20 +138,29 @@ class _$OrientPainter extends CustomPainter {
         ..lineTo(10.0, 90.0)
         ..lineTo(90.0, 90.0);
       {
-        final Paint paint = Paint();
-        paint.color = Colors.black;
-        paint.style = PaintingStyle.stroke;
-        paint.strokeWidth = 1.0;
-        canvas.drawPath(path, paint);
+        final Paint strokePaint = Paint();
+        {
+          strokePaint.color = Colors.black;
+          strokePaint.style = PaintingStyle.stroke;
+          strokePaint.strokeWidth = 1.0;
+        }
+        canvas.drawPath(path, strokePaint);
+        _marker_arrow(
+          canvas,
+          const Offset(10.0, 10.0),
+          1.5707963267948966,
+          1.0,
+          isStart: true,
+          contextStroke: strokePaint,
+        );
+        _marker_arrow(
+          canvas,
+          const Offset(90.0, 90.0),
+          0.0,
+          1.0,
+          contextStroke: strokePaint,
+        );
       }
-      _marker_arrow(
-        canvas,
-        const Offset(10.0, 10.0),
-        1.5707963267948966,
-        1.0,
-        isStart: true,
-      );
-      _marker_arrow(canvas, const Offset(90.0, 90.0), 0.0, 1.0);
     }
     {
       final Path path = Path()
@@ -158,49 +171,57 @@ class _$OrientPainter extends CustomPainter {
         ..lineTo(71.0, 40.0)
         ..lineTo(85.0, 15.0);
       {
-        final Paint paint = Paint();
-        paint.color = const Color(0xFF808080);
-        paint.style = PaintingStyle.stroke;
-        paint.strokeWidth = 1.0;
-        canvas.drawPath(path, paint);
+        final Paint strokePaint = Paint();
+        {
+          strokePaint.color = const Color(0xFF808080);
+          strokePaint.style = PaintingStyle.stroke;
+          strokePaint.strokeWidth = 1.0;
+        }
+        canvas.drawPath(path, strokePaint);
+        _marker_dataArrow(
+          canvas,
+          const Offset(15.0, 80.0),
+          -1.1341691669813554,
+          1.0,
+          isStart: true,
+          contextStroke: strokePaint,
+        );
+        _marker_dataArrow(
+          canvas,
+          const Offset(29.0, 50.0),
+          -0.2569598404992669,
+          1.0,
+          contextStroke: strokePaint,
+        );
+        _marker_dataArrow(
+          canvas,
+          const Offset(43.0, 60.0),
+          -0.2569598404992669,
+          1.0,
+          contextStroke: strokePaint,
+        );
+        _marker_dataArrow(
+          canvas,
+          const Offset(57.0, 30.0),
+          -0.2569598404992669,
+          1.0,
+          contextStroke: strokePaint,
+        );
+        _marker_dataArrow(
+          canvas,
+          const Offset(71.0, 40.0),
+          -0.22002925944764962,
+          1.0,
+          contextStroke: strokePaint,
+        );
+        _marker_dataArrow(
+          canvas,
+          const Offset(85.0, 15.0),
+          -1.0603080048781208,
+          1.0,
+          contextStroke: strokePaint,
+        );
       }
-      _marker_dataArrow(
-        canvas,
-        const Offset(15.0, 80.0),
-        -1.1341691669813554,
-        1.0,
-        isStart: true,
-      );
-      _marker_dataArrow(
-        canvas,
-        const Offset(29.0, 50.0),
-        -0.2569598404992669,
-        1.0,
-      );
-      _marker_dataArrow(
-        canvas,
-        const Offset(43.0, 60.0),
-        -0.2569598404992669,
-        1.0,
-      );
-      _marker_dataArrow(
-        canvas,
-        const Offset(57.0, 30.0),
-        -0.2569598404992669,
-        1.0,
-      );
-      _marker_dataArrow(
-        canvas,
-        const Offset(71.0, 40.0),
-        -0.22002925944764962,
-        1.0,
-      );
-      _marker_dataArrow(
-        canvas,
-        const Offset(85.0, 15.0),
-        -1.0603080048781208,
-        1.0,
-      );
     }
     canvas.restore();
   }

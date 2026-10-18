@@ -134,6 +134,30 @@ void main() {
           ),
         );
       });
+
+      test('should parse context-fill keyword correctly', () {
+        // Arrange
+        const input = 'context-fill';
+
+        // Act
+        final SvgColor? color = input.toSvgColor();
+
+        // Assert
+        expect(color, isA<SvgContextFillColor>());
+        expect(color.toArgb(), 0x00000000);
+      });
+
+      test('should parse context-stroke keyword correctly', () {
+        // Arrange
+        const input = 'context-stroke';
+
+        // Act
+        final SvgColor? color = input.toSvgColor();
+
+        // Assert
+        expect(color, isA<SvgContextStrokeColor>());
+        expect(color.toArgb(), 0x00000000);
+      });
     });
   });
 }

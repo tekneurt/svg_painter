@@ -17,7 +17,9 @@ void main() {
       // Populate dummy font files in source directory
       final robotoDir = Directory(p.join(tempSourceDir.path, 'roboto'))..createSync();
       File(p.join(robotoDir.path, 'roboto_400.ttf')).writeAsStringSync('dummy roboto 400');
-      File(p.join(robotoDir.path, 'roboto_700_italic.ttf')).writeAsStringSync('dummy roboto 700 italic');
+      File(
+        p.join(robotoDir.path, 'roboto_700_italic.ttf'),
+      ).writeAsStringSync('dummy roboto 700 italic');
 
       final tinosDir = Directory(p.join(tempSourceDir.path, 'tinos'))..createSync();
       File(p.join(tinosDir.path, 'tinos_400.ttf')).writeAsStringSync('dummy tinos 400');
@@ -44,7 +46,10 @@ void main() {
       expect(AssetExporter.familyToDirectoryName('Tinos'), equals('tinos'));
       expect(AssetExporter.familyToDirectoryName('Noto Serif'), equals('noto_serif'));
       expect(AssetExporter.familyToDirectoryName('Roboto Mono'), equals('roboto_mono'));
-      expect(AssetExporter.familyToDirectoryName('Custom Display Font'), equals('custom_display_font'));
+      expect(
+        AssetExporter.familyToDirectoryName('Custom Display Font'),
+        equals('custom_display_font'),
+      );
     });
 
     test('should export all bundled fonts when no specific families are requested', () {

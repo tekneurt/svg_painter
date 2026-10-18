@@ -118,12 +118,13 @@ class AssetExporter {
       buffer.writeln('      fonts:');
 
       if (sourceDir.existsSync()) {
-        final List<File> fontFiles = sourceDir
-            .listSync()
-            .whereType<File>()
-            .where((File f) => f.path.endsWith('.ttf'))
-            .toList()
-          ..sort((File a, File b) => a.path.compareTo(b.path));
+        final List<File> fontFiles =
+            sourceDir
+                .listSync()
+                .whereType<File>()
+                .where((File f) => f.path.endsWith('.ttf'))
+                .toList()
+              ..sort((File a, File b) => a.path.compareTo(b.path));
 
         for (final file in fontFiles) {
           final String fileName = p.basename(file.path);

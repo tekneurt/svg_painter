@@ -11,6 +11,7 @@ import 'elements/g_painter.dart';
 import 'elements/image_painter.dart';
 import 'elements/line_painter.dart';
 import 'elements/linear_gradient_painter.dart';
+import 'elements/marker_context_fill_stroke_painter.dart';
 import 'elements/marker_painter.dart';
 import 'elements/marker_polymarkers_painter.dart';
 import 'elements/mask_painter.dart';
@@ -239,6 +240,13 @@ _fixtures =
       (
         painter: const MarkerPolymarkersPainter(),
         name: 'marker_polymarkers_painter',
+        tests: defaultGoldenTests,
+        widget: null,
+        nativeSize: null,
+      ),
+      (
+        painter: const MarkerContextFillStrokePainter(),
+        name: 'marker_context_fill_stroke_painter',
         tests: defaultGoldenTests,
         widget: null,
         nativeSize: null,

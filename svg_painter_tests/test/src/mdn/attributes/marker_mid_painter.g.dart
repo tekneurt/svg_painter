@@ -66,6 +66,8 @@ class _$MarkerMidPainter extends CustomPainter {
       double tangentAngle,
       double strokeWidth, {
       bool isStart = false,
+      Paint? contextFill,
+      Paint? contextStroke,
     }) {
       canvas.save();
       canvas.translate(position.dx, position.dy);
@@ -90,24 +92,28 @@ class _$MarkerMidPainter extends CustomPainter {
         ..lineTo(70.0, 80.0)
         ..lineTo(100.0, 20.0);
       {
-        final Paint paint = Paint();
-        paint.color = Colors.black;
-        paint.style = PaintingStyle.stroke;
-        paint.strokeWidth = 1.0;
-        canvas.drawPath(path, paint);
+        final Paint strokePaint = Paint();
+        {
+          strokePaint.color = Colors.black;
+          strokePaint.style = PaintingStyle.stroke;
+          strokePaint.strokeWidth = 1.0;
+        }
+        canvas.drawPath(path, strokePaint);
+        _marker_circle(
+          canvas,
+          const Offset(40.0, 60.0),
+          -0.2595730571232615,
+          1.0,
+          contextStroke: strokePaint,
+        );
+        _marker_circle(
+          canvas,
+          const Offset(70.0, 80.0),
+          -0.2595730571232615,
+          1.0,
+          contextStroke: strokePaint,
+        );
       }
-      _marker_circle(
-        canvas,
-        const Offset(40.0, 60.0),
-        -0.2595730571232615,
-        1.0,
-      );
-      _marker_circle(
-        canvas,
-        const Offset(70.0, 80.0),
-        -0.2595730571232615,
-        1.0,
-      );
     }
     canvas.restore();
   }

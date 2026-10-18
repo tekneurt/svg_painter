@@ -24,6 +24,7 @@ class RadialGradientGenerator extends CommandGenerator<DefineRadialGradient> {
     String? painterClassName,
     Set<String>? gradientsNeedingStretch,
     SvgColorMapping colorMapping = SvgColorMapping.material,
+    bool isInsideMarker = false,
   }) {
     final varName = '_grad_${command.id}';
 

@@ -24,6 +24,7 @@ class TextGenerator extends ShapeGenerator<DrawText> {
     String? painterClassName,
     Set<String>? gradientsNeedingStretch,
     SvgColorMapping colorMapping = SvgColorMapping.material,
+    bool isInsideMarker = false,
   }) {
     final bounds = 'Rect.fromLTWH(${command.x}, ${command.y}, 100, 100)'; // Approximation
     wrapWithStyle(buffer, command.style, 'Offset.zero & viewBox', () {
@@ -38,6 +39,7 @@ class TextGenerator extends ShapeGenerator<DrawText> {
         activeStrokeProperties: activeStrokeProperties,
         inheritedFills: inheritedFills,
         inheritedStrokes: inheritedStrokes,
+        isInsideMarker: isInsideMarker,
         (String p, {String? dashArray, String? pathLength, String? dashOffset}) {
           _generateTextPainter(
             buffer,

@@ -47,7 +47,7 @@ void main() {
       expect(
         output,
         contains(
-          'void _marker_arrow1(Canvas canvas, Offset position, double tangentAngle, double strokeWidth, {bool isStart = false}) {',
+          'void _marker_arrow1(Canvas canvas, Offset position, double tangentAngle, double strokeWidth, {bool isStart = false, Paint? contextFill, Paint? contextStroke}) {',
         ),
       );
       expect(output, contains('canvas.save();'));

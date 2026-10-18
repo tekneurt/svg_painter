@@ -25,6 +25,7 @@ class UseGenerator extends CommandGenerator<DrawGroup> {
     String? painterClassName,
     Set<String>? gradientsNeedingStretch,
     SvgColorMapping colorMapping = SvgColorMapping.material,
+    bool isInsideMarker = false,
   }) {
     if (generators == null) {
       return;
@@ -45,6 +46,7 @@ class UseGenerator extends CommandGenerator<DrawGroup> {
           painterClassName: painterClassName,
           gradientsNeedingStretch: gradientsNeedingStretch,
           colorMapping: colorMapping,
+          isInsideMarker: isInsideMarker,
         );
       }
     });

@@ -27,6 +27,12 @@ extension ToSvgColor on String {
     if (normalized == 'currentcolor') {
       return const SvgCurrentColor();
     }
+    if (normalized == 'context-fill') {
+      return const SvgContextFillColor();
+    }
+    if (normalized == 'context-stroke') {
+      return const SvgContextStrokeColor();
+    }
     if (normalized == 'inherit') {
       // In CSS/SVG, 'inherit' indicates taking the computed value from the parent context.
       // Returning null allows resolvePresentation / inherit() to take the parent's value.

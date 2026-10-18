@@ -25,40 +25,44 @@ class MaskGenerator extends CommandGenerator<DefineMask> {
     String? painterClassName,
     Set<String>? gradientsNeedingStretch,
     SvgColorMapping colorMapping = SvgColorMapping.material,
+    bool isInsideMarker = false,
   }) {
     if (generators == null) {
       return;
     }
 
-    buffer.writeBlock(
-      'void _mask_${command.id}(Canvas canvas, Size size, Rect targetBounds) {',
-      () {
-        final isContentOBox = command.maskContentUnits == PaintingGradientUnits.objectBoundingBox;
-        final isMaskOBox = command.maskUnits == PaintingGradientUnits.objectBoundingBox;
+    buffer.writeBlock('void _mask_${command.id}(Canvas canvas, Size size, Rect targetBounds) {', () {
+      final isContentOBox = command.maskContentUnits == PaintingGradientUnits.objectBoundingBox;
+      final isMaskOBox = command.maskUnits == PaintingGradientUnits.objectBoundingBox;
 
-        // 1. Resolve mask region
-        final String mx, my, mw, mh;
+      // 1. Resolve mask region
+      final String mx, my, mw, mh;
 
-        String resolveVal(SvgLengthPercentage val, bool isOBox, SvgOrientation orientation) {
-          if (val is SvgPercentage) {
-            final double fraction = val.value / 100.0;
-            if (isOBox) {
-              return '$fraction';
-            }
-            final total =
-                orientation == SvgOrientation.horizontal ? 'viewBox.width' : 'viewBox.height';
-            return '($fraction * $total)';
-          } else if (val is SvgLength) {
-            return '${val.value}';
+      String resolveVal(SvgLengthPercentage val, bool isOBox, SvgOrientation orientation) {
+        if (val is SvgPercentage) {
+          final double fraction = val.value / 100.0;
+          if (isOBox) {
+            return '$fraction';
           }
-          return '0.0';
+          final total = orientation == SvgOrientation.horizontal
+              ? 'viewBox.width'
+              : 'viewBox.height';
+          return '($fraction * $total)';
+        } else if (val is SvgLength) {
+          return '${val.value}';
         }
+        return '0.0';
+      }
 
       if (isMaskOBox) {
-        mx = 'targetBounds.left + (${resolveVal(command.x, true, SvgOrientation.horizontal)} * targetBounds.width)';
-        my = 'targetBounds.top + (${resolveVal(command.y, true, SvgOrientation.vertical)} * targetBounds.height)';
-        mw = '(${resolveVal(command.width as SvgLengthPercentage, true, SvgOrientation.horizontal)} * targetBounds.width)';
-        mh = '(${resolveVal(command.height as SvgLengthPercentage, true, SvgOrientation.vertical)} * targetBounds.height)';
+        mx =
+            'targetBounds.left + (${resolveVal(command.x, true, SvgOrientation.horizontal)} * targetBounds.width)';
+        my =
+            'targetBounds.top + (${resolveVal(command.y, true, SvgOrientation.vertical)} * targetBounds.height)';
+        mw =
+            '(${resolveVal(command.width as SvgLengthPercentage, true, SvgOrientation.horizontal)} * targetBounds.width)';
+        mh =
+            '(${resolveVal(command.height as SvgLengthPercentage, true, SvgOrientation.vertical)} * targetBounds.height)';
       } else {
         mx = resolveVal(command.x, false, SvgOrientation.horizontal);
         my = resolveVal(command.y, false, SvgOrientation.vertical);

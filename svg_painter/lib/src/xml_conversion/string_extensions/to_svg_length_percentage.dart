@@ -26,8 +26,10 @@ extension ToSvgLengthPercentage on String {
     final Match? match = unitRegex.firstMatch(trimmed);
 
     if (match != null) {
-      if ((match.group(1), match.group(2))
-          case (final String numberPart, final String unitSuffix)) {
+      if ((match.group(1), match.group(2)) case (
+        final String numberPart,
+        final String unitSuffix,
+      )) {
         final double? parsedNumber = double.tryParse(numberPart);
         if (parsedNumber != null) {
           final SvgLengthUnit unit = unitSuffix.toSvgLengthUnit();

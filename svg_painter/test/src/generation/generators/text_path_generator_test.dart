@@ -16,37 +16,40 @@ void main() {
   );
 
   group('TextPathGenerator', () {
-    test('should generate Path and character painting loop along metric when DrawTextPath is provided', () {
-      // Arrange
-      const generator = TextPathGenerator();
-      const command = DrawTextPath(
-        pathOperations: <PathOperation>[
-          MoveTo(10.0, 90.0),
-          QuadraticTo(90.0, 90.0, 90.0, 45.0),
-        ],
-        text: 'Fox',
-        startOffset: 5.0,
-        style: textStyle,
-      );
-      final buffer = GeneratorBuffer();
+    test(
+      'should generate Path and character painting loop along metric when DrawTextPath is provided',
+      () {
+        // Arrange
+        const generator = TextPathGenerator();
+        const command = DrawTextPath(
+          pathOperations: <PathOperation>[
+            MoveTo(10.0, 90.0),
+            QuadraticTo(90.0, 90.0, 90.0, 45.0),
+          ],
+          text: 'Fox',
+          startOffset: 5.0,
+          style: textStyle,
+        );
+        final buffer = GeneratorBuffer();
 
-      // Act
-      generator.generate(command, buffer);
+        // Act
+        generator.generate(command, buffer);
 
-      // Assert
-      final output = buffer.toString();
-      expect(output, contains('..moveTo(10.0, 90.0)'));
-      expect(output, contains('..quadraticBezierTo(90.0, 90.0, 90.0, 45.0)'));
-      expect(output, contains('for (final metric in path.computeMetrics()) {'));
-      expect(output, contains('double currentOffset = 5.0;'));
-      expect(output, contains("final String text = 'Fox';"));
-      expect(output, contains('metric.getTangentForOffset(distance)'));
-      expect(output, contains('canvas.translate(tangent.position.dx, tangent.position.dy);'));
-      expect(output, contains('canvas.rotate(-tangent.angle);'));
-      expect(output, contains('fontSize: 14.0'));
-      expect(output, contains('fontWeight: FontWeight.bold'));
-      expect(output, contains("fontFamily: 'Roboto'"));
-    });
+        // Assert
+        final output = buffer.toString();
+        expect(output, contains('..moveTo(10.0, 90.0)'));
+        expect(output, contains('..quadraticBezierTo(90.0, 90.0, 90.0, 45.0)'));
+        expect(output, contains('for (final metric in path.computeMetrics()) {'));
+        expect(output, contains('double currentOffset = 5.0;'));
+        expect(output, contains("final String text = 'Fox';"));
+        expect(output, contains('metric.getTangentForOffset(distance)'));
+        expect(output, contains('canvas.translate(tangent.position.dx, tangent.position.dy);'));
+        expect(output, contains('canvas.rotate(-tangent.angle);'));
+        expect(output, contains('fontSize: 14.0'));
+        expect(output, contains('fontWeight: FontWeight.bold'));
+        expect(output, contains("fontFamily: 'Roboto'"));
+      },
+    );
 
     test('should wrap with opacity layer when groupOpacity is less than 1.0', () {
       // Arrange
