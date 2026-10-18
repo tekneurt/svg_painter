@@ -10,6 +10,8 @@ export 'painting_fill_03_t.dart';
 export 'painting_fill_04_t.dart';
 export 'painting_fill_05_b.dart';
 export 'painting_marker_01_f.dart';
+export 'painting_marker_03_f.dart';
+export 'painting_marker_06_f.dart';
 export 'painting_stroke_01_t.dart';
 export 'painting_stroke_02_t.dart';
 export 'painting_stroke_03_t.dart';

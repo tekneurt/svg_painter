@@ -12,6 +12,7 @@ import 'elements/image_painter.dart';
 import 'elements/line_painter.dart';
 import 'elements/linear_gradient_painter.dart';
 import 'elements/marker_painter.dart';
+import 'elements/marker_polymarkers_painter.dart';
 import 'elements/mask_painter.dart';
 import 'elements/path_painter.dart';
 import 'elements/polygon_painter.dart';
@@ -231,6 +232,13 @@ _fixtures =
       (
         painter: const MarkerPainter(),
         name: 'marker_painter',
+        tests: defaultGoldenTests,
+        widget: null,
+        nativeSize: null,
+      ),
+      (
+        painter: const MarkerPolymarkersPainter(),
+        name: 'marker_polymarkers_painter',
         tests: defaultGoldenTests,
         widget: null,
         nativeSize: null,

@@ -57,5 +57,46 @@ void main() {
       expect(output, contains('canvas.translate(-5.0, -5.0);'));
       expect(output, contains('canvas.restore();'));
     });
+
+    test(
+      'should generate correct translate with negative ref coordinates when refX and refY are negative',
+      () {
+        // Arrange
+        const generator = MarkerGenerator();
+        final generators = <Type, CommandGenerator<PaintCommand>>{
+          DrawRect: const RectGenerator(),
+        };
+        const command = DefineMarker(
+          id: 'negative_ref',
+          commands: <PaintCommand>[
+            DrawRect(
+              x: 0.0,
+              y: 0.0,
+              width: 10.0,
+              height: 10.0,
+              rx: 0.0,
+              ry: 0.0,
+              style: PaintingStyle(
+                fill: PaintingFillStyle(colorArgb: 0xFF0000FF),
+              ),
+            ),
+          ],
+          refX: -5.0,
+          refY: -10.0,
+          markerWidth: 4.0,
+          markerHeight: 4.0,
+          viewBox: SvgViewBox(-10.0, -10.0, 20.0, 20.0),
+          orient: SvgMarkerOrient.auto,
+        );
+        final buffer = GeneratorBuffer();
+
+        // Act
+        generator.generate(command, buffer, generators: generators);
+
+        // Assert
+        final output = buffer.toString();
+        expect(output, contains('canvas.translate(5.0, 10.0);'));
+      },
+    );
   });
 }

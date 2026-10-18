@@ -75,22 +75,14 @@ class MarkerGenerator extends CommandGenerator<DefineMarker> {
           } else {
             buffer.writeln('canvas.scale($sx, $sy);');
           }
-          if (command.refX == 0.0 && command.refY == 0.0) {
-            // No reference offset
-          } else {
-            buffer.writeln('canvas.translate(-${command.refX}, -${command.refY});');
-          }
-          if (viewBox.minX == 0.0 && viewBox.minY == 0.0) {
-            // Origin at 0, 0
-          } else {
-            buffer.writeln('canvas.translate(-${viewBox.minX}, -${viewBox.minY});');
-          }
+        }
+
+        if (command.refX == 0.0 && command.refY == 0.0) {
+          // No reference offset
         } else {
-          if (command.refX == 0.0 && command.refY == 0.0) {
-            // No reference offset
-          } else {
-            buffer.writeln('canvas.translate(-${command.refX}, -${command.refY});');
-          }
+          final double refX = command.refX == 0.0 ? 0.0 : -command.refX;
+          final double refY = command.refY == 0.0 ? 0.0 : -command.refY;
+          buffer.writeln('canvas.translate($refX, $refY);');
         }
 
         // Draw children

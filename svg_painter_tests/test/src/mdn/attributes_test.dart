@@ -26,11 +26,15 @@ import 'attributes/fy_painter.dart';
 import 'attributes/gradient_transform_painter.dart';
 import 'attributes/height_painter.dart';
 import 'attributes/id_painter.dart';
+import 'attributes/marker_end_painter.dart';
+import 'attributes/marker_mid_painter.dart';
+import 'attributes/marker_start_painter.dart';
 import 'attributes/mask_content_units_painter.dart';
 import 'attributes/mask_painter.dart';
 import 'attributes/mask_units_painter.dart';
 import 'attributes/media_painter.dart';
 import 'attributes/opacity_painter.dart';
+import 'attributes/orient_painter.dart';
 import 'attributes/paint_order_painter.dart';
 import 'attributes/path_length_painter.dart';
 import 'attributes/points_example_painter.dart';
@@ -181,6 +185,13 @@ _fixtures =
       ),
       (painter: const HeightPainter(), name: 'height_painter', tests: defaultGoldenTests),
       (painter: const IdPainter(), name: 'id_painter', tests: defaultGoldenTests),
+      (painter: const MarkerEndPainter(), name: 'marker_end_painter', tests: defaultGoldenTests),
+      (painter: const MarkerMidPainter(), name: 'marker_mid_painter', tests: defaultGoldenTests),
+      (
+        painter: const MarkerStartPainter(),
+        name: 'marker_start_painter',
+        tests: defaultGoldenTests,
+      ),
       (
         painter: const MaskAttributePainter(),
         name: 'mask_attribute_painter',
@@ -198,6 +209,7 @@ _fixtures =
       ),
       (painter: const MediaPainter(), name: 'media_painter', tests: defaultGoldenTests),
       (painter: const OpacityPainter(), name: 'opacity_painter', tests: defaultGoldenTests),
+      (painter: const OrientPainter(), name: 'orient_painter', tests: defaultGoldenTests),
       (
         painter: const PaintOrderPainter(),
         name: 'paint_order_painter',
