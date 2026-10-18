@@ -65,24 +65,39 @@ class MarkerGenerator extends CommandGenerator<DefineMarker> {
           });
         }
 
-        // ViewBox / Viewport mapping
+        // Viewport and reference offset calculation
         final SvgViewBox? viewBox = command.viewBox;
-        if (viewBox != null) {
-          final double sx = command.markerWidth / viewBox.width;
-          final double sy = command.markerHeight / viewBox.height;
-          if (sx == 1.0 && sy == 1.0) {
-            // Unit scale
-          } else {
-            buffer.writeln('canvas.scale($sx, $sy);');
-          }
-        }
+        final double sx = viewBox != null ? command.markerWidth / viewBox.width : 1.0;
+        final double sy = viewBox != null ? command.markerHeight / viewBox.height : 1.0;
+        final double minX = viewBox?.minX ?? 0.0;
+        final double minY = viewBox?.minY ?? 0.0;
+        final double transX = (command.refX - minX) * sx;
+        final double transY = (command.refY - minY) * sy;
 
-        if (command.refX == 0.0 && command.refY == 0.0) {
+        if (transX == 0.0 && transY == 0.0) {
           // No reference offset
         } else {
-          final double refX = command.refX == 0.0 ? 0.0 : -command.refX;
-          final double refY = command.refY == 0.0 ? 0.0 : -command.refY;
-          buffer.writeln('canvas.translate($refX, $refY);');
+          final double offsetX = transX == 0.0 ? 0.0 : -transX;
+          final double offsetY = transY == 0.0 ? 0.0 : -transY;
+          buffer.writeln('canvas.translate($offsetX, $offsetY);');
+        }
+
+        buffer.writeln(
+          'canvas.clipRect(Rect.fromLTWH(0.0, 0.0, ${command.markerWidth}, ${command.markerHeight}));',
+        );
+
+        if (sx == 1.0 && sy == 1.0) {
+          // Unit scale
+        } else {
+          buffer.writeln('canvas.scale($sx, $sy);');
+        }
+
+        if (minX == 0.0 && minY == 0.0) {
+          // No viewBox min offset
+        } else {
+          final double offsetMinX = minX == 0.0 ? 0.0 : -minX;
+          final double offsetMinY = minY == 0.0 ? 0.0 : -minY;
+          buffer.writeln('canvas.translate($offsetMinX, $offsetMinY);');
         }
 
         // Draw children

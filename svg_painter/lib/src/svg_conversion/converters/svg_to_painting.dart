@@ -83,15 +83,22 @@ extension SvgElementToPaintCommands on SvgElement {
       presentationAttributes: self is SvgPresentable ? self.presentationAttributes : null,
     );
 
-    if (resolved.display == SvgDisplay.none &&
-        self is! SvgMask &&
-        self is! SvgClipPath &&
-        self is! SvgMarker &&
-        self is! SvgDefs &&
-        self is! SvgSymbol &&
-        self is! SvgRadialGradient &&
-        self is! SvgLinearGradient) {
-      return const Success<List<PaintCommand>>(<PaintCommand>[]);
+    final bool isDefinitionElement =
+        self is SvgMask ||
+        self is SvgClipPath ||
+        self is SvgMarker ||
+        self is SvgDefs ||
+        self is SvgSymbol ||
+        self is SvgRadialGradient ||
+        self is SvgLinearGradient;
+
+    if (resolved.display == SvgDisplay.none) {
+      if (context.isDefinition && (self is SvgGroup || isDefinitionElement)) {
+        // Definitions inside <defs> (and <g> containers grouping them) are processed
+        // to discover definitions regardless of display property.
+      } else {
+        return const Success<List<PaintCommand>>(<PaintCommand>[]);
+      }
     }
 
     final SvgPaintingContext childContext = context.derive(inheritedAttributes: resolved);
@@ -156,8 +163,14 @@ extension SvgElementToPaintCommands on SvgElement {
   Result<List<PaintCommand>> _toDefineClipPath(SvgClipPath clipPath, SvgPaintingContext context) {
     final SvgPaintingContext childrenContext =
         (clipPath.clipPathUnits == SvgClipPathUnits.objectBoundingBox)
-        ? context.derive(viewBoxWidth: 1.0, viewBoxHeight: 1.0, viewBoxMinX: 0, viewBoxMinY: 0)
-        : context;
+        ? context.derive(
+            viewBoxWidth: 1.0,
+            viewBoxHeight: 1.0,
+            viewBoxMinX: 0,
+            viewBoxMinY: 0,
+            isDefinition: false,
+          )
+        : context.derive(isDefinition: false);
 
     return clipPath.children
         .map((SvgElement child) => child.toPaintCommands(childrenContext))
@@ -179,8 +192,14 @@ extension SvgElementToPaintCommands on SvgElement {
   Result<List<PaintCommand>> _toDefineMask(SvgMask mask, SvgPaintingContext context) {
     final SvgPaintingContext childrenContext =
         (mask.maskContentUnits == SvgMaskUnits.objectBoundingBox)
-        ? context.derive(viewBoxWidth: 1.0, viewBoxHeight: 1.0, viewBoxMinX: 0, viewBoxMinY: 0)
-        : context;
+        ? context.derive(
+            viewBoxWidth: 1.0,
+            viewBoxHeight: 1.0,
+            viewBoxMinX: 0,
+            viewBoxMinY: 0,
+            isDefinition: false,
+          )
+        : context.derive(isDefinition: false);
 
     return mask.children
         .map((SvgElement child) => child.toPaintCommands(childrenContext))
@@ -216,8 +235,9 @@ extension SvgElementToPaintCommands on SvgElement {
             viewBoxHeight: marker.viewBox!.height,
             viewBoxMinX: marker.viewBox!.minX,
             viewBoxMinY: marker.viewBox!.minY,
+            isDefinition: false,
           )
-        : context;
+        : context.derive(isDefinition: false);
 
     return marker.children
         .map((SvgElement child) => child.toPaintCommands(childrenContext))

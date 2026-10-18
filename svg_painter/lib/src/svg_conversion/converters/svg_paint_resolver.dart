@@ -86,6 +86,7 @@ PaintingStyle resolvePaint(
     markerEndId: _extractUrlId(resolved.marker?.markerEnd ?? resolved.marker?.marker),
     paintOrder: resolved.paintOrder ?? SvgPaintOrder.normal,
     vectorEffect: resolved.vectorEffect ?? SvgVectorEffect.none,
+    strokeWidth: strokeStyle?.width ?? resolved.stroke?.width?.resolve(context, .normalized) ?? 1.0,
   );
 }
 

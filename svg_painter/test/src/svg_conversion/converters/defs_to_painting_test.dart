@@ -46,5 +46,47 @@ void main() {
       expect(commands[0], isA<DefineLinearGradient>());
       expect(commands[1], isA<DefineClipPath>());
     });
+
+    test(
+      'should return nested definition commands from children when wrapped in group with display none',
+      () {
+        // Arrange
+        const context = SvgPaintingContext(viewBoxWidth: 120, viewBoxHeight: 240);
+        const defs = SvgDefs(
+          children: <SvgElement>[
+            SvgGroup(
+              presentationAttributes: SvgPresentationAttributes(
+                display: SvgDisplay.none,
+              ),
+              children: <SvgElement>[
+                SvgMarker(
+                  coreAttributes: SvgCoreAttributes(id: 'markerNested'),
+                  children: <SvgElement>[
+                    SvgCircle(cx: SvgLength(15), cy: SvgLength(25), r: SvgLength(35)),
+                  ],
+                ),
+              ],
+            ),
+          ],
+        );
+
+        // Act
+        final Result<List<PaintCommand>> result = defs.toPaintCommandsDefs(context);
+
+        // Assert
+        expect(
+          result.fold((Failure<List<PaintCommand>> f) => false, (List<PaintCommand> s) => true),
+          isTrue,
+        );
+        final List<PaintCommand> commands = result.fold(
+          (Failure<List<PaintCommand>> f) => <PaintCommand>[],
+          (List<PaintCommand> s) => s,
+        );
+        expect(commands.length, equals(1));
+        expect(commands[0], isA<DefineMarker>());
+        final markerCmd = commands[0] as DefineMarker;
+        expect(markerCmd.id, equals('markerNested'));
+      },
+    );
   });
 }

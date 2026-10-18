@@ -105,7 +105,7 @@ class PathGenerator extends ShapeGenerator<DrawPath> {
                   final String? markerStart = command.style.markerStartId;
                   final String? markerMid = command.style.markerMidId;
                   final String? markerEnd = command.style.markerEndId;
-                  final double strokeWidth = command.style.stroke?.width ?? 1.0;
+                  final double strokeWidth = command.style.strokeWidth;
                   final List<MarkerVertex> vertices = PathMarkerExtractor.extractFromOperations(
                     command.operations,
                   );

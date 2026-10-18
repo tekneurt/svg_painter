@@ -63,5 +63,17 @@ void main() {
       final SvgPaintingContext derived = context.deriveWith(element);
       expect(derived, same(context));
     });
+
+    test('should override isDefinition when derive is called with isDefinition', () {
+      // Arrange
+      const ctx = SvgPaintingContext(viewBoxWidth: 120, viewBoxHeight: 240);
+      expect(ctx.isDefinition, isFalse);
+
+      // Act
+      final SvgPaintingContext derived = ctx.derive(isDefinition: true);
+
+      // Assert
+      expect(derived.isDefinition, isTrue);
+    });
   });
 }

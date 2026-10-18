@@ -75,8 +75,10 @@ class _$PaintingMarker06FPainter extends CustomPainter {
       if (strokeWidth != 1.0) {
         canvas.scale(strokeWidth, strokeWidth);
       }
+      canvas.translate(-1.0, -1.0);
+      canvas.clipRect(Rect.fromLTWH(0.0, 0.0, 2.0, 2.0));
       canvas.scale(0.2, 0.2);
-      canvas.translate(-25.0, -25.0);
+      canvas.translate(-20.0, -20.0);
       {
         final Paint paint = Paint();
         paint.color = const Color(0xFF800080);
@@ -99,7 +101,10 @@ class _$PaintingMarker06FPainter extends CustomPainter {
       if (strokeWidth != 1.0) {
         canvas.scale(strokeWidth, strokeWidth);
       }
+      canvas.translate(-1.0, -1.0);
+      canvas.clipRect(Rect.fromLTWH(0.0, 0.0, 2.0, 2.0));
       canvas.scale(0.2, 0.2);
+      canvas.translate(5.0, 5.0);
       {
         final Path path = Path()
           ..moveTo(0.0, -5.0)
@@ -128,8 +133,9 @@ class _$PaintingMarker06FPainter extends CustomPainter {
       if (strokeWidth != 1.0) {
         canvas.scale(strokeWidth, strokeWidth);
       }
+      canvas.translate(-1.0, -1.0);
+      canvas.clipRect(Rect.fromLTWH(0.0, 0.0, 2.0, 2.0));
       canvas.scale(0.2, 0.2);
-      canvas.translate(-5.0, -5.0);
       {
         final Paint paint = Paint();
         paint.color = const Color(0xFF800080);
@@ -151,8 +157,9 @@ class _$PaintingMarker06FPainter extends CustomPainter {
       if (strokeWidth != 1.0) {
         canvas.scale(strokeWidth, strokeWidth);
       }
+      canvas.translate(-1.0, -1.0);
+      canvas.clipRect(Rect.fromLTWH(0.0, 0.0, 2.0, 2.0));
       canvas.scale(0.2, 0.2);
-      canvas.translate(-5.0, -5.0);
       {
         final Paint paint = Paint();
         paint.color = const Color(0xFF008000);
@@ -174,8 +181,9 @@ class _$PaintingMarker06FPainter extends CustomPainter {
       if (strokeWidth != 1.0) {
         canvas.scale(strokeWidth, strokeWidth);
       }
+      canvas.translate(-1.0, -1.0);
+      canvas.clipRect(Rect.fromLTWH(0.0, 0.0, 2.0, 2.0));
       canvas.scale(0.2, 0.2);
-      canvas.translate(-5.0, -5.0);
       {
         final Path path = Path()
           ..moveTo(5.0, 0.0)

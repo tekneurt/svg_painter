@@ -73,6 +73,7 @@ class _$MarkerMidPainter extends CustomPainter {
         canvas.scale(strokeWidth, strokeWidth);
       }
       canvas.translate(-4.0, -4.0);
+      canvas.clipRect(Rect.fromLTWH(0.0, 0.0, 8.0, 8.0));
       {
         final Paint paint = Paint();
         paint.color = const Color(0xFFFF0000);

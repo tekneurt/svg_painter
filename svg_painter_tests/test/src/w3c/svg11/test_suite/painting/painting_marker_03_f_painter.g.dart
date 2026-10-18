@@ -75,8 +75,9 @@ class _$PaintingMarker03FPainter extends CustomPainter {
       if (strokeWidth != 1.0) {
         canvas.scale(strokeWidth, strokeWidth);
       }
+      canvas.translate(-2.5, -2.5);
+      canvas.clipRect(Rect.fromLTWH(0.0, 0.0, 5.0, 5.0));
       canvas.scale(0.05, 0.05);
-      canvas.translate(-50.0, -50.0);
       {
         final Paint paint = Paint();
         paint.color = const Color(0xFF4169E1);
@@ -98,8 +99,9 @@ class _$PaintingMarker03FPainter extends CustomPainter {
       if (strokeWidth != 1.0) {
         canvas.scale(strokeWidth, strokeWidth);
       }
+      canvas.translate(-7.5, -7.5);
+      canvas.clipRect(Rect.fromLTWH(0.0, 0.0, 15.0, 15.0));
       canvas.scale(0.075, 0.075);
-      canvas.translate(-100.0, -100.0);
       {
         final Paint paint = Paint();
         paint.color = const Color(0xFFFF0000);

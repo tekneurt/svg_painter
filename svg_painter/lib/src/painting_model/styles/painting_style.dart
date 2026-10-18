@@ -59,7 +59,11 @@ final class PaintingStyle {
     this.markerEndId,
     this.paintOrder = SvgPaintOrder.normal,
     this.vectorEffect = SvgVectorEffect.none,
+    this.strokeWidth = 1.0,
   });
+
+  /// The width of the stroke (used e.g. for marker strokeWidth scaling), even if stroke is none.
+  final double strokeWidth;
 
   /// The filling style, or null if the element is not filled.
   final PaintingFillStyle? fill;
@@ -119,6 +123,7 @@ final class PaintingStyle {
       if (markerEndId != null) 'markerEndId: $markerEndId',
       if (paintOrder != SvgPaintOrder.normal) 'paintOrder: $paintOrder',
       if (vectorEffect != SvgVectorEffect.none) 'vectorEffect: $vectorEffect',
+      if (strokeWidth != 1.0) 'strokeWidth: $strokeWidth',
     ];
     if (parts.isEmpty) {
       return 'PaintingStyle()';

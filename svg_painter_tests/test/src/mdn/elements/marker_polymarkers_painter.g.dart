@@ -77,8 +77,9 @@ class _$MarkerPolymarkersPainter extends CustomPainter {
       if (strokeWidth != 1.0) {
         canvas.scale(strokeWidth, strokeWidth);
       }
+      canvas.translate(-3.0, -3.0);
+      canvas.clipRect(Rect.fromLTWH(0.0, 0.0, 6.0, 6.0));
       canvas.scale(0.6, 0.6);
-      canvas.translate(-5.0, -5.0);
       {
         final Path path = Path()
           ..moveTo(0.0, 0.0)
@@ -107,8 +108,9 @@ class _$MarkerPolymarkersPainter extends CustomPainter {
       if (strokeWidth != 1.0) {
         canvas.scale(strokeWidth, strokeWidth);
       }
+      canvas.translate(-2.5, -2.5);
+      canvas.clipRect(Rect.fromLTWH(0.0, 0.0, 5.0, 5.0));
       canvas.scale(0.5, 0.5);
-      canvas.translate(-5.0, -5.0);
       {
         final Paint paint = Paint();
         paint.color = const Color(0xFFFF0000);

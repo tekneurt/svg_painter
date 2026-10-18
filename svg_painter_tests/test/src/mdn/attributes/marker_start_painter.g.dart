@@ -74,6 +74,7 @@ class _$MarkerStartPainter extends CustomPainter {
         canvas.scale(strokeWidth, strokeWidth);
       }
       canvas.translate(-1.0, -5.0);
+      canvas.clipRect(Rect.fromLTWH(0.0, 0.0, 10.0, 10.0));
       {
         final Path path = Path()
           ..moveTo(0.0, 0.0)

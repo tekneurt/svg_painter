@@ -67,7 +67,7 @@ class LineGenerator extends ShapeGenerator<DrawLine> {
             ? () {
                 final String? markerStart = command.style.markerStartId;
                 final String? markerEnd = command.style.markerEndId;
-                final double strokeWidth = command.style.stroke?.width ?? 1.0;
+                final double strokeWidth = command.style.strokeWidth;
                 final List<MarkerVertex> vertices = PathMarkerExtractor.extractFromLine(
                   command.x1,
                   command.y1,
