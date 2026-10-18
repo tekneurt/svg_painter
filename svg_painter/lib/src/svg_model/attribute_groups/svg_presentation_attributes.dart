@@ -25,6 +25,7 @@ final class SvgPresentationAttributes {
     this.vectorEffect,
     this.display,
     this.visibility,
+    this.overflow,
   });
 
   /// The indirect color value for currentColor.
@@ -57,6 +58,9 @@ final class SvgPresentationAttributes {
   /// Specifies whether an element is visible.
   final SvgVisibility? visibility;
 
+  /// Specifies whether content is clipped when it overflows the element's box.
+  final SvgOverflow? overflow;
+
   /// Merges this set of attributes with another set.
   ///
   /// This is used to resolve attribute priority (e.g., Inline Style > CSS > Attribute).
@@ -76,6 +80,7 @@ final class SvgPresentationAttributes {
       vectorEffect: other.vectorEffect ?? vectorEffect,
       display: other.display ?? display,
       visibility: other.visibility ?? visibility,
+      overflow: other.overflow ?? overflow,
     );
   }
 
@@ -102,10 +107,11 @@ final class SvgPresentationAttributes {
       marker: _inheritMarker(marker, parent?.marker),
       paintOrder: paintOrder ?? parent?.paintOrder,
       visibility: effectiveVisibility,
-      // Non-inherited groups (opacity, transform, vector-effect, etc. do NOT inherit)
+      // Non-inherited groups (opacity, transform, vector-effect, overflow, etc. do NOT inherit)
       graphics: graphics,
       vectorEffect: vectorEffect,
       display: effectiveDisplay,
+      overflow: overflow,
     );
   }
 
@@ -315,6 +321,7 @@ final class SvgPresentationAttributes {
       if (vectorEffect != null) 'vector-effect: $vectorEffect',
       if (display != null) 'display: $display',
       if (visibility != null) 'visibility: $visibility',
+      if (overflow != null) 'overflow: $overflow',
     ];
     return 'SvgPresentationAttributes(${parts.join(', ')})';
   }

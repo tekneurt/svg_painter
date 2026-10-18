@@ -25,6 +25,7 @@ part 'values/svg_marker_orient.dart';
 part 'values/svg_marker_units.dart';
 part 'values/svg_mask_units.dart';
 part 'values/svg_number.dart';
+part 'values/svg_overflow.dart';
 part 'values/svg_paint_order.dart';
 part 'values/svg_percentage.dart';
 part 'values/svg_point_list.dart';

@@ -309,10 +309,12 @@
                 - [x] Add `painting-control-06-f` (visibility inheritance and child overrides).
             - [x] **Painting Fill Tests (`painting-fill-01` to `05`)**.
             - [x] **Painting Stroke Tests (`painting-stroke-01` to `10`)**.
-            - [ ] **Painting Marker Tests (`painting-marker-01` to `07`)**:
+            - [x] **Painting Marker Tests (`painting-marker-01` to `07`)**:
                 - [x] `painting-marker-01-f` (Basic marker orientation, angles, and unit scaling).
                 - [x] `painting-marker-02-f` (Property inheritance and marker styling).
                 - [x] `painting-marker-03-f` (CSS marker shorthand on path, polygon, polyline, line).
+                - [x] `painting-marker-04-f` (XML vs CSS marker shorthand distinction).
+                - [x] `painting-marker-05-f` (Marker overflow property values: visible, auto, hidden, scroll).
                 - [x] `painting-marker-06-f` (Marker coordinate offsets and non-zero viewBox values).
                 - [x] `painting-marker-07-f` (Display none handling and marker viewport clipping).
     - [ ] **Modern SVG Test Suites Evaluation**:

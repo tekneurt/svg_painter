@@ -14,6 +14,7 @@ export 'to_svg_length_unit.dart';
 export 'to_svg_marker_orient.dart';
 export 'to_svg_marker_units.dart';
 export 'to_svg_number.dart';
+export 'to_svg_overflow.dart';
 export 'to_svg_paint_order.dart';
 export 'to_svg_point_list.dart';
 export 'to_svg_preserve_aspect_ratio.dart';

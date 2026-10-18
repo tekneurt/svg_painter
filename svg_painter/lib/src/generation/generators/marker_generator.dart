@@ -82,9 +82,11 @@ class MarkerGenerator extends CommandGenerator<DefineMarker> {
           buffer.writeln('canvas.translate($offsetX, $offsetY);');
         }
 
-        buffer.writeln(
-          'canvas.clipRect(Rect.fromLTWH(0.0, 0.0, ${command.markerWidth}, ${command.markerHeight}));',
-        );
+        if (command.overflow.isClipped) {
+          buffer.writeln(
+            'canvas.clipRect(Rect.fromLTWH(0.0, 0.0, ${command.markerWidth}, ${command.markerHeight}));',
+          );
+        }
 
         if (sx == 1.0 && sy == 1.0) {
           // Unit scale

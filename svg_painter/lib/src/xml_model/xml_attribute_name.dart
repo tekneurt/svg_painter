@@ -162,6 +162,10 @@ enum XmlAttributeName {
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/orient
   orient('orient'),
 
+  /// Specifies whether content of a block-level element is clipped when it overflows the element's box.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/overflow
+  overflow('overflow'),
+
   /// The order that the fill, stroke, and markers of a shape or text element are painted.
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/paint-order
   paintOrder('paint-order'),

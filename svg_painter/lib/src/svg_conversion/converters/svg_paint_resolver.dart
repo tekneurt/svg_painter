@@ -231,6 +231,7 @@ SvgPresentationAttributes _parseCssPresentation(
   final SvgVectorEffect? cssVectorEffect = resolvedRules['vector-effect']?.toSvgVectorEffect();
   final SvgDisplay? cssDisplay = resolvedRules['display']?.toSvgDisplay();
   final SvgVisibility? cssVisibility = resolvedRules['visibility']?.toSvgVisibility();
+  final SvgOverflow? cssOverflow = resolvedRules['overflow']?.toSvgOverflow();
   final String? cssMarker = resolvedRules['marker'];
   final String? cssMarkerStart = resolvedRules['marker-start'];
   final String? cssMarkerMid = resolvedRules['marker-mid'];
@@ -240,6 +241,7 @@ SvgPresentationAttributes _parseCssPresentation(
     color: cssColor,
     display: cssDisplay,
     visibility: cssVisibility,
+    overflow: cssOverflow,
     fill: SvgFillAttributes(
       color: cssFill,
       opacity: cssFillOpacity,

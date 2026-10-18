@@ -214,5 +214,40 @@ void main() {
       // Assert
       expect(result, contains('visibility: SvgVisibility.hidden'));
     });
+
+    test('should merge overflow when other has overflow', () {
+      // Arrange
+      const first = SvgPresentationAttributes(overflow: SvgOverflow.hidden);
+      const second = SvgPresentationAttributes(overflow: SvgOverflow.visible);
+
+      // Act
+      final SvgPresentationAttributes merged = first.merge(second);
+
+      // Assert
+      expect(merged.overflow, SvgOverflow.visible);
+    });
+
+    test('should not inherit overflow from parent when child has null overflow', () {
+      // Arrange
+      const parent = SvgPresentationAttributes(overflow: SvgOverflow.visible);
+      const child = SvgPresentationAttributes();
+
+      // Act
+      final SvgPresentationAttributes inherited = child.inherit(parent);
+
+      // Assert
+      expect(inherited.overflow, isNull);
+    });
+
+    test('should include overflow in toString when overflow is set', () {
+      // Arrange
+      const attrs = SvgPresentationAttributes(overflow: SvgOverflow.visible);
+
+      // Act
+      final result = attrs.toString();
+
+      // Assert
+      expect(result, contains('overflow: SvgOverflow.visible'));
+    });
   });
 }

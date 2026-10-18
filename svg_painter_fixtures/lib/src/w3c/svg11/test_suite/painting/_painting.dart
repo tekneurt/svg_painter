@@ -12,6 +12,8 @@ export 'painting_fill_05_b.dart';
 export 'painting_marker_01_f.dart';
 export 'painting_marker_02_f.dart';
 export 'painting_marker_03_f.dart';
+export 'painting_marker_04_f.dart';
+export 'painting_marker_05_f.dart';
 export 'painting_marker_06_f.dart';
 export 'painting_marker_07_f.dart';
 export 'painting_stroke_01_t.dart';

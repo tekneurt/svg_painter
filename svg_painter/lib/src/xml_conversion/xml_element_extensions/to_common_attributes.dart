@@ -84,12 +84,10 @@ extension ToCommonAttributes on XmlElement {
         clipPath: getAttribute(XmlAttributeName.clipPath.name),
       ),
       marker:
-          (getAttribute(XmlAttributeName.marker.name) != null ||
-              getAttribute(XmlAttributeName.markerStart.name) != null ||
+          (getAttribute(XmlAttributeName.markerStart.name) != null ||
               getAttribute(XmlAttributeName.markerMid.name) != null ||
               getAttribute(XmlAttributeName.markerEnd.name) != null)
           ? SvgMarkerAttributes(
-              marker: getAttribute(XmlAttributeName.marker.name),
               markerStart: getAttribute(XmlAttributeName.markerStart.name),
               markerMid: getAttribute(XmlAttributeName.markerMid.name),
               markerEnd: getAttribute(XmlAttributeName.markerEnd.name),
@@ -99,6 +97,7 @@ extension ToCommonAttributes on XmlElement {
       vectorEffect: toSvgValueOrNull<SvgVectorEffect>(elementName, XmlAttributeName.vectorEffect),
       display: toSvgValueOrNull<SvgDisplay>(elementName, XmlAttributeName.display),
       visibility: toSvgValueOrNull<SvgVisibility>(elementName, XmlAttributeName.visibility),
+      overflow: toSvgValueOrNull<SvgOverflow>(elementName, XmlAttributeName.overflow),
     );
 
     return (

@@ -66,6 +66,11 @@ extension ToDefaultValue on XmlAttributeName {
         return SvgDisplay.inline;
       case .visibility:
         return SvgVisibility.visible;
+      case .overflow:
+        return switch (elementName) {
+          .marker || .symbol => SvgOverflow.hidden,
+          (_) => SvgOverflow.visible,
+        };
       case .color:
         return const SvgNamedColor(SvgColorName.black);
       case .fill:

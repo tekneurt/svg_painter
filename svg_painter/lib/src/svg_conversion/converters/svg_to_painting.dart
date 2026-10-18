@@ -263,6 +263,13 @@ extension SvgElementToPaintCommands on SvgElement {
             final SvgPercentage p => (p.value / 100.0) * 100.0,
             null => 3.0,
           };
+          final SvgPresentationAttributes resolved = resolvePresentation(
+            context,
+            tagName: 'marker',
+            coreAttributes: marker.coreAttributes,
+            presentationAttributes: marker.presentationAttributes,
+          );
+          final SvgOverflow overflow = resolved.overflow ?? SvgOverflow.hidden;
 
           return <PaintCommand>[
             DefineMarker(
@@ -276,6 +283,7 @@ extension SvgElementToPaintCommands on SvgElement {
               orient: marker.orient,
               viewBox: marker.viewBox,
               preserveAspectRatio: marker.preserveAspectRatio,
+              overflow: overflow,
             ),
           ];
         });

@@ -79,6 +79,7 @@ extension ToSvgValue on XmlElement {
         .vectorEffect => attributeValue.toSvgVectorEffect(),
         .display => attributeValue.toSvgDisplay(),
         .visibility => attributeValue.toSvgVisibility(),
+        .overflow => attributeValue.toSvgOverflow(),
         .rotate => attributeValue.toSvgNumber(),
         .gradientUnits => attributeValue.toSvgGradientUnits(),
         .markerUnits => attributeValue.toSvgMarkerUnits(),

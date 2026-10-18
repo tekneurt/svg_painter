@@ -14,6 +14,7 @@ final class DefineMarker extends DefineCommand {
     this.orient = SvgMarkerOrient.zero,
     this.viewBox,
     this.preserveAspectRatio,
+    this.overflow = SvgOverflow.hidden,
   });
 
   /// The commands that make up the marker content.
@@ -42,6 +43,9 @@ final class DefineMarker extends DefineCommand {
 
   /// The preserveAspectRatio defining how the viewBox is mapped to the marker viewport.
   final SvgPreserveAspectRatio? preserveAspectRatio;
+
+  /// Whether marker content is clipped to its viewport box.
+  final SvgOverflow overflow;
 
   @override
   String toString() => 'DefineMarker(id: $id, commands: ${commands.length})';

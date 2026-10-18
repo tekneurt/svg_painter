@@ -47,6 +47,7 @@ void main() {
           XmlAttributeName.offset => 'offset',
           XmlAttributeName.opacity => 'opacity',
           XmlAttributeName.orient => 'orient',
+          XmlAttributeName.overflow => 'overflow',
           XmlAttributeName.paintOrder => 'paint-order',
           XmlAttributeName.pathLength => 'pathLength',
           XmlAttributeName.points => 'points',
