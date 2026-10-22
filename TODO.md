@@ -277,7 +277,7 @@
     - `hex`: Strict `Color(0xAARRGGBB)` usage.
 - [x] **Advanced Pathing (<marker>)**: `<marker>` element, presentation attributes (`marker-start`, `marker-mid`, `marker-end`, `marker`, `refX`, `refY`, `markerWidth`, `markerHeight`, `markerUnits`, `orient`).
     - [x] Support `context-fill` and `context-stroke` keywords on markers.
-- [ ] **Text along Curves**: `<textPath>` implementation.
+- [x] **Text along Curves**: `<textPath>` implementation.
 - [ ] **Text Coordinate Architecture**: Replace `hasMultiCoordinates` with a cleaner, unified solution for text and tspan coordinate and shift distribution.
 - [ ] **Containers**: `<switch>` for conditional rendering.
 - [ ] **Basic Filters**: `<filter>`, `<feGaussianBlur>`, `<feOffset>`, `<feDropShadow>`, `<feMerge>`, `<feFlood>`.
@@ -322,7 +322,7 @@
         - [ ] **Web Platform Tests (WPT)**: Evaluate standalone SVG reftest subsets from `wpt/svg/`.
         - [ ] **SVG Native Test Suite (Adobe / W3C)**: Explore static SVG test fixtures and modern Skia reference comparisons.
     - [ ] **MDN Examples Audit**: Update MDN references, validate test completeness for all currently supported SVG features, verify and update links.
-        - [ ] **MDN `color` Attribute**: Implement and add tests for [MDN color](https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/color) when updating MDN tests.
+        - [x] **MDN `color` Attribute**: Implement and add tests for [MDN color](https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/color) when updating MDN tests.
 - [ ] Support `gradientTransform` properly using `Matrix4` from `vector_math_64` (see: https://api.flutter.dev/flutter/package-vector_math_vector_math_64/Matrix4-class.html).
 - [ ] Support complex nested transformations in gradients.
 

@@ -1,0 +1,155 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
+part of 'transform_2_painter.dart';
+
+// **************************************************************************
+// SvgPainterGenerator
+// **************************************************************************
+
+// coverage:ignore-file
+// ignore_for_file: type=lint
+// ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
+
+class Transform2PainterWidget extends StatelessWidget {
+  const Transform2PainterWidget({
+    super.key,
+    this.width,
+    this.height,
+    this.fit = BoxFit.contain,
+    this.alignment = Alignment.center,
+  });
+
+  final double? width;
+  final double? height;
+  final BoxFit fit;
+  final AlignmentGeometry alignment;
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomPaint(
+      size: Size(width ?? 150.0, height ?? 100.0),
+      painter: _$Transform2Painter(fit: fit),
+    );
+  }
+}
+
+class _$Transform2Painter extends CustomPainter {
+  const _$Transform2Painter({this.fit = BoxFit.contain});
+
+  final BoxFit fit;
+
+  Size get viewBox => const Size(150.0, 100.0);
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final FittedSizes fittedSizes = applyBoxFit(
+      fit,
+      const Size(150.0, 100.0),
+      size,
+    );
+    final Size sourceSize = fittedSizes.source;
+    final Rect destRect = Alignment.center.inscribe(
+      fittedSizes.destination,
+      Offset.zero & size,
+    );
+
+    canvas.save();
+    canvas.translate(destRect.left, destRect.top);
+    canvas.scale(
+      destRect.width / sourceSize.width,
+      destRect.height / sourceSize.height,
+    );
+
+    canvas.save();
+    canvas.translate(50.0, 100.0);
+    canvas.rotate(-0.17453292519943295);
+    canvas.translate(-50.0, -100.0);
+    canvas.translate(-36.0, 15.5);
+    canvas.skew(0.8390996311772799, 0.0);
+    canvas.scale(1.0, 0.5);
+    canvas.clipRect(Rect.fromLTWH(0.0, 0.0, 150.0, 100.0));
+    canvas.save();
+    canvas.translate(40.0, -0.0);
+    {
+      final Path path = Path()
+        ..moveTo(10.0, 30.0)
+        ..arcToPoint(
+          const Offset(50.0, 30.0),
+          radius: const Radius.elliptical(20.0, 20.0),
+          rotation: 0.0,
+          largeArc: false,
+          clockwise: true,
+        )
+        ..arcToPoint(
+          const Offset(90.0, 30.0),
+          radius: const Radius.elliptical(20.0, 20.0),
+          rotation: 0.0,
+          largeArc: false,
+          clockwise: true,
+        )
+        ..quadraticBezierTo(90.0, 60.0, 50.0, 90.0)
+        ..quadraticBezierTo(10.0, 60.0, 10.0, 30.0)
+        ..close();
+      {
+        final Paint paint = Paint();
+        paint.color = const Color(0xFF808080);
+        paint.style = PaintingStyle.fill;
+        canvas.drawPath(path, paint);
+      }
+    }
+    {
+      final Path path = Path()
+        ..moveTo(10.0, 30.0)
+        ..arcToPoint(
+          const Offset(50.0, 30.0),
+          radius: const Radius.elliptical(20.0, 20.0),
+          rotation: 0.0,
+          largeArc: false,
+          clockwise: true,
+        )
+        ..arcToPoint(
+          const Offset(90.0, 30.0),
+          radius: const Radius.elliptical(20.0, 20.0),
+          rotation: 0.0,
+          largeArc: false,
+          clockwise: true,
+        )
+        ..quadraticBezierTo(90.0, 60.0, 50.0, 90.0)
+        ..quadraticBezierTo(10.0, 60.0, 10.0, 30.0)
+        ..close();
+      {
+        final Paint paint = Paint();
+        paint.color = const Color(0xFFFF0000);
+        paint.style = PaintingStyle.stroke;
+        paint.strokeWidth = 1.0;
+        canvas.drawPath(path, paint);
+      }
+    }
+    canvas.restore();
+    canvas.restore();
+    canvas.restore();
+  }
+
+  void _applyOverride(Paint paint, Object? override) {
+    switch (override) {
+      case final Color color:
+        paint.color = color;
+        paint.shader = null;
+
+      case final Shader shader:
+        paint.shader = shader;
+
+      case null || _:
+        break;
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant _$Transform2Painter oldDelegate) {
+    if (fit == oldDelegate.fit) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+}

@@ -36,6 +36,7 @@ import 'attributes/mask_units_painter.dart';
 import 'attributes/media_painter.dart';
 import 'attributes/opacity_painter.dart';
 import 'attributes/orient_painter.dart';
+import 'attributes/overflow_painter.dart';
 import 'attributes/paint_order_painter.dart';
 import 'attributes/path_length_painter.dart';
 import 'attributes/points_example_painter.dart';
@@ -49,6 +50,7 @@ import 'attributes/preserve_aspect_ratio_5_painter.dart';
 import 'attributes/r_painter.dart';
 import 'attributes/ry_painter.dart';
 import 'attributes/spread_method_painter.dart';
+import 'attributes/start_offset_painter.dart';
 import 'attributes/stroke_context_stroke_painter.dart';
 import 'attributes/stroke_dasharray_painter.dart';
 import 'attributes/stroke_dashoffset_painter.dart';
@@ -60,6 +62,8 @@ import 'attributes/stroke_painter.dart';
 import 'attributes/stroke_width_painter.dart';
 import 'attributes/style_painter.dart';
 import 'attributes/text_anchor_painter.dart';
+import 'attributes/transform_2_painter.dart';
+import 'attributes/transform_painter.dart';
 import 'attributes/vector_effect_painter.dart';
 import 'attributes/view_box_1_painter.dart';
 import 'attributes/view_box_2_painter.dart';
@@ -217,6 +221,7 @@ _fixtures =
       (painter: const MediaPainter(), name: 'media_painter', tests: defaultGoldenTests),
       (painter: const OpacityPainter(), name: 'opacity_painter', tests: defaultGoldenTests),
       (painter: const OrientPainter(), name: 'orient_painter', tests: defaultGoldenTests),
+      (painter: const OverflowPainter(), name: 'overflow_painter', tests: defaultGoldenTests),
       (
         painter: const PaintOrderPainter(),
         name: 'paint_order_painter',
@@ -286,6 +291,11 @@ _fixtures =
         },
       ),
       (
+        painter: const StartOffsetPainter(),
+        name: 'start_offset_painter',
+        tests: macOsOverrideGoldenTests,
+      ),
+      (
         painter: const StrokeDasharrayPainter(),
         name: 'stroke_dasharray_painter',
         tests: defaultGoldenTests,
@@ -319,6 +329,16 @@ _fixtures =
         painter: const TextAnchorPainter(),
         name: 'text_anchor_painter',
         tests: macOsOverrideGoldenTests,
+      ),
+      (
+        painter: const TransformPainter(),
+        name: 'transform_painter',
+        tests: defaultGoldenTests,
+      ),
+      (
+        painter: const Transform2Painter(),
+        name: 'transform_2_painter',
+        tests: defaultGoldenTests,
       ),
       (
         painter: const VectorEffectPainter(),
