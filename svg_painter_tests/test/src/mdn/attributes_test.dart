@@ -82,6 +82,7 @@ import 'attributes/x2_linear_gradient_painter.dart';
 import 'attributes/x_examples_painter.dart';
 import 'attributes/x_text_painter.dart';
 import 'attributes/x_tspan_painter.dart';
+import 'attributes/xml_space_painter.dart';
 import 'attributes/y1_examples_painter.dart';
 import 'attributes/y1_line_painter.dart';
 import 'attributes/y1_linear_gradient_painter.dart';
@@ -402,6 +403,11 @@ _fixtures =
         painter: const Y2LinearGradientPainter(),
         name: 'y2_linear_gradient_painter',
         tests: defaultGoldenTests,
+      ),
+      (
+        painter: const XmlSpacePainter(),
+        name: 'xml_space_painter',
+        tests: macOsOverrideGoldenTests,
       ),
     ];
 

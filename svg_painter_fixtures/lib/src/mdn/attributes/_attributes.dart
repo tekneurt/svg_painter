@@ -60,6 +60,7 @@ export 'width.dart';
 export 'x.dart';
 export 'x1.dart';
 export 'x2.dart';
+export 'xml_space.dart';
 export 'y.dart';
 export 'y1.dart';
 export 'y2.dart';
