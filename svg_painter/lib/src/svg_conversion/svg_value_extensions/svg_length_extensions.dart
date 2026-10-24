@@ -24,8 +24,26 @@ extension SvgLengthToDouble on SvgLength {
         value * min(context?.viewBoxWidth ?? 100.0, context?.viewBoxHeight ?? 100.0) / 100.0,
       SvgLengthUnit.vmax =>
         value * max(context?.viewBoxWidth ?? 100.0, context?.viewBoxHeight ?? 100.0) / 100.0,
+      SvgLengthUnit.em => value * _resolveInheritedFontSize(context),
+      SvgLengthUnit.rem => value * 16.0,
+      SvgLengthUnit.ex => value * _resolveInheritedFontSize(context) * 0.5,
+      SvgLengthUnit.ch => value * _resolveInheritedFontSize(context) * 0.5,
     };
   }
+}
+
+double _resolveInheritedFontSize(SvgPaintingContext? context) {
+  final SvgLengthPercentage? inherited = context?.inheritedFontSize;
+  if (inherited == null) {
+    return 16.0;
+  }
+  return switch (inherited) {
+    final SvgLength length => switch (length.unit) {
+        SvgLengthUnit.em || SvgLengthUnit.rem || SvgLengthUnit.ex || SvgLengthUnit.ch => 16.0,
+        _ => length.toDouble(),
+      },
+    final SvgPercentage percentage => percentage.value / 100.0 * 16.0,
+  };
 }
 
 /// Extension to convert [SvgPercentage] to a double.

@@ -55,6 +55,38 @@ void main() {
       // max(200, 100) = 200
       expect(const SvgLength(10.0, SvgLengthUnit.vmax).toDouble(context), 20.0);
     });
+
+    test('should return value relative to default font size when unit is em and context is null', () {
+      // Arrange
+      const length = SvgLength(2.5, SvgLengthUnit.em);
+
+      // Act
+      final double result = length.toDouble();
+
+      // Assert
+      expect(result, 2.5 * 16.0);
+    });
+
+    test('should return value relative to root font size when unit is rem', () {
+      // Arrange
+      const length = SvgLength(1.5, SvgLengthUnit.rem);
+
+      // Act
+      final double result = length.toDouble(context);
+
+      // Assert
+      expect(result, 1.5 * 16.0);
+    });
+
+    test('should return value relative to font size when unit is ex or ch', () {
+      // Arrange
+      const exLength = SvgLength(2.0, SvgLengthUnit.ex);
+      const chLength = SvgLength(4.0, SvgLengthUnit.ch);
+
+      // Act & Assert
+      expect(exLength.toDouble(context), 2.0 * 16.0 * 0.5);
+      expect(chLength.toDouble(context), 4.0 * 16.0 * 0.5);
+    });
   });
 
   group('SvgPercentageToDouble', () {

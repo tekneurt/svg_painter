@@ -5,18 +5,22 @@ import 'package:test/test.dart';
 void main() {
   group('ToSvgLengthUnit', () {
     const expectedMapping = <String, SvgLengthUnit>{
-      'px': SvgLengthUnit.px,
-      'cm': SvgLengthUnit.cm,
-      'mm': SvgLengthUnit.mm,
-      'Q': SvgLengthUnit.q,
-      'in': SvgLengthUnit.inUnit,
-      'pt': SvgLengthUnit.pt,
-      'pc': SvgLengthUnit.pc,
-      'vw': SvgLengthUnit.vw,
-      'vh': SvgLengthUnit.vh,
-      'vmin': SvgLengthUnit.vmin,
-      'vmax': SvgLengthUnit.vmax,
       '': SvgLengthUnit.none,
+      'ch': SvgLengthUnit.ch,
+      'cm': SvgLengthUnit.cm,
+      'em': SvgLengthUnit.em,
+      'ex': SvgLengthUnit.ex,
+      'in': SvgLengthUnit.inUnit,
+      'mm': SvgLengthUnit.mm,
+      'pc': SvgLengthUnit.pc,
+      'pt': SvgLengthUnit.pt,
+      'px': SvgLengthUnit.px,
+      'Q': SvgLengthUnit.q,
+      'rem': SvgLengthUnit.rem,
+      'vh': SvgLengthUnit.vh,
+      'vmax': SvgLengthUnit.vmax,
+      'vmin': SvgLengthUnit.vmin,
+      'vw': SvgLengthUnit.vw,
     };
 
     group('toSvgLengthUnit', () {

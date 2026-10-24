@@ -323,12 +323,13 @@
         - [ ] **SVG Native Test Suite (Adobe / W3C)**: Explore static SVG test fixtures and modern Skia reference comparisons.
     - [ ] **MDN Examples Audit**: Update MDN references, validate test completeness for all currently supported SVG features, verify and update links.
         - [x] **MDN `color` Attribute**: Implement and add tests for [MDN color](https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/color) when updating MDN tests.
+        - [x] **MDN `font-size` Attribute**: Implement full CSS/SVG font-size specification support (keywords, `em`, `rem`, `ex`, `ch`, `%`) and add tests for [MDN font-size](https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/font-size).
 - [ ] Support `gradientTransform` properly using `Matrix4` from `vector_math_64` (see: https://api.flutter.dev/flutter/package-vector_math_vector_math_64/Matrix4-class.html).
 - [ ] Support complex nested transformations in gradients.
 
 ### Phase 7: Advanced Units & Path Syntax (0.6.0)
 - [ ] **SVG 2 Path Syntax**: Robust tokenizer for compact arc syntax (concatenated flags).
-- [ ] **Relative Units**: Support for `em`, `ex`, and other CSS relative units.
+- [x] **Relative Units**: Support for `em`, `rem`, `ex`, `ch`, and other CSS relative units in font-size and lengths.
 - [x] **Result Ergonomics**: Add ergonomic extensions (e.g., `combine()`) to simplify list folding and result aggregation in `Result`.
 
 ### Phase 8: Niche & Future Roadmap (1.0.0+)

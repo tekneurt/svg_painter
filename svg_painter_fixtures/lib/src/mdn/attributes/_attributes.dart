@@ -12,6 +12,7 @@ export 'fill.dart';
 export 'fill_opacity.dart';
 export 'fill_rule.dart';
 export 'font_family.dart';
+export 'font_size.dart';
 export 'font_style.dart';
 export 'font_weight.dart';
 export 'fr.dart';

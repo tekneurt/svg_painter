@@ -524,10 +524,13 @@ PaintingTextStyle _resolveTextStyle(
   SvgPaintingContext context,
   SvgFontAttributes? fontAttrs,
 ) {
-  final double finalFontSize = (fontAttrs?.size ?? const SvgLength(16.0)).resolve(
-    context,
-    .vertical,
-  );
+  final SvgLengthPercentage? size = fontAttrs?.size;
+  final double finalFontSize = switch (size) {
+    null => 16.0,
+    final SvgPercentage percentage =>
+      percentage.value / 100.0 * (context.inheritedFontSize?.resolve(context, .vertical) ?? 16.0),
+    final SvgLength length => length.toDouble(context),
+  };
 
   final PaintingFontWeight finalFontWeight = _toPaintingFontWeight(
     fontAttrs?.weight,

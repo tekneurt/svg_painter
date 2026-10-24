@@ -19,6 +19,7 @@ import 'attributes/fill_rule_evenodd_painter.dart';
 import 'attributes/fill_rule_nonzero_painter.dart';
 import 'attributes/fill_rule_painter.dart';
 import 'attributes/font_family_painter.dart';
+import 'attributes/font_size_painter.dart';
 import 'attributes/font_style_painter.dart';
 import 'attributes/font_weight_painter.dart';
 import 'attributes/fr_painter.dart';
@@ -161,6 +162,11 @@ _fixtures =
       (
         painter: const FontFamilyPainter(),
         name: 'font_family_painter',
+        tests: macOsOverrideGoldenTests,
+      ),
+      (
+        painter: const FontSizePainter(),
+        name: 'font_size_painter',
         tests: macOsOverrideGoldenTests,
       ),
       (

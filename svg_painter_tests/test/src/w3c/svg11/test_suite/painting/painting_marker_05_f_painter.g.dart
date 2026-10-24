@@ -800,7 +800,7 @@ class _$PaintingMarker05FPainter extends CustomPainter {
           canvas,
           Offset(
             240.0 - tp.width / 2.0,
-            3.0 - tp.computeDistanceToActualBaseline(TextBaseline.alphabetic),
+            54.0 - tp.computeDistanceToActualBaseline(TextBaseline.alphabetic),
           ),
         );
       }
