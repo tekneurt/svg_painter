@@ -66,7 +66,13 @@ import 'attributes/stroke_width_painter.dart';
 import 'attributes/style_painter.dart';
 import 'attributes/text_anchor_painter.dart';
 import 'attributes/transform_2_painter.dart';
+import 'attributes/transform_matrix_painter.dart';
 import 'attributes/transform_painter.dart';
+import 'attributes/transform_rotate_painter.dart';
+import 'attributes/transform_scale_painter.dart';
+import 'attributes/transform_skew_x_painter.dart';
+import 'attributes/transform_skew_y_painter.dart';
+import 'attributes/transform_translate_painter.dart';
 import 'attributes/vector_effect_painter.dart';
 import 'attributes/view_box_1_painter.dart';
 import 'attributes/view_box_2_painter.dart';
@@ -353,6 +359,36 @@ _fixtures =
       (
         painter: const Transform2Painter(),
         name: 'transform_2_painter',
+        tests: defaultGoldenTests,
+      ),
+      (
+        painter: const TransformMatrixPainter(),
+        name: 'transform_matrix_painter',
+        tests: defaultGoldenTests,
+      ),
+      (
+        painter: const TransformRotatePainter(),
+        name: 'transform_rotate_painter',
+        tests: defaultGoldenTests,
+      ),
+      (
+        painter: const TransformScalePainter(),
+        name: 'transform_scale_painter',
+        tests: defaultGoldenTests,
+      ),
+      (
+        painter: const TransformSkewXPainter(),
+        name: 'transform_skew_x_painter',
+        tests: defaultGoldenTests,
+      ),
+      (
+        painter: const TransformSkewYPainter(),
+        name: 'transform_skew_y_painter',
+        tests: defaultGoldenTests,
+      ),
+      (
+        painter: const TransformTranslatePainter(),
+        name: 'transform_translate_painter',
         tests: defaultGoldenTests,
       ),
       (
