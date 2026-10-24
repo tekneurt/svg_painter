@@ -71,9 +71,6 @@ class _$FillContextFillPainter extends CustomPainter {
     }) {
       canvas.save();
       canvas.translate(position.dx, position.dy);
-      if (strokeWidth != 1.0) {
-        canvas.scale(strokeWidth, strokeWidth);
-      }
       canvas.translate(-6.0, -6.0);
       canvas.clipRect(Rect.fromLTWH(0.0, 0.0, 12.0, 12.0));
       {
@@ -85,7 +82,7 @@ class _$FillContextFillPainter extends CustomPainter {
           paint.color = const Color(0x00000000);
         }
         paint.style = PaintingStyle.fill;
-        canvas.drawCircle(const Offset(6.0, 6.0), 5.0, paint);
+        canvas.drawCircle(const Offset(6.0, 6.0), 3.0, paint);
       }
       {
         final Paint paint = Paint();
@@ -96,67 +93,25 @@ class _$FillContextFillPainter extends CustomPainter {
           paint.color = const Color(0x00000000);
         }
         paint.style = PaintingStyle.stroke;
-        paint.strokeWidth = 1.0;
-        canvas.drawCircle(const Offset(6.0, 6.0), 5.0, paint);
+        paint.strokeWidth = 2.0;
+        canvas.drawCircle(const Offset(6.0, 6.0), 3.0, paint);
       }
       canvas.restore();
     }
 
     {
       final Path path = Path()
-        ..moveTo(20.0, 20.0)
-        ..lineTo(80.0, 20.0)
-        ..lineTo(80.0, 70.0);
+        ..moveTo(10.0, 44.64)
+        ..lineTo(30.0, 10.0)
+        ..lineTo(70.0, 10.0)
+        ..lineTo(90.0, 44.64)
+        ..lineTo(70.0, 79.28)
+        ..lineTo(30.0, 79.28)
+        ..close();
       {
         final Paint fillPaint = Paint();
         {
-          fillPaint.color = const Color(0xFFFFC0CB);
-          fillPaint.style = PaintingStyle.fill;
-        }
-        final Paint strokePaint = Paint();
-        {
-          strokePaint.color = Colors.black;
-          strokePaint.style = PaintingStyle.stroke;
-          strokePaint.strokeWidth = 2.0;
-        }
-        canvas.drawPath(path, fillPaint);
-        canvas.drawPath(path, strokePaint);
-        _marker_circle(
-          canvas,
-          const Offset(20.0, 20.0),
-          0.0,
-          2.0,
-          isStart: true,
-          contextFill: fillPaint,
-          contextStroke: strokePaint,
-        );
-        _marker_circle(
-          canvas,
-          const Offset(80.0, 20.0),
-          0.7853981633974483,
-          2.0,
-          contextFill: fillPaint,
-          contextStroke: strokePaint,
-        );
-        _marker_circle(
-          canvas,
-          const Offset(80.0, 70.0),
-          1.5707963267948966,
-          2.0,
-          contextFill: fillPaint,
-          contextStroke: strokePaint,
-        );
-      }
-    }
-    {
-      final Path path = Path()
-        ..moveTo(120.0, 20.0)
-        ..lineTo(180.0, 20.0)
-        ..lineTo(180.0, 70.0);
-      {
-        final Paint fillPaint = Paint();
-        {
-          fillPaint.color = const Color(0xFFFFFF00);
+          fillPaint.color = const Color(0xFFFFA500);
           fillPaint.style = PaintingStyle.fill;
         }
         final Paint strokePaint = Paint();
@@ -169,8 +124,8 @@ class _$FillContextFillPainter extends CustomPainter {
         canvas.drawPath(path, strokePaint);
         _marker_circle(
           canvas,
-          const Offset(120.0, 20.0),
-          0.0,
+          const Offset(10.0, 44.64),
+          -1.0471848490249271,
           2.0,
           isStart: true,
           contextFill: fillPaint,
@@ -178,16 +133,48 @@ class _$FillContextFillPainter extends CustomPainter {
         );
         _marker_circle(
           canvas,
-          const Offset(180.0, 20.0),
-          0.7853981633974483,
+          const Offset(30.0, 10.0),
+          -0.5235924245124636,
           2.0,
           contextFill: fillPaint,
           contextStroke: strokePaint,
         );
         _marker_circle(
           canvas,
-          const Offset(180.0, 70.0),
-          1.5707963267948966,
+          const Offset(70.0, 10.0),
+          0.5235924245124636,
+          2.0,
+          contextFill: fillPaint,
+          contextStroke: strokePaint,
+        );
+        _marker_circle(
+          canvas,
+          const Offset(90.0, 44.64),
+          1.5707963267948968,
+          2.0,
+          contextFill: fillPaint,
+          contextStroke: strokePaint,
+        );
+        _marker_circle(
+          canvas,
+          const Offset(70.0, 79.28),
+          2.61800022907733,
+          2.0,
+          contextFill: fillPaint,
+          contextStroke: strokePaint,
+        );
+        _marker_circle(
+          canvas,
+          const Offset(30.0, 79.28),
+          -2.61800022907733,
+          2.0,
+          contextFill: fillPaint,
+          contextStroke: strokePaint,
+        );
+        _marker_circle(
+          canvas,
+          const Offset(10.0, 44.64),
+          -2.094407804564866,
           2.0,
           contextFill: fillPaint,
           contextStroke: strokePaint,
@@ -196,13 +183,99 @@ class _$FillContextFillPainter extends CustomPainter {
     }
     {
       final Path path = Path()
-        ..moveTo(220.0, 20.0)
-        ..lineTo(280.0, 20.0)
-        ..lineTo(280.0, 70.0);
+        ..moveTo(100.0, 44.64)
+        ..lineTo(80.0, 10.0)
+        ..lineTo(120.0, 10.0)
+        ..lineTo(140.0, 44.64)
+        ..lineTo(120.0, 79.28)
+        ..lineTo(80.0, 79.28)
+        ..close();
       {
         final Paint fillPaint = Paint();
         {
-          fillPaint.color = const Color(0xFF008000);
+          fillPaint.color = const Color(0xFF90EE90);
+          fillPaint.style = PaintingStyle.fill;
+        }
+        final Paint strokePaint = Paint();
+        {
+          strokePaint.color = const Color(0xFF008000);
+          strokePaint.style = PaintingStyle.stroke;
+          strokePaint.strokeWidth = 2.0;
+        }
+        canvas.drawPath(path, fillPaint);
+        canvas.drawPath(path, strokePaint);
+        _marker_circle(
+          canvas,
+          const Offset(100.0, 44.64),
+          -2.094407804564866,
+          2.0,
+          isStart: true,
+          contextFill: fillPaint,
+          contextStroke: strokePaint,
+        );
+        _marker_circle(
+          canvas,
+          const Offset(80.0, 10.0),
+          -1.047203902282433,
+          2.0,
+          contextFill: fillPaint,
+          contextStroke: strokePaint,
+        );
+        _marker_circle(
+          canvas,
+          const Offset(120.0, 10.0),
+          0.5235924245124636,
+          2.0,
+          contextFill: fillPaint,
+          contextStroke: strokePaint,
+        );
+        _marker_circle(
+          canvas,
+          const Offset(140.0, 44.64),
+          1.5707963267948968,
+          2.0,
+          contextFill: fillPaint,
+          contextStroke: strokePaint,
+        );
+        _marker_circle(
+          canvas,
+          const Offset(120.0, 79.28),
+          2.61800022907733,
+          2.0,
+          contextFill: fillPaint,
+          contextStroke: strokePaint,
+        );
+        _marker_circle(
+          canvas,
+          const Offset(80.0, 79.28),
+          -2.0943887513073602,
+          2.0,
+          contextFill: fillPaint,
+          contextStroke: strokePaint,
+        );
+        _marker_circle(
+          canvas,
+          const Offset(100.0, 44.64),
+          -1.0471848490249271,
+          2.0,
+          contextFill: fillPaint,
+          contextStroke: strokePaint,
+        );
+      }
+    }
+    {
+      final Path path = Path()
+        ..moveTo(150.0, 44.64)
+        ..lineTo(130.0, 10.0)
+        ..lineTo(170.0, 10.0)
+        ..lineTo(190.0, 44.64)
+        ..lineTo(170.0, 79.28)
+        ..lineTo(130.0, 79.28)
+        ..close();
+      {
+        final Paint fillPaint = Paint();
+        {
+          fillPaint.color = const Color(0xFFADD8E6);
           fillPaint.style = PaintingStyle.fill;
         }
         final Paint strokePaint = Paint();
@@ -215,8 +288,8 @@ class _$FillContextFillPainter extends CustomPainter {
         canvas.drawPath(path, strokePaint);
         _marker_circle(
           canvas,
-          const Offset(220.0, 20.0),
-          0.0,
+          const Offset(150.0, 44.64),
+          -2.094407804564866,
           2.0,
           isStart: true,
           contextFill: fillPaint,
@@ -224,16 +297,48 @@ class _$FillContextFillPainter extends CustomPainter {
         );
         _marker_circle(
           canvas,
-          const Offset(280.0, 20.0),
-          0.7853981633974483,
+          const Offset(130.0, 10.0),
+          -1.047203902282433,
           2.0,
           contextFill: fillPaint,
           contextStroke: strokePaint,
         );
         _marker_circle(
           canvas,
-          const Offset(280.0, 70.0),
-          1.5707963267948966,
+          const Offset(170.0, 10.0),
+          0.5235924245124636,
+          2.0,
+          contextFill: fillPaint,
+          contextStroke: strokePaint,
+        );
+        _marker_circle(
+          canvas,
+          const Offset(190.0, 44.64),
+          1.5707963267948968,
+          2.0,
+          contextFill: fillPaint,
+          contextStroke: strokePaint,
+        );
+        _marker_circle(
+          canvas,
+          const Offset(170.0, 79.28),
+          2.61800022907733,
+          2.0,
+          contextFill: fillPaint,
+          contextStroke: strokePaint,
+        );
+        _marker_circle(
+          canvas,
+          const Offset(130.0, 79.28),
+          -2.0943887513073602,
+          2.0,
+          contextFill: fillPaint,
+          contextStroke: strokePaint,
+        );
+        _marker_circle(
+          canvas,
+          const Offset(150.0, 44.64),
+          -1.0471848490249271,
           2.0,
           contextFill: fillPaint,
           contextStroke: strokePaint,
