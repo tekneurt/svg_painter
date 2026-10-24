@@ -133,6 +133,7 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
         DefineClipPath: ClipPathGenerator(),
         DefineMarker: MarkerGenerator(),
         DefinePattern: PatternGenerator(),
+        DefineFilter: FilterGenerator(),
       };
 
   /// Generates the painter class from SVG content string.

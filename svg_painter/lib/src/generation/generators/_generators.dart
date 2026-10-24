@@ -1,5 +1,6 @@
 export 'circle_generator.dart';
 export 'clip_path_generator.dart';
+export 'filter_generator.dart';
 export 'group_generator.dart';
 export 'image_generator.dart';
 export 'line_generator.dart';

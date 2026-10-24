@@ -74,6 +74,16 @@ extension ToSvgElement on XmlElement {
           return toSvgPattern();
         case .clipPath:
           return toSvgClipPath();
+        case .filter:
+          return toSvgFilter();
+        case .feGaussianBlur:
+          return toSvgFeGaussianBlur();
+        case .feOffset:
+          return toSvgFeOffset();
+        case .feMerge:
+          return toSvgFeMerge();
+        case .feMergeNode:
+          return toSvgFeMergeNode();
         case .title:
           final CommonAttributes common = toCommonAttributes(elementName);
           return Success<SvgTitle>(

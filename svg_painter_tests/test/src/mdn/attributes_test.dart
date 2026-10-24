@@ -18,6 +18,7 @@ import 'attributes/fill_painter.dart';
 import 'attributes/fill_rule_evenodd_painter.dart';
 import 'attributes/fill_rule_nonzero_painter.dart';
 import 'attributes/fill_rule_painter.dart';
+import 'attributes/filter_painter.dart';
 import 'attributes/font_family_painter.dart';
 import 'attributes/font_size_painter.dart';
 import 'attributes/font_style_painter.dart';
@@ -52,6 +53,7 @@ import 'attributes/r_painter.dart';
 import 'attributes/ry_painter.dart';
 import 'attributes/spread_method_painter.dart';
 import 'attributes/start_offset_painter.dart';
+import 'attributes/std_deviation_painter.dart';
 import 'attributes/stroke_context_stroke_painter.dart';
 import 'attributes/stroke_dasharray_painter.dart';
 import 'attributes/stroke_dashoffset_painter.dart';
@@ -159,6 +161,7 @@ _fixtures =
         name: 'fill_rule_evenodd_painter',
         tests: defaultGoldenTests,
       ),
+      (painter: const FilterPainter(), name: 'filter_painter', tests: defaultGoldenTests),
       (
         painter: const FontFamilyPainter(),
         name: 'font_family_painter',
@@ -300,6 +303,11 @@ _fixtures =
         painter: const StartOffsetPainter(),
         name: 'start_offset_painter',
         tests: macOsOverrideGoldenTests,
+      ),
+      (
+        painter: const StdDeviationPainter(),
+        name: 'std_deviation_painter',
+        tests: defaultGoldenTests,
       ),
       (
         painter: const StrokeDasharrayPainter(),

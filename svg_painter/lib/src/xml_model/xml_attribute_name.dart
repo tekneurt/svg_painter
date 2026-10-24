@@ -58,6 +58,14 @@ enum XmlAttributeName {
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/fill-rule
   fillRule('fill-rule'),
 
+  /// The filter effects applied to an element.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/filter
+  filter('filter'),
+
+  /// The coordinate system for the filter region.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/filterUnits
+  filterUnits('filterUnits'),
+
   /// The family of the font.
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/font-family
   fontFamily('font-family'),
@@ -105,6 +113,10 @@ enum XmlAttributeName {
   /// The unique identifier of the element.
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/id
   id('id'),
+
+  /// The input for this filter primitive.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/in
+  in_('in'),
 
   /// The marker shorthand attribute.
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/marker
@@ -194,6 +206,10 @@ enum XmlAttributeName {
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/preserveAspectRatio
   preserveAspectRatio('preserveAspectRatio'),
 
+  /// The coordinate system for filter primitives.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/primitiveUnits
+  primitiveUnits('primitiveUnits'),
+
   /// The radius of the element.
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/r
   r('r'),
@@ -205,6 +221,10 @@ enum XmlAttributeName {
   /// The y-axis coordinate of reference point for the marker.
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/refY
   refY('refY'),
+
+  /// The assigned name for this filter primitive's result.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/result
+  result('result'),
 
   /// The supplemental rotation applied to characters.
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/rotate
@@ -225,6 +245,10 @@ enum XmlAttributeName {
   /// How far the beginning of the text should be offset from the beginning of the path.
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/startOffset
   startOffset('startOffset'),
+
+  /// The standard deviation for the blur operation.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stdDeviation
+  stdDeviation('stdDeviation'),
 
   /// The color of a gradient stop.
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stop-color

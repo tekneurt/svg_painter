@@ -81,6 +81,7 @@ PaintingStyle resolvePaint(
     clipRect: clipRect,
     maskId: _extractUrlId(graphics?.mask),
     clipPathId: _extractUrlId(graphics?.clipPath),
+    filterId: _extractUrlId(graphics?.filter),
     markerStartId: _extractUrlId(resolved.marker?.markerStart ?? resolved.marker?.marker),
     markerMidId: _extractUrlId(resolved.marker?.markerMid ?? resolved.marker?.marker),
     markerEndId: _extractUrlId(resolved.marker?.markerEnd ?? resolved.marker?.marker),
@@ -268,12 +269,14 @@ SvgPresentationAttributes _parseCssPresentation(
         (cssOpacity != null ||
             cssTransform != null ||
             resolvedRules['mask'] != null ||
-            resolvedRules['clip-path'] != null)
+            resolvedRules['clip-path'] != null ||
+            resolvedRules['filter'] != null)
         ? SvgGraphicsAttributes(
             opacity: cssOpacity,
             transformAttributes: cssTransform,
             mask: resolvedRules['mask'],
             clipPath: resolvedRules['clip-path'],
+            filter: resolvedRules['filter'],
           )
         : null,
     marker:

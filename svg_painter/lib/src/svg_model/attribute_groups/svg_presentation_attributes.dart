@@ -176,6 +176,7 @@ final class SvgPresentationAttributes {
       transformAttributes: b.transformAttributes ?? a.transformAttributes,
       mask: b.mask ?? a.mask,
       clipPath: b.clipPath ?? a.clipPath,
+      filter: b.filter ?? a.filter,
     );
   }
 

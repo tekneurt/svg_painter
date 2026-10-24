@@ -46,20 +46,24 @@ abstract class CommandGenerator<T extends PaintCommand> {
       _ => false,
     };
 
+    final String? filterId = style.filterId;
     final String? maskId = style.maskId;
 
-    switch ((hasCanvasModification, maskId)) {
-      case (false, null):
-        body();
-      case (true, final String id):
-        _wrapWithCanvasSave(buffer, style, boundsRect, () {
-          _wrapWithMask(buffer, id, boundsRect, body);
-        });
-      case (true, null):
-        _wrapWithCanvasSave(buffer, style, boundsRect, body);
-      case (false, final String id):
-        _wrapWithMask(buffer, id, boundsRect, body);
+    var wrappedBody = body;
+    if (filterId case final String fId) {
+      final currentBody = wrappedBody;
+      wrappedBody = () => _wrapWithFilter(buffer, fId, currentBody);
     }
+    if (maskId case final String mId) {
+      final currentBody = wrappedBody;
+      wrappedBody = () => _wrapWithMask(buffer, mId, boundsRect, currentBody);
+    }
+    if (hasCanvasModification) {
+      final currentBody = wrappedBody;
+      wrappedBody = () => _wrapWithCanvasSave(buffer, style, boundsRect, currentBody);
+    }
+
+    wrappedBody();
   }
 
   void _wrapWithCanvasSave(
@@ -159,5 +163,15 @@ abstract class CommandGenerator<T extends PaintCommand> {
     buffer.writeln('_mask_$maskId(canvas, size, $boundsRect);');
     buffer.writeln('canvas.restore();');
     buffer.writeln('canvas.restore();');
+  }
+
+  void _wrapWithFilter(
+    GeneratorBuffer buffer,
+    String filterId,
+    void Function() body,
+  ) {
+    buffer.writeBlock('_filter_$filterId(canvas, () {', () {
+      body();
+    }, footer: '});');
   }
 }

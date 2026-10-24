@@ -33,6 +33,7 @@ part 'elements/base/svg_bounded.dart';
 // Containers
 part 'elements/containers/svg_container_element.dart';
 part 'elements/containers/svg_defs.dart';
+part 'elements/containers/svg_filter.dart';
 part 'elements/containers/svg_group.dart';
 part 'elements/containers/svg_marker.dart';
 part 'elements/containers/svg_mask.dart';
@@ -43,6 +44,13 @@ part 'elements/containers/svg_svg.dart';
 
 part 'elements/containers/svg_symbol.dart';
 part 'elements/containers/svg_use.dart';
+
+// Filters
+part 'elements/filters/svg_filter_primitive.dart';
+part 'elements/filters/svg_fe_gaussian_blur.dart';
+part 'elements/filters/svg_fe_offset.dart';
+part 'elements/filters/svg_fe_merge_node.dart';
+part 'elements/filters/svg_fe_merge.dart';
 
 // Geometry
 part 'elements/geometry/svg_basic_shape.dart';

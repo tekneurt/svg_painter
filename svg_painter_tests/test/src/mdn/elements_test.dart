@@ -7,6 +7,10 @@ import 'elements/clip_path_painter.dart';
 import 'elements/defs_painter.dart';
 import 'elements/desc_painter.dart';
 import 'elements/ellipse_painter.dart';
+import 'elements/fe_gaussian_blur_element_painter.dart';
+import 'elements/fe_merge_element_painter.dart';
+import 'elements/fe_offset_element_painter.dart';
+import 'elements/filter_element_painter.dart';
 import 'elements/g_painter.dart';
 import 'elements/image_painter.dart';
 import 'elements/line_painter.dart';
@@ -81,6 +85,41 @@ _fixtures =
       (
         painter: const EllipsePainter(),
         name: 'ellipse_painter',
+        tests: defaultGoldenTests,
+        widget: null,
+        nativeSize: null,
+      ),
+      (
+        painter: const FeGaussianBlurElement1Painter(),
+        name: 'fe_gaussian_blur_element_1_painter',
+        tests: defaultGoldenTests,
+        widget: null,
+        nativeSize: null,
+      ),
+      (
+        painter: const FeGaussianBlurElement2Painter(),
+        name: 'fe_gaussian_blur_element_2_painter',
+        tests: defaultGoldenTests,
+        widget: null,
+        nativeSize: null,
+      ),
+      (
+        painter: const FeMergeElementPainter(),
+        name: 'fe_merge_element_painter',
+        tests: defaultGoldenTests,
+        widget: null,
+        nativeSize: null,
+      ),
+      (
+        painter: const FeOffsetElementPainter(),
+        name: 'fe_offset_element_painter',
+        tests: defaultGoldenTests,
+        widget: null,
+        nativeSize: null,
+      ),
+      (
+        painter: const FilterElementPainter(),
+        name: 'filter_element_painter',
         tests: defaultGoldenTests,
         widget: null,
         nativeSize: null,

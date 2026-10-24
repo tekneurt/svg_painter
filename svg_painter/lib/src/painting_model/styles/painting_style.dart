@@ -63,6 +63,7 @@ final class PaintingStyle {
     this.clipRect,
     this.maskId,
     this.clipPathId,
+    this.filterId,
     this.markerStartId,
     this.markerMidId,
     this.markerEndId,
@@ -98,6 +99,9 @@ final class PaintingStyle {
   /// The ID of the clipPath to apply to this element.
   final String? clipPathId;
 
+  /// The ID of the filter to apply to this element.
+  final String? filterId;
+
   /// The ID of the marker to draw at the start vertex.
   final String? markerStartId;
 
@@ -127,6 +131,7 @@ final class PaintingStyle {
       if (clipRect != null) 'clipRect: $clipRect',
       if (maskId != null) 'maskId: $maskId',
       if (clipPathId != null) 'clipPathId: $clipPathId',
+      if (filterId != null) 'filterId: $filterId',
       if (markerStartId != null) 'markerStartId: $markerStartId',
       if (markerMidId != null) 'markerMidId: $markerMidId',
       if (markerEndId != null) 'markerEndId: $markerEndId',

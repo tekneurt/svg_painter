@@ -87,6 +87,8 @@ extension SvgElementToPaintCommands on SvgElement {
         self is SvgMask ||
         self is SvgClipPath ||
         self is SvgMarker ||
+        self is SvgPattern ||
+        self is SvgFilter ||
         self is SvgDefs ||
         self is SvgSymbol ||
         self is SvgRadialGradient ||
@@ -145,8 +147,11 @@ extension SvgElementToPaintCommands on SvgElement {
       final SvgMarker marker => _toDefineMarker(marker, childContext),
       final SvgMask mask => _toDefineMask(mask, childContext),
       final SvgPattern pattern => _toDefinePattern(pattern, childContext),
+      final SvgFilter filter => _toDefineFilter(filter, childContext),
       final SvgClipPath clipPath => _toDefineClipPath(clipPath, childContext),
       final SvgDefs defs => defs.toPaintCommandsDefs(childContext),
+      final SvgFilterPrimitive _ ||
+      final SvgFeMergeNode _ ||
       final SvgStop _ ||
       final SvgMetadataElement _ ||
       final SvgStyle _ ||
@@ -227,6 +232,19 @@ extension SvgElementToPaintCommands on SvgElement {
             ),
           ];
         });
+  }
+
+  Result<List<PaintCommand>> _toDefineFilter(SvgFilter filter, SvgPaintingContext context) {
+    return Success<List<PaintCommand>>(<PaintCommand>[
+      DefineFilter(
+        id: filter.id ?? '',
+        primitives: filter.primitives,
+        x: filter.x,
+        y: filter.y,
+        width: filter.width,
+        height: filter.height,
+      ),
+    ]);
   }
 
   Result<List<PaintCommand>> _toDefinePattern(SvgPattern pattern, SvgPaintingContext context) {
@@ -371,6 +389,10 @@ String _elementTagName(SvgElement element) => switch (element) {
   SvgSymbol _ => 'symbol',
   SvgMarker _ => 'marker',
   SvgMask _ => 'mask',
+  SvgPattern _ => 'pattern',
+  SvgFilter _ => 'filter',
+  SvgFilterPrimitive _ => 'filterPrimitive',
+  SvgFeMergeNode _ => 'feMergeNode',
   SvgClipPath _ => 'clipPath',
   SvgDefs _ => 'defs',
   SvgLinearGradient _ => 'linearGradient',

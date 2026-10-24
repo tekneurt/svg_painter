@@ -147,6 +147,12 @@ extension ToDefaultValue on XmlAttributeName {
       case .patternUnits:
       case .patternContentUnits:
       case .patternTransform:
+      case .filter:
+      case .filterUnits:
+      case .primitiveUnits:
+      case .stdDeviation:
+      case .in_:
+      case .result:
       case .type:
       case .media:
       case .title:

@@ -108,6 +108,12 @@ extension ToSvgValue on XmlElement {
         .patternUnits ||
         .patternContentUnits ||
         .patternTransform ||
+        .filter ||
+        .filterUnits ||
+        .primitiveUnits ||
+        .stdDeviation ||
+        .in_ ||
+        .result ||
         .decoding ||
         .transform ||
         .gradientTransform => null, // These are strings or special types handled elsewhere

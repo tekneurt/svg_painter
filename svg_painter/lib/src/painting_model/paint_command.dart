@@ -4,6 +4,7 @@ import '../svg_model/_svg_model.dart';
 import 'styles/painting_style.dart';
 
 part 'commands/define_clip_path.dart';
+part 'commands/define_filter.dart';
 part 'commands/define_gradient.dart';
 part 'commands/define_linear_gradient.dart';
 part 'commands/define_marker.dart';
