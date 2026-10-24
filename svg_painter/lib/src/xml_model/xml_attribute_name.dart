@@ -174,6 +174,18 @@ enum XmlAttributeName {
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/pathLength
   pathLength('pathLength'),
 
+  /// The coordinate system for the pattern content.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/patternContentUnits
+  patternContentUnits('patternContentUnits'),
+
+  /// The transform applied to the pattern tile grid.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/patternTransform
+  patternTransform('patternTransform'),
+
+  /// The coordinate system for the pattern tile dimensions.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/patternUnits
+  patternUnits('patternUnits'),
+
   /// The points of a polyline or polygon.
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/points
   points('points'),

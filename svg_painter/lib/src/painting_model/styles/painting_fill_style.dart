@@ -7,6 +7,7 @@ final class PaintingFillStyle implements PaintingPaintStyle {
     this.colorArgb,
     this.shaderId,
     this.shaderUnits,
+    this.patternId,
     this.opacity = 1.0,
     this.isExplicit = true,
     this.isCurrentColor = false,
@@ -26,6 +27,10 @@ final class PaintingFillStyle implements PaintingPaintStyle {
   /// The coordinate system used for the shader coordinates.
   @override
   final PaintingGradientUnits? shaderUnits;
+
+  /// The ID of the pattern to use for filling.
+  @override
+  final String? patternId;
 
   /// The opacity of the fill (0.0 to 1.0).
   @override
@@ -55,6 +60,7 @@ final class PaintingFillStyle implements PaintingPaintStyle {
     final parts = <String>[
       if (colorArgb != null) 'color: $colorArgb',
       if (shaderId != null) 'shader: $shaderId',
+      if (patternId != null) 'pattern: $patternId',
       if (shaderUnits != null) 'units: $shaderUnits',
       if (opacity != 1.0) 'opacity: $opacity',
       if (!isExplicit) 'explicit: $isExplicit',

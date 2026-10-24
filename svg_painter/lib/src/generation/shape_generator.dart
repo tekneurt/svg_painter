@@ -438,6 +438,11 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
           '$paintVar.color = (color ?? const Color(0xFF000000)).withValues(alpha: ${style.opacity});',
         );
       }
+    } else if (style.patternId != null) {
+      buffer.writeln('$paintVar.shader = _createPattern_${style.patternId}($boundsRect);');
+      if (style.opacity != 1.0) {
+        buffer.writeln('$paintVar.color = $paintVar.color.withValues(alpha: ${style.opacity});');
+      }
     } else if (style.shaderId == null) {
       final int? argb = style.colorArgb;
       if (argb != null) {

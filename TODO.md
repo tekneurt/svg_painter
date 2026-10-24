@@ -281,7 +281,7 @@
 - [ ] **Text Coordinate Architecture**: Replace `hasMultiCoordinates` with a cleaner, unified solution for text and tspan coordinate and shift distribution.
 - [ ] **Containers**: `<switch>` for conditional rendering.
 - [ ] **Basic Filters**: `<filter>`, `<feGaussianBlur>`, `<feOffset>`, `<feDropShadow>`, `<feMerge>`, `<feFlood>`.
-- [ ] **Patterns**: `<pattern>` for repeating fills.
+- [x] **Patterns**: `<pattern>` for repeating fills.
 - [x] **Gradients (Polish)**: `objectBoundingBox` and `spreadMethod`.
 - [ ] **Standard Test Suite & Reference Audit**:
     - [ ] **W3C SVG 1.1 Second Edition Test Suite**: Incrementally add approved test fixtures with exact source SVGs, dynamic reference revision substitution, Flutter goldens, and automated isolated AA diff tracking against official W3C PNGs.

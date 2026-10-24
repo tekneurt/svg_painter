@@ -70,6 +70,8 @@ extension ToSvgElement on XmlElement {
           return toSvgMarker();
         case .mask:
           return toSvgMask();
+        case .pattern:
+          return toSvgPattern();
         case .clipPath:
           return toSvgClipPath();
         case .title:

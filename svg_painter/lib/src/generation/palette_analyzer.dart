@@ -96,6 +96,8 @@ class PaletteAnalyzer {
         for (final GradientStop stop in command.stops) {
           colors.add(stop.colorArgb);
         }
+      } else if (command is DefinePattern) {
+        _collectColors(command.commands, colors);
       }
     }
   }
@@ -108,6 +110,8 @@ class PaletteAnalyzer {
   }) {
     for (final command in commands) {
       if (command is DrawGroup) {
+        _collectGroups(command.commands, fillGroups, strokeGroups, mode: mode);
+      } else if (command is DefinePattern) {
         _collectGroups(command.commands, fillGroups, strokeGroups, mode: mode);
       }
 
@@ -213,16 +217,17 @@ class PaletteAnalyzer {
 
 @immutable
 class _StyleKey implements Comparable<_StyleKey> {
-  const _StyleKey(this.colorArgb, this.shaderId, this.dashArray, this.pathLength, this.dashOffset);
+  const _StyleKey(this.colorArgb, this.shaderId, this.patternId, this.dashArray, this.pathLength, this.dashOffset);
 
   factory _StyleKey.fromFill(PaintingFillStyle fill) {
-    return _StyleKey(fill.colorArgb, fill.shaderId, null, null, null);
+    return _StyleKey(fill.colorArgb, fill.shaderId, fill.patternId, null, null, null);
   }
 
   factory _StyleKey.fromStroke(PaintingStrokeStyle stroke) {
     return _StyleKey(
       stroke.colorArgb,
       stroke.shaderId,
+      stroke.patternId,
       stroke.dashArray,
       stroke.pathLength,
       stroke.dashOffset,
@@ -231,6 +236,7 @@ class _StyleKey implements Comparable<_StyleKey> {
 
   final int? colorArgb;
   final String? shaderId;
+  final String? patternId;
   final List<double>? dashArray;
   final double? pathLength;
   final double? dashOffset;
@@ -248,6 +254,9 @@ class _StyleKey implements Comparable<_StyleKey> {
       return false;
     }
     if (shaderId != other.shaderId) {
+      return false;
+    }
+    if (patternId != other.patternId) {
       return false;
     }
     if (pathLength != other.pathLength) {
@@ -280,6 +289,7 @@ class _StyleKey implements Comparable<_StyleKey> {
   int get hashCode =>
       colorArgb.hashCode ^
       shaderId.hashCode ^
+      patternId.hashCode ^
       (dashArray?.length ?? 0).hashCode ^
       pathLength.hashCode ^
       dashOffset.hashCode;
@@ -291,6 +301,9 @@ class _StyleKey implements Comparable<_StyleKey> {
     }
     if (shaderId != other.shaderId) {
       return (shaderId ?? '').compareTo(other.shaderId ?? '');
+    }
+    if (patternId != other.patternId) {
+      return (patternId ?? '').compareTo(other.patternId ?? '');
     }
     if (pathLength != other.pathLength) {
       return (pathLength ?? 0).compareTo(other.pathLength ?? 0);

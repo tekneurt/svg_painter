@@ -31,6 +31,7 @@ final class PaintingStrokeStyle implements PaintingPaintStyle {
     this.colorArgb,
     this.shaderId,
     this.shaderUnits,
+    this.patternId,
     this.width = 1.0,
     this.pathLength,
     this.opacity = 1.0,
@@ -57,6 +58,10 @@ final class PaintingStrokeStyle implements PaintingPaintStyle {
   /// The coordinate system used for the shader coordinates.
   @override
   final PaintingGradientUnits? shaderUnits;
+
+  /// The ID of the pattern to use for stroking.
+  @override
+  final String? patternId;
 
   /// The width of the stroke.
   final double width;
@@ -104,6 +109,7 @@ final class PaintingStrokeStyle implements PaintingPaintStyle {
     final parts = <String>[
       if (colorArgb != null) 'color: $colorArgb',
       if (shaderId != null) 'shader: $shaderId',
+      if (patternId != null) 'pattern: $patternId',
       if (shaderUnits != null) 'units: $shaderUnits',
       if (width != 1.0) 'width: $width',
       if (pathLength != null) 'pathLength: $pathLength',

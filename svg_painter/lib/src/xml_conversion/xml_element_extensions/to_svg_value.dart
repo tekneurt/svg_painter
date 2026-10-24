@@ -105,6 +105,9 @@ extension ToSvgValue on XmlElement {
         .maskContentUnits ||
         .clipPath ||
         .clipPathUnits ||
+        .patternUnits ||
+        .patternContentUnits ||
+        .patternTransform ||
         .decoding ||
         .transform ||
         .gradientTransform => null, // These are strings or special types handled elsewhere

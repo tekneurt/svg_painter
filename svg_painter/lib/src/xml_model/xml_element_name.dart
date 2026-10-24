@@ -50,6 +50,10 @@ enum XmlElementName {
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Element/path
   path('path'),
 
+  /// The `<pattern>` element.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Element/pattern
+  pattern('pattern'),
+
   /// The `<polygon>` element.
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Element/polygon
   polygon('polygon'),

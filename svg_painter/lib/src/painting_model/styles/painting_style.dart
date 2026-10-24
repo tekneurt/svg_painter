@@ -29,6 +29,9 @@ abstract interface class PaintingPaintStyle {
   /// The ID of the shader (e.g., gradient) to use.
   String? get shaderId;
 
+  /// The ID of the pattern to use.
+  String? get patternId;
+
   /// The coordinate system used for the shader coordinates.
   PaintingGradientUnits? get shaderUnits;
 

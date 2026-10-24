@@ -16,6 +16,7 @@ import 'elements/marker_painter.dart';
 import 'elements/marker_polymarkers_painter.dart';
 import 'elements/mask_painter.dart';
 import 'elements/path_painter.dart';
+import 'elements/pattern_element_painter.dart';
 import 'elements/polygon_painter.dart';
 import 'elements/polyline_painter.dart';
 import 'elements/radial_gradient_painter.dart';
@@ -127,6 +128,13 @@ _fixtures =
           GoldenTestType.fixed: null,
           GoldenTestType.viewBox: <TargetPlatform>{TargetPlatform.macOS},
         },
+        widget: null,
+        nativeSize: null,
+      ),
+      (
+        painter: const PatternElementPainter(),
+        name: 'pattern_element_painter',
+        tests: defaultGoldenTests,
         widget: null,
         nativeSize: null,
       ),

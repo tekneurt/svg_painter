@@ -341,19 +341,24 @@ PaintingFillStyle _buildFillStyle(
 }) {
   int? fillColorArgb;
   String? fillShaderId;
+  String? fillPatternId;
   PaintingGradientUnits? shaderUnits;
   var isCurrentColor = false;
   var isContextFill = false;
   var isContextStroke = false;
 
   if (fillPaint is SvgPaintReference) {
-    fillShaderId = fillPaint.id;
-    final SvgElement? def = context.definitions[fillShaderId];
-    if (def is SvgGradient) {
-      shaderUnits = switch (def.gradientUnits) {
-        SvgGradientUnits.objectBoundingBox => .objectBoundingBox,
-        SvgGradientUnits.userSpaceOnUse => .userSpaceOnUse,
-      };
+    final SvgElement? def = context.definitions[fillPaint.id];
+    if (def is SvgPattern) {
+      fillPatternId = fillPaint.id;
+    } else {
+      fillShaderId = fillPaint.id;
+      if (def is SvgGradient) {
+        shaderUnits = switch (def.gradientUnits) {
+          SvgGradientUnits.objectBoundingBox => .objectBoundingBox,
+          SvgGradientUnits.userSpaceOnUse => .userSpaceOnUse,
+        };
+      }
     }
   } else if (fillPaint is SvgCurrentColor) {
     if (currentColor != null && currentColor is! SvgCurrentColor) {
@@ -376,6 +381,7 @@ PaintingFillStyle _buildFillStyle(
     colorArgb: fillColorArgb,
     shaderId: fillShaderId,
     shaderUnits: shaderUnits,
+    patternId: fillPatternId,
     opacity: finalFillOpacity,
     isExplicit: isExplicit,
     isCurrentColor: isCurrentColor,
@@ -454,19 +460,24 @@ PaintingStrokeStyle _buildStrokeStyle(
 }) {
   int? strokeColorArgb;
   String? strokeShaderId;
+  String? strokePatternId;
   PaintingGradientUnits? shaderUnits;
   var isCurrentColor = false;
   var isContextFill = false;
   var isContextStroke = false;
 
   if (strokePaint is SvgPaintReference) {
-    strokeShaderId = strokePaint.id;
-    final SvgElement? def = context.definitions[strokeShaderId];
-    if (def is SvgGradient) {
-      shaderUnits = switch (def.gradientUnits) {
-        SvgGradientUnits.objectBoundingBox => .objectBoundingBox,
-        SvgGradientUnits.userSpaceOnUse => .userSpaceOnUse,
-      };
+    final SvgElement? def = context.definitions[strokePaint.id];
+    if (def is SvgPattern) {
+      strokePatternId = strokePaint.id;
+    } else {
+      strokeShaderId = strokePaint.id;
+      if (def is SvgGradient) {
+        shaderUnits = switch (def.gradientUnits) {
+          SvgGradientUnits.objectBoundingBox => .objectBoundingBox,
+          SvgGradientUnits.userSpaceOnUse => .userSpaceOnUse,
+        };
+      }
     }
   } else if (strokePaint is SvgCurrentColor) {
     if (currentColor != null && currentColor is! SvgCurrentColor) {
@@ -505,6 +516,7 @@ PaintingStrokeStyle _buildStrokeStyle(
     colorArgb: strokeColorArgb,
     shaderId: strokeShaderId,
     shaderUnits: shaderUnits,
+    patternId: strokePatternId,
     width: finalStrokeWidth,
     pathLength: finalPathLength,
     opacity: finalStrokeOpacity,

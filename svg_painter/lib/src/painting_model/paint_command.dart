@@ -8,6 +8,7 @@ part 'commands/define_gradient.dart';
 part 'commands/define_linear_gradient.dart';
 part 'commands/define_marker.dart';
 part 'commands/define_mask.dart';
+part 'commands/define_pattern.dart';
 part 'commands/define_radial_gradient.dart';
 part 'commands/draw_circle.dart';
 part 'commands/draw_group.dart';

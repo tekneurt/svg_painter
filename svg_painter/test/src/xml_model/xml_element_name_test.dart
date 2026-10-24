@@ -19,6 +19,7 @@ void main() {
           XmlElementName.marker => 'marker',
           XmlElementName.mask => 'mask',
           XmlElementName.path => 'path',
+          XmlElementName.pattern => 'pattern',
           XmlElementName.polygon => 'polygon',
           XmlElementName.polyline => 'polyline',
           XmlElementName.radialGradient => 'radialGradient',

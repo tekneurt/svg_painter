@@ -144,6 +144,7 @@ extension SvgElementToPaintCommands on SvgElement {
       final SvgSymbol symbol => symbol.toPaintCommandsSymbol(childContext, onlyDefinitions: true),
       final SvgMarker marker => _toDefineMarker(marker, childContext),
       final SvgMask mask => _toDefineMask(mask, childContext),
+      final SvgPattern pattern => _toDefinePattern(pattern, childContext),
       final SvgClipPath clipPath => _toDefineClipPath(clipPath, childContext),
       final SvgDefs defs => defs.toPaintCommandsDefs(childContext),
       final SvgStop _ ||
@@ -223,6 +224,39 @@ extension SvgElementToPaintCommands on SvgElement {
                 SvgMaskUnits.objectBoundingBox => PaintingGradientUnits.objectBoundingBox,
                 SvgMaskUnits.userSpaceOnUse => PaintingGradientUnits.userSpaceOnUse,
               },
+            ),
+          ];
+        });
+  }
+
+  Result<List<PaintCommand>> _toDefinePattern(SvgPattern pattern, SvgPaintingContext context) {
+    final SvgPaintingContext childrenContext = pattern.viewBox != null
+        ? context.derive(
+            viewBoxWidth: pattern.viewBox!.width,
+            viewBoxHeight: pattern.viewBox!.height,
+            viewBoxMinX: pattern.viewBox!.minX,
+            viewBoxMinY: pattern.viewBox!.minY,
+            isDefinition: false,
+          )
+        : context.derive(isDefinition: false);
+
+    return pattern.children
+        .map((SvgElement child) => child.toPaintCommands(childrenContext))
+        .combine()
+        .map((List<PaintCommand> childCommands) {
+          return <PaintCommand>[
+            DefinePattern(
+              id: pattern.id,
+              commands: childCommands,
+              x: pattern.x,
+              y: pattern.y,
+              width: pattern.width,
+              height: pattern.height,
+              patternUnits: pattern.patternUnits,
+              patternContentUnits: pattern.patternContentUnits,
+              viewBox: pattern.viewBox,
+              preserveAspectRatio: pattern.preserveAspectRatio,
+              patternTransform: pattern.patternTransformAttributes,
             ),
           ];
         });

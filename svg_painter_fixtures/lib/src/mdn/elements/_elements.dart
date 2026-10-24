@@ -10,6 +10,7 @@ export 'linear_gradient.dart';
 export 'marker.dart';
 export 'mask.dart';
 export 'path.dart';
+export 'pattern.dart';
 export 'polygon.dart';
 export 'polyline.dart';
 export 'radial_gradient.dart';

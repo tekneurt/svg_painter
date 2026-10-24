@@ -183,6 +183,9 @@ void main() {
         XmlAttributeName.strokeDasharray,
         XmlAttributeName.clipPath,
         XmlAttributeName.clipPathUnits,
+        XmlAttributeName.patternUnits,
+        XmlAttributeName.patternContentUnits,
+        XmlAttributeName.patternTransform,
       ];
 
       for (final attr in noDefaultAttrs) {

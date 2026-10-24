@@ -588,7 +588,24 @@ class PainterClassGenerator {
       }
     }
 
-    // 5th pass: Drawing commands (DrawCommand)
+    // 5th pass: Pattern definitions (DefinePattern)
+    for (final command in uniqueDefinitions) {
+      if (command is DefinePattern) {
+        generators[command.runtimeType]?.generate(
+          command,
+          buffer,
+          generators: generators,
+          palette: palette,
+          activeFillProperties: activeFillProperties,
+          activeStrokeProperties: activeStrokeProperties,
+          painterClassName: className,
+          gradientsNeedingStretch: gradientsNeedingStretch,
+          colorMapping: colorMapping,
+        );
+      }
+    }
+
+    // 6th pass: Drawing commands (DrawCommand)
     for (final command in drawingCommands) {
       if (command is DrawCommand) {
         generators[command.runtimeType]?.generate(

@@ -11,6 +11,7 @@ export 'to_svg_linear_gradient.dart';
 export 'to_svg_marker.dart';
 export 'to_svg_mask.dart';
 export 'to_svg_path.dart';
+export 'to_svg_pattern.dart';
 export 'to_svg_polygon.dart';
 export 'to_svg_polyline.dart';
 export 'to_svg_radial_gradient.dart';
