@@ -27,6 +27,7 @@ export 'rect.dart';
 export 'stop.dart';
 export 'style.dart';
 export 'svg.dart';
+export 'switch.dart';
 export 'symbol.dart';
 export 'text.dart';
 export 'text_path.dart';

@@ -62,6 +62,8 @@ extension ToSvgElement on XmlElement {
           return toSvgStop();
         case .style:
           return toSvgStyle();
+        case .switch_:
+          return toSvgSwitch();
         case .text:
           return toSvgText();
         case .textPath:

@@ -23,6 +23,8 @@ class GenerationAnalyzer {
       }
       if (command is DrawGroup) {
         collectIds(command.commands, fillIds, strokeIds);
+      } else if (command is DrawSwitch) {
+        collectIds(command.allCommands.toList(), fillIds, strokeIds);
       }
     }
   }
@@ -41,6 +43,10 @@ class GenerationAnalyzer {
 
       if (command is DrawGroup) {
         if (hasDashes(command.commands)) {
+          return true;
+        }
+      } else if (command is DrawSwitch) {
+        if (hasDashes(command.allCommands.toList())) {
           return true;
         }
       }
@@ -62,6 +68,10 @@ class GenerationAnalyzer {
         if (hasCurrentColor(command.commands)) {
           return true;
         }
+      } else if (command is DrawSwitch) {
+        if (hasCurrentColor(command.allCommands.toList())) {
+          return true;
+        }
       }
     }
     return false;
@@ -75,6 +85,8 @@ class GenerationAnalyzer {
       }
       if (command is DrawGroup && needsViewBoxRect(command.commands)) {
         return true;
+      } else if (command is DrawSwitch && needsViewBoxRect(command.allCommands.toList())) {
+        return true;
       }
     }
     return false;
@@ -86,6 +98,8 @@ class GenerationAnalyzer {
     for (final command in commands) {
       if (command is DrawGroup) {
         ids.addAll(findGradientsNeedingStretch(command.commands));
+      } else if (command is DrawSwitch) {
+        ids.addAll(findGradientsNeedingStretch(command.allCommands.toList()));
       } else if (command is DrawCommand) {
         final String? shaderId = command.style.fill?.shaderId ?? command.style.stroke?.shaderId;
         if (shaderId != null && isNonSquare(command)) {
@@ -130,6 +144,9 @@ class GenerationAnalyzer {
       }
       if (command is DrawGroup &&
           needsGradientTransform(command.commands, gradientsNeedingStretch)) {
+        return true;
+      } else if (command is DrawSwitch &&
+          needsGradientTransform(command.allCommands.toList(), gradientsNeedingStretch)) {
         return true;
       }
     }

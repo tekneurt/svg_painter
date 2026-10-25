@@ -13,5 +13,6 @@ export 'pattern_generator.dart';
 export 'poly_generator.dart';
 export 'radial_gradient_generator.dart';
 export 'rect_generator.dart';
+export 'switch_generator.dart';
 export 'text_generator.dart';
 export 'text_path_generator.dart';

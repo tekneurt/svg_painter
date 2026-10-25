@@ -126,6 +126,7 @@ extension SvgElementToPaintCommands on SvgElement {
       final SvgSvg container => container.toPaintCommandsSvg(childContext),
       final SvgGroup group => group._toPaintCommandsGroup(childContext),
       final SvgA a => a._toPaintCommandsA(childContext),
+      final SvgSwitch switchElement => switchElement._toPaintCommandsSwitch(childContext),
 
       // Basic Shapes (Geometry)
       final SvgCircle circle => circle.toPaintCommands(context),
@@ -401,6 +402,57 @@ extension _SvgAToPaintCommands on SvgA {
   }
 }
 
+extension _SvgSwitchToPaintCommands on SvgSwitch {
+  Result<List<PaintCommand>> _toPaintCommandsSwitch(SvgPaintingContext context) {
+    final PaintingStyle style = resolvePaint(
+      context,
+      tagName: 'switch',
+      coreAttributes: coreAttributes,
+      presentationAttributes: presentationAttributes,
+    );
+
+    final cases = <SwitchCase>[];
+    final fallback = <PaintCommand>[];
+
+    for (final SvgElement child in children) {
+      final SvgCoreAttributes? coreAttrs = child.coreAttributes;
+      if (coreAttrs?.requiredExtensions != null && coreAttrs!.requiredExtensions!.isNotEmpty) {
+        continue;
+      }
+      if (coreAttrs?.requiredFeatures != null && coreAttrs!.requiredFeatures!.isEmpty) {
+        continue;
+      }
+      if (coreAttrs?.systemLanguage != null && coreAttrs!.systemLanguage!.isNotEmpty) {
+        final Result<List<PaintCommand>> childResult = child.toPaintCommands(context);
+        switch (childResult) {
+          case Failure(:final String message):
+            return Failure<List<PaintCommand>>(message);
+          case Success(:final List<PaintCommand> value):
+            cases.add(SwitchCase(languages: coreAttrs.systemLanguage!, commands: value));
+        }
+      } else {
+        final Result<List<PaintCommand>> childResult = child.toPaintCommands(context);
+        switch (childResult) {
+          case Failure(:final String message):
+            return Failure<List<PaintCommand>>(message);
+          case Success(:final List<PaintCommand> value):
+            fallback.addAll(value);
+        }
+        break;
+      }
+    }
+
+    return Success<List<PaintCommand>>(<PaintCommand>[
+      DrawSwitch(
+        cases: cases,
+        fallback: fallback,
+        style: style,
+        id: id,
+      ),
+    ]);
+  }
+}
+
 String _elementTagName(SvgElement element) => switch (element) {
   SvgRect _ => 'rect',
   SvgCircle _ => 'circle',
@@ -412,6 +464,7 @@ String _elementTagName(SvgElement element) => switch (element) {
   SvgText _ => 'text',
   SvgGroup _ => 'g',
   SvgA _ => 'a',
+  SvgSwitch _ => 'switch',
   SvgUse _ => 'use',
   SvgImage _ => 'image',
   SvgSvg _ => 'svg',

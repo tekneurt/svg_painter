@@ -33,6 +33,7 @@ import 'elements/rect_painter.dart';
 import 'elements/stop_painter.dart';
 import 'elements/style_painter.dart';
 import 'elements/svg_painter.dart';
+import 'elements/switch_element_painter.dart';
 import 'elements/symbol_painter.dart';
 import 'elements/text_painter.dart';
 import 'elements/text_path_painter.dart';
@@ -342,6 +343,13 @@ _fixtures =
         painter: const MaskPainter(),
         name: 'mask_painter',
         tests: macOsOverrideGoldenTests,
+        widget: null,
+        nativeSize: null,
+      ),
+      (
+        painter: const SwitchElementPainter(),
+        name: 'switch_element_painter',
+        tests: defaultGoldenTests,
         widget: null,
         nativeSize: null,
       ),

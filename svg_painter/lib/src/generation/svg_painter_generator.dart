@@ -119,6 +119,7 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
         DrawCircle: CircleGenerator(),
         DrawOval: OvalGenerator(),
         DrawRect: RectGenerator(),
+        DrawSwitch: SwitchGenerator(),
         DrawText: TextGenerator(),
         DrawTextPath: TextPathGenerator(),
         DrawGroup: GroupGenerator(),

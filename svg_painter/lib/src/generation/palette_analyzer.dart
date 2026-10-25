@@ -79,6 +79,8 @@ class PaletteAnalyzer {
     for (final command in commands) {
       if (command is DrawGroup) {
         _collectColors(command.commands, colors);
+      } else if (command is DrawSwitch) {
+        _collectColors(command.allCommands.toList(), colors);
       } else if (command is DrawCommand) {
         final PaintingFillStyle? fill = command.style.fill;
         if (fill != null && fill.colorArgb != null) {
@@ -111,6 +113,8 @@ class PaletteAnalyzer {
     for (final command in commands) {
       if (command is DrawGroup) {
         _collectGroups(command.commands, fillGroups, strokeGroups, mode: mode);
+      } else if (command is DrawSwitch) {
+        _collectGroups(command.allCommands.toList(), fillGroups, strokeGroups, mode: mode);
       } else if (command is DefinePattern) {
         _collectGroups(command.commands, fillGroups, strokeGroups, mode: mode);
       }

@@ -110,6 +110,8 @@ class ImagePreloader {
       }
       if (command is DrawGroup) {
         collectImageHrefs(command.commands, hrefs);
+      } else if (command is DrawSwitch) {
+        collectImageHrefs(command.allCommands.toList(), hrefs);
       }
     }
   }
@@ -135,6 +137,11 @@ class ImagePreloader {
       }
       if (command is DrawGroup) {
         populateImageIndices(command.commands, uniqueHrefs);
+      } else if (command is DrawSwitch) {
+        for (final SwitchCase c in command.cases) {
+          populateImageIndices(c.commands, uniqueHrefs);
+        }
+        populateImageIndices(command.fallback, uniqueHrefs);
       }
     }
   }
@@ -147,6 +154,11 @@ class ImagePreloader {
       }
       if (command is DrawGroup) {
         final List<int>? bytes = findBytesForHref(command.commands, href);
+        if (bytes != null) {
+          return bytes;
+        }
+      } else if (command is DrawSwitch) {
+        final List<int>? bytes = findBytesForHref(command.allCommands.toList(), href);
         if (bytes != null) {
           return bytes;
         }

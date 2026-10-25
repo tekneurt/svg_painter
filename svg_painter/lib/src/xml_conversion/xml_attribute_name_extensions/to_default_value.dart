@@ -152,6 +152,9 @@ extension ToDefaultValue on XmlAttributeName {
       case .filter:
       case .filterUnits:
       case .primitiveUnits:
+      case .requiredExtensions:
+      case .requiredFeatures:
+      case .systemLanguage:
       case .stdDeviation:
       case .in_:
       case .result:

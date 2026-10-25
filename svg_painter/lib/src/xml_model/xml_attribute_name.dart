@@ -242,6 +242,14 @@ enum XmlAttributeName {
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/refY
   refY('refY'),
 
+  /// A list of required language extensions.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/requiredExtensions
+  requiredExtensions('requiredExtensions'),
+
+  /// A list of required SVG features.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/requiredFeatures
+  requiredFeatures('requiredFeatures'),
+
   /// The assigned name for this filter primitive's result.
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/result
   result('result'),
@@ -317,6 +325,10 @@ enum XmlAttributeName {
   /// Inline style rules for the element.
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/style
   style('style'),
+
+  /// A list of supported BCP 47 language tags for conditional processing.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/systemLanguage
+  systemLanguage('systemLanguage'),
 
   /// The table values for table or discrete transfer functions for feFunc*.
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/tableValues

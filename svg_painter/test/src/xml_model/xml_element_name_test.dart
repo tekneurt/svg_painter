@@ -39,6 +39,7 @@ void main() {
           XmlElementName.rect => 'rect',
           XmlElementName.stop => 'stop',
           XmlElementName.style => 'style',
+          XmlElementName.switch_ => 'switch',
           XmlElementName.svg => 'svg',
           XmlElementName.symbol => 'symbol',
           XmlElementName.text => 'text',

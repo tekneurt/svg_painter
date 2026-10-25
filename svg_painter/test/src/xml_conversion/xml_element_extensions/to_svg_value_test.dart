@@ -148,6 +148,9 @@ void main() {
         XmlAttributeName.xlinkHref,
         XmlAttributeName.transform,
         XmlAttributeName.gradientTransform,
+        XmlAttributeName.requiredExtensions,
+        XmlAttributeName.requiredFeatures,
+        XmlAttributeName.systemLanguage,
       ];
 
       for (final attr in complexAttributes) {

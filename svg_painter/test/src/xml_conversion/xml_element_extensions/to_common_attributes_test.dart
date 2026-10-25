@@ -46,6 +46,28 @@ void main() {
       expect(attrs.desc?.id, 'd1');
     });
 
+    test('should extract conditional processing attributes when specified', () {
+      // Arrange
+      final document = XmlDocument.parse(
+        '<text systemLanguage="en-US, de" requiredExtensions="http://example.com/ext1 http://example.com/ext2" requiredFeatures="http://example.com/feat" />',
+      );
+      final XmlElement element = document.rootElement;
+
+      // Act
+      final CommonAttributes attrs = element.toCommonAttributes(XmlElementName.text);
+
+      // Assert
+      expect(attrs.core.systemLanguage, equals(<String>['en-us', 'de']));
+      expect(
+        attrs.core.requiredExtensions,
+        equals(<String>['http://example.com/ext1', 'http://example.com/ext2']),
+      );
+      expect(
+        attrs.core.requiredFeatures,
+        equals(<String>['http://example.com/feat']),
+      );
+    });
+
     test('should return empty attribute groups when attributes are missing', () {
       // Arrange
       final document = XmlDocument.parse('<circle />');

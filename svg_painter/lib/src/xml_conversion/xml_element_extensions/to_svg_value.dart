@@ -118,6 +118,9 @@ extension ToSvgValue on XmlElement {
         .filter ||
         .filterUnits ||
         .primitiveUnits ||
+        .requiredExtensions ||
+        .requiredFeatures ||
+        .systemLanguage ||
         .stdDeviation ||
         .in_ ||
         .result ||

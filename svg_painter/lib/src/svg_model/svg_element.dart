@@ -42,7 +42,7 @@ part 'elements/containers/svg_pattern.dart';
 part 'elements/containers/svg_clip_path.dart';
 part 'elements/containers/svg_root.dart';
 part 'elements/containers/svg_svg.dart';
-
+part 'elements/containers/svg_switch.dart';
 part 'elements/containers/svg_symbol.dart';
 part 'elements/containers/svg_use.dart';
 

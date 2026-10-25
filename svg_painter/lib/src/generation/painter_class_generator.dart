@@ -487,6 +487,25 @@ class PainterClassGenerator {
             bounds: cmd.bounds,
           ),
         );
+      } else if (cmd is DrawSwitch) {
+        final newCases = <SwitchCase>[];
+        for (final SwitchCase c in cmd.cases) {
+          final (List<DefineCommand> nestedDefs, List<PaintCommand> nestedCommands) =
+              _extractDefinitions(c.commands);
+          definitions.addAll(nestedDefs);
+          newCases.add(SwitchCase(languages: c.languages, commands: nestedCommands));
+        }
+        final (List<DefineCommand> fallbackDefs, List<PaintCommand> fallbackCommands) =
+            _extractDefinitions(cmd.fallback);
+        definitions.addAll(fallbackDefs);
+        drawingCommands.add(
+          DrawSwitch(
+            cases: newCases,
+            fallback: fallbackCommands,
+            style: cmd.style,
+            id: cmd.id,
+          ),
+        );
       } else {
         drawingCommands.add(cmd);
       }

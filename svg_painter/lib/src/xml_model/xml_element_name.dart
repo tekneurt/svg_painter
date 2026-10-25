@@ -130,6 +130,10 @@ enum XmlElementName {
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Element/style
   style('style'),
 
+  /// The `<switch>` element.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Element/switch
+  switch_('switch'),
+
   /// The root `<svg>` element.
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Element/svg
   svg('svg'),

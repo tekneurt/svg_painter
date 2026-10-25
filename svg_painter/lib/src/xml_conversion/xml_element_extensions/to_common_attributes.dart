@@ -16,10 +16,34 @@ typedef CommonAttributes = ({
 extension ToCommonAttributes on XmlElement {
   /// Extracts common attributes from this element.
   CommonAttributes toCommonAttributes(XmlElementName elementName) {
+    final String? rawSystemLanguage = toXmlAttributeValue(XmlAttributeName.systemLanguage);
+    final List<String>? systemLanguage = rawSystemLanguage
+        ?.split(',')
+        .map((String s) => s.trim().toLowerCase())
+        .where((String s) => s.isNotEmpty)
+        .toList();
+
+    final String? rawExtensions = toXmlAttributeValue(XmlAttributeName.requiredExtensions);
+    final List<String>? requiredExtensions = rawExtensions
+        ?.split(RegExp(r'\s+'))
+        .map((String s) => s.trim())
+        .where((String s) => s.isNotEmpty)
+        .toList();
+
+    final String? rawFeatures = toXmlAttributeValue(XmlAttributeName.requiredFeatures);
+    final List<String>? requiredFeatures = rawFeatures
+        ?.split(RegExp(r'\s+'))
+        .map((String s) => s.trim())
+        .where((String s) => s.isNotEmpty)
+        .toList();
+
     final core = SvgCoreAttributes(
       id: toXmlAttributeValue(XmlAttributeName.id),
       cssClass: toXmlAttributeValue(XmlAttributeName.className),
       inlineStyle: toXmlAttributeValue(XmlAttributeName.style),
+      systemLanguage: systemLanguage,
+      requiredExtensions: requiredExtensions,
+      requiredFeatures: requiredFeatures,
     );
 
     final XmlElement? titleElement = children
