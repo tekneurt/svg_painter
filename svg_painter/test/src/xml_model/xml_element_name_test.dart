@@ -14,6 +14,8 @@ void main() {
           XmlElementName.desc => 'desc',
           XmlElementName.ellipse => 'ellipse',
           XmlElementName.feComponentTransfer => 'feComponentTransfer',
+          XmlElementName.feDropShadow => 'feDropShadow',
+          XmlElementName.feFlood => 'feFlood',
           XmlElementName.feFuncA => 'feFuncA',
           XmlElementName.feFuncB => 'feFuncB',
           XmlElementName.feFuncG => 'feFuncG',

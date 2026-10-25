@@ -119,6 +119,8 @@ void main() {
         XmlAttributeName.fill: 'red',
         XmlAttributeName.strokeLinecap: 'round',
         XmlAttributeName.strokeLinejoin: 'bevel',
+        XmlAttributeName.floodColor: 'cyan',
+        XmlAttributeName.floodOpacity: '0.8',
       };
 
       for (final MapEntry<XmlAttributeName, String> entry in tests.entries) {

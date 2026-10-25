@@ -80,6 +80,10 @@ extension ToSvgElement on XmlElement {
           return toSvgFilter();
         case .feComponentTransfer:
           return toSvgFeComponentTransfer();
+        case .feDropShadow:
+          return toSvgFeDropShadow();
+        case .feFlood:
+          return toSvgFeFlood();
         case .feFuncR:
           return toSvgFeFuncR();
         case .feFuncG:

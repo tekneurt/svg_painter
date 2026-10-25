@@ -146,6 +146,14 @@ void main() {
         XmlAttributeName.strokeOpacity.toDefaultValue(XmlElementName.path),
         const SvgLength(1.0),
       );
+      expect(
+        XmlAttributeName.floodColor.toDefaultValue(XmlElementName.feFlood),
+        const SvgNamedColor(SvgColorName.black),
+      );
+      expect(
+        XmlAttributeName.floodOpacity.toDefaultValue(XmlElementName.feFlood),
+        const SvgLength(1.0),
+      );
     });
 
     test('radialGradient specific attributes should return correct defaults', () {

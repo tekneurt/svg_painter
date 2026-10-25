@@ -9,6 +9,8 @@ import 'elements/defs_painter.dart';
 import 'elements/desc_painter.dart';
 import 'elements/ellipse_painter.dart';
 import 'elements/fe_component_transfer_element_painter.dart';
+import 'elements/fe_drop_shadow_element_painter.dart';
+import 'elements/fe_flood_element_painter.dart';
 import 'elements/fe_gaussian_blur_element_painter.dart';
 import 'elements/fe_merge_element_painter.dart';
 import 'elements/fe_merge_node_element_painter.dart';
@@ -102,6 +104,20 @@ _fixtures =
       (
         painter: const FeComponentTransferElementPainter(),
         name: 'fe_component_transfer_element_painter',
+        tests: defaultGoldenTests,
+        widget: null,
+        nativeSize: null,
+      ),
+      (
+        painter: const FeDropShadowElementPainter(),
+        name: 'fe_drop_shadow_element_painter',
+        tests: defaultGoldenTests,
+        widget: null,
+        nativeSize: null,
+      ),
+      (
+        painter: const FeFloodElementPainter(),
+        name: 'fe_flood_element_painter',
         tests: defaultGoldenTests,
         widget: null,
         nativeSize: null,

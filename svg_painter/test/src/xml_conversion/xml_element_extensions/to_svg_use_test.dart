@@ -50,9 +50,9 @@ void main() {
       );
     });
 
-    test('should return Failure when href attribute is missing', () {
+    test('should return Success with null href when href attribute is missing', () {
       // Arrange
-      final document = XmlDocument.parse('<use x="0" y="0" />');
+      final document = XmlDocument.parse('<use x="10" y="20" />');
       final XmlElement element = document.rootElement;
 
       // Act
@@ -61,10 +61,10 @@ void main() {
       // Assert
       expect(
         result,
-        isA<Failure<SvgUse>>().having(
-          (Failure<SvgUse> f) => f.message,
-          'message',
-          contains('must have an href attribute'),
+        isA<Success<SvgUse>>().having(
+          (Success<SvgUse> s) => s.value,
+          'value',
+          isA<SvgUse>().having((SvgUse u) => u.href, 'href', isNull),
         ),
       );
     });

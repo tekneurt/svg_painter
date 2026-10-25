@@ -13,6 +13,8 @@ export 'fill.dart';
 export 'fill_opacity.dart';
 export 'fill_rule.dart';
 export 'filter.dart';
+export 'flood_color.dart';
+export 'flood_opacity.dart';
 export 'font_family.dart';
 export 'font_size.dart';
 export 'font_style.dart';

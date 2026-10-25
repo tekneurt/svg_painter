@@ -12,7 +12,52 @@ import 'symbol_to_painting.dart';
 extension SvgUseToPaintCommands on SvgUse {
   /// Converts this [SvgUse] to a list of [PaintCommand]s.
   Result<List<PaintCommand>> toPaintCommandsUse(SvgPaintingContext context) {
-    final String targetId = href.startsWith('#') ? href.substring(1) : href;
+    final String? hrefVal = href;
+    if (hrefVal == null || hrefVal.isEmpty) {
+      final PaintingStyle style = resolvePaint(
+        context,
+        tagName: 'use',
+        coreAttributes: coreAttributes,
+        presentationAttributes: presentationAttributes,
+      );
+      if (style.filterId case final String fId) {
+        double dx = x.resolve(context, .horizontal);
+        double dy = y.resolve(context, .vertical);
+        double? w = width?.resolveOrNull(context, .horizontal);
+        double? h = height?.resolveOrNull(context, .vertical);
+
+        if (w == null || h == null) {
+          final SvgElement? filterElem = context.definitions[fId];
+          if (filterElem is SvgFilter) {
+            for (final SvgFilterPrimitive prim in filterElem.primitives) {
+              if (prim is SvgFeFlood) {
+                dx = prim.x?.resolveOrNull(context, .horizontal) ?? dx;
+                dy = prim.y?.resolveOrNull(context, .vertical) ?? dy;
+                w = prim.width?.resolveOrNull(context, .horizontal) ?? w;
+                h = prim.height?.resolveOrNull(context, .vertical) ?? h;
+                break;
+              }
+            }
+          }
+        }
+
+        return Success<List<PaintCommand>>([
+          DrawRect(
+            x: dx,
+            y: dy,
+            width: w ?? 0.0,
+            height: h ?? 0.0,
+            rx: 0.0,
+            ry: 0.0,
+            style: style,
+          ),
+        ]);
+      } else {
+        return const Success<List<PaintCommand>>([]);
+      }
+    }
+
+    final String targetId = hrefVal.startsWith('#') ? hrefVal.substring(1) : hrefVal;
     final SvgElement? target = context.definitions[targetId];
 
     if (target == null) {

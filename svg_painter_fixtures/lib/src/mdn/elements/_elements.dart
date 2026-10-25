@@ -5,6 +5,8 @@ export 'defs.dart';
 export 'desc.dart';
 export 'ellipse.dart';
 export 'fe_component_transfer.dart';
+export 'fe_drop_shadow.dart';
+export 'fe_flood.dart';
 export 'fe_gaussian_blur.dart';
 export 'fe_merge.dart';
 export 'fe_merge_node.dart';

@@ -97,9 +97,10 @@ extension ToDefaultValue on XmlAttributeName {
       case .markerHeight:
         return const SvgLength(3.0);
       case .stopColor:
+      case .floodColor:
         return const SvgNamedColor(SvgColorName.black);
       case .stopOpacity:
-        return const SvgLength(1.0);
+      case .floodOpacity:
       case .opacity:
       case .fillOpacity:
       case .strokeOpacity:

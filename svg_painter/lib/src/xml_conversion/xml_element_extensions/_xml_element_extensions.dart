@@ -6,6 +6,8 @@ export 'to_svg_defs.dart';
 export 'to_svg_element.dart';
 export 'to_svg_ellipse.dart';
 export 'to_svg_fe_component_transfer.dart';
+export 'to_svg_fe_drop_shadow.dart';
+export 'to_svg_fe_flood.dart';
 export 'to_svg_fe_func.dart';
 export 'to_svg_fe_gaussian_blur.dart';
 export 'to_svg_fe_merge.dart';

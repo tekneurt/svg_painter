@@ -6,9 +6,9 @@ part of '../../svg_element.dart';
 @immutable
 final class SvgUse extends SvgGraphicsElement with SvgFontAttributable, SvgBounded {
   const SvgUse({
-    required this.href,
     required this.x,
     required this.y,
+    this.href,
     this.width,
     this.height,
     super.title,
@@ -18,7 +18,7 @@ final class SvgUse extends SvgGraphicsElement with SvgFontAttributable, SvgBound
   });
 
   /// The URI reference to the element to be cloned.
-  final String href;
+  final String? href;
 
   @override
   final SvgLengthPercentage x;

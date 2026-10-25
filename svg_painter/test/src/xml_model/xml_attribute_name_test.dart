@@ -25,6 +25,8 @@ void main() {
           XmlAttributeName.fillRule => 'fill-rule',
           XmlAttributeName.filter => 'filter',
           XmlAttributeName.filterUnits => 'filterUnits',
+          XmlAttributeName.floodColor => 'flood-color',
+          XmlAttributeName.floodOpacity => 'flood-opacity',
           XmlAttributeName.fontFamily => 'font-family',
           XmlAttributeName.fontSize => 'font-size',
           XmlAttributeName.fontStyle => 'font-style',

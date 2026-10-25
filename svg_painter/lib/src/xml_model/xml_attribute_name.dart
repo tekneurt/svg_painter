@@ -74,6 +74,14 @@ enum XmlAttributeName {
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/filterUnits
   filterUnits('filterUnits'),
 
+  /// The color to use to flood the current filter primitive subregion.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/flood-color
+  floodColor('flood-color'),
+
+  /// The opacity to use to flood the current filter primitive subregion.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/flood-opacity
+  floodOpacity('flood-opacity'),
+
   /// The family of the font.
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/font-family
   fontFamily('font-family'),

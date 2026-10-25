@@ -47,6 +47,7 @@ extension ToSvgValue on XmlElement {
         .fillOpacity ||
         .strokeOpacity ||
         .stopOpacity ||
+        .floodOpacity ||
         .fontSize ||
         .startOffset ||
         .strokeDashoffset ||
@@ -68,7 +69,7 @@ extension ToSvgValue on XmlElement {
         .points => attributeValue.toSvgPointList(),
         .strokeDasharray => attributeValue.toSvgStrokeDasharray(),
         .fillRule => attributeValue.toSvgFillRule(),
-        .fill || .stroke || .stopColor || .color => attributeValue.toSvgColor(),
+        .fill || .stroke || .stopColor || .color || .floodColor => attributeValue.toSvgColor(),
         .strokeLinecap => attributeValue.toSvgStrokeLinecap(),
         .strokeLinejoin => attributeValue.toSvgStrokeLinejoin(),
         .fontWeight => attributeValue.toSvgFontWeight(),

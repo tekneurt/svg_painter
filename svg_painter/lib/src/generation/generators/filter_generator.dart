@@ -1,6 +1,7 @@
 import 'package:svg_painter_annotation/svg_painter_annotation.dart';
 
 import '../../painting_model/_painting_model.dart';
+import '../../svg_conversion/svg_value_extensions/svg_color_to_int.dart';
 import '../../svg_model/_svg_model.dart';
 import '../command_generator.dart';
 import '../generator_buffer.dart';
@@ -40,6 +41,65 @@ class FilterGenerator extends CommandGenerator<DefineFilter> {
     final List<SvgFilterPrimitive> primitives = command.primitives;
     if (primitives.isEmpty) {
       buffer.writeln('drawGraphic();');
+      return;
+    }
+
+    // Check if there is an feDropShadow
+    final int dropShadowIndex = primitives.indexWhere((SvgFilterPrimitive p) => p is SvgFeDropShadow);
+    if (dropShadowIndex != -1) {
+      final dropShadow = primitives[dropShadowIndex] as SvgFeDropShadow;
+      final int baseArgb = dropShadow.floodColor.toFillArgb();
+      final int alpha = (dropShadow.floodOpacity * 255.0).round().clamp(0, 255);
+      final int colorArgb = (baseArgb & 0x00FFFFFF) | (alpha << 24);
+      final String hex = colorArgb.toRadixString(16).toUpperCase().padLeft(8, '0');
+
+      final bool hasOffset = dropShadow.dx != 0.0 || dropShadow.dy != 0.0;
+      final bool hasBlur = dropShadow.stdDeviationX > 0.0 || dropShadow.stdDeviationY > 0.0;
+
+      // 1. Shadow pass
+      if (hasOffset) {
+        buffer.writeln('canvas.save();');
+        buffer.writeln('canvas.translate(${dropShadow.dx}, ${dropShadow.dy});');
+      }
+
+      if (hasBlur) {
+        final blurCode =
+            'ui.ImageFilter.blur(sigmaX: ${dropShadow.stdDeviationX}, sigmaY: ${dropShadow.stdDeviationY})';
+        buffer.writeln(
+          'canvas.saveLayer(null, Paint()..imageFilter = $blurCode..colorFilter = const ColorFilter.mode(Color(0x$hex), BlendMode.srcIn));',
+        );
+      } else {
+        buffer.writeln(
+          'canvas.saveLayer(null, Paint()..colorFilter = const ColorFilter.mode(Color(0x$hex), BlendMode.srcIn));',
+        );
+      }
+
+      buffer.writeln('drawGraphic();');
+      buffer.writeln('canvas.restore();');
+
+      if (hasOffset) {
+        buffer.writeln('canvas.restore();');
+      }
+
+      // 2. Original graphic pass
+      buffer.writeln('drawGraphic();');
+      return;
+    }
+
+    // Check if there is an feFlood
+    final int floodIndex = primitives.indexWhere((SvgFilterPrimitive p) => p is SvgFeFlood);
+    if (floodIndex != -1) {
+      final flood = primitives[floodIndex] as SvgFeFlood;
+      final int baseArgb = flood.floodColor.toFillArgb();
+      final int alpha = (flood.floodOpacity * 255.0).round().clamp(0, 255);
+      final int colorArgb = (baseArgb & 0x00FFFFFF) | (alpha << 24);
+      final String hex = colorArgb.toRadixString(16).toUpperCase().padLeft(8, '0');
+
+      buffer.writeln(
+        'canvas.saveLayer(null, Paint()..colorFilter = const ColorFilter.mode(Color(0x$hex), BlendMode.srcIn));',
+      );
+      buffer.writeln('drawGraphic();');
+      buffer.writeln('canvas.restore();');
       return;
     }
 

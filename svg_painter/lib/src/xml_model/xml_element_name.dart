@@ -30,6 +30,14 @@ enum XmlElementName {
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Element/feComponentTransfer
   feComponentTransfer('feComponentTransfer'),
 
+  /// The `<feDropShadow>` element.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Element/feDropShadow
+  feDropShadow('feDropShadow'),
+
+  /// The `<feFlood>` element.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Element/feFlood
+  feFlood('feFlood'),
+
   /// The `<feFuncA>` element.
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Element/feFuncA
   feFuncA('feFuncA'),

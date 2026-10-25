@@ -20,6 +20,8 @@ import 'attributes/fill_rule_evenodd_painter.dart';
 import 'attributes/fill_rule_nonzero_painter.dart';
 import 'attributes/fill_rule_painter.dart';
 import 'attributes/filter_painter.dart';
+import 'attributes/flood_color_attribute_painter.dart';
+import 'attributes/flood_opacity_attribute_painter.dart';
 import 'attributes/font_family_painter.dart';
 import 'attributes/font_size_painter.dart';
 import 'attributes/font_style_painter.dart';
@@ -176,6 +178,16 @@ _fixtures =
         tests: defaultGoldenTests,
       ),
       (painter: const FilterPainter(), name: 'filter_painter', tests: defaultGoldenTests),
+      (
+        painter: const FloodColorAttributePainter(),
+        name: 'flood_color_attribute_painter',
+        tests: defaultGoldenTests,
+      ),
+      (
+        painter: const FloodOpacityAttributePainter(),
+        name: 'flood_opacity_attribute_painter',
+        tests: defaultGoldenTests,
+      ),
       (
         painter: const FontFamilyPainter(),
         name: 'font_family_painter',

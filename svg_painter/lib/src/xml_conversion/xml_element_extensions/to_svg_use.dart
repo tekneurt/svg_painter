@@ -10,10 +10,8 @@ extension ToSvgUse on XmlElement {
   Result<SvgUse> toSvgUse() {
     const XmlElementName elementName = XmlElementName.use;
 
-    final String? href = toXmlAttributeValue(XmlAttributeName.href);
-    if (href == null) {
-      return const Failure<SvgUse>('use element must have an href attribute.');
-    }
+    final String? href = toXmlAttributeValue(XmlAttributeName.href) ??
+        toXmlAttributeValue(XmlAttributeName.xlinkHref);
 
     final SvgLengthPercentage x = toSvgValue<SvgLengthPercentage>(elementName, XmlAttributeName.x);
     final SvgLengthPercentage y = toSvgValue<SvgLengthPercentage>(elementName, XmlAttributeName.y);
