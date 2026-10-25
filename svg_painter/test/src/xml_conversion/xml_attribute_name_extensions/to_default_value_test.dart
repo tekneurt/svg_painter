@@ -173,6 +173,7 @@ void main() {
         XmlAttributeName.className,
         XmlAttributeName.style,
         XmlAttributeName.href,
+        XmlAttributeName.xlinkHref,
         XmlAttributeName.transform,
         XmlAttributeName.gradientTransform,
         XmlAttributeName.fontSize,

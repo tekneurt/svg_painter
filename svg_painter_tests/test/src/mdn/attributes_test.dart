@@ -29,6 +29,8 @@ import 'attributes/fx_painter.dart';
 import 'attributes/fy_painter.dart';
 import 'attributes/gradient_transform_painter.dart';
 import 'attributes/height_painter.dart';
+import 'attributes/href_a_painter.dart';
+import 'attributes/href_image_painter.dart';
 import 'attributes/id_painter.dart';
 import 'attributes/marker_end_painter.dart';
 import 'attributes/marker_mid_painter.dart';
@@ -91,6 +93,7 @@ import 'attributes/x2_linear_gradient_painter.dart';
 import 'attributes/x_examples_painter.dart';
 import 'attributes/x_text_painter.dart';
 import 'attributes/x_tspan_painter.dart';
+import 'attributes/xlink_href_painter.dart';
 import 'attributes/xml_space_painter.dart';
 import 'attributes/y1_examples_painter.dart';
 import 'attributes/y1_line_painter.dart';
@@ -215,6 +218,7 @@ _fixtures =
         tests: macOsOverrideGoldenTests,
       ),
       (painter: const HeightPainter(), name: 'height_painter', tests: defaultGoldenTests),
+      (painter: const HrefAPainter(), name: 'href_a_painter', tests: defaultGoldenTests),
       (painter: const IdPainter(), name: 'id_painter', tests: defaultGoldenTests),
       (painter: const MarkerEndPainter(), name: 'marker_end_painter', tests: defaultGoldenTests),
       (painter: const MarkerMidPainter(), name: 'marker_mid_painter', tests: defaultGoldenTests),
@@ -455,6 +459,11 @@ _fixtures =
         tests: defaultGoldenTests,
       ),
       (
+        painter: const XlinkHrefPainter(),
+        name: 'xlink_href_painter',
+        tests: defaultGoldenTests,
+      ),
+      (
         painter: const XmlSpacePainter(),
         name: 'xml_space_painter',
         tests: macOsOverrideGoldenTests,
@@ -515,6 +524,18 @@ void main() {
         folder: 'attributes',
         tests: defaultGoldenTests,
         nativeSize: const Size(200, 200),
+      );
+    });
+
+    testWidgets('href_image_painter', (WidgetTester tester) async {
+      await testDualResolutionWidget(
+        tester: tester,
+        widget: const HrefImagePainterWidget(),
+        name: 'href_image_painter',
+        type: SvgTestType.mdn,
+        folder: 'attributes',
+        tests: defaultGoldenTests,
+        nativeSize: const Size(100, 100),
       );
     });
   });

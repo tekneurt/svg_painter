@@ -126,6 +126,7 @@ extension ToDefaultValue on XmlAttributeName {
       case .className:
       case .style:
       case .href:
+      case .xlinkHref:
       case .transform:
       case .gradientTransform:
       case .fontSize:

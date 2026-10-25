@@ -96,6 +96,7 @@ void main() {
           XmlAttributeName.x => 'x',
           XmlAttributeName.x1 => 'x1',
           XmlAttributeName.x2 => 'x2',
+          XmlAttributeName.xlinkHref => 'xlink:href',
           XmlAttributeName.xmlSpace => 'xml:space',
           XmlAttributeName.y => 'y',
           XmlAttributeName.y1 => 'y1',

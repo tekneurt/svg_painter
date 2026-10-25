@@ -101,6 +101,7 @@ extension ToSvgValue on XmlElement {
         .className ||
         .style ||
         .href ||
+        .xlinkHref ||
         .marker ||
         .markerStart ||
         .markerMid ||

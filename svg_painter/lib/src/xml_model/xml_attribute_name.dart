@@ -358,6 +358,10 @@ enum XmlAttributeName {
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/x2
   x2('x2'),
 
+  /// The `xlink:href` attribute.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/xlink:href
+  xlinkHref('xlink:href'),
+
   /// The xml:space attribute.
   /// https://www.w3.org/TR/SVG11/styling.html#XMLSpaceAttribute
   xmlSpace('xml:space'),
