@@ -114,6 +114,14 @@ Map<String, String> _resolveCssRules(
         resolvedRules.addAll(rules);
       }
     }
+
+    // Compound element.class selector rules (e.g. rect.rectClass)
+    for (final className in classes) {
+      final Map<String, String>? compoundRules = context.styleSheet.rules['$tagName.$className'];
+      if (compoundRules != null) {
+        resolvedRules.addAll(compoundRules);
+      }
+    }
   }
 
   // c. ID selector rules

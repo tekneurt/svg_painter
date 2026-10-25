@@ -25,9 +25,9 @@ extension ToSvgElement on XmlElement {
 
       switch (elementName) {
         case .svg:
-          // Only the root element of the document should be mapped to SvgRoot.
+          // Only the root SVG element of the document should be mapped to SvgRoot.
           // Nested <svg> elements are standard SvgSvg containers.
-          return parent is XmlDocument ? toSvgRoot() : _toSvgSvg();
+          return _isRootSvg(this) ? toSvgRoot() : _toSvgSvg();
         case .circle:
           return toSvgCircle();
         case .ellipse:
@@ -162,5 +162,16 @@ extension ToSvgElement on XmlElement {
         coreAttributes: common.core,
       ),
     );
+  }
+
+  bool _isRootSvg(XmlElement element) {
+    XmlElement? current = element.parentElement;
+    while (current != null) {
+      if (current.name.local == XmlElementName.svg.tagName) {
+        return false;
+      }
+      current = current.parentElement;
+    }
+    return true;
   }
 }

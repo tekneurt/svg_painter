@@ -1,3 +1,4 @@
+export 'class.dart';
 export 'clip_path.dart';
 export 'clip_path_units.dart';
 export 'color.dart';

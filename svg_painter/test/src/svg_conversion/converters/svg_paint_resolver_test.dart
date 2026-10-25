@@ -183,6 +183,30 @@ void main() {
       expect(style.fill?.colorArgb, 0xFFFF0000); // Red
     });
 
+    test('should resolve compound element.class selector when tag and class match', () {
+      // Arrange
+      const sheet = SvgStyleSheet(<String, Map<String, String>>{
+        'myClass': <String, String>{'fill': 'blue', 'stroke': 'yellow'},
+        'rect.myClass': <String, String>{'fill': 'green'},
+      });
+      const context = SvgPaintingContext(
+        viewBoxWidth: 100,
+        viewBoxHeight: 100,
+        styleSheet: sheet,
+      );
+
+      // Act
+      final PaintingStyle style = resolvePaint(
+        context,
+        tagName: 'rect',
+        coreAttributes: const SvgCoreAttributes(cssClass: 'myClass'),
+      );
+
+      // Assert
+      expect(style.fill?.colorArgb, 0xFF008000);
+      expect(style.stroke?.colorArgb, 0xFFFFFF00);
+    });
+
     test('should mark fill/stroke as explicit if from CSS', () {
       const sheet = SvgStyleSheet(<String, Map<String, String>>{
         'myClass': <String, String>{'fill': 'green'},
