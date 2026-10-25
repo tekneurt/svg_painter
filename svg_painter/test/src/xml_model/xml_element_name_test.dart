@@ -7,6 +7,7 @@ void main() {
       // Arrange & Act & Assert
       for (final XmlElementName value in XmlElementName.values) {
         final String expected = switch (value) {
+          XmlElementName.a => 'a',
           XmlElementName.circle => 'circle',
           XmlElementName.clipPath => 'clipPath',
           XmlElementName.defs => 'defs',

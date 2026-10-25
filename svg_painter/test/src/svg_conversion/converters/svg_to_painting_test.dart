@@ -616,6 +616,40 @@ void main() {
       });
     });
 
+    group('SvgA', () {
+      test('should wrap children in DrawGroup with opacity and styling when converted', () {
+        // Arrange
+        const rect = SvgRect(
+          x: SvgLength(10),
+          y: SvgLength(20),
+          width: SvgLength(30),
+          height: SvgLength(40),
+          rx: SvgLength(0),
+          ry: SvgLength(0),
+        );
+        const a = SvgA(
+          children: <SvgElement>[rect],
+          href: 'https://developer.mozilla.org',
+          presentationAttributes: SvgPresentationAttributes(
+            graphics: SvgGraphicsAttributes(opacity: SvgPercentage(75)),
+          ),
+        );
+        const root = SvgRoot(children: <SvgElement>[a]);
+
+        // Act
+        final Result<List<PaintCommand>> result = root.toPaintCommands();
+
+        // Assert
+        final List<PaintCommand> commands = (result as Success<List<PaintCommand>>).value;
+        final rootGroup = commands.single as DrawGroup;
+        expect(rootGroup.commands.single, isA<DrawGroup>());
+        final drawGroup = rootGroup.commands.single as DrawGroup;
+        expect(drawGroup.opacity, 0.75);
+        expect(drawGroup.commands.length, 1);
+        expect(drawGroup.commands.single, isA<DrawRect>());
+      });
+    });
+
     group('Delegation', () {
       test('should delegate to all element types', () {
         final elements = <SvgElement>[

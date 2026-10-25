@@ -31,6 +31,7 @@ part 'elements/base/svg_viewport_attributable.dart';
 part 'elements/base/svg_bounded.dart';
 
 // Containers
+part 'elements/containers/svg_a.dart';
 part 'elements/containers/svg_container_element.dart';
 part 'elements/containers/svg_defs.dart';
 part 'elements/containers/svg_filter.dart';

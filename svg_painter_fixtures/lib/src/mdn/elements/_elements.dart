@@ -1,3 +1,4 @@
+export 'a.dart';
 export 'circle.dart';
 export 'clip_path.dart';
 export 'defs.dart';

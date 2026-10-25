@@ -24,6 +24,8 @@ extension ToSvgElement on XmlElement {
       }
 
       switch (elementName) {
+        case .a:
+          return toSvgA();
         case .svg:
           // Only the root SVG element of the document should be mapped to SvgRoot.
           // Nested <svg> elements are standard SvgSvg containers.

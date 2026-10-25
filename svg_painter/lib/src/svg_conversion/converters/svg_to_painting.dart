@@ -95,7 +95,7 @@ extension SvgElementToPaintCommands on SvgElement {
         self is SvgLinearGradient;
 
     if (resolved.display == SvgDisplay.none) {
-      if (context.isDefinition && (self is SvgGroup || isDefinitionElement)) {
+      if (context.isDefinition && (self is SvgGroup || self is SvgA || isDefinitionElement)) {
         // Definitions inside <defs> (and <g> containers grouping them) are processed
         // to discover definitions regardless of display property.
       } else {
@@ -125,6 +125,7 @@ extension SvgElementToPaintCommands on SvgElement {
       // Containers
       final SvgSvg container => container.toPaintCommandsSvg(childContext),
       final SvgGroup group => group._toPaintCommandsGroup(childContext),
+      final SvgA a => a._toPaintCommandsA(childContext),
 
       // Basic Shapes (Geometry)
       final SvgCircle circle => circle.toPaintCommands(context),
@@ -373,6 +374,33 @@ extension _SvgGroupToPaintCommands on SvgGroup {
   }
 }
 
+extension _SvgAToPaintCommands on SvgA {
+  Result<List<PaintCommand>> _toPaintCommandsA(SvgPaintingContext context) {
+    // Determine if we should use saveLayer (group opacity).
+    final double resolvedOpacity = opacity.resolveOpacity(context);
+
+    final PaintingStyle style = resolvePaint(
+      context,
+      tagName: 'a',
+      coreAttributes: coreAttributes,
+      presentationAttributes: presentationAttributes,
+    );
+
+    return children.map((SvgElement child) => child.toPaintCommands(context)).combine().map((
+      List<PaintCommand> childCommands,
+    ) {
+      return <PaintCommand>[
+        DrawGroup(
+          commands: childCommands,
+          style: style,
+          id: id,
+          opacity: resolvedOpacity,
+        ),
+      ];
+    });
+  }
+}
+
 String _elementTagName(SvgElement element) => switch (element) {
   SvgRect _ => 'rect',
   SvgCircle _ => 'circle',
@@ -383,6 +411,7 @@ String _elementTagName(SvgElement element) => switch (element) {
   SvgPath _ => 'path',
   SvgText _ => 'text',
   SvgGroup _ => 'g',
+  SvgA _ => 'a',
   SvgUse _ => 'use',
   SvgImage _ => 'image',
   SvgSvg _ => 'svg',

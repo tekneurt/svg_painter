@@ -2,6 +2,10 @@
 ///
 /// See: https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Element
 enum XmlElementName {
+  /// The `<a>` element.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Element/a
+  a('a'),
+
   /// The `<circle>` element.
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Element/circle
   circle('circle'),

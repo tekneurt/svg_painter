@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../test_utils.dart';
+import 'elements/a_painter.dart';
 import 'elements/circle_painter.dart';
 import 'elements/clip_path_painter.dart';
 import 'elements/defs_painter.dart';
@@ -56,6 +57,13 @@ _fixtures =
         Map<GoldenTestType, Set<TargetPlatform>?> tests,
       })
     >[
+      (
+        painter: const APainter(),
+        name: 'a_painter',
+        tests: defaultGoldenTests,
+        widget: null,
+        nativeSize: null,
+      ),
       (
         painter: const CirclePainter(),
         name: 'circle_painter',
