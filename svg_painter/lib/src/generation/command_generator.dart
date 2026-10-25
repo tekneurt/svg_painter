@@ -7,6 +7,7 @@ import '../svg_model/_svg_model.dart';
 import 'generator_buffer.dart';
 import 'models.dart';
 import 'palette_analyzer.dart';
+import 'svg_id_formatter.dart';
 
 /// Base class for all command-specific code generators.
 abstract class CommandGenerator<T extends PaintCommand> {
@@ -138,7 +139,8 @@ abstract class CommandGenerator<T extends PaintCommand> {
     String boundsRect,
   ) {
     if (clipPathId case final id?) {
-      buffer.writeln('_clipPath_$id(canvas, size, $boundsRect);');
+      final String cleanId = SvgIdFormatter.sanitizeId(id);
+      buffer.writeln('_clipPath_$cleanId(canvas, size, $boundsRect);');
     }
   }
 
@@ -160,7 +162,8 @@ abstract class CommandGenerator<T extends PaintCommand> {
       },
       footer: ']));',
     );
-    buffer.writeln('_mask_$maskId(canvas, size, $boundsRect);');
+    final String cleanMaskId = SvgIdFormatter.sanitizeId(maskId);
+    buffer.writeln('_mask_$cleanMaskId(canvas, size, $boundsRect);');
     buffer.writeln('canvas.restore();');
     buffer.writeln('canvas.restore();');
   }
@@ -170,7 +173,8 @@ abstract class CommandGenerator<T extends PaintCommand> {
     String filterId,
     void Function() body,
   ) {
-    buffer.writeBlock('_filter_$filterId(canvas, () {', () {
+    final String cleanFilterId = SvgIdFormatter.sanitizeId(filterId);
+    buffer.writeBlock('_filter_$cleanFilterId(canvas, () {', () {
       body();
     }, footer: '});');
   }

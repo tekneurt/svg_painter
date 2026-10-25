@@ -6,6 +6,7 @@ import '../command_generator.dart';
 import '../generator_buffer.dart';
 import '../models.dart';
 import '../palette_analyzer.dart';
+import '../svg_id_formatter.dart';
 
 /// Generator for [DefineFilter] commands.
 class FilterGenerator extends CommandGenerator<DefineFilter> {
@@ -26,8 +27,9 @@ class FilterGenerator extends CommandGenerator<DefineFilter> {
     SvgColorMapping colorMapping = SvgColorMapping.material,
     bool isInsideMarker = false,
   }) {
+    final String filterId = SvgIdFormatter.sanitizeId(command.id);
     buffer.writeBlock(
-      'void _filter_${command.id}(Canvas canvas, void Function() drawGraphic) {',
+      'void _filter_$filterId(Canvas canvas, void Function() drawGraphic) {',
       () {
         _generateFilterBody(command, buffer);
       },
@@ -66,19 +68,62 @@ class FilterGenerator extends CommandGenerator<DefineFilter> {
     GeneratorBuffer buffer,
   ) {
     final activePrimitives = <SvgFilterPrimitive>[];
-    for (final p in primitives) {
-      activePrimitives.add(p);
-      if (targetResult != null && p.result == targetResult) {
+
+    // 1. Locate the starting primitive for the pipeline.
+    SvgFilterPrimitive? currentPrimitive;
+    var currentIndex = -1;
+    if (targetResult != null) {
+      for (var i = 0; i < primitives.length; i++) {
+        if (primitives[i].result == targetResult) {
+          currentPrimitive = primitives[i];
+          currentIndex = i;
+          break;
+        }
+      }
+    } else if (primitives.isNotEmpty) {
+      currentIndex = primitives.length - 1;
+      currentPrimitive = primitives.last;
+    }
+
+    // 2. Trace backwards through inputs.
+    while (currentPrimitive != null) {
+      activePrimitives.add(currentPrimitive);
+      final String? inSource = currentPrimitive.inSource;
+      if (inSource == 'SourceGraphic' || inSource == 'SourceAlpha') {
         break;
       }
+      if (inSource != null) {
+        // Trace to the primitive that produced this result.
+        SvgFilterPrimitive? nextPrimitive;
+        var nextIndex = -1;
+        for (int i = currentIndex - 1; i >= 0; i--) {
+          if (primitives[i].result == inSource) {
+            nextPrimitive = primitives[i];
+            nextIndex = i;
+            break;
+          }
+        }
+        currentPrimitive = nextPrimitive;
+        currentIndex = nextIndex;
+      } else {
+        // When inSource is omitted, implicitly depend on immediately preceding primitive.
+        if (currentIndex > 0) {
+          currentIndex--;
+          currentPrimitive = primitives[currentIndex];
+        } else {
+          currentPrimitive = null;
+        }
+      }
     }
+
+    final List<SvgFilterPrimitive> orderedPrimitives = activePrimitives.reversed.toList();
 
     SvgFeOffset? offset;
     SvgFeGaussianBlur? blur;
     SvgFeComponentTransfer? componentTransfer;
     var isSourceAlpha = false;
 
-    for (final p in activePrimitives) {
+    for (final p in orderedPrimitives) {
       if (p is SvgFeOffset) {
         offset = p;
       } else if (p is SvgFeGaussianBlur) {

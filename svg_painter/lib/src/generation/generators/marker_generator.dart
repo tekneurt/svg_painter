@@ -8,6 +8,7 @@ import '../command_generator.dart';
 import '../generator_buffer.dart';
 import '../models.dart';
 import '../palette_analyzer.dart';
+import '../svg_id_formatter.dart';
 
 /// Generator for [DefineMarker] commands.
 class MarkerGenerator extends CommandGenerator<DefineMarker> {
@@ -32,7 +33,7 @@ class MarkerGenerator extends CommandGenerator<DefineMarker> {
       return;
     }
 
-    final String markerId = command.id ?? '';
+    final String markerId = SvgIdFormatter.sanitizeId(command.id);
     buffer.writeBlock(
       'void _marker_$markerId(Canvas canvas, Offset position, double tangentAngle, double strokeWidth, {bool isStart = false, Paint? contextFill, Paint? contextStroke}) {',
       () {

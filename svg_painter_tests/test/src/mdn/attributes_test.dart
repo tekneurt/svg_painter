@@ -36,6 +36,8 @@ import 'attributes/mask_content_units_painter.dart';
 import 'attributes/mask_painter.dart';
 import 'attributes/mask_units_painter.dart';
 import 'attributes/media_painter.dart';
+import 'attributes/offset_component_transfer_painter.dart';
+import 'attributes/offset_gradient_stop_painter.dart';
 import 'attributes/opacity_painter.dart';
 import 'attributes/orient_painter.dart';
 import 'attributes/overflow_painter.dart';
@@ -235,6 +237,16 @@ _fixtures =
         tests: defaultGoldenTests,
       ),
       (painter: const MediaPainter(), name: 'media_painter', tests: defaultGoldenTests),
+      (
+        painter: const OffsetGradientStopPainter(),
+        name: 'offset_gradient_stop_painter',
+        tests: defaultGoldenTests,
+      ),
+      (
+        painter: const OffsetComponentTransferPainter(),
+        name: 'offset_component_transfer_painter',
+        tests: defaultGoldenTests,
+      ),
       (painter: const OpacityPainter(), name: 'opacity_painter', tests: defaultGoldenTests),
       (painter: const OrientPainter(), name: 'orient_painter', tests: defaultGoldenTests),
       (painter: const OverflowPainter(), name: 'overflow_painter', tests: defaultGoldenTests),

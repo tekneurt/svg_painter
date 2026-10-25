@@ -7,6 +7,7 @@ import '../models.dart';
 import '../palette_analyzer.dart';
 import '../path_marker_extractor.dart';
 import '../shape_generator.dart';
+import '../svg_id_formatter.dart';
 
 class LineGenerator extends ShapeGenerator<DrawLine> {
   const LineGenerator();
@@ -80,12 +81,14 @@ class LineGenerator extends ShapeGenerator<DrawLine> {
                 final strokeArg = strokePaintVar != null ? ', contextStroke: $strokePaintVar' : '';
                 for (final v in vertices) {
                   if (v.isStart && markerStart != null) {
+                    final String cleanStart = SvgIdFormatter.sanitizeId(markerStart);
                     buffer.writeln(
-                      '_marker_$markerStart(canvas, const Offset(${v.x}, ${v.y}), ${v.angle}, $strokeWidth, isStart: true$fillArg$strokeArg);',
+                      '_marker_$cleanStart(canvas, const Offset(${v.x}, ${v.y}), ${v.angle}, $strokeWidth, isStart: true$fillArg$strokeArg);',
                     );
                   } else if (v.isEnd && markerEnd != null) {
+                    final String cleanEnd = SvgIdFormatter.sanitizeId(markerEnd);
                     buffer.writeln(
-                      '_marker_$markerEnd(canvas, const Offset(${v.x}, ${v.y}), ${v.angle}, $strokeWidth$fillArg$strokeArg);',
+                      '_marker_$cleanEnd(canvas, const Offset(${v.x}, ${v.y}), ${v.angle}, $strokeWidth$fillArg$strokeArg);',
                     );
                   }
                 }

@@ -7,6 +7,7 @@ import '../generation_extensions.dart';
 import '../generator_buffer.dart';
 import '../models.dart';
 import '../palette_analyzer.dart';
+import '../svg_id_formatter.dart';
 
 class LinearGradientGenerator extends CommandGenerator<DefineLinearGradient> {
   const LinearGradientGenerator();
@@ -26,7 +27,7 @@ class LinearGradientGenerator extends CommandGenerator<DefineLinearGradient> {
     SvgColorMapping colorMapping = SvgColorMapping.material,
     bool isInsideMarker = false,
   }) {
-    final varName = '_grad_${command.id}';
+    final varName = '_grad_${SvgIdFormatter.sanitizeId(command.id)}';
 
     buffer.writeBlock('final Gradient $varName = LinearGradient(', () {
       buffer.writeln('begin: Alignment(${command.x1 * 2 - 1}, ${command.y1 * 2 - 1}),');

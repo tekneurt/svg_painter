@@ -8,6 +8,7 @@ import '../models.dart';
 import '../palette_analyzer.dart';
 import '../path_marker_extractor.dart';
 import '../shape_generator.dart';
+import '../svg_id_formatter.dart';
 
 class PathGenerator extends ShapeGenerator<DrawPath> {
   const PathGenerator();
@@ -118,20 +119,23 @@ class PathGenerator extends ShapeGenerator<DrawPath> {
                   for (final v in vertices) {
                     if (v.isStart) {
                       if (markerStart != null) {
+                        final String cleanStart = SvgIdFormatter.sanitizeId(markerStart);
                         buffer.writeln(
-                          '_marker_$markerStart(canvas, const Offset(${v.x}, ${v.y}), ${v.angle}, $strokeWidth, isStart: true$fillArg$strokeArg);',
+                          '_marker_$cleanStart(canvas, const Offset(${v.x}, ${v.y}), ${v.angle}, $strokeWidth, isStart: true$fillArg$strokeArg);',
                         );
                       }
                     } else if (v.isEnd) {
                       if (markerEnd != null) {
+                        final String cleanEnd = SvgIdFormatter.sanitizeId(markerEnd);
                         buffer.writeln(
-                          '_marker_$markerEnd(canvas, const Offset(${v.x}, ${v.y}), ${v.angle}, $strokeWidth$fillArg$strokeArg);',
+                          '_marker_$cleanEnd(canvas, const Offset(${v.x}, ${v.y}), ${v.angle}, $strokeWidth$fillArg$strokeArg);',
                         );
                       }
                     } else {
                       if (markerMid != null) {
+                        final String cleanMid = SvgIdFormatter.sanitizeId(markerMid);
                         buffer.writeln(
-                          '_marker_$markerMid(canvas, const Offset(${v.x}, ${v.y}), ${v.angle}, $strokeWidth$fillArg$strokeArg);',
+                          '_marker_$cleanMid(canvas, const Offset(${v.x}, ${v.y}), ${v.angle}, $strokeWidth$fillArg$strokeArg);',
                         );
                       }
                     }

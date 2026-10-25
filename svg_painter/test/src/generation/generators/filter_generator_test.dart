@@ -137,5 +137,40 @@ void main() {
       expect(output, contains('drawGraphic();'));
       expect(output, contains('canvas.restore();'));
     });
+
+    test('should not apply preceding feOffset when feGaussianBlur explicitly uses SourceGraphic', () {
+      // Arrange
+      const generator = FilterGenerator();
+      const command = DefineFilter(
+        id: 'independentBlur',
+        primitives: <SvgFilterPrimitive>[
+          SvgFeOffset(inSource: 'SourceGraphic', dx: 60.0, dy: 60.0),
+          SvgFeGaussianBlur(inSource: 'SourceGraphic', stdDeviationX: 5.0, stdDeviationY: 5.0, result: 'blur2'),
+          SvgFeMerge(
+            nodes: <SvgFeMergeNode>[
+              SvgFeMergeNode(inSource: 'blur2'),
+              SvgFeMergeNode(inSource: 'SourceGraphic'),
+            ],
+          ),
+        ],
+      );
+      final buffer = GeneratorBuffer();
+
+      // Act
+      generator.generate(command, buffer);
+
+      // Assert
+      final output = buffer.toString();
+      expect(output, contains('void _filter_independentBlur(Canvas canvas, void Function() drawGraphic) {'));
+      expect(output, isNot(contains('canvas.translate(60.0, 60.0);')));
+      expect(
+        output,
+        contains(
+          'canvas.saveLayer(null, Paint()..imageFilter = ui.ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0));',
+        ),
+      );
+      expect(output, contains('drawGraphic();'));
+      expect(output, contains('canvas.restore();'));
+    });
   });
 }

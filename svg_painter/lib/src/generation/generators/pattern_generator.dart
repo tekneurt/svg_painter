@@ -7,6 +7,7 @@ import '../generation_extensions.dart';
 import '../generator_buffer.dart';
 import '../models.dart';
 import '../palette_analyzer.dart';
+import '../svg_id_formatter.dart';
 
 /// Generator for [DefinePattern] commands.
 class PatternGenerator extends CommandGenerator<DefinePattern> {
@@ -31,7 +32,7 @@ class PatternGenerator extends CommandGenerator<DefinePattern> {
       return;
     }
 
-    final String patternId = command.id ?? '';
+    final String patternId = SvgIdFormatter.sanitizeId(command.id);
     buffer.writeBlock(
       'ImageShader? _createPattern_$patternId(Rect targetBounds) {',
       () {

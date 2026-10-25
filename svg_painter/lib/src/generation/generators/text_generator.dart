@@ -7,6 +7,7 @@ import '../generator_buffer.dart';
 import '../models.dart';
 import '../palette_analyzer.dart';
 import '../shape_generator.dart';
+import '../svg_id_formatter.dart';
 
 class TextGenerator extends ShapeGenerator<DrawText> {
   const TextGenerator();
@@ -206,8 +207,9 @@ class TextGenerator extends ShapeGenerator<DrawText> {
                 : style.fill;
             if (fill != null) {
               if (fill.shaderId != null) {
+                final String cleanShaderId = SvgIdFormatter.sanitizeId(fill.shaderId);
                 buffer.writeln(
-                  'foreground: Paint()..shader = _grad_${fill.shaderId}.createShader(Rect.zero),',
+                  'foreground: Paint()..shader = _grad_$cleanShaderId.createShader(Rect.zero),',
                 );
               } else if (fill.colorArgb != null) {
                 final String colorCode = FlutterColorMap.getColorCode(

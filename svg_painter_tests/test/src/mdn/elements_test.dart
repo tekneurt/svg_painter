@@ -10,6 +10,7 @@ import 'elements/ellipse_painter.dart';
 import 'elements/fe_component_transfer_element_painter.dart';
 import 'elements/fe_gaussian_blur_element_painter.dart';
 import 'elements/fe_merge_element_painter.dart';
+import 'elements/fe_merge_node_element_painter.dart';
 import 'elements/fe_offset_element_painter.dart';
 import 'elements/filter_element_painter.dart';
 import 'elements/g_painter.dart';
@@ -114,6 +115,13 @@ _fixtures =
       (
         painter: const FeMergeElementPainter(),
         name: 'fe_merge_element_painter',
+        tests: defaultGoldenTests,
+        widget: null,
+        nativeSize: null,
+      ),
+      (
+        painter: const FeMergeNodeElementPainter(),
+        name: 'fe_merge_node_element_painter',
         tests: defaultGoldenTests,
         widget: null,
         nativeSize: null,

@@ -6,6 +6,7 @@ export 'ellipse.dart';
 export 'fe_component_transfer.dart';
 export 'fe_gaussian_blur.dart';
 export 'fe_merge.dart';
+export 'fe_merge_node.dart';
 export 'fe_offset.dart';
 export 'filter.dart';
 export 'g.dart';

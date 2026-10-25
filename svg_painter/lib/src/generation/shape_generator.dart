@@ -439,7 +439,8 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
         );
       }
     } else if (style.patternId != null) {
-      buffer.writeln('$paintVar.shader = _createPattern_${style.patternId}($boundsRect);');
+      final String cleanPatternId = SvgIdFormatter.sanitizeId(style.patternId);
+      buffer.writeln('$paintVar.shader = _createPattern_$cleanPatternId($boundsRect);');
       if (style.opacity != 1.0) {
         buffer.writeln('$paintVar.color = $paintVar.color.withValues(alpha: ${style.opacity});');
       }
@@ -476,7 +477,8 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
       final shaderRect = style.shaderUnits == PaintingGradientUnits.userSpaceOnUse
           ? 'viewBoxRect'
           : boundsRect;
-      buffer.writeln('$paintVar.shader = _grad_${style.shaderId}.createShader($shaderRect);');
+      final String cleanShaderId = SvgIdFormatter.sanitizeId(style.shaderId);
+      buffer.writeln('$paintVar.shader = _grad_$cleanShaderId.createShader($shaderRect);');
       if (style.opacity != 1.0) {
         buffer.writeln('$paintVar.color = $paintVar.color.withValues(alpha: ${style.opacity});');
       }

@@ -7,6 +7,7 @@ import '../command_generator.dart';
 import '../generator_buffer.dart';
 import '../models.dart';
 import '../palette_analyzer.dart';
+import '../svg_id_formatter.dart';
 
 /// Generator for [DefineMask] commands.
 class MaskGenerator extends CommandGenerator<DefineMask> {
@@ -31,7 +32,8 @@ class MaskGenerator extends CommandGenerator<DefineMask> {
       return;
     }
 
-    buffer.writeBlock('void _mask_${command.id}(Canvas canvas, Size size, Rect targetBounds) {', () {
+    final String cleanId = SvgIdFormatter.sanitizeId(command.id);
+    buffer.writeBlock('void _mask_$cleanId(Canvas canvas, Size size, Rect targetBounds) {', () {
       final isContentOBox = command.maskContentUnits == PaintingGradientUnits.objectBoundingBox;
       final isMaskOBox = command.maskUnits == PaintingGradientUnits.objectBoundingBox;
 

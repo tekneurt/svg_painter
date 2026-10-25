@@ -29,6 +29,7 @@ export 'mask.dart';
 export 'mask_content_units.dart';
 export 'mask_units.dart';
 export 'media.dart';
+export 'offset.dart';
 export 'opacity.dart';
 export 'orient.dart';
 export 'overflow.dart';

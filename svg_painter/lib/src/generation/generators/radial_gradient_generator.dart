@@ -7,6 +7,7 @@ import '../generation_extensions.dart';
 import '../generator_buffer.dart';
 import '../models.dart';
 import '../palette_analyzer.dart';
+import '../svg_id_formatter.dart';
 
 class RadialGradientGenerator extends CommandGenerator<DefineRadialGradient> {
   const RadialGradientGenerator();
@@ -26,7 +27,7 @@ class RadialGradientGenerator extends CommandGenerator<DefineRadialGradient> {
     SvgColorMapping colorMapping = SvgColorMapping.material,
     bool isInsideMarker = false,
   }) {
-    final varName = '_grad_${command.id}';
+    final varName = '_grad_${SvgIdFormatter.sanitizeId(command.id)}';
 
     final bool needsStretch = gradientsNeedingStretch?.contains(command.id) ?? false;
 
