@@ -130,37 +130,38 @@ extension SvgTextToPaintCommands on SvgText {
               (child.dx?.toList().length ?? 0) > 1 ||
               (child.dy?.toList().length ?? 0) > 1;
 
+          final double startX =
+              (child.primaryX ?? primaryX).resolve(spanContext, .horizontal) + spanDx;
+          final double startY =
+              (child.primaryY ?? primaryY).resolve(spanContext, .vertical) + spanDy;
+          final PaintingTextSpan span = _buildSpan(child.children, spanContext, 'tspan');
+
           if (childHasMulti) {
-            final String childText = _extractText(child.children);
-            final List<PaintingTextChunk> chunks = _buildChunks(
-              text: childText,
+            final List<_StyledCharacter> styledChars = _extractStyledCharacters(
+              child.children,
+              spanContext,
+              spanStyle,
+            );
+            final List<PaintingTextChunk> chunks = _buildStyledChunks(
+              styledCharacters: styledChars,
               context: spanContext,
-              style: spanStyle,
+              defaultStyle: spanStyle,
               xCoord: child.x,
               yCoord: child.y,
               dxCoord: child.dx,
               dyCoord: child.dy,
             );
-            final double startX =
-                (child.primaryX ?? primaryX).resolve(spanContext, .horizontal) + spanDx;
-            final double startY =
-                (child.primaryY ?? primaryY).resolve(spanContext, .vertical) + spanDy;
             commands.add(
               DrawText(
                 x: startX,
                 y: startY,
-                rootSpan: PaintingTextSpan(text: childText, style: spanStyle),
+                rootSpan: span,
                 style: spanStyle,
                 chunks: chunks,
                 id: child.id,
               ),
             );
           } else {
-            final double startX =
-                (child.primaryX ?? primaryX).resolve(spanContext, .horizontal) + spanDx;
-            final double startY =
-                (child.primaryY ?? primaryY).resolve(spanContext, .vertical) + spanDy;
-            final PaintingTextSpan span = _buildSpan(child.children, spanContext, 'tspan');
             commands.add(
               DrawText(
                 x: startX,
@@ -172,6 +173,9 @@ extension SvgTextToPaintCommands on SvgText {
             );
           }
         } else if (child is SvgCharacterData) {
+          if (child.text.trim().isEmpty) {
+            continue;
+          }
           if (textResolvedAttrs.visibility == SvgVisibility.hidden ||
               textResolvedAttrs.visibility == SvgVisibility.collapse) {
             continue;
@@ -194,21 +198,26 @@ extension SvgTextToPaintCommands on SvgText {
           textResolvedAttrs.visibility == SvgVisibility.collapse) {
         return const Success<List<PaintCommand>>(<PaintCommand>[]);
       }
-      final String text = _extractText(children);
-      final List<PaintingTextChunk> chunks = _buildChunks(
-        text: text,
+      final List<_StyledCharacter> styledChars = _extractStyledCharacters(
+        children,
+        textContext,
+        style,
+      );
+      final List<PaintingTextChunk> chunks = _buildStyledChunks(
+        styledCharacters: styledChars,
         context: textContext,
-        style: style,
+        defaultStyle: style,
         xCoord: x,
         yCoord: y,
         dxCoord: dx,
         dyCoord: dy,
       );
+      final PaintingTextSpan rootSpan = _buildSpan(children, textContext, 'text');
       return Success<List<PaintCommand>>(<PaintCommand>[
         DrawText(
           x: finalX,
           y: finalY,
-          rootSpan: PaintingTextSpan(text: text, style: style),
+          rootSpan: rootSpan,
           style: style,
           chunks: chunks,
           id: id,
@@ -238,10 +247,46 @@ extension SvgTextToPaintCommands on SvgText {
     return buffer.toString();
   }
 
-  List<PaintingTextChunk> _buildChunks({
-    required String text,
+  List<_StyledCharacter> _extractStyledCharacters(
+    List<SvgTextContent> contents,
+    SvgPaintingContext context,
+    PaintingStyle currentStyle,
+  ) {
+    final result = <_StyledCharacter>[];
+    for (final content in contents) {
+      if (content is SvgCharacterData) {
+        for (final String char in content.text.split('')) {
+          result.add(_StyledCharacter(char: char, style: currentStyle));
+        }
+      } else if (content is SvgTspan) {
+        final SvgPresentationAttributes spanAttrs = resolvePresentation(
+          context,
+          tagName: 'tspan',
+          coreAttributes: content.coreAttributes,
+          presentationAttributes: content.presentationAttributes,
+        );
+        if (spanAttrs.display == SvgDisplay.none ||
+            spanAttrs.visibility == SvgVisibility.hidden ||
+            spanAttrs.visibility == SvgVisibility.collapse) {
+          continue;
+        }
+        final SvgPaintingContext spanContext = context.derive(inheritedAttributes: spanAttrs);
+        final PaintingStyle spanStyle = resolvePaint(
+          spanContext,
+          tagName: 'tspan',
+          coreAttributes: content.coreAttributes,
+          presentationAttributes: content.presentationAttributes,
+        );
+        result.addAll(_extractStyledCharacters(content.children, spanContext, spanStyle));
+      }
+    }
+    return result;
+  }
+
+  List<PaintingTextChunk> _buildStyledChunks({
+    required List<_StyledCharacter> styledCharacters,
     required SvgPaintingContext context,
-    required PaintingStyle style,
+    required PaintingStyle defaultStyle,
     SvgLengthPercentageOrList? xCoord,
     SvgLengthPercentageOrList? yCoord,
     SvgLengthPercentageOrList? dxCoord,
@@ -252,10 +297,9 @@ extension SvgTextToPaintCommands on SvgText {
     final List<SvgLengthPercentage>? yValues = yCoord?.toList();
     final List<SvgLengthPercentage>? dxValues = dxCoord?.toList();
     final List<SvgLengthPercentage>? dyValues = dyCoord?.toList();
-    final List<String> characters = text.split('');
 
-    for (var i = 0; i < characters.length; i++) {
-      final String char = characters[i];
+    for (var i = 0; i < styledCharacters.length; i++) {
+      final _StyledCharacter styled = styledCharacters[i];
       double? chunkX;
       if (xValues != null && i < xValues.length) {
         chunkX = xValues[i].resolve(context, .horizontal);
@@ -282,12 +326,12 @@ extension SvgTextToPaintCommands on SvgText {
 
       chunks.add(
         PaintingTextChunk(
-          text: char,
+          text: styled.char,
           x: chunkX,
           y: chunkY,
           dx: chunkDx,
           dy: chunkDy,
-          style: style,
+          style: styled.style,
         ),
       );
     }
@@ -343,4 +387,14 @@ extension SvgTextToPaintCommands on SvgText {
 
     return PaintingTextSpan(children: childSpans);
   }
+}
+
+final class _StyledCharacter {
+  const _StyledCharacter({
+    required this.char,
+    required this.style,
+  });
+
+  final String char;
+  final PaintingStyle style;
 }

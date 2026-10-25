@@ -4,6 +4,8 @@ import 'package:svg_painter/src/painting_model/styles/painting_style.dart';
 import 'package:svg_painter/src/svg_conversion/converters/svg_painting_context.dart';
 import 'package:svg_painter/src/svg_conversion/svg_element_extensions/svg_text_to_painting.dart';
 import 'package:svg_painter/src/svg_model/attribute_groups/svg_core_attributes.dart';
+import 'package:svg_painter/src/svg_model/attribute_groups/svg_fill_attributes.dart';
+import 'package:svg_painter/src/svg_model/attribute_groups/svg_presentation_attributes.dart';
 import 'package:svg_painter/src/svg_model/svg_element.dart';
 import 'package:svg_painter/src/svg_model/svg_value.dart';
 import 'package:test/test.dart';
@@ -123,6 +125,51 @@ void main() {
       expect(drawTextPath.text, 'Path Text');
       expect(drawTextPath.startOffset, 10.0);
       expect(drawTextPath.pathOperations, hasLength(2));
+    });
+
+    test('should preserve styled chunks for nested tspan when multi-coordinates are present', () {
+      // Arrange
+      const text = SvgText(
+        x: SvgLengthPercentageList(<SvgLengthPercentage>[
+          SvgLength(12.0),
+          SvgLength(24.0),
+          SvgLength(36.0),
+        ]),
+        y: SvgLength(48.0),
+        children: <SvgTextContent>[
+          SvgCharacterData('A'),
+          SvgTspan(
+            presentationAttributes: SvgPresentationAttributes(
+              fill: SvgFillAttributes(
+                color: SvgNamedColor(SvgColorName.red),
+              ),
+            ),
+            children: <SvgTextContent>[
+              SvgCharacterData('B'),
+            ],
+          ),
+          SvgCharacterData('C'),
+        ],
+      );
+
+      // Act
+      final Result<List<PaintCommand>> result = text.toPaintCommands(context);
+
+      // Assert
+      expect(result, isA<Success<List<PaintCommand>>>());
+      final List<PaintCommand> cmds = (result as Success<List<PaintCommand>>).value;
+      expect(cmds, hasLength(1));
+      expect(cmds.first, isA<DrawText>());
+      final drawText = cmds.first as DrawText;
+      expect(drawText.chunks, hasLength(3));
+      expect(drawText.chunks![0].text, 'A');
+      expect(drawText.chunks![0].x, 12.0);
+      expect(drawText.chunks![0].y, 48.0);
+      expect(drawText.chunks![1].text, 'B');
+      expect(drawText.chunks![1].x, 24.0);
+      expect(drawText.chunks![1].style?.fill?.colorArgb, 0xFFFF0000);
+      expect(drawText.chunks![2].text, 'C');
+      expect(drawText.chunks![2].x, 36.0);
     });
   });
 }

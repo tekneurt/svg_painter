@@ -132,34 +132,6 @@ class _$YTspanPainter extends CustomPainter {
       {
         final TextPainter tp = TextPainter(
           text: TextSpan(
-            text: ' ',
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 40.0,
-              fontWeight: FontWeight.normal,
-              fontStyle: FontStyle.normal,
-              fontFamily: 'Roboto',
-              package: 'svg_painter',
-            ),
-          ),
-          textDirection: TextDirection.ltr,
-        )..layout();
-        tp.paint(
-          canvas,
-          Offset(
-            0.0,
-            0.0 - tp.computeDistanceToActualBaseline(TextBaseline.alphabetic),
-          ),
-        );
-      }
-    }
-    {
-      final Paint paint = Paint();
-      paint.color = Colors.black;
-      paint.style = PaintingStyle.fill;
-      {
-        final TextPainter tp = TextPainter(
-          text: TextSpan(
             style: TextStyle(
               color: Colors.black,
               fontSize: 40.0,
@@ -177,62 +149,6 @@ class _$YTspanPainter extends CustomPainter {
           Offset(
             10.0,
             40.0 - tp.computeDistanceToActualBaseline(TextBaseline.alphabetic),
-          ),
-        );
-      }
-    }
-    {
-      final Paint paint = Paint();
-      paint.color = Colors.black;
-      paint.style = PaintingStyle.fill;
-      {
-        final TextPainter tp = TextPainter(
-          text: TextSpan(
-            text: ' ',
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 40.0,
-              fontWeight: FontWeight.normal,
-              fontStyle: FontStyle.normal,
-              fontFamily: 'Roboto',
-              package: 'svg_painter',
-            ),
-          ),
-          textDirection: TextDirection.ltr,
-        )..layout();
-        tp.paint(
-          canvas,
-          Offset(
-            0.0,
-            0.0 - tp.computeDistanceToActualBaseline(TextBaseline.alphabetic),
-          ),
-        );
-      }
-    }
-    {
-      final Paint paint = Paint();
-      paint.color = Colors.black;
-      paint.style = PaintingStyle.fill;
-      {
-        final TextPainter tp = TextPainter(
-          text: TextSpan(
-            text: ' ',
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 40.0,
-              fontWeight: FontWeight.normal,
-              fontStyle: FontStyle.normal,
-              fontFamily: 'Roboto',
-              package: 'svg_painter',
-            ),
-          ),
-          textDirection: TextDirection.ltr,
-        )..layout();
-        tp.paint(
-          canvas,
-          Offset(
-            0.0,
-            0.0 - tp.computeDistanceToActualBaseline(TextBaseline.alphabetic),
           ),
         );
       }

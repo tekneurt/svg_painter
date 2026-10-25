@@ -278,9 +278,9 @@
 - [x] **Advanced Pathing (<marker>)**: `<marker>` element, presentation attributes (`marker-start`, `marker-mid`, `marker-end`, `marker`, `refX`, `refY`, `markerWidth`, `markerHeight`, `markerUnits`, `orient`).
     - [x] Support `context-fill` and `context-stroke` keywords on markers.
 - [x] **Text along Curves**: `<textPath>` implementation.
-- [ ] **Text Coordinate Architecture**: Replace `hasMultiCoordinates` with a cleaner, unified solution for text and tspan coordinate and shift distribution.
-- [ ] **Containers**: `<switch>` for conditional rendering.
-- [ ] **Basic Filters**: `<filter>`, `<feGaussianBlur>`, `<feOffset>`, `<feDropShadow>`, `<feMerge>`, `<feFlood>`.
+- [x] **Text Coordinate Architecture**: Replace `hasMultiCoordinates` with a cleaner, unified solution for text and tspan coordinate and shift distribution.
+- [x] **Containers**: `<switch>` for conditional rendering.
+- [x] **Basic Filters**: `<filter>`, `<feGaussianBlur>`, `<feOffset>`, `<feDropShadow>`, `<feMerge>`, `<feFlood>`.
 - [x] **Patterns**: `<pattern>` for repeating fills.
 - [x] **Gradients (Polish)**: `objectBoundingBox` and `spreadMethod`.
 - [ ] **Standard Test Suite & Reference Audit**:
