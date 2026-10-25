@@ -7,6 +7,7 @@ import 'elements/clip_path_painter.dart';
 import 'elements/defs_painter.dart';
 import 'elements/desc_painter.dart';
 import 'elements/ellipse_painter.dart';
+import 'elements/fe_component_transfer_element_painter.dart';
 import 'elements/fe_gaussian_blur_element_painter.dart';
 import 'elements/fe_merge_element_painter.dart';
 import 'elements/fe_offset_element_painter.dart';
@@ -85,6 +86,13 @@ _fixtures =
       (
         painter: const EllipsePainter(),
         name: 'ellipse_painter',
+        tests: defaultGoldenTests,
+        widget: null,
+        nativeSize: null,
+      ),
+      (
+        painter: const FeComponentTransferElementPainter(),
+        name: 'fe_component_transfer_element_painter',
         tests: defaultGoldenTests,
         widget: null,
         nativeSize: null,

@@ -86,6 +86,11 @@ extension ToSvgValue on XmlElement {
         .orient => attributeValue.toSvgMarkerOrient(),
         .spreadMethod => throw UnimplementedError('spreadMethod is not yet implemented'),
         .type ||
+        .tableValues ||
+        .slope ||
+        .intercept ||
+        .amplitude ||
+        .exponent ||
         .media ||
         .title ||
         .xmlSpace ||

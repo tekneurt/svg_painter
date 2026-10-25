@@ -14,6 +14,7 @@ part 'values/colors/svg_system_color_name.dart';
 part 'values/svg_auto.dart';
 part 'values/svg_clip_path_units.dart';
 part 'values/svg_color.dart';
+part 'values/svg_component_transfer_type.dart';
 part 'values/svg_display.dart';
 part 'values/svg_fill_rule.dart';
 part 'values/svg_filter_units.dart';

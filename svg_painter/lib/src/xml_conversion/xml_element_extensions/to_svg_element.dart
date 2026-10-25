@@ -76,6 +76,16 @@ extension ToSvgElement on XmlElement {
           return toSvgClipPath();
         case .filter:
           return toSvgFilter();
+        case .feComponentTransfer:
+          return toSvgFeComponentTransfer();
+        case .feFuncR:
+          return toSvgFeFuncR();
+        case .feFuncG:
+          return toSvgFeFuncG();
+        case .feFuncB:
+          return toSvgFeFuncB();
+        case .feFuncA:
+          return toSvgFeFuncA();
         case .feGaussianBlur:
           return toSvgFeGaussianBlur();
         case .feOffset:

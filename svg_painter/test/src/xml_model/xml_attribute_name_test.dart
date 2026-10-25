@@ -7,6 +7,7 @@ void main() {
       // Arrange & Act & Assert
       for (final XmlAttributeName value in XmlAttributeName.values) {
         final String expected = switch (value) {
+          XmlAttributeName.amplitude => 'amplitude',
           XmlAttributeName.className => 'class',
           XmlAttributeName.clipPath => 'clip-path',
           XmlAttributeName.clipPathUnits => 'clipPathUnits',
@@ -18,6 +19,7 @@ void main() {
           XmlAttributeName.display => 'display',
           XmlAttributeName.dx => 'dx',
           XmlAttributeName.dy => 'dy',
+          XmlAttributeName.exponent => 'exponent',
           XmlAttributeName.fill => 'fill',
           XmlAttributeName.fillOpacity => 'fill-opacity',
           XmlAttributeName.fillRule => 'fill-rule',
@@ -36,6 +38,7 @@ void main() {
           XmlAttributeName.href => 'href',
           XmlAttributeName.id => 'id',
           XmlAttributeName.in_ => 'in',
+          XmlAttributeName.intercept => 'intercept',
           XmlAttributeName.marker => 'marker',
           XmlAttributeName.markerEnd => 'marker-end',
           XmlAttributeName.markerHeight => 'markerHeight',
@@ -66,6 +69,7 @@ void main() {
           XmlAttributeName.rotate => 'rotate',
           XmlAttributeName.rx => 'rx',
           XmlAttributeName.ry => 'ry',
+          XmlAttributeName.slope => 'slope',
           XmlAttributeName.spreadMethod => 'spreadMethod',
           XmlAttributeName.startOffset => 'startOffset',
           XmlAttributeName.stdDeviation => 'stdDeviation',
@@ -80,6 +84,7 @@ void main() {
           XmlAttributeName.strokeOpacity => 'stroke-opacity',
           XmlAttributeName.strokeWidth => 'stroke-width',
           XmlAttributeName.style => 'style',
+          XmlAttributeName.tableValues => 'tableValues',
           XmlAttributeName.textAnchor => 'text-anchor',
           XmlAttributeName.title => 'title',
           XmlAttributeName.transform => 'transform',

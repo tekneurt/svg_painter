@@ -154,6 +154,11 @@ extension ToDefaultValue on XmlAttributeName {
       case .in_:
       case .result:
       case .type:
+      case .tableValues:
+      case .slope:
+      case .intercept:
+      case .amplitude:
+      case .exponent:
       case .media:
       case .title:
       case .xmlSpace:

@@ -1,5 +1,6 @@
 import 'package:svg_painter/src/svg_model/attribute_groups/svg_core_attributes.dart';
 import 'package:svg_painter/src/svg_model/svg_element.dart';
+import 'package:svg_painter/src/svg_model/svg_value.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -108,6 +109,94 @@ void main() {
       expect(merge.nodes[0].inSource, 'layerA');
       expect(merge.nodes[1].inSource, 'layerB');
       expect(merge.result, 'finalMerge');
+    });
+  });
+
+  group('SvgFeFunc', () {
+    test('should return correct string representation when toString is called', () {
+      // Arrange
+      const funcR = SvgFeFuncR(type: SvgComponentTransferType.linear);
+      const funcG = SvgFeFuncG(type: SvgComponentTransferType.gamma);
+      const funcB = SvgFeFuncB(type: SvgComponentTransferType.table);
+      const funcA = SvgFeFuncA(type: SvgComponentTransferType.discrete);
+
+      // Act & Assert
+      expect(funcR.toString(), 'SvgFeFuncR(type: SvgComponentTransferType.linear)');
+      expect(funcG.toString(), 'SvgFeFuncG(type: SvgComponentTransferType.gamma)');
+      expect(funcB.toString(), 'SvgFeFuncB(type: SvgComponentTransferType.table)');
+      expect(funcA.toString(), 'SvgFeFuncA(type: SvgComponentTransferType.discrete)');
+    });
+
+    test('should store properties correctly when instantiated with distinct values', () {
+      // Arrange
+      const func = SvgFeFuncR(
+        type: SvgComponentTransferType.gamma,
+        tableValues: <double>[0.1, 0.4, 0.9],
+        slope: 2.5,
+        intercept: 0.15,
+        amplitude: 3.5,
+        exponent: 4.5,
+        offset: 0.25,
+        coreAttributes: SvgCoreAttributes(id: 'func1'),
+      );
+
+      // Act & Assert
+      expect(func.type, SvgComponentTransferType.gamma);
+      expect(func.tableValues, <double>[0.1, 0.4, 0.9]);
+      expect(func.slope, 2.5);
+      expect(func.intercept, 0.15);
+      expect(func.amplitude, 3.5);
+      expect(func.exponent, 4.5);
+      expect(func.offset, 0.25);
+      expect(func.id, 'func1');
+    });
+  });
+
+  group('SvgFeComponentTransfer', () {
+    test('should return correct string representation when toString is called', () {
+      // Arrange
+      const funcR = SvgFeFuncR(type: SvgComponentTransferType.linear);
+      const transfer = SvgFeComponentTransfer(
+        funcR: funcR,
+        result: 'transferOut',
+        coreAttributes: SvgCoreAttributes(id: 'ct1'),
+      );
+
+      // Act
+      final result = transfer.toString();
+
+      // Assert
+      expect(
+        result,
+        'SvgFeComponentTransfer(R: SvgFeFuncR(type: SvgComponentTransferType.linear), G: null, B: null, A: null, result: transferOut)',
+      );
+      expect(transfer.id, 'ct1');
+    });
+
+    test('should store properties correctly when instantiated with distinct values', () {
+      // Arrange
+      const funcR = SvgFeFuncR(type: SvgComponentTransferType.linear, slope: 1.5);
+      const funcG = SvgFeFuncG(type: SvgComponentTransferType.gamma, amplitude: 2.0);
+      const funcB = SvgFeFuncB(type: SvgComponentTransferType.table, tableValues: <double>[0.2, 0.8]);
+      const funcA = SvgFeFuncA(type: SvgComponentTransferType.discrete);
+      const transfer = SvgFeComponentTransfer(
+        funcR: funcR,
+        funcG: funcG,
+        funcB: funcB,
+        funcA: funcA,
+        inSource: 'layerIn',
+        result: 'layerOut',
+        coreAttributes: SvgCoreAttributes(id: 'ct2'),
+      );
+
+      // Act & Assert
+      expect(transfer.funcR?.slope, 1.5);
+      expect(transfer.funcG?.amplitude, 2.0);
+      expect(transfer.funcB?.tableValues, <double>[0.2, 0.8]);
+      expect(transfer.funcA?.type, SvgComponentTransferType.discrete);
+      expect(transfer.inSource, 'layerIn');
+      expect(transfer.result, 'layerOut');
+      expect(transfer.id, 'ct2');
     });
   });
 }

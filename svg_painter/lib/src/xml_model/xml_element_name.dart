@@ -22,6 +22,26 @@ enum XmlElementName {
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Element/ellipse
   ellipse('ellipse'),
 
+  /// The `<feComponentTransfer>` element.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Element/feComponentTransfer
+  feComponentTransfer('feComponentTransfer'),
+
+  /// The `<feFuncA>` element.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Element/feFuncA
+  feFuncA('feFuncA'),
+
+  /// The `<feFuncB>` element.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Element/feFuncB
+  feFuncB('feFuncB'),
+
+  /// The `<feFuncG>` element.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Element/feFuncG
+  feFuncG('feFuncG'),
+
+  /// The `<feFuncR>` element.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Element/feFuncR
+  feFuncR('feFuncR'),
+
   /// The `<feGaussianBlur>` element.
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Element/feGaussianBlur
   feGaussianBlur('feGaussianBlur'),

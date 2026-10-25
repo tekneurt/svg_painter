@@ -2,6 +2,7 @@ import 'package:svg_painter/src/generation/generator_buffer.dart';
 import 'package:svg_painter/src/generation/generators/filter_generator.dart';
 import 'package:svg_painter/src/painting_model/paint_command.dart';
 import 'package:svg_painter/src/svg_model/svg_element.dart';
+import 'package:svg_painter/src/svg_model/svg_value.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -103,6 +104,38 @@ void main() {
       final output = buffer.toString();
       expect(output, contains('void _filter_emptyFilter(Canvas canvas, void Function() drawGraphic) {'));
       expect(output, contains('drawGraphic();'));
+    });
+
+    test('should generate color filter matrix layer when feComponentTransfer primitive is provided', () {
+      // Arrange
+      const generator = FilterGenerator();
+      const command = DefineFilter(
+        id: 'componentTransfer1',
+        primitives: <SvgFilterPrimitive>[
+          SvgFeComponentTransfer(
+            funcR: SvgFeFuncR(type: SvgComponentTransferType.linear, slope: 2.0, intercept: 0.1),
+            funcG: SvgFeFuncG(type: SvgComponentTransferType.gamma, amplitude: 3.0, offset: 0.2),
+            funcB: SvgFeFuncB(),
+            funcA: SvgFeFuncA(type: SvgComponentTransferType.table, tableValues: <double>[0.0, 1.0]),
+          ),
+        ],
+      );
+      final buffer = GeneratorBuffer();
+
+      // Act
+      generator.generate(command, buffer);
+
+      // Assert
+      final output = buffer.toString();
+      expect(output, contains('void _filter_componentTransfer1(Canvas canvas, void Function() drawGraphic) {'));
+      expect(
+        output,
+        contains(
+          'canvas.saveLayer(null, Paint()..colorFilter = const ColorFilter.matrix(<double>[2.0, 0.0, 0.0, 0.0, 25.5, 0.0, 3.0, 0.0, 0.0, 51.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0]));',
+        ),
+      );
+      expect(output, contains('drawGraphic();'));
+      expect(output, contains('canvas.restore();'));
     });
   });
 }

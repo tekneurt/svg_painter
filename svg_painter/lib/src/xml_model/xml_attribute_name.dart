@@ -2,6 +2,10 @@
 ///
 /// See: https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute
 enum XmlAttributeName {
+  /// The amplitude of the gamma function for feFunc*.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/amplitude
+  amplitude('amplitude'),
+
   /// The CSS class(es) of the element.
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/class
   className('class'),
@@ -45,6 +49,10 @@ enum XmlAttributeName {
   /// The relative y-axis shift for text.
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/dy
   dy('dy'),
+
+  /// The exponent of the gamma function for feFunc*.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/exponent
+  exponent('exponent'),
 
   /// The fill color of the element.
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/fill
@@ -117,6 +125,10 @@ enum XmlAttributeName {
   /// The input for this filter primitive.
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/in
   in_('in'),
+
+  /// The intercept of the linear function for feFunc*.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/intercept
+  intercept('intercept'),
 
   /// The marker shorthand attribute.
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/marker
@@ -238,6 +250,10 @@ enum XmlAttributeName {
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/ry
   ry('ry'),
 
+  /// The slope of the linear function for feFunc*.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/slope
+  slope('slope'),
+
   /// The method used to fill the area outside the gradient vector.
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/spreadMethod
   spreadMethod('spreadMethod'),
@@ -293,6 +309,10 @@ enum XmlAttributeName {
   /// Inline style rules for the element.
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/style
   style('style'),
+
+  /// The table values for table or discrete transfer functions for feFunc*.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/tableValues
+  tableValues('tableValues'),
 
   /// The alignment of text relative to a given point.
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/text-anchor

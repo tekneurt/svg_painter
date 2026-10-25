@@ -47,6 +47,8 @@ part 'elements/containers/svg_use.dart';
 
 // Filters
 part 'elements/filters/svg_filter_primitive.dart';
+part 'elements/filters/svg_fe_component_transfer.dart';
+part 'elements/filters/svg_fe_func.dart';
 part 'elements/filters/svg_fe_gaussian_blur.dart';
 part 'elements/filters/svg_fe_offset.dart';
 part 'elements/filters/svg_fe_merge_node.dart';

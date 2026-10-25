@@ -75,6 +75,7 @@ class FilterGenerator extends CommandGenerator<DefineFilter> {
 
     SvgFeOffset? offset;
     SvgFeGaussianBlur? blur;
+    SvgFeComponentTransfer? componentTransfer;
     var isSourceAlpha = false;
 
     for (final p in activePrimitives) {
@@ -85,6 +86,8 @@ class FilterGenerator extends CommandGenerator<DefineFilter> {
         if (p.inSource == 'SourceAlpha') {
           isSourceAlpha = true;
         }
+      } else if (p is SvgFeComponentTransfer) {
+        componentTransfer = p;
       }
       if (p.inSource == 'SourceAlpha') {
         isSourceAlpha = true;
@@ -99,6 +102,25 @@ class FilterGenerator extends CommandGenerator<DefineFilter> {
     if (hasOffset) {
       buffer.writeln('canvas.save();');
       buffer.writeln('canvas.translate(${offset.dx}, ${offset.dy});');
+      closeSaveCount++;
+    }
+
+    if (componentTransfer != null) {
+      final (double rSlope, double rIntercept) = _channelTransfer(componentTransfer.funcR);
+      final (double gSlope, double gIntercept) = _channelTransfer(componentTransfer.funcG);
+      final (double bSlope, double bIntercept) = _channelTransfer(componentTransfer.funcB);
+      final (double aSlope, double aIntercept) = _channelTransfer(componentTransfer.funcA);
+
+      final matrix = <double>[
+        rSlope, 0.0, 0.0, 0.0, rIntercept,
+        0.0, gSlope, 0.0, 0.0, gIntercept,
+        0.0, 0.0, bSlope, 0.0, bIntercept,
+        0.0, 0.0, 0.0, aSlope, aIntercept,
+      ];
+
+      buffer.writeln(
+        'canvas.saveLayer(null, Paint()..colorFilter = const ColorFilter.matrix(<double>[${matrix.join(', ')}]));',
+      );
       closeSaveCount++;
     }
 
@@ -123,6 +145,40 @@ class FilterGenerator extends CommandGenerator<DefineFilter> {
 
     for (var i = 0; i < closeSaveCount; i++) {
       buffer.writeln('canvas.restore();');
+    }
+  }
+
+  (double, double) _channelTransfer(SvgFeFunc? func) {
+    if (func == null) {
+      return (1.0, 0.0);
+    }
+    switch (func.type) {
+      case .identity:
+        return (1.0, 0.0);
+      case .linear:
+        return (func.slope, func.intercept * 255.0);
+      case .gamma:
+        return (func.amplitude, func.offset * 255.0);
+      case .table:
+        if (func.tableValues.isEmpty) {
+          return (1.0, 0.0);
+        } else if (func.tableValues.length == 1) {
+          return (0.0, func.tableValues.first * 255.0);
+        } else {
+          final double slope = func.tableValues.last - func.tableValues.first;
+          final double intercept = func.tableValues.first * 255.0;
+          return (slope, intercept);
+        }
+      case .discrete:
+        if (func.tableValues.isEmpty) {
+          return (1.0, 0.0);
+        } else if (func.tableValues.length == 1) {
+          return (0.0, func.tableValues.first * 255.0);
+        } else {
+          final double slope = func.tableValues.last - func.tableValues.first;
+          final double intercept = func.tableValues.first * 255.0;
+          return (slope, intercept);
+        }
     }
   }
 }
