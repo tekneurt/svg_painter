@@ -75,7 +75,10 @@ class LinearGradientGenerator extends CommandGenerator<DefineLinearGradient> {
 
       if (command.transformAttributes != null) {
         final List<double> matrix = command.transformAttributes!.toFlutterMatrix();
-        buffer.writeln('transform: $helperName(matrix: <double>[${matrix.join(', ')}]),');
+        final extra = command.units == PaintingGradientUnits.objectBoundingBox
+            ? ', isObjectBoundingBox: true'
+            : '';
+        buffer.writeln('transform: $helperName(matrix: <double>[${matrix.join(', ')}]$extra),');
       }
     }, footer: ');');
   }

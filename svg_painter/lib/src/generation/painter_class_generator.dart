@@ -414,11 +414,14 @@ class PainterClassGenerator {
       );
       buffer.writeBlock('class $helperClassName extends GradientTransform {', () {
         buffer.writeln(
-          'const $helperClassName({this.matrix, this.isElliptical = false, this.centerX = 0.5, this.centerY = 0.5});',
+          'const $helperClassName({this.matrix, this.isObjectBoundingBox = false, this.isElliptical = false, this.centerX = 0.5, this.centerY = 0.5});',
         );
         buffer.writeln();
         buffer.writeln('/// The 4x4 matrix storage.');
         buffer.writeln('final List<double>? matrix;');
+        buffer.writeln();
+        buffer.writeln('/// Whether the gradient uses objectBoundingBox units.');
+        buffer.writeln('final bool isObjectBoundingBox;');
         buffer.writeln();
         buffer.writeln('/// Whether to correct the aspect ratio for elliptical gradients.');
         buffer.writeln('final bool isElliptical;');
@@ -438,6 +441,15 @@ class PainterClassGenerator {
           buffer.writeln('Matrix4? m;');
           buffer.writeln('if (matrix != null) {');
           buffer.writeln('  m = Matrix4.fromList(matrix!);');
+          buffer.writeBlock('  if (isObjectBoundingBox && bounds.width > 0 && bounds.height > 0) {', () {
+            buffer.writeln('final Matrix4 toCanvas = Matrix4.identity()');
+            buffer.writeln('  ..translateByDouble(bounds.left, bounds.top, 0.0, 1.0)');
+            buffer.writeln('  ..scaleByDouble(bounds.width, bounds.height, 1.0, 1.0);');
+            buffer.writeln('final Matrix4 fromCanvas = Matrix4.identity()');
+            buffer.writeln('  ..scaleByDouble(1.0 / bounds.width, 1.0 / bounds.height, 1.0, 1.0)');
+            buffer.writeln('  ..translateByDouble(-bounds.left, -bounds.top, 0.0, 1.0);');
+            buffer.writeln('m = toCanvas..multiply(m)..multiply(fromCanvas);');
+          });
           buffer.writeln('}');
           buffer.writeln();
           buffer.writeBlock('if (isElliptical && bounds.width != bounds.height) {', () {

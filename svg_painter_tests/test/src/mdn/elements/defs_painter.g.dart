@@ -85,6 +85,7 @@ class _$DefsPainter extends CustomPainter {
           0.0,
           1.0,
         ],
+        isObjectBoundingBox: true,
       ),
     );
     canvas.save();
@@ -129,6 +130,7 @@ class _$DefsPainter extends CustomPainter {
 class _SvgGradientTransform_DefsPainter extends GradientTransform {
   const _SvgGradientTransform_DefsPainter({
     this.matrix,
+    this.isObjectBoundingBox = false,
     this.isElliptical = false,
     this.centerX = 0.5,
     this.centerY = 0.5,
@@ -136,6 +138,9 @@ class _SvgGradientTransform_DefsPainter extends GradientTransform {
 
   /// The 4x4 matrix storage.
   final List<double>? matrix;
+
+  /// Whether the gradient uses objectBoundingBox units.
+  final bool isObjectBoundingBox;
 
   /// Whether to correct the aspect ratio for elliptical gradients.
   final bool isElliptical;
@@ -151,6 +156,17 @@ class _SvgGradientTransform_DefsPainter extends GradientTransform {
     Matrix4? m;
     if (matrix != null) {
       m = Matrix4.fromList(matrix!);
+      if (isObjectBoundingBox && bounds.width > 0 && bounds.height > 0) {
+        final Matrix4 toCanvas = Matrix4.identity()
+          ..translateByDouble(bounds.left, bounds.top, 0.0, 1.0)
+          ..scaleByDouble(bounds.width, bounds.height, 1.0, 1.0);
+        final Matrix4 fromCanvas = Matrix4.identity()
+          ..scaleByDouble(1.0 / bounds.width, 1.0 / bounds.height, 1.0, 1.0)
+          ..translateByDouble(-bounds.left, -bounds.top, 0.0, 1.0);
+        m = toCanvas
+          ..multiply(m)
+          ..multiply(fromCanvas);
+      }
     }
 
     if (isElliptical && bounds.width != bounds.height) {

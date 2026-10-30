@@ -79,10 +79,14 @@ class RadialGradientGenerator extends CommandGenerator<DefineRadialGradient> {
 
       if (command.transformAttributes != null) {
         final List<double> matrix = command.transformAttributes!.toFlutterMatrix();
-        final extra = command.units == PaintingGradientUnits.objectBoundingBox && needsStretch
+        final isBbox = command.units == PaintingGradientUnits.objectBoundingBox;
+        final extraBbox = isBbox ? ', isObjectBoundingBox: true' : '';
+        final extraStretch = isBbox && needsStretch
             ? ', isElliptical: true, centerX: ${command.cx}, centerY: ${command.cy}'
             : '';
-        buffer.writeln('transform: $helperName(matrix: <double>[${matrix.join(', ')}]$extra),');
+        buffer.writeln(
+          'transform: $helperName(matrix: <double>[${matrix.join(', ')}]$extraBbox$extraStretch),',
+        );
       } else if (command.units == PaintingGradientUnits.objectBoundingBox && needsStretch) {
         // SVG objectBoundingBox radial gradients are elliptical on non-square elements.
         // We use the centerX/centerY to ensure correct aspect-ratio correction.

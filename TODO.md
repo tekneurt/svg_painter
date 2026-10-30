@@ -325,8 +325,8 @@
         - [x] **MDN `color` Attribute**: Implement and add tests for [MDN color](https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/color) when updating MDN tests.
         - [x] **MDN `font-size` Attribute**: Implement full CSS/SVG font-size specification support (keywords, `em`, `rem`, `ex`, `ch`, `%`) and add tests for [MDN font-size](https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/font-size).
         - [x] **MDN Filter Elements & Attributes**: Implement support for `filter`, `stdDeviation`, `<filter>`, `<feGaussianBlur>`, `<feOffset>`, `<feMerge>`, and `<feMergeNode>` with fixtures and golden tests for all MDN examples.
-- [ ] Support `gradientTransform` properly using `Matrix4` from `vector_math_64` (see: https://api.flutter.dev/flutter/package-vector_math_vector_math_64/Matrix4-class.html).
-- [ ] Support complex nested transformations in gradients.
+- [x] Support `gradientTransform` properly using `Matrix4` from `vector_math_64` (see: https://api.flutter.dev/flutter/package-vector_math_vector_math_64/Matrix4-class.html).
+- [x] Support complex nested transformations in gradients.
 
 ### Phase 7: Advanced Units & Path Syntax (0.6.0)
 - [ ] **SVG 2 Path Syntax**: Robust tokenizer for compact arc syntax (concatenated flags).
