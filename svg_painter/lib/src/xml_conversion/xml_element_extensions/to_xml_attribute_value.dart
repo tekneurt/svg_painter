@@ -9,10 +9,16 @@ extension ToXmlAttributeValue on XmlElement {
   String? toXmlAttributeValue(XmlAttributeName attribute) {
     final String? value = getAttribute(attribute.name);
 
-    if ((value == null) && (attribute == XmlAttributeName.href)) {
-      return getAttribute('href', namespaceUri: 'http://www.w3.org/1999/xlink');
-    } else {
+    if (value != null) {
       return value;
+    } else if (attribute == XmlAttributeName.href) {
+      return getAttribute('href', namespaceUri: 'http://www.w3.org/1999/xlink') ??
+          getAttribute('xlink:href');
+    } else if (attribute == XmlAttributeName.xlinkHref) {
+      return getAttribute('href', namespaceUri: 'http://www.w3.org/1999/xlink') ??
+          getAttribute('href');
+    } else {
+      return null;
     }
   }
 }

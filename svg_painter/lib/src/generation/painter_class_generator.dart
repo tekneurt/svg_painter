@@ -1,6 +1,7 @@
 import 'package:svg_painter_annotation/svg_painter_annotation.dart';
 
 import '../painting_model/_painting_model.dart';
+import '../svg_model/values/svg_media_query.dart';
 import 'command_generator.dart';
 import 'generation_analyzer.dart';
 import 'generator_buffer.dart';
@@ -33,10 +34,14 @@ class PainterClassGenerator {
     required double viewBoxHeight,
     required List<PaintCommand> commands,
     required Map<Type, CommandGenerator<PaintCommand>> generators,
+    Map<SvgMediaQuery, List<PaintCommand>> conditionalCommands =
+        const <SvgMediaQuery, List<PaintCommand>>{},
     SvgExposureMode exposureMode = SvgExposureMode.none,
     Map<String, String> propertyMapping = const <String, String>{},
     String? semanticLabel,
     String? semanticHint,
+    SvgColorMapping colorMapping = SvgColorMapping.material,
+    bool tokenColors = false,
   }) {
     final buffer = GeneratorBuffer();
 
@@ -48,18 +53,25 @@ class PainterClassGenerator {
     );
     buffer.writeln();
 
+    final allCommands = <PaintCommand>[
+      ...commands,
+      for (final list in conditionalCommands.values) ...list,
+    ];
+
     final fillIds = <String>{};
     final strokeIds = <String>{};
     if (exposureMode == SvgExposureMode.id || exposureMode == SvgExposureMode.mixed) {
-      analyzer.collectIds(commands, fillIds, strokeIds);
+      analyzer.collectIds(allCommands, fillIds, strokeIds);
     }
 
     final PaletteResult? palette =
-        (exposureMode == SvgExposureMode.indexed || exposureMode == SvgExposureMode.mixed)
-        ? const PaletteAnalyzer().analyze(commands, mode: exposureMode)
+        (exposureMode == SvgExposureMode.indexed ||
+            exposureMode == SvgExposureMode.mixed ||
+            tokenColors)
+        ? const PaletteAnalyzer().analyze(allCommands, mode: exposureMode, tokenColors: tokenColors)
         : null;
 
-    final Set<String> gradientsNeedingStretch = analyzer.findGradientsNeedingStretch(commands);
+    final Set<String> gradientsNeedingStretch = analyzer.findGradientsNeedingStretch(allCommands);
 
     final List<String> sortedFillIds = fillIds.toList()..sort();
     final List<String> sortedStrokeIds = strokeIds.toList()..sort();
@@ -92,6 +104,13 @@ class PainterClassGenerator {
       }
     }
 
+    final activeColorTokens = <String, String>{};
+    if (tokenColors && palette != null) {
+      for (final String tokenName in palette.colorTokens.values.toSet()) {
+        activeColorTokens[tokenName] = resolveName(tokenName);
+      }
+    }
+
     final bool hasCurrentColor = analyzer.hasCurrentColor(commands);
 
     final imageHrefs = <String>[];
@@ -109,6 +128,7 @@ class PainterClassGenerator {
       painterClassName: className,
       activeFillProperties: activeFillProperties,
       activeStrokeProperties: activeStrokeProperties,
+      activeColorTokens: activeColorTokens,
       viewBoxWidth: viewBoxWidth,
       viewBoxHeight: viewBoxHeight,
       hasCurrentColor: hasCurrentColor,
@@ -153,6 +173,9 @@ class PainterClassGenerator {
             buffer.writeln('this.${resolveName(name)},');
           }
         }
+        for (final String token in activeColorTokens.values) {
+          buffer.writeln('this.$token,');
+        }
         for (var i = 0; i < uniqueImageHrefs.length; i++) {
           buffer.writeln('this.image$i,');
         }
@@ -177,6 +200,9 @@ class PainterClassGenerator {
         for (final String name in sortedStrokeIndexed) {
           buffer.writeln('final Object? ${resolveName(name)};');
         }
+      }
+      for (final String token in activeColorTokens.values) {
+        buffer.writeln('final Color? $token;');
       }
       for (var i = 0; i < uniqueImageHrefs.length; i++) {
         buffer.writeln('final Object? image$i;');
@@ -210,52 +236,53 @@ class PainterClassGenerator {
         );
         buffer.writeln();
 
-        // 1st pass: Mask definitions (DefineMask)
-        for (final command in commands) {
-          if (command is DefineMask) {
-            generators[command.runtimeType]?.generate(
-              command,
+        if (conditionalCommands.isEmpty) {
+          _generatePasses(
+            commands,
+            buffer,
+            generators: generators,
+            palette: palette,
+            activeFillProperties: activeFillProperties,
+            activeStrokeProperties: activeStrokeProperties,
+            className: className,
+            gradientsNeedingStretch: gradientsNeedingStretch,
+            colorMapping: colorMapping,
+          );
+        } else {
+          final List<MapEntry<SvgMediaQuery, List<PaintCommand>>> entries = conditionalCommands
+              .entries
+              .toList();
+          for (var i = 0; i < entries.length; i++) {
+            final MapEntry<SvgMediaQuery, List<PaintCommand>> entry = entries[i];
+            final String condition = entry.key.toDartCondition('size');
+            final header = i == 0 ? 'if ($condition) {' : 'else if ($condition) {';
+            buffer.writeBlock(header, () {
+              _generatePasses(
+                entry.value,
+                buffer,
+                generators: generators,
+                palette: palette,
+                activeFillProperties: activeFillProperties,
+                activeStrokeProperties: activeStrokeProperties,
+                className: className,
+                gradientsNeedingStretch: gradientsNeedingStretch,
+                colorMapping: colorMapping,
+              );
+            });
+          }
+          buffer.writeBlock('else {', () {
+            _generatePasses(
+              commands,
               buffer,
               generators: generators,
               palette: palette,
               activeFillProperties: activeFillProperties,
               activeStrokeProperties: activeStrokeProperties,
-              painterClassName: className,
+              className: className,
               gradientsNeedingStretch: gradientsNeedingStretch,
+              colorMapping: colorMapping,
             );
-          }
-        }
-
-        // 2nd pass: Gradient definitions (DefineGradient)
-        for (final command in commands) {
-          if (command is DefineGradient && command is! DefineMask) {
-            generators[command.runtimeType]?.generate(
-              command,
-              buffer,
-              generators: generators,
-              palette: palette,
-              activeFillProperties: activeFillProperties,
-              activeStrokeProperties: activeStrokeProperties,
-              painterClassName: className,
-              gradientsNeedingStretch: gradientsNeedingStretch,
-            );
-          }
-        }
-
-        // 3rd pass: Drawing commands (DrawCommand)
-        for (final command in commands) {
-          if (command is DrawCommand) {
-            generators[command.runtimeType]?.generate(
-              command,
-              buffer,
-              generators: generators,
-              palette: palette,
-              activeFillProperties: activeFillProperties,
-              activeStrokeProperties: activeStrokeProperties,
-              painterClassName: className,
-              gradientsNeedingStretch: gradientsNeedingStretch,
-            );
-          }
+          });
         }
 
         buffer.writeln('canvas.restore();');
@@ -293,7 +320,7 @@ class PainterClassGenerator {
                 buffer.writeln('scale = metric.length / pathLength;');
               });
               buffer.writeln(
-                'final double totalLength = dashArray.fold(0.0, (final sum, final d) => sum + d * scale);',
+                'final double totalLength = dashArray.fold(0.0, (sum, d) => sum + d * scale);',
               );
               buffer.writeln('if (totalLength <= 0) return source;');
               buffer.writeln('double offset = (dashOffset ?? 0.0) * scale;');
@@ -360,6 +387,9 @@ class PainterClassGenerator {
             checks.add('$prop == oldDelegate.$prop');
           }
         }
+        for (final String token in activeColorTokens.values) {
+          checks.add('$token == oldDelegate.$token');
+        }
         for (var i = 0; i < uniqueImageHrefs.length; i++) {
           checks.add('image$i == oldDelegate.image$i');
         }
@@ -384,11 +414,14 @@ class PainterClassGenerator {
       );
       buffer.writeBlock('class $helperClassName extends GradientTransform {', () {
         buffer.writeln(
-          'const $helperClassName({this.matrix, this.isElliptical = false, this.centerX = 0.5, this.centerY = 0.5});',
+          'const $helperClassName({this.matrix, this.isObjectBoundingBox = false, this.isElliptical = false, this.centerX = 0.5, this.centerY = 0.5});',
         );
         buffer.writeln();
         buffer.writeln('/// The 4x4 matrix storage.');
         buffer.writeln('final List<double>? matrix;');
+        buffer.writeln();
+        buffer.writeln('/// Whether the gradient uses objectBoundingBox units.');
+        buffer.writeln('final bool isObjectBoundingBox;');
         buffer.writeln();
         buffer.writeln('/// Whether to correct the aspect ratio for elliptical gradients.');
         buffer.writeln('final bool isElliptical;');
@@ -408,6 +441,15 @@ class PainterClassGenerator {
           buffer.writeln('Matrix4? m;');
           buffer.writeln('if (matrix != null) {');
           buffer.writeln('  m = Matrix4.fromList(matrix!);');
+          buffer.writeBlock('  if (isObjectBoundingBox && bounds.width > 0 && bounds.height > 0) {', () {
+            buffer.writeln('final Matrix4 toCanvas = Matrix4.identity()');
+            buffer.writeln('  ..translateByDouble(bounds.left, bounds.top, 0.0, 1.0)');
+            buffer.writeln('  ..scaleByDouble(bounds.width, bounds.height, 1.0, 1.0);');
+            buffer.writeln('final Matrix4 fromCanvas = Matrix4.identity()');
+            buffer.writeln('  ..scaleByDouble(1.0 / bounds.width, 1.0 / bounds.height, 1.0, 1.0)');
+            buffer.writeln('  ..translateByDouble(-bounds.left, -bounds.top, 0.0, 1.0);');
+            buffer.writeln('m = toCanvas..multiply(m)..multiply(fromCanvas);');
+          });
           buffer.writeln('}');
           buffer.writeln();
           buffer.writeBlock('if (isElliptical && bounds.width != bounds.height) {', () {
@@ -435,5 +477,197 @@ class PainterClassGenerator {
     }
 
     return buffer.toString();
+  }
+
+  (List<DefineCommand>, List<PaintCommand>) _extractDefinitions(List<PaintCommand> commands) {
+    final definitions = <DefineCommand>[];
+    final drawingCommands = <PaintCommand>[];
+
+    for (final cmd in commands) {
+      if (cmd is DefineCommand) {
+        definitions.add(cmd);
+      } else if (cmd is DrawGroup) {
+        final (List<DefineCommand> nestedDefs, List<PaintCommand> nestedCommands) =
+            _extractDefinitions(cmd.commands);
+        definitions.addAll(nestedDefs);
+        drawingCommands.add(
+          DrawGroup(
+            commands: nestedCommands,
+            style: cmd.style,
+            id: cmd.id,
+            opacity: cmd.opacity,
+            bounds: cmd.bounds,
+          ),
+        );
+      } else if (cmd is DrawSwitch) {
+        final newCases = <SwitchCase>[];
+        for (final SwitchCase c in cmd.cases) {
+          final (List<DefineCommand> nestedDefs, List<PaintCommand> nestedCommands) =
+              _extractDefinitions(c.commands);
+          definitions.addAll(nestedDefs);
+          newCases.add(SwitchCase(languages: c.languages, commands: nestedCommands));
+        }
+        final (List<DefineCommand> fallbackDefs, List<PaintCommand> fallbackCommands) =
+            _extractDefinitions(cmd.fallback);
+        definitions.addAll(fallbackDefs);
+        drawingCommands.add(
+          DrawSwitch(
+            cases: newCases,
+            fallback: fallbackCommands,
+            style: cmd.style,
+            id: cmd.id,
+          ),
+        );
+      } else {
+        drawingCommands.add(cmd);
+      }
+    }
+
+    return (definitions, drawingCommands);
+  }
+
+  void _generatePasses(
+    List<PaintCommand> commandList,
+    GeneratorBuffer buffer, {
+    required Map<Type, CommandGenerator<PaintCommand>> generators,
+    required PaletteResult? palette,
+    required Map<String, String> activeFillProperties,
+    required Map<String, String> activeStrokeProperties,
+    required String className,
+    required Set<String> gradientsNeedingStretch,
+    required SvgColorMapping colorMapping,
+  }) {
+    final (List<DefineCommand> definitions, List<PaintCommand> drawingCommands) =
+        _extractDefinitions(commandList);
+
+    final seenIds = <String>{};
+    final uniqueDefinitions = <DefineCommand>[];
+    for (final def in definitions) {
+      final String? id = def.id;
+      if (id == null || id.isEmpty) {
+        uniqueDefinitions.add(def);
+      } else if (seenIds.add(id)) {
+        uniqueDefinitions.add(def);
+      }
+    }
+
+    // 1st pass: Mask definitions (DefineMask)
+    for (final command in uniqueDefinitions) {
+      if (command is DefineMask) {
+        generators[command.runtimeType]?.generate(
+          command,
+          buffer,
+          generators: generators,
+          palette: palette,
+          activeFillProperties: activeFillProperties,
+          activeStrokeProperties: activeStrokeProperties,
+          painterClassName: className,
+          gradientsNeedingStretch: gradientsNeedingStretch,
+          colorMapping: colorMapping,
+        );
+      }
+    }
+
+    // 2nd pass: ClipPath definitions (DefineClipPath)
+    for (final command in uniqueDefinitions) {
+      if (command is DefineClipPath) {
+        generators[command.runtimeType]?.generate(
+          command,
+          buffer,
+          generators: generators,
+          palette: palette,
+          activeFillProperties: activeFillProperties,
+          activeStrokeProperties: activeStrokeProperties,
+          painterClassName: className,
+          gradientsNeedingStretch: gradientsNeedingStretch,
+          colorMapping: colorMapping,
+        );
+      }
+    }
+
+    // 3rd pass: Gradient definitions (DefineGradient)
+    for (final command in uniqueDefinitions) {
+      if (command is DefineGradient) {
+        generators[command.runtimeType]?.generate(
+          command,
+          buffer,
+          generators: generators,
+          palette: palette,
+          activeFillProperties: activeFillProperties,
+          activeStrokeProperties: activeStrokeProperties,
+          painterClassName: className,
+          gradientsNeedingStretch: gradientsNeedingStretch,
+          colorMapping: colorMapping,
+        );
+      }
+    }
+
+    // 4th pass: Marker definitions (DefineMarker)
+    for (final command in uniqueDefinitions) {
+      if (command is DefineMarker) {
+        generators[command.runtimeType]?.generate(
+          command,
+          buffer,
+          generators: generators,
+          palette: palette,
+          activeFillProperties: activeFillProperties,
+          activeStrokeProperties: activeStrokeProperties,
+          painterClassName: className,
+          gradientsNeedingStretch: gradientsNeedingStretch,
+          colorMapping: colorMapping,
+        );
+      }
+    }
+
+    // 5th pass: Pattern definitions (DefinePattern)
+    for (final command in uniqueDefinitions) {
+      if (command is DefinePattern) {
+        generators[command.runtimeType]?.generate(
+          command,
+          buffer,
+          generators: generators,
+          palette: palette,
+          activeFillProperties: activeFillProperties,
+          activeStrokeProperties: activeStrokeProperties,
+          painterClassName: className,
+          gradientsNeedingStretch: gradientsNeedingStretch,
+          colorMapping: colorMapping,
+        );
+      }
+    }
+
+    // 6th pass: Filter definitions (DefineFilter)
+    for (final command in uniqueDefinitions) {
+      if (command is DefineFilter) {
+        generators[command.runtimeType]?.generate(
+          command,
+          buffer,
+          generators: generators,
+          palette: palette,
+          activeFillProperties: activeFillProperties,
+          activeStrokeProperties: activeStrokeProperties,
+          painterClassName: className,
+          gradientsNeedingStretch: gradientsNeedingStretch,
+          colorMapping: colorMapping,
+        );
+      }
+    }
+
+    // 7th pass: Drawing commands (DrawCommand)
+    for (final command in drawingCommands) {
+      if (command is DrawCommand) {
+        generators[command.runtimeType]?.generate(
+          command,
+          buffer,
+          generators: generators,
+          palette: palette,
+          activeFillProperties: activeFillProperties,
+          activeStrokeProperties: activeStrokeProperties,
+          painterClassName: className,
+          gradientsNeedingStretch: gradientsNeedingStretch,
+          colorMapping: colorMapping,
+        );
+      }
+    }
   }
 }

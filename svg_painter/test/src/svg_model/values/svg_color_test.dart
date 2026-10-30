@@ -44,6 +44,35 @@ void main() {
       // Assert
       expect(result, 'SvgPaintReference(grad1, fallback: null)');
     });
+
+    test('SvgSystemColor should return correct string', () {
+      // Arrange & Act
+      final result = const SvgSystemColor(SvgSystemColorName.background).toString();
+      // Assert
+      expect(result, 'SvgSystemColor(background)');
+    });
+
+    test('should return "context-fill" when SvgContextFillColor toString is called', () {
+      // Arrange
+      const color = SvgContextFillColor();
+
+      // Act
+      final result = color.toString();
+
+      // Assert
+      expect(result, 'context-fill');
+    });
+
+    test('should return "context-stroke" when SvgContextStrokeColor toString is called', () {
+      // Arrange
+      const color = SvgContextStrokeColor();
+
+      // Act
+      final result = color.toString();
+
+      // Assert
+      expect(result, 'context-stroke');
+    });
   });
 
   group('SvgColorName', () {
@@ -57,6 +86,20 @@ void main() {
     test('fromName should return null for invalid names', () {
       // Arrange & Act & Assert
       expect(SvgColorName.fromName('blacky'), isNull);
+    });
+  });
+
+  group('SvgSystemColorName', () {
+    test('should return correct enum when name is valid case-insensitively', () {
+      // Arrange & Act & Assert
+      expect(SvgSystemColorName.fromName('Background'), SvgSystemColorName.background);
+      expect(SvgSystemColorName.fromName('WINDOW'), SvgSystemColorName.window);
+      expect(SvgSystemColorName.fromName('ThreeDFace'), SvgSystemColorName.threedface);
+    });
+
+    test('should return null when name is invalid', () {
+      // Arrange & Act & Assert
+      expect(SvgSystemColorName.fromName('InvalidColor'), isNull);
     });
   });
 }

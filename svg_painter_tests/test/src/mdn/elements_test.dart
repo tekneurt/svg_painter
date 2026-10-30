@@ -2,16 +2,30 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../test_utils.dart';
+import 'elements/a_painter.dart';
 import 'elements/circle_painter.dart';
 import 'elements/clip_path_painter.dart';
 import 'elements/defs_painter.dart';
+import 'elements/desc_painter.dart';
 import 'elements/ellipse_painter.dart';
+import 'elements/fe_component_transfer_element_painter.dart';
+import 'elements/fe_drop_shadow_element_painter.dart';
+import 'elements/fe_flood_element_painter.dart';
+import 'elements/fe_gaussian_blur_element_painter.dart';
+import 'elements/fe_merge_element_painter.dart';
+import 'elements/fe_merge_node_element_painter.dart';
+import 'elements/fe_offset_element_painter.dart';
+import 'elements/filter_element_painter.dart';
 import 'elements/g_painter.dart';
 import 'elements/image_painter.dart';
 import 'elements/line_painter.dart';
 import 'elements/linear_gradient_painter.dart';
+import 'elements/marker_context_fill_stroke_painter.dart';
+import 'elements/marker_painter.dart';
+import 'elements/marker_polymarkers_painter.dart';
 import 'elements/mask_painter.dart';
 import 'elements/path_painter.dart';
+import 'elements/pattern_element_painter.dart';
 import 'elements/polygon_painter.dart';
 import 'elements/polyline_painter.dart';
 import 'elements/radial_gradient_painter.dart';
@@ -19,8 +33,11 @@ import 'elements/rect_painter.dart';
 import 'elements/stop_painter.dart';
 import 'elements/style_painter.dart';
 import 'elements/svg_painter.dart';
+import 'elements/switch_element_painter.dart';
 import 'elements/symbol_painter.dart';
 import 'elements/text_painter.dart';
+import 'elements/text_path_painter.dart';
+import 'elements/title_painter.dart';
 import 'elements/tspan_painter.dart';
 import 'elements/use_element_painter.dart';
 
@@ -44,6 +61,13 @@ _fixtures =
       })
     >[
       (
+        painter: const APainter(),
+        name: 'a_painter',
+        tests: macOsOverrideGoldenTests,
+        widget: null,
+        nativeSize: null,
+      ),
+      (
         painter: const CirclePainter(),
         name: 'circle_painter',
         tests: defaultGoldenTests,
@@ -53,7 +77,7 @@ _fixtures =
       (
         painter: const ClipPathPainter(),
         name: 'clip_path_painter',
-        tests: defaultGoldenTests,
+        tests: macOsViewBoxOverrideGoldenTests,
         widget: null,
         nativeSize: null,
       ),
@@ -65,9 +89,79 @@ _fixtures =
         nativeSize: null,
       ),
       (
+        painter: const DescPainter(),
+        name: 'desc_painter',
+        tests: defaultGoldenTests,
+        widget: null,
+        nativeSize: null,
+      ),
+      (
         painter: const EllipsePainter(),
         name: 'ellipse_painter',
         tests: defaultGoldenTests,
+        widget: null,
+        nativeSize: null,
+      ),
+      (
+        painter: const FeComponentTransferElementPainter(),
+        name: 'fe_component_transfer_element_painter',
+        tests: macOsOverrideGoldenTests,
+        widget: null,
+        nativeSize: null,
+      ),
+      (
+        painter: const FeDropShadowElementPainter(),
+        name: 'fe_drop_shadow_element_painter',
+        tests: defaultGoldenTests,
+        widget: null,
+        nativeSize: null,
+      ),
+      (
+        painter: const FeFloodElementPainter(),
+        name: 'fe_flood_element_painter',
+        tests: defaultGoldenTests,
+        widget: null,
+        nativeSize: null,
+      ),
+      (
+        painter: const FeGaussianBlurElement1Painter(),
+        name: 'fe_gaussian_blur_element_1_painter',
+        tests: macOsOverrideGoldenTests,
+        widget: null,
+        nativeSize: null,
+      ),
+      (
+        painter: const FeGaussianBlurElement2Painter(),
+        name: 'fe_gaussian_blur_element_2_painter',
+        tests: defaultGoldenTests,
+        widget: null,
+        nativeSize: null,
+      ),
+      (
+        painter: const FeMergeElementPainter(),
+        name: 'fe_merge_element_painter',
+        tests: macOsFixedOverrideGoldenTests,
+        widget: null,
+        nativeSize: null,
+      ),
+      (
+        painter: const FeMergeNodeElementPainter(),
+        name: 'fe_merge_node_element_painter',
+        tests: macOsFixedOverrideGoldenTests,
+        widget: null,
+        nativeSize: null,
+      ),
+      (
+        painter: const FeOffsetElementPainter(),
+        name: 'fe_offset_element_painter',
+        tests: defaultGoldenTests,
+        widget: null,
+        nativeSize: null,
+      ),
+      (
+        painter: const FilterElementPainter(),
+        name: 'filter_element_painter',
+        tests: macOsOverrideGoldenTests,
         widget: null,
         nativeSize: null,
       ),
@@ -114,6 +208,13 @@ _fixtures =
           GoldenTestType.fixed: null,
           GoldenTestType.viewBox: <TargetPlatform>{TargetPlatform.macOS},
         },
+        widget: null,
+        nativeSize: null,
+      ),
+      (
+        painter: const PatternElementPainter(),
+        name: 'pattern_element_painter',
+        tests: defaultGoldenTests,
         widget: null,
         nativeSize: null,
       ),
@@ -184,10 +285,7 @@ _fixtures =
       (
         painter: const TspanPainter(),
         name: 'tspan_painter',
-        tests: <GoldenTestType, Set<TargetPlatform>?>{
-          GoldenTestType.fixed: <TargetPlatform>{TargetPlatform.macOS},
-          GoldenTestType.viewBox: <TargetPlatform>{TargetPlatform.macOS},
-        },
+        tests: macOsOverrideGoldenTests,
         widget: null,
         nativeSize: null,
       ),
@@ -195,10 +293,21 @@ _fixtures =
       (
         painter: const MdnTextExamplePainter(),
         name: 'text_painter',
-        tests: <GoldenTestType, Set<TargetPlatform>?>{
-          GoldenTestType.fixed: <TargetPlatform>{TargetPlatform.macOS},
-          GoldenTestType.viewBox: <TargetPlatform>{TargetPlatform.macOS},
-        },
+        tests: macOsOverrideGoldenTests,
+        widget: null,
+        nativeSize: null,
+      ),
+      (
+        painter: const TextPathPainter(),
+        name: 'text_path_painter',
+        tests: macOsOverrideGoldenTests,
+        widget: null,
+        nativeSize: null,
+      ),
+      (
+        painter: const TitlePainter(),
+        name: 'title_painter',
+        tests: defaultGoldenTests,
         widget: null,
         nativeSize: null,
       ),
@@ -210,23 +319,37 @@ _fixtures =
         nativeSize: null,
       ),
       (
+        painter: const MarkerPainter(),
+        name: 'marker_painter',
+        tests: defaultGoldenTests,
+        widget: null,
+        nativeSize: null,
+      ),
+      (
+        painter: const MarkerPolymarkersPainter(),
+        name: 'marker_polymarkers_painter',
+        tests: defaultGoldenTests,
+        widget: null,
+        nativeSize: null,
+      ),
+      (
+        painter: const MarkerContextFillStrokePainter(),
+        name: 'marker_context_fill_stroke_painter',
+        tests: defaultGoldenTests,
+        widget: null,
+        nativeSize: null,
+      ),
+      (
         painter: const MaskPainter(),
         name: 'mask_painter',
-        tests: defaultGoldenTests,
+        tests: macOsOverrideGoldenTests,
         widget: null,
         nativeSize: null,
       ),
       (
-        painter: const MaskUnitsPainter(),
-        name: 'mask_units_painter',
-        tests: defaultGoldenTests,
-        widget: null,
-        nativeSize: null,
-      ),
-      (
-        painter: const MaskContentUnitsPainter(),
-        name: 'mask_content_units_painter',
-        tests: defaultGoldenTests,
+        painter: const SwitchElementPainter(),
+        name: 'switch_element_painter',
+        tests: macOsOverrideGoldenTests,
         widget: null,
         nativeSize: null,
       ),
@@ -270,5 +393,35 @@ void main() {
         }
       });
     }
+
+    group('Accessibility (Semantics)', () {
+      testWidgets('should render DescPainterWidget with CustomPaint', (
+        WidgetTester tester,
+      ) async {
+        // Arrange
+        const widget = DescPainterWidget();
+
+        // Act
+        await tester.pumpWidget(const MaterialApp(home: Scaffold(body: widget)));
+
+        // Assert
+        expect(find.byType(DescPainterWidget), findsOneWidget);
+        expect(find.byType(CustomPaint), findsWidgets);
+      });
+
+      testWidgets('should render TitlePainterWidget with CustomPaint', (
+        WidgetTester tester,
+      ) async {
+        // Arrange
+        const widget = TitlePainterWidget();
+
+        // Act
+        await tester.pumpWidget(const MaterialApp(home: Scaffold(body: widget)));
+
+        // Assert
+        expect(find.byType(TitlePainterWidget), findsOneWidget);
+        expect(find.byType(CustomPaint), findsWidgets);
+      });
+    });
   });
 }

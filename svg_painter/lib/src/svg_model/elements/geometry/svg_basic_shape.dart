@@ -5,6 +5,8 @@ part of '../../svg_element.dart';
 sealed class SvgBasicShape extends SvgGraphicsElement with SvgGeometryAttributable {
   const SvgBasicShape({
     this.geometryAttributes,
+    super.title,
+    super.desc,
     super.presentationAttributes,
     super.coreAttributes,
   });

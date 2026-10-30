@@ -67,6 +67,15 @@ class SvgIdFormatter {
     'yield',
   };
 
+  /// Sanitizes an SVG ID into a valid Dart identifier token by replacing
+  /// non-alphanumeric characters with underscores.
+  static String sanitizeId(String? id) {
+    if (id == null || id.isEmpty) {
+      return '';
+    }
+    return id.replaceAll(RegExp(r'[^a-zA-Z0-9_]'), '_');
+  }
+
   /// Formats an SVG [id] into a valid `lowerCamelCase` Dart identifier.
   static String format(String id) {
     if (id.isEmpty) {

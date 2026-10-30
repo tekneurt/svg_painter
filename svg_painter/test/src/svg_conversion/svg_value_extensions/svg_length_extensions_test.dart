@@ -55,6 +55,38 @@ void main() {
       // max(200, 100) = 200
       expect(const SvgLength(10.0, SvgLengthUnit.vmax).toDouble(context), 20.0);
     });
+
+    test('should return value relative to default font size when unit is em and context is null', () {
+      // Arrange
+      const length = SvgLength(2.5, SvgLengthUnit.em);
+
+      // Act
+      final double result = length.toDouble();
+
+      // Assert
+      expect(result, 2.5 * 16.0);
+    });
+
+    test('should return value relative to root font size when unit is rem', () {
+      // Arrange
+      const length = SvgLength(1.5, SvgLengthUnit.rem);
+
+      // Act
+      final double result = length.toDouble(context);
+
+      // Assert
+      expect(result, 1.5 * 16.0);
+    });
+
+    test('should return value relative to font size when unit is ex or ch', () {
+      // Arrange
+      const exLength = SvgLength(2.0, SvgLengthUnit.ex);
+      const chLength = SvgLength(4.0, SvgLengthUnit.ch);
+
+      // Act & Assert
+      expect(exLength.toDouble(context), 2.0 * 16.0 * 0.5);
+      expect(chLength.toDouble(context), 4.0 * 16.0 * 0.5);
+    });
   });
 
   group('SvgPercentageToDouble', () {
@@ -124,6 +156,96 @@ void main() {
       );
 
       expect(const SvgLength(5.6).toPositionOrNull(contextWithOffset, .horizontal), 5.6);
+    });
+  });
+
+  group('SvgOpacityResolutionExtension', () {
+    test('should return 1.0 when opacity is null', () {
+      // Arrange
+      const SvgLengthPercentage? opacity = null;
+
+      // Act
+      final double result = opacity.resolveOpacity(context);
+
+      // Assert
+      expect(result, 1.0);
+    });
+
+    test('should return clamped 0.0 when opacity is negative number', () {
+      // Arrange
+      const SvgLengthPercentage opacity = SvgLength(-0.35);
+
+      // Act
+      final double result = opacity.resolveOpacity(context);
+
+      // Assert
+      expect(result, 0.0);
+    });
+
+    test('should return clamped 1.0 when opacity exceeds 1.0', () {
+      // Arrange
+      const SvgLengthPercentage opacity = SvgLength(1.45);
+
+      // Act
+      final double result = opacity.resolveOpacity(context);
+
+      // Assert
+      expect(result, 1.0);
+    });
+
+    test('should return double value when opacity is valid number in range', () {
+      // Arrange
+      const SvgLengthPercentage opacity = SvgLength(0.65);
+
+      // Act
+      final double result = opacity.resolveOpacity(context);
+
+      // Assert
+      expect(result, 0.65);
+    });
+
+    test('should return value as fraction when opacity is percentage in range', () {
+      // Arrange
+      const SvgLengthPercentage opacity = SvgPercentage(45.0);
+
+      // Act
+      final double result = opacity.resolveOpacity(context);
+
+      // Assert
+      expect(result, closeTo(0.45, 0.0001));
+    });
+
+    test('should return clamped 0.0 when opacity percentage is negative', () {
+      // Arrange
+      const SvgLengthPercentage opacity = SvgPercentage(-25.0);
+
+      // Act
+      final double result = opacity.resolveOpacity(context);
+
+      // Assert
+      expect(result, 0.0);
+    });
+
+    test('should return clamped 1.0 when opacity percentage exceeds 100%', () {
+      // Arrange
+      const SvgLengthPercentage opacity = SvgPercentage(175.0);
+
+      // Act
+      final double result = opacity.resolveOpacity(context);
+
+      // Assert
+      expect(result, 1.0);
+    });
+
+    test('should return valid opacity when context is omitted', () {
+      // Arrange
+      const SvgLengthPercentage opacity = SvgLength(0.75);
+
+      // Act
+      final double result = opacity.resolveOpacity();
+
+      // Assert
+      expect(result, 0.75);
     });
   });
 }

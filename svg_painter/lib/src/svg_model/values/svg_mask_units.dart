@@ -6,7 +6,8 @@ enum SvgMaskUnits {
   objectBoundingBox('objectBoundingBox'),
 
   /// The coordinate system is the same as the user coordinate system.
-  userSpaceOnUse('userSpaceOnUse');
+  userSpaceOnUse('userSpaceOnUse')
+  ;
 
   const SvgMaskUnits(this.value);
 

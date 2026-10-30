@@ -63,5 +63,30 @@ void main() {
         ),
       );
     });
+
+    test('should extract title and desc when child elements are present', () {
+      // Arrange
+      final document = XmlDocument.parse(
+        '<circle cx="15" cy="25" r="35"><title id="t-circle">Circle Title</title><desc id="d-circle">Circle Desc</desc></circle>',
+      );
+      final XmlElement element = document.rootElement;
+
+      // Act
+      final Result<SvgElement> result = element.toSvgCircle();
+
+      // Assert
+      expect(
+        result,
+        isA<Success<SvgElement>>().having(
+          (Success<SvgElement> s) => s.value,
+          'value',
+          isA<SvgCircle>()
+              .having((SvgCircle c) => c.title?.content, 'title content', 'Circle Title')
+              .having((SvgCircle c) => c.title?.id, 'title id', 't-circle')
+              .having((SvgCircle c) => c.desc?.content, 'desc content', 'Circle Desc')
+              .having((SvgCircle c) => c.desc?.id, 'desc id', 'd-circle'),
+        ),
+      );
+    });
   });
 }

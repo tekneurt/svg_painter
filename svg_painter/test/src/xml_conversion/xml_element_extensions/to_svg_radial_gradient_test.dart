@@ -60,5 +60,30 @@ void main() {
       expect((grad.r as SvgPercentage).value, 50.0);
       expect((grad.fr as SvgPercentage).value, 0.0);
     });
+
+    test('should parse color attribute when color is provided', () {
+      // Arrange
+      final document = XmlDocument.parse('''
+        <radialGradient id="rad1" color="blue">
+          <stop offset="0%" stop-color="white" />
+        </radialGradient>
+      ''');
+      final XmlElement element = document.rootElement;
+
+      // Act
+      final Result<SvgRadialGradient> result = element.toSvgRadialGradient();
+
+      // Assert
+      expect(result, isA<Success<SvgRadialGradient>>());
+      final SvgRadialGradient grad = (result as Success<SvgRadialGradient>).value;
+      expect(
+        grad.color,
+        isA<SvgNamedColor>().having(
+          (SvgNamedColor c) => c.name,
+          'name',
+          SvgColorName.blue,
+        ),
+      );
+    });
   });
 }

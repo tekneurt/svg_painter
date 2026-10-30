@@ -1,3 +1,5 @@
+import 'package:svg_painter_annotation/svg_painter_annotation.dart';
+
 import '../../painting_model/_painting_model.dart';
 import '../command_generator.dart';
 import '../flutter_color_map.dart';
@@ -5,6 +7,7 @@ import '../generation_extensions.dart';
 import '../generator_buffer.dart';
 import '../models.dart';
 import '../palette_analyzer.dart';
+import '../svg_id_formatter.dart';
 
 class RadialGradientGenerator extends CommandGenerator<DefineRadialGradient> {
   const RadialGradientGenerator();
@@ -21,8 +24,10 @@ class RadialGradientGenerator extends CommandGenerator<DefineRadialGradient> {
     List<InheritedProperty>? inheritedStrokes,
     String? painterClassName,
     Set<String>? gradientsNeedingStretch,
+    SvgColorMapping colorMapping = SvgColorMapping.material,
+    bool isInsideMarker = false,
   }) {
-    final varName = '_grad_${command.id}';
+    final varName = '_grad_${SvgIdFormatter.sanitizeId(command.id)}';
 
     final bool needsStretch = gradientsNeedingStretch?.contains(command.id) ?? false;
 
@@ -36,8 +41,22 @@ class RadialGradientGenerator extends CommandGenerator<DefineRadialGradient> {
         for (final GradientStop stop in command.stops) {
           final int alpha = (stop.opacity * 255).round().clamp(0, 255);
           final int combinedColor = (stop.colorArgb & 0x00FFFFFF) | (alpha << 24);
-          final String colorCode = FlutterColorMap.getColorCode(combinedColor);
-          buffer.writeln('$colorCode,');
+          final String colorCode = FlutterColorMap.getColorCode(
+            combinedColor,
+            colorMapping: colorMapping,
+          );
+          final String? tokenName = palette?.colorTokens[stop.colorArgb];
+          if (tokenName != null) {
+            if (stop.opacity == 1.0) {
+              buffer.writeln('$tokenName ?? $colorCode,');
+            } else {
+              buffer.writeln(
+                '($tokenName != null ? $tokenName!.withValues(alpha: ${stop.opacity}) : $colorCode),',
+              );
+            }
+          } else {
+            buffer.writeln('$colorCode,');
+          }
         }
       }, footer: '],');
       buffer.writeBlock('stops: <double>[', () {
@@ -60,10 +79,14 @@ class RadialGradientGenerator extends CommandGenerator<DefineRadialGradient> {
 
       if (command.transformAttributes != null) {
         final List<double> matrix = command.transformAttributes!.toFlutterMatrix();
-        final extra = command.units == PaintingGradientUnits.objectBoundingBox && needsStretch
+        final isBbox = command.units == PaintingGradientUnits.objectBoundingBox;
+        final extraBbox = isBbox ? ', isObjectBoundingBox: true' : '';
+        final extraStretch = isBbox && needsStretch
             ? ', isElliptical: true, centerX: ${command.cx}, centerY: ${command.cy}'
             : '';
-        buffer.writeln('transform: $helperName(matrix: <double>[${matrix.join(', ')}]$extra),');
+        buffer.writeln(
+          'transform: $helperName(matrix: <double>[${matrix.join(', ')}]$extraBbox$extraStretch),',
+        );
       } else if (command.units == PaintingGradientUnits.objectBoundingBox && needsStretch) {
         // SVG objectBoundingBox radial gradients are elliptical on non-square elements.
         // We use the centerX/centerY to ensure correct aspect-ratio correction.

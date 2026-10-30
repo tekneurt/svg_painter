@@ -69,6 +69,47 @@ void main() {
         expect(length.value, 0.0);
         expect(length.unit, SvgLengthUnit.none);
       });
+
+      test('should parse em unit when valid string is provided', () {
+        // Arrange
+        const input = '2.5em';
+
+        // Act
+        final SvgLengthPercentage result = input.toSvgLengthPercentage();
+
+        // Assert
+        expect(result, isA<SvgLength>());
+        final length = result as SvgLength;
+        expect(length.value, 2.5);
+        expect(length.unit, SvgLengthUnit.em);
+      });
+
+      test('should parse smaller keyword when valid string is provided', () {
+        // Arrange
+        const input = 'smaller';
+
+        // Act
+        final SvgLengthPercentage result = input.toSvgLengthPercentage();
+
+        // Assert
+        expect(result, isA<SvgLength>());
+        final length = result as SvgLength;
+        expect(length.value, 1.0 / 1.2);
+        expect(length.unit, SvgLengthUnit.em);
+      });
+
+      test('should parse absolute font-size keywords when valid strings are provided', () {
+        // Arrange & Act & Assert
+        expect('xx-small'.toSvgLengthPercentage(), const SvgLength(9.0, SvgLengthUnit.px));
+        expect('x-small'.toSvgLengthPercentage(), const SvgLength(10.0, SvgLengthUnit.px));
+        expect('small'.toSvgLengthPercentage(), const SvgLength(13.333333333333334, SvgLengthUnit.px));
+        expect('medium'.toSvgLengthPercentage(), const SvgLength(16.0, SvgLengthUnit.px));
+        expect('large'.toSvgLengthPercentage(), const SvgLength(19.2, SvgLengthUnit.px));
+        expect('x-large'.toSvgLengthPercentage(), const SvgLength(24.0, SvgLengthUnit.px));
+        expect('xx-large'.toSvgLengthPercentage(), const SvgLength(32.0, SvgLengthUnit.px));
+        expect('xxx-large'.toSvgLengthPercentage(), const SvgLength(48.0, SvgLengthUnit.px));
+        expect('larger'.toSvgLengthPercentage(), const SvgLength(1.2, SvgLengthUnit.em));
+      });
     });
   });
 }

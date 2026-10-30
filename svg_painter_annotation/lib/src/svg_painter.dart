@@ -17,6 +17,17 @@ enum SvgExposureMode {
   mixed,
 }
 
+/// Defines how color constants are emitted in the generated code.
+enum SvgColorMapping {
+  /// Uses Flutter's `Colors.*` constants (e.g., `Colors.red`, `Colors.black`)
+  /// when a matching ARGB value exists in Flutter's color palette, falling back
+  /// to `const Color(0xAARRGGBB)`. This is the default.
+  material,
+
+  /// Strictly emits `const Color(0xAARRGGBB)` for all colors.
+  hex,
+}
+
 /// Annotation to mark a class for SVG code generation.
 @immutable
 sealed class SvgPainter {
@@ -24,6 +35,8 @@ sealed class SvgPainter {
     this.painterClassName,
     this.exposureMode = SvgExposureMode.none,
     this.propertyMapping = const <String, String>{},
+    this.colorMapping = SvgColorMapping.material,
+    this.tokenColors = false,
   });
 
   /// Creates an annotation from a file path.
@@ -35,6 +48,8 @@ sealed class SvgPainter {
     String? painterClassName,
     SvgExposureMode exposureMode,
     Map<String, String> propertyMapping,
+    SvgColorMapping colorMapping,
+    bool tokenColors,
   }) = SvgFilePainter;
 
   /// Creates an annotation from raw SVG code.
@@ -45,6 +60,8 @@ sealed class SvgPainter {
     String? painterClassName,
     SvgExposureMode exposureMode,
     Map<String, String> propertyMapping,
+    SvgColorMapping colorMapping,
+    bool tokenColors,
   }) = SvgCodePainter;
 
   /// The name of the generated CustomPainter class.
@@ -58,6 +75,13 @@ sealed class SvgPainter {
   /// Keys are the default generated names (e.g., 'fill1', 'myRectFill'),
   /// and values are the desired names (e.g., 'background', 'logoColor').
   final Map<String, String> propertyMapping;
+
+  /// Defines how color constants are formatted in the generated code.
+  final SvgColorMapping colorMapping;
+
+  /// Whether to expose global color tokens (e.g., `red`, `black`) that override
+  /// all occurrences of that color across the SVG (fills, strokes, and gradients).
+  final bool tokenColors;
 }
 
 /// Annotation for SVG files.
@@ -68,6 +92,8 @@ final class SvgFilePainter extends SvgPainter {
     super.painterClassName,
     super.exposureMode = SvgExposureMode.none,
     super.propertyMapping = const <String, String>{},
+    super.colorMapping = SvgColorMapping.material,
+    super.tokenColors = false,
   });
 
   /// The path to the SVG file.
@@ -82,6 +108,8 @@ final class SvgCodePainter extends SvgPainter {
     super.painterClassName,
     super.exposureMode = SvgExposureMode.none,
     super.propertyMapping = const <String, String>{},
+    super.colorMapping = SvgColorMapping.material,
+    super.tokenColors = false,
   });
 
   /// The SVG code content.

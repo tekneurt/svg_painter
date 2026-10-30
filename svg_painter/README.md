@@ -209,6 +209,46 @@ class ArrowIcon extends _$ArrowIcon {}
 const arrow = ArrowIconWidget(color: Colors.amber);
 ```
 
+### Global Token Colors (`tokenColors`)
+
+Enable `tokenColors: true` to discover all unique colors in an SVG and expose them as clean named properties (e.g. `black`, `red`, `cFF123456`). Overriding a token globally updates that color across all solid fills, strokes, and individual gradient stops:
+
+```dart
+@SvgPainter.code(
+  '''
+  <svg viewBox="0 0 100 50">
+    <rect width="50" height="50" fill="black" />
+    <rect x="50" width="50" height="50" fill="red" stroke="black" stroke-width="2" />
+  </svg>
+  ''',
+  tokenColors: true,
+)
+class DuoBoxPainter extends _$DuoBoxPainter {
+  const DuoBoxPainter({super.fit, super.black, super.red});
+}
+
+// Usage: Recolor all black parts to navy blue and red parts to gold
+const box = DuoBoxPainterWidget(
+  black: Colors.indigo,
+  red: Colors.amber,
+);
+```
+
+### Configurable Color Mapping (`colorMapping`)
+
+Choose how color constants are written into generated code via `SvgColorMapping`:
+
+* `SvgColorMapping.material` (Default): Uses Flutter `Colors.*` constants (`Colors.black`, `Colors.red`, `Colors.amber.shade200`).
+* `SvgColorMapping.hex`: Generates pure `const Color(0xAARRGGBB)` hex values without referencing the Material palette.
+
+```dart
+@SvgPainter.file(
+  'assets/logo.svg',
+  colorMapping: SvgColorMapping.hex,
+)
+class LogoPainter extends _$LogoPainter {}
+```
+
 ### Dynamic Style Inheritance
 
 `svg_painter` honors SVG group inheritance rules. Overriding a property on a parent `<g>` automatically propagates down to all children that inherit from it.

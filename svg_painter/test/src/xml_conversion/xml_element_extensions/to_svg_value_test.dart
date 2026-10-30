@@ -119,6 +119,8 @@ void main() {
         XmlAttributeName.fill: 'red',
         XmlAttributeName.strokeLinecap: 'round',
         XmlAttributeName.strokeLinejoin: 'bevel',
+        XmlAttributeName.floodColor: 'cyan',
+        XmlAttributeName.floodOpacity: '0.8',
       };
 
       for (final MapEntry<XmlAttributeName, String> entry in tests.entries) {
@@ -143,8 +145,12 @@ void main() {
         XmlAttributeName.className,
         XmlAttributeName.style,
         XmlAttributeName.href,
+        XmlAttributeName.xlinkHref,
         XmlAttributeName.transform,
         XmlAttributeName.gradientTransform,
+        XmlAttributeName.requiredExtensions,
+        XmlAttributeName.requiredFeatures,
+        XmlAttributeName.systemLanguage,
       ];
 
       for (final attr in complexAttributes) {
@@ -259,25 +265,30 @@ void main() {
       expect(resultAbsent, SvgTextAnchor.start);
     });
 
-    test('toSvgValue should return parsed stroke-dashoffset when present and default when absent', () {
-      // Arrange
-      final docPresent = XmlDocument.parse('<line stroke-dashoffset="15.5" />');
-      final docAbsent = XmlDocument.parse('<line />');
+    test(
+      'toSvgValue should return parsed stroke-dashoffset when present and default when absent',
+      () {
+        // Arrange
+        final docPresent = XmlDocument.parse('<line stroke-dashoffset="15.5" />');
+        final docAbsent = XmlDocument.parse('<line />');
 
-      // Act
-      final SvgLengthPercentage resultPresent = docPresent.rootElement.toSvgValue<SvgLengthPercentage>(
-        XmlElementName.line,
-        XmlAttributeName.strokeDashoffset,
-      );
-      final SvgLengthPercentage resultAbsent = docAbsent.rootElement.toSvgValue<SvgLengthPercentage>(
-        XmlElementName.line,
-        XmlAttributeName.strokeDashoffset,
-      );
+        // Act
+        final SvgLengthPercentage resultPresent = docPresent.rootElement
+            .toSvgValue<SvgLengthPercentage>(
+              XmlElementName.line,
+              XmlAttributeName.strokeDashoffset,
+            );
+        final SvgLengthPercentage resultAbsent = docAbsent.rootElement
+            .toSvgValue<SvgLengthPercentage>(
+              XmlElementName.line,
+              XmlAttributeName.strokeDashoffset,
+            );
 
-      // Assert
-      expect(resultPresent, isA<SvgLength>().having((SvgLength l) => l.value, 'value', 15.5));
-      expect(resultAbsent, isA<SvgLength>().having((SvgLength l) => l.value, 'value', 0.0));
-    });
+        // Assert
+        expect(resultPresent, isA<SvgLength>().having((SvgLength l) => l.value, 'value', 15.5));
+        expect(resultAbsent, isA<SvgLength>().having((SvgLength l) => l.value, 'value', 0.0));
+      },
+    );
 
     test('toSvgValue should return parsed paint-order when present and default when absent', () {
       // Arrange

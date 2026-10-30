@@ -19,10 +19,13 @@ extension SvgPathToPaintCommands on SvgPath {
       geometryAttributes: geometryAttributes,
     );
 
-    return PathDataParser.parse(d, context).map((List<PathOperation> ops) {
-      return <PaintCommand>[
+    return PathDataParser.parse(d, context).fold(
+      (Failure<List<PathOperation>> failure) {
+        return const Success<List<PaintCommand>>(<PaintCommand>[]);
+      },
+      (List<PathOperation> ops) => Success<List<PaintCommand>>(<PaintCommand>[
         DrawPath(operations: ops, style: paint, id: id),
-      ];
-    });
+      ]),
+    );
   }
 }

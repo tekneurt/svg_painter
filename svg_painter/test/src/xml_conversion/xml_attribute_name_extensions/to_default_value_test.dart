@@ -146,6 +146,14 @@ void main() {
         XmlAttributeName.strokeOpacity.toDefaultValue(XmlElementName.path),
         const SvgLength(1.0),
       );
+      expect(
+        XmlAttributeName.floodColor.toDefaultValue(XmlElementName.feFlood),
+        const SvgNamedColor(SvgColorName.black),
+      );
+      expect(
+        XmlAttributeName.floodOpacity.toDefaultValue(XmlElementName.feFlood),
+        const SvgLength(1.0),
+      );
     });
 
     test('radialGradient specific attributes should return correct defaults', () {
@@ -173,6 +181,7 @@ void main() {
         XmlAttributeName.className,
         XmlAttributeName.style,
         XmlAttributeName.href,
+        XmlAttributeName.xlinkHref,
         XmlAttributeName.transform,
         XmlAttributeName.gradientTransform,
         XmlAttributeName.fontSize,
@@ -183,6 +192,9 @@ void main() {
         XmlAttributeName.strokeDasharray,
         XmlAttributeName.clipPath,
         XmlAttributeName.clipPathUnits,
+        XmlAttributeName.patternUnits,
+        XmlAttributeName.patternContentUnits,
+        XmlAttributeName.patternTransform,
       ];
 
       for (final attr in noDefaultAttrs) {

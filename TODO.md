@@ -252,7 +252,7 @@
     - [x] Refactor `SvgPaintResolver` into modular, single-responsibility helpers for easier maintenance.
     - [x] Systematic code audit for similar patterns: Identify and refactor remaining complex boolean flag cascades, negated conditions, and monolithic methods across generators and converters into clean switch/pattern-matching helpers.
 - [x] **Accessibility (Semantic Mapping)**: Map `<title>` and `<desc>` automatically to Flutter's `Semantics` widget in the generated code.
-- [ ] **MDN Compliance**: Add 2nd example from [MDN fill](https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/fill) once `<marker>`, `context-stroke`, and `context-fill` are implemented.
+- [x] **MDN Compliance**: Add 2nd example from [MDN fill](https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/fill) once `<marker>`, `context-stroke`, and `context-fill` are implemented.
 - [x] **Essential Attributes**: `text-anchor` [x], `fill-rule` [x], `stroke-dashoffset` [x], `stroke-miterlimit` [x], `paint-order` [x], `preserveAspectRatio` [x].
 - [x] **Remaining Attributes**: `vector-effect` [x], `dx` [x], `dy` [x].
 - [x] **Concise Model toString()**: Refactor `PaintingStyle.toString()` and `DrawCommand` subclasses to omit `null` and default values, reducing test verbosity and cognitive load.
@@ -271,24 +271,66 @@
 ## Post-MVP Roadmap
 
 ### Phase 6: Recommended "Wise-to-Have" Features (0.5.0)
-- [ ] **Dual-Platform Golden Hardening**: Systematize macOS and Linux golden testing. For tests subject to platform font/anti-aliasing variance, configure platform-specific golden overrides (`TargetPlatform.macOS` / `TargetPlatform.linux`) in `test_utils.dart` so both local macOS and CI Linux pass with 100% reliability.
-- [ ] **Configurable Color Generation**: Add `colorMapping` option to `@SvgPainter`.
+- [x] **Dual-Platform Golden Hardening**: Systematize macOS and Linux golden testing. For tests subject to platform font/anti-aliasing variance, configure platform-specific golden overrides (`TargetPlatform.macOS` / `TargetPlatform.linux`) in `test_utils.dart` so both local macOS and CI Linux pass with 100% reliability.
+- [x] **Configurable Color Generation**: Add `colorMapping` option to `@SvgPainter`.
     - `material` (default): Use Flutter's `Colors.red`, `Colors.amber.shade200`.
-    - `svg`: Use SVG constants like `Color(0xFFFF0000)` but potentially aliased to a generated `SvgColors` class for readability.
     - `hex`: Strict `Color(0xAARRGGBB)` usage.
-- [ ] **Token-Based Global Coloring**: Allow a single property to control all occurrences of a specific color across the entire SVG, including both solid fills/strokes AND individual gradient stops (e.g., changing `red` to `yellow` globally).
-- [ ] **Advanced Pathing**: `<marker>` support and `context-fill`/`context-stroke` keywords.
-- [ ] **Text along Curves**: `<textPath>` implementation.
-- [ ] **Containers**: `<switch>` for conditional rendering.
-- [ ] **Basic Filters**: `<filter>`, `<feGaussianBlur>`, `<feOffset>`, `<feDropShadow>`, `<feMerge>`, `<feFlood>`.
-- [ ] **Patterns**: `<pattern>` for repeating fills.
-- [ ] **Gradients (Polish)**: `objectBoundingBox` and `spreadMethod`.
-- [ ] Support `gradientTransform` properly using `Matrix4` from `vector_math_64` (see: https://api.flutter.dev/flutter/package-vector_math_vector_math_64/Matrix4-class.html).
-- [ ] Support complex nested transformations in gradients.
+- [x] **Advanced Pathing (<marker>)**: `<marker>` element, presentation attributes (`marker-start`, `marker-mid`, `marker-end`, `marker`, `refX`, `refY`, `markerWidth`, `markerHeight`, `markerUnits`, `orient`).
+    - [x] Support `context-fill` and `context-stroke` keywords on markers.
+- [x] **Text along Curves**: `<textPath>` implementation.
+- [x] **Text Coordinate Architecture**: Replace `hasMultiCoordinates` with a cleaner, unified solution for text and tspan coordinate and shift distribution.
+- [x] **Containers**: `<switch>` for conditional rendering.
+- [x] **Basic Filters**: `<filter>`, `<feGaussianBlur>`, `<feOffset>`, `<feDropShadow>`, `<feMerge>`, `<feFlood>`.
+- [x] **Patterns**: `<pattern>` for repeating fills.
+- [x] **Gradients (Polish)**: `objectBoundingBox` and `spreadMethod`.
+- [ ] **Standard Test Suite & Reference Audit**:
+    - [ ] **W3C SVG 1.1 Second Edition Test Suite**: Incrementally add approved test fixtures with exact source SVGs, dynamic reference revision substitution, Flutter goldens, and automated isolated AA diff tracking against official W3C PNGs.
+        - [x] **Color Test Suite Conformance (`color-prop-01` to `05`)**:
+            - [x] **Color Parsing & Map Fixes (Prerequisite for `color-prop-02-f` & `color-prop-03-t`)**:
+                - Fix fractional percentage parsing in `_parseRgb()` (support floating-point values like `86.2745%` and `66.667%`).
+                - Fix `SvgColorName.lightyellow` ARGB hex in `svgColorNameMap` (`0xFFFFE0` -> `0xFFFFFFE0`).
+            - [x] **Inheritance & Gradient CurrentColor Support (Prerequisite for `color-prop-01-b`)**:
+                - Support `inherit` keyword on presentation attributes (including `color="inherit"`).
+                - Support presentation attribute inheritance and `currentColor` resolution on `<linearGradient>`/`<radialGradient>` and `<stop>` elements.
+            - [x] **CSS System Colors Evaluation/Support (Prerequisite for `color-prop-04-t`)**:
+                - Evaluate and implement CSS system color keyword mappings (`Background`, `Window`, `ThreeDFace`, `ButtonFace`, etc.).
+            - [x] **Add W3C Color Test Cases**:
+                - [x] Add `color-prop-01-b` fixture, painter, diff mask, and golden test.
+                - [x] Add `color-prop-02-f` fixture, painter, diff mask, and golden test.
+                - [x] Add `color-prop-03-t` fixture, painter, diff mask, and golden test.
+                - [x] Add `color-prop-04-t` fixture, painter, diff mask, and golden test.
+                - [x] Add `color-prop-05-t` fixture, painter, diff mask, and golden test.
+        - [x] **Painting Test Suite Conformance**:
+            - [x] **Painting Control Tests (`painting-control-01` to `06`)**:
+                - [x] Add `painting-control-01-f` (display attribute support).
+                - [x] Add `painting-control-02-f` (stroke-dasharray with length units).
+                - [x] Add `painting-control-03-f` and `painting-control-04-f`.
+                - [x] Add `painting-control-05-f` (display=none in masks and clipPaths).
+                - [x] Add `painting-control-06-f` (visibility inheritance and child overrides).
+            - [x] **Painting Fill Tests (`painting-fill-01` to `05`)**.
+            - [x] **Painting Stroke Tests (`painting-stroke-01` to `10`)**.
+            - [x] **Painting Marker Tests (`painting-marker-01` to `07`)**:
+                - [x] `painting-marker-01-f` (Basic marker orientation, angles, and unit scaling).
+                - [x] `painting-marker-02-f` (Property inheritance and marker styling).
+                - [x] `painting-marker-03-f` (CSS marker shorthand on path, polygon, polyline, line).
+                - [x] `painting-marker-04-f` (XML vs CSS marker shorthand distinction).
+                - [x] `painting-marker-05-f` (Marker overflow property values: visible, auto, hidden, scroll).
+                - [x] `painting-marker-06-f` (Marker coordinate offsets and non-zero viewBox values).
+                - [x] `painting-marker-07-f` (Display none handling and marker viewport clipping).
+    - [ ] **Modern SVG Test Suites Evaluation**:
+        - [ ] **`resvg-test-suite` (Linebender)**: Evaluate integration of the ~1,600 standalone SVG tests for granular spec conformance.
+        - [ ] **Web Platform Tests (WPT)**: Evaluate standalone SVG reftest subsets from `wpt/svg/`.
+        - [ ] **SVG Native Test Suite (Adobe / W3C)**: Explore static SVG test fixtures and modern Skia reference comparisons.
+    - [ ] **MDN Examples Audit**: Update MDN references, validate test completeness for all currently supported SVG features, verify and update links.
+        - [x] **MDN `color` Attribute**: Implement and add tests for [MDN color](https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/color) when updating MDN tests.
+        - [x] **MDN `font-size` Attribute**: Implement full CSS/SVG font-size specification support (keywords, `em`, `rem`, `ex`, `ch`, `%`) and add tests for [MDN font-size](https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/font-size).
+        - [x] **MDN Filter Elements & Attributes**: Implement support for `filter`, `stdDeviation`, `<filter>`, `<feGaussianBlur>`, `<feOffset>`, `<feMerge>`, and `<feMergeNode>` with fixtures and golden tests for all MDN examples.
+- [x] Support `gradientTransform` properly using `Matrix4` from `vector_math_64` (see: https://api.flutter.dev/flutter/package-vector_math_vector_math_64/Matrix4-class.html).
+- [x] Support complex nested transformations in gradients.
 
 ### Phase 7: Advanced Units & Path Syntax (0.6.0)
 - [ ] **SVG 2 Path Syntax**: Robust tokenizer for compact arc syntax (concatenated flags).
-- [ ] **Relative Units**: Support for `em`, `ex`, and other CSS relative units.
+- [x] **Relative Units**: Support for `em`, `rem`, `ex`, `ch`, and other CSS relative units in font-size and lengths.
 - [x] **Result Ergonomics**: Add ergonomic extensions (e.g., `combine()`) to simplify list folding and result aggregation in `Result`.
 
 ### Phase 8: Niche & Future Roadmap (1.0.0+)

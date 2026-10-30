@@ -5,6 +5,7 @@ import 'attribute_groups/svg_fill_attributes.dart';
 import 'attribute_groups/svg_font_attributes.dart';
 import 'attribute_groups/svg_geometry_attributes.dart';
 import 'attribute_groups/svg_graphics_attributes.dart';
+import 'attribute_groups/svg_marker_attributes.dart';
 import 'attribute_groups/svg_presentation_attributes.dart';
 import 'attribute_groups/svg_stroke_attributes.dart';
 import 'attribute_groups/svg_transform_attributes.dart';
@@ -14,12 +15,14 @@ import 'svg_value.dart';
 
 // Base
 part 'elements/base/svg_definition_element.dart';
+part 'elements/base/svg_descriptive.dart';
 part 'elements/base/svg_fill_attributable.dart';
 part 'elements/base/svg_font_attributable.dart';
 part 'elements/base/svg_geometry_attributable.dart';
 part 'elements/base/svg_graphics_attributable.dart';
 part 'elements/base/svg_graphics_element.dart';
 part 'elements/base/svg_ignored_element.dart';
+part 'elements/base/svg_marker_attributable.dart';
 part 'elements/base/svg_metadata_element.dart';
 part 'elements/base/svg_parent.dart';
 part 'elements/base/svg_presentable.dart';
@@ -28,16 +31,31 @@ part 'elements/base/svg_viewport_attributable.dart';
 part 'elements/base/svg_bounded.dart';
 
 // Containers
+part 'elements/containers/svg_a.dart';
 part 'elements/containers/svg_container_element.dart';
 part 'elements/containers/svg_defs.dart';
+part 'elements/containers/svg_filter.dart';
 part 'elements/containers/svg_group.dart';
+part 'elements/containers/svg_marker.dart';
 part 'elements/containers/svg_mask.dart';
+part 'elements/containers/svg_pattern.dart';
 part 'elements/containers/svg_clip_path.dart';
 part 'elements/containers/svg_root.dart';
 part 'elements/containers/svg_svg.dart';
-
+part 'elements/containers/svg_switch.dart';
 part 'elements/containers/svg_symbol.dart';
 part 'elements/containers/svg_use.dart';
+
+// Filters
+part 'elements/filters/svg_filter_primitive.dart';
+part 'elements/filters/svg_fe_component_transfer.dart';
+part 'elements/filters/svg_fe_drop_shadow.dart';
+part 'elements/filters/svg_fe_flood.dart';
+part 'elements/filters/svg_fe_func.dart';
+part 'elements/filters/svg_fe_gaussian_blur.dart';
+part 'elements/filters/svg_fe_offset.dart';
+part 'elements/filters/svg_fe_merge_node.dart';
+part 'elements/filters/svg_fe_merge.dart';
 
 // Geometry
 part 'elements/geometry/svg_basic_shape.dart';
@@ -66,6 +84,7 @@ part 'elements/style/svg_style.dart';
 // Text
 part 'elements/text/svg_text.dart';
 part 'elements/text/svg_text_content.dart';
+part 'elements/text/svg_text_path.dart';
 part 'elements/text/svg_tspan.dart';
 
 /// The base class for all SVG elements in the domain model.

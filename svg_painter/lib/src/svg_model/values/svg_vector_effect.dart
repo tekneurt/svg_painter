@@ -8,7 +8,8 @@ enum SvgVectorEffect implements SvgBaseValue {
   none('none'),
 
   /// The stroke width does not scale when the coordinate system is transformed.
-  nonScalingStroke('non-scaling-stroke');
+  nonScalingStroke('non-scaling-stroke')
+  ;
 
   const SvgVectorEffect(this.value);
 

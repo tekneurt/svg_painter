@@ -6,7 +6,8 @@ enum SvgFillRule with SvgBaseValue {
   nonzero('nonzero'),
 
   /// The evenodd winding rule.
-  evenodd('evenodd');
+  evenodd('evenodd')
+  ;
 
   const SvgFillRule(this.value);
 

@@ -60,13 +60,6 @@ class _$StrokePainter extends CustomPainter {
       destRect.height / sourceSize.height,
     );
 
-    {
-      final Paint paint = Paint();
-      paint.color = const Color(0xFF008000);
-      paint.style = PaintingStyle.stroke;
-      paint.strokeWidth = 1.0;
-      canvas.drawCircle(const Offset(5.0, 5.0), 4.0, paint);
-    }
     final Gradient _grad_myGradient = LinearGradient(
       begin: Alignment(-1.0, -1.0),
       end: Alignment(1.0, -1.0),
@@ -74,6 +67,13 @@ class _$StrokePainter extends CustomPainter {
       stops: <double>[0.0, 1.0],
       tileMode: TileMode.clamp,
     );
+    {
+      final Paint paint = Paint();
+      paint.color = const Color(0xFF008000);
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 1.0;
+      canvas.drawCircle(const Offset(5.0, 5.0), 4.0, paint);
+    }
     {
       final Paint paint = Paint();
       paint.shader = _grad_myGradient.createShader(

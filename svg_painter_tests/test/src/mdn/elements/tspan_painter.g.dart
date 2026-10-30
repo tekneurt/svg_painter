@@ -72,7 +72,7 @@ class _$TspanPainter extends CustomPainter {
               fontSize: 12.0,
               fontWeight: FontWeight.normal,
               fontStyle: FontStyle.italic,
-              fontFamily: 'Noto Serif',
+              fontFamily: 'Tinos',
               package: 'svg_painter',
             ),
             children: <InlineSpan>[

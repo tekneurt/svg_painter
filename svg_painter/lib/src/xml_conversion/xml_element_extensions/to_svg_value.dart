@@ -33,8 +33,7 @@ extension ToSvgValue on XmlElement {
       return null;
     } else {
       final SvgBaseValue? parsedValue = switch (attributeName) {
-        .x ||
-        .y ||
+        .x || .y || .dx || .dy => attributeValue.toSvgLengthPercentageOrList(),
         .x1 ||
         .y1 ||
         .x2 ||
@@ -48,10 +47,14 @@ extension ToSvgValue on XmlElement {
         .fillOpacity ||
         .strokeOpacity ||
         .stopOpacity ||
+        .floodOpacity ||
         .fontSize ||
+        .startOffset ||
         .strokeDashoffset ||
+        .refX ||
+        .refY ||
         .strokeWidth => attributeValue.toSvgLengthPercentage(),
-        .r || .fr || .rx || .ry || .width || .height => () {
+        .r || .fr || .rx || .ry || .width || .height || .markerWidth || .markerHeight => () {
           final SvgLengthPercentage val = attributeValue.toSvgLengthPercentage();
           if (val is SvgLength && val.value < 0) {
             return null;
@@ -63,9 +66,10 @@ extension ToSvgValue on XmlElement {
         }(),
         .pathLength => attributeValue.toSvgNonNegativeNumber(),
         .strokeMiterlimit => attributeValue.toSvgMiterLimit(),
-        .points || .strokeDasharray => attributeValue.toSvgPointList(),
+        .points => attributeValue.toSvgPointList(),
+        .strokeDasharray => attributeValue.toSvgStrokeDasharray(),
         .fillRule => attributeValue.toSvgFillRule(),
-        .fill || .stroke || .stopColor => attributeValue.toSvgColor(),
+        .fill || .stroke || .stopColor || .color || .floodColor => attributeValue.toSvgColor(),
         .strokeLinecap => attributeValue.toSvgStrokeLinecap(),
         .strokeLinejoin => attributeValue.toSvgStrokeLinejoin(),
         .fontWeight => attributeValue.toSvgFontWeight(),
@@ -74,11 +78,20 @@ extension ToSvgValue on XmlElement {
         .textAnchor => attributeValue.toSvgTextAnchor(),
         .paintOrder => attributeValue.toSvgPaintOrder(),
         .vectorEffect => attributeValue.toSvgVectorEffect(),
-        .dx || .dy => attributeValue.toSvgLengthPercentage(),
+        .display => attributeValue.toSvgDisplay(),
+        .visibility => attributeValue.toSvgVisibility(),
+        .overflow => attributeValue.toSvgOverflow(),
         .rotate => attributeValue.toSvgNumber(),
         .gradientUnits => attributeValue.toSvgGradientUnits(),
+        .markerUnits => attributeValue.toSvgMarkerUnits(),
+        .orient => attributeValue.toSvgMarkerOrient(),
         .spreadMethod => throw UnimplementedError('spreadMethod is not yet implemented'),
         .type ||
+        .tableValues ||
+        .slope ||
+        .intercept ||
+        .amplitude ||
+        .exponent ||
         .media ||
         .title ||
         .xmlSpace ||
@@ -89,11 +102,28 @@ extension ToSvgValue on XmlElement {
         .className ||
         .style ||
         .href ||
+        .xlinkHref ||
+        .marker ||
+        .markerStart ||
+        .markerMid ||
+        .markerEnd ||
         .mask ||
         .maskUnits ||
         .maskContentUnits ||
         .clipPath ||
         .clipPathUnits ||
+        .patternUnits ||
+        .patternContentUnits ||
+        .patternTransform ||
+        .filter ||
+        .filterUnits ||
+        .primitiveUnits ||
+        .requiredExtensions ||
+        .requiredFeatures ||
+        .systemLanguage ||
+        .stdDeviation ||
+        .in_ ||
+        .result ||
         .decoding ||
         .transform ||
         .gradientTransform => null, // These are strings or special types handled elsewhere

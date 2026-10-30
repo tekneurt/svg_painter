@@ -4,6 +4,7 @@ import '../svg_value.dart';
 import 'svg_fill_attributes.dart';
 import 'svg_font_attributes.dart';
 import 'svg_graphics_attributes.dart';
+import 'svg_marker_attributes.dart';
 import 'svg_stroke_attributes.dart';
 
 /// Represents a unified set of presentation attributes for an SVG element.
@@ -14,13 +15,21 @@ import 'svg_stroke_attributes.dart';
 @immutable
 final class SvgPresentationAttributes {
   const SvgPresentationAttributes({
+    this.color,
     this.fill,
     this.stroke,
     this.font,
     this.graphics,
+    this.marker,
     this.paintOrder,
     this.vectorEffect,
+    this.display,
+    this.visibility,
+    this.overflow,
   });
+
+  /// The indirect color value for currentColor.
+  final SvgColor? color;
 
   /// Fill-related attributes.
   final SvgFillAttributes? fill;
@@ -34,11 +43,23 @@ final class SvgPresentationAttributes {
   /// Graphics-related presentation attributes (e.g., opacity, transform).
   final SvgGraphicsAttributes? graphics;
 
+  /// Marker-related presentation attributes (e.g., marker-start, marker-end).
+  final SvgMarkerAttributes? marker;
+
   /// The order that the fill, stroke, and markers of a shape or text element are painted.
   final SvgPaintOrder? paintOrder;
 
   /// The vector effect to use when drawing an object (e.g., non-scaling-stroke).
   final SvgVectorEffect? vectorEffect;
+
+  /// Specifies whether or how an element is rendered.
+  final SvgDisplay? display;
+
+  /// Specifies whether an element is visible.
+  final SvgVisibility? visibility;
+
+  /// Specifies whether content is clipped when it overflows the element's box.
+  final SvgOverflow? overflow;
 
   /// Merges this set of attributes with another set.
   ///
@@ -49,12 +70,17 @@ final class SvgPresentationAttributes {
       return this;
     }
     return SvgPresentationAttributes(
+      color: other.color ?? color,
       fill: _mergeFill(fill, other.fill),
       stroke: _mergeStroke(stroke, other.stroke),
       font: _mergeFont(font, other.font),
       graphics: _mergeGraphics(graphics, other.graphics),
+      marker: _mergeMarker(marker, other.marker),
       paintOrder: other.paintOrder ?? paintOrder,
       vectorEffect: other.vectorEffect ?? vectorEffect,
+      display: other.display ?? display,
+      visibility: other.visibility ?? visibility,
+      overflow: other.overflow ?? overflow,
     );
   }
 
@@ -63,18 +89,29 @@ final class SvgPresentationAttributes {
   /// This is used to resolve attribute inheritance. Only properties that are
   /// specified as inherited in the SVG spec will be taken from the [parent].
   SvgPresentationAttributes inherit(SvgPresentationAttributes? parent) {
-    if (parent == null) {
-      return this;
+    final SvgColor? effectiveColor = color ?? parent?.color;
+    final SvgDisplay? effectiveDisplay;
+    if (parent?.display == SvgDisplay.none) {
+      effectiveDisplay = SvgDisplay.none;
+    } else {
+      effectiveDisplay = display ?? parent?.display;
     }
+    final SvgVisibility? effectiveVisibility = visibility ?? parent?.visibility;
+
     return SvgPresentationAttributes(
       // Inherited groups
-      fill: _inheritFill(fill, parent.fill),
-      stroke: _inheritStroke(stroke, parent.stroke),
-      font: _inheritFont(font, parent.font),
-      paintOrder: paintOrder ?? parent.paintOrder,
-      // Non-inherited groups (opacity, transform, vector-effect, etc. do NOT inherit)
+      color: effectiveColor,
+      fill: _inheritFill(fill, parent?.fill, effectiveColor),
+      stroke: _inheritStroke(stroke, parent?.stroke, effectiveColor),
+      font: _inheritFont(font, parent?.font),
+      marker: _inheritMarker(marker, parent?.marker),
+      paintOrder: paintOrder ?? parent?.paintOrder,
+      visibility: effectiveVisibility,
+      // Non-inherited groups (opacity, transform, vector-effect, overflow, etc. do NOT inherit)
       graphics: graphics,
       vectorEffect: vectorEffect,
+      display: effectiveDisplay,
+      overflow: overflow,
     );
   }
 
@@ -139,43 +176,88 @@ final class SvgPresentationAttributes {
       transformAttributes: b.transformAttributes ?? a.transformAttributes,
       mask: b.mask ?? a.mask,
       clipPath: b.clipPath ?? a.clipPath,
+      filter: b.filter ?? a.filter,
     );
   }
 
-  static SvgFillAttributes? _inheritFill(SvgFillAttributes? child, SvgFillAttributes? parent) {
+  static SvgFillAttributes? _inheritFill(
+    SvgFillAttributes? child,
+    SvgFillAttributes? parent,
+    SvgColor? effectiveColor,
+  ) {
     if (parent == null) {
-      return child;
+      if (child == null) {
+        return null;
+      } else {
+        return SvgFillAttributes(
+          color: _resolveInheritedColor(child.color, effectiveColor),
+          opacity: child.opacity,
+          rule: child.rule,
+        );
+      }
+    } else {
+      if (child == null) {
+        return parent;
+      } else {
+        final SvgColor? rawColor = child.color ?? parent.color;
+        return SvgFillAttributes(
+          color: _resolveInheritedColor(rawColor, effectiveColor),
+          opacity: child.opacity ?? parent.opacity,
+          rule: child.rule ?? parent.rule,
+        );
+      }
     }
-    if (child == null) {
-      return parent;
-    }
-    return SvgFillAttributes(
-      color: child.color ?? parent.color,
-      opacity: child.opacity ?? parent.opacity,
-      rule: child.rule ?? parent.rule,
-    );
   }
 
   static SvgStrokeAttributes? _inheritStroke(
     SvgStrokeAttributes? child,
     SvgStrokeAttributes? parent,
+    SvgColor? effectiveColor,
   ) {
     if (parent == null) {
-      return child;
+      if (child == null) {
+        return null;
+      } else {
+        return SvgStrokeAttributes(
+          color: _resolveInheritedColor(child.color, effectiveColor),
+          opacity: child.opacity,
+          width: child.width,
+          dashArray: child.dashArray,
+          dashOffset: child.dashOffset,
+          linecap: child.linecap,
+          linejoin: child.linejoin,
+          miterLimit: child.miterLimit,
+        );
+      }
+    } else {
+      if (child == null) {
+        return parent;
+      } else {
+        final SvgColor? rawColor = child.color ?? parent.color;
+        return SvgStrokeAttributes(
+          color: _resolveInheritedColor(rawColor, effectiveColor),
+          opacity: child.opacity ?? parent.opacity,
+          width: child.width ?? parent.width,
+          dashArray: child.dashArray ?? parent.dashArray,
+          dashOffset: child.dashOffset ?? parent.dashOffset,
+          linecap: child.linecap ?? parent.linecap,
+          linejoin: child.linejoin ?? parent.linejoin,
+          miterLimit: child.miterLimit ?? parent.miterLimit,
+        );
+      }
     }
-    if (child == null) {
-      return parent;
+  }
+
+  static SvgColor? _resolveInheritedColor(SvgColor? color, SvgColor? effectiveColor) {
+    if (color is SvgCurrentColor) {
+      if (effectiveColor != null && effectiveColor is! SvgCurrentColor) {
+        return effectiveColor;
+      } else {
+        return color;
+      }
+    } else {
+      return color;
     }
-    return SvgStrokeAttributes(
-      color: child.color ?? parent.color,
-      opacity: child.opacity ?? parent.opacity,
-      width: child.width ?? parent.width,
-      dashArray: child.dashArray ?? parent.dashArray,
-      dashOffset: child.dashOffset ?? parent.dashOffset,
-      linecap: child.linecap ?? parent.linecap,
-      linejoin: child.linejoin ?? parent.linejoin,
-      miterLimit: child.miterLimit ?? parent.miterLimit,
-    );
   }
 
   static SvgFontAttributes? _inheritFont(SvgFontAttributes? child, SvgFontAttributes? parent) {
@@ -194,15 +276,53 @@ final class SvgPresentationAttributes {
     );
   }
 
+  static SvgMarkerAttributes? _mergeMarker(SvgMarkerAttributes? a, SvgMarkerAttributes? b) {
+    if (a == null) {
+      return b;
+    }
+    if (b == null) {
+      return a;
+    }
+    return SvgMarkerAttributes(
+      marker: b.marker ?? a.marker,
+      markerStart: b.markerStart ?? a.markerStart,
+      markerMid: b.markerMid ?? a.markerMid,
+      markerEnd: b.markerEnd ?? a.markerEnd,
+    );
+  }
+
+  static SvgMarkerAttributes? _inheritMarker(
+    SvgMarkerAttributes? child,
+    SvgMarkerAttributes? parent,
+  ) {
+    if (parent == null) {
+      return child;
+    }
+    if (child == null) {
+      return parent;
+    }
+    return SvgMarkerAttributes(
+      marker: child.marker ?? parent.marker,
+      markerStart: child.markerStart ?? parent.markerStart,
+      markerMid: child.markerMid ?? parent.markerMid,
+      markerEnd: child.markerEnd ?? parent.markerEnd,
+    );
+  }
+
   @override
   String toString() {
     final parts = <String>[
+      if (color != null) 'color: $color',
       if (fill != null) 'fill: $fill',
       if (stroke != null) 'stroke: $stroke',
       if (font != null) 'font: $font',
       if (graphics != null) 'graphics: $graphics',
+      if (marker != null) 'marker: $marker',
       if (paintOrder != null) 'paint-order: $paintOrder',
       if (vectorEffect != null) 'vector-effect: $vectorEffect',
+      if (display != null) 'display: $display',
+      if (visibility != null) 'visibility: $visibility',
+      if (overflow != null) 'overflow: $overflow',
     ];
     return 'SvgPresentationAttributes(${parts.join(', ')})';
   }

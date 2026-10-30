@@ -43,6 +43,9 @@ extension ToSvgLinearGradient on XmlElement {
         XmlAttributeName.spreadMethod.toDefaultValue(elementName) as SvgSpreadMethod;
 
     final CommonAttributes common = toCommonAttributes(elementName);
+    final SvgColor? color =
+        common.presentation.color ??
+        toSvgValueOrNull<SvgColor>(elementName, XmlAttributeName.color);
 
     return stopsResult.map(
       (List<SvgStop> stops) => SvgLinearGradient(
@@ -54,6 +57,7 @@ extension ToSvgLinearGradient on XmlElement {
         gradientTransformAttributes: SvgTransformParser.parse(gradientTransform),
         gradientUnits: gradientUnits,
         spreadMethod: spreadMethod,
+        color: color,
         coreAttributes: common.core,
       ),
     );

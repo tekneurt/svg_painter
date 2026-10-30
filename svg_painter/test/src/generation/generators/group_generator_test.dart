@@ -2,6 +2,7 @@ import 'package:svg_painter/src/generation/_generation.dart';
 import 'package:svg_painter/src/painting_model/paint_command.dart';
 import 'package:svg_painter/src/painting_model/styles/painting_style.dart';
 import 'package:svg_painter/src/svg_model/_svg_model.dart';
+import 'package:svg_painter_annotation/svg_painter_annotation.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -307,6 +308,8 @@ class _SpyGenerator extends CommandGenerator<DrawCircle> {
     List<InheritedProperty>? inheritedStrokes,
     String? painterClassName,
     Set<String>? gradientsNeedingStretch,
+    SvgColorMapping colorMapping = SvgColorMapping.material,
+    bool isInsideMarker = false,
   }) {
     lastInheritedFills = inheritedFills;
     lastInheritedStrokes = inheritedStrokes;

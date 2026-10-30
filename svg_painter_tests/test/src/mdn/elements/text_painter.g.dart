@@ -156,7 +156,7 @@ class _$MdnTextExamplePainter extends CustomPainter {
               fontSize: 40.0,
               fontWeight: FontWeight.normal,
               fontStyle: FontStyle.italic,
-              fontFamily: 'Noto Serif',
+              fontFamily: 'Tinos',
               package: 'svg_painter',
             ),
             children: <InlineSpan>[TextSpan(text: 'Grumpy!')],

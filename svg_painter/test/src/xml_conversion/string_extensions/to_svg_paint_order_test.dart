@@ -16,23 +16,26 @@ void main() {
         expect(result, SvgPaintOrder.normal);
       });
 
-      test('should return correct order when single keyword is provided and fill remaining in default order', () {
-        // Arrange
-        const strokeStr = 'stroke';
+      test(
+        'should return correct order when single keyword is provided and fill remaining in default order',
+        () {
+          // Arrange
+          const strokeStr = 'stroke';
 
-        // Act
-        final SvgPaintOrder? result = strokeStr.toSvgPaintOrder();
+          // Act
+          final SvgPaintOrder? result = strokeStr.toSvgPaintOrder();
 
-        // Assert
-        expect(
-          result,
-          const SvgPaintOrder(<SvgPaintOrderComponent>[
-            SvgPaintOrderComponent.stroke,
-            SvgPaintOrderComponent.fill,
-            SvgPaintOrderComponent.markers,
-          ]),
-        );
-      });
+          // Assert
+          expect(
+            result,
+            const SvgPaintOrder(<SvgPaintOrderComponent>[
+              SvgPaintOrderComponent.stroke,
+              SvgPaintOrderComponent.fill,
+              SvgPaintOrderComponent.markers,
+            ]),
+          );
+        },
+      );
 
       test('should return correct order when multiple keywords are provided', () {
         // Arrange

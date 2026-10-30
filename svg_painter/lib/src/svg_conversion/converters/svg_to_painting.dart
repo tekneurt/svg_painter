@@ -48,6 +48,7 @@ extension SvgElementToPaintCommands on SvgElement {
         viewBoxMinX: minX,
         viewBoxMinY: minY,
         inheritedAttributes: SvgPresentationAttributes(
+          color: self.presentationAttributes?.color ?? const SvgNamedColor(SvgColorName.black),
           fill: SvgFillAttributes(
             color: self.fillAttributes?.color ?? const SvgNamedColor(SvgColorName.black),
             opacity: self.fillAttributes?.opacity ?? const SvgLength(1.0),
@@ -61,10 +62,10 @@ extension SvgElementToPaintCommands on SvgElement {
             linejoin: self.strokeAttributes?.linejoin ?? SvgStrokeLinejoin.miter,
           ),
           font: SvgFontAttributes(
-            size: self.fontAttributes?.size ?? const SvgLength(12.0),
+            size: self.fontAttributes?.size ?? const SvgLength(16.0),
             weight: self.fontAttributes?.weight ?? const SvgFontWeightNormal(),
             style: self.fontAttributes?.style ?? SvgFontStyle.normal,
-            family: self.fontAttributes?.family ?? const SvgFontFamily('sans-serif'),
+            family: self.fontAttributes?.family ?? const SvgFontFamily('serif'),
           ),
         ),
         styleSheet: self.styleSheet,
@@ -74,12 +75,58 @@ extension SvgElementToPaintCommands on SvgElement {
     }
 
     context ??= const SvgPaintingContext(viewBoxWidth: 100.0, viewBoxHeight: 100.0);
-    final SvgPaintingContext childContext = context.deriveWith(self);
+
+    final SvgPresentationAttributes resolved = resolvePresentation(
+      context,
+      tagName: _elementTagName(self),
+      coreAttributes: self.coreAttributes,
+      presentationAttributes: self is SvgPresentable ? self.presentationAttributes : null,
+    );
+
+    final bool isDefinitionElement =
+        self is SvgMask ||
+        self is SvgClipPath ||
+        self is SvgMarker ||
+        self is SvgPattern ||
+        self is SvgFilter ||
+        self is SvgDefs ||
+        self is SvgSymbol ||
+        self is SvgRadialGradient ||
+        self is SvgLinearGradient;
+
+    if (resolved.display == SvgDisplay.none) {
+      if (context.isDefinition && (self is SvgGroup || self is SvgA || isDefinitionElement)) {
+        // Definitions inside <defs> (and <g> containers grouping them) are processed
+        // to discover definitions regardless of display property.
+      } else {
+        return const Success<List<PaintCommand>>(<PaintCommand>[]);
+      }
+    }
+
+    final SvgPaintingContext childContext = context.derive(inheritedAttributes: resolved);
+
+    final bool isVisibilityHidden =
+        resolved.visibility == SvgVisibility.hidden ||
+        resolved.visibility == SvgVisibility.collapse;
+
+    if (isVisibilityHidden &&
+        (self is SvgRect ||
+            self is SvgCircle ||
+            self is SvgEllipse ||
+            self is SvgLine ||
+            self is SvgPolyline ||
+            self is SvgPolygon ||
+            self is SvgPath ||
+            self is SvgImage)) {
+      return const Success<List<PaintCommand>>(<PaintCommand>[]);
+    }
 
     return switch (self) {
       // Containers
       final SvgSvg container => container.toPaintCommandsSvg(childContext),
       final SvgGroup group => group._toPaintCommandsGroup(childContext),
+      final SvgA a => a._toPaintCommandsA(childContext),
+      final SvgSwitch switchElement => switchElement._toPaintCommandsSwitch(childContext),
 
       // Basic Shapes (Geometry)
       final SvgCircle circle => circle.toPaintCommands(context),
@@ -99,9 +146,14 @@ extension SvgElementToPaintCommands on SvgElement {
 
       // Definitions
       final SvgSymbol symbol => symbol.toPaintCommandsSymbol(childContext, onlyDefinitions: true),
+      final SvgMarker marker => _toDefineMarker(marker, childContext),
       final SvgMask mask => _toDefineMask(mask, childContext),
+      final SvgPattern pattern => _toDefinePattern(pattern, childContext),
+      final SvgFilter filter => _toDefineFilter(filter, childContext),
       final SvgClipPath clipPath => _toDefineClipPath(clipPath, childContext),
       final SvgDefs defs => defs.toPaintCommandsDefs(childContext),
+      final SvgFilterPrimitive _ ||
+      final SvgFeMergeNode _ ||
       final SvgStop _ ||
       final SvgMetadataElement _ ||
       final SvgStyle _ ||
@@ -119,61 +171,187 @@ extension SvgElementToPaintCommands on SvgElement {
   Result<List<PaintCommand>> _toDefineClipPath(SvgClipPath clipPath, SvgPaintingContext context) {
     final SvgPaintingContext childrenContext =
         (clipPath.clipPathUnits == SvgClipPathUnits.objectBoundingBox)
-            ? context.derive(viewBoxWidth: 1.0, viewBoxHeight: 1.0, viewBoxMinX: 0, viewBoxMinY: 0)
-            : context;
+        ? context.derive(
+            viewBoxWidth: 1.0,
+            viewBoxHeight: 1.0,
+            viewBoxMinX: 0,
+            viewBoxMinY: 0,
+            isDefinition: false,
+          )
+        : context.derive(isDefinition: false);
 
     return clipPath.children
         .map((SvgElement child) => child.toPaintCommands(childrenContext))
         .combine()
         .map((List<PaintCommand> childCommands) {
-      return <PaintCommand>[
-        DefineClipPath(
-          id: clipPath.id ?? '',
-          commands: childCommands,
-          clipPathUnits: switch (clipPath.clipPathUnits) {
-            SvgClipPathUnits.objectBoundingBox => PaintingGradientUnits.objectBoundingBox,
-            SvgClipPathUnits.userSpaceOnUse => PaintingGradientUnits.userSpaceOnUse,
-          },
-        ),
-      ];
-    });
+          return <PaintCommand>[
+            DefineClipPath(
+              id: clipPath.id ?? '',
+              commands: childCommands,
+              clipPathUnits: switch (clipPath.clipPathUnits) {
+                SvgClipPathUnits.objectBoundingBox => PaintingGradientUnits.objectBoundingBox,
+                SvgClipPathUnits.userSpaceOnUse => PaintingGradientUnits.userSpaceOnUse,
+              },
+            ),
+          ];
+        });
   }
 
   Result<List<PaintCommand>> _toDefineMask(SvgMask mask, SvgPaintingContext context) {
     final SvgPaintingContext childrenContext =
         (mask.maskContentUnits == SvgMaskUnits.objectBoundingBox)
-            ? context.derive(viewBoxWidth: 1.0, viewBoxHeight: 1.0, viewBoxMinX: 0, viewBoxMinY: 0)
-            : context;
+        ? context.derive(
+            viewBoxWidth: 1.0,
+            viewBoxHeight: 1.0,
+            viewBoxMinX: 0,
+            viewBoxMinY: 0,
+            isDefinition: false,
+          )
+        : context.derive(isDefinition: false);
 
-    return mask.children.map((SvgElement child) => child.toPaintCommands(childrenContext)).combine().map((
-      List<PaintCommand> childCommands,
-    ) {
-      return <PaintCommand>[
-        DefineMask(
-          id: mask.id ?? '',
-          commands: childCommands,
-          x: mask.x ?? const SvgPercentage(0),
-          y: mask.y ?? const SvgPercentage(0),
-          width: mask.width ?? const SvgPercentage(100),
-          height: mask.height ?? const SvgPercentage(100),
-          maskUnits: switch (mask.maskUnits) {
-            SvgMaskUnits.objectBoundingBox => PaintingGradientUnits.objectBoundingBox,
-            SvgMaskUnits.userSpaceOnUse => PaintingGradientUnits.userSpaceOnUse,
-          },
-          maskContentUnits: switch (mask.maskContentUnits) {
-            SvgMaskUnits.objectBoundingBox => PaintingGradientUnits.objectBoundingBox,
-            SvgMaskUnits.userSpaceOnUse => PaintingGradientUnits.userSpaceOnUse,
-          },
-        ),
-      ];
-    });
+    return mask.children
+        .map((SvgElement child) => child.toPaintCommands(childrenContext))
+        .combine()
+        .map((
+          List<PaintCommand> childCommands,
+        ) {
+          return <PaintCommand>[
+            DefineMask(
+              id: mask.id ?? '',
+              commands: childCommands,
+              x: mask.x ?? const SvgPercentage(0),
+              y: mask.y ?? const SvgPercentage(0),
+              width: mask.width ?? const SvgPercentage(100),
+              height: mask.height ?? const SvgPercentage(100),
+              maskUnits: switch (mask.maskUnits) {
+                SvgMaskUnits.objectBoundingBox => PaintingGradientUnits.objectBoundingBox,
+                SvgMaskUnits.userSpaceOnUse => PaintingGradientUnits.userSpaceOnUse,
+              },
+              maskContentUnits: switch (mask.maskContentUnits) {
+                SvgMaskUnits.objectBoundingBox => PaintingGradientUnits.objectBoundingBox,
+                SvgMaskUnits.userSpaceOnUse => PaintingGradientUnits.userSpaceOnUse,
+              },
+            ),
+          ];
+        });
+  }
+
+  Result<List<PaintCommand>> _toDefineFilter(SvgFilter filter, SvgPaintingContext context) {
+    return Success<List<PaintCommand>>(<PaintCommand>[
+      DefineFilter(
+        id: filter.id ?? '',
+        primitives: filter.primitives,
+        x: filter.x,
+        y: filter.y,
+        width: filter.width,
+        height: filter.height,
+      ),
+    ]);
+  }
+
+  Result<List<PaintCommand>> _toDefinePattern(SvgPattern pattern, SvgPaintingContext context) {
+    final SvgPaintingContext childrenContext = pattern.viewBox != null
+        ? context.derive(
+            viewBoxWidth: pattern.viewBox!.width,
+            viewBoxHeight: pattern.viewBox!.height,
+            viewBoxMinX: pattern.viewBox!.minX,
+            viewBoxMinY: pattern.viewBox!.minY,
+            isDefinition: false,
+          )
+        : context.derive(isDefinition: false);
+
+    return pattern.children
+        .map((SvgElement child) => child.toPaintCommands(childrenContext))
+        .combine()
+        .map((List<PaintCommand> childCommands) {
+          return <PaintCommand>[
+            DefinePattern(
+              id: pattern.id,
+              commands: childCommands,
+              x: pattern.x,
+              y: pattern.y,
+              width: pattern.width,
+              height: pattern.height,
+              patternUnits: pattern.patternUnits,
+              patternContentUnits: pattern.patternContentUnits,
+              viewBox: pattern.viewBox,
+              preserveAspectRatio: pattern.preserveAspectRatio,
+              patternTransform: pattern.patternTransformAttributes,
+            ),
+          ];
+        });
+  }
+
+  Result<List<PaintCommand>> _toDefineMarker(SvgMarker marker, SvgPaintingContext context) {
+    final SvgPaintingContext childrenContext = marker.viewBox != null
+        ? context.derive(
+            viewBoxWidth: marker.viewBox!.width,
+            viewBoxHeight: marker.viewBox!.height,
+            viewBoxMinX: marker.viewBox!.minX,
+            viewBoxMinY: marker.viewBox!.minY,
+            isDefinition: false,
+            resetContextPaint: true,
+          )
+        : context.derive(
+            isDefinition: false,
+            resetContextPaint: true,
+          );
+
+    return marker.children
+        .map((SvgElement child) => child.toPaintCommands(childrenContext))
+        .combine()
+        .map((List<PaintCommand> childCommands) {
+          final double refX = switch (marker.refX) {
+            final SvgLength l => l.value,
+            final SvgPercentage p => (p.value / 100.0) * (marker.viewBox?.width ?? 100.0),
+            null => 0.0,
+          };
+          final double refY = switch (marker.refY) {
+            final SvgLength l => l.value,
+            final SvgPercentage p => (p.value / 100.0) * (marker.viewBox?.height ?? 100.0),
+            null => 0.0,
+          };
+          final double markerWidth = switch (marker.markerWidth) {
+            final SvgLength l => l.value,
+            final SvgPercentage p => (p.value / 100.0) * 100.0,
+            null => 3.0,
+          };
+          final double markerHeight = switch (marker.markerHeight) {
+            final SvgLength l => l.value,
+            final SvgPercentage p => (p.value / 100.0) * 100.0,
+            null => 3.0,
+          };
+          final SvgPresentationAttributes resolved = resolvePresentation(
+            context,
+            tagName: 'marker',
+            coreAttributes: marker.coreAttributes,
+            presentationAttributes: marker.presentationAttributes,
+          );
+          final SvgOverflow overflow = resolved.overflow ?? SvgOverflow.hidden;
+
+          return <PaintCommand>[
+            DefineMarker(
+              id: marker.id ?? '',
+              commands: childCommands,
+              refX: refX,
+              refY: refY,
+              markerWidth: markerWidth,
+              markerHeight: markerHeight,
+              markerUnits: marker.markerUnits,
+              orient: marker.orient,
+              viewBox: marker.viewBox,
+              preserveAspectRatio: marker.preserveAspectRatio,
+              overflow: overflow,
+            ),
+          ];
+        });
   }
 }
 
 extension _SvgGroupToPaintCommands on SvgGroup {
   Result<List<PaintCommand>> _toPaintCommandsGroup(SvgPaintingContext context) {
     // Determine if we should use saveLayer (group opacity).
-    final double resolvedOpacity = opacity?.resolve(context, SvgOrientation.unit) ?? 1.0;
+    final double resolvedOpacity = opacity.resolveOpacity(context);
 
     final PaintingStyle style = resolvePaint(
       context,
@@ -196,3 +374,111 @@ extension _SvgGroupToPaintCommands on SvgGroup {
     });
   }
 }
+
+extension _SvgAToPaintCommands on SvgA {
+  Result<List<PaintCommand>> _toPaintCommandsA(SvgPaintingContext context) {
+    // Determine if we should use saveLayer (group opacity).
+    final double resolvedOpacity = opacity.resolveOpacity(context);
+
+    final PaintingStyle style = resolvePaint(
+      context,
+      tagName: 'a',
+      coreAttributes: coreAttributes,
+      presentationAttributes: presentationAttributes,
+    );
+
+    return children.map((SvgElement child) => child.toPaintCommands(context)).combine().map((
+      List<PaintCommand> childCommands,
+    ) {
+      return <PaintCommand>[
+        DrawGroup(
+          commands: childCommands,
+          style: style,
+          id: id,
+          opacity: resolvedOpacity,
+        ),
+      ];
+    });
+  }
+}
+
+extension _SvgSwitchToPaintCommands on SvgSwitch {
+  Result<List<PaintCommand>> _toPaintCommandsSwitch(SvgPaintingContext context) {
+    final PaintingStyle style = resolvePaint(
+      context,
+      tagName: 'switch',
+      coreAttributes: coreAttributes,
+      presentationAttributes: presentationAttributes,
+    );
+
+    final cases = <SwitchCase>[];
+    final fallback = <PaintCommand>[];
+
+    for (final SvgElement child in children) {
+      final SvgCoreAttributes? coreAttrs = child.coreAttributes;
+      if (coreAttrs?.requiredExtensions != null && coreAttrs!.requiredExtensions!.isNotEmpty) {
+        continue;
+      }
+      if (coreAttrs?.requiredFeatures != null && coreAttrs!.requiredFeatures!.isEmpty) {
+        continue;
+      }
+      if (coreAttrs?.systemLanguage != null && coreAttrs!.systemLanguage!.isNotEmpty) {
+        final Result<List<PaintCommand>> childResult = child.toPaintCommands(context);
+        switch (childResult) {
+          case Failure(:final String message):
+            return Failure<List<PaintCommand>>(message);
+          case Success(:final List<PaintCommand> value):
+            cases.add(SwitchCase(languages: coreAttrs.systemLanguage!, commands: value));
+        }
+      } else {
+        final Result<List<PaintCommand>> childResult = child.toPaintCommands(context);
+        switch (childResult) {
+          case Failure(:final String message):
+            return Failure<List<PaintCommand>>(message);
+          case Success(:final List<PaintCommand> value):
+            fallback.addAll(value);
+        }
+        break;
+      }
+    }
+
+    return Success<List<PaintCommand>>(<PaintCommand>[
+      DrawSwitch(
+        cases: cases,
+        fallback: fallback,
+        style: style,
+        id: id,
+      ),
+    ]);
+  }
+}
+
+String _elementTagName(SvgElement element) => switch (element) {
+  SvgRect _ => 'rect',
+  SvgCircle _ => 'circle',
+  SvgEllipse _ => 'ellipse',
+  SvgLine _ => 'line',
+  SvgPolyline _ => 'polyline',
+  SvgPolygon _ => 'polygon',
+  SvgPath _ => 'path',
+  SvgText _ => 'text',
+  SvgGroup _ => 'g',
+  SvgA _ => 'a',
+  SvgSwitch _ => 'switch',
+  SvgUse _ => 'use',
+  SvgImage _ => 'image',
+  SvgSvg _ => 'svg',
+  SvgSymbol _ => 'symbol',
+  SvgMarker _ => 'marker',
+  SvgMask _ => 'mask',
+  SvgPattern _ => 'pattern',
+  SvgFilter _ => 'filter',
+  SvgFilterPrimitive _ => 'filterPrimitive',
+  SvgFeMergeNode _ => 'feMergeNode',
+  SvgClipPath _ => 'clipPath',
+  SvgDefs _ => 'defs',
+  SvgLinearGradient _ => 'linearGradient',
+  SvgRadialGradient _ => 'radialGradient',
+  SvgStop _ => 'stop',
+  _ => '',
+};

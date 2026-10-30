@@ -50,5 +50,30 @@ void main() {
       expect((grad.y2 as SvgPercentage).value, 0.0);
       expect(grad.stops, isEmpty);
     });
+
+    test('should parse color attribute when color is provided', () {
+      // Arrange
+      final document = XmlDocument.parse('''
+        <linearGradient id="grad1" color="green">
+          <stop offset="0%" stop-color="white" />
+        </linearGradient>
+      ''');
+      final XmlElement element = document.rootElement;
+
+      // Act
+      final Result<SvgLinearGradient> result = element.toSvgLinearGradient();
+
+      // Assert
+      expect(result, isA<Success<SvgLinearGradient>>());
+      final SvgLinearGradient grad = (result as Success<SvgLinearGradient>).value;
+      expect(
+        grad.color,
+        isA<SvgNamedColor>().having(
+          (SvgNamedColor c) => c.name,
+          'name',
+          SvgColorName.green,
+        ),
+      );
+    });
   });
 }

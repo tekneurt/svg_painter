@@ -3,12 +3,12 @@ import '../../xml_model/_xml_model.dart';
 
 /// Extension to provide default values for [XmlAttributeName]s based on the element.
 extension ToDefaultValue on XmlAttributeName {
-  SvgBaseValue toDefaultValue(final XmlElementName elementName) {
+  SvgBaseValue toDefaultValue(XmlElementName elementName) {
     switch (this) {
       case .x:
       case .y:
         return switch (elementName) {
-          .rect || .use || .text || .svg => const SvgLength(0.0),
+          .rect || .use || .svg || .text => const SvgLength(0.0),
           (_) => throw UnsupportedError('Invalid combination $this x $elementName '),
         };
       case .x1:
@@ -58,8 +58,21 @@ extension ToDefaultValue on XmlAttributeName {
         return SvgTextAnchor.start;
       case .paintOrder:
         return SvgPaintOrder.normal;
+      case .startOffset:
+        return const SvgLength(0.0);
       case .vectorEffect:
         return SvgVectorEffect.none;
+      case .display:
+        return SvgDisplay.inline;
+      case .visibility:
+        return SvgVisibility.visible;
+      case .overflow:
+        return switch (elementName) {
+          .marker || .symbol => SvgOverflow.hidden,
+          (_) => SvgOverflow.visible,
+        };
+      case .color:
+        return const SvgNamedColor(SvgColorName.black);
       case .fill:
         return switch (elementName) {
           .line => const SvgNoneColor(),
@@ -77,11 +90,17 @@ extension ToDefaultValue on XmlAttributeName {
         return const SvgGenericNumber(4.0);
       case .offset:
       case .strokeDashoffset:
+      case .refX:
+      case .refY:
         return const SvgLength(0.0);
+      case .markerWidth:
+      case .markerHeight:
+        return const SvgLength(3.0);
       case .stopColor:
+      case .floodColor:
         return const SvgNamedColor(SvgColorName.black);
       case .stopOpacity:
-        return const SvgLength(1.0);
+      case .floodOpacity:
       case .opacity:
       case .fillOpacity:
       case .strokeOpacity:
@@ -108,6 +127,7 @@ extension ToDefaultValue on XmlAttributeName {
       case .className:
       case .style:
       case .href:
+      case .xlinkHref:
       case .transform:
       case .gradientTransform:
       case .fontSize:
@@ -115,12 +135,35 @@ extension ToDefaultValue on XmlAttributeName {
       case .dy:
       case .rotate:
       case .decoding:
+      case .marker:
+      case .markerStart:
+      case .markerMid:
+      case .markerEnd:
+      case .markerUnits:
+      case .orient:
       case .mask:
       case .maskUnits:
       case .maskContentUnits:
       case .clipPath:
       case .clipPathUnits:
+      case .patternUnits:
+      case .patternContentUnits:
+      case .patternTransform:
+      case .filter:
+      case .filterUnits:
+      case .primitiveUnits:
+      case .requiredExtensions:
+      case .requiredFeatures:
+      case .systemLanguage:
+      case .stdDeviation:
+      case .in_:
+      case .result:
       case .type:
+      case .tableValues:
+      case .slope:
+      case .intercept:
+      case .amplitude:
+      case .exponent:
       case .media:
       case .title:
       case .xmlSpace:

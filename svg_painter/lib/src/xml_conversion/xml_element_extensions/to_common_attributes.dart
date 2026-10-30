@@ -9,18 +9,72 @@ import '_xml_element_extensions.dart';
 typedef CommonAttributes = ({
   SvgCoreAttributes core,
   SvgPresentationAttributes presentation,
+  SvgTitle? title,
+  SvgDesc? desc,
 });
 
 extension ToCommonAttributes on XmlElement {
   /// Extracts common attributes from this element.
   CommonAttributes toCommonAttributes(XmlElementName elementName) {
+    final String? rawSystemLanguage = toXmlAttributeValue(XmlAttributeName.systemLanguage);
+    final List<String>? systemLanguage = rawSystemLanguage
+        ?.split(',')
+        .map((String s) => s.trim().toLowerCase())
+        .where((String s) => s.isNotEmpty)
+        .toList();
+
+    final String? rawExtensions = toXmlAttributeValue(XmlAttributeName.requiredExtensions);
+    final List<String>? requiredExtensions = rawExtensions
+        ?.split(RegExp(r'\s+'))
+        .map((String s) => s.trim())
+        .where((String s) => s.isNotEmpty)
+        .toList();
+
+    final String? rawFeatures = toXmlAttributeValue(XmlAttributeName.requiredFeatures);
+    final List<String>? requiredFeatures = rawFeatures
+        ?.split(RegExp(r'\s+'))
+        .map((String s) => s.trim())
+        .where((String s) => s.isNotEmpty)
+        .toList();
+
     final core = SvgCoreAttributes(
       id: toXmlAttributeValue(XmlAttributeName.id),
       cssClass: toXmlAttributeValue(XmlAttributeName.className),
       inlineStyle: toXmlAttributeValue(XmlAttributeName.style),
+      systemLanguage: systemLanguage,
+      requiredExtensions: requiredExtensions,
+      requiredFeatures: requiredFeatures,
     );
 
+    final XmlElement? titleElement = children
+        .whereType<XmlElement>()
+        .where((XmlElement e) => e.name.local == 'title')
+        .firstOrNull;
+    final XmlElement? descElement = children
+        .whereType<XmlElement>()
+        .where((XmlElement e) => e.name.local == 'desc')
+        .firstOrNull;
+
+    final SvgTitle? title = titleElement != null
+        ? SvgTitle(
+            content: titleElement.innerText.trim(),
+            coreAttributes: SvgCoreAttributes(
+              id: titleElement.getAttribute(XmlAttributeName.id.name),
+            ),
+          )
+        : null;
+
+    final SvgDesc? desc = descElement != null
+        ? SvgDesc(
+            content: descElement.innerText.trim(),
+            coreAttributes: SvgCoreAttributes(
+              id: descElement.getAttribute(XmlAttributeName.id.name),
+            ),
+          )
+        : null;
+
     final presentation = SvgPresentationAttributes(
+      color: toSvgValueOrNull<SvgColor>(elementName, XmlAttributeName.color),
       fill: SvgFillAttributes(
         color: toSvgValueOrNull<SvgColor>(elementName, XmlAttributeName.fill),
         opacity: toSvgValueOrNull<SvgLengthPercentage>(elementName, XmlAttributeName.fillOpacity),
@@ -31,7 +85,10 @@ extension ToCommonAttributes on XmlElement {
         opacity: toSvgValueOrNull<SvgLengthPercentage>(elementName, XmlAttributeName.strokeOpacity),
         width: toSvgValueOrNull<SvgLengthPercentage>(elementName, XmlAttributeName.strokeWidth),
         dashArray: toSvgValueOrNull<SvgPointList>(elementName, XmlAttributeName.strokeDasharray),
-        dashOffset: toSvgValueOrNull<SvgLengthPercentage>(elementName, XmlAttributeName.strokeDashoffset),
+        dashOffset: toSvgValueOrNull<SvgLengthPercentage>(
+          elementName,
+          XmlAttributeName.strokeDashoffset,
+        ),
         linecap: toSvgValueOrNull<SvgStrokeLinecap>(elementName, XmlAttributeName.strokeLinecap),
         linejoin: toSvgValueOrNull<SvgStrokeLinejoin>(elementName, XmlAttributeName.strokeLinejoin),
       ),
@@ -49,11 +106,30 @@ extension ToCommonAttributes on XmlElement {
         ),
         mask: getAttribute(XmlAttributeName.mask.name),
         clipPath: getAttribute(XmlAttributeName.clipPath.name),
+        filter: getAttribute(XmlAttributeName.filter.name),
       ),
+      marker:
+          (getAttribute(XmlAttributeName.markerStart.name) != null ||
+              getAttribute(XmlAttributeName.markerMid.name) != null ||
+              getAttribute(XmlAttributeName.markerEnd.name) != null)
+          ? SvgMarkerAttributes(
+              markerStart: getAttribute(XmlAttributeName.markerStart.name),
+              markerMid: getAttribute(XmlAttributeName.markerMid.name),
+              markerEnd: getAttribute(XmlAttributeName.markerEnd.name),
+            )
+          : null,
       paintOrder: toSvgValueOrNull<SvgPaintOrder>(elementName, XmlAttributeName.paintOrder),
       vectorEffect: toSvgValueOrNull<SvgVectorEffect>(elementName, XmlAttributeName.vectorEffect),
+      display: toSvgValueOrNull<SvgDisplay>(elementName, XmlAttributeName.display),
+      visibility: toSvgValueOrNull<SvgVisibility>(elementName, XmlAttributeName.visibility),
+      overflow: toSvgValueOrNull<SvgOverflow>(elementName, XmlAttributeName.overflow),
     );
 
-    return (core: core, presentation: presentation);
+    return (
+      core: core,
+      presentation: presentation,
+      title: title,
+      desc: desc,
+    );
   }
 }

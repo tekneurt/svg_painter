@@ -1,3 +1,5 @@
+import 'package:svg_painter_annotation/svg_painter_annotation.dart';
+
 import '../../painting_model/_painting_model.dart';
 import '../command_generator.dart';
 import '../flutter_color_map.dart';
@@ -5,6 +7,7 @@ import '../generation_extensions.dart';
 import '../generator_buffer.dart';
 import '../models.dart';
 import '../palette_analyzer.dart';
+import '../svg_id_formatter.dart';
 
 class LinearGradientGenerator extends CommandGenerator<DefineLinearGradient> {
   const LinearGradientGenerator();
@@ -21,8 +24,10 @@ class LinearGradientGenerator extends CommandGenerator<DefineLinearGradient> {
     List<InheritedProperty>? inheritedStrokes,
     String? painterClassName,
     Set<String>? gradientsNeedingStretch,
+    SvgColorMapping colorMapping = SvgColorMapping.material,
+    bool isInsideMarker = false,
   }) {
-    final varName = '_grad_${command.id}';
+    final varName = '_grad_${SvgIdFormatter.sanitizeId(command.id)}';
 
     buffer.writeBlock('final Gradient $varName = LinearGradient(', () {
       buffer.writeln('begin: Alignment(${command.x1 * 2 - 1}, ${command.y1 * 2 - 1}),');
@@ -32,8 +37,22 @@ class LinearGradientGenerator extends CommandGenerator<DefineLinearGradient> {
         for (final GradientStop stop in command.stops) {
           final int alpha = (stop.opacity * 255).round().clamp(0, 255);
           final int combinedColor = (stop.colorArgb & 0x00FFFFFF) | (alpha << 24);
-          final String colorCode = FlutterColorMap.getColorCode(combinedColor);
-          buffer.writeln('$colorCode,');
+          final String colorCode = FlutterColorMap.getColorCode(
+            combinedColor,
+            colorMapping: colorMapping,
+          );
+          final String? tokenName = palette?.colorTokens[stop.colorArgb];
+          if (tokenName != null) {
+            if (stop.opacity == 1.0) {
+              buffer.writeln('$tokenName ?? $colorCode,');
+            } else {
+              buffer.writeln(
+                '($tokenName != null ? $tokenName!.withValues(alpha: ${stop.opacity}) : $colorCode),',
+              );
+            }
+          } else {
+            buffer.writeln('$colorCode,');
+          }
         }
       }, footer: '],');
       buffer.writeBlock('stops: <double>[', () {
@@ -56,7 +75,10 @@ class LinearGradientGenerator extends CommandGenerator<DefineLinearGradient> {
 
       if (command.transformAttributes != null) {
         final List<double> matrix = command.transformAttributes!.toFlutterMatrix();
-        buffer.writeln('transform: $helperName(matrix: <double>[${matrix.join(', ')}]),');
+        final extra = command.units == PaintingGradientUnits.objectBoundingBox
+            ? ', isObjectBoundingBox: true'
+            : '';
+        buffer.writeln('transform: $helperName(matrix: <double>[${matrix.join(', ')}]$extra),');
       }
     }, footer: ');');
   }

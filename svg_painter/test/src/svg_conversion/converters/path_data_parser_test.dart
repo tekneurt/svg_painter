@@ -326,6 +326,102 @@ void main() {
         expect(result, isA<Failure<List<PathOperation>>>());
         expect((result as Failure<List<PathOperation>>).message, contains('Expected path command'));
       });
+
+      test('should parse concatenated arc flags when no separator exists between flags', () {
+        // Arrange
+        const d = 'M 10 20 A 25 35 0 10 40 50';
+
+        // Act
+        final Result<List<PathOperation>> result = PathDataParser.parse(d, context);
+
+        // Assert
+        expect(result, isA<Success<List<PathOperation>>>());
+        final List<PathOperation> ops = (result as Success<List<PathOperation>>).value;
+        expect(ops, hasLength(2));
+        expect(ops[1], isA<ArcTo>());
+        final arc = ops[1] as ArcTo;
+        expect(arc.rx, 25.0);
+        expect(arc.ry, 35.0);
+        expect(arc.xAxisRotation, 0.0);
+        expect(arc.largeArcFlag, isTrue);
+        expect(arc.sweepFlag, isFalse);
+        expect(arc.x, 40.0);
+        expect(arc.y, 50.0);
+      });
+
+      test(
+        'should parse concatenated arc flags and coordinate when no separator exists after flags',
+        () {
+          // Arrange
+          const d = 'M 10 20 A 25 35 0 1140 50';
+
+          // Act
+          final Result<List<PathOperation>> result = PathDataParser.parse(d, context);
+
+          // Assert
+          expect(result, isA<Success<List<PathOperation>>>());
+          final List<PathOperation> ops = (result as Success<List<PathOperation>>).value;
+          expect(ops, hasLength(2));
+          expect(ops[1], isA<ArcTo>());
+          final arc = ops[1] as ArcTo;
+          expect(arc.largeArcFlag, isTrue);
+          expect(arc.sweepFlag, isTrue);
+          expect(arc.x, 40.0);
+          expect(arc.y, 50.0);
+        },
+      );
+
+      test(
+        'should parse negative coordinate immediately following sweep flag when no separator exists',
+        () {
+          // Arrange
+          const d = 'M 10 20 A 25 35 0 1 1-40 -50';
+
+          // Act
+          final Result<List<PathOperation>> result = PathDataParser.parse(d, context);
+
+          // Assert
+          expect(result, isA<Success<List<PathOperation>>>());
+          final List<PathOperation> ops = (result as Success<List<PathOperation>>).value;
+          expect(ops, hasLength(2));
+          expect(ops[1], isA<ArcTo>());
+          final arc = ops[1] as ArcTo;
+          expect(arc.largeArcFlag, isTrue);
+          expect(arc.sweepFlag, isTrue);
+          expect(arc.x, -40.0);
+          expect(arc.y, -50.0);
+        },
+      );
+
+      test('should return Failure when arc flag value is out of range', () {
+        // Arrange
+        const d = 'M 10 20 A 25 35 0 6 0 40 50';
+
+        // Act
+        final Result<List<PathOperation>> result = PathDataParser.parse(d, context);
+
+        // Assert
+        expect(result, isA<Failure<List<PathOperation>>>());
+        expect(
+          (result as Failure<List<PathOperation>>).message,
+          contains('Insufficient parameters for A command'),
+        );
+      });
+
+      test('should return Failure when no separator precedes large arc flag', () {
+        // Arrange
+        const d = 'M 10 20 A 25 3501 0 40 50';
+
+        // Act
+        final Result<List<PathOperation>> result = PathDataParser.parse(d, context);
+
+        // Assert
+        expect(result, isA<Failure<List<PathOperation>>>());
+        expect(
+          (result as Failure<List<PathOperation>>).message,
+          contains('Insufficient parameters for A command'),
+        );
+      });
     });
   });
 }

@@ -1,10 +1,13 @@
 import 'dart:math' as math;
 
+import 'package:svg_painter_annotation/svg_painter_annotation.dart';
+
 import '../painting_model/_painting_model.dart';
 import '../svg_model/_svg_model.dart';
 import 'generator_buffer.dart';
 import 'models.dart';
 import 'palette_analyzer.dart';
+import 'svg_id_formatter.dart';
 
 /// Base class for all command-specific code generators.
 abstract class CommandGenerator<T extends PaintCommand> {
@@ -22,6 +25,8 @@ abstract class CommandGenerator<T extends PaintCommand> {
     List<InheritedProperty>? inheritedStrokes,
     String? painterClassName,
     Set<String>? gradientsNeedingStretch,
+    SvgColorMapping colorMapping = SvgColorMapping.material,
+    bool isInsideMarker = false,
   });
 
   /// Helper to wrap a block of code with styling features like transforms or clips.
@@ -42,20 +47,24 @@ abstract class CommandGenerator<T extends PaintCommand> {
       _ => false,
     };
 
+    final String? filterId = style.filterId;
     final String? maskId = style.maskId;
 
-    switch ((hasCanvasModification, maskId)) {
-      case (false, null):
-        body();
-      case (true, final String id):
-        _wrapWithCanvasSave(buffer, style, boundsRect, () {
-          _wrapWithMask(buffer, id, boundsRect, body);
-        });
-      case (true, null):
-        _wrapWithCanvasSave(buffer, style, boundsRect, body);
-      case (false, final String id):
-        _wrapWithMask(buffer, id, boundsRect, body);
+    var wrappedBody = body;
+    if (filterId case final String fId) {
+      final currentBody = wrappedBody;
+      wrappedBody = () => _wrapWithFilter(buffer, fId, currentBody);
     }
+    if (maskId case final String mId) {
+      final currentBody = wrappedBody;
+      wrappedBody = () => _wrapWithMask(buffer, mId, boundsRect, currentBody);
+    }
+    if (hasCanvasModification) {
+      final currentBody = wrappedBody;
+      wrappedBody = () => _wrapWithCanvasSave(buffer, style, boundsRect, currentBody);
+    }
+
+    wrappedBody();
   }
 
   void _wrapWithCanvasSave(
@@ -76,9 +85,9 @@ abstract class CommandGenerator<T extends PaintCommand> {
     GeneratorBuffer buffer,
     SvgTransformAttributes? transformAttributes,
   ) {
-    if (transformAttributes
-        case SvgTransformAttributes(:final operations)
-        when operations.isNotEmpty) {
+    if (transformAttributes case SvgTransformAttributes(
+      :final operations,
+    ) when operations.isNotEmpty) {
       for (final op in operations) {
         switch (op) {
           case SvgTranslate(:final double x, :final double y):
@@ -106,12 +115,10 @@ abstract class CommandGenerator<T extends PaintCommand> {
               'canvas.transform(Matrix4.fromList(<double>[$a, $b, 0, 0, $c, $d, 0, 0, 0, 0, 1, 0, $e, $f, 0, 1]).storage);',
             );
           case SvgSkewX(:final double angle):
-            final double tan =
-                angle == 0.0 ? 0.0 : math.tan(angle * (math.pi / 180.0));
+            final double tan = angle == 0.0 ? 0.0 : math.tan(angle * (math.pi / 180.0));
             buffer.writeln('canvas.skew($tan, 0.0);');
           case SvgSkewY(:final double angle):
-            final double tan =
-                angle == 0.0 ? 0.0 : math.tan(angle * (math.pi / 180.0));
+            final double tan = angle == 0.0 ? 0.0 : math.tan(angle * (math.pi / 180.0));
             buffer.writeln('canvas.skew(0.0, $tan);');
         }
       }
@@ -119,8 +126,7 @@ abstract class CommandGenerator<T extends PaintCommand> {
   }
 
   void _applyClipRect(GeneratorBuffer buffer, PaintingRect? clipRect) {
-    if (clipRect
-        case PaintingRect(:final left, :final top, :final width, :final height)) {
+    if (clipRect case PaintingRect(:final left, :final top, :final width, :final height)) {
       buffer.writeln(
         'canvas.clipRect(Rect.fromLTWH($left, $top, $width, $height));',
       );
@@ -133,7 +139,8 @@ abstract class CommandGenerator<T extends PaintCommand> {
     String boundsRect,
   ) {
     if (clipPathId case final id?) {
-      buffer.writeln('_clipPath_$id(canvas, size, $boundsRect);');
+      final String cleanId = SvgIdFormatter.sanitizeId(id);
+      buffer.writeln('_clipPath_$cleanId(canvas, size, $boundsRect);');
     }
   }
 
@@ -155,8 +162,20 @@ abstract class CommandGenerator<T extends PaintCommand> {
       },
       footer: ']));',
     );
-    buffer.writeln('_mask_$maskId(canvas, size, $boundsRect);');
+    final String cleanMaskId = SvgIdFormatter.sanitizeId(maskId);
+    buffer.writeln('_mask_$cleanMaskId(canvas, size, $boundsRect);');
     buffer.writeln('canvas.restore();');
     buffer.writeln('canvas.restore();');
+  }
+
+  void _wrapWithFilter(
+    GeneratorBuffer buffer,
+    String filterId,
+    void Function() body,
+  ) {
+    final String cleanFilterId = SvgIdFormatter.sanitizeId(filterId);
+    buffer.writeBlock('_filter_$cleanFilterId(canvas, () {', () {
+      body();
+    }, footer: '});');
   }
 }

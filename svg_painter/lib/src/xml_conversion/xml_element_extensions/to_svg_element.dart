@@ -24,10 +24,12 @@ extension ToSvgElement on XmlElement {
       }
 
       switch (elementName) {
+        case .a:
+          return toSvgA();
         case .svg:
-          // Only the root element of the document should be mapped to SvgRoot.
+          // Only the root SVG element of the document should be mapped to SvgRoot.
           // Nested <svg> elements are standard SvgSvg containers.
-          return parent is XmlDocument ? toSvgRoot() : _toSvgSvg();
+          return _isRootSvg(this) ? toSvgRoot() : _toSvgSvg();
         case .circle:
           return toSvgCircle();
         case .ellipse:
@@ -60,14 +62,46 @@ extension ToSvgElement on XmlElement {
           return toSvgStop();
         case .style:
           return toSvgStyle();
+        case .switch_:
+          return toSvgSwitch();
         case .text:
           return toSvgText();
+        case .textPath:
+          return toSvgTextPath();
         case .tspan:
           return toSvgTspan();
+        case .marker:
+          return toSvgMarker();
         case .mask:
           return toSvgMask();
+        case .pattern:
+          return toSvgPattern();
         case .clipPath:
           return toSvgClipPath();
+        case .filter:
+          return toSvgFilter();
+        case .feComponentTransfer:
+          return toSvgFeComponentTransfer();
+        case .feDropShadow:
+          return toSvgFeDropShadow();
+        case .feFlood:
+          return toSvgFeFlood();
+        case .feFuncR:
+          return toSvgFeFuncR();
+        case .feFuncG:
+          return toSvgFeFuncG();
+        case .feFuncB:
+          return toSvgFeFuncB();
+        case .feFuncA:
+          return toSvgFeFuncA();
+        case .feGaussianBlur:
+          return toSvgFeGaussianBlur();
+        case .feOffset:
+          return toSvgFeOffset();
+        case .feMerge:
+          return toSvgFeMerge();
+        case .feMergeNode:
+          return toSvgFeMergeNode();
         case .title:
           final CommonAttributes common = toCommonAttributes(elementName);
           return Success<SvgTitle>(
@@ -122,6 +156,8 @@ extension ToSvgElement on XmlElement {
     return childrenResult.map(
       (List<SvgElement> childElements) => SvgSvg(
         children: childElements,
+        title: common.title,
+        desc: common.desc,
         x: x,
         y: y,
         width: width,
@@ -134,5 +170,16 @@ extension ToSvgElement on XmlElement {
         coreAttributes: common.core,
       ),
     );
+  }
+
+  bool _isRootSvg(XmlElement element) {
+    XmlElement? current = element.parentElement;
+    while (current != null) {
+      if (current.name.local == XmlElementName.svg.tagName) {
+        return false;
+      }
+      current = current.parentElement;
+    }
+    return true;
   }
 }

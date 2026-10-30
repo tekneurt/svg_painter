@@ -1,3 +1,5 @@
+import 'package:svg_painter_annotation/svg_painter_annotation.dart';
+
 import '../../painting_model/_painting_model.dart';
 import '../command_generator.dart';
 import '../generator_buffer.dart';
@@ -20,6 +22,8 @@ class RectGenerator extends ShapeGenerator<DrawRect> {
     List<InheritedProperty>? inheritedStrokes,
     String? painterClassName,
     Set<String>? gradientsNeedingStretch,
+    SvgColorMapping colorMapping = SvgColorMapping.material,
+    bool isInsideMarker = false,
   }) {
     final bounds = 'Rect.fromLTWH(${command.x}, ${command.y}, ${command.width}, ${command.height})';
     final bool isRounded = command.rx != 0 || command.ry != 0;
@@ -40,6 +44,13 @@ class RectGenerator extends ShapeGenerator<DrawRect> {
         command,
         command.style,
         bounds,
+        colorMapping: colorMapping,
+        palette: palette,
+        activeFillProperties: activeFillProperties,
+        activeStrokeProperties: activeStrokeProperties,
+        inheritedFills: inheritedFills,
+        inheritedStrokes: inheritedStrokes,
+        isInsideMarker: isInsideMarker,
         (String p, {String? dashArray, String? pathLength, String? dashOffset}) {
           emitDirectDraw(p);
         },
@@ -57,16 +68,13 @@ class RectGenerator extends ShapeGenerator<DrawRect> {
               } else {
                 buffer.writeln('final Path path = Path()..addRect($bounds);');
               }
-              final pathExpr = dashArray == null ? 'path' : '_dashPath(path, $dashArray$plArg$doArg)';
+              final pathExpr = dashArray == null
+                  ? 'path'
+                  : '_dashPath(path, $dashArray$plArg$doArg)';
               emitDrawStrokePath(buffer, pathExpr, p, style: command.style);
             });
           }
         },
-        palette: palette,
-        activeFillProperties: activeFillProperties,
-        activeStrokeProperties: activeStrokeProperties,
-        inheritedFills: inheritedFills,
-        inheritedStrokes: inheritedStrokes,
       );
     });
   }

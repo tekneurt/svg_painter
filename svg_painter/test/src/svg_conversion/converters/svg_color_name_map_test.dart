@@ -87,7 +87,7 @@ void main() {
       SvgColorName.lightslategray: 0xFF778899,
       SvgColorName.lightslategrey: 0xFF778899,
       SvgColorName.lightsteelblue: 0xFFB0C4DE,
-      SvgColorName.lightyellow: 0xFFFFE0,
+      SvgColorName.lightyellow: 0xFFFFFFE0,
       SvgColorName.lime: 0xFF00FF00,
       SvgColorName.limegreen: 0xFF32CD32,
       SvgColorName.linen: 0xFFFAF0E6,

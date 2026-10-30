@@ -44,5 +44,28 @@ void main() {
       expect((stop.stopColor as SvgNamedColor).name, SvgColorName.black);
       expect((stop.stopOpacity as SvgLength).value, 1.0);
     });
+
+    test('should parse color attribute when color is provided', () {
+      // Arrange
+      final document = XmlDocument.parse(
+        '<stop offset="50%" stop-color="currentColor" color="green" />',
+      );
+      final XmlElement element = document.rootElement;
+
+      // Act
+      final Result<SvgStop> result = element.toSvgStop();
+
+      // Assert
+      expect(result, isA<Success<SvgStop>>());
+      final SvgStop stop = (result as Success<SvgStop>).value;
+      expect(
+        stop.color,
+        isA<SvgNamedColor>().having(
+          (SvgNamedColor c) => c.name,
+          'name',
+          SvgColorName.green,
+        ),
+      );
+    });
   });
 }

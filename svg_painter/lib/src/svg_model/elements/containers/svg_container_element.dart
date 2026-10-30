@@ -5,6 +5,8 @@ part of '../../svg_element.dart';
 sealed class SvgContainerElement extends SvgGraphicsElement with SvgParent, SvgFontAttributable {
   const SvgContainerElement({
     required this.children,
+    super.title,
+    super.desc,
     super.presentationAttributes,
     super.coreAttributes,
   });

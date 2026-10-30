@@ -6,7 +6,13 @@ import 'svg_transform_attributes.dart';
 /// Represents the grouped presentation attributes that apply to graphics elements.
 @immutable
 final class SvgGraphicsAttributes {
-  const SvgGraphicsAttributes({this.opacity, this.transformAttributes, this.mask, this.clipPath});
+  const SvgGraphicsAttributes({
+    this.opacity,
+    this.transformAttributes,
+    this.mask,
+    this.clipPath,
+    this.filter,
+  });
 
   /// The transparency of the element (mapped from `opacity` attribute).
   final SvgLengthPercentage? opacity;
@@ -20,6 +26,9 @@ final class SvgGraphicsAttributes {
   /// The reference to a clipPath element (mapped from `clip-path` attribute).
   final String? clipPath;
 
+  /// The reference to a filter element (mapped from `filter` attribute).
+  final String? filter;
+
   @override
   String toString() {
     final parts = <String>[
@@ -27,6 +36,7 @@ final class SvgGraphicsAttributes {
       if (transformAttributes != null) 'transform: $transformAttributes',
       if (mask != null) 'mask: $mask',
       if (clipPath != null) 'clip-path: $clipPath',
+      if (filter != null) 'filter: $filter',
     ];
     return 'SvgGraphicsAttributes(${parts.join(', ')})';
   }

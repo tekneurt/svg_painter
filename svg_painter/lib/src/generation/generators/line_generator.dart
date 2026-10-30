@@ -1,9 +1,13 @@
+import 'package:svg_painter_annotation/svg_painter_annotation.dart';
+
 import '../../painting_model/_painting_model.dart';
 import '../command_generator.dart';
 import '../generator_buffer.dart';
 import '../models.dart';
 import '../palette_analyzer.dart';
+import '../path_marker_extractor.dart';
 import '../shape_generator.dart';
+import '../svg_id_formatter.dart';
 
 class LineGenerator extends ShapeGenerator<DrawLine> {
   const LineGenerator();
@@ -20,6 +24,8 @@ class LineGenerator extends ShapeGenerator<DrawLine> {
     List<InheritedProperty>? inheritedStrokes,
     String? painterClassName,
     Set<String>? gradientsNeedingStretch,
+    SvgColorMapping colorMapping = SvgColorMapping.material,
+    bool isInsideMarker = false,
   }) {
     final bounds =
         'Rect.fromPoints(const Offset(${command.x1}, ${command.y1}), const Offset(${command.x2}, ${command.y2}))';
@@ -29,6 +35,13 @@ class LineGenerator extends ShapeGenerator<DrawLine> {
         command,
         command.style,
         bounds,
+        colorMapping: colorMapping,
+        palette: palette,
+        activeFillProperties: activeFillProperties,
+        activeStrokeProperties: activeStrokeProperties,
+        inheritedFills: inheritedFills,
+        inheritedStrokes: inheritedStrokes,
+        isInsideMarker: isInsideMarker,
         (String p, {String? dashArray, String? pathLength, String? dashOffset}) {
           buffer.writeln(
             'canvas.drawLine(const Offset(${command.x1}, ${command.y1}), const Offset(${command.x2}, ${command.y2}), $p);',
@@ -46,16 +59,41 @@ class LineGenerator extends ShapeGenerator<DrawLine> {
               buffer.writeln(
                 'final Path path = Path()..moveTo(${command.x1}, ${command.y1})..lineTo(${command.x2}, ${command.y2});',
               );
-              final pathExpr = dashArray == null ? 'path' : '_dashPath(path, $dashArray$plArg$doArg)';
+              final pathExpr = dashArray == null
+                  ? 'path'
+                  : '_dashPath(path, $dashArray$plArg$doArg)';
               emitDrawStrokePath(buffer, pathExpr, p, style: command.style);
             });
           }
         },
-        palette: palette,
-        activeFillProperties: activeFillProperties,
-        activeStrokeProperties: activeStrokeProperties,
-        inheritedFills: inheritedFills,
-        inheritedStrokes: inheritedStrokes,
+        drawMarkersCall: command.style.hasMarkers
+            ? (String? fillPaintVar, String? strokePaintVar) {
+                final String? markerStart = command.style.markerStartId;
+                final String? markerEnd = command.style.markerEndId;
+                final double strokeWidth = command.style.strokeWidth;
+                final List<MarkerVertex> vertices = PathMarkerExtractor.extractFromLine(
+                  command.x1,
+                  command.y1,
+                  command.x2,
+                  command.y2,
+                );
+                final fillArg = fillPaintVar != null ? ', contextFill: $fillPaintVar' : '';
+                final strokeArg = strokePaintVar != null ? ', contextStroke: $strokePaintVar' : '';
+                for (final v in vertices) {
+                  if (v.isStart && markerStart != null) {
+                    final String cleanStart = SvgIdFormatter.sanitizeId(markerStart);
+                    buffer.writeln(
+                      '_marker_$cleanStart(canvas, const Offset(${v.x}, ${v.y}), ${v.angle}, $strokeWidth, isStart: true$fillArg$strokeArg);',
+                    );
+                  } else if (v.isEnd && markerEnd != null) {
+                    final String cleanEnd = SvgIdFormatter.sanitizeId(markerEnd);
+                    buffer.writeln(
+                      '_marker_$cleanEnd(canvas, const Offset(${v.x}, ${v.y}), ${v.angle}, $strokeWidth$fillArg$strokeArg);',
+                    );
+                  }
+                }
+              }
+            : null,
       );
     });
   }

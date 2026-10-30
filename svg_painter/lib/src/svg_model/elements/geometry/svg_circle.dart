@@ -10,6 +10,8 @@ final class SvgCircle extends SvgBasicShape {
     required this.cy,
     required this.r,
     super.geometryAttributes,
+    super.title,
+    super.desc,
     super.presentationAttributes,
     super.coreAttributes,
   });

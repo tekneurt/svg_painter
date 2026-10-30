@@ -11,6 +11,8 @@ final class SvgEllipse extends SvgBasicShape {
     required this.rx,
     required this.ry,
     super.geometryAttributes,
+    super.title,
+    super.desc,
     super.presentationAttributes,
     super.coreAttributes,
   });

@@ -1,4 +1,5 @@
 import 'package:svg_painter/src/svg_conversion/svg_value_extensions/svg_color_to_int.dart';
+import 'package:svg_painter/src/svg_model/svg_value.dart';
 import 'package:svg_painter/src/xml_conversion/string_extensions/to_svg_color.dart';
 import 'package:test/test.dart';
 
@@ -32,11 +33,33 @@ void main() {
         expect('transparent'.toSvgColor().toArgb(), 0x00000000);
       });
 
+      test('should return null when input is inherit', () {
+        // Arrange
+        const input = 'inherit';
+
+        // Act
+        final SvgColor? color = input.toSvgColor();
+
+        // Assert
+        expect(color, isNull);
+      });
+
       test('should parse rgb() functional notation correctly', () {
         // Arrange & Act & Assert
         expect('rgb(255, 0, 0)'.toSvgColor().toArgb(), 0xFFFF0000);
         expect('rgb(100%, 0%, 0%)'.toSvgColor().toArgb(), 0xFFFF0000);
         expect('rgb(0, 255, 0)'.toSvgColor().toArgb(), 0xFF00FF00);
+      });
+
+      test('should parse rgb() with fractional percentages when given valid input', () {
+        // Arrange
+        const input = 'rgb(86.2745%, 7.8431%, 23.5294%)';
+
+        // Act
+        final SvgColor? color = input.toSvgColor();
+
+        // Assert
+        expect(color.toArgb(), 0xFFDC143C);
       });
 
       test('should parse rgba() functional notation correctly', () {
@@ -64,10 +87,76 @@ void main() {
         expect('rgb(0 0 255)'.toSvgColor().toArgb(), 0xFF0000FF);
       });
 
+      test(
+        'should parse space-separated rgb() with fractional percentages when given valid input',
+        () {
+          // Arrange
+          const input = 'rgb(66.667% 0% 6.667% / 50%)';
+
+          // Act
+          final SvgColor? color = input.toSvgColor();
+
+          // Assert
+          expect(color.toArgb(), 0x80AA0011);
+        },
+      );
+
       test('should parse hsl() space and slash notation correctly', () {
         // Arrange & Act & Assert
         expect('hsl(0 100% 50% / 50%)'.toSvgColor().toArgb(), 0x80FF0000);
         expect('hsl(120 100% 50% / 0.5)'.toSvgColor().toArgb(), 0x8000FF00);
+      });
+
+      test('should parse system colors correctly case-insensitively', () {
+        // Arrange & Act & Assert
+        expect(
+          'Background'.toSvgColor(),
+          isA<SvgSystemColor>().having(
+            (SvgSystemColor c) => c.name,
+            'name',
+            SvgSystemColorName.background,
+          ),
+        );
+        expect(
+          'window'.toSvgColor(),
+          isA<SvgSystemColor>().having(
+            (SvgSystemColor c) => c.name,
+            'name',
+            SvgSystemColorName.window,
+          ),
+        );
+        expect(
+          'ThreeDFace'.toSvgColor(),
+          isA<SvgSystemColor>().having(
+            (SvgSystemColor c) => c.name,
+            'name',
+            SvgSystemColorName.threedface,
+          ),
+        );
+      });
+
+      test('should parse context-fill keyword correctly', () {
+        // Arrange
+        const input = 'context-fill';
+
+        // Act
+        final SvgColor? color = input.toSvgColor();
+
+        // Assert
+        expect(color, isA<SvgContextFillColor>());
+        expect(color.toArgb(), 0x00000000);
+      });
+
+      test('should parse context-stroke keyword correctly', () {
+        // Arrange
+        const input = 'context-stroke';
+
+        // Act
+        final SvgColor? color = input.toSvgColor();
+
+        // Assert
+        expect(color, isA<SvgContextStrokeColor>());
+        expect(color.toArgb(), 0x00000000);
       });
     });
   });

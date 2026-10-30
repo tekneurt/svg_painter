@@ -7,6 +7,8 @@ part of '../../svg_element.dart';
 final class SvgMask extends SvgContainerElement with SvgBounded {
   const SvgMask({
     required super.children,
+    super.title,
+    super.desc,
     this.x,
     this.y,
     this.width,

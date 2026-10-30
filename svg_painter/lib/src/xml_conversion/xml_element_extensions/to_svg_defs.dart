@@ -20,6 +20,8 @@ extension ToSvgDefs on XmlElement {
     return childrenResult.map(
       (List<SvgElement> childElements) => SvgDefs(
         children: childElements,
+        title: common.title,
+        desc: common.desc,
         coreAttributes: common.core,
         presentationAttributes: common.presentation,
       ),

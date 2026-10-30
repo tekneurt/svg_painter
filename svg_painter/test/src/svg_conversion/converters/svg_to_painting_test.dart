@@ -616,6 +616,40 @@ void main() {
       });
     });
 
+    group('SvgA', () {
+      test('should wrap children in DrawGroup with opacity and styling when converted', () {
+        // Arrange
+        const rect = SvgRect(
+          x: SvgLength(10),
+          y: SvgLength(20),
+          width: SvgLength(30),
+          height: SvgLength(40),
+          rx: SvgLength(0),
+          ry: SvgLength(0),
+        );
+        const a = SvgA(
+          children: <SvgElement>[rect],
+          href: 'https://developer.mozilla.org',
+          presentationAttributes: SvgPresentationAttributes(
+            graphics: SvgGraphicsAttributes(opacity: SvgPercentage(75)),
+          ),
+        );
+        const root = SvgRoot(children: <SvgElement>[a]);
+
+        // Act
+        final Result<List<PaintCommand>> result = root.toPaintCommands();
+
+        // Assert
+        final List<PaintCommand> commands = (result as Success<List<PaintCommand>>).value;
+        final rootGroup = commands.single as DrawGroup;
+        expect(rootGroup.commands.single, isA<DrawGroup>());
+        final drawGroup = rootGroup.commands.single as DrawGroup;
+        expect(drawGroup.opacity, 0.75);
+        expect(drawGroup.commands.length, 1);
+        expect(drawGroup.commands.single, isA<DrawRect>());
+      });
+    });
+
     group('Delegation', () {
       test('should delegate to all element types', () {
         final elements = <SvgElement>[
@@ -641,7 +675,7 @@ void main() {
           const SvgPolygon(points: SvgPointList(<double>[0, 0, 10, 10, 0, 10])),
           const SvgText(
             x: SvgLength(10),
-            y: SvgLength(10),
+            y: SvgLength(20),
             children: <SvgTextContent>[SvgCharacterData('test')],
           ),
         ];
@@ -749,6 +783,218 @@ void main() {
         expect(defineMask.commands, hasLength(1));
         expect(defineMask.commands.single, isA<DrawRect>());
       });
+    });
+
+    group('display', () {
+      test('should suppress paint commands when element has display none', () {
+        // Arrange
+        const rect = SvgRect(
+          x: SvgLength(10),
+          y: SvgLength(20),
+          width: SvgLength(100),
+          height: SvgLength(50),
+          rx: SvgLength(2),
+          ry: SvgLength(3),
+          presentationAttributes: SvgPresentationAttributes(
+            display: SvgDisplay.none,
+          ),
+        );
+        const root = SvgRoot(children: <SvgElement>[rect]);
+
+        // Act
+        final Result<List<PaintCommand>> result = root.toPaintCommands();
+
+        // Assert
+        expect(result, isA<Success<List<PaintCommand>>>());
+        final List<PaintCommand> commands = (result as Success<List<PaintCommand>>).value;
+        final rootGroup = commands.single as DrawGroup;
+        expect(rootGroup.commands, isEmpty);
+      });
+
+      test('should suppress entire group when group has display none', () {
+        // Arrange
+        const group = SvgGroup(
+          children: <SvgElement>[
+            SvgRect(
+              x: SvgLength(15),
+              y: SvgLength(25),
+              width: SvgLength(80),
+              height: SvgLength(40),
+              rx: SvgLength(1),
+              ry: SvgLength(1),
+            ),
+          ],
+          presentationAttributes: SvgPresentationAttributes(
+            display: SvgDisplay.none,
+          ),
+        );
+        const root = SvgRoot(children: <SvgElement>[group]);
+
+        // Act
+        final Result<List<PaintCommand>> result = root.toPaintCommands();
+
+        // Assert
+        expect(result, isA<Success<List<PaintCommand>>>());
+        final List<PaintCommand> commands = (result as Success<List<PaintCommand>>).value;
+        final rootGroup = commands.single as DrawGroup;
+        expect(rootGroup.commands, isEmpty);
+      });
+    });
+
+    group('visibility', () {
+      test('should suppress paint commands when element has visibility hidden', () {
+        // Arrange
+        const rect = SvgRect(
+          x: SvgLength(12),
+          y: SvgLength(34),
+          width: SvgLength(78),
+          height: SvgLength(56),
+          rx: SvgLength(4),
+          ry: SvgLength(5),
+          presentationAttributes: SvgPresentationAttributes(
+            visibility: SvgVisibility.hidden,
+          ),
+        );
+        const root = SvgRoot(children: <SvgElement>[rect]);
+
+        // Act
+        final Result<List<PaintCommand>> result = root.toPaintCommands();
+
+        // Assert
+        expect(result, isA<Success<List<PaintCommand>>>());
+        final List<PaintCommand> commands = (result as Success<List<PaintCommand>>).value;
+        final rootGroup = commands.single as DrawGroup;
+        expect(rootGroup.commands, isEmpty);
+      });
+
+      test(
+        'should suppress child paint commands when group has visibility hidden and child does not override',
+        () {
+          // Arrange
+          const group = SvgGroup(
+            children: <SvgElement>[
+              SvgRect(
+                x: SvgLength(16),
+                y: SvgLength(28),
+                width: SvgLength(84),
+                height: SvgLength(42),
+                rx: SvgLength(2),
+                ry: SvgLength(3),
+              ),
+            ],
+            presentationAttributes: SvgPresentationAttributes(
+              visibility: SvgVisibility.hidden,
+            ),
+          );
+          const root = SvgRoot(children: <SvgElement>[group]);
+
+          // Act
+          final Result<List<PaintCommand>> result = root.toPaintCommands();
+
+          // Assert
+          expect(result, isA<Success<List<PaintCommand>>>());
+          final List<PaintCommand> commands = (result as Success<List<PaintCommand>>).value;
+          final rootGroup = commands.single as DrawGroup;
+          final childGroup = rootGroup.commands.single as DrawGroup;
+          expect(childGroup.commands, isEmpty);
+        },
+      );
+
+      test(
+        'should allow child to render when group has visibility hidden and child overrides with visibility visible',
+        () {
+          // Arrange
+          const group = SvgGroup(
+            children: <SvgElement>[
+              SvgRect(
+                x: SvgLength(22),
+                y: SvgLength(33),
+                width: SvgLength(66),
+                height: SvgLength(77),
+                rx: SvgLength(6),
+                ry: SvgLength(7),
+                presentationAttributes: SvgPresentationAttributes(
+                  visibility: SvgVisibility.visible,
+                ),
+              ),
+            ],
+            presentationAttributes: SvgPresentationAttributes(
+              visibility: SvgVisibility.hidden,
+            ),
+          );
+          const root = SvgRoot(children: <SvgElement>[group]);
+
+          // Act
+          final Result<List<PaintCommand>> result = root.toPaintCommands();
+
+          // Assert
+          expect(result, isA<Success<List<PaintCommand>>>());
+          final List<PaintCommand> commands = (result as Success<List<PaintCommand>>).value;
+          final rootGroup = commands.single as DrawGroup;
+          final childGroup = rootGroup.commands.single as DrawGroup;
+          expect(childGroup.commands, hasLength(1));
+          expect(childGroup.commands.single, isA<DrawRect>());
+        },
+      );
+
+      test('should suppress text when text element has visibility hidden', () {
+        // Arrange
+        const text = SvgText(
+          x: SvgLength(15),
+          y: SvgLength(25),
+          children: <SvgTextContent>[
+            SvgCharacterData('Hidden Text'),
+          ],
+          presentationAttributes: SvgPresentationAttributes(
+            visibility: SvgVisibility.hidden,
+          ),
+        );
+        const root = SvgRoot(children: <SvgElement>[text]);
+
+        // Act
+        final Result<List<PaintCommand>> result = root.toPaintCommands();
+
+        // Assert
+        expect(result, isA<Success<List<PaintCommand>>>());
+        final List<PaintCommand> commands = (result as Success<List<PaintCommand>>).value;
+        final rootGroup = commands.single as DrawGroup;
+        expect(rootGroup.commands, isEmpty);
+      });
+
+      test(
+        'should allow child tspan to render when text has visibility hidden and tspan has visibility visible',
+        () {
+          // Arrange
+          const text = SvgText(
+            x: SvgLength(18),
+            y: SvgLength(32),
+            children: <SvgTextContent>[
+              SvgTspan(
+                children: <SvgTextContent>[
+                  SvgCharacterData('Visible Tspan'),
+                ],
+                presentationAttributes: SvgPresentationAttributes(
+                  visibility: SvgVisibility.visible,
+                ),
+              ),
+            ],
+            presentationAttributes: SvgPresentationAttributes(
+              visibility: SvgVisibility.hidden,
+            ),
+          );
+          const root = SvgRoot(children: <SvgElement>[text]);
+
+          // Act
+          final Result<List<PaintCommand>> result = root.toPaintCommands();
+
+          // Assert
+          expect(result, isA<Success<List<PaintCommand>>>());
+          final List<PaintCommand> commands = (result as Success<List<PaintCommand>>).value;
+          final rootGroup = commands.single as DrawGroup;
+          expect(rootGroup.commands, hasLength(1));
+          expect(rootGroup.commands.single, isA<DrawText>());
+        },
+      );
     });
   });
 }

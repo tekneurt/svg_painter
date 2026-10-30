@@ -29,6 +29,9 @@ abstract interface class PaintingPaintStyle {
   /// The ID of the shader (e.g., gradient) to use.
   String? get shaderId;
 
+  /// The ID of the pattern to use.
+  String? get patternId;
+
   /// The coordinate system used for the shader coordinates.
   PaintingGradientUnits? get shaderUnits;
 
@@ -40,6 +43,12 @@ abstract interface class PaintingPaintStyle {
 
   /// Whether this style uses the 'currentColor' keyword.
   bool get isCurrentColor;
+
+  /// Whether this style uses the 'context-fill' keyword.
+  bool get isContextFill;
+
+  /// Whether this style uses the 'context-stroke' keyword.
+  bool get isContextStroke;
 }
 
 /// Represents the visual style (fill and stroke) for a drawing command.
@@ -54,9 +63,17 @@ final class PaintingStyle {
     this.clipRect,
     this.maskId,
     this.clipPathId,
+    this.filterId,
+    this.markerStartId,
+    this.markerMidId,
+    this.markerEndId,
     this.paintOrder = SvgPaintOrder.normal,
     this.vectorEffect = SvgVectorEffect.none,
+    this.strokeWidth = 1.0,
   });
+
+  /// The width of the stroke (used e.g. for marker strokeWidth scaling), even if stroke is none.
+  final double strokeWidth;
 
   /// The filling style, or null if the element is not filled.
   final PaintingFillStyle? fill;
@@ -82,6 +99,21 @@ final class PaintingStyle {
   /// The ID of the clipPath to apply to this element.
   final String? clipPathId;
 
+  /// The ID of the filter to apply to this element.
+  final String? filterId;
+
+  /// The ID of the marker to draw at the start vertex.
+  final String? markerStartId;
+
+  /// The ID of the marker to draw at middle vertices.
+  final String? markerMidId;
+
+  /// The ID of the marker to draw at the end vertex.
+  final String? markerEndId;
+
+  /// Whether this style specifies any markers.
+  bool get hasMarkers => markerStartId != null || markerMidId != null || markerEndId != null;
+
   /// The order that the fill, stroke, and markers of a shape or text element are painted.
   final SvgPaintOrder paintOrder;
 
@@ -99,8 +131,13 @@ final class PaintingStyle {
       if (clipRect != null) 'clipRect: $clipRect',
       if (maskId != null) 'maskId: $maskId',
       if (clipPathId != null) 'clipPathId: $clipPathId',
+      if (filterId != null) 'filterId: $filterId',
+      if (markerStartId != null) 'markerStartId: $markerStartId',
+      if (markerMidId != null) 'markerMidId: $markerMidId',
+      if (markerEndId != null) 'markerEndId: $markerEndId',
       if (paintOrder != SvgPaintOrder.normal) 'paintOrder: $paintOrder',
       if (vectorEffect != SvgVectorEffect.none) 'vectorEffect: $vectorEffect',
+      if (strokeWidth != 1.0) 'strokeWidth: $strokeWidth',
     ];
     if (parts.isEmpty) {
       return 'PaintingStyle()';

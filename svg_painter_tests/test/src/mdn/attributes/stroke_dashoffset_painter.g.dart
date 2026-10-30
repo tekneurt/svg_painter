@@ -181,7 +181,7 @@ class _$StrokeDashoffsetPainter extends CustomPainter {
       }
       final double totalLength = dashArray.fold(
         0.0,
-        (final sum, final d) => sum + d * scale,
+        (sum, d) => sum + d * scale,
       );
       if (totalLength <= 0) return source;
       double offset = (dashOffset ?? 0.0) * scale;

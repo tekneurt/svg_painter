@@ -8,6 +8,7 @@ final class DrawText extends DrawCommand {
     required this.x,
     required this.y,
     required this.style,
+    this.chunks,
     super.id,
   });
 
@@ -24,6 +25,9 @@ final class DrawText extends DrawCommand {
   @override
   final PaintingStyle style;
 
+  /// Individual positioned chunks of text when multi-coordinate lists are used.
+  final List<PaintingTextChunk>? chunks;
+
   @override
   String toString() {
     final parts = <String>[
@@ -31,6 +35,7 @@ final class DrawText extends DrawCommand {
       'y: $y',
       'span: $rootSpan',
       'style: $style',
+      if (chunks != null) 'chunks: ${chunks!.length}',
       if (id != null) 'id: $id',
     ];
     return 'DrawText(${parts.join(', ')})';

@@ -13,6 +13,8 @@ final class SvgRect extends SvgBasicShape with SvgBounded {
     required this.rx,
     required this.ry,
     super.geometryAttributes,
+    super.title,
+    super.desc,
     super.presentationAttributes,
     super.coreAttributes,
   });

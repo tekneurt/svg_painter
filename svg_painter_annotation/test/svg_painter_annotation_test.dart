@@ -19,8 +19,41 @@ void main() {
     });
 
     test('SvgPainter accepts optional painterClassName', () {
+      // Arrange & Act
       const annotation = SvgPainter.file('path', painterClassName: 'MyPainter');
+
+      // Assert
       expect(annotation.painterClassName, 'MyPainter');
+    });
+
+    test('SvgPainter should use default colorMapping and tokenColors when omitted', () {
+      // Arrange & Act
+      const annotation = SvgPainter.file('path');
+
+      // Assert
+      expect(annotation.colorMapping, SvgColorMapping.material);
+      expect(annotation.tokenColors, isFalse);
+    });
+
+    test('SvgPainter should respect custom colorMapping and tokenColors when provided', () {
+      // Arrange & Act
+      const annotation = SvgPainter.file(
+        'path',
+        colorMapping: SvgColorMapping.hex,
+        tokenColors: true,
+      );
+
+      // Assert
+      expect(annotation.colorMapping, SvgColorMapping.hex);
+      expect(annotation.tokenColors, isTrue);
+    });
+
+    test('SvgColorMapping should define expected enum values', () {
+      // Arrange & Act
+      const List<SvgColorMapping> values = SvgColorMapping.values;
+
+      // Assert
+      expect(values, containsAll(<SvgColorMapping>[SvgColorMapping.material, SvgColorMapping.hex]));
     });
   });
 }

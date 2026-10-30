@@ -1,4 +1,6 @@
 import 'dart:io';
+import 'dart:ui' as ui;
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -57,6 +59,28 @@ const Map<GoldenTestType, Set<TargetPlatform>?> defaultGoldenTests =
       GoldenTestType.viewBox: null,
     };
 
+/// Convenient preset for tests where both fixed and viewBox rendering differs on macOS
+/// (e.g., text rasterization, sub-pixel antialiasing, or raster filtering).
+const Map<GoldenTestType, Set<TargetPlatform>?> macOsOverrideGoldenTests =
+    <GoldenTestType, Set<TargetPlatform>?>{
+      GoldenTestType.fixed: <TargetPlatform>{TargetPlatform.macOS},
+      GoldenTestType.viewBox: <TargetPlatform>{TargetPlatform.macOS},
+    };
+
+/// Convenient preset for tests where only the viewBox rendering differs on macOS.
+const Map<GoldenTestType, Set<TargetPlatform>?> macOsViewBoxOverrideGoldenTests =
+    <GoldenTestType, Set<TargetPlatform>?>{
+      GoldenTestType.fixed: null,
+      GoldenTestType.viewBox: <TargetPlatform>{TargetPlatform.macOS},
+    };
+
+/// Convenient preset for tests where only the fixed-size rendering differs on macOS.
+const Map<GoldenTestType, Set<TargetPlatform>?> macOsFixedOverrideGoldenTests =
+    <GoldenTestType, Set<TargetPlatform>?>{
+      GoldenTestType.fixed: <TargetPlatform>{TargetPlatform.macOS},
+      GoldenTestType.viewBox: null,
+    };
+
 /// Returns the current host platform as a [TargetPlatform].
 TargetPlatform get currentPlatform => switch (Platform.operatingSystem) {
   'macos' => TargetPlatform.macOS,
@@ -98,18 +122,22 @@ String goldenFileName(String name, Set<TargetPlatform>? platforms) {
 Future<void> loadTestFonts() async {
   final families = <String, String>{
     'Roboto': '../svg_painter/assets/fonts/roboto',
+    'Tinos': '../svg_painter/assets/fonts/tinos',
     'Noto Serif': '../svg_painter/assets/fonts/noto_serif',
     'Roboto Mono': '../svg_painter/assets/fonts/roboto_mono',
     'Verdana': '../svg_painter/assets/fonts/roboto',
     'Arial': '../svg_painter/assets/fonts/roboto',
     'Helvetica': '../svg_painter/assets/fonts/roboto',
     'sans-serif': '../svg_painter/assets/fonts/roboto',
-    'Times New Roman': '../svg_painter/assets/fonts/noto_serif',
-    'Georgia': '../svg_painter/assets/fonts/noto_serif',
-    'serif': '../svg_painter/assets/fonts/noto_serif',
+    'Times': '../svg_painter/assets/fonts/tinos',
+    'Times New Roman': '../svg_painter/assets/fonts/tinos',
+    'Georgia': '../svg_painter/assets/fonts/tinos',
+    'serif': '../svg_painter/assets/fonts/tinos',
     'Courier': '../svg_painter/assets/fonts/roboto_mono',
     'Courier New': '../svg_painter/assets/fonts/roboto_mono',
     'monospace': '../svg_painter/assets/fonts/roboto_mono',
+    'SVGFreeSansASCII': '../svg_painter/assets/fonts/free_sans',
+    'SVGFreeSansASCII,sans-serif': '../svg_painter/assets/fonts/free_sans',
   };
 
   for (final MapEntry<String, String> entry in families.entries) {
@@ -276,6 +304,96 @@ Future<void> testSvgPainterNative({
   );
 
   await expectLater(find.byType(SizedBox), matchesGoldenFile('$goldenPath/$goldenName'));
+
+  tester.view.resetDevicePixelRatio();
+  tester.view.resetPhysicalSize();
+}
+
+/// Tests a W3C SVG painter against its Flutter golden file, and compares
+/// it against the official W3C reference image to isolate and verify the stroke
+/// antialiasing difference.
+Future<void> testSvgPainterWithW3cDiff({
+  required WidgetTester tester,
+  required CustomPainter painter,
+  required String testName,
+  String folder = 'shapes',
+  double maxDiffPercent = 0.06,
+  Set<TargetPlatform>? platformOverrides = const <TargetPlatform>{TargetPlatform.macOS},
+}) async {
+  tester.view.devicePixelRatio = 1.0;
+
+  final size = (painter as dynamic).viewBox as Size;
+  tester.view.physicalSize = size;
+
+  final GlobalKey repaintBoundaryKey = GlobalKey();
+
+  await tester.pumpWidget(
+    MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Center(
+        child: RepaintBoundary(
+          key: repaintBoundaryKey,
+          child: SizedBox(
+            width: size.width,
+            height: size.height,
+            child: CustomPaint(painter: painter),
+          ),
+        ),
+      ),
+    ),
+  );
+
+  final String goldenName = goldenFileName(testName, platformOverrides);
+
+  // 1. Primary Regression Test: Test against Flutter golden (0.00% diff).
+  await expectLater(
+    find.byKey(repaintBoundaryKey),
+    matchesGoldenFile('$folder/goldens/$goldenName'),
+  );
+
+  // 2. W3C Reference Comparison & Diff Isolation:
+  await tester.runAsync(() async {
+    final goldenFile = File(
+      'test/src/w3c/svg11/test_suite/$folder/goldens/$goldenName',
+    );
+    final w3cReferenceFile = File(
+      'test/src/w3c/svg11/test_suite/$folder/w3c_reference/$testName.png',
+    );
+
+    if (goldenFile.existsSync() && w3cReferenceFile.existsSync()) {
+      final Uint8List renderedBytes = await goldenFile.readAsBytes();
+      final Uint8List w3cBytes = await w3cReferenceFile.readAsBytes();
+
+      final ComparisonResult comparison = await GoldenFileComparator.compareLists(
+        renderedBytes,
+        w3cBytes,
+      );
+
+      final ui.Image? isolatedDiff = comparison.diffs?['isolatedDiff'];
+      if (isolatedDiff != null) {
+        final ByteData? diffByteData = await isolatedDiff.toByteData(
+          format: ui.ImageByteFormat.png,
+        );
+        if (diffByteData != null) {
+          final diffFile = File(
+            'test/src/w3c/svg11/test_suite/$folder/w3c_reference/${testName}_diff.png',
+          );
+          await diffFile.parent.create(recursive: true);
+          await diffFile.writeAsBytes(diffByteData.buffer.asUint8List());
+        }
+      }
+
+      expect(
+        comparison.diffPercent,
+        lessThanOrEqualTo(maxDiffPercent),
+        reason:
+            'W3C pixel diff of ${(comparison.diffPercent * 100).toStringAsFixed(2)}% '
+            'exceeded expected maximum AA tolerance of ${(maxDiffPercent * 100).toStringAsFixed(2)}%',
+      );
+
+      comparison.dispose();
+    }
+  });
 
   tester.view.resetDevicePixelRatio();
   tester.view.resetPhysicalSize();

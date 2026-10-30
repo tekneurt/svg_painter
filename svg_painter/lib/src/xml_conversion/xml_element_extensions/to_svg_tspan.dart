@@ -59,19 +59,19 @@ extension ToSvgTspan on XmlElement {
       }
     }
 
-    final SvgLengthPercentage? x = toSvgValueOrNull<SvgLengthPercentage>(
+    final SvgLengthPercentageOrList? x = toSvgValueOrNull<SvgLengthPercentageOrList>(
       elementName,
       XmlAttributeName.x,
     );
-    final SvgLengthPercentage? y = toSvgValueOrNull<SvgLengthPercentage>(
+    final SvgLengthPercentageOrList? y = toSvgValueOrNull<SvgLengthPercentageOrList>(
       elementName,
       XmlAttributeName.y,
     );
-    final SvgLengthPercentage? dx = toSvgValueOrNull<SvgLengthPercentage>(
+    final SvgLengthPercentageOrList? dx = toSvgValueOrNull<SvgLengthPercentageOrList>(
       elementName,
       XmlAttributeName.dx,
     );
-    final SvgLengthPercentage? dy = toSvgValueOrNull<SvgLengthPercentage>(
+    final SvgLengthPercentageOrList? dy = toSvgValueOrNull<SvgLengthPercentageOrList>(
       elementName,
       XmlAttributeName.dy,
     );
@@ -90,6 +90,8 @@ extension ToSvgTspan on XmlElement {
         dx: dx,
         dy: dy,
         rotate: rotate,
+        title: common.title,
+        desc: common.desc,
         coreAttributes: common.core,
         presentationAttributes: common.presentation,
       ),
