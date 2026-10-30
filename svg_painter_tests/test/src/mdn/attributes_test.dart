@@ -152,9 +152,9 @@ _fixtures =
       ),
       (painter: const DisplayPainter(), name: 'display_painter', tests: defaultGoldenTests),
       (painter: const DxPainter(), name: 'dx_painter', tests: macOsOverrideGoldenTests),
-      (painter: const Dx2Painter(), name: 'dx_2_painter', tests: defaultGoldenTests),
+      (painter: const Dx2Painter(), name: 'dx_2_painter', tests: macOsOverrideGoldenTests),
       (painter: const DyPainter(), name: 'dy_painter', tests: macOsOverrideGoldenTests),
-      (painter: const Dy2Painter(), name: 'dy_2_painter', tests: defaultGoldenTests),
+      (painter: const Dy2Painter(), name: 'dy_2_painter', tests: macOsOverrideGoldenTests),
       (
         painter: const FillOpacityPainter(),
         name: 'fill_opacity_painter',
@@ -177,7 +177,7 @@ _fixtures =
         name: 'fill_rule_evenodd_painter',
         tests: defaultGoldenTests,
       ),
-      (painter: const FilterPainter(), name: 'filter_painter', tests: defaultGoldenTests),
+      (painter: const FilterPainter(), name: 'filter_painter', tests: macOsFixedOverrideGoldenTests),
       (
         painter: const FloodColorAttributePainter(),
         name: 'flood_color_attribute_painter',
@@ -216,7 +216,7 @@ _fixtures =
       (
         painter: const Fr2Painter(),
         name: 'fr_2_painter',
-        tests: defaultGoldenTests,
+        tests: macOsOverrideGoldenTests,
       ),
       (painter: const FxPainter(), name: 'fx_painter', tests: defaultGoldenTests),
       (
@@ -230,7 +230,7 @@ _fixtures =
         tests: macOsOverrideGoldenTests,
       ),
       (painter: const HeightPainter(), name: 'height_painter', tests: defaultGoldenTests),
-      (painter: const HrefAPainter(), name: 'href_a_painter', tests: defaultGoldenTests),
+      (painter: const HrefAPainter(), name: 'href_a_painter', tests: macOsOverrideGoldenTests),
       (painter: const IdPainter(), name: 'id_painter', tests: defaultGoldenTests),
       (painter: const MarkerEndPainter(), name: 'marker_end_painter', tests: defaultGoldenTests),
       (painter: const MarkerMidPainter(), name: 'marker_mid_painter', tests: defaultGoldenTests),
@@ -254,7 +254,7 @@ _fixtures =
         name: 'mask_units_painter',
         tests: defaultGoldenTests,
       ),
-      (painter: const MediaPainter(), name: 'media_painter', tests: defaultGoldenTests),
+      (painter: const MediaPainter(), name: 'media_painter', tests: macOsOverrideGoldenTests),
       (
         painter: const OffsetGradientStopPainter(),
         name: 'offset_gradient_stop_painter',
@@ -263,11 +263,11 @@ _fixtures =
       (
         painter: const OffsetComponentTransferPainter(),
         name: 'offset_component_transfer_painter',
-        tests: defaultGoldenTests,
+        tests: macOsOverrideGoldenTests,
       ),
       (painter: const OpacityPainter(), name: 'opacity_painter', tests: defaultGoldenTests),
       (painter: const OrientPainter(), name: 'orient_painter', tests: defaultGoldenTests),
-      (painter: const OverflowPainter(), name: 'overflow_painter', tests: defaultGoldenTests),
+      (painter: const OverflowPainter(), name: 'overflow_painter', tests: macOsOverrideGoldenTests),
       (
         painter: const PaintOrderPainter(),
         name: 'paint_order_painter',
@@ -344,7 +344,7 @@ _fixtures =
       (
         painter: const StdDeviationPainter(),
         name: 'std_deviation_painter',
-        tests: defaultGoldenTests,
+        tests: macOsFixedOverrideGoldenTests,
       ),
       (
         painter: const StrokeDasharrayPainter(),
@@ -433,7 +433,7 @@ _fixtures =
       (
         painter: const GradientTransformPainter(),
         name: 'gradient_transform_painter',
-        tests: defaultGoldenTests,
+        tests: macOsOverrideGoldenTests,
       ),
       (painter: const WidthPainter(), name: 'width_painter', tests: defaultGoldenTests),
       (painter: const X1ExamplesPainter(), name: 'x1_examples_painter', tests: defaultGoldenTests),
@@ -458,11 +458,11 @@ _fixtures =
         tests: defaultGoldenTests,
       ),
       (painter: const XExamplesPainter(), name: 'x_examples_painter', tests: defaultGoldenTests),
-      (painter: const XTextPainter(), name: 'x_text_painter', tests: defaultGoldenTests),
-      (painter: const XTspanPainter(), name: 'x_tspan_painter', tests: defaultGoldenTests),
+      (painter: const XTextPainter(), name: 'x_text_painter', tests: macOsOverrideGoldenTests),
+      (painter: const XTspanPainter(), name: 'x_tspan_painter', tests: macOsOverrideGoldenTests),
       (painter: const YExamplesPainter(), name: 'y_examples_painter', tests: defaultGoldenTests),
-      (painter: const YTextPainter(), name: 'y_text_painter', tests: defaultGoldenTests),
-      (painter: const YTspanPainter(), name: 'y_tspan_painter', tests: defaultGoldenTests),
+      (painter: const YTextPainter(), name: 'y_text_painter', tests: macOsOverrideGoldenTests),
+      (painter: const YTspanPainter(), name: 'y_tspan_painter', tests: macOsOverrideGoldenTests),
       (painter: const Y2ExamplesPainter(), name: 'y2_examples_painter', tests: defaultGoldenTests),
       (painter: const Y2LinePainter(), name: 'y2_line_painter', tests: defaultGoldenTests),
       (
@@ -473,7 +473,7 @@ _fixtures =
       (
         painter: const XlinkHrefPainter(),
         name: 'xlink_href_painter',
-        tests: defaultGoldenTests,
+        tests: macOsOverrideGoldenTests,
       ),
       (
         painter: const XmlSpacePainter(),
@@ -511,7 +511,10 @@ void main() {
       await testSvgPainter(
         tester: tester,
         painter: const MediaPainter(),
-        goldenName: 'media_painter_w600.png',
+        goldenName: goldenFileName(
+          'media_painter_w600',
+          <TargetPlatform>{TargetPlatform.macOS},
+        ),
         goldenPath: 'attributes/goldens',
         size: const Size(600, 550),
       );
@@ -521,7 +524,10 @@ void main() {
       await testSvgPainter(
         tester: tester,
         painter: const MediaPainter(),
-        goldenName: 'media_painter_w800.png',
+        goldenName: goldenFileName(
+          'media_painter_w800',
+          <TargetPlatform>{TargetPlatform.macOS},
+        ),
         goldenPath: 'attributes/goldens',
         size: const Size(800, 600),
       );

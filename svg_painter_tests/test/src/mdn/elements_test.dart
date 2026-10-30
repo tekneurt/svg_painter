@@ -63,7 +63,7 @@ _fixtures =
       (
         painter: const APainter(),
         name: 'a_painter',
-        tests: defaultGoldenTests,
+        tests: macOsOverrideGoldenTests,
         widget: null,
         nativeSize: null,
       ),
@@ -105,7 +105,7 @@ _fixtures =
       (
         painter: const FeComponentTransferElementPainter(),
         name: 'fe_component_transfer_element_painter',
-        tests: defaultGoldenTests,
+        tests: macOsOverrideGoldenTests,
         widget: null,
         nativeSize: null,
       ),
@@ -126,7 +126,7 @@ _fixtures =
       (
         painter: const FeGaussianBlurElement1Painter(),
         name: 'fe_gaussian_blur_element_1_painter',
-        tests: defaultGoldenTests,
+        tests: macOsOverrideGoldenTests,
         widget: null,
         nativeSize: null,
       ),
@@ -140,14 +140,14 @@ _fixtures =
       (
         painter: const FeMergeElementPainter(),
         name: 'fe_merge_element_painter',
-        tests: defaultGoldenTests,
+        tests: macOsFixedOverrideGoldenTests,
         widget: null,
         nativeSize: null,
       ),
       (
         painter: const FeMergeNodeElementPainter(),
         name: 'fe_merge_node_element_painter',
-        tests: defaultGoldenTests,
+        tests: macOsFixedOverrideGoldenTests,
         widget: null,
         nativeSize: null,
       ),
@@ -161,7 +161,7 @@ _fixtures =
       (
         painter: const FilterElementPainter(),
         name: 'filter_element_painter',
-        tests: defaultGoldenTests,
+        tests: macOsOverrideGoldenTests,
         widget: null,
         nativeSize: null,
       ),
@@ -349,7 +349,7 @@ _fixtures =
       (
         painter: const SwitchElementPainter(),
         name: 'switch_element_painter',
-        tests: defaultGoldenTests,
+        tests: macOsOverrideGoldenTests,
         widget: null,
         nativeSize: null,
       ),
