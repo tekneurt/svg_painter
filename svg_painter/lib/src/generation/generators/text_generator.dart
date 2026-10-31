@@ -206,11 +206,16 @@ class TextGenerator extends ShapeGenerator<DrawText> {
                 ? span.style?.fill
                 : style.fill;
             if (fill != null) {
-              if (fill.shaderId != null) {
-                final String cleanShaderId = SvgIdFormatter.sanitizeId(fill.shaderId);
-                buffer.writeln(
-                  'foreground: Paint()..shader = _grad_$cleanShaderId.createShader(Rect.zero),',
-                );
+              if (fill.shaderId != null || fill.patternId != null) {
+                if (span.style?.fill?.shaderId != null &&
+                    span.style?.fill?.shaderId != initialStyle?.fill?.shaderId) {
+                  final String cleanShaderId = SvgIdFormatter.sanitizeId(fill.shaderId);
+                  buffer.writeln(
+                    'foreground: (Paint()..shader = _grad_$cleanShaderId.createShader(viewBoxRect)),',
+                  );
+                } else {
+                  buffer.writeln('foreground: $parentPaint,');
+                }
               } else if (fill.colorArgb != null) {
                 final String colorCode = FlutterColorMap.getColorCode(
                   fill.colorArgb!,

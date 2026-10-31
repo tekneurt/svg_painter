@@ -281,6 +281,38 @@ void main() {
       expect(output, contains("fontFamily: 'Noto Serif',"));
       expect(output, contains("package: 'svg_painter',"));
     });
+
+    test('should emit foreground parentPaint when text fill has shaderId', () {
+      // Arrange
+      const generator = TextGenerator();
+      const shaderStyle = PaintingStyle(
+        fill: PaintingFillStyle(
+          shaderId: 'my_grad',
+          shaderUnits: PaintingGradientUnits.userSpaceOnUse,
+        ),
+        text: PaintingTextStyle(
+          fontSize: 14.0,
+          fontWeight: PaintingFontWeight.normal,
+          fontStyle: PaintingFontStyle.normal,
+          fontFamily: 'Roboto',
+        ),
+      );
+      const command = DrawText(
+        x: 15.0,
+        y: 25.0,
+        rootSpan: PaintingTextSpan(text: 'Gradient Text'),
+        style: shaderStyle,
+      );
+      final buffer = GeneratorBuffer();
+
+      // Act
+      generator.generate(command, buffer);
+
+      // Assert
+      final output = buffer.toString();
+      expect(output, contains('paint.shader = _grad_my_grad.createShader(viewBoxRect);'));
+      expect(output, contains('foreground: paint,'));
+    });
   });
 
   group('escapeDartStringLiteral', () {

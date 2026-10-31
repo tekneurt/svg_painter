@@ -138,6 +138,7 @@ Future<void> loadTestFonts() async {
     'monospace': '../svg_painter/assets/fonts/roboto_mono',
     'SVGFreeSansASCII': '../svg_painter/assets/fonts/free_sans',
     'SVGFreeSansASCII,sans-serif': '../svg_painter/assets/fonts/free_sans',
+    'Blocky': '../svg_painter/assets/fonts/blocky',
   };
 
   for (final MapEntry<String, String> entry in families.entries) {
@@ -153,7 +154,7 @@ Future<void> loadTestFonts() async {
     final List<FileSystemEntity> files = dir.listSync();
 
     for (final file in files) {
-      if (file is File && file.path.endsWith('.ttf')) {
+      if (file is File && (file.path.endsWith('.ttf') || file.path.endsWith('.otf'))) {
         final Uint8List bytes = await file.readAsBytes();
         loader.addFont(Future<ByteData>.value(ByteData.view(bytes.buffer)));
         packageLoader.addFont(Future<ByteData>.value(ByteData.view(bytes.buffer)));
