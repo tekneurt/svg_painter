@@ -571,5 +571,68 @@ void main() {
       final lgrad = (result as Success<PaintCommand>).value as DefineLinearGradient;
       expect(lgrad.stops.first.colorArgb, 0xFF800080);
     });
+
+    test('should duplicate single stop to 0.0 and 1.0 when gradient has only one stop', () {
+      // Arrange
+      const grad = SvgLinearGradient(
+        coreAttributes: SvgCoreAttributes(id: 'g-single-stop'),
+        stops: <SvgStop>[
+          SvgStop(
+            offset: SvgLength(0.5),
+            stopColor: SvgNamedColor(SvgColorName.red),
+            stopOpacity: SvgLength(0.8),
+          ),
+        ],
+      );
+
+      // Act
+      final Result<PaintCommand> result = grad.toPaintCommand(context);
+
+      // Assert
+      expect(result, isA<Success<PaintCommand>>());
+      final lgrad = (result as Success<PaintCommand>).value as DefineLinearGradient;
+      expect(lgrad.stops, hasLength(2));
+      expect(lgrad.stops[0].offset, 0.0);
+      expect(lgrad.stops[0].opacity, 0.8);
+      expect(lgrad.stops[1].offset, 1.0);
+      expect(lgrad.stops[1].opacity, 0.8);
+    });
+
+    test('should clamp stop offset to previous maximum when stop offset is less than previous', () {
+      // Arrange
+      const grad = SvgLinearGradient(
+        coreAttributes: SvgCoreAttributes(id: 'g-non-decreasing'),
+        stops: <SvgStop>[
+          SvgStop(
+            offset: SvgLength(0.0),
+            stopColor: SvgNamedColor(SvgColorName.yellow),
+          ),
+          SvgStop(
+            offset: SvgLength(0.25),
+            stopColor: SvgNamedColor(SvgColorName.green),
+          ),
+          SvgStop(
+            offset: SvgLength(0.6),
+            stopColor: SvgNamedColor(SvgColorName.blue),
+          ),
+          SvgStop(
+            offset: SvgLength(0.2), // less than 0.6
+            stopColor: SvgNamedColor(SvgColorName.red),
+          ),
+        ],
+      );
+
+      // Act
+      final Result<PaintCommand> result = grad.toPaintCommand(context);
+
+      // Assert
+      expect(result, isA<Success<PaintCommand>>());
+      final lgrad = (result as Success<PaintCommand>).value as DefineLinearGradient;
+      expect(lgrad.stops, hasLength(4));
+      expect(lgrad.stops[0].offset, 0.0);
+      expect(lgrad.stops[1].offset, 0.25);
+      expect(lgrad.stops[2].offset, 0.6);
+      expect(lgrad.stops[3].offset, 0.6); // clamped to 0.6
+    });
   });
 }

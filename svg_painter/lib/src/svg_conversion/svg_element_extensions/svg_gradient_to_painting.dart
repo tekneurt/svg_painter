@@ -227,7 +227,9 @@ extension on List<SvgStop> {
     SvgPaintingContext context, {
     SvgColor? gradientColor,
   }) {
-    return map((SvgStop stop) {
+    var maxOffset = 0.0;
+    final stops = <GradientStop>[];
+    for (final stop in this) {
       final Map<String, String> resolvedRules = resolveCssRules(
         context,
         'stop',
@@ -244,7 +246,10 @@ extension on List<SvgStop> {
       final SvgLengthPercentage resolvedStopOpacity =
           cssStopOpacity ?? stop.stopOpacity ?? const SvgLength(1.0);
 
-      final double offset = stop.offset.resolve(context, SvgOrientation.unit);
+      final double rawOffset =
+          stop.offset.resolve(context, SvgOrientation.unit).clamp(0.0, 1.0);
+      final offset = rawOffset < maxOffset ? maxOffset : rawOffset;
+      maxOffset = offset;
       final double opacity = resolvedStopOpacity.resolveOpacity(context);
 
       final SvgColor effectiveColor = switch (resolvedStopColor) {
@@ -257,11 +262,25 @@ extension on List<SvgStop> {
         final SvgColor c => c,
       };
 
-      return GradientStop(
-        offset: offset,
-        colorArgb: effectiveColor.toFillArgb(),
-        opacity: opacity,
+      stops.add(
+        GradientStop(
+          offset: offset,
+          colorArgb: effectiveColor.toFillArgb(),
+          opacity: opacity,
+        ),
       );
-    }).toList();
+    }
+
+    if (stops.length == 1) {
+      // SVG 1.1 13.2.4: If a gradient has only one stop, then paint is equivalent
+      // to a solid color paint with the color and opacity of that single stop.
+      final GradientStop single = stops.first;
+      return <GradientStop>[
+        GradientStop(offset: 0.0, colorArgb: single.colorArgb, opacity: single.opacity),
+        GradientStop(offset: 1.0, colorArgb: single.colorArgb, opacity: single.opacity),
+      ];
+    }
+
+    return stops;
   }
 }

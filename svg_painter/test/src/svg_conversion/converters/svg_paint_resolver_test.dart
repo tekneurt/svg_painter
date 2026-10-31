@@ -786,5 +786,65 @@ void main() {
       expect(style.fill?.opacity, 1.0);
       expect(style.stroke?.opacity, 1.0);
     });
+
+    test('should treat fill as none when referenced gradient has no stops', () {
+      // Arrange
+      const emptyGrad = SvgLinearGradient(
+        coreAttributes: SvgCoreAttributes(id: 'emptyGrad'),
+        stops: <SvgStop>[],
+      );
+      const context = SvgPaintingContext(
+        viewBoxWidth: 160,
+        viewBoxHeight: 240,
+        definitions: <String, SvgElement>{'emptyGrad': emptyGrad},
+      );
+      const presentationAttributes = SvgPresentationAttributes(
+        fill: SvgFillAttributes(
+          color: SvgPaintReference('emptyGrad'),
+        ),
+      );
+
+      // Act
+      final PaintingStyle style = resolvePaint(
+        context,
+        tagName: 'rect',
+        presentationAttributes: presentationAttributes,
+      );
+
+      // Assert
+      expect(style.fill?.shaderId, isNull);
+      expect(style.fill?.isExplicit, isFalse);
+      expect(style.fill?.colorArgb, 0x00000000);
+    });
+
+    test('should treat stroke as none when referenced gradient has no stops', () {
+      // Arrange
+      const emptyGrad = SvgLinearGradient(
+        coreAttributes: SvgCoreAttributes(id: 'emptyGradStroke'),
+        stops: <SvgStop>[],
+      );
+      const context = SvgPaintingContext(
+        viewBoxWidth: 170,
+        viewBoxHeight: 260,
+        definitions: <String, SvgElement>{'emptyGradStroke': emptyGrad},
+      );
+      const presentationAttributes = SvgPresentationAttributes(
+        stroke: SvgStrokeAttributes(
+          color: SvgPaintReference('emptyGradStroke'),
+        ),
+      );
+
+      // Act
+      final PaintingStyle style = resolvePaint(
+        context,
+        tagName: 'rect',
+        presentationAttributes: presentationAttributes,
+      );
+
+      // Assert
+      expect(style.stroke?.shaderId, isNull);
+      expect(style.stroke?.isExplicit, isFalse);
+      expect(style.stroke?.colorArgb, 0x00000000);
+    });
   });
 }

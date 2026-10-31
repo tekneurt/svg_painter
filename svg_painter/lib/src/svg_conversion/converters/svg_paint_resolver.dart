@@ -362,14 +362,20 @@ PaintingFillStyle _buildFillStyle(
     final SvgElement? def = context.definitions[fillPaint.id];
     if (def is SvgPattern) {
       fillPatternId = fillPaint.id;
-    } else {
-      fillShaderId = fillPaint.id;
-      if (def is SvgGradient) {
+    } else if (def is SvgGradient) {
+      if (_hasGradientStops(def, context)) {
+        fillShaderId = fillPaint.id;
         shaderUnits = switch (_resolveGradientUnits(def, context)) {
           SvgGradientUnits.objectBoundingBox => .objectBoundingBox,
           SvgGradientUnits.userSpaceOnUse => .userSpaceOnUse,
         };
+      } else {
+        // SVG 1.1 13.2.4: If a gradient has no stops, paint is equivalent to 'none'.
+        isExplicit = false;
+        fillColorArgb = 0x00000000;
       }
+    } else {
+      fillShaderId = fillPaint.id;
     }
   } else if (fillPaint is SvgCurrentColor) {
     if (currentColor != null && currentColor is! SvgCurrentColor) {
@@ -481,14 +487,21 @@ PaintingStrokeStyle _buildStrokeStyle(
     final SvgElement? def = context.definitions[strokePaint.id];
     if (def is SvgPattern) {
       strokePatternId = strokePaint.id;
-    } else {
-      strokeShaderId = strokePaint.id;
-      if (def is SvgGradient) {
+    } else if (def is SvgGradient) {
+      if (_hasGradientStops(def, context)) {
+        strokeShaderId = strokePaint.id;
         shaderUnits = switch (_resolveGradientUnits(def, context)) {
           SvgGradientUnits.objectBoundingBox => .objectBoundingBox,
           SvgGradientUnits.userSpaceOnUse => .userSpaceOnUse,
         };
+      } else {
+        // SVG 1.1 13.2.4: If a gradient has no stops, paint is equivalent to 'none'.
+        isExplicit = false;
+        strokeColorArgb = 0x00000000;
+        strokeShaderId = null;
       }
+    } else {
+      strokeShaderId = strokePaint.id;
     }
   } else if (strokePaint is SvgCurrentColor) {
     if (currentColor != null && currentColor is! SvgCurrentColor) {
@@ -733,4 +746,35 @@ SvgGradientUnits _resolveGradientUnits(SvgGradient gradient, SvgPaintingContext 
   }
 
   return SvgGradientUnits.objectBoundingBox;
+}
+
+bool _hasGradientStops(SvgGradient gradient, SvgPaintingContext context) {
+  if (gradient.stops.isNotEmpty) {
+    return true;
+  }
+  final visited = <String>{};
+  final String? gradId = gradient.id;
+  if (gradId != null) {
+    visited.add(gradId);
+  }
+  String? currentHref = gradient.href;
+  while (currentHref != null && currentHref.isNotEmpty) {
+    final String targetId = currentHref.startsWith('#')
+        ? currentHref.substring(1)
+        : currentHref;
+    if (visited.contains(targetId)) {
+      break;
+    }
+    visited.add(targetId);
+    final SvgElement? target = context.definitions[targetId];
+    if (target is SvgGradient) {
+      if (target.stops.isNotEmpty) {
+        return true;
+      }
+      currentHref = target.href;
+    } else {
+      break;
+    }
+  }
+  return false;
 }
