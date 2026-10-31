@@ -14,6 +14,8 @@ import 'pservers/pservers_grad_09_b_painter.dart';
 import 'pservers/pservers_grad_10_b_painter.dart';
 import 'pservers/pservers_grad_11_b_painter.dart';
 import 'pservers/pservers_grad_12_b_painter.dart';
+import 'pservers/pservers_grad_13_b_painter.dart';
+import 'pservers/pservers_grad_14_b_painter.dart';
 
 final List<({CustomPainter painter, String name, double? maxDiffPercent})> _fixtures =
     <({CustomPainter painter, String name, double? maxDiffPercent})>[
@@ -29,6 +31,8 @@ final List<({CustomPainter painter, String name, double? maxDiffPercent})> _fixt
       (painter: const PserversGrad10BPainter(), name: 'pservers_grad_10_b', maxDiffPercent: 0.40),
       (painter: const PserversGrad11BPainter(), name: 'pservers_grad_11_b', maxDiffPercent: 0.70),
       (painter: const PserversGrad12BPainter(), name: 'pservers_grad_12_b', maxDiffPercent: 0.50),
+      (painter: const PserversGrad13BPainter(), name: 'pservers_grad_13_b', maxDiffPercent: 0.50),
+      (painter: const PserversGrad14BPainter(), name: 'pservers_grad_14_b', maxDiffPercent: 0.50),
     ];
 
 void main() {
