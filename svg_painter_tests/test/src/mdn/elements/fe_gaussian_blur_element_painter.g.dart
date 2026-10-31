@@ -8,7 +8,7 @@ part of 'fe_gaussian_blur_element_painter.dart';
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
+// ignore_for_file: unused_element, unused_field, unused_element_parameter, unused_local_variable, deprecated_member_use_from_same_package
 
 class FeGaussianBlurElement1PainterWidget extends StatelessWidget {
   const FeGaussianBlurElement1PainterWidget({
@@ -112,7 +112,7 @@ class _$FeGaussianBlurElement1Painter extends CustomPainter {
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
+// ignore_for_file: unused_element, unused_field, unused_element_parameter, unused_local_variable, deprecated_member_use_from_same_package
 
 class FeGaussianBlurElement2PainterWidget extends StatelessWidget {
   const FeGaussianBlurElement2PainterWidget({

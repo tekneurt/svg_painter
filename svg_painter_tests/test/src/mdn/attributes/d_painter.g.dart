@@ -8,7 +8,7 @@ part of 'd_painter.dart';
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
+// ignore_for_file: unused_element, unused_field, unused_element_parameter, unused_local_variable, deprecated_member_use_from_same_package
 
 class DExamplePainterWidget extends StatelessWidget {
   const DExamplePainterWidget({
@@ -117,7 +117,7 @@ class _$DExamplePainter extends CustomPainter {
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
+// ignore_for_file: unused_element, unused_field, unused_element_parameter, unused_local_variable, deprecated_member_use_from_same_package
 
 class DMoveToPainterWidget extends StatelessWidget {
   const DMoveToPainterWidget({
@@ -230,7 +230,7 @@ class _$DMoveToPainter extends CustomPainter {
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
+// ignore_for_file: unused_element, unused_field, unused_element_parameter, unused_local_variable, deprecated_member_use_from_same_package
 
 class DLineToPainterWidget extends StatelessWidget {
   const DLineToPainterWidget({
@@ -339,7 +339,7 @@ class _$DLineToPainter extends CustomPainter {
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
+// ignore_for_file: unused_element, unused_field, unused_element_parameter, unused_local_variable, deprecated_member_use_from_same_package
 
 class DCubicBezierPainterWidget extends StatelessWidget {
   const DCubicBezierPainterWidget({
@@ -679,7 +679,7 @@ class _$DCubicBezierPainter extends CustomPainter {
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
+// ignore_for_file: unused_element, unused_field, unused_element_parameter, unused_local_variable, deprecated_member_use_from_same_package
 
 class DQuadraticBezierPainterWidget extends StatelessWidget {
   const DQuadraticBezierPainterWidget({
@@ -1001,7 +1001,7 @@ class _$DQuadraticBezierPainter extends CustomPainter {
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
+// ignore_for_file: unused_element, unused_field, unused_element_parameter, unused_local_variable, deprecated_member_use_from_same_package
 
 class DEllipticalArcPainterWidget extends StatelessWidget {
   const DEllipticalArcPainterWidget({
@@ -1154,7 +1154,7 @@ class _$DEllipticalArcPainter extends CustomPainter {
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
+// ignore_for_file: unused_element, unused_field, unused_element_parameter, unused_local_variable, deprecated_member_use_from_same_package
 
 class DClosePathPainterWidget extends StatelessWidget {
   const DClosePathPainterWidget({

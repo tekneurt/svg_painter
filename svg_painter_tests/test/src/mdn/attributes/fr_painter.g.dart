@@ -8,7 +8,7 @@ part of 'fr_painter.dart';
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
+// ignore_for_file: unused_element, unused_field, unused_element_parameter, unused_local_variable, deprecated_member_use_from_same_package
 
 class Fr1PainterWidget extends StatelessWidget {
   const Fr1PainterWidget({
@@ -127,7 +127,7 @@ class _$Fr1Painter extends CustomPainter {
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
+// ignore_for_file: unused_element, unused_field, unused_element_parameter, unused_local_variable, deprecated_member_use_from_same_package
 
 class Fr2PainterWidget extends StatelessWidget {
   const Fr2PainterWidget({

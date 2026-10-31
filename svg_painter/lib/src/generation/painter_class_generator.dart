@@ -49,7 +49,7 @@ class PainterClassGenerator {
     buffer.writeln('// coverage:ignore-file');
     buffer.writeln('// ignore_for_file: type=lint');
     buffer.writeln(
-      '// ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package',
+      '// ignore_for_file: unused_element, unused_field, unused_element_parameter, unused_local_variable, deprecated_member_use_from_same_package',
     );
     buffer.writeln();
 

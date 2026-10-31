@@ -8,7 +8,7 @@ part of 'paths_data_20_f_painter.dart';
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
+// ignore_for_file: unused_element, unused_field, unused_element_parameter, unused_local_variable, deprecated_member_use_from_same_package
 
 class PathsData20FPainterWidget extends StatelessWidget {
   const PathsData20FPainterWidget({

@@ -33,6 +33,7 @@ import 'attributes/gradient_transform_painter.dart';
 import 'attributes/height_painter.dart';
 import 'attributes/href_a_painter.dart';
 import 'attributes/href_image_painter.dart';
+import 'attributes/href_linear_gradient_painter.dart';
 import 'attributes/id_painter.dart';
 import 'attributes/marker_end_painter.dart';
 import 'attributes/marker_mid_painter.dart';
@@ -231,6 +232,11 @@ _fixtures =
       ),
       (painter: const HeightPainter(), name: 'height_painter', tests: defaultGoldenTests),
       (painter: const HrefAPainter(), name: 'href_a_painter', tests: macOsOverrideGoldenTests),
+      (
+        painter: const HrefLinearGradientPainter(),
+        name: 'href_linear_gradient_painter',
+        tests: defaultGoldenTests,
+      ),
       (painter: const IdPainter(), name: 'id_painter', tests: defaultGoldenTests),
       (painter: const MarkerEndPainter(), name: 'marker_end_painter', tests: defaultGoldenTests),
       (painter: const MarkerMidPainter(), name: 'marker_mid_painter', tests: defaultGoldenTests),

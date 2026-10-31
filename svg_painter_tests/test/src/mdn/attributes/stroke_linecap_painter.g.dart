@@ -8,7 +8,7 @@ part of 'stroke_linecap_painter.dart';
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
+// ignore_for_file: unused_element, unused_field, unused_element_parameter, unused_local_variable, deprecated_member_use_from_same_package
 
 class StrokeLinecapPainterWidget extends StatelessWidget {
   const StrokeLinecapPainterWidget({
@@ -134,7 +134,7 @@ class _$StrokeLinecapPainter extends CustomPainter {
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
+// ignore_for_file: unused_element, unused_field, unused_element_parameter, unused_local_variable, deprecated_member_use_from_same_package
 
 class StrokeLinecapButtPainterWidget extends StatelessWidget {
   const StrokeLinecapButtPainterWidget({
@@ -287,7 +287,7 @@ class _$StrokeLinecapButtPainter extends CustomPainter {
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
+// ignore_for_file: unused_element, unused_field, unused_element_parameter, unused_local_variable, deprecated_member_use_from_same_package
 
 class StrokeLinecapRoundPainterWidget extends StatelessWidget {
   const StrokeLinecapRoundPainterWidget({
@@ -442,7 +442,7 @@ class _$StrokeLinecapRoundPainter extends CustomPainter {
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
+// ignore_for_file: unused_element, unused_field, unused_element_parameter, unused_local_variable, deprecated_member_use_from_same_package
 
 class StrokeLinecapSquarePainterWidget extends StatelessWidget {
   const StrokeLinecapSquarePainterWidget({

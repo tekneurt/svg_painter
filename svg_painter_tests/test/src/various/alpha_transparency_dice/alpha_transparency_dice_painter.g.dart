@@ -8,7 +8,7 @@ part of 'alpha_transparency_dice_painter.dart';
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
+// ignore_for_file: unused_element, unused_field, unused_element_parameter, unused_local_variable, deprecated_member_use_from_same_package
 
 class AlphaTransparencyDicePainterWidget extends StatefulWidget {
   const AlphaTransparencyDicePainterWidget({
@@ -221127,7 +221127,7 @@ class _$AlphaTransparencyDicePainter extends CustomPainter {
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
+// ignore_for_file: unused_element, unused_field, unused_element_parameter, unused_local_variable, deprecated_member_use_from_same_package
 
 class AlphaTransparencyDiceTransformedPainterWidget extends StatefulWidget {
   const AlphaTransparencyDiceTransformedPainterWidget({
@@ -442265,7 +442265,7 @@ class _$AlphaTransparencyDiceTransformedPainter extends CustomPainter {
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
+// ignore_for_file: unused_element, unused_field, unused_element_parameter, unused_local_variable, deprecated_member_use_from_same_package
 
 class AlphaTransparencyDiceDataUriPainterWidget extends StatefulWidget {
   const AlphaTransparencyDiceDataUriPainterWidget({

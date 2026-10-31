@@ -18,3 +18,17 @@ const String mdnHrefImageExample = '''
   <image href="package:svg_painter_fixtures/assets/mdn/mdn_logo_only_color.png" x="0" y="0" height="100" width="100" />
 </svg>
 ''';
+
+/// https://developer.mozilla.org/en-US/docs/Web/API/SVGGradientElement/href#accessing_the_href_property
+const String mdnHrefLinearGradientExample = '''
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200">
+  <defs>
+    <linearGradient id="gradient1">
+      <stop offset="0%" stop-color="red" />
+      <stop offset="100%" stop-color="blue" />
+    </linearGradient>
+    <linearGradient id="gradient2" href="#gradient1" />
+  </defs>
+  <rect x="10" y="10" width="180" height="180" fill="url(#gradient2)" />
+</svg>
+''';
