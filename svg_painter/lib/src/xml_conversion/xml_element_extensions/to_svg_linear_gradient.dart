@@ -11,19 +11,19 @@ extension ToSvgLinearGradient on XmlElement {
   Result<SvgLinearGradient> toSvgLinearGradient() {
     const XmlElementName elementName = XmlElementName.linearGradient;
 
-    final SvgLengthPercentage x1 = toSvgValue<SvgLengthPercentage>(
+    final SvgLengthPercentage? x1 = toSvgValueOrNull<SvgLengthPercentage>(
       elementName,
       XmlAttributeName.x1,
     );
-    final SvgLengthPercentage y1 = toSvgValue<SvgLengthPercentage>(
+    final SvgLengthPercentage? y1 = toSvgValueOrNull<SvgLengthPercentage>(
       elementName,
       XmlAttributeName.y1,
     );
-    final SvgLengthPercentage x2 = toSvgValue<SvgLengthPercentage>(
+    final SvgLengthPercentage? x2 = toSvgValueOrNull<SvgLengthPercentage>(
       elementName,
       XmlAttributeName.x2,
     );
-    final SvgLengthPercentage y2 = toSvgValue<SvgLengthPercentage>(
+    final SvgLengthPercentage? y2 = toSvgValueOrNull<SvgLengthPercentage>(
       elementName,
       XmlAttributeName.y2,
     );
@@ -35,12 +35,11 @@ extension ToSvgLinearGradient on XmlElement {
         .combine();
 
     final String? gradientTransform = toXmlAttributeValue(XmlAttributeName.gradientTransform);
-    final SvgGradientUnits gradientUnits =
-        toXmlAttributeValue(XmlAttributeName.gradientUnits)?.toSvgGradientUnits() ??
-        XmlAttributeName.gradientUnits.toDefaultValue(elementName) as SvgGradientUnits;
-    final SvgSpreadMethod spreadMethod =
-        toXmlAttributeValue(XmlAttributeName.spreadMethod)?.toSvgSpreadMethod() ??
-        XmlAttributeName.spreadMethod.toDefaultValue(elementName) as SvgSpreadMethod;
+    final SvgGradientUnits? gradientUnits =
+        toXmlAttributeValue(XmlAttributeName.gradientUnits)?.toSvgGradientUnits();
+    final SvgSpreadMethod? spreadMethod =
+        toXmlAttributeValue(XmlAttributeName.spreadMethod)?.toSvgSpreadMethod();
+    final String? href = toXmlAttributeValue(XmlAttributeName.href);
 
     final CommonAttributes common = toCommonAttributes(elementName);
     final SvgColor? color =
@@ -57,6 +56,7 @@ extension ToSvgLinearGradient on XmlElement {
         gradientTransformAttributes: SvgTransformParser.parse(gradientTransform),
         gradientUnits: gradientUnits,
         spreadMethod: spreadMethod,
+        href: href,
         color: color,
         coreAttributes: common.core,
       ),

@@ -1,8 +1,12 @@
 import 'package:svg_painter/src/base/result.dart';
-import 'package:svg_painter/src/painting_model/_painting_model.dart';
+import 'package:svg_painter/src/painting_model/paint_command.dart';
+import 'package:svg_painter/src/painting_model/styles/painting_style.dart';
 import 'package:svg_painter/src/svg_conversion/converters/svg_painting_context.dart';
 import 'package:svg_painter/src/svg_conversion/svg_element_extensions/svg_gradient_to_painting.dart';
-import 'package:svg_painter/src/svg_model/_svg_model.dart';
+import 'package:svg_painter/src/svg_model/attribute_groups/svg_core_attributes.dart';
+import 'package:svg_painter/src/svg_model/attribute_groups/svg_transform_attributes.dart';
+import 'package:svg_painter/src/svg_model/svg_element.dart';
+import 'package:svg_painter/src/svg_model/svg_value.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -248,6 +252,189 @@ void main() {
       expect(result, isA<Success<PaintCommand>>());
       final lgrad = (result as Success<PaintCommand>).value as DefineLinearGradient;
       expect(lgrad.stops.first.colorArgb, 0xFF0000FF);
+    });
+
+    test('should inherit stops and coordinates through href when referenced gradient has stops', () {
+      // Arrange
+      const baseGrad = SvgLinearGradient(
+        coreAttributes: SvgCoreAttributes(id: 'base'),
+        x1: SvgPercentage(10),
+        y1: SvgPercentage(20),
+        x2: SvgPercentage(90),
+        y2: SvgPercentage(80),
+        stops: <SvgStop>[
+          SvgStop(
+            offset: SvgLength(0),
+            stopColor: SvgNamedColor(SvgColorName.red),
+            stopOpacity: SvgLength(1.0),
+          ),
+          SvgStop(
+            offset: SvgLength(1),
+            stopColor: SvgNamedColor(SvgColorName.blue),
+            stopOpacity: SvgLength(0.8),
+          ),
+        ],
+      );
+      const childGrad = SvgLinearGradient(
+        coreAttributes: SvgCoreAttributes(id: 'derived'),
+        href: '#base',
+        x1: SvgPercentage(25),
+        stops: <SvgStop>[],
+      );
+      const ctx = SvgPaintingContext(
+        viewBoxWidth: 100,
+        viewBoxHeight: 100,
+        definitions: <String, SvgElement>{'base': baseGrad},
+      );
+
+      // Act
+      final Result<PaintCommand> result = childGrad.toPaintCommand(ctx);
+
+      // Assert
+      expect(result, isA<Success<PaintCommand>>());
+      final lgrad = (result as Success<PaintCommand>).value as DefineLinearGradient;
+      expect(lgrad.id, 'derived');
+      expect(lgrad.x1, 0.25);
+      expect(lgrad.y1, 0.20);
+      expect(lgrad.x2, 0.90);
+      expect(lgrad.y2, 0.80);
+      expect(lgrad.stops, hasLength(2));
+      expect(lgrad.stops[1].opacity, 0.8);
+    });
+
+    test('should inherit across multi-level href chain', () {
+      // Arrange
+      const gradA = SvgLinearGradient(
+        coreAttributes: SvgCoreAttributes(id: 'gradA'),
+        stops: <SvgStop>[
+          SvgStop(
+            offset: SvgLength(0),
+            stopColor: SvgNamedColor(SvgColorName.black),
+            stopOpacity: SvgLength(1.0),
+          ),
+          SvgStop(
+            offset: SvgLength(1),
+            stopColor: SvgNamedColor(SvgColorName.white),
+            stopOpacity: SvgLength(1.0),
+          ),
+        ],
+        gradientUnits: SvgGradientUnits.userSpaceOnUse,
+        spreadMethod: SvgSpreadMethod.repeat,
+      );
+      const gradB = SvgLinearGradient(
+        coreAttributes: SvgCoreAttributes(id: 'gradB'),
+        href: '#gradA',
+        x1: SvgPercentage(15),
+        y1: SvgPercentage(25),
+        stops: <SvgStop>[],
+      );
+      const gradC = SvgLinearGradient(
+        coreAttributes: SvgCoreAttributes(id: 'gradC'),
+        href: '#gradB',
+        x2: SvgPercentage(75),
+        y2: SvgPercentage(85),
+        stops: <SvgStop>[],
+      );
+      const ctx = SvgPaintingContext(
+        viewBoxWidth: 100,
+        viewBoxHeight: 200,
+        definitions: <String, SvgElement>{
+          'gradA': gradA,
+          'gradB': gradB,
+        },
+      );
+
+      // Act
+      final Result<PaintCommand> result = gradC.toPaintCommand(ctx);
+
+      // Assert
+      expect(result, isA<Success<PaintCommand>>());
+      final lgrad = (result as Success<PaintCommand>).value as DefineLinearGradient;
+      expect(lgrad.id, 'gradC');
+      expect(lgrad.x1, 0.15);
+      expect(lgrad.y1, 0.25);
+      expect(lgrad.x2, 0.75);
+      expect(lgrad.y2, 0.85);
+      expect(lgrad.units, PaintingGradientUnits.userSpaceOnUse);
+      expect(lgrad.spreadMethod, PaintingSpreadMethod.repeat);
+      expect(lgrad.stops, hasLength(2));
+    });
+
+    test('should prevent infinite loop when circular href reference exists', () {
+      // Arrange
+      const grad1 = SvgLinearGradient(
+        coreAttributes: SvgCoreAttributes(id: 'g1'),
+        href: '#g2',
+        stops: <SvgStop>[],
+      );
+      const grad2 = SvgLinearGradient(
+        coreAttributes: SvgCoreAttributes(id: 'g2'),
+        href: '#g1',
+        stops: <SvgStop>[],
+      );
+      const ctx = SvgPaintingContext(
+        viewBoxWidth: 100,
+        viewBoxHeight: 100,
+        definitions: <String, SvgElement>{
+          'g1': grad1,
+          'g2': grad2,
+        },
+      );
+
+      // Act
+      final Result<PaintCommand> result = grad1.toPaintCommand(ctx);
+
+      // Assert
+      expect(result, isA<Success<PaintCommand>>());
+      final lgrad = (result as Success<PaintCommand>).value as DefineLinearGradient;
+      expect(lgrad.id, 'g1');
+      expect(lgrad.stops, isEmpty);
+    });
+
+    test('should inherit stops and spreadMethod when radial gradient references linear gradient', () {
+      // Arrange
+      const linear = SvgLinearGradient(
+        coreAttributes: SvgCoreAttributes(id: 'lin'),
+        spreadMethod: SvgSpreadMethod.reflect,
+        stops: <SvgStop>[
+          SvgStop(
+            offset: SvgLength(0),
+            stopColor: SvgNamedColor(SvgColorName.yellow),
+            stopOpacity: SvgLength(1.0),
+          ),
+          SvgStop(
+            offset: SvgLength(1),
+            stopColor: SvgNamedColor(SvgColorName.purple),
+            stopOpacity: SvgLength(1.0),
+          ),
+        ],
+      );
+      const radial = SvgRadialGradient(
+        coreAttributes: SvgCoreAttributes(id: 'rad'),
+        href: '#lin',
+        cx: SvgPercentage(40),
+        cy: SvgPercentage(60),
+        r: SvgPercentage(30),
+        stops: <SvgStop>[],
+      );
+      const ctx = SvgPaintingContext(
+        viewBoxWidth: 100,
+        viewBoxHeight: 100,
+        definitions: <String, SvgElement>{'lin': linear},
+      );
+
+      // Act
+      final Result<PaintCommand> result = radial.toPaintCommand(ctx);
+
+      // Assert
+      expect(result, isA<Success<PaintCommand>>());
+      final rgrad = (result as Success<PaintCommand>).value as DefineRadialGradient;
+      expect(rgrad.id, 'rad');
+      expect(rgrad.cx, 0.40);
+      expect(rgrad.cy, 0.60);
+      expect(rgrad.radius, 0.30);
+      expect(rgrad.spreadMethod, PaintingSpreadMethod.reflect);
+      expect(rgrad.stops, hasLength(2));
     });
   });
 }

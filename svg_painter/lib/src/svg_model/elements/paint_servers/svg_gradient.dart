@@ -6,8 +6,9 @@ sealed class SvgGradient extends SvgDefinitionElement {
   const SvgGradient({
     required this.stops,
     this.gradientTransformAttributes,
-    this.gradientUnits = SvgGradientUnits.objectBoundingBox,
-    this.spreadMethod = SvgSpreadMethod.pad,
+    this.gradientUnits,
+    this.spreadMethod,
+    this.href,
     this.color,
     super.coreAttributes,
   });
@@ -19,10 +20,13 @@ sealed class SvgGradient extends SvgDefinitionElement {
   final SvgTransformAttributes? gradientTransformAttributes;
 
   /// The coordinate system used for the gradient coordinates.
-  final SvgGradientUnits gradientUnits;
+  final SvgGradientUnits? gradientUnits;
 
   /// The method used to fill the area outside the gradient vector.
-  final SvgSpreadMethod spreadMethod;
+  final SvgSpreadMethod? spreadMethod;
+
+  /// The optional reference to another gradient element.
+  final String? href;
 
   /// The indirect color value for currentColor.
   final SvgColor? color;

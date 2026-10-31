@@ -6,41 +6,43 @@ part of '../../svg_element.dart';
 @immutable
 final class SvgLinearGradient extends SvgGradient {
   const SvgLinearGradient({
-    required this.x1,
-    required this.y1,
-    required this.x2,
-    required this.y2,
+    this.x1,
+    this.y1,
+    this.x2,
+    this.y2,
     required super.stops,
     super.gradientTransformAttributes,
     super.gradientUnits,
     super.spreadMethod,
+    super.href,
     super.color,
     super.coreAttributes,
   });
 
   /// The x-axis coordinate of the start of the gradient vector.
-  final SvgLengthPercentage x1;
+  final SvgLengthPercentage? x1;
 
   /// The y-axis coordinate of the start of the gradient vector.
-  final SvgLengthPercentage y1;
+  final SvgLengthPercentage? y1;
 
   /// The x-axis coordinate of the end of the gradient vector.
-  final SvgLengthPercentage x2;
+  final SvgLengthPercentage? x2;
 
   /// The y-axis coordinate of the end of the gradient vector.
-  final SvgLengthPercentage y2;
+  final SvgLengthPercentage? y2;
 
   @override
   String toString() {
     final parts = <String>[
-      'x1: $x1',
-      'y1: $y1',
-      'x2: $x2',
-      'y2: $y2',
+      if (x1 != null) 'x1: $x1',
+      if (y1 != null) 'y1: $y1',
+      if (x2 != null) 'x2: $x2',
+      if (y2 != null) 'y2: $y2',
       'stops: ${stops.length}',
       if (gradientTransformAttributes != null) 'transform: $gradientTransformAttributes',
-      'units: $gradientUnits',
-      'spread: $spreadMethod',
+      if (gradientUnits != null) 'units: $gradientUnits',
+      if (spreadMethod != null) 'spread: $spreadMethod',
+      if (href != null) 'href: $href',
       if (id != null) 'id: $id',
     ];
     return 'SvgLinearGradient(${parts.join(', ')})';

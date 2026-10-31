@@ -6,51 +6,53 @@ part of '../../svg_element.dart';
 @immutable
 final class SvgRadialGradient extends SvgGradient {
   const SvgRadialGradient({
-    required this.cx,
-    required this.cy,
-    required this.r,
-    required this.fx,
-    required this.fy,
-    required this.fr,
+    this.cx,
+    this.cy,
+    this.r,
+    this.fx,
+    this.fy,
+    this.fr,
     required super.stops,
     super.gradientTransformAttributes,
     super.gradientUnits,
     super.spreadMethod,
+    super.href,
     super.color,
     super.coreAttributes,
   });
 
   /// The x-axis coordinate of the center of the largest circle for the gradient.
-  final SvgLengthPercentage cx;
+  final SvgLengthPercentage? cx;
 
   /// The y-axis coordinate of the center of the largest circle for the gradient.
-  final SvgLengthPercentage cy;
+  final SvgLengthPercentage? cy;
 
   /// The radius of the largest circle for the gradient.
-  final SvgLengthPercentage r;
+  final SvgLengthPercentage? r;
 
   /// The x-axis coordinate of the focal point for the gradient.
-  final SvgLengthPercentage fx;
+  final SvgLengthPercentage? fx;
 
   /// The y-axis coordinate of the focal point for the gradient.
-  final SvgLengthPercentage fy;
+  final SvgLengthPercentage? fy;
 
   /// The radius of the focal circle for the gradient.
-  final SvgLengthPercentage fr;
+  final SvgLengthPercentage? fr;
 
   @override
   String toString() {
     final parts = <String>[
-      'cx: $cx',
-      'cy: $cy',
-      'r: $r',
-      'fx: $fx',
-      'fy: $fy',
-      'fr: $fr',
+      if (cx != null) 'cx: $cx',
+      if (cy != null) 'cy: $cy',
+      if (r != null) 'r: $r',
+      if (fx != null) 'fx: $fx',
+      if (fy != null) 'fy: $fy',
+      if (fr != null) 'fr: $fr',
       'stops: ${stops.length}',
       if (gradientTransformAttributes != null) 'transform: $gradientTransformAttributes',
-      'units: $gradientUnits',
-      'spread: $spreadMethod',
+      if (gradientUnits != null) 'units: $gradientUnits',
+      if (spreadMethod != null) 'spread: $spreadMethod',
+      if (href != null) 'href: $href',
       if (id != null) 'id: $id',
     ];
     return 'SvgRadialGradient(${parts.join(', ')})';

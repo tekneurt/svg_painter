@@ -365,7 +365,7 @@ PaintingFillStyle _buildFillStyle(
     } else {
       fillShaderId = fillPaint.id;
       if (def is SvgGradient) {
-        shaderUnits = switch (def.gradientUnits) {
+        shaderUnits = switch (_resolveGradientUnits(def, context)) {
           SvgGradientUnits.objectBoundingBox => .objectBoundingBox,
           SvgGradientUnits.userSpaceOnUse => .userSpaceOnUse,
         };
@@ -484,7 +484,7 @@ PaintingStrokeStyle _buildStrokeStyle(
     } else {
       strokeShaderId = strokePaint.id;
       if (def is SvgGradient) {
-        shaderUnits = switch (def.gradientUnits) {
+        shaderUnits = switch (_resolveGradientUnits(def, context)) {
           SvgGradientUnits.objectBoundingBox => .objectBoundingBox,
           SvgGradientUnits.userSpaceOnUse => .userSpaceOnUse,
         };
@@ -697,4 +697,40 @@ extension on SvgStrokeLinejoin {
       SvgStrokeLinejoin.bevel => PaintingStrokeJoin.bevel,
     };
   }
+}
+
+SvgGradientUnits _resolveGradientUnits(SvgGradient gradient, SvgPaintingContext context) {
+  final SvgGradientUnits? directUnits = gradient.gradientUnits;
+  if (directUnits != null) {
+    return directUnits;
+  }
+
+  final visited = <String>{};
+  final String? gradId = gradient.id;
+  if (gradId != null) {
+    visited.add(gradId);
+  }
+
+  String? currentHref = gradient.href;
+  while (currentHref != null && currentHref.isNotEmpty) {
+    final String targetId = currentHref.startsWith('#')
+        ? currentHref.substring(1)
+        : currentHref;
+    if (visited.contains(targetId)) {
+      break;
+    }
+    visited.add(targetId);
+    final SvgElement? target = context.definitions[targetId];
+    if (target is SvgGradient) {
+      final SvgGradientUnits? targetUnits = target.gradientUnits;
+      if (targetUnits != null) {
+        return targetUnits;
+      }
+      currentHref = target.href;
+    } else {
+      break;
+    }
+  }
+
+  return SvgGradientUnits.objectBoundingBox;
 }
