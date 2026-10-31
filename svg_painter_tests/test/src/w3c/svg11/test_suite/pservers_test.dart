@@ -4,11 +4,13 @@ import 'package:flutter_test/flutter_test.dart';
 import '../../../../test_utils.dart';
 import 'pservers/pservers_grad_01_b_painter.dart';
 import 'pservers/pservers_grad_02_b_painter.dart';
+import 'pservers/pservers_grad_03_b_painter.dart';
 
 final List<({CustomPainter painter, String name, double? maxDiffPercent})> _fixtures =
     <({CustomPainter painter, String name, double? maxDiffPercent})>[
       (painter: const PserversGrad01BPainter(), name: 'pservers_grad_01_b', maxDiffPercent: 0.35),
       (painter: const PserversGrad02BPainter(), name: 'pservers_grad_02_b', maxDiffPercent: 0.30),
+      (painter: const PserversGrad03BPainter(), name: 'pservers_grad_03_b', maxDiffPercent: 0.30),
     ];
 
 void main() {

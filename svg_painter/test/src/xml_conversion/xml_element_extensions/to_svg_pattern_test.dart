@@ -54,8 +54,8 @@ void main() {
       expect(pattern.height, isNull);
       expect(pattern.x, isNull);
       expect(pattern.y, isNull);
-      expect(pattern.patternUnits, SvgPatternUnits.objectBoundingBox);
-      expect(pattern.patternContentUnits, SvgPatternUnits.userSpaceOnUse);
+      expect(pattern.patternUnits, isNull);
+      expect(pattern.patternContentUnits, isNull);
       expect(pattern.patternTransformAttributes, isNull);
       expect(pattern.href, isNull);
       expect(pattern.children, isEmpty);

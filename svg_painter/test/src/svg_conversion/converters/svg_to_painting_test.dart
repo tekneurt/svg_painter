@@ -996,5 +996,172 @@ void main() {
         },
       );
     });
+
+    group('SvgPattern', () {
+      test('should convert pattern with direct attributes to DefinePattern command', () {
+        // Arrange
+        const pattern = SvgPattern(
+          coreAttributes: SvgCoreAttributes(id: 'pat1'),
+          x: SvgLength(10),
+          y: SvgLength(20),
+          width: SvgLength(30),
+          height: SvgLength(40),
+          patternUnits: SvgPatternUnits.userSpaceOnUse,
+          patternContentUnits: SvgPatternUnits.objectBoundingBox,
+          children: <SvgElement>[
+            SvgRect(
+              x: SvgLength(2),
+              y: SvgLength(4),
+              width: SvgLength(6),
+              height: SvgLength(8),
+              rx: SvgLength(1),
+              ry: SvgLength(2),
+            ),
+          ],
+        );
+        const root = SvgRoot(
+          children: <SvgElement>[pattern],
+        );
+
+        // Act
+        final Result<List<PaintCommand>> result = root.toPaintCommands();
+
+        // Assert
+        expect(result, isA<Success<List<PaintCommand>>>());
+        final List<PaintCommand> commands = (result as Success<List<PaintCommand>>).value;
+        final rootGroup = commands.single as DrawGroup;
+        expect(rootGroup.commands, hasLength(1));
+        final definePattern = rootGroup.commands.single as DefinePattern;
+        expect(definePattern.id, 'pat1');
+        expect(definePattern.x, const SvgLength(10));
+        expect(definePattern.y, const SvgLength(20));
+        expect(definePattern.width, const SvgLength(30));
+        expect(definePattern.height, const SvgLength(40));
+        expect(definePattern.patternUnits, SvgPatternUnits.userSpaceOnUse);
+        expect(definePattern.patternContentUnits, SvgPatternUnits.objectBoundingBox);
+        expect(definePattern.commands, hasLength(1));
+      });
+
+      test('should inherit attributes and children when pattern references another pattern via href', () {
+        // Arrange
+        const parentPattern = SvgPattern(
+          coreAttributes: SvgCoreAttributes(id: 'parentPat'),
+          x: SvgLength(12),
+          y: SvgLength(24),
+          width: SvgLength(36),
+          height: SvgLength(48),
+          patternUnits: SvgPatternUnits.userSpaceOnUse,
+          patternContentUnits: SvgPatternUnits.userSpaceOnUse,
+          children: <SvgElement>[
+            SvgRect(
+              x: SvgLength(3),
+              y: SvgLength(5),
+              width: SvgLength(7),
+              height: SvgLength(9),
+              rx: SvgLength(1.5),
+              ry: SvgLength(2.5),
+            ),
+          ],
+        );
+        const childPattern = SvgPattern(
+          coreAttributes: SvgCoreAttributes(id: 'childPat'),
+          href: '#parentPat',
+          children: <SvgElement>[],
+        );
+        const root = SvgRoot(
+          children: <SvgElement>[parentPattern, childPattern],
+        );
+
+        // Act
+        final Result<List<PaintCommand>> result = root.toPaintCommands();
+
+        // Assert
+        expect(result, isA<Success<List<PaintCommand>>>());
+        final List<PaintCommand> commands = (result as Success<List<PaintCommand>>).value;
+        final rootGroup = commands.single as DrawGroup;
+        expect(rootGroup.commands, hasLength(2));
+        final childDef = rootGroup.commands[1] as DefinePattern;
+        expect(childDef.id, 'childPat');
+        expect(childDef.x, const SvgLength(12));
+        expect(childDef.y, const SvgLength(24));
+        expect(childDef.width, const SvgLength(36));
+        expect(childDef.height, const SvgLength(48));
+        expect(childDef.patternUnits, SvgPatternUnits.userSpaceOnUse);
+        expect(childDef.patternContentUnits, SvgPatternUnits.userSpaceOnUse);
+        expect(childDef.commands, hasLength(1));
+      });
+
+      test('should preserve own attributes when pattern overrides inherited attributes', () {
+        // Arrange
+        const parentPattern = SvgPattern(
+          coreAttributes: SvgCoreAttributes(id: 'basePat'),
+          x: SvgLength(14),
+          y: SvgLength(28),
+          width: SvgLength(42),
+          height: SvgLength(56),
+          patternUnits: SvgPatternUnits.userSpaceOnUse,
+          children: <SvgElement>[
+            SvgRect(
+              x: SvgLength(1),
+              y: SvgLength(2),
+              width: SvgLength(3),
+              height: SvgLength(4),
+              rx: SvgLength(0.5),
+              ry: SvgLength(0.75),
+            ),
+          ],
+        );
+        const derivedPattern = SvgPattern(
+          coreAttributes: SvgCoreAttributes(id: 'derivedPat'),
+          href: '#basePat',
+          width: SvgLength(70),
+          height: SvgLength(80),
+          patternUnits: SvgPatternUnits.objectBoundingBox,
+          children: <SvgElement>[],
+        );
+        const root = SvgRoot(
+          children: <SvgElement>[parentPattern, derivedPattern],
+        );
+
+        // Act
+        final Result<List<PaintCommand>> result = root.toPaintCommands();
+
+        // Assert
+        expect(result, isA<Success<List<PaintCommand>>>());
+        final List<PaintCommand> commands = (result as Success<List<PaintCommand>>).value;
+        final rootGroup = commands.single as DrawGroup;
+        final derivedDef = rootGroup.commands[1] as DefinePattern;
+        expect(derivedDef.id, 'derivedPat');
+        expect(derivedDef.x, const SvgLength(14));
+        expect(derivedDef.y, const SvgLength(28));
+        expect(derivedDef.width, const SvgLength(70));
+        expect(derivedDef.height, const SvgLength(80));
+        expect(derivedDef.patternUnits, SvgPatternUnits.objectBoundingBox);
+        expect(derivedDef.commands, hasLength(1));
+      });
+
+      test('should avoid infinite loop when patterns have circular href reference', () {
+        // Arrange
+        const patA = SvgPattern(
+          coreAttributes: SvgCoreAttributes(id: 'patA'),
+          href: '#patB',
+          children: <SvgElement>[],
+        );
+        const patB = SvgPattern(
+          coreAttributes: SvgCoreAttributes(id: 'patB'),
+          href: '#patA',
+          children: <SvgElement>[],
+        );
+        const root = SvgRoot(
+          children: <SvgElement>[patA, patB],
+        );
+
+        // Act
+        final Result<List<PaintCommand>> result = root.toPaintCommands();
+
+        // Assert
+        expect(result, isA<Success<List<PaintCommand>>>());
+      });
+    });
   });
 }

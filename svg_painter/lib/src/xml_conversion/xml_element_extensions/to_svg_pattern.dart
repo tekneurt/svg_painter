@@ -33,13 +33,11 @@ extension ToSvgPattern on XmlElement {
       XmlAttributeName.y,
     );
 
-    final SvgPatternUnits patternUnits =
-        toXmlAttributeValue(XmlAttributeName.patternUnits)?.toSvgPatternUnits() ??
-        SvgPatternUnits.objectBoundingBox;
+    final SvgPatternUnits? patternUnits =
+        toXmlAttributeValue(XmlAttributeName.patternUnits)?.toSvgPatternUnits();
 
-    final SvgPatternUnits patternContentUnits =
-        toXmlAttributeValue(XmlAttributeName.patternContentUnits)?.toSvgPatternUnits() ??
-        SvgPatternUnits.userSpaceOnUse;
+    final SvgPatternUnits? patternContentUnits =
+        toXmlAttributeValue(XmlAttributeName.patternContentUnits)?.toSvgPatternUnits();
 
     final String? patternTransform = toXmlAttributeValue(XmlAttributeName.patternTransform);
 

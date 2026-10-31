@@ -11,8 +11,8 @@ final class SvgPattern extends SvgContainerElement with SvgViewportAttributable,
     this.y,
     this.width,
     this.height,
-    this.patternUnits = SvgPatternUnits.objectBoundingBox,
-    this.patternContentUnits = SvgPatternUnits.userSpaceOnUse,
+    this.patternUnits,
+    this.patternContentUnits,
     this.patternTransformAttributes,
     this.href,
     this.viewportAttributes,
@@ -35,10 +35,10 @@ final class SvgPattern extends SvgContainerElement with SvgViewportAttributable,
   final SvgLengthPercentageAuto? height;
 
   /// The coordinate system for attributes x, y, width and height.
-  final SvgPatternUnits patternUnits;
+  final SvgPatternUnits? patternUnits;
 
   /// The coordinate system for the contents of the pattern.
-  final SvgPatternUnits patternContentUnits;
+  final SvgPatternUnits? patternContentUnits;
 
   /// The optional pattern transform attributes.
   final SvgTransformAttributes? patternTransformAttributes;

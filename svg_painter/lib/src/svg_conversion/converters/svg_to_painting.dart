@@ -250,17 +250,100 @@ extension SvgElementToPaintCommands on SvgElement {
   }
 
   Result<List<PaintCommand>> _toDefinePattern(SvgPattern pattern, SvgPaintingContext context) {
-    final SvgPaintingContext childrenContext = pattern.viewBox != null
+    final chain = <SvgPattern>[pattern];
+    final visited = <String>{};
+    final String? patternId = pattern.id;
+    if (patternId != null) {
+      visited.add(patternId);
+    }
+
+    String? currentHref = pattern.href;
+    while (currentHref != null && currentHref.isNotEmpty) {
+      final String targetId = currentHref.startsWith('#')
+          ? currentHref.substring(1)
+          : currentHref;
+      if (visited.contains(targetId)) {
+        break;
+      }
+      visited.add(targetId);
+      final SvgElement? target = context.definitions[targetId];
+      if (target is SvgPattern) {
+        chain.add(target);
+        currentHref = target.href;
+      } else {
+        break;
+      }
+    }
+
+    SvgLengthPercentage? resolvedX;
+    SvgLengthPercentage? resolvedY;
+    SvgLengthPercentageAuto? resolvedWidth;
+    SvgLengthPercentageAuto? resolvedHeight;
+
+    for (final p in chain) {
+      resolvedX ??= p.x;
+      resolvedY ??= p.y;
+      resolvedWidth ??= p.width;
+      resolvedHeight ??= p.height;
+    }
+
+    SvgPatternUnits resolvedPatternUnits = SvgPatternUnits.objectBoundingBox;
+    for (final p in chain) {
+      final SvgPatternUnits? u = p.patternUnits;
+      if (u != null) {
+        resolvedPatternUnits = u;
+        break;
+      }
+    }
+
+    SvgPatternUnits resolvedPatternContentUnits = SvgPatternUnits.userSpaceOnUse;
+    for (final p in chain) {
+      final SvgPatternUnits? u = p.patternContentUnits;
+      if (u != null) {
+        resolvedPatternContentUnits = u;
+        break;
+      }
+    }
+
+    SvgTransformAttributes? resolvedTransform;
+    for (final p in chain) {
+      final SvgTransformAttributes? t = p.patternTransformAttributes;
+      if (t != null) {
+        resolvedTransform = t;
+        break;
+      }
+    }
+
+    SvgViewBox? resolvedViewBox;
+    SvgPreserveAspectRatio? resolvedPreserveAspectRatio;
+    for (final p in chain) {
+      if (p.viewportAttributes?.viewBox != null) {
+        resolvedViewBox ??= p.viewportAttributes?.viewBox;
+      }
+      if (p.viewportAttributes?.preserveAspectRatio != null) {
+        resolvedPreserveAspectRatio ??= p.viewportAttributes?.preserveAspectRatio;
+      }
+    }
+
+    var resolvedChildren = const <SvgElement>[];
+    for (final p in chain) {
+      if (p.children.isNotEmpty) {
+        resolvedChildren = p.children;
+        break;
+      }
+    }
+
+    final SvgPaintingContext childrenContext = resolvedViewBox != null
         ? context.derive(
-            viewBoxWidth: pattern.viewBox!.width,
-            viewBoxHeight: pattern.viewBox!.height,
-            viewBoxMinX: pattern.viewBox!.minX,
-            viewBoxMinY: pattern.viewBox!.minY,
+            viewBoxWidth: resolvedViewBox.width,
+            viewBoxHeight: resolvedViewBox.height,
+            viewBoxMinX: resolvedViewBox.minX,
+            viewBoxMinY: resolvedViewBox.minY,
             isDefinition: false,
           )
         : context.derive(isDefinition: false);
 
-    return pattern.children
+    return resolvedChildren
         .map((SvgElement child) => child.toPaintCommands(childrenContext))
         .combine()
         .map((List<PaintCommand> childCommands) {
@@ -268,15 +351,15 @@ extension SvgElementToPaintCommands on SvgElement {
             DefinePattern(
               id: pattern.id,
               commands: childCommands,
-              x: pattern.x,
-              y: pattern.y,
-              width: pattern.width,
-              height: pattern.height,
-              patternUnits: pattern.patternUnits,
-              patternContentUnits: pattern.patternContentUnits,
-              viewBox: pattern.viewBox,
-              preserveAspectRatio: pattern.preserveAspectRatio,
-              patternTransform: pattern.patternTransformAttributes,
+              x: resolvedX,
+              y: resolvedY,
+              width: resolvedWidth,
+              height: resolvedHeight,
+              patternUnits: resolvedPatternUnits,
+              patternContentUnits: resolvedPatternContentUnits,
+              viewBox: resolvedViewBox,
+              preserveAspectRatio: resolvedPreserveAspectRatio,
+              patternTransform: resolvedTransform,
             ),
           ];
         });
