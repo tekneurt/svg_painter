@@ -317,6 +317,14 @@
                 - [x] `painting-marker-05-f` (Marker overflow property values: visible, auto, hidden, scroll).
                 - [x] `painting-marker-06-f` (Marker coordinate offsets and non-zero viewBox values).
                 - [x] `painting-marker-07-f` (Display none handling and marker viewport clipping).
+        - [x] **Coordinate Systems Test Suite Conformance (`coords`)**:
+            - [x] `coords-trans-01-b` (Basic transforms: translate, scale, rotate, skewX, skewY).
+            - [x] `coords-trans-02-t` (Nested group transforms and coordinate accumulation).
+            - [x] `coords-trans-03-t` (Explicit 6-element matrix operations).
+            - [x] `coords-trans-04-t` (Transform attribute on basic shapes).
+            - [x] `coords-transformattr-01-f` (Transform attribute syntax variations).
+            - [x] `coords-units-01-b` (User space coordinate units vs percentage and fraction values in bounding boxes).
+            - [x] `coords-viewattr-01-b` (viewBox mapping and aspect ratio scaling).
     - [ ] **Modern SVG Test Suites Evaluation**:
         - [ ] **`resvg-test-suite` (Linebender)**: Evaluate integration of the ~1,600 standalone SVG tests for granular spec conformance.
         - [ ] **Web Platform Tests (WPT)**: Evaluate standalone SVG reftest subsets from `wpt/svg/`.
