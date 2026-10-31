@@ -132,6 +132,11 @@ class _SvgGradientTransform_GradientTransformBboxPainter
     this.isElliptical = false,
     this.centerX = 0.5,
     this.centerY = 0.5,
+    this.isLinearBoundingBox = false,
+    this.x1 = 0.0,
+    this.y1 = 0.0,
+    this.x2 = 1.0,
+    this.y2 = 0.0,
   });
 
   /// The 4x4 matrix storage.
@@ -149,11 +154,27 @@ class _SvgGradientTransform_GradientTransformBboxPainter
   /// The normalized center Y coordinate (0..1) for aspect ratio correction.
   final double centerY;
 
+  /// Whether to correct the skew/aspect ratio for linear bounding box gradients.
+  final bool isLinearBoundingBox;
+
+  /// Normalized start X coordinate (0..1).
+  final double x1;
+
+  /// Normalized start Y coordinate (0..1).
+  final double y1;
+
+  /// Normalized end X coordinate (0..1).
+  final double x2;
+
+  /// Normalized end Y coordinate (0..1).
+  final double y2;
+
   @override
   Matrix4? transform(Rect bounds, {TextDirection? textDirection}) {
     Matrix4? m;
-    if (matrix != null) {
-      m = Matrix4.fromList(matrix!);
+    final matrixList = matrix;
+    if (matrixList != null) {
+      m = Matrix4.fromList(matrixList);
       if (isObjectBoundingBox && bounds.width > 0 && bounds.height > 0) {
         final Matrix4 toCanvas = Matrix4.identity()
           ..translateByDouble(bounds.left, bounds.top, 0.0, 1.0)
@@ -164,6 +185,32 @@ class _SvgGradientTransform_GradientTransformBboxPainter
         m = toCanvas
           ..multiply(m)
           ..multiply(fromCanvas);
+      }
+    }
+
+    if (isLinearBoundingBox && bounds.width != bounds.height) {
+      final double dx = x2 - x1;
+      final double dy = y2 - y1;
+      if (dx != 0.0 && dy != 0.0) {
+        final double w = bounds.width;
+        final double h = bounds.height;
+        final double denom = (dx * dx * w * w) + (dy * dy * h * h);
+        if (denom > 0.0) {
+          final double numUnit = (dx * dx) + (dy * dy);
+          final double sx = (numUnit * w * w) / denom;
+          final double sy = (numUnit * h * h) / denom;
+          final double p1x = bounds.left + (x1 * w);
+          final double p1y = bounds.top + (y1 * h);
+          final Matrix4 skewScale = Matrix4.identity()
+            ..translateByDouble(p1x, p1y, 0.0, 1.0)
+            ..scaleByDouble(sx, sy, 1.0, 1.0)
+            ..translateByDouble(-p1x, -p1y, 0.0, 1.0);
+          if (m != null) {
+            m = skewScale..multiply(m);
+          } else {
+            m = skewScale;
+          }
+        }
       }
     }
 
@@ -182,9 +229,10 @@ class _SvgGradientTransform_GradientTransformBboxPainter
         ..translateByDouble(-px, -py, 0.0, 1.0);
 
       if (m != null) {
-        return scale..multiply(m);
+        m = scale..multiply(m);
+      } else {
+        m = scale;
       }
-      return scale;
     }
     return m;
   }

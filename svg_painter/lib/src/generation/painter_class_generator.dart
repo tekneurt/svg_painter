@@ -413,9 +413,18 @@ class PainterClassGenerator {
         '/// A private helper class to apply arbitrary transformations to SVG gradients.',
       );
       buffer.writeBlock('class $helperClassName extends GradientTransform {', () {
-        buffer.writeln(
-          'const $helperClassName({this.matrix, this.isObjectBoundingBox = false, this.isElliptical = false, this.centerX = 0.5, this.centerY = 0.5});',
-        );
+        buffer.writeln('const $helperClassName({');
+        buffer.writeln('  this.matrix,');
+        buffer.writeln('  this.isObjectBoundingBox = false,');
+        buffer.writeln('  this.isElliptical = false,');
+        buffer.writeln('  this.centerX = 0.5,');
+        buffer.writeln('  this.centerY = 0.5,');
+        buffer.writeln('  this.isLinearBoundingBox = false,');
+        buffer.writeln('  this.x1 = 0.0,');
+        buffer.writeln('  this.y1 = 0.0,');
+        buffer.writeln('  this.x2 = 1.0,');
+        buffer.writeln('  this.y2 = 0.0,');
+        buffer.writeln('});');
         buffer.writeln();
         buffer.writeln('/// The 4x4 matrix storage.');
         buffer.writeln('final List<double>? matrix;');
@@ -436,21 +445,65 @@ class PainterClassGenerator {
         );
         buffer.writeln('final double centerY;');
         buffer.writeln();
+        buffer.writeln(
+          '/// Whether to correct the skew/aspect ratio for linear bounding box gradients.',
+        );
+        buffer.writeln('final bool isLinearBoundingBox;');
+        buffer.writeln();
+        buffer.writeln('/// Normalized start X coordinate (0..1).');
+        buffer.writeln('final double x1;');
+        buffer.writeln();
+        buffer.writeln('/// Normalized start Y coordinate (0..1).');
+        buffer.writeln('final double y1;');
+        buffer.writeln();
+        buffer.writeln('/// Normalized end X coordinate (0..1).');
+        buffer.writeln('final double x2;');
+        buffer.writeln();
+        buffer.writeln('/// Normalized end Y coordinate (0..1).');
+        buffer.writeln('final double y2;');
+        buffer.writeln();
         buffer.writeln('@override');
         buffer.writeBlock('Matrix4? transform(Rect bounds, {TextDirection? textDirection}) {', () {
           buffer.writeln('Matrix4? m;');
-          buffer.writeln('if (matrix != null) {');
-          buffer.writeln('  m = Matrix4.fromList(matrix!);');
-          buffer.writeBlock('  if (isObjectBoundingBox && bounds.width > 0 && bounds.height > 0) {', () {
-            buffer.writeln('final Matrix4 toCanvas = Matrix4.identity()');
-            buffer.writeln('  ..translateByDouble(bounds.left, bounds.top, 0.0, 1.0)');
-            buffer.writeln('  ..scaleByDouble(bounds.width, bounds.height, 1.0, 1.0);');
-            buffer.writeln('final Matrix4 fromCanvas = Matrix4.identity()');
-            buffer.writeln('  ..scaleByDouble(1.0 / bounds.width, 1.0 / bounds.height, 1.0, 1.0)');
-            buffer.writeln('  ..translateByDouble(-bounds.left, -bounds.top, 0.0, 1.0);');
-            buffer.writeln('m = toCanvas..multiply(m)..multiply(fromCanvas);');
+          buffer.writeln('final matrixList = matrix;');
+          buffer.writeBlock('if (matrixList != null) {', () {
+            buffer.writeln('m = Matrix4.fromList(matrixList);');
+            buffer.writeBlock('if (isObjectBoundingBox && bounds.width > 0 && bounds.height > 0) {', () {
+              buffer.writeln('final Matrix4 toCanvas = Matrix4.identity()');
+              buffer.writeln('  ..translateByDouble(bounds.left, bounds.top, 0.0, 1.0)');
+              buffer.writeln('  ..scaleByDouble(bounds.width, bounds.height, 1.0, 1.0);');
+              buffer.writeln('final Matrix4 fromCanvas = Matrix4.identity()');
+              buffer.writeln('  ..scaleByDouble(1.0 / bounds.width, 1.0 / bounds.height, 1.0, 1.0)');
+              buffer.writeln('  ..translateByDouble(-bounds.left, -bounds.top, 0.0, 1.0);');
+              buffer.writeln('m = toCanvas..multiply(m)..multiply(fromCanvas);');
+            });
           });
-          buffer.writeln('}');
+          buffer.writeln();
+          buffer.writeBlock('if (isLinearBoundingBox && bounds.width != bounds.height) {', () {
+            buffer.writeln('final double dx = x2 - x1;');
+            buffer.writeln('final double dy = y2 - y1;');
+            buffer.writeBlock('if (dx != 0.0 && dy != 0.0) {', () {
+              buffer.writeln('final double w = bounds.width;');
+              buffer.writeln('final double h = bounds.height;');
+              buffer.writeln('final double denom = (dx * dx * w * w) + (dy * dy * h * h);');
+              buffer.writeBlock('if (denom > 0.0) {', () {
+                buffer.writeln('final double numUnit = (dx * dx) + (dy * dy);');
+                buffer.writeln('final double sx = (numUnit * w * w) / denom;');
+                buffer.writeln('final double sy = (numUnit * h * h) / denom;');
+                buffer.writeln('final double p1x = bounds.left + (x1 * w);');
+                buffer.writeln('final double p1y = bounds.top + (y1 * h);');
+                buffer.writeln('final Matrix4 skewScale = Matrix4.identity()');
+                buffer.writeln('  ..translateByDouble(p1x, p1y, 0.0, 1.0)');
+                buffer.writeln('  ..scaleByDouble(sx, sy, 1.0, 1.0)');
+                buffer.writeln('  ..translateByDouble(-p1x, -p1y, 0.0, 1.0);');
+                buffer.writeln('if (m != null) {');
+                buffer.writeln('  m = skewScale..multiply(m);');
+                buffer.writeln('} else {');
+                buffer.writeln('  m = skewScale;');
+                buffer.writeln('}');
+              });
+            });
+          });
           buffer.writeln();
           buffer.writeBlock('if (isElliptical && bounds.width != bounds.height) {', () {
             buffer.writeln(
@@ -467,9 +520,10 @@ class PainterClassGenerator {
             buffer.writeln('  ..translateByDouble(-px, -py, 0.0, 1.0);');
             buffer.writeln();
             buffer.writeln('if (m != null) {');
-            buffer.writeln('  return scale..multiply(m);');
+            buffer.writeln('  m = scale..multiply(m);');
+            buffer.writeln('} else {');
+            buffer.writeln('  m = scale;');
             buffer.writeln('}');
-            buffer.writeln('return scale;');
           });
           buffer.writeln('return m;');
         });

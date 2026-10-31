@@ -174,6 +174,40 @@ void main() {
         // Act & Assert
         expect(analyzer.needsGradientTransform(commands, <String>{}), isTrue);
       });
+
+      test('should return true when linear gradient is in gradientsNeedingStretch and is diagonal', () {
+        // Arrange
+        final commands = <PaintCommand>[
+          const DefineLinearGradient(
+            id: 'diagGrad',
+            x1: 0.1,
+            y1: 0.2,
+            x2: 0.8,
+            y2: 0.9,
+            stops: <GradientStop>[],
+          ),
+        ];
+
+        // Act & Assert
+        expect(analyzer.needsGradientTransform(commands, <String>{'diagGrad'}), isTrue);
+      });
+
+      test('should return false when linear gradient is in gradientsNeedingStretch but is horizontal', () {
+        // Arrange
+        final commands = <PaintCommand>[
+          const DefineLinearGradient(
+            id: 'horizGrad',
+            x1: 0.1,
+            y1: 0.5,
+            x2: 0.9,
+            y2: 0.5,
+            stops: <GradientStop>[],
+          ),
+        ];
+
+        // Act & Assert
+        expect(analyzer.needsGradientTransform(commands, <String>{'horizGrad'}), isFalse);
+      });
     });
   });
 }

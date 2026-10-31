@@ -141,6 +141,13 @@ class GenerationAnalyzer {
             gradientsNeedingStretch.contains(command.id)) {
           return true;
         }
+        if (command is DefineLinearGradient &&
+            command.units == PaintingGradientUnits.objectBoundingBox &&
+            gradientsNeedingStretch.contains(command.id) &&
+            command.x1 != command.x2 &&
+            command.y1 != command.y2) {
+          return true;
+        }
       }
       if (command is DrawGroup &&
           needsGradientTransform(command.commands, gradientsNeedingStretch)) {

@@ -92,5 +92,87 @@ void main() {
       expect(result, contains('matrix: <double>['));
       expect(result, isNot(contains('isObjectBoundingBox: true')));
     });
+
+    test('should generate transform with isLinearBoundingBox when gradient needs stretch and is diagonal', () {
+      // Arrange
+      final buffer = GeneratorBuffer();
+      const command = DefineLinearGradient(
+        id: 'diagGrad',
+        x1: 0.15,
+        y1: 0.25,
+        x2: 0.85,
+        y2: 0.75,
+        stops: <GradientStop>[],
+      );
+
+      // Act
+      const LinearGradientGenerator().generate(
+        command,
+        buffer,
+        painterClassName: 'DiagPainter',
+        gradientsNeedingStretch: <String>{'diagGrad'},
+      );
+      final result = buffer.toString();
+
+      // Assert
+      expect(result, contains('transform: _SvgGradientTransform_DiagPainter('));
+      expect(result, contains('isLinearBoundingBox: true'));
+      expect(result, contains('x1: 0.15, y1: 0.25, x2: 0.85, y2: 0.75'));
+    });
+
+    test('should generate transform with matrix and isLinearBoundingBox when both apply', () {
+      // Arrange
+      final buffer = GeneratorBuffer();
+      const command = DefineLinearGradient(
+        id: 'comboGrad',
+        x1: 0.2,
+        y1: 0.3,
+        x2: 0.7,
+        y2: 0.9,
+        stops: <GradientStop>[],
+        transformAttributes: SvgTransformAttributes(<SvgTransformOperation>[SvgTranslate(10.0, 20.0)]),
+      );
+
+      // Act
+      const LinearGradientGenerator().generate(
+        command,
+        buffer,
+        painterClassName: 'ComboPainter',
+        gradientsNeedingStretch: <String>{'comboGrad'},
+      );
+      final result = buffer.toString();
+
+      // Assert
+      expect(result, contains('transform: _SvgGradientTransform_ComboPainter('));
+      expect(result, contains('matrix: <double>['));
+      expect(result, contains('isObjectBoundingBox: true'));
+      expect(result, contains('isLinearBoundingBox: true'));
+      expect(result, contains('x1: 0.2, y1: 0.3, x2: 0.7, y2: 0.9'));
+    });
+
+    test('should not generate isLinearBoundingBox when gradient is purely horizontal', () {
+      // Arrange
+      final buffer = GeneratorBuffer();
+      const command = DefineLinearGradient(
+        id: 'horizGrad',
+        x1: 0.1,
+        y1: 0.5,
+        x2: 0.9,
+        y2: 0.5, // y1 == y2
+        stops: <GradientStop>[],
+      );
+
+      // Act
+      const LinearGradientGenerator().generate(
+        command,
+        buffer,
+        painterClassName: 'HorizPainter',
+        gradientsNeedingStretch: <String>{'horizGrad'},
+      );
+      final result = buffer.toString();
+
+      // Assert
+      expect(result, isNot(contains('transform:')));
+    });
   });
 }

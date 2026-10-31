@@ -29,6 +29,11 @@ class LinearGradientGenerator extends CommandGenerator<DefineLinearGradient> {
   }) {
     final varName = '_grad_${SvgIdFormatter.sanitizeId(command.id)}';
 
+    final bool needsStretch = (gradientsNeedingStretch?.contains(command.id) ?? false) &&
+        command.units == PaintingGradientUnits.objectBoundingBox &&
+        command.x1 != command.x2 &&
+        command.y1 != command.y2;
+
     buffer.writeBlock('final Gradient $varName = LinearGradient(', () {
       buffer.writeln('begin: Alignment(${command.x1 * 2 - 1}, ${command.y1 * 2 - 1}),');
       buffer.writeln('end: Alignment(${command.x2 * 2 - 1}, ${command.y2 * 2 - 1}),');
@@ -75,10 +80,18 @@ class LinearGradientGenerator extends CommandGenerator<DefineLinearGradient> {
 
       if (command.transformAttributes != null) {
         final List<double> matrix = command.transformAttributes!.toFlutterMatrix();
-        final extra = command.units == PaintingGradientUnits.objectBoundingBox
-            ? ', isObjectBoundingBox: true'
+        final isBbox = command.units == PaintingGradientUnits.objectBoundingBox;
+        final extraBbox = isBbox ? ', isObjectBoundingBox: true' : '';
+        final extraStretch = needsStretch
+            ? ', isLinearBoundingBox: true, x1: ${command.x1}, y1: ${command.y1}, x2: ${command.x2}, y2: ${command.y2}'
             : '';
-        buffer.writeln('transform: $helperName(matrix: <double>[${matrix.join(', ')}]$extra),');
+        buffer.writeln(
+          'transform: $helperName(matrix: <double>[${matrix.join(', ')}]$extraBbox$extraStretch),',
+        );
+      } else if (needsStretch) {
+        buffer.writeln(
+          'transform: $helperName(isLinearBoundingBox: true, x1: ${command.x1}, y1: ${command.y1}, x2: ${command.x2}, y2: ${command.y2}),',
+        );
       }
     }, footer: ');');
   }
