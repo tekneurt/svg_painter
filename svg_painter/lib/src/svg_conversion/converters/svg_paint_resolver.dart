@@ -13,7 +13,7 @@ SvgPresentationAttributes resolvePresentation(
   SvgCoreAttributes? coreAttributes,
   SvgPresentationAttributes? presentationAttributes,
 }) {
-  final Map<String, String> resolvedRules = _resolveCssRules(
+  final Map<String, String> resolvedRules = resolveCssRules(
     context,
     tagName,
     coreAttributes,
@@ -37,7 +37,7 @@ PaintingStyle resolvePaint(
   SvgGeometryAttributes? geometryAttributes,
   PaintingRect? clipRect,
 }) {
-  final Map<String, String> resolvedRules = _resolveCssRules(
+  final Map<String, String> resolvedRules = resolveCssRules(
     context,
     tagName,
     coreAttributes,
@@ -91,7 +91,7 @@ PaintingStyle resolvePaint(
   );
 }
 
-Map<String, String> _resolveCssRules(
+Map<String, String> resolveCssRules(
   SvgPaintingContext context,
   String tagName,
   SvgCoreAttributes? coreAttributes,

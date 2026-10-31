@@ -1,4 +1,4 @@
-import 'package:svg_painter/src/svg_model/attribute_groups/_attribute_groups.dart';
+import 'package:svg_painter/src/svg_model/attribute_groups/svg_core_attributes.dart';
 import 'package:svg_painter/src/svg_model/svg_element.dart';
 import 'package:svg_painter/src/svg_model/svg_value.dart';
 import 'package:test/test.dart';
@@ -19,6 +19,18 @@ void main() {
 
       // Assert
       expect(result, 'SvgStop(offset: 55.0%, color: SvgNamedColor(red), id: stop1)');
+    });
+
+    test('should allow nullable stopColor and stopOpacity when omitted', () {
+      // Arrange & Act
+      const stop = SvgStop(
+        offset: SvgPercentage(25.0),
+      );
+
+      // Assert
+      expect(stop.offset, const SvgPercentage(25.0));
+      expect(stop.stopColor, isNull);
+      expect(stop.stopOpacity, isNull);
     });
   });
 }

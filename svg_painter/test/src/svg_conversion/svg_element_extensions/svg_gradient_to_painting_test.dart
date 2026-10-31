@@ -6,6 +6,7 @@ import 'package:svg_painter/src/svg_conversion/svg_element_extensions/svg_gradie
 import 'package:svg_painter/src/svg_model/attribute_groups/svg_core_attributes.dart';
 import 'package:svg_painter/src/svg_model/attribute_groups/svg_transform_attributes.dart';
 import 'package:svg_painter/src/svg_model/svg_element.dart';
+import 'package:svg_painter/src/svg_model/svg_style_sheet.dart';
 import 'package:svg_painter/src/svg_model/svg_value.dart';
 import 'package:test/test.dart';
 
@@ -435,6 +436,140 @@ void main() {
       expect(rgrad.radius, 0.30);
       expect(rgrad.spreadMethod, PaintingSpreadMethod.reflect);
       expect(rgrad.stops, hasLength(2));
+    });
+
+    test('should resolve stop-color and stop-opacity from CSS class when stop defines cssClass', () {
+      // Arrange
+      const grad = SvgLinearGradient(
+        coreAttributes: SvgCoreAttributes(id: 'g-css'),
+        x1: SvgLength(0),
+        y1: SvgLength(0),
+        x2: SvgLength(1),
+        y2: SvgLength(0),
+        stops: <SvgStop>[
+          SvgStop(
+            offset: SvgLength(0),
+            coreAttributes: SvgCoreAttributes(cssClass: 'stop1'),
+          ),
+          SvgStop(
+            offset: SvgLength(1),
+            coreAttributes: SvgCoreAttributes(cssClass: 'stop2'),
+          ),
+        ],
+      );
+      const ctx = SvgPaintingContext(
+        viewBoxWidth: 100,
+        viewBoxHeight: 100,
+        styleSheet: SvgStyleSheet(<String, Map<String, String>>{
+          'stop1': <String, String>{'stop-color': 'red'},
+          'stop2': <String, String>{'stop-color': 'black', 'stop-opacity': '0'},
+        }),
+      );
+
+      // Act
+      final Result<PaintCommand> result = grad.toPaintCommand(ctx);
+
+      // Assert
+      expect(result, isA<Success<PaintCommand>>());
+      final lgrad = (result as Success<PaintCommand>).value as DefineLinearGradient;
+      expect(lgrad.stops[0].colorArgb, 0xFFFF0000);
+      expect(lgrad.stops[0].opacity, 1.0);
+      expect(lgrad.stops[1].colorArgb, 0xFF000000);
+      expect(lgrad.stops[1].opacity, 0.0);
+    });
+
+    test('should resolve stop-color and stop-opacity from inline style when stop defines inlineStyle', () {
+      // Arrange
+      const grad = SvgLinearGradient(
+        coreAttributes: SvgCoreAttributes(id: 'g-inline'),
+        x1: SvgLength(0),
+        y1: SvgLength(0),
+        x2: SvgLength(1),
+        y2: SvgLength(0),
+        stops: <SvgStop>[
+          SvgStop(
+            offset: SvgLength(0.5),
+            coreAttributes: SvgCoreAttributes(inlineStyle: 'stop-color: blue; stop-opacity: 0.5;'),
+          ),
+        ],
+      );
+
+      // Act
+      final Result<PaintCommand> result = grad.toPaintCommand(context);
+
+      // Assert
+      expect(result, isA<Success<PaintCommand>>());
+      final lgrad = (result as Success<PaintCommand>).value as DefineLinearGradient;
+      expect(lgrad.stops.first.colorArgb, 0xFF0000FF);
+      expect(lgrad.stops.first.opacity, 0.5);
+    });
+
+    test('should prefer CSS stylesheet over direct presentation attribute on stop', () {
+      // Arrange
+      const grad = SvgLinearGradient(
+        coreAttributes: SvgCoreAttributes(id: 'g-override'),
+        x1: SvgLength(0),
+        y1: SvgLength(0),
+        x2: SvgLength(1),
+        y2: SvgLength(0),
+        stops: <SvgStop>[
+          SvgStop(
+            offset: SvgLength(0),
+            stopColor: SvgNamedColor(SvgColorName.green),
+            stopOpacity: SvgLength(1.0),
+            coreAttributes: SvgCoreAttributes(cssClass: 'stopRed'),
+          ),
+        ],
+      );
+      const ctx = SvgPaintingContext(
+        viewBoxWidth: 100,
+        viewBoxHeight: 100,
+        styleSheet: SvgStyleSheet(<String, Map<String, String>>{
+          'stopRed': <String, String>{'stop-color': 'red', 'stop-opacity': '0.3'},
+        }),
+      );
+
+      // Act
+      final Result<PaintCommand> result = grad.toPaintCommand(ctx);
+
+      // Assert
+      expect(result, isA<Success<PaintCommand>>());
+      final lgrad = (result as Success<PaintCommand>).value as DefineLinearGradient;
+      expect(lgrad.stops.first.colorArgb, 0xFFFF0000);
+      expect(lgrad.stops.first.opacity, 0.3);
+    });
+
+    test('should resolve stop currentColor from CSS color property', () {
+      // Arrange
+      const grad = SvgLinearGradient(
+        coreAttributes: SvgCoreAttributes(id: 'g-css-current'),
+        x1: SvgLength(0),
+        y1: SvgLength(0),
+        x2: SvgLength(1),
+        y2: SvgLength(0),
+        stops: <SvgStop>[
+          SvgStop(
+            offset: SvgLength(0),
+            stopColor: SvgCurrentColor(),
+            coreAttributes: SvgCoreAttributes(cssClass: 'stopColorProp'),
+          ),
+        ],
+      );
+      const ctx = SvgPaintingContext(
+        viewBoxWidth: 100,
+        viewBoxHeight: 100,
+        styleSheet: SvgStyleSheet(<String, Map<String, String>>{
+          'stopColorProp': <String, String>{'color': 'purple'},
+        }),
+      );
+
+      // Act
+      final Result<PaintCommand> result = grad.toPaintCommand(ctx);
+
+      // Assert
+      expect(result, isA<Success<PaintCommand>>());
+      final lgrad = (result as Success<PaintCommand>).value as DefineLinearGradient;
+      expect(lgrad.stops.first.colorArgb, 0xFF800080);
     });
   });
 }

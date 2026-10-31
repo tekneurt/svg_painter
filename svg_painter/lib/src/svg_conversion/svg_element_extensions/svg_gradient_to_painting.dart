@@ -3,6 +3,9 @@ import 'dart:math' as math;
 import '../../base/_base.dart';
 import '../../painting_model/_painting_model.dart';
 import '../../svg_model/_svg_model.dart';
+import '../../xml_conversion/string_extensions/to_svg_color.dart';
+import '../../xml_conversion/string_extensions/to_svg_length_percentage.dart';
+import '../converters/svg_paint_resolver.dart';
 import '../converters/svg_painting_context.dart';
 import '../svg_value_extensions/_svg_value_extensions.dart';
 
@@ -225,12 +228,29 @@ extension on List<SvgStop> {
     SvgColor? gradientColor,
   }) {
     return map((SvgStop stop) {
-      final double offset = stop.offset.resolve(context, SvgOrientation.unit);
-      final double opacity = stop.stopOpacity.resolveOpacity(context);
+      final Map<String, String> resolvedRules = resolveCssRules(
+        context,
+        'stop',
+        stop.coreAttributes,
+      );
 
-      final SvgColor effectiveColor = switch (stop.stopColor) {
+      final SvgColor? cssStopColor = resolvedRules['stop-color']?.toSvgColor();
+      final SvgLengthPercentage? cssStopOpacity =
+          resolvedRules['stop-opacity']?.toSvgLengthPercentage();
+      final SvgColor? cssColor = resolvedRules['color']?.toSvgColor();
+
+      final SvgColor resolvedStopColor =
+          cssStopColor ?? stop.stopColor ?? const SvgNamedColor(SvgColorName.black);
+      final SvgLengthPercentage resolvedStopOpacity =
+          cssStopOpacity ?? stop.stopOpacity ?? const SvgLength(1.0);
+
+      final double offset = stop.offset.resolve(context, SvgOrientation.unit);
+      final double opacity = resolvedStopOpacity.resolveOpacity(context);
+
+      final SvgColor effectiveColor = switch (resolvedStopColor) {
         final SvgCurrentColor _ =>
-          stop.color ??
+          cssColor ??
+              stop.color ??
               gradientColor ??
               context.inheritedAttributes.color ??
               const SvgNamedColor(SvgColorName.black),
