@@ -66,7 +66,7 @@ class _$PserversGrad13BPainter extends CustomPainter {
     final Gradient _grad_grad1a = RadialGradient(
       center: Alignment(-0.8, -0.8),
       radius: 0.75,
-      focal: Alignment(-1.0, -1.0),
+      focal: Alignment(-0.92, -1.0),
       focalRadius: 0.0,
       colors: <Color>[
         Colors.transparent,
@@ -84,7 +84,7 @@ class _$PserversGrad13BPainter extends CustomPainter {
     final Gradient _grad_grad2a = RadialGradient(
       center: Alignment(-0.8, -0.8),
       radius: 0.75,
-      focal: Alignment(-0.6668000000000001, -1.0),
+      focal: Alignment(-0.72008, -1.0),
       focalRadius: 0.0,
       colors: <Color>[
         Colors.transparent,
@@ -102,7 +102,7 @@ class _$PserversGrad13BPainter extends CustomPainter {
     final Gradient _grad_grad4a = RadialGradient(
       center: Alignment(-0.8, -0.8),
       radius: 0.75,
-      focal: Alignment(0.0, -1.0),
+      focal: Alignment(-0.32000000000000006, -1.0),
       focalRadius: 0.0,
       colors: <Color>[
         Colors.transparent,
@@ -120,7 +120,7 @@ class _$PserversGrad13BPainter extends CustomPainter {
     final Gradient _grad_grad6a = RadialGradient(
       center: Alignment(-0.8, -0.8),
       radius: 0.75,
-      focal: Alignment(0.6665999999999999, -1.0),
+      focal: Alignment(0.07995999999999981, -1.0),
       focalRadius: 0.0,
       colors: <Color>[
         Colors.transparent,
@@ -138,7 +138,7 @@ class _$PserversGrad13BPainter extends CustomPainter {
     final Gradient _grad_grad1b = RadialGradient(
       center: Alignment(-0.8, -0.8),
       radius: 0.75,
-      focal: Alignment(-1.0, -0.5),
+      focal: Alignment(-0.92, -0.5),
       focalRadius: 0.0,
       colors: <Color>[
         Colors.transparent,
@@ -156,7 +156,7 @@ class _$PserversGrad13BPainter extends CustomPainter {
     final Gradient _grad_grad2b = RadialGradient(
       center: Alignment(-0.8, -0.8),
       radius: 0.75,
-      focal: Alignment(-0.6668000000000001, -0.5),
+      focal: Alignment(-0.72008, -0.5),
       focalRadius: 0.0,
       colors: <Color>[
         Colors.transparent,
@@ -174,7 +174,7 @@ class _$PserversGrad13BPainter extends CustomPainter {
     final Gradient _grad_grad4b = RadialGradient(
       center: Alignment(-0.8, -0.8),
       radius: 0.75,
-      focal: Alignment(0.0, -0.5),
+      focal: Alignment(-0.32000000000000006, -0.5),
       focalRadius: 0.0,
       colors: <Color>[
         Colors.transparent,
@@ -192,7 +192,7 @@ class _$PserversGrad13BPainter extends CustomPainter {
     final Gradient _grad_grad6b = RadialGradient(
       center: Alignment(-0.8, -0.8),
       radius: 0.75,
-      focal: Alignment(0.6665999999999999, -0.5),
+      focal: Alignment(0.07995999999999981, -0.5),
       focalRadius: 0.0,
       colors: <Color>[
         Colors.transparent,
@@ -210,7 +210,7 @@ class _$PserversGrad13BPainter extends CustomPainter {
     final Gradient _grad_grad1c = RadialGradient(
       center: Alignment(-0.8, -0.8),
       radius: 0.75,
-      focal: Alignment(-1.0, 0.0),
+      focal: Alignment(-0.92, 0.0),
       focalRadius: 0.0,
       colors: <Color>[
         Colors.transparent,
@@ -228,7 +228,7 @@ class _$PserversGrad13BPainter extends CustomPainter {
     final Gradient _grad_grad2c = RadialGradient(
       center: Alignment(-0.8, -0.8),
       radius: 0.75,
-      focal: Alignment(-0.6668000000000001, 0.0),
+      focal: Alignment(-0.72008, 0.0),
       focalRadius: 0.0,
       colors: <Color>[
         Colors.transparent,
@@ -246,7 +246,7 @@ class _$PserversGrad13BPainter extends CustomPainter {
     final Gradient _grad_grad4c = RadialGradient(
       center: Alignment(-0.8, -0.8),
       radius: 0.75,
-      focal: Alignment(0.0, 0.0),
+      focal: Alignment(-0.32000000000000006, 0.0),
       focalRadius: 0.0,
       colors: <Color>[
         Colors.transparent,
@@ -264,7 +264,7 @@ class _$PserversGrad13BPainter extends CustomPainter {
     final Gradient _grad_grad6c = RadialGradient(
       center: Alignment(-0.8, -0.8),
       radius: 0.75,
-      focal: Alignment(0.6665999999999999, 0.0),
+      focal: Alignment(-0.0106923176266015, -0.08241494397618188),
       focalRadius: 0.0,
       colors: <Color>[
         Colors.transparent,
@@ -282,7 +282,7 @@ class _$PserversGrad13BPainter extends CustomPainter {
     final Gradient _grad_grad1d = RadialGradient(
       center: Alignment(-0.8, -0.8),
       radius: 0.75,
-      focal: Alignment(-1.0, 0.5),
+      focal: Alignment(-0.92, 0.5),
       focalRadius: 0.0,
       colors: <Color>[
         Colors.transparent,
@@ -300,7 +300,7 @@ class _$PserversGrad13BPainter extends CustomPainter {
     final Gradient _grad_grad2d = RadialGradient(
       center: Alignment(-0.8, -0.8),
       radius: 0.75,
-      focal: Alignment(-0.6668000000000001, 0.5),
+      focal: Alignment(-0.72008, 0.5),
       focalRadius: 0.0,
       colors: <Color>[
         Colors.transparent,
@@ -318,7 +318,7 @@ class _$PserversGrad13BPainter extends CustomPainter {
     final Gradient _grad_grad4d = RadialGradient(
       center: Alignment(-0.8, -0.8),
       radius: 0.75,
-      focal: Alignment(0.0, 0.5),
+      focal: Alignment(-0.32878400458519663, 0.4762099875817589),
       focalRadius: 0.0,
       colors: <Color>[
         Colors.transparent,
@@ -336,7 +336,7 @@ class _$PserversGrad13BPainter extends CustomPainter {
     final Gradient _grad_grad6d = RadialGradient(
       center: Alignment(-0.8, -0.8),
       radius: 0.75,
-      focal: Alignment(0.6665999999999999, 0.5),
+      focal: Alignment(-0.12717472352070425, 0.19399161259953268),
       focalRadius: 0.0,
       colors: <Color>[
         Colors.transparent,

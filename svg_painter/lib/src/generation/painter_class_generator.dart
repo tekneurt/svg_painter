@@ -5,6 +5,7 @@ import '../svg_model/values/svg_media_query.dart';
 import 'command_generator.dart';
 import 'generation_analyzer.dart';
 import 'generator_buffer.dart';
+import 'generators/radial_gradient_generator.dart';
 import 'image_preloader.dart';
 import 'palette_analyzer.dart';
 import 'svg_id_formatter.dart';
@@ -72,6 +73,8 @@ class PainterClassGenerator {
         : null;
 
     final Set<String> gradientsNeedingStretch = analyzer.findGradientsNeedingStretch(allCommands);
+    final Map<String, ({double sx, double sy})> gradientAspectRatios =
+        analyzer.findGradientAspectRatios(allCommands);
 
     final List<String> sortedFillIds = fillIds.toList()..sort();
     final List<String> sortedStrokeIds = strokeIds.toList()..sort();
@@ -246,6 +249,7 @@ class PainterClassGenerator {
             activeStrokeProperties: activeStrokeProperties,
             className: className,
             gradientsNeedingStretch: gradientsNeedingStretch,
+            gradientAspectRatios: gradientAspectRatios,
             colorMapping: colorMapping,
           );
         } else {
@@ -266,6 +270,7 @@ class PainterClassGenerator {
                 activeStrokeProperties: activeStrokeProperties,
                 className: className,
                 gradientsNeedingStretch: gradientsNeedingStretch,
+                gradientAspectRatios: gradientAspectRatios,
                 colorMapping: colorMapping,
               );
             });
@@ -280,6 +285,7 @@ class PainterClassGenerator {
               activeStrokeProperties: activeStrokeProperties,
               className: className,
               gradientsNeedingStretch: gradientsNeedingStretch,
+              gradientAspectRatios: gradientAspectRatios,
               colorMapping: colorMapping,
             );
           });
@@ -589,6 +595,7 @@ class PainterClassGenerator {
     required Map<String, String> activeStrokeProperties,
     required String className,
     required Set<String> gradientsNeedingStretch,
+    required Map<String, ({double sx, double sy})> gradientAspectRatios,
     required SvgColorMapping colorMapping,
   }) {
     final (List<DefineCommand> definitions, List<PaintCommand> drawingCommands) =
@@ -641,6 +648,24 @@ class PainterClassGenerator {
 
     // 3rd pass: Gradient definitions (DefineGradient)
     for (final command in uniqueDefinitions) {
+      if (command is DefineRadialGradient) {
+        final CommandGenerator<PaintCommand>? generator = generators[DefineRadialGradient];
+        if (generator is RadialGradientGenerator) {
+          generator.generateWithAspectRatios(
+            command,
+            buffer,
+            generators: generators,
+            palette: palette,
+            activeFillProperties: activeFillProperties,
+            activeStrokeProperties: activeStrokeProperties,
+            painterClassName: className,
+            gradientsNeedingStretch: gradientsNeedingStretch,
+            gradientAspectRatios: gradientAspectRatios,
+            colorMapping: colorMapping,
+          );
+          continue;
+        }
+      }
       if (command is DefineGradient) {
         generators[command.runtimeType]?.generate(
           command,

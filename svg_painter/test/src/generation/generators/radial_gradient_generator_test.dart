@@ -149,5 +149,36 @@ void main() {
       expect(result, contains('isObjectBoundingBox: true'));
       expect(result, contains('isElliptical: true, centerX: 0.35, centerY: 0.65'));
     });
+
+    test('should adjust focal alignment when gradient needs stretch and aspectRatio is provided', () {
+      // Arrange
+      const cmd = DefineRadialGradient(
+        id: 'stretchGrad',
+        cx: 1.0,
+        cy: 0.5,
+        radius: 0.2,
+        fx: 0.8,
+        fy: 0.5,
+        focalRadius: 0.0,
+        stops: <GradientStop>[],
+      );
+      final buffer = GeneratorBuffer();
+
+      // Act
+      const RadialGradientGenerator().generateWithAspectRatios(
+        cmd,
+        buffer,
+        painterClassName: 'StretchFocalPainter',
+        gradientsNeedingStretch: <String>{'stretchGrad'},
+        gradientAspectRatios: <String, ({double sx, double sy})>{
+          'stretchGrad': (sx: 1.3333333333333333, sy: 1.0),
+        },
+      );
+      final result = buffer.toString();
+
+      // Assert
+      expect(result, contains('center: Alignment(1.0, 0.0)'));
+      expect(result, contains('focal: Alignment(0.7000000000000001, 0.0)'));
+    });
   });
 }

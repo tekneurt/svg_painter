@@ -27,14 +27,58 @@ class RadialGradientGenerator extends CommandGenerator<DefineRadialGradient> {
     SvgColorMapping colorMapping = SvgColorMapping.material,
     bool isInsideMarker = false,
   }) {
+    generateWithAspectRatios(
+      command,
+      buffer,
+      generators: generators,
+      palette: palette,
+      activeFillProperties: activeFillProperties,
+      activeStrokeProperties: activeStrokeProperties,
+      inheritedFills: inheritedFills,
+      inheritedStrokes: inheritedStrokes,
+      painterClassName: painterClassName,
+      gradientsNeedingStretch: gradientsNeedingStretch,
+      colorMapping: colorMapping,
+      isInsideMarker: isInsideMarker,
+    );
+  }
+
+  /// Generates radial gradient code with optional aspect ratio correction for non-square bounds.
+  void generateWithAspectRatios(
+    DefineRadialGradient command,
+    GeneratorBuffer buffer, {
+    Map<Type, CommandGenerator<PaintCommand>>? generators,
+    PaletteResult? palette,
+    Map<String, String>? activeFillProperties,
+    Map<String, String>? activeStrokeProperties,
+    List<InheritedProperty>? inheritedFills,
+    List<InheritedProperty>? inheritedStrokes,
+    String? painterClassName,
+    Set<String>? gradientsNeedingStretch,
+    Map<String, ({double sx, double sy})>? gradientAspectRatios,
+    SvgColorMapping colorMapping = SvgColorMapping.material,
+    bool isInsideMarker = false,
+  }) {
     final varName = '_grad_${SvgIdFormatter.sanitizeId(command.id)}';
 
     final bool needsStretch = gradientsNeedingStretch?.contains(command.id) ?? false;
+    final ({double sx, double sy})? aspectRatio;
+    if (needsStretch && command.units == PaintingGradientUnits.objectBoundingBox) {
+      aspectRatio = gradientAspectRatios?[command.id];
+    } else {
+      aspectRatio = null;
+    }
+    final double sx = aspectRatio?.sx ?? 1.0;
+    final double sy = aspectRatio?.sy ?? 1.0;
+    final double centerAlignX = command.cx * 2 - 1;
+    final double centerAlignY = command.cy * 2 - 1;
+    final double focalAlignX = centerAlignX + ((command.fx - command.cx) * 2 / sx);
+    final double focalAlignY = centerAlignY + ((command.fy - command.cy) * 2 / sy);
 
     buffer.writeBlock('final Gradient $varName = RadialGradient(', () {
-      buffer.writeln('center: Alignment(${command.cx * 2 - 1}, ${command.cy * 2 - 1}),');
+      buffer.writeln('center: Alignment($centerAlignX, $centerAlignY),');
       buffer.writeln('radius: ${command.radius},');
-      buffer.writeln('focal: Alignment(${command.fx * 2 - 1}, ${command.fy * 2 - 1}),');
+      buffer.writeln('focal: Alignment($focalAlignX, $focalAlignY),');
       buffer.writeln('focalRadius: ${command.focalRadius},');
 
       buffer.writeBlock('colors: <Color>[', () {

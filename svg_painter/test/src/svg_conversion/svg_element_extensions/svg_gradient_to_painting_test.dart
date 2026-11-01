@@ -634,5 +634,57 @@ void main() {
       expect(lgrad.stops[2].offset, 0.6);
       expect(lgrad.stops[3].offset, 0.6); // clamped to 0.6
     });
+
+    test('should clamp focal point to circle boundary when focal point lies outside radius', () {
+      // Arrange
+      const grad = SvgRadialGradient(
+        coreAttributes: SvgCoreAttributes(id: 'rg-clamp-outside'),
+        cx: SvgLength(0.8),
+        cy: SvgLength(0.4),
+        r: SvgLength(0.2),
+        fx: SvgLength(0.1),
+        fy: SvgLength(0.4),
+        fr: SvgLength(0.0),
+        stops: <SvgStop>[],
+      );
+
+      // Act
+      final Result<PaintCommand> result = grad.toPaintCommand(context);
+
+      // Assert
+      expect(result, isA<Success<PaintCommand>>());
+      final cmd = (result as Success<PaintCommand>).value as DefineRadialGradient;
+      expect(cmd.cx, 0.8);
+      expect(cmd.cy, 0.4);
+      expect(cmd.radius, 0.2);
+      expect(cmd.fx, closeTo(0.6002, 0.001));
+      expect(cmd.fy, 0.4);
+    });
+
+    test('should not modify focal point when focal point lies inside radius', () {
+      // Arrange
+      const grad = SvgRadialGradient(
+        coreAttributes: SvgCoreAttributes(id: 'rg-inside'),
+        cx: SvgLength(0.7),
+        cy: SvgLength(0.3),
+        r: SvgLength(0.4),
+        fx: SvgLength(0.6),
+        fy: SvgLength(0.3),
+        fr: SvgLength(0.0),
+        stops: <SvgStop>[],
+      );
+
+      // Act
+      final Result<PaintCommand> result = grad.toPaintCommand(context);
+
+      // Assert
+      expect(result, isA<Success<PaintCommand>>());
+      final cmd = (result as Success<PaintCommand>).value as DefineRadialGradient;
+      expect(cmd.cx, 0.7);
+      expect(cmd.cy, 0.3);
+      expect(cmd.radius, 0.4);
+      expect(cmd.fx, 0.6);
+      expect(cmd.fy, 0.3);
+    });
   });
 }

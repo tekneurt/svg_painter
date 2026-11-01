@@ -188,6 +188,18 @@ extension SvgGradientToPainting on SvgGradient {
       double resolvedFy = resolveCoord(finalFy, yOrient);
       double resolvedFr = resolveCoord(finalFr, rOrient);
 
+      final double focalDx = resolvedFx - resolvedCx;
+      final double focalDy = resolvedFy - resolvedCy;
+      final double focalDist = math.sqrt((focalDx * focalDx) + (focalDy * focalDy));
+      if (focalDist > resolvedR && resolvedR > 0) {
+        // SVG 1.1 §13.2.3: If (fx, fy) lies outside the circle (cx, cy, r),
+        // the focal point is set to the intersection of the line from (cx, cy) to (fx, fy) with the circle.
+        // A factor of 0.999 keeps the focal point strictly inside for conical shader stability.
+        final double scale = (resolvedR * 0.999) / focalDist;
+        resolvedFx = resolvedCx + (focalDx * scale);
+        resolvedFy = resolvedCy + (focalDy * scale);
+      }
+
       if (isUserUnits) {
         // Normalize absolute user units to 0..1 relative to viewBox.
         resolvedCx /= context.viewBoxWidth;

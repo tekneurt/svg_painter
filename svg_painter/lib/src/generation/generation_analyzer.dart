@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import '../painting_model/_painting_model.dart';
 
 /// Helper class to analyze the paint command tree for code generation decisions.
@@ -123,6 +125,46 @@ class GenerationAnalyzer {
       DrawText() => true,
       DrawImage() => true,
       _ => true,
+    };
+  }
+
+  /// Finds aspect ratios (sx, sy) for gradients used on non-square elements.
+  Map<String, ({double sx, double sy})> findGradientAspectRatios(List<PaintCommand> commands) {
+    final ratios = <String, ({double sx, double sy})>{};
+    for (final command in commands) {
+      if (command is DrawGroup) {
+        ratios.addAll(findGradientAspectRatios(command.commands));
+      } else if (command is DrawSwitch) {
+        ratios.addAll(findGradientAspectRatios(command.allCommands.toList()));
+      } else if (command is DrawCommand) {
+        final String? shaderId = command.style.fill?.shaderId ?? command.style.stroke?.shaderId;
+        if (shaderId != null) {
+          final ({double sx, double sy})? ratio = getAspectRatio(command);
+          if (ratio != null) {
+            ratios[shaderId] = ratio;
+          }
+        }
+      }
+    }
+    return ratios;
+  }
+
+  /// Computes the horizontal and vertical scale factor for non-square shapes.
+  ({double sx, double sy})? getAspectRatio(DrawCommand command) {
+    return switch (command) {
+      DrawRect(:final double width, :final double height)
+          when width != height && width > 0 && height > 0 =>
+        () {
+          final double shortest = math.min(width, height);
+          return (sx: width / shortest, sy: height / shortest);
+        }(),
+      DrawOval(:final double rx, :final double ry)
+          when rx != ry && rx > 0 && ry > 0 =>
+        () {
+          final double shortest = math.min(rx, ry);
+          return (sx: rx / shortest, sy: ry / shortest);
+        }(),
+      _ => null,
     };
   }
 
