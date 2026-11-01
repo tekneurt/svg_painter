@@ -22,13 +22,57 @@ extension SvgLineToPaintCommands on SvgLine {
     final double finalX2 = x2.resolve(context, .horizontal);
     final double finalY2 = y2.resolve(context, .vertical);
 
+    final PaintingStrokeStyle? stroke = paint.stroke;
+    final PaintingStyle effectivePaint;
+    if ((finalX1 == finalX2 || finalY1 == finalY2) &&
+        stroke?.shaderUnits == PaintingGradientUnits.objectBoundingBox) {
+      if (stroke?.colorArgb != null) {
+        effectivePaint = PaintingStyle(
+          fill: paint.fill,
+          stroke: PaintingStrokeStyle(
+            colorArgb: stroke!.colorArgb,
+            width: stroke.width,
+            pathLength: stroke.pathLength,
+            opacity: stroke.opacity,
+            cap: stroke.cap,
+            join: stroke.join,
+            miterLimit: stroke.miterLimit,
+            dashArray: stroke.dashArray,
+            dashOffset: stroke.dashOffset,
+            isExplicit: stroke.isExplicit,
+            isCurrentColor: stroke.isCurrentColor,
+            isContextFill: stroke.isContextFill,
+            isContextStroke: stroke.isContextStroke,
+          ),
+          text: paint.text,
+          groupOpacity: paint.groupOpacity,
+          transformAttributes: paint.transformAttributes,
+          clipRect: paint.clipRect,
+          maskId: paint.maskId,
+          clipPathId: paint.clipPathId,
+          filterId: paint.filterId,
+          markerStartId: paint.markerStartId,
+          markerMidId: paint.markerMidId,
+          markerEndId: paint.markerEndId,
+          paintOrder: paint.paintOrder,
+          vectorEffect: paint.vectorEffect,
+          strokeWidth: paint.strokeWidth,
+        );
+      } else {
+        // SVG 1.1 §7.11 & §13.2.2: Zero-dimension bounding box without fallback must not be painted.
+        return const Success<List<PaintCommand>>(<PaintCommand>[]);
+      }
+    } else {
+      effectivePaint = paint;
+    }
+
     return Success<List<PaintCommand>>(<PaintCommand>[
       DrawLine(
         x1: finalX1,
         y1: finalY1,
         x2: finalX2,
         y2: finalY2,
-        style: paint,
+        style: effectivePaint,
         id: id,
       ),
     ]);

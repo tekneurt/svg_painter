@@ -359,6 +359,17 @@ PaintingFillStyle _buildFillStyle(
   var isContextStroke = false;
 
   if (fillPaint is SvgPaintReference) {
+    if (fillPaint.fallback != null) {
+      if (fillPaint.fallback is SvgCurrentColor) {
+        if (currentColor != null && currentColor is! SvgCurrentColor) {
+          fillColorArgb = currentColor.toFillArgb();
+        } else {
+          isCurrentColor = true;
+        }
+      } else {
+        fillColorArgb = fillPaint.fallback.toFillArgb();
+      }
+    }
     final SvgElement? def = context.definitions[fillPaint.id];
     if (def is SvgPattern) {
       fillPatternId = fillPaint.id;
@@ -484,6 +495,17 @@ PaintingStrokeStyle _buildStrokeStyle(
   var isContextStroke = false;
 
   if (strokePaint is SvgPaintReference) {
+    if (strokePaint.fallback != null) {
+      if (strokePaint.fallback is SvgCurrentColor) {
+        if (currentColor != null && currentColor is! SvgCurrentColor) {
+          strokeColorArgb = currentColor.toStrokeArgb();
+        } else {
+          isCurrentColor = true;
+        }
+      } else {
+        strokeColorArgb = strokePaint.fallback.toStrokeArgb();
+      }
+    }
     final SvgElement? def = context.definitions[strokePaint.id];
     if (def is SvgPattern) {
       strokePatternId = strokePaint.id;

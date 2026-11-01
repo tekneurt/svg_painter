@@ -158,6 +158,53 @@ void main() {
         expect(color, isA<SvgContextStrokeColor>());
         expect(color.toArgb(), 0x00000000);
       });
+
+      test('should parse paint reference with fallback hex color correctly', () {
+        // Arrange
+        const input = 'url(#gradient-id) #00ff00';
+
+        // Act
+        final SvgColor? color = input.toSvgColor();
+
+        // Assert
+        expect(color, isA<SvgPaintReference>());
+        if (color case final SvgPaintReference ref) {
+          expect(ref.id, 'gradient-id');
+          expect(ref.fallback, isA<SvgRgbColor>());
+          expect(ref.fallback.toArgb(), 0xFF00FF00);
+        }
+      });
+
+      test('should parse paint reference with fallback named color correctly', () {
+        // Arrange
+        const input = 'url(#pattern-id) red';
+
+        // Act
+        final SvgColor? color = input.toSvgColor();
+
+        // Assert
+        expect(color, isA<SvgPaintReference>());
+        if (color case final SvgPaintReference ref) {
+          expect(ref.id, 'pattern-id');
+          expect(ref.fallback, isA<SvgNamedColor>());
+          expect(ref.fallback.toArgb(), 0xFFFF0000);
+        }
+      });
+
+      test('should parse paint reference without fallback correctly', () {
+        // Arrange
+        const input = 'url(#simple-id)';
+
+        // Act
+        final SvgColor? color = input.toSvgColor();
+
+        // Assert
+        expect(color, isA<SvgPaintReference>());
+        if (color case final SvgPaintReference ref) {
+          expect(ref.id, 'simple-id');
+          expect(ref.fallback, isNull);
+        }
+      });
     });
   });
 }

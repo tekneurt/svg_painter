@@ -92,5 +92,65 @@ void main() {
         ),
       );
     });
+
+    test('should inherit stopColor from ancestor when stopColor is inherit', () {
+      // Arrange
+      final document = XmlDocument.parse(
+        '<g stop-color="#ff4488"><linearGradient stop-color="inherit"><stop offset="1" stop-color="inherit" /></linearGradient></g>',
+      );
+      final XmlElement stopElement = document.findAllElements('stop').first;
+
+      // Act
+      final Result<SvgStop> result = stopElement.toSvgStop();
+
+      // Assert
+      expect(result, isA<Success<SvgStop>>());
+      final SvgStop stop = (result as Success<SvgStop>).value;
+      expect(
+        stop.stopColor,
+        isA<SvgRgbColor>()
+            .having((SvgRgbColor c) => c.red, 'red', 255)
+            .having((SvgRgbColor c) => c.green, 'green', 68)
+            .having((SvgRgbColor c) => c.blue, 'blue', 136),
+      );
+    });
+
+    test('should inherit stopOpacity from ancestor when stopOpacity is inherit', () {
+      // Arrange
+      final document = XmlDocument.parse(
+        '<g stop-opacity="0.75"><linearGradient stop-opacity="inherit"><stop offset="1" stop-opacity="inherit" /></linearGradient></g>',
+      );
+      final XmlElement stopElement = document.findAllElements('stop').first;
+
+      // Act
+      final Result<SvgStop> result = stopElement.toSvgStop();
+
+      // Assert
+      expect(result, isA<Success<SvgStop>>());
+      final SvgStop stop = (result as Success<SvgStop>).value;
+      expect(
+        stop.stopOpacity,
+        isA<SvgLength>().having((SvgLength l) => l.value, 'value', 0.75),
+      );
+    });
+
+    test('should inherit color from ancestor when color is not specified on stop', () {
+      // Arrange
+      final document = XmlDocument.parse(
+        '<g color="yellow"><linearGradient><stop offset="1" stop-color="currentColor" /></linearGradient></g>',
+      );
+      final XmlElement stopElement = document.findAllElements('stop').first;
+
+      // Act
+      final Result<SvgStop> result = stopElement.toSvgStop();
+
+      // Assert
+      expect(result, isA<Success<SvgStop>>());
+      final SvgStop stop = (result as Success<SvgStop>).value;
+      expect(
+        stop.color,
+        isA<SvgNamedColor>().having((SvgNamedColor c) => c.name, 'name', SvgColorName.yellow),
+      );
+    });
   });
 }

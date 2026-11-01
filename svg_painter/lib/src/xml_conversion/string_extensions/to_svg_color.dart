@@ -10,12 +10,11 @@ extension ToSvgColor on String {
       return null;
     }
 
-    // url(#id) - Case sensitive ID
-    final String? urlId = trimmed.extractUrlId();
-    if (urlId == null) {
-      // Not a reference
-    } else {
-      return SvgPaintReference(urlId);
+    // url(#id) or url(#id) <fallback>
+    final (String? urlId, String? fallbackStr) = trimmed.extractUrlReference() ?? (null, null);
+    if (urlId != null) {
+      final SvgColor? fallbackColor = fallbackStr?.toSvgColor();
+      return SvgPaintReference(urlId, fallback: fallbackColor);
     }
 
     final String normalized = trimmed.toLowerCase();

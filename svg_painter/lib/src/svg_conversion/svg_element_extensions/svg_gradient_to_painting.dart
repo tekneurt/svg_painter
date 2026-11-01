@@ -72,7 +72,7 @@ extension SvgGradientToPainting on SvgGradient {
     for (final grad in chain) {
       if (grad.stops.isNotEmpty) {
         resolvedStops = grad.stops;
-        stopsColor = grad.color ?? self.color;
+        stopsColor = grad.color ?? self.color ?? context.inheritedAttributes.color;
         break;
       }
     }
@@ -237,8 +237,11 @@ extension on List<SvgStop> {
       );
 
       final SvgColor? cssStopColor = resolvedRules['stop-color']?.toSvgColor();
+      final String? rawCssOpacity = resolvedRules['stop-opacity'];
       final SvgLengthPercentage? cssStopOpacity =
-          resolvedRules['stop-opacity']?.toSvgLengthPercentage();
+          (rawCssOpacity == null || rawCssOpacity.trim().toLowerCase() == 'inherit')
+              ? null
+              : rawCssOpacity.toSvgLengthPercentage();
       final SvgColor? cssColor = resolvedRules['color']?.toSvgColor();
 
       final SvgColor resolvedStopColor =
