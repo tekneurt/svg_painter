@@ -215,6 +215,8 @@ SvgPresentationAttributes _parseCssPresentation(
   final SvgTextAnchor? cssTextAnchor = resolvedRules['text-anchor']?.toSvgTextAnchor();
 
   final SvgColor? cssColor = resolvedRules['color']?.toSvgColor();
+  final SvgColorInterpolation? cssColorInterpolation =
+      resolvedRules['color-interpolation']?.toSvgColorInterpolation();
   final SvgColor? cssFill = resolvedRules['fill']?.toSvgColor();
   final SvgLengthPercentage? cssFillOpacity = resolvedRules['fill-opacity']
       ?.toSvgLengthPercentage();
@@ -248,6 +250,7 @@ SvgPresentationAttributes _parseCssPresentation(
 
   return SvgPresentationAttributes(
     color: cssColor,
+    colorInterpolation: cssColorInterpolation,
     display: cssDisplay,
     visibility: cssVisibility,
     overflow: cssOverflow,

@@ -10,6 +10,7 @@ sealed class SvgGradient extends SvgDefinitionElement {
     this.spreadMethod,
     this.href,
     this.color,
+    this.colorInterpolation,
     super.coreAttributes,
   });
 
@@ -30,4 +31,7 @@ sealed class SvgGradient extends SvgDefinitionElement {
 
   /// The indirect color value for currentColor.
   final SvgColor? color;
+
+  /// The color space used for color interpolation.
+  final SvgColorInterpolation? colorInterpolation;
 }

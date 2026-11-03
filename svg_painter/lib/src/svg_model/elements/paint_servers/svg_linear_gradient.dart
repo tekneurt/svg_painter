@@ -16,6 +16,7 @@ final class SvgLinearGradient extends SvgGradient {
     super.spreadMethod,
     super.href,
     super.color,
+    super.colorInterpolation,
     super.coreAttributes,
   });
 
@@ -42,6 +43,7 @@ final class SvgLinearGradient extends SvgGradient {
       if (gradientTransformAttributes != null) 'transform: $gradientTransformAttributes',
       if (gradientUnits != null) 'units: $gradientUnits',
       if (spreadMethod != null) 'spread: $spreadMethod',
+      if (colorInterpolation != null) 'color-interpolation: $colorInterpolation',
       if (href != null) 'href: $href',
       if (id != null) 'id: $id',
     ];

@@ -22,6 +22,10 @@ enum XmlAttributeName {
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/color
   color('color'),
 
+  /// Specifies the color space for gradient and filter interpolation.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/color-interpolation
+  colorInterpolation('color-interpolation'),
+
   /// The x-axis coordinate of the center of the element.
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/cx
   cx('cx'),

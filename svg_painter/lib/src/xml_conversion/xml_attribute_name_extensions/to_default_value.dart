@@ -109,6 +109,8 @@ extension ToDefaultValue on XmlAttributeName {
         return SvgGradientUnits.objectBoundingBox;
       case .spreadMethod:
         return SvgSpreadMethod.pad;
+      case .colorInterpolation:
+        return SvgColorInterpolation.sRGB;
       case .fx:
       case .fy:
         return switch (elementName) {

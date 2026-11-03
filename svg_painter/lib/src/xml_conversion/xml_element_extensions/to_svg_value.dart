@@ -70,6 +70,7 @@ extension ToSvgValue on XmlElement {
         .strokeDasharray => attributeValue.toSvgStrokeDasharray(),
         .fillRule => attributeValue.toSvgFillRule(),
         .fill || .stroke || .stopColor || .color || .floodColor => attributeValue.toSvgColor(),
+        .colorInterpolation => attributeValue.toSvgColorInterpolation(),
         .strokeLinecap => attributeValue.toSvgStrokeLinecap(),
         .strokeLinejoin => attributeValue.toSvgStrokeLinejoin(),
         .fontWeight => attributeValue.toSvgFontWeight(),

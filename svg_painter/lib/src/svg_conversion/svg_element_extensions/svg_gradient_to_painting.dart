@@ -77,6 +77,16 @@ extension SvgGradientToPainting on SvgGradient {
       }
     }
 
+    SvgColorInterpolation resolvedColorInterpolation =
+        context.inheritedAttributes.colorInterpolation ?? SvgColorInterpolation.sRGB;
+    for (final grad in chain) {
+      final SvgColorInterpolation? ci = grad.colorInterpolation;
+      if (ci != null && ci != SvgColorInterpolation.auto) {
+        resolvedColorInterpolation = ci;
+        break;
+      }
+    }
+
     final PaintingGradientUnits paintingUnits = switch (resolvedUnits) {
       SvgGradientUnits.objectBoundingBox => PaintingGradientUnits.objectBoundingBox,
       SvgGradientUnits.userSpaceOnUse => PaintingGradientUnits.userSpaceOnUse,
@@ -149,7 +159,11 @@ extension SvgGradientToPainting on SvgGradient {
           y1: resolvedY1,
           x2: resolvedX2,
           y2: resolvedY2,
-          stops: resolvedStops.toPaintingStops(context, gradientColor: stopsColor),
+          stops: resolvedStops.toPaintingStops(
+            context,
+            gradientColor: stopsColor,
+            colorInterpolation: resolvedColorInterpolation,
+          ),
           transformAttributes: resolvedTransform,
           units: paintingUnits,
           spreadMethod: paintingSpread,
@@ -220,7 +234,11 @@ extension SvgGradientToPainting on SvgGradient {
           fx: resolvedFx,
           fy: resolvedFy,
           focalRadius: resolvedFr,
-          stops: resolvedStops.toPaintingStops(context, gradientColor: stopsColor),
+          stops: resolvedStops.toPaintingStops(
+            context,
+            gradientColor: stopsColor,
+            colorInterpolation: resolvedColorInterpolation,
+          ),
           transformAttributes: resolvedTransform,
           units: paintingUnits,
           spreadMethod: paintingSpread,
@@ -238,6 +256,7 @@ extension on List<SvgStop> {
   List<GradientStop> toPaintingStops(
     SvgPaintingContext context, {
     SvgColor? gradientColor,
+    SvgColorInterpolation colorInterpolation = SvgColorInterpolation.sRGB,
   }) {
     var maxOffset = 0.0;
     final stops = <GradientStop>[];
@@ -294,6 +313,10 @@ extension on List<SvgStop> {
         GradientStop(offset: 0.0, colorArgb: single.colorArgb, opacity: single.opacity),
         GradientStop(offset: 1.0, colorArgb: single.colorArgb, opacity: single.opacity),
       ];
+    }
+
+    if (colorInterpolation == SvgColorInterpolation.linearRGB) {
+      return interpolateLinearRgbStops(stops);
     }
 
     return stops;

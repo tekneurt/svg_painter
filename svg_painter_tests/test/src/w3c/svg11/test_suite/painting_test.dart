@@ -20,6 +20,7 @@ import 'painting/painting_marker_04_f_painter.dart';
 import 'painting/painting_marker_05_f_painter.dart';
 import 'painting/painting_marker_06_f_painter.dart';
 import 'painting/painting_marker_07_f_painter.dart';
+import 'painting/painting_render_01_b_painter.dart';
 import 'painting/painting_stroke_01_t_painter.dart';
 import 'painting/painting_stroke_02_t_painter.dart';
 import 'painting/painting_stroke_03_t_painter.dart';
@@ -51,6 +52,7 @@ _fixtures = <({CustomPainter painter, String name, double? maxDiffPercent})>[
   (painter: const PaintingMarker05FPainter(), name: 'painting_marker_05_f', maxDiffPercent: 0.12),
   (painter: const PaintingMarker06FPainter(), name: 'painting_marker_06_f', maxDiffPercent: 0.08),
   (painter: const PaintingMarker07FPainter(), name: 'painting_marker_07_f', maxDiffPercent: 0.10),
+  (painter: const PaintingRender01BPainter(), name: 'painting_render_01_b', maxDiffPercent: 0.30),
   (painter: const PaintingStroke01TPainter(), name: 'painting_stroke_01_t', maxDiffPercent: 0.10),
   (painter: const PaintingStroke02TPainter(), name: 'painting_stroke_02_t', maxDiffPercent: 0.13),
   (painter: const PaintingStroke03TPainter(), name: 'painting_stroke_03_t', maxDiffPercent: 0.13),

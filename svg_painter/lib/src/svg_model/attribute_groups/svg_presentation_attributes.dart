@@ -16,6 +16,7 @@ import 'svg_stroke_attributes.dart';
 final class SvgPresentationAttributes {
   const SvgPresentationAttributes({
     this.color,
+    this.colorInterpolation,
     this.fill,
     this.stroke,
     this.font,
@@ -30,6 +31,9 @@ final class SvgPresentationAttributes {
 
   /// The indirect color value for currentColor.
   final SvgColor? color;
+
+  /// Specifies the color space for gradient and filter interpolation.
+  final SvgColorInterpolation? colorInterpolation;
 
   /// Fill-related attributes.
   final SvgFillAttributes? fill;
@@ -71,6 +75,7 @@ final class SvgPresentationAttributes {
     }
     return SvgPresentationAttributes(
       color: other.color ?? color,
+      colorInterpolation: other.colorInterpolation ?? colorInterpolation,
       fill: _mergeFill(fill, other.fill),
       stroke: _mergeStroke(stroke, other.stroke),
       font: _mergeFont(font, other.font),
@@ -101,6 +106,7 @@ final class SvgPresentationAttributes {
     return SvgPresentationAttributes(
       // Inherited groups
       color: effectiveColor,
+      colorInterpolation: colorInterpolation ?? parent?.colorInterpolation,
       fill: _inheritFill(fill, parent?.fill, effectiveColor),
       stroke: _inheritStroke(stroke, parent?.stroke, effectiveColor),
       font: _inheritFont(font, parent?.font),
@@ -313,6 +319,7 @@ final class SvgPresentationAttributes {
   String toString() {
     final parts = <String>[
       if (color != null) 'color: $color',
+      if (colorInterpolation != null) 'color-interpolation: $colorInterpolation',
       if (fill != null) 'fill: $fill',
       if (stroke != null) 'stroke: $stroke',
       if (font != null) 'font: $font',

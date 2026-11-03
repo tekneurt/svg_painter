@@ -48,6 +48,9 @@ extension ToSvgRadialGradient on XmlElement {
     final SvgColor? color =
         common.presentation.color ??
         toSvgValueOrNull<SvgColor>(elementName, XmlAttributeName.color);
+    final SvgColorInterpolation? colorInterpolation =
+        common.presentation.colorInterpolation ??
+        toSvgValueOrNull<SvgColorInterpolation>(elementName, XmlAttributeName.colorInterpolation);
 
     return stopsResult.map(
       (List<SvgStop> stops) => SvgRadialGradient(
@@ -63,6 +66,7 @@ extension ToSvgRadialGradient on XmlElement {
         spreadMethod: spreadMethod,
         href: href,
         color: color,
+        colorInterpolation: colorInterpolation,
         coreAttributes: common.core,
       ),
     );

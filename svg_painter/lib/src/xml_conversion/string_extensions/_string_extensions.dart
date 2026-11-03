@@ -1,4 +1,5 @@
 export 'to_svg_color.dart';
+export 'to_svg_color_interpolation.dart';
 export 'to_svg_display.dart';
 export 'to_svg_fill_rule.dart';
 export 'to_svg_filter_units.dart';

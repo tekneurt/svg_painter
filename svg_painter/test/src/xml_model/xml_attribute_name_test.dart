@@ -12,6 +12,7 @@ void main() {
           XmlAttributeName.clipPath => 'clip-path',
           XmlAttributeName.clipPathUnits => 'clipPathUnits',
           XmlAttributeName.color => 'color',
+          XmlAttributeName.colorInterpolation => 'color-interpolation',
           XmlAttributeName.cx => 'cx',
           XmlAttributeName.cy => 'cy',
           XmlAttributeName.d => 'd',
