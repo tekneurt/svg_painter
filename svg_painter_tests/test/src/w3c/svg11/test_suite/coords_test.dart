@@ -11,6 +11,11 @@ import 'coords/coords_trans_06_t_painter.dart';
 import 'coords/coords_trans_07_t_painter.dart';
 import 'coords/coords_trans_08_t_painter.dart';
 import 'coords/coords_trans_09_t_painter.dart';
+import 'coords/coords_trans_10_f_painter.dart';
+import 'coords/coords_trans_11_f_painter.dart';
+import 'coords/coords_trans_12_f_painter.dart';
+import 'coords/coords_trans_13_f_painter.dart';
+import 'coords/coords_trans_14_f_painter.dart';
 import 'coords/coords_transformattr_01_f_painter.dart';
 import 'coords/coords_units_01_b_painter.dart';
 import 'coords/coords_viewattr_01_b_painter.dart';
@@ -26,6 +31,11 @@ final List<({CustomPainter painter, String name, double? maxDiffPercent})> _fixt
       (painter: const CoordsTrans07TPainter(), name: 'coords_trans_07_t', maxDiffPercent: null),
       (painter: const CoordsTrans08TPainter(), name: 'coords_trans_08_t', maxDiffPercent: null),
       (painter: const CoordsTrans09TPainter(), name: 'coords_trans_09_t', maxDiffPercent: 0.12),
+      (painter: const CoordsTrans10FPainter(), name: 'coords_trans_10_f', maxDiffPercent: null),
+      (painter: const CoordsTrans11FPainter(), name: 'coords_trans_11_f', maxDiffPercent: 0.08),
+      (painter: const CoordsTrans12FPainter(), name: 'coords_trans_12_f', maxDiffPercent: null),
+      (painter: const CoordsTrans13FPainter(), name: 'coords_trans_13_f', maxDiffPercent: null),
+      (painter: const CoordsTrans14FPainter(), name: 'coords_trans_14_f', maxDiffPercent: null),
       (
         painter: const CoordsTransformattr01FPainter(),
         name: 'coords_transformattr_01_f',
