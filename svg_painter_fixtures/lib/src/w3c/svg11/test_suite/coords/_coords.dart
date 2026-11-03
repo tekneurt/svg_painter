@@ -24,3 +24,4 @@ export 'coords_units_02_b.dart';
 export 'coords_units_03_b.dart';
 export 'coords_viewattr_01_b.dart';
 export 'coords_viewattr_02_b.dart';
+export 'coords_viewattr_03_b.dart';

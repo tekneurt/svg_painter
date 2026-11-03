@@ -128,14 +128,17 @@ extension SvgRootToPaintCommands on SvgSvg {
     // The root <svg> only needs to clip if 'slice' scaling is used (which explicitly bleeds)
     // OR if the viewBox is shifted (non-zero origin), making bleeding highly likely.
     final isRoot = this is SvgRoot;
+    final isOverflowVisible = presentationAttributes?.overflow == SvgOverflow.visible;
     final bool isSliceOrNone =
         par.scale == SvgPreserveAspectRatioScale.slice ||
         par.alignment == SvgPreserveAspectRatioAlignment.none;
     final bool hasShiftedViewBox = (viewBox?.minX ?? 0) != 0 || (viewBox?.minY ?? 0) != 0;
 
-    final PaintingRect? clipRect = (!isRoot || isSliceOrNone || hasShiftedViewBox)
-        ? PaintingRect(0, 0, wVal, hVal)
-        : null;
+    final PaintingRect? clipRect = isOverflowVisible
+        ? null
+        : (!isRoot || isSliceOrNone || hasShiftedViewBox)
+            ? PaintingRect(0, 0, wVal, hVal)
+            : null;
 
     final PaintingStyle viewportStyle = resolvePaint(
       context,

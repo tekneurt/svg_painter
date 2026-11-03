@@ -28,6 +28,7 @@ import 'coords/coords_units_02_b_painter.dart';
 import 'coords/coords_units_03_b_painter.dart';
 import 'coords/coords_viewattr_01_b_painter.dart';
 import 'coords/coords_viewattr_02_b_painter.dart';
+import 'coords/coords_viewattr_03_b_painter.dart';
 
 class _CoordsFixture {
   const _CoordsFixture({
@@ -92,6 +93,11 @@ final List<_CoordsFixture> _fixtures = <_CoordsFixture>[
     painter: CoordsViewattr02BPainter(),
     widget: CoordsViewattr02BPainterWidget(),
     name: 'coords_viewattr_02_b',
+    maxDiffPercent: 0.16,
+  ),
+  const _CoordsFixture(
+    painter: CoordsViewattr03BPainter(),
+    name: 'coords_viewattr_03_b',
     maxDiffPercent: 0.16,
   ),
 ];
