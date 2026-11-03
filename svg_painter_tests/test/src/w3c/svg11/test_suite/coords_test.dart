@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../../../test_utils.dart';
+import 'coords/coords_coord_01_t_painter.dart';
+import 'coords/coords_coord_02_t_painter.dart';
 import 'coords/coords_trans_01_b_painter.dart';
 import 'coords/coords_trans_02_t_painter.dart';
 import 'coords/coords_trans_03_t_painter.dart';
@@ -22,10 +24,14 @@ import 'coords/coords_transformattr_03_f_painter.dart';
 import 'coords/coords_transformattr_04_f_painter.dart';
 import 'coords/coords_transformattr_05_f_painter.dart';
 import 'coords/coords_units_01_b_painter.dart';
+import 'coords/coords_units_02_b_painter.dart';
+import 'coords/coords_units_03_b_painter.dart';
 import 'coords/coords_viewattr_01_b_painter.dart';
 
 final List<({CustomPainter painter, String name, double? maxDiffPercent})> _fixtures =
     <({CustomPainter painter, String name, double? maxDiffPercent})>[
+      (painter: const CoordsCoord01TPainter(), name: 'coords_coord_01_t', maxDiffPercent: null),
+      (painter: const CoordsCoord02TPainter(), name: 'coords_coord_02_t', maxDiffPercent: null),
       (painter: const CoordsTrans01BPainter(), name: 'coords_trans_01_b', maxDiffPercent: 0.08),
       (painter: const CoordsTrans02TPainter(), name: 'coords_trans_02_t', maxDiffPercent: null),
       (painter: const CoordsTrans03TPainter(), name: 'coords_trans_03_t', maxDiffPercent: null),
@@ -66,6 +72,8 @@ final List<({CustomPainter painter, String name, double? maxDiffPercent})> _fixt
         maxDiffPercent: null,
       ),
       (painter: const CoordsUnits01BPainter(), name: 'coords_units_01_b', maxDiffPercent: 0.16),
+      (painter: const CoordsUnits02BPainter(), name: 'coords_units_02_b', maxDiffPercent: 0.14),
+      (painter: const CoordsUnits03BPainter(), name: 'coords_units_03_b', maxDiffPercent: 0.12),
       (
         painter: const CoordsViewattr01BPainter(),
         name: 'coords_viewattr_01_b',
