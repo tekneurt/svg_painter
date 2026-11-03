@@ -53,6 +53,13 @@ _fixtures = <({CustomPainter painter, String name, double? maxDiffPercent})>[
   (painter: const PaintingMarker06FPainter(), name: 'painting_marker_06_f', maxDiffPercent: 0.08),
   (painter: const PaintingMarker07FPainter(), name: 'painting_marker_07_f', maxDiffPercent: 0.10),
   (painter: const PaintingRender01BPainter(), name: 'painting_render_01_b', maxDiffPercent: 0.30),
+  // Note: 'painting_render_02_b' is unimplementable in Flutter (under both Skia
+  // and Impeller) because it tests color-interpolation="linearRGB" for shape alpha
+  // compositing. Flutter's 2D canvas and Impeller hardware blending perform
+  // Porter-Duff alpha compositing strictly in the display's gamma-encoded sRGB
+  // framebuffer space with fixed-function GPU blend stages, offering no API
+  // (Canvas.drawRect / Canvas.saveLayer) to composite shape alpha in linear RGB
+  // photometric space.
   (painter: const PaintingStroke01TPainter(), name: 'painting_stroke_01_t', maxDiffPercent: 0.10),
   (painter: const PaintingStroke02TPainter(), name: 'painting_stroke_02_t', maxDiffPercent: 0.13),
   (painter: const PaintingStroke03TPainter(), name: 'painting_stroke_03_t', maxDiffPercent: 0.13),
