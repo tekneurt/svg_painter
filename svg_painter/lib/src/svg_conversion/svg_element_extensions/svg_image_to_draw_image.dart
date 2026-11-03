@@ -159,20 +159,144 @@ extension SvgImageToDrawImage on SvgImage {
       SvgImageDecoding.async || SvgImageDecoding.auto => PaintingImageDecoding.async,
     };
 
+    final ({double width, double height})? dimensions = parseImageDimensions(bytes);
+
+    if (dimensions == null) {
+      return Success<List<PaintCommand>>(<PaintCommand>[
+        DrawImage(
+          id: id,
+          href: href,
+          imageIndex: 0, // Placeholder, populated by generator
+          x: xVal,
+          y: yVal,
+          width: widthVal,
+          height: heightVal,
+          bytes: bytes,
+          decoding: resolvedDecoding,
+          style: PaintingStyle(
+            groupOpacity: (presentationAttributes?.graphics?.opacity).resolveOpacity(context),
+            transformAttributes: presentationAttributes?.graphics?.transformAttributes,
+          ),
+        ),
+      ]);
+    }
+
+    final double imgW = dimensions.width;
+    final double imgH = dimensions.height;
+
+    final SvgPreserveAspectRatio par = preserveAspectRatio ?? SvgPreserveAspectRatio.defaults;
+
+    double sx = imgW > 0 ? widthVal / imgW : 1.0;
+    double sy = imgH > 0 ? heightVal / imgH : 1.0;
+    var alignX = 0.0;
+    var alignY = 0.0;
+
+    if (par.alignment != SvgPreserveAspectRatioAlignment.none) {
+      if (par.scale == SvgPreserveAspectRatioScale.slice) {
+        sx = math.max(sx, sy);
+        sy = sx;
+      } else {
+        sx = math.min(sx, sy);
+        sy = sx;
+      }
+
+      final double scaledWidth = imgW * sx;
+      final double scaledHeight = imgH * sy;
+
+      switch (par.alignment) {
+        case SvgPreserveAspectRatioAlignment.xMinYMin:
+        case SvgPreserveAspectRatioAlignment.xMinYMid:
+        case SvgPreserveAspectRatioAlignment.xMinYMax:
+          alignX = 0.0;
+        case SvgPreserveAspectRatioAlignment.xMidYMin:
+        case SvgPreserveAspectRatioAlignment.xMidYMid:
+        case SvgPreserveAspectRatioAlignment.xMidYMax:
+          alignX = (widthVal - scaledWidth) / 2.0;
+        case SvgPreserveAspectRatioAlignment.xMaxYMin:
+        case SvgPreserveAspectRatioAlignment.xMaxYMid:
+        case SvgPreserveAspectRatioAlignment.xMaxYMax:
+          alignX = widthVal - scaledWidth;
+        case SvgPreserveAspectRatioAlignment.none:
+          break;
+      }
+
+      switch (par.alignment) {
+        case SvgPreserveAspectRatioAlignment.xMinYMin:
+        case SvgPreserveAspectRatioAlignment.xMidYMin:
+        case SvgPreserveAspectRatioAlignment.xMaxYMin:
+          alignY = 0.0;
+        case SvgPreserveAspectRatioAlignment.xMinYMid:
+        case SvgPreserveAspectRatioAlignment.xMidYMid:
+        case SvgPreserveAspectRatioAlignment.xMaxYMid:
+          alignY = (heightVal - scaledHeight) / 2.0;
+        case SvgPreserveAspectRatioAlignment.xMinYMax:
+        case SvgPreserveAspectRatioAlignment.xMidYMax:
+        case SvgPreserveAspectRatioAlignment.xMaxYMax:
+          alignY = heightVal - scaledHeight;
+        case SvgPreserveAspectRatioAlignment.none:
+          break;
+      }
+    }
+
+    final double scaledW = imgW * sx;
+    final double scaledH = imgH * sy;
+
+    final outerOps = <SvgTransformOperation>[];
+    if (presentationAttributes?.graphics?.transformAttributes case final ta?) {
+      outerOps.addAll(ta.operations);
+    }
+    if (xVal != 0 || yVal != 0) {
+      outerOps.add(SvgTranslate(xVal, yVal));
+    }
+
+    final isOverflowVisible = presentationAttributes?.overflow == SvgOverflow.visible;
+    final bool shouldClip = !isOverflowVisible &&
+        (par.scale == SvgPreserveAspectRatioScale.slice ||
+            par.alignment == SvgPreserveAspectRatioAlignment.none);
+
+    final PaintingRect? clipRect = shouldClip ? PaintingRect(0, 0, widthVal, heightVal) : null;
+
+    final drawImage = DrawImage(
+      id: id,
+      href: href,
+      imageIndex: 0,
+      x: alignX,
+      y: alignY,
+      width: scaledW,
+      height: scaledH,
+      bytes: bytes,
+      decoding: resolvedDecoding,
+      style: PaintingStyle(
+        groupOpacity: (presentationAttributes?.graphics?.opacity).resolveOpacity(context),
+      ),
+    );
+
+    if (outerOps.isEmpty && clipRect == null) {
+      return Success<List<PaintCommand>>(<PaintCommand>[
+        DrawImage(
+          id: id,
+          href: href,
+          imageIndex: 0,
+          x: xVal + alignX,
+          y: yVal + alignY,
+          width: scaledW,
+          height: scaledH,
+          bytes: bytes,
+          decoding: resolvedDecoding,
+          style: PaintingStyle(
+            groupOpacity: (presentationAttributes?.graphics?.opacity).resolveOpacity(context),
+            transformAttributes: presentationAttributes?.graphics?.transformAttributes,
+          ),
+        ),
+      ]);
+    }
+
     return Success<List<PaintCommand>>(<PaintCommand>[
-      DrawImage(
-        id: id,
-        href: href,
-        imageIndex: 0, // Placeholder, populated by generator
-        x: xVal,
-        y: yVal,
-        width: widthVal,
-        height: heightVal,
-        bytes: bytes,
-        decoding: resolvedDecoding,
+      DrawGroup(
+        commands: <PaintCommand>[drawImage],
         style: PaintingStyle(
-          groupOpacity: (presentationAttributes?.graphics?.opacity).resolveOpacity(context),
-          transformAttributes: presentationAttributes?.graphics?.transformAttributes,
+          transformAttributes: outerOps.isEmpty ? null : SvgTransformAttributes(outerOps),
+          clipRect: clipRect,
         ),
       ),
     ]);

@@ -33,7 +33,8 @@ class ImagePreloader {
 
       if (href.startsWith('data:')) {
         try {
-          final Uri uri = Uri.parse(href);
+          final String normalizedHref = href.replaceAll(RegExp(r'\s+'), '');
+          final Uri uri = Uri.parse(normalizedHref);
           final List<int> bytes = uri.data!.contentAsBytes();
 
           if (href.startsWith('data:image/svg+xml')) {

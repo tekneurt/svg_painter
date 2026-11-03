@@ -1109578,6 +1109578,8 @@ class _$LennaDataUriPainter extends CustomPainter {
       destRect.height / sourceSize.height,
     );
 
+    canvas.save();
+    canvas.translate(25.0, 25.0);
     if (image0 != null) {
       final dynamic img = image0;
       final double srcW = (img.width as int).toDouble();
@@ -1109586,10 +1109588,11 @@ class _$LennaDataUriPainter extends CustomPainter {
       (canvas as dynamic).drawImageRect(
         img,
         Rect.fromLTWH(0, 0, srcW, srcH),
-        Rect.fromLTWH(25.0, 25.0, 50.0, 50.0),
+        Rect.fromLTWH(0.0, 0.0, 50.0, 50.0),
         paint,
       );
     }
+    canvas.restore();
     canvas.restore();
   }
 

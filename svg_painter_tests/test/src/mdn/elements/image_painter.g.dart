@@ -9654,7 +9654,7 @@ class _$MdnImagePainter extends CustomPainter {
       (canvas as dynamic).drawImageRect(
         img,
         Rect.fromLTWH(0, 0, srcW, srcH),
-        Rect.fromLTWH(0.0, 0.0, 200.0, 200.0),
+        Rect.fromLTWH(0.0, 11.833333333333343, 200.0, 176.33333333333331),
         paint,
       );
     }

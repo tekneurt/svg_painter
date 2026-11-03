@@ -9654,7 +9654,7 @@ class _$HrefImagePainter extends CustomPainter {
       (canvas as dynamic).drawImageRect(
         img,
         Rect.fromLTWH(0, 0, srcW, srcH),
-        Rect.fromLTWH(0.0, 0.0, 100.0, 100.0),
+        Rect.fromLTWH(0.0, 5.916666666666671, 100.0, 88.16666666666666),
         paint,
       );
     }

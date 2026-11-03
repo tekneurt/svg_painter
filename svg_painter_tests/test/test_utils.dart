@@ -316,6 +316,7 @@ Future<void> testSvgPainterNative({
 Future<void> testSvgPainterWithW3cDiff({
   required WidgetTester tester,
   required CustomPainter painter,
+  Widget? widget,
   required String testName,
   String folder = 'shapes',
   double maxDiffPercent = 0.06,
@@ -337,12 +338,19 @@ Future<void> testSvgPainterWithW3cDiff({
           child: SizedBox(
             width: size.width,
             height: size.height,
-            child: CustomPaint(painter: painter),
+            child: widget ?? CustomPaint(painter: painter),
           ),
         ),
       ),
     ),
   );
+
+  if (widget != null) {
+    await tester.runAsync(() async {
+      await Future<void>.delayed(const Duration(milliseconds: 500));
+    });
+    await tester.pumpAndSettle();
+  }
 
   final String goldenName = goldenFileName(testName, platformOverrides);
 
