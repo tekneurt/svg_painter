@@ -21,3 +21,4 @@ export 'pservers_grad_21_b.dart';
 export 'pservers_grad_22_b.dart';
 export 'pservers_pattern_01_b.dart';
 export 'pservers_pattern_02_f.dart';
+export 'pservers_pattern_04_f.dart';
