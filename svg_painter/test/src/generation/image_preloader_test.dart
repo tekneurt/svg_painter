@@ -1,8 +1,13 @@
 import 'package:build/build.dart';
 import 'package:mockito/annotations.dart';
+import 'package:mockito/mockito.dart';
 import 'package:svg_painter/src/generation/image_preloader.dart';
 import 'package:svg_painter/src/painting_model/_painting_model.dart';
+import 'package:svg_painter/src/svg_model/_svg_model.dart';
 import 'package:test/test.dart';
+import 'package:xml/xml.dart';
+
+import 'image_preloader_test.mocks.dart';
 
 @GenerateNiceMocks(<MockSpec<Object>>[
   MockSpec<BuildStep>(),
@@ -99,6 +104,34 @@ void main() {
 
         // Assert
         expect(result, equals(bytes));
+      });
+    });
+
+    group('preloadImages', () {
+      test('should load relative image href using fallback asset id', () async {
+        // Arrange
+        final buildStep = MockBuildStep();
+        final imageCache = <String, List<int>>{};
+        final svgCache = <String, SvgSvg>{};
+        final expectedBytes = <int>[10, 20, 30];
+        final XmlElement root =
+            XmlDocument.parse('<svg><image xlink:href="../images/sign.png" /></svg>').rootElement;
+        when(
+          buildStep.readAsBytes(
+            AssetId('svg_painter_fixtures', 'lib/assets/w3c/images/sign.png'),
+          ),
+        ).thenAnswer((_) async => expectedBytes);
+
+        // Act
+        await preloader.preloadImages(
+          root,
+          buildStep,
+          imageCache,
+          svgCache,
+        );
+
+        // Assert
+        expect(imageCache['../images/sign.png'], equals(expectedBytes));
       });
     });
   });

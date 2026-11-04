@@ -139,6 +139,8 @@ Future<void> loadTestFonts() async {
     'SVGFreeSansASCII': '../svg_painter/assets/fonts/free_sans',
     'SVGFreeSansASCII,sans-serif': '../svg_painter/assets/fonts/free_sans',
     'Blocky': '../svg_painter/assets/fonts/blocky',
+    's-larabie-anglepoise': '../svg_painter/assets/fonts/anglepoise',
+    'anglepoise': '../svg_painter/assets/fonts/anglepoise',
   };
 
   for (final MapEntry<String, String> entry in families.entries) {

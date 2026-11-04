@@ -99,6 +99,16 @@ class ImagePreloader {
         } catch (e) {
           log.warning('Failed to load image asset $href: $e');
         }
+      } else if (!href.startsWith('http:') && !href.startsWith('https:')) {
+        // Relative reference (e.g. ../images/sign.png from W3C test suite)
+        final String imageName = href.split('/').last;
+        final assetId = AssetId('svg_painter_fixtures', 'lib/assets/w3c/images/$imageName');
+        try {
+          final List<int> bytes = await buildStep.readAsBytes(assetId);
+          imageCache[href] = bytes;
+        } catch (e) {
+          log.warning('Failed to load relative image asset $href as $assetId: $e');
+        }
       }
     }
   }
