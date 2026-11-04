@@ -65,6 +65,25 @@ void main() {
         final failure = result as Failure<XmlDocument>;
         expect(failure.message, contains('XML parsing failed'));
       });
+
+      test('should expand internal DTD entities when present in document', () {
+        // Arrange
+        const xml = '''
+<!DOCTYPE svg [
+          <!ENTITY myShape "<path d='M10,20 L30,40 Z' />">
+        ]>
+        <svg>&myShape;</svg>''';
+
+        // Act
+        final Result<XmlDocument> result = xml.toXmlDocument();
+
+        // Assert
+        expect(result, isA<Success<XmlDocument>>());
+        final XmlDocument doc = (result as Success<XmlDocument>).value;
+        expect(doc.findAllElements('path'), hasLength(1));
+        final XmlElement pathElem = doc.findAllElements('path').first;
+        expect(pathElem.getAttribute('d'), equals('M10,20 L30,40 Z'));
+      });
     });
   });
 }

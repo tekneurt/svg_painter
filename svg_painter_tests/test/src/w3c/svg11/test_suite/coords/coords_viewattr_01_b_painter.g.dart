@@ -125,6 +125,59 @@ class _$CoordsViewattr01BPainter extends CustomPainter {
     }
     canvas.save();
     canvas.translate(20.0, 40.0);
+    {
+      final Paint paint = Paint();
+      paint.color = Colors.black;
+      paint.style = PaintingStyle.fill;
+      canvas.drawRect(Rect.fromLTWH(0.5, 0.5, 29.0, 39.0), paint);
+    }
+    {
+      final Paint paint = Paint();
+      paint.color = const Color(0xFFFFA500);
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 2.0;
+      canvas.drawRect(Rect.fromLTWH(0.5, 0.5, 29.0, 39.0), paint);
+    }
+    canvas.save();
+    canvas.translate(0.0, 5.0);
+    {
+      final Paint paint = Paint();
+      paint.color = const Color(0xFFFFFF00);
+      paint.style = PaintingStyle.fill;
+      canvas.drawCircle(const Offset(15.0, 15.0), 10.0, paint);
+    }
+    {
+      final Paint paint = Paint();
+      paint.color = Colors.black;
+      paint.style = PaintingStyle.fill;
+      canvas.drawCircle(const Offset(12.0, 12.0), 1.5, paint);
+    }
+    {
+      final Paint paint = Paint();
+      paint.color = Colors.black;
+      paint.style = PaintingStyle.fill;
+      canvas.drawCircle(const Offset(17.0, 12.0), 1.5, paint);
+    }
+    {
+      final Path path = Path()
+        ..moveTo(10.0, 19.0)
+        ..lineTo(15.0, 23.0)
+        ..lineTo(20.0, 19.0);
+      {
+        final Paint paint = Paint();
+        paint.color = Colors.black;
+        paint.style = PaintingStyle.fill;
+        canvas.drawPath(path, paint);
+      }
+      {
+        final Paint paint = Paint();
+        paint.color = Colors.black;
+        paint.style = PaintingStyle.stroke;
+        paint.strokeWidth = 2.0;
+        canvas.drawPath(path, paint);
+      }
+    }
+    canvas.restore();
     canvas.restore();
     {
       final Paint paint = Paint();
@@ -156,6 +209,13 @@ class _$CoordsViewattr01BPainter extends CustomPainter {
     }
     canvas.save();
     canvas.translate(10.0, 120.0);
+    {
+      final Paint paint = Paint();
+      paint.color = const Color(0xFF0000FF);
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 1.0;
+      canvas.drawRect(Rect.fromLTWH(0.5, 0.5, 49.0, 29.0), paint);
+    }
     canvas.restore();
     {
       final Paint paint = Paint();
@@ -187,6 +247,13 @@ class _$CoordsViewattr01BPainter extends CustomPainter {
     }
     canvas.save();
     canvas.translate(20.0, 190.0);
+    {
+      final Paint paint = Paint();
+      paint.color = const Color(0xFF0000FF);
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 1.0;
+      canvas.drawRect(Rect.fromLTWH(0.5, 0.5, 29.0, 59.0), paint);
+    }
     canvas.restore();
     canvas.save();
     canvas.translate(120.0, 50.0);
@@ -248,10 +315,70 @@ class _$CoordsViewattr01BPainter extends CustomPainter {
         );
       }
     }
+    {
+      final Paint paint = Paint();
+      paint.color = const Color(0xFF0000FF);
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 1.0;
+      canvas.drawRect(Rect.fromLTWH(0.5, 0.5, 49.0, 29.0), paint);
+    }
     canvas.save();
     canvas.clipRect(Rect.fromLTWH(0.0, 0.0, 50.0, 30.0));
     canvas.save();
     canvas.scale(0.75, 0.75);
+    {
+      final Paint paint = Paint();
+      paint.color = Colors.black;
+      paint.style = PaintingStyle.fill;
+      canvas.drawRect(Rect.fromLTWH(0.5, 0.5, 29.0, 39.0), paint);
+    }
+    {
+      final Paint paint = Paint();
+      paint.color = const Color(0xFFFFA500);
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 2.0;
+      canvas.drawRect(Rect.fromLTWH(0.5, 0.5, 29.0, 39.0), paint);
+    }
+    canvas.save();
+    canvas.translate(0.0, 5.0);
+    {
+      final Paint paint = Paint();
+      paint.color = const Color(0xFFFFFF00);
+      paint.style = PaintingStyle.fill;
+      canvas.drawCircle(const Offset(15.0, 15.0), 10.0, paint);
+    }
+    {
+      final Paint paint = Paint();
+      paint.color = Colors.black;
+      paint.style = PaintingStyle.fill;
+      canvas.drawCircle(const Offset(12.0, 12.0), 1.5, paint);
+    }
+    {
+      final Paint paint = Paint();
+      paint.color = Colors.black;
+      paint.style = PaintingStyle.fill;
+      canvas.drawCircle(const Offset(17.0, 12.0), 1.5, paint);
+    }
+    {
+      final Path path = Path()
+        ..moveTo(10.0, 19.0)
+        ..lineTo(15.0, 23.0)
+        ..lineTo(20.0, 19.0);
+      {
+        final Paint paint = Paint();
+        paint.color = Colors.black;
+        paint.style = PaintingStyle.fill;
+        canvas.drawPath(path, paint);
+      }
+      {
+        final Paint paint = Paint();
+        paint.color = Colors.black;
+        paint.style = PaintingStyle.stroke;
+        paint.strokeWidth = 2.0;
+        canvas.drawPath(path, paint);
+      }
+    }
+    canvas.restore();
     canvas.restore();
     canvas.restore();
     canvas.save();
@@ -284,11 +411,71 @@ class _$CoordsViewattr01BPainter extends CustomPainter {
         );
       }
     }
+    {
+      final Paint paint = Paint();
+      paint.color = const Color(0xFF0000FF);
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 1.0;
+      canvas.drawRect(Rect.fromLTWH(0.5, 0.5, 49.0, 29.0), paint);
+    }
     canvas.save();
     canvas.clipRect(Rect.fromLTWH(0.0, 0.0, 50.0, 30.0));
     canvas.save();
     canvas.translate(13.75, 0.0);
     canvas.scale(0.75, 0.75);
+    {
+      final Paint paint = Paint();
+      paint.color = Colors.black;
+      paint.style = PaintingStyle.fill;
+      canvas.drawRect(Rect.fromLTWH(0.5, 0.5, 29.0, 39.0), paint);
+    }
+    {
+      final Paint paint = Paint();
+      paint.color = const Color(0xFFFFA500);
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 2.0;
+      canvas.drawRect(Rect.fromLTWH(0.5, 0.5, 29.0, 39.0), paint);
+    }
+    canvas.save();
+    canvas.translate(0.0, 5.0);
+    {
+      final Paint paint = Paint();
+      paint.color = const Color(0xFFFFFF00);
+      paint.style = PaintingStyle.fill;
+      canvas.drawCircle(const Offset(15.0, 15.0), 10.0, paint);
+    }
+    {
+      final Paint paint = Paint();
+      paint.color = Colors.black;
+      paint.style = PaintingStyle.fill;
+      canvas.drawCircle(const Offset(12.0, 12.0), 1.5, paint);
+    }
+    {
+      final Paint paint = Paint();
+      paint.color = Colors.black;
+      paint.style = PaintingStyle.fill;
+      canvas.drawCircle(const Offset(17.0, 12.0), 1.5, paint);
+    }
+    {
+      final Path path = Path()
+        ..moveTo(10.0, 19.0)
+        ..lineTo(15.0, 23.0)
+        ..lineTo(20.0, 19.0);
+      {
+        final Paint paint = Paint();
+        paint.color = Colors.black;
+        paint.style = PaintingStyle.fill;
+        canvas.drawPath(path, paint);
+      }
+      {
+        final Paint paint = Paint();
+        paint.color = Colors.black;
+        paint.style = PaintingStyle.stroke;
+        paint.strokeWidth = 2.0;
+        canvas.drawPath(path, paint);
+      }
+    }
+    canvas.restore();
     canvas.restore();
     canvas.restore();
     canvas.restore();
@@ -322,11 +509,71 @@ class _$CoordsViewattr01BPainter extends CustomPainter {
         );
       }
     }
+    {
+      final Paint paint = Paint();
+      paint.color = const Color(0xFF0000FF);
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 1.0;
+      canvas.drawRect(Rect.fromLTWH(0.5, 0.5, 49.0, 29.0), paint);
+    }
     canvas.save();
     canvas.clipRect(Rect.fromLTWH(0.0, 0.0, 50.0, 30.0));
     canvas.save();
     canvas.translate(27.5, 0.0);
     canvas.scale(0.75, 0.75);
+    {
+      final Paint paint = Paint();
+      paint.color = Colors.black;
+      paint.style = PaintingStyle.fill;
+      canvas.drawRect(Rect.fromLTWH(0.5, 0.5, 29.0, 39.0), paint);
+    }
+    {
+      final Paint paint = Paint();
+      paint.color = const Color(0xFFFFA500);
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 2.0;
+      canvas.drawRect(Rect.fromLTWH(0.5, 0.5, 29.0, 39.0), paint);
+    }
+    canvas.save();
+    canvas.translate(0.0, 5.0);
+    {
+      final Paint paint = Paint();
+      paint.color = const Color(0xFFFFFF00);
+      paint.style = PaintingStyle.fill;
+      canvas.drawCircle(const Offset(15.0, 15.0), 10.0, paint);
+    }
+    {
+      final Paint paint = Paint();
+      paint.color = Colors.black;
+      paint.style = PaintingStyle.fill;
+      canvas.drawCircle(const Offset(12.0, 12.0), 1.5, paint);
+    }
+    {
+      final Paint paint = Paint();
+      paint.color = Colors.black;
+      paint.style = PaintingStyle.fill;
+      canvas.drawCircle(const Offset(17.0, 12.0), 1.5, paint);
+    }
+    {
+      final Path path = Path()
+        ..moveTo(10.0, 19.0)
+        ..lineTo(15.0, 23.0)
+        ..lineTo(20.0, 19.0);
+      {
+        final Paint paint = Paint();
+        paint.color = Colors.black;
+        paint.style = PaintingStyle.fill;
+        canvas.drawPath(path, paint);
+      }
+      {
+        final Paint paint = Paint();
+        paint.color = Colors.black;
+        paint.style = PaintingStyle.stroke;
+        paint.strokeWidth = 2.0;
+        canvas.drawPath(path, paint);
+      }
+    }
+    canvas.restore();
     canvas.restore();
     canvas.restore();
     canvas.restore();
@@ -391,8 +638,68 @@ class _$CoordsViewattr01BPainter extends CustomPainter {
         );
       }
     }
+    {
+      final Paint paint = Paint();
+      paint.color = const Color(0xFF0000FF);
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 1.0;
+      canvas.drawRect(Rect.fromLTWH(0.5, 0.5, 29.0, 59.0), paint);
+    }
     canvas.save();
     canvas.clipRect(Rect.fromLTWH(0.0, 0.0, 30.0, 60.0));
+    {
+      final Paint paint = Paint();
+      paint.color = Colors.black;
+      paint.style = PaintingStyle.fill;
+      canvas.drawRect(Rect.fromLTWH(0.5, 0.5, 29.0, 39.0), paint);
+    }
+    {
+      final Paint paint = Paint();
+      paint.color = const Color(0xFFFFA500);
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 2.0;
+      canvas.drawRect(Rect.fromLTWH(0.5, 0.5, 29.0, 39.0), paint);
+    }
+    canvas.save();
+    canvas.translate(0.0, 5.0);
+    {
+      final Paint paint = Paint();
+      paint.color = const Color(0xFFFFFF00);
+      paint.style = PaintingStyle.fill;
+      canvas.drawCircle(const Offset(15.0, 15.0), 10.0, paint);
+    }
+    {
+      final Paint paint = Paint();
+      paint.color = Colors.black;
+      paint.style = PaintingStyle.fill;
+      canvas.drawCircle(const Offset(12.0, 12.0), 1.5, paint);
+    }
+    {
+      final Paint paint = Paint();
+      paint.color = Colors.black;
+      paint.style = PaintingStyle.fill;
+      canvas.drawCircle(const Offset(17.0, 12.0), 1.5, paint);
+    }
+    {
+      final Path path = Path()
+        ..moveTo(10.0, 19.0)
+        ..lineTo(15.0, 23.0)
+        ..lineTo(20.0, 19.0);
+      {
+        final Paint paint = Paint();
+        paint.color = Colors.black;
+        paint.style = PaintingStyle.fill;
+        canvas.drawPath(path, paint);
+      }
+      {
+        final Paint paint = Paint();
+        paint.color = Colors.black;
+        paint.style = PaintingStyle.stroke;
+        paint.strokeWidth = 2.0;
+        canvas.drawPath(path, paint);
+      }
+    }
+    canvas.restore();
     canvas.restore();
     canvas.save();
     canvas.translate(50.0, 0.0);
@@ -424,10 +731,70 @@ class _$CoordsViewattr01BPainter extends CustomPainter {
         );
       }
     }
+    {
+      final Paint paint = Paint();
+      paint.color = const Color(0xFF0000FF);
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 1.0;
+      canvas.drawRect(Rect.fromLTWH(0.5, 0.5, 29.0, 59.0), paint);
+    }
     canvas.save();
     canvas.clipRect(Rect.fromLTWH(0.0, 0.0, 30.0, 60.0));
     canvas.save();
     canvas.translate(0.0, 10.0);
+    {
+      final Paint paint = Paint();
+      paint.color = Colors.black;
+      paint.style = PaintingStyle.fill;
+      canvas.drawRect(Rect.fromLTWH(0.5, 0.5, 29.0, 39.0), paint);
+    }
+    {
+      final Paint paint = Paint();
+      paint.color = const Color(0xFFFFA500);
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 2.0;
+      canvas.drawRect(Rect.fromLTWH(0.5, 0.5, 29.0, 39.0), paint);
+    }
+    canvas.save();
+    canvas.translate(0.0, 5.0);
+    {
+      final Paint paint = Paint();
+      paint.color = const Color(0xFFFFFF00);
+      paint.style = PaintingStyle.fill;
+      canvas.drawCircle(const Offset(15.0, 15.0), 10.0, paint);
+    }
+    {
+      final Paint paint = Paint();
+      paint.color = Colors.black;
+      paint.style = PaintingStyle.fill;
+      canvas.drawCircle(const Offset(12.0, 12.0), 1.5, paint);
+    }
+    {
+      final Paint paint = Paint();
+      paint.color = Colors.black;
+      paint.style = PaintingStyle.fill;
+      canvas.drawCircle(const Offset(17.0, 12.0), 1.5, paint);
+    }
+    {
+      final Path path = Path()
+        ..moveTo(10.0, 19.0)
+        ..lineTo(15.0, 23.0)
+        ..lineTo(20.0, 19.0);
+      {
+        final Paint paint = Paint();
+        paint.color = Colors.black;
+        paint.style = PaintingStyle.fill;
+        canvas.drawPath(path, paint);
+      }
+      {
+        final Paint paint = Paint();
+        paint.color = Colors.black;
+        paint.style = PaintingStyle.stroke;
+        paint.strokeWidth = 2.0;
+        canvas.drawPath(path, paint);
+      }
+    }
+    canvas.restore();
     canvas.restore();
     canvas.restore();
     canvas.restore();
@@ -461,10 +828,70 @@ class _$CoordsViewattr01BPainter extends CustomPainter {
         );
       }
     }
+    {
+      final Paint paint = Paint();
+      paint.color = const Color(0xFF0000FF);
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 1.0;
+      canvas.drawRect(Rect.fromLTWH(0.5, 0.5, 29.0, 59.0), paint);
+    }
     canvas.save();
     canvas.clipRect(Rect.fromLTWH(0.0, 0.0, 30.0, 60.0));
     canvas.save();
     canvas.translate(0.0, 20.0);
+    {
+      final Paint paint = Paint();
+      paint.color = Colors.black;
+      paint.style = PaintingStyle.fill;
+      canvas.drawRect(Rect.fromLTWH(0.5, 0.5, 29.0, 39.0), paint);
+    }
+    {
+      final Paint paint = Paint();
+      paint.color = const Color(0xFFFFA500);
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 2.0;
+      canvas.drawRect(Rect.fromLTWH(0.5, 0.5, 29.0, 39.0), paint);
+    }
+    canvas.save();
+    canvas.translate(0.0, 5.0);
+    {
+      final Paint paint = Paint();
+      paint.color = const Color(0xFFFFFF00);
+      paint.style = PaintingStyle.fill;
+      canvas.drawCircle(const Offset(15.0, 15.0), 10.0, paint);
+    }
+    {
+      final Paint paint = Paint();
+      paint.color = Colors.black;
+      paint.style = PaintingStyle.fill;
+      canvas.drawCircle(const Offset(12.0, 12.0), 1.5, paint);
+    }
+    {
+      final Paint paint = Paint();
+      paint.color = Colors.black;
+      paint.style = PaintingStyle.fill;
+      canvas.drawCircle(const Offset(17.0, 12.0), 1.5, paint);
+    }
+    {
+      final Path path = Path()
+        ..moveTo(10.0, 19.0)
+        ..lineTo(15.0, 23.0)
+        ..lineTo(20.0, 19.0);
+      {
+        final Paint paint = Paint();
+        paint.color = Colors.black;
+        paint.style = PaintingStyle.fill;
+        canvas.drawPath(path, paint);
+      }
+      {
+        final Paint paint = Paint();
+        paint.color = Colors.black;
+        paint.style = PaintingStyle.stroke;
+        paint.strokeWidth = 2.0;
+        canvas.drawPath(path, paint);
+      }
+    }
+    canvas.restore();
     canvas.restore();
     canvas.restore();
     canvas.restore();
@@ -529,10 +956,70 @@ class _$CoordsViewattr01BPainter extends CustomPainter {
         );
       }
     }
+    {
+      final Paint paint = Paint();
+      paint.color = const Color(0xFF0000FF);
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 1.0;
+      canvas.drawRect(Rect.fromLTWH(0.5, 0.5, 29.0, 59.0), paint);
+    }
     canvas.save();
     canvas.clipRect(Rect.fromLTWH(0.0, 0.0, 30.0, 60.0));
     canvas.save();
     canvas.scale(1.5, 1.5);
+    {
+      final Paint paint = Paint();
+      paint.color = Colors.black;
+      paint.style = PaintingStyle.fill;
+      canvas.drawRect(Rect.fromLTWH(0.5, 0.5, 29.0, 39.0), paint);
+    }
+    {
+      final Paint paint = Paint();
+      paint.color = const Color(0xFFFFA500);
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 2.0;
+      canvas.drawRect(Rect.fromLTWH(0.5, 0.5, 29.0, 39.0), paint);
+    }
+    canvas.save();
+    canvas.translate(0.0, 5.0);
+    {
+      final Paint paint = Paint();
+      paint.color = const Color(0xFFFFFF00);
+      paint.style = PaintingStyle.fill;
+      canvas.drawCircle(const Offset(15.0, 15.0), 10.0, paint);
+    }
+    {
+      final Paint paint = Paint();
+      paint.color = Colors.black;
+      paint.style = PaintingStyle.fill;
+      canvas.drawCircle(const Offset(12.0, 12.0), 1.5, paint);
+    }
+    {
+      final Paint paint = Paint();
+      paint.color = Colors.black;
+      paint.style = PaintingStyle.fill;
+      canvas.drawCircle(const Offset(17.0, 12.0), 1.5, paint);
+    }
+    {
+      final Path path = Path()
+        ..moveTo(10.0, 19.0)
+        ..lineTo(15.0, 23.0)
+        ..lineTo(20.0, 19.0);
+      {
+        final Paint paint = Paint();
+        paint.color = Colors.black;
+        paint.style = PaintingStyle.fill;
+        canvas.drawPath(path, paint);
+      }
+      {
+        final Paint paint = Paint();
+        paint.color = Colors.black;
+        paint.style = PaintingStyle.stroke;
+        paint.strokeWidth = 2.0;
+        canvas.drawPath(path, paint);
+      }
+    }
+    canvas.restore();
     canvas.restore();
     canvas.restore();
     canvas.save();
@@ -565,11 +1052,71 @@ class _$CoordsViewattr01BPainter extends CustomPainter {
         );
       }
     }
+    {
+      final Paint paint = Paint();
+      paint.color = const Color(0xFF0000FF);
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 1.0;
+      canvas.drawRect(Rect.fromLTWH(0.5, 0.5, 29.0, 59.0), paint);
+    }
     canvas.save();
     canvas.clipRect(Rect.fromLTWH(0.0, 0.0, 30.0, 60.0));
     canvas.save();
     canvas.translate(-7.5, 0.0);
     canvas.scale(1.5, 1.5);
+    {
+      final Paint paint = Paint();
+      paint.color = Colors.black;
+      paint.style = PaintingStyle.fill;
+      canvas.drawRect(Rect.fromLTWH(0.5, 0.5, 29.0, 39.0), paint);
+    }
+    {
+      final Paint paint = Paint();
+      paint.color = const Color(0xFFFFA500);
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 2.0;
+      canvas.drawRect(Rect.fromLTWH(0.5, 0.5, 29.0, 39.0), paint);
+    }
+    canvas.save();
+    canvas.translate(0.0, 5.0);
+    {
+      final Paint paint = Paint();
+      paint.color = const Color(0xFFFFFF00);
+      paint.style = PaintingStyle.fill;
+      canvas.drawCircle(const Offset(15.0, 15.0), 10.0, paint);
+    }
+    {
+      final Paint paint = Paint();
+      paint.color = Colors.black;
+      paint.style = PaintingStyle.fill;
+      canvas.drawCircle(const Offset(12.0, 12.0), 1.5, paint);
+    }
+    {
+      final Paint paint = Paint();
+      paint.color = Colors.black;
+      paint.style = PaintingStyle.fill;
+      canvas.drawCircle(const Offset(17.0, 12.0), 1.5, paint);
+    }
+    {
+      final Path path = Path()
+        ..moveTo(10.0, 19.0)
+        ..lineTo(15.0, 23.0)
+        ..lineTo(20.0, 19.0);
+      {
+        final Paint paint = Paint();
+        paint.color = Colors.black;
+        paint.style = PaintingStyle.fill;
+        canvas.drawPath(path, paint);
+      }
+      {
+        final Paint paint = Paint();
+        paint.color = Colors.black;
+        paint.style = PaintingStyle.stroke;
+        paint.strokeWidth = 2.0;
+        canvas.drawPath(path, paint);
+      }
+    }
+    canvas.restore();
     canvas.restore();
     canvas.restore();
     canvas.restore();
@@ -603,11 +1150,71 @@ class _$CoordsViewattr01BPainter extends CustomPainter {
         );
       }
     }
+    {
+      final Paint paint = Paint();
+      paint.color = const Color(0xFF0000FF);
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 1.0;
+      canvas.drawRect(Rect.fromLTWH(0.5, 0.5, 29.0, 59.0), paint);
+    }
     canvas.save();
     canvas.clipRect(Rect.fromLTWH(0.0, 0.0, 30.0, 60.0));
     canvas.save();
     canvas.translate(-15.0, 0.0);
     canvas.scale(1.5, 1.5);
+    {
+      final Paint paint = Paint();
+      paint.color = Colors.black;
+      paint.style = PaintingStyle.fill;
+      canvas.drawRect(Rect.fromLTWH(0.5, 0.5, 29.0, 39.0), paint);
+    }
+    {
+      final Paint paint = Paint();
+      paint.color = const Color(0xFFFFA500);
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 2.0;
+      canvas.drawRect(Rect.fromLTWH(0.5, 0.5, 29.0, 39.0), paint);
+    }
+    canvas.save();
+    canvas.translate(0.0, 5.0);
+    {
+      final Paint paint = Paint();
+      paint.color = const Color(0xFFFFFF00);
+      paint.style = PaintingStyle.fill;
+      canvas.drawCircle(const Offset(15.0, 15.0), 10.0, paint);
+    }
+    {
+      final Paint paint = Paint();
+      paint.color = Colors.black;
+      paint.style = PaintingStyle.fill;
+      canvas.drawCircle(const Offset(12.0, 12.0), 1.5, paint);
+    }
+    {
+      final Paint paint = Paint();
+      paint.color = Colors.black;
+      paint.style = PaintingStyle.fill;
+      canvas.drawCircle(const Offset(17.0, 12.0), 1.5, paint);
+    }
+    {
+      final Path path = Path()
+        ..moveTo(10.0, 19.0)
+        ..lineTo(15.0, 23.0)
+        ..lineTo(20.0, 19.0);
+      {
+        final Paint paint = Paint();
+        paint.color = Colors.black;
+        paint.style = PaintingStyle.fill;
+        canvas.drawPath(path, paint);
+      }
+      {
+        final Paint paint = Paint();
+        paint.color = Colors.black;
+        paint.style = PaintingStyle.stroke;
+        paint.strokeWidth = 2.0;
+        canvas.drawPath(path, paint);
+      }
+    }
+    canvas.restore();
     canvas.restore();
     canvas.restore();
     canvas.restore();
@@ -673,10 +1280,70 @@ class _$CoordsViewattr01BPainter extends CustomPainter {
         );
       }
     }
+    {
+      final Paint paint = Paint();
+      paint.color = const Color(0xFF0000FF);
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 1.0;
+      canvas.drawRect(Rect.fromLTWH(0.5, 0.5, 49.0, 29.0), paint);
+    }
     canvas.save();
     canvas.clipRect(Rect.fromLTWH(0.0, 0.0, 50.0, 30.0));
     canvas.save();
     canvas.scale(1.6666666666666667, 1.6666666666666667);
+    {
+      final Paint paint = Paint();
+      paint.color = Colors.black;
+      paint.style = PaintingStyle.fill;
+      canvas.drawRect(Rect.fromLTWH(0.5, 0.5, 29.0, 39.0), paint);
+    }
+    {
+      final Paint paint = Paint();
+      paint.color = const Color(0xFFFFA500);
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 2.0;
+      canvas.drawRect(Rect.fromLTWH(0.5, 0.5, 29.0, 39.0), paint);
+    }
+    canvas.save();
+    canvas.translate(0.0, 5.0);
+    {
+      final Paint paint = Paint();
+      paint.color = const Color(0xFFFFFF00);
+      paint.style = PaintingStyle.fill;
+      canvas.drawCircle(const Offset(15.0, 15.0), 10.0, paint);
+    }
+    {
+      final Paint paint = Paint();
+      paint.color = Colors.black;
+      paint.style = PaintingStyle.fill;
+      canvas.drawCircle(const Offset(12.0, 12.0), 1.5, paint);
+    }
+    {
+      final Paint paint = Paint();
+      paint.color = Colors.black;
+      paint.style = PaintingStyle.fill;
+      canvas.drawCircle(const Offset(17.0, 12.0), 1.5, paint);
+    }
+    {
+      final Path path = Path()
+        ..moveTo(10.0, 19.0)
+        ..lineTo(15.0, 23.0)
+        ..lineTo(20.0, 19.0);
+      {
+        final Paint paint = Paint();
+        paint.color = Colors.black;
+        paint.style = PaintingStyle.fill;
+        canvas.drawPath(path, paint);
+      }
+      {
+        final Paint paint = Paint();
+        paint.color = Colors.black;
+        paint.style = PaintingStyle.stroke;
+        paint.strokeWidth = 2.0;
+        canvas.drawPath(path, paint);
+      }
+    }
+    canvas.restore();
     canvas.restore();
     canvas.restore();
     canvas.save();
@@ -709,11 +1376,71 @@ class _$CoordsViewattr01BPainter extends CustomPainter {
         );
       }
     }
+    {
+      final Paint paint = Paint();
+      paint.color = const Color(0xFF0000FF);
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 1.0;
+      canvas.drawRect(Rect.fromLTWH(0.5, 0.5, 49.0, 29.0), paint);
+    }
     canvas.save();
     canvas.clipRect(Rect.fromLTWH(0.0, 0.0, 50.0, 30.0));
     canvas.save();
     canvas.translate(0.0, -18.333333333333336);
     canvas.scale(1.6666666666666667, 1.6666666666666667);
+    {
+      final Paint paint = Paint();
+      paint.color = Colors.black;
+      paint.style = PaintingStyle.fill;
+      canvas.drawRect(Rect.fromLTWH(0.5, 0.5, 29.0, 39.0), paint);
+    }
+    {
+      final Paint paint = Paint();
+      paint.color = const Color(0xFFFFA500);
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 2.0;
+      canvas.drawRect(Rect.fromLTWH(0.5, 0.5, 29.0, 39.0), paint);
+    }
+    canvas.save();
+    canvas.translate(0.0, 5.0);
+    {
+      final Paint paint = Paint();
+      paint.color = const Color(0xFFFFFF00);
+      paint.style = PaintingStyle.fill;
+      canvas.drawCircle(const Offset(15.0, 15.0), 10.0, paint);
+    }
+    {
+      final Paint paint = Paint();
+      paint.color = Colors.black;
+      paint.style = PaintingStyle.fill;
+      canvas.drawCircle(const Offset(12.0, 12.0), 1.5, paint);
+    }
+    {
+      final Paint paint = Paint();
+      paint.color = Colors.black;
+      paint.style = PaintingStyle.fill;
+      canvas.drawCircle(const Offset(17.0, 12.0), 1.5, paint);
+    }
+    {
+      final Path path = Path()
+        ..moveTo(10.0, 19.0)
+        ..lineTo(15.0, 23.0)
+        ..lineTo(20.0, 19.0);
+      {
+        final Paint paint = Paint();
+        paint.color = Colors.black;
+        paint.style = PaintingStyle.fill;
+        canvas.drawPath(path, paint);
+      }
+      {
+        final Paint paint = Paint();
+        paint.color = Colors.black;
+        paint.style = PaintingStyle.stroke;
+        paint.strokeWidth = 2.0;
+        canvas.drawPath(path, paint);
+      }
+    }
+    canvas.restore();
     canvas.restore();
     canvas.restore();
     canvas.restore();
@@ -747,11 +1474,71 @@ class _$CoordsViewattr01BPainter extends CustomPainter {
         );
       }
     }
+    {
+      final Paint paint = Paint();
+      paint.color = const Color(0xFF0000FF);
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 1.0;
+      canvas.drawRect(Rect.fromLTWH(0.5, 0.5, 49.0, 29.0), paint);
+    }
     canvas.save();
     canvas.clipRect(Rect.fromLTWH(0.0, 0.0, 50.0, 30.0));
     canvas.save();
     canvas.translate(0.0, -36.66666666666667);
     canvas.scale(1.6666666666666667, 1.6666666666666667);
+    {
+      final Paint paint = Paint();
+      paint.color = Colors.black;
+      paint.style = PaintingStyle.fill;
+      canvas.drawRect(Rect.fromLTWH(0.5, 0.5, 29.0, 39.0), paint);
+    }
+    {
+      final Paint paint = Paint();
+      paint.color = const Color(0xFFFFA500);
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 2.0;
+      canvas.drawRect(Rect.fromLTWH(0.5, 0.5, 29.0, 39.0), paint);
+    }
+    canvas.save();
+    canvas.translate(0.0, 5.0);
+    {
+      final Paint paint = Paint();
+      paint.color = const Color(0xFFFFFF00);
+      paint.style = PaintingStyle.fill;
+      canvas.drawCircle(const Offset(15.0, 15.0), 10.0, paint);
+    }
+    {
+      final Paint paint = Paint();
+      paint.color = Colors.black;
+      paint.style = PaintingStyle.fill;
+      canvas.drawCircle(const Offset(12.0, 12.0), 1.5, paint);
+    }
+    {
+      final Paint paint = Paint();
+      paint.color = Colors.black;
+      paint.style = PaintingStyle.fill;
+      canvas.drawCircle(const Offset(17.0, 12.0), 1.5, paint);
+    }
+    {
+      final Path path = Path()
+        ..moveTo(10.0, 19.0)
+        ..lineTo(15.0, 23.0)
+        ..lineTo(20.0, 19.0);
+      {
+        final Paint paint = Paint();
+        paint.color = Colors.black;
+        paint.style = PaintingStyle.fill;
+        canvas.drawPath(path, paint);
+      }
+      {
+        final Paint paint = Paint();
+        paint.color = Colors.black;
+        paint.style = PaintingStyle.stroke;
+        paint.strokeWidth = 2.0;
+        canvas.drawPath(path, paint);
+      }
+    }
+    canvas.restore();
     canvas.restore();
     canvas.restore();
     canvas.restore();

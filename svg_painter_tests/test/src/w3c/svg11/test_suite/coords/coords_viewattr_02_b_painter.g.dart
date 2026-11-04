@@ -2822,6 +2822,13 @@ class _$CoordsViewattr02BPainter extends CustomPainter {
     }
     canvas.save();
     canvas.translate(10.0, 120.0);
+    {
+      final Paint paint = Paint();
+      paint.color = const Color(0xFF0000FF);
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 1.0;
+      canvas.drawRect(Rect.fromLTWH(0.5, 0.5, 49.0, 29.0), paint);
+    }
     canvas.restore();
     {
       final Paint paint = Paint();
@@ -2853,6 +2860,13 @@ class _$CoordsViewattr02BPainter extends CustomPainter {
     }
     canvas.save();
     canvas.translate(20.0, 190.0);
+    {
+      final Paint paint = Paint();
+      paint.color = const Color(0xFF0000FF);
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 1.0;
+      canvas.drawRect(Rect.fromLTWH(0.5, 0.5, 29.0, 59.0), paint);
+    }
     canvas.restore();
     canvas.save();
     canvas.translate(120.0, 50.0);
@@ -2914,6 +2928,13 @@ class _$CoordsViewattr02BPainter extends CustomPainter {
         );
       }
     }
+    {
+      final Paint paint = Paint();
+      paint.color = const Color(0xFF0000FF);
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 1.0;
+      canvas.drawRect(Rect.fromLTWH(0.5, 0.5, 49.0, 29.0), paint);
+    }
     if (image0 != null) {
       final dynamic img = image0;
       final double srcW = (img.width as int).toDouble();
@@ -2955,6 +2976,13 @@ class _$CoordsViewattr02BPainter extends CustomPainter {
           ),
         );
       }
+    }
+    {
+      final Paint paint = Paint();
+      paint.color = const Color(0xFF0000FF);
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 1.0;
+      canvas.drawRect(Rect.fromLTWH(0.5, 0.5, 49.0, 29.0), paint);
     }
     if (image0 != null) {
       final dynamic img = image0;
@@ -2998,6 +3026,13 @@ class _$CoordsViewattr02BPainter extends CustomPainter {
           ),
         );
       }
+    }
+    {
+      final Paint paint = Paint();
+      paint.color = const Color(0xFF0000FF);
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 1.0;
+      canvas.drawRect(Rect.fromLTWH(0.5, 0.5, 49.0, 29.0), paint);
     }
     if (image0 != null) {
       final dynamic img = image0;
@@ -3073,6 +3108,13 @@ class _$CoordsViewattr02BPainter extends CustomPainter {
         );
       }
     }
+    {
+      final Paint paint = Paint();
+      paint.color = const Color(0xFF0000FF);
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 1.0;
+      canvas.drawRect(Rect.fromLTWH(0.5, 0.5, 29.0, 59.0), paint);
+    }
     if (image0 != null) {
       final dynamic img = image0;
       final double srcW = (img.width as int).toDouble();
@@ -3114,6 +3156,13 @@ class _$CoordsViewattr02BPainter extends CustomPainter {
           ),
         );
       }
+    }
+    {
+      final Paint paint = Paint();
+      paint.color = const Color(0xFF0000FF);
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 1.0;
+      canvas.drawRect(Rect.fromLTWH(0.5, 0.5, 29.0, 59.0), paint);
     }
     if (image0 != null) {
       final dynamic img = image0;
@@ -3157,6 +3206,13 @@ class _$CoordsViewattr02BPainter extends CustomPainter {
           ),
         );
       }
+    }
+    {
+      final Paint paint = Paint();
+      paint.color = const Color(0xFF0000FF);
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 1.0;
+      canvas.drawRect(Rect.fromLTWH(0.5, 0.5, 29.0, 59.0), paint);
     }
     if (image0 != null) {
       final dynamic img = image0;
@@ -3232,6 +3288,13 @@ class _$CoordsViewattr02BPainter extends CustomPainter {
         );
       }
     }
+    {
+      final Paint paint = Paint();
+      paint.color = const Color(0xFF0000FF);
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 1.0;
+      canvas.drawRect(Rect.fromLTWH(0.5, 0.5, 29.0, 59.0), paint);
+    }
     canvas.save();
     canvas.clipRect(Rect.fromLTWH(0.0, 0.0, 30.0, 60.0));
     if (image0 != null) {
@@ -3276,6 +3339,13 @@ class _$CoordsViewattr02BPainter extends CustomPainter {
           ),
         );
       }
+    }
+    {
+      final Paint paint = Paint();
+      paint.color = const Color(0xFF0000FF);
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 1.0;
+      canvas.drawRect(Rect.fromLTWH(0.5, 0.5, 29.0, 59.0), paint);
     }
     canvas.save();
     canvas.clipRect(Rect.fromLTWH(0.0, 0.0, 30.0, 60.0));
@@ -3322,6 +3392,13 @@ class _$CoordsViewattr02BPainter extends CustomPainter {
           ),
         );
       }
+    }
+    {
+      final Paint paint = Paint();
+      paint.color = const Color(0xFF0000FF);
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 1.0;
+      canvas.drawRect(Rect.fromLTWH(0.5, 0.5, 29.0, 59.0), paint);
     }
     canvas.save();
     canvas.clipRect(Rect.fromLTWH(0.0, 0.0, 30.0, 60.0));
@@ -3401,6 +3478,13 @@ class _$CoordsViewattr02BPainter extends CustomPainter {
         );
       }
     }
+    {
+      final Paint paint = Paint();
+      paint.color = const Color(0xFF0000FF);
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 1.0;
+      canvas.drawRect(Rect.fromLTWH(0.5, 0.5, 49.0, 29.0), paint);
+    }
     canvas.save();
     canvas.clipRect(Rect.fromLTWH(0.0, 0.0, 50.0, 30.0));
     if (image0 != null) {
@@ -3445,6 +3529,13 @@ class _$CoordsViewattr02BPainter extends CustomPainter {
           ),
         );
       }
+    }
+    {
+      final Paint paint = Paint();
+      paint.color = const Color(0xFF0000FF);
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 1.0;
+      canvas.drawRect(Rect.fromLTWH(0.5, 0.5, 49.0, 29.0), paint);
     }
     canvas.save();
     canvas.clipRect(Rect.fromLTWH(0.0, 0.0, 50.0, 30.0));
@@ -3491,6 +3582,13 @@ class _$CoordsViewattr02BPainter extends CustomPainter {
           ),
         );
       }
+    }
+    {
+      final Paint paint = Paint();
+      paint.color = const Color(0xFF0000FF);
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 1.0;
+      canvas.drawRect(Rect.fromLTWH(0.5, 0.5, 49.0, 29.0), paint);
     }
     canvas.save();
     canvas.clipRect(Rect.fromLTWH(0.0, 0.0, 50.0, 30.0));
