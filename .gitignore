@@ -83,6 +83,8 @@ analysis_benchmark.json
 .pub/
 build/
 flutter_*.png
+# svg_painter specific addition: Re-include test goldens and reference PNGs matching flutter_*.png in test suites
+!**/test/**/flutter_*.png
 linked_*.ds
 unlinked.ds
 unlinked_spec.ds
