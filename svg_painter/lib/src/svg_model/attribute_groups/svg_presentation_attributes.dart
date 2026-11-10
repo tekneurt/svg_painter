@@ -113,8 +113,8 @@ final class SvgPresentationAttributes {
       marker: _inheritMarker(marker, parent?.marker),
       paintOrder: paintOrder ?? parent?.paintOrder,
       visibility: effectiveVisibility,
-      // Non-inherited groups (opacity, transform, vector-effect, overflow, etc. do NOT inherit)
-      graphics: graphics,
+      // Non-inherited groups (opacity, transform, vector-effect, overflow, etc. do NOT inherit, but clipRule does)
+      graphics: _inheritGraphics(graphics, parent?.graphics),
       vectorEffect: vectorEffect,
       display: effectiveDisplay,
       overflow: overflow,
@@ -182,7 +182,32 @@ final class SvgPresentationAttributes {
       transformAttributes: b.transformAttributes ?? a.transformAttributes,
       mask: b.mask ?? a.mask,
       clipPath: b.clipPath ?? a.clipPath,
+      clipRule: b.clipRule ?? a.clipRule,
       filter: b.filter ?? a.filter,
+    );
+  }
+
+  static SvgGraphicsAttributes? _inheritGraphics(
+    SvgGraphicsAttributes? child,
+    SvgGraphicsAttributes? parent,
+  ) {
+    if (parent == null) {
+      return child;
+    }
+    final SvgClipRule? effectiveClipRule = child?.clipRule ?? parent.clipRule;
+    if (child == null) {
+      if (effectiveClipRule == null) {
+        return null;
+      }
+      return SvgGraphicsAttributes(clipRule: effectiveClipRule);
+    }
+    return SvgGraphicsAttributes(
+      opacity: child.opacity,
+      transformAttributes: child.transformAttributes,
+      mask: child.mask,
+      clipPath: child.clipPath,
+      clipRule: effectiveClipRule,
+      filter: child.filter,
     );
   }
 

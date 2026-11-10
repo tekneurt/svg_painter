@@ -1,6 +1,7 @@
 import 'package:svg_painter_annotation/svg_painter_annotation.dart';
 
 import '../../painting_model/_painting_model.dart';
+import '../../svg_model/_svg_model.dart';
 import '../command_generator.dart';
 import '../generator_buffer.dart';
 import '../models.dart';
@@ -81,7 +82,7 @@ class ClipPathGenerator extends CommandGenerator<DefineClipPath> {
       case DrawLine(:final double x1, :final double y1, :final double x2, :final double y2):
         buffer.writeln('path.moveTo($x1, $y1);');
         buffer.writeln('path.lineTo($x2, $y2);');
-      case DrawPolygon(:final List<double> points):
+      case DrawPolygon(:final List<double> points, :final PaintingStyle style):
         if (points.isNotEmpty) {
           buffer.writeBlock('{', () {
             buffer.writeln('final Path polyPath = Path()');
@@ -92,6 +93,11 @@ class ClipPathGenerator extends CommandGenerator<DefineClipPath> {
             }
             buffer.writeln('..close();');
             buffer.outdent();
+            if (style.clipRule == SvgClipRule.evenodd ||
+                style.fill?.fillRule == SvgFillRule.evenodd) {
+              buffer.writeln('polyPath.fillType = PathFillType.evenOdd;');
+              buffer.writeln('path.fillType = PathFillType.evenOdd;');
+            }
             buffer.writeln('path.addPath(polyPath, Offset.zero);');
           });
         }
@@ -109,7 +115,7 @@ class ClipPathGenerator extends CommandGenerator<DefineClipPath> {
             buffer.writeln('path.addPath(polyPath, Offset.zero);');
           });
         }
-      case DrawPath(:final List<PathOperation> operations):
+      case DrawPath(:final List<PathOperation> operations, :final PaintingStyle style):
         buffer.writeBlock('{', () {
           buffer.writeln('final Path subPath = Path()');
           buffer.indent();
@@ -153,6 +159,11 @@ class ClipPathGenerator extends CommandGenerator<DefineClipPath> {
           }
           buffer.outdent();
           buffer.writeln(';');
+          if (style.clipRule == SvgClipRule.evenodd ||
+              style.fill?.fillRule == SvgFillRule.evenodd) {
+            buffer.writeln('subPath.fillType = PathFillType.evenOdd;');
+            buffer.writeln('path.fillType = PathFillType.evenOdd;');
+          }
           buffer.writeln('path.addPath(subPath, Offset.zero);');
         });
       case DrawGroup(:final List<PaintCommand> commands):

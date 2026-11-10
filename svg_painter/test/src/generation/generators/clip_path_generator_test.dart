@@ -2,6 +2,7 @@ import 'package:svg_painter/src/generation/generator_buffer.dart';
 import 'package:svg_painter/src/generation/generators/clip_path_generator.dart';
 import 'package:svg_painter/src/painting_model/paint_command.dart';
 import 'package:svg_painter/src/painting_model/styles/painting_style.dart';
+import 'package:svg_painter/src/svg_model/svg_value.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -142,5 +143,33 @@ void main() {
         );
       },
     );
+
+    test('should set path fillType to evenOdd when child path has clipRule evenodd', () {
+      // Arrange
+      const generator = ClipPathGenerator();
+      const evenOddStyle = PaintingStyle(clipRule: SvgClipRule.evenodd);
+      const command = DefineClipPath(
+        id: 'evenOddClip',
+        commands: <PaintCommand>[
+          DrawPath(
+            operations: <PathOperation>[
+              MoveTo(200.0, 40.0),
+              LineTo(220.0, 40.0),
+              ClosePath(),
+            ],
+            style: evenOddStyle,
+          ),
+        ],
+      );
+      final buffer = GeneratorBuffer();
+
+      // Act
+      generator.generate(command, buffer);
+
+      // Assert
+      final output = buffer.toString();
+      expect(output, contains('subPath.fillType = PathFillType.evenOdd;'));
+      expect(output, contains('path.fillType = PathFillType.evenOdd;'));
+    });
   });
 }

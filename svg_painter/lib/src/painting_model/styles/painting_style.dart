@@ -70,10 +70,14 @@ final class PaintingStyle {
     this.paintOrder = SvgPaintOrder.normal,
     this.vectorEffect = SvgVectorEffect.none,
     this.strokeWidth = 1.0,
+    this.clipRule = SvgClipRule.nonzero,
   });
 
   /// The width of the stroke (used e.g. for marker strokeWidth scaling), even if stroke is none.
   final double strokeWidth;
+
+  /// The clipping rule (nonzero or evenodd) for elements that define a clip path.
+  final SvgClipRule clipRule;
 
   /// The filling style, or null if the element is not filled.
   final PaintingFillStyle? fill;
@@ -138,6 +142,7 @@ final class PaintingStyle {
       if (paintOrder != SvgPaintOrder.normal) 'paintOrder: $paintOrder',
       if (vectorEffect != SvgVectorEffect.none) 'vectorEffect: $vectorEffect',
       if (strokeWidth != 1.0) 'strokeWidth: $strokeWidth',
+      if (clipRule != SvgClipRule.nonzero) 'clipRule: $clipRule',
     ];
     if (parts.isEmpty) {
       return 'PaintingStyle()';

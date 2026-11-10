@@ -110,6 +110,7 @@ extension ToCommonAttributes on XmlElement {
         ),
         mask: getAttribute(XmlAttributeName.mask.name),
         clipPath: getAttribute(XmlAttributeName.clipPath.name),
+        clipRule: toSvgValueOrNull<SvgClipRule>(elementName, XmlAttributeName.clipRule),
         filter: getAttribute(XmlAttributeName.filter.name),
       ),
       marker:

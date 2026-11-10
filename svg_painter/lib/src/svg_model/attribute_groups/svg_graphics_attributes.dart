@@ -11,6 +11,7 @@ final class SvgGraphicsAttributes {
     this.transformAttributes,
     this.mask,
     this.clipPath,
+    this.clipRule,
     this.filter,
   });
 
@@ -26,6 +27,9 @@ final class SvgGraphicsAttributes {
   /// The reference to a clipPath element (mapped from `clip-path` attribute).
   final String? clipPath;
 
+  /// The algorithm used to determine what parts of the canvas are inside a clipping path (mapped from `clip-rule` attribute).
+  final SvgClipRule? clipRule;
+
   /// The reference to a filter element (mapped from `filter` attribute).
   final String? filter;
 
@@ -36,6 +40,7 @@ final class SvgGraphicsAttributes {
       if (transformAttributes != null) 'transform: $transformAttributes',
       if (mask != null) 'mask: $mask',
       if (clipPath != null) 'clip-path: $clipPath',
+      if (clipRule != null) 'clip-rule: $clipRule',
       if (filter != null) 'filter: $filter',
     ];
     return 'SvgGraphicsAttributes(${parts.join(', ')})';

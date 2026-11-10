@@ -312,21 +312,25 @@ Future<void> testSvgPainterNative({
   tester.view.resetPhysicalSize();
 }
 
-/// Tests a W3C SVG painter against its Flutter golden file, and compares
-/// it against the official W3C reference image to isolate and verify the stroke
-/// antialiasing difference.
-Future<void> testSvgPainterWithW3cDiff({
+/// Tests an SVG painter against its Flutter golden file, and compares
+/// it against an official reference image (e.g., W3C, flutter_svg) to isolate
+/// and verify any visual differences.
+Future<void> testSvgPainterWithReferenceDiff({
   required WidgetTester tester,
   required CustomPainter painter,
   Widget? widget,
   required String testName,
-  String folder = 'shapes',
+  required String relativeGoldenPath,
+  required String diskBasePath,
+  String referenceDirName = 'reference',
+  Size? canvasSize,
   double maxDiffPercent = 0.06,
   Set<TargetPlatform>? platformOverrides = const <TargetPlatform>{TargetPlatform.macOS},
+  String testSuiteName = 'Reference',
 }) async {
   tester.view.devicePixelRatio = 1.0;
 
-  final size = (painter as dynamic).viewBox as Size;
+  final Size size = canvasSize ?? (painter as dynamic).viewBox as Size;
   tester.view.physicalSize = size;
 
   final GlobalKey repaintBoundaryKey = GlobalKey();
@@ -359,25 +363,25 @@ Future<void> testSvgPainterWithW3cDiff({
   // 1. Primary Regression Test: Test against Flutter golden (0.00% diff).
   await expectLater(
     find.byKey(repaintBoundaryKey),
-    matchesGoldenFile('$folder/goldens/$goldenName'),
+    matchesGoldenFile('$relativeGoldenPath/$goldenName'),
   );
 
-  // 2. W3C Reference Comparison & Diff Isolation:
+  // 2. Reference Comparison & Diff Isolation:
   await tester.runAsync(() async {
     final goldenFile = File(
-      'test/src/w3c/svg11/test_suite/$folder/goldens/$goldenName',
+      '$diskBasePath/goldens/$goldenName',
     );
-    final w3cReferenceFile = File(
-      'test/src/w3c/svg11/test_suite/$folder/w3c_reference/$testName.png',
+    final referenceFile = File(
+      '$diskBasePath/$referenceDirName/$testName.png',
     );
 
-    if (goldenFile.existsSync() && w3cReferenceFile.existsSync()) {
+    if (goldenFile.existsSync() && referenceFile.existsSync()) {
       final Uint8List renderedBytes = await goldenFile.readAsBytes();
-      final Uint8List w3cBytes = await w3cReferenceFile.readAsBytes();
+      final Uint8List referenceBytes = await referenceFile.readAsBytes();
 
       final ComparisonResult comparison = await GoldenFileComparator.compareLists(
         renderedBytes,
-        w3cBytes,
+        referenceBytes,
       );
 
       final ui.Image? isolatedDiff = comparison.diffs?['isolatedDiff'];
@@ -387,7 +391,7 @@ Future<void> testSvgPainterWithW3cDiff({
         );
         if (diffByteData != null) {
           final diffFile = File(
-            'test/src/w3c/svg11/test_suite/$folder/w3c_reference/${testName}_diff.png',
+            '$diskBasePath/$referenceDirName/${testName}_diff.png',
           );
           await diffFile.parent.create(recursive: true);
           await diffFile.writeAsBytes(diffByteData.buffer.asUint8List());
@@ -398,7 +402,7 @@ Future<void> testSvgPainterWithW3cDiff({
         comparison.diffPercent,
         lessThanOrEqualTo(maxDiffPercent),
         reason:
-            'W3C pixel diff of ${(comparison.diffPercent * 100).toStringAsFixed(2)}% '
+            '$testSuiteName pixel diff of ${(comparison.diffPercent * 100).toStringAsFixed(2)}% '
             'exceeded expected maximum AA tolerance of ${(maxDiffPercent * 100).toStringAsFixed(2)}%',
       );
 
@@ -408,6 +412,58 @@ Future<void> testSvgPainterWithW3cDiff({
 
   tester.view.resetDevicePixelRatio();
   tester.view.resetPhysicalSize();
+}
+
+/// Tests a W3C SVG painter against its Flutter golden file, and compares
+/// it against the official W3C reference image to isolate and verify the stroke
+/// antialiasing difference.
+Future<void> testSvgPainterWithW3cDiff({
+  required WidgetTester tester,
+  required CustomPainter painter,
+  Widget? widget,
+  required String testName,
+  String folder = 'shapes',
+  double maxDiffPercent = 0.06,
+  Set<TargetPlatform>? platformOverrides = const <TargetPlatform>{TargetPlatform.macOS},
+}) async {
+  await testSvgPainterWithReferenceDiff(
+    tester: tester,
+    painter: painter,
+    widget: widget,
+    testName: testName,
+    relativeGoldenPath: '$folder/goldens',
+    diskBasePath: 'test/src/w3c/svg11/test_suite/$folder',
+    referenceDirName: 'w3c_reference',
+    maxDiffPercent: maxDiffPercent,
+    platformOverrides: platformOverrides,
+    testSuiteName: 'W3C',
+  );
+}
+
+/// Tests a flutter_svg painter against its Flutter golden file, and compares
+/// it against the official flutter_svg reference image.
+Future<void> testSvgPainterWithFlutterSvgDiff({
+  required WidgetTester tester,
+  required CustomPainter painter,
+  Widget? widget,
+  required String testName,
+  Size? canvasSize,
+  double maxDiffPercent = 0.05,
+  Set<TargetPlatform>? platformOverrides = const <TargetPlatform>{TargetPlatform.macOS},
+}) async {
+  await testSvgPainterWithReferenceDiff(
+    tester: tester,
+    painter: painter,
+    widget: widget,
+    testName: testName,
+    relativeGoldenPath: 'goldens',
+    diskBasePath: 'test/src/flutter_svg',
+    referenceDirName: 'flutter_svg_reference',
+    canvasSize: canvasSize,
+    maxDiffPercent: maxDiffPercent,
+    platformOverrides: platformOverrides,
+    testSuiteName: 'flutter_svg',
+  );
 }
 
 /// Runs golden tests for a painter based on the [tests] configuration.

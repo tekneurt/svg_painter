@@ -13,6 +13,7 @@ part 'values/colors/svg_system_color.dart';
 part 'values/colors/svg_system_color_name.dart';
 part 'values/svg_auto.dart';
 part 'values/svg_clip_path_units.dart';
+part 'values/svg_clip_rule.dart';
 part 'values/svg_color.dart';
 part 'values/svg_color_interpolation.dart';
 part 'values/svg_component_transfer_type.dart';

@@ -18,6 +18,10 @@ enum XmlAttributeName {
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/clipPathUnits
   clipPathUnits('clipPathUnits'),
 
+  /// The algorithm which is to be used to determine what parts of the canvas are inside a clipping path.
+  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/clip-rule
+  clipRule('clip-rule'),
+
   /// The color property used as an indirect value for currentColor.
   /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/color
   color('color'),

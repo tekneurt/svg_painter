@@ -1,3 +1,4 @@
+export 'to_svg_clip_rule.dart';
 export 'to_svg_color.dart';
 export 'to_svg_color_interpolation.dart';
 export 'to_svg_display.dart';

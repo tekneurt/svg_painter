@@ -81,6 +81,7 @@ PaintingStyle resolvePaint(
     clipRect: clipRect,
     maskId: _extractUrlId(graphics?.mask),
     clipPathId: _extractUrlId(graphics?.clipPath),
+    clipRule: graphics?.clipRule ?? SvgClipRule.nonzero,
     filterId: _extractUrlId(graphics?.filter),
     markerStartId: _extractUrlId(resolved.marker?.markerStart ?? resolved.marker?.marker),
     markerMidId: _extractUrlId(resolved.marker?.markerMid ?? resolved.marker?.marker),
@@ -234,6 +235,7 @@ SvgPresentationAttributes _parseCssPresentation(
   final SvgStrokeLinejoin? cssStrokeLinejoin = resolvedRules['stroke-linejoin']
       ?.toSvgStrokeLinejoin();
   final SvgNumber? cssStrokeMiterlimit = resolvedRules['stroke-miterlimit']?.toSvgMiterLimit();
+  final SvgClipRule? cssClipRule = resolvedRules['clip-rule']?.toSvgClipRule();
   final SvgLengthPercentage? cssOpacity = resolvedRules['opacity']?.toSvgLengthPercentage();
   final SvgTransformAttributes? cssTransform = SvgTransformParser.parse(
     resolvedRules['transform'],
@@ -281,12 +283,14 @@ SvgPresentationAttributes _parseCssPresentation(
             cssTransform != null ||
             resolvedRules['mask'] != null ||
             resolvedRules['clip-path'] != null ||
+            resolvedRules['clip-rule'] != null ||
             resolvedRules['filter'] != null)
         ? SvgGraphicsAttributes(
             opacity: cssOpacity,
             transformAttributes: cssTransform,
             mask: resolvedRules['mask'],
             clipPath: resolvedRules['clip-path'],
+            clipRule: cssClipRule,
             filter: resolvedRules['filter'],
           )
         : null,
