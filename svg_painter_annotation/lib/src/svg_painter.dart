@@ -1,5 +1,7 @@
 import 'package:meta/meta.dart';
 
+import 'svg_theme.dart';
+
 /// Defines which properties are exposed in the generated CustomPainter.
 enum SvgExposureMode {
   /// No properties are exposed. The painter is static.
@@ -37,6 +39,7 @@ sealed class SvgPainter {
     this.propertyMapping = const <String, String>{},
     this.colorMapping = SvgColorMapping.material,
     this.tokenColors = false,
+    this.theme = const SvgTheme(),
   });
 
   /// Creates an annotation from a file path.
@@ -50,6 +53,7 @@ sealed class SvgPainter {
     Map<String, String> propertyMapping,
     SvgColorMapping colorMapping,
     bool tokenColors,
+    SvgTheme theme,
   }) = SvgFilePainter;
 
   /// Creates an annotation from raw SVG code.
@@ -62,6 +66,7 @@ sealed class SvgPainter {
     Map<String, String> propertyMapping,
     SvgColorMapping colorMapping,
     bool tokenColors,
+    SvgTheme theme,
   }) = SvgCodePainter;
 
   /// The name of the generated CustomPainter class.
@@ -82,6 +87,9 @@ sealed class SvgPainter {
   /// Whether to expose global color tokens (e.g., `red`, `black`) that override
   /// all occurrences of that color across the SVG (fills, strokes, and gradients).
   final bool tokenColors;
+
+  /// The ambient theme values used to resolve relative units like `em` and `ex`.
+  final SvgTheme theme;
 }
 
 /// Annotation for SVG files.
@@ -94,6 +102,7 @@ final class SvgFilePainter extends SvgPainter {
     super.propertyMapping = const <String, String>{},
     super.colorMapping = SvgColorMapping.material,
     super.tokenColors = false,
+    super.theme = const SvgTheme(),
   });
 
   /// The path to the SVG file.
@@ -110,6 +119,7 @@ final class SvgCodePainter extends SvgPainter {
     super.propertyMapping = const <String, String>{},
     super.colorMapping = SvgColorMapping.material,
     super.tokenColors = false,
+    super.theme = const SvgTheme(),
   });
 
   /// The SVG code content.

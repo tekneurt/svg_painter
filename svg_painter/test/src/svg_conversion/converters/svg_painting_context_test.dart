@@ -58,6 +58,23 @@ void main() {
       expect(derived, same(context));
     });
 
+    test('should preserve and override xHeight when derive is called', () {
+      // Arrange
+      const ctx = SvgPaintingContext(
+        viewBoxWidth: 100,
+        viewBoxHeight: 100,
+        xHeight: 60.0,
+      );
+
+      // Act
+      final SvgPaintingContext derivedSame = ctx.derive(viewBoxWidth: 300);
+      final SvgPaintingContext derivedNew = ctx.derive(xHeight: 80.0);
+
+      // Assert
+      expect(derivedSame.xHeight, 60.0);
+      expect(derivedNew.xHeight, 80.0);
+    });
+
     test('deriveWith should return same context if element is not presentable', () {
       const element = SvgIgnoredElement();
       final SvgPaintingContext derived = context.deriveWith(element);

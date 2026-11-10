@@ -265,6 +265,10 @@ void main() {
         final mockTokenColorsReader = MockConstantReader();
         when(mockAnnotation.read('tokenColors')).thenReturn(mockTokenColorsReader);
         when(mockTokenColorsReader.isNull).thenReturn(true);
+
+        final mockThemeReader = MockConstantReader();
+        when(mockAnnotation.read('theme')).thenReturn(mockThemeReader);
+        when(mockThemeReader.isNull).thenReturn(true);
       });
 
       test('should throw InvalidGenerationSourceError when loadSvgContent fails', () async {
@@ -438,6 +442,50 @@ void main() {
 
         // Assert
         expect(output, contains(r'class _$Unknown extends CustomPainter {'));
+      });
+
+      test('should respect custom theme from annotation', () async {
+        // Arrange
+        final gen = MockableSvgPainterGenerator(
+          mockSvgContent: '<svg width="800px" height="600px"><circle cx="0.5em" cy="0.5em" r="0.5em"/></svg>',
+        );
+        final mockElement = MockElement();
+        when(mockElement.name).thenReturn('ThemePainter');
+
+        final mockClassNameReader = MockConstantReader();
+        when(mockAnnotation.read('painterClassName')).thenReturn(mockClassNameReader);
+        when(mockClassNameReader.isNull).thenReturn(true);
+
+        final mockExposureReader = MockConstantReader();
+        when(mockAnnotation.read('exposureMode')).thenReturn(mockExposureReader);
+        when(mockExposureReader.isNull).thenReturn(true);
+
+        final mockPropertyMappingReader = MockConstantReader();
+        when(mockAnnotation.read('propertyMapping')).thenReturn(mockPropertyMappingReader);
+        when(mockPropertyMappingReader.isNull).thenReturn(true);
+
+        final mockThemeReader = MockConstantReader();
+        when(mockAnnotation.read('theme')).thenReturn(mockThemeReader);
+        when(mockThemeReader.isNull).thenReturn(false);
+
+        final mockThemeObject = MockDartObject();
+        when(mockThemeReader.objectValue).thenReturn(mockThemeObject);
+        final mockFontSizeField = MockDartObject();
+        when(mockThemeObject.getField('fontSize')).thenReturn(mockFontSizeField);
+        when(mockFontSizeField.toDoubleValue()).thenReturn(600.0);
+        final mockXHeightField = MockDartObject();
+        when(mockThemeObject.getField('xHeight')).thenReturn(mockXHeightField);
+        when(mockXHeightField.toDoubleValue()).thenReturn(300.0);
+
+        // Act
+        final String output = await gen.generateForAnnotatedElement(
+          mockElement,
+          mockAnnotation,
+          mockBuildStep,
+        );
+
+        // Assert: 0.5em with fontSize=600.0 resolves to 300.0
+        expect(output, contains('canvas.drawCircle(const Offset(300.0, 300.0), 300.0, paint);'));
       });
     });
   });

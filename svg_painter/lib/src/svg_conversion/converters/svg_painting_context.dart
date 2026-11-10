@@ -32,6 +32,7 @@ final class SvgPaintingContext {
     this.isDefinition = false,
     this.contextFill,
     this.contextStroke,
+    this.xHeight,
   });
 
   /// The width of the viewport/viewBox.
@@ -109,6 +110,9 @@ final class SvgPaintingContext {
   /// The stroke attributes of the referencing context element (e.g. for <use>).
   final SvgStrokeAttributes? contextStroke;
 
+  /// The default x-height in logical pixels used to resolve `ex` units.
+  final double? xHeight;
+
   /// Returns the normalized diagonal length of the viewBox for resolving radii.
   /// Formula: sqrt(w*w + h*h) / sqrt(2)
   double get viewBoxNormalizedDiagonal {
@@ -128,6 +132,7 @@ final class SvgPaintingContext {
     SvgFillAttributes? contextFill,
     SvgStrokeAttributes? contextStroke,
     bool resetContextPaint = false,
+    double? xHeight,
   }) {
     return SvgPaintingContext(
       viewBoxWidth: viewBoxWidth ?? this.viewBoxWidth,
@@ -142,6 +147,7 @@ final class SvgPaintingContext {
       isDefinition: isDefinition ?? this.isDefinition,
       contextFill: resetContextPaint ? null : (contextFill ?? this.contextFill),
       contextStroke: resetContextPaint ? null : (contextStroke ?? this.contextStroke),
+      xHeight: xHeight ?? this.xHeight,
     );
   }
 

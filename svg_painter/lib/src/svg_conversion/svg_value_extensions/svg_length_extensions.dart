@@ -26,7 +26,7 @@ extension SvgLengthToDouble on SvgLength {
         value * max(context?.viewBoxWidth ?? 100.0, context?.viewBoxHeight ?? 100.0) / 100.0,
       SvgLengthUnit.em => value * _resolveInheritedFontSize(context),
       SvgLengthUnit.rem => value * 16.0,
-      SvgLengthUnit.ex => value * _resolveInheritedFontSize(context) * 0.5,
+      SvgLengthUnit.ex => value * (context?.xHeight ?? (_resolveInheritedFontSize(context) * 0.5)),
       SvgLengthUnit.ch => value * _resolveInheritedFontSize(context) * 0.5,
     };
   }

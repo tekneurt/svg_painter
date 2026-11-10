@@ -1,5 +1,7 @@
 import 'package:svg_painter/src/svg_conversion/converters/svg_painting_context.dart';
 import 'package:svg_painter/src/svg_conversion/svg_value_extensions/svg_length_extensions.dart';
+import 'package:svg_painter/src/svg_model/attribute_groups/svg_font_attributes.dart';
+import 'package:svg_painter/src/svg_model/attribute_groups/svg_presentation_attributes.dart';
 import 'package:svg_painter/src/svg_model/svg_value.dart';
 import 'package:test/test.dart';
 
@@ -86,6 +88,42 @@ void main() {
       // Act & Assert
       expect(exLength.toDouble(context), 2.0 * 16.0 * 0.5);
       expect(chLength.toDouble(context), 4.0 * 16.0 * 0.5);
+    });
+
+    test('should return value relative to context xHeight when unit is ex and xHeight is set', () {
+      // Arrange
+      const contextWithXHeight = SvgPaintingContext(
+        viewBoxWidth: 200,
+        viewBoxHeight: 100,
+        xHeight: 60.0,
+      );
+      const exLength = SvgLength(3.0, SvgLengthUnit.ex);
+
+      // Act
+      final double result = exLength.toDouble(contextWithXHeight);
+
+      // Assert
+      expect(result, 3.0 * 60.0);
+    });
+
+    test('should return value relative to context font size when unit is em and custom font size is set', () {
+      // Arrange
+      const contextWithCustomFont = SvgPaintingContext(
+        viewBoxWidth: 200,
+        viewBoxHeight: 100,
+        inheritedAttributes: SvgPresentationAttributes(
+          font: SvgFontAttributes(
+            size: SvgLength(32.0),
+          ),
+        ),
+      );
+      const emLength = SvgLength(2.5, SvgLengthUnit.em);
+
+      // Act
+      final double result = emLength.toDouble(contextWithCustomFont);
+
+      // Assert
+      expect(result, 2.5 * 32.0);
     });
   });
 

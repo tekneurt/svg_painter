@@ -2,9 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../test_utils.dart';
+import 'circle_em_ex2_painter.dart';
+import 'circle_em_ex_painter.dart';
+import 'ellipse_em_ex2_painter.dart';
+import 'ellipse_em_ex_painter.dart';
 import 'flutter_logo_painter.dart';
 import 'image_blue_painter.dart';
 import 'image_red_painter.dart';
+import 'line_em_ex2_painter.dart';
+import 'line_em_ex_painter.dart';
+import 'rect_em_ex2_painter.dart';
+import 'rect_em_ex_painter.dart';
 import 'stick_figure_painter.dart';
 
 class _FlutterSvgFixture {
@@ -78,6 +86,62 @@ final List<_FlutterSvgFixture> _fixtures = <_FlutterSvgFixture>[
     ),
     canvasSize: Size(2400.0, 1800.0),
     maxDiffPercent: 0.05,
+  ),
+  const _FlutterSvgFixture(
+    painter: CircleEmExPainter(),
+    name: 'circle.em_ex',
+    widget: CircleEmExPainterWidget(width: 800.0, height: 600.0),
+    canvasSize: Size(800.0, 600.0),
+    maxDiffPercent: 0.02,
+  ),
+  const _FlutterSvgFixture(
+    painter: RectEmExPainter(),
+    name: 'rect.em_ex',
+    widget: RectEmExPainterWidget(width: 800.0, height: 600.0),
+    canvasSize: Size(800.0, 600.0),
+    maxDiffPercent: 0.02,
+  ),
+  const _FlutterSvgFixture(
+    painter: EllipseEmExPainter(),
+    name: 'ellipse.em_ex',
+    widget: EllipseEmExPainterWidget(width: 800.0, height: 600.0),
+    canvasSize: Size(800.0, 600.0),
+    maxDiffPercent: 0.02,
+  ),
+  const _FlutterSvgFixture(
+    painter: LineEmExPainter(),
+    name: 'line.em_ex',
+    widget: LineEmExPainterWidget(width: 800.0, height: 600.0),
+    canvasSize: Size(800.0, 600.0),
+    maxDiffPercent: 0.02,
+  ),
+  const _FlutterSvgFixture(
+    painter: CircleEmEx2Painter(),
+    name: 'circle.em_ex2',
+    widget: CircleEmEx2PainterWidget(width: 800.0, height: 600.0),
+    canvasSize: Size(800.0, 600.0),
+    maxDiffPercent: 0.02,
+  ),
+  const _FlutterSvgFixture(
+    painter: RectEmEx2Painter(),
+    name: 'rect.em_ex2',
+    widget: RectEmEx2PainterWidget(width: 800.0, height: 600.0),
+    canvasSize: Size(800.0, 600.0),
+    maxDiffPercent: 0.02,
+  ),
+  const _FlutterSvgFixture(
+    painter: EllipseEmEx2Painter(),
+    name: 'ellipse.em_ex2',
+    widget: EllipseEmEx2PainterWidget(width: 800.0, height: 600.0),
+    canvasSize: Size(800.0, 600.0),
+    maxDiffPercent: 0.02,
+  ),
+  const _FlutterSvgFixture(
+    painter: LineEmEx2Painter(),
+    name: 'line.em_ex2',
+    widget: LineEmEx2PainterWidget(width: 800.0, height: 600.0),
+    canvasSize: Size(800.0, 600.0),
+    maxDiffPercent: 0.02,
   ),
 ];
 

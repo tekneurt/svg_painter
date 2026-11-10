@@ -68,6 +68,20 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
     final ConstantReader tokenColorsReader = annotation.read('tokenColors');
     final bool tokenColors = tokenColorsReader.isBool && tokenColorsReader.boolValue;
 
+    final ConstantReader themeReader = annotation.read('theme');
+    var defaultFontSize = 16.0;
+    double? defaultXHeight;
+    if (!themeReader.isNull) {
+      final double? fs = themeReader.objectValue.getField('fontSize')?.toDoubleValue();
+      if (fs != null) {
+        defaultFontSize = fs;
+      }
+      final double? xh = themeReader.objectValue.getField('xHeight')?.toDoubleValue();
+      if (xh != null) {
+        defaultXHeight = xh;
+      }
+    }
+
     final propertyMapping = <String, String>{};
     if (annotation.read('propertyMapping').isNull) {
       // No mapping provided
@@ -92,6 +106,8 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
       propertyMapping: propertyMapping,
       colorMapping: colorMapping,
       tokenColors: tokenColors,
+      defaultFontSize: defaultFontSize,
+      defaultXHeight: defaultXHeight,
       buildStep: buildStep,
     );
   }
@@ -147,6 +163,8 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
     Map<String, String> propertyMapping = const <String, String>{},
     SvgColorMapping colorMapping = SvgColorMapping.material,
     bool tokenColors = false,
+    double defaultFontSize = 16.0,
+    double? defaultXHeight,
     BuildStep? buildStep,
   }) async {
     final Result<XmlDocument> parseResult = svgContent.toXmlDocument();
@@ -190,8 +208,19 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
       final SvgLengthPercentageAuto? h = svgRootElement.height;
       final SvgLength? hLen = h is SvgLength ? h : null;
 
-      viewBoxWidth = wLen?.toDouble() ?? svgRootElement.viewBox?.width ?? 100.0;
-      viewBoxHeight = hLen?.toDouble() ?? svgRootElement.viewBox?.height ?? 100.0;
+      final tempContext = SvgPaintingContext(
+        viewBoxWidth: 100.0,
+        viewBoxHeight: 100.0,
+        inheritedAttributes: SvgPresentationAttributes(
+          font: SvgFontAttributes(
+            size: svgRootElement.fontAttributes?.size ?? SvgLength(defaultFontSize),
+          ),
+        ),
+        xHeight: defaultXHeight,
+      );
+
+      viewBoxWidth = wLen?.toDouble(tempContext) ?? svgRootElement.viewBox?.width ?? 100.0;
+      viewBoxHeight = hLen?.toDouble(tempContext) ?? svgRootElement.viewBox?.height ?? 100.0;
 
       final definitions = <String, SvgElement>{};
       svgRootElement.collectDefinitions(definitions);
@@ -216,12 +245,13 @@ class SvgPainterGenerator extends GeneratorForAnnotation<SvgPainter> {
             linejoin: svgRootElement.strokeAttributes?.linejoin ?? SvgStrokeLinejoin.miter,
           ),
           font: SvgFontAttributes(
-            size: svgRootElement.fontAttributes?.size ?? const SvgLength(16.0),
+            size: svgRootElement.fontAttributes?.size ?? SvgLength(defaultFontSize),
             weight: svgRootElement.fontAttributes?.weight ?? const SvgFontWeightNormal(),
             style: svgRootElement.fontAttributes?.style ?? SvgFontStyle.normal,
             family: svgRootElement.fontAttributes?.family ?? const SvgFontFamily('serif'),
           ),
         ),
+        xHeight: defaultXHeight,
         styleSheet: (svgRootElement is SvgRoot)
             ? svgRootElement.styleSheet
             : const SvgStyleSheet.empty(),
