@@ -13,7 +13,9 @@ import 'line_em_ex2_painter.dart';
 import 'line_em_ex_painter.dart';
 import 'rect_em_ex2_painter.dart';
 import 'rect_em_ex_painter.dart';
+import 'simple_painter.dart';
 import 'stick_figure_painter.dart';
+import 'text_color_filter_painter.dart';
 
 class _FlutterSvgFixture {
   const _FlutterSvgFixture({
@@ -142,6 +144,128 @@ final List<_FlutterSvgFixture> _fixtures = <_FlutterSvgFixture>[
     widget: LineEmEx2PainterWidget(width: 800.0, height: 600.0),
     canvasSize: Size(800.0, 600.0),
     maxDiffPercent: 0.02,
+  ),
+  const _FlutterSvgFixture(
+    painter: FlutterLogoPainter(),
+    name: 'flutter_logo.string.color_filter',
+    widget: Center(
+      child: ColorFiltered(
+        colorFilter: ColorFilter.mode(
+          Color(0xFF990000),
+          BlendMode.srcIn,
+        ),
+        child: FlutterLogoPainterWidget(width: 800.0, height: 600.0),
+      ),
+    ),
+    canvasSize: Size(800.0, 600.0),
+    maxDiffPercent: 0.05,
+  ),
+  const _FlutterSvgFixture(
+    painter: TextColorFilterPainter(),
+    name: 'text_color_filter',
+    widget: Center(
+      child: ColorFiltered(
+        colorFilter: ColorFilter.mode(
+          Color(0xFF990000),
+          BlendMode.srcIn,
+        ),
+        child: TextColorFilterPainterWidget(width: 800.0, height: 600.0),
+      ),
+    ),
+    canvasSize: Size(800.0, 600.0),
+    maxDiffPercent: 0.05,
+  ),
+  const _FlutterSvgFixture(
+    painter: SimplePainter(),
+    name: 'two_of_same',
+    widget: Center(
+      child: Directionality(
+        textDirection: TextDirection.ltr,
+        child: Row(
+          children: <Widget>[
+            SimplePainterWidget(),
+            SimplePainterWidget(),
+          ],
+        ),
+      ),
+    ),
+    canvasSize: Size(800.0, 600.0),
+    maxDiffPercent: 0.02,
+  ),
+  const _FlutterSvgFixture(
+    painter: FlutterLogoPainter(),
+    name: 'flutter_logo.natural',
+    widget: Center(
+      child: SizedBox(
+        width: 498.0,
+        height: 606.0,
+        child: FlutterLogoPainterWidget(width: 498.0, height: 606.0),
+      ),
+    ),
+    canvasSize: Size(2400.0, 1800.0),
+    maxDiffPercent: 0.05,
+  ),
+  _FlutterSvgFixture(
+    painter: const FlutterLogoPainter(),
+    name: 'flutter_logo.string.ltr',
+    widget: Center(
+      child: Directionality(
+        textDirection: TextDirection.ltr,
+        child: Row(
+          children: <Widget>[
+            Expanded(
+              child: Container(
+                color: const Color(0xFF0D47A1),
+                height: 100.0,
+              ),
+            ),
+            const FlutterLogoPainterWidget(
+              width: 100.0 * 166.0 / 202.0,
+              height: 100.0,
+            ),
+            Expanded(
+              child: Container(
+                color: const Color(0xFF42A5F5),
+                height: 100.0,
+              ),
+            ),
+          ],
+        ),
+      ),
+    ),
+    canvasSize: const Size(800.0, 600.0),
+    maxDiffPercent: 0.05,
+  ),
+  _FlutterSvgFixture(
+    painter: const FlutterLogoPainter(),
+    name: 'flutter_logo.string.rtl',
+    widget: Center(
+      child: Directionality(
+        textDirection: TextDirection.rtl,
+        child: Row(
+          children: <Widget>[
+            Expanded(
+              child: Container(
+                color: const Color(0xFF0D47A1),
+                height: 100.0,
+              ),
+            ),
+            const FlutterLogoPainterWidget(
+              width: 100.0 * 166.0 / 202.0,
+              height: 100.0,
+            ),
+            Expanded(
+              child: Container(
+                color: const Color(0xFF42A5F5),
+                height: 100.0,
+              ),
+            ),
+          ],
+        ),
+      ),
+    ),
+    canvasSize: const Size(800.0, 600.0),
+    maxDiffPercent: 0.05,
   ),
 ];
 
