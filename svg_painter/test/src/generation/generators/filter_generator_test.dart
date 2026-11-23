@@ -172,5 +172,152 @@ void main() {
       expect(output, contains('drawGraphic();'));
       expect(output, contains('canvas.restore();'));
     });
+
+    test('should generate shadow and graphic pass when feDropShadow has offset and blur', () {
+      // Arrange
+      const generator = FilterGenerator();
+      const command = DefineFilter(
+        id: 'dropShadow1',
+        primitives: <SvgFilterPrimitive>[
+          SvgFeDropShadow(
+            dx: 3.0,
+            dy: 4.0,
+            stdDeviationX: 2.5,
+            stdDeviationY: 1.5,
+            floodColor: SvgNamedColor(.red),
+            floodOpacity: 0.5,
+          ),
+        ],
+      );
+      final buffer = GeneratorBuffer();
+
+      // Act
+      generator.generate(command, buffer);
+
+      // Assert
+      final output = buffer.toString();
+      expect(output, contains('canvas.translate(3.0, 4.0);'));
+      expect(
+        output,
+        contains(
+          'ui.ImageFilter.blur(sigmaX: 2.5, sigmaY: 1.5)..colorFilter = const ColorFilter.mode(Color(0x80FF0000), BlendMode.srcIn)',
+        ),
+      );
+      expect(output, contains('drawGraphic();'));
+    });
+
+    test('should omit translate and blur when feDropShadow has zero offset and zero stdDeviation', () {
+      // Arrange
+      const generator = FilterGenerator();
+      const command = DefineFilter(
+        id: 'dropShadowFlat',
+        primitives: <SvgFilterPrimitive>[
+          SvgFeDropShadow(
+            dx: 0.0,
+            dy: 0.0,
+            stdDeviationX: 0.0,
+            stdDeviationY: 0.0,
+            floodColor: SvgNamedColor(.green),
+          ),
+        ],
+      );
+      final buffer = GeneratorBuffer();
+
+      // Act
+      generator.generate(command, buffer);
+
+      // Assert
+      final output = buffer.toString();
+      expect(output, isNot(contains('canvas.translate')));
+      expect(output, isNot(contains('ImageFilter.blur')));
+      expect(
+        output,
+        contains(
+          'canvas.saveLayer(null, Paint()..colorFilter = const ColorFilter.mode(Color(0xFF008000), BlendMode.srcIn));',
+        ),
+      );
+    });
+
+    test('should generate flood saveLayer when feFlood primitive is provided', () {
+      // Arrange
+      const generator = FilterGenerator();
+      const command = DefineFilter(
+        id: 'flood1',
+        primitives: <SvgFilterPrimitive>[
+          SvgFeFlood(
+            floodColor: SvgNamedColor(.blue),
+            floodOpacity: 0.5,
+          ),
+        ],
+      );
+      final buffer = GeneratorBuffer();
+
+      // Act
+      generator.generate(command, buffer);
+
+      // Assert
+      final output = buffer.toString();
+      expect(
+        output,
+        contains(
+          'canvas.saveLayer(null, Paint()..colorFilter = const ColorFilter.mode(Color(0x800000FF), BlendMode.srcIn));',
+        ),
+      );
+      expect(output, contains('drawGraphic();'));
+    });
+
+    test('should apply SourceAlpha color filter without blur when feOffset uses SourceAlpha', () {
+      // Arrange
+      const generator = FilterGenerator();
+      const command = DefineFilter(
+        id: 'offsetAlpha',
+        primitives: <SvgFilterPrimitive>[
+          SvgFeOffset(inSource: 'SourceAlpha', dx: 4.0, dy: 5.0),
+        ],
+      );
+      final buffer = GeneratorBuffer();
+
+      // Act
+      generator.generate(command, buffer);
+
+      // Assert
+      final output = buffer.toString();
+      expect(output, contains('canvas.translate(4.0, 5.0);'));
+      expect(
+        output,
+        contains(
+          'canvas.saveLayer(null, Paint()..colorFilter = const ColorFilter.mode(Color(0xFF000000), BlendMode.srcIn));',
+        ),
+      );
+    });
+
+    test('should handle single-value table and discrete transfer functions in feComponentTransfer', () {
+      // Arrange
+      const generator = FilterGenerator();
+      const command = DefineFilter(
+        id: 'transferVariants',
+        primitives: <SvgFilterPrimitive>[
+          SvgFeComponentTransfer(
+            funcR: SvgFeFuncR(type: .table, tableValues: <double>[0.4]),
+            funcG: SvgFeFuncG(type: .discrete),
+            funcB: SvgFeFuncB(type: .discrete, tableValues: <double>[0.6]),
+            funcA: SvgFeFuncA(type: .discrete, tableValues: <double>[0.2, 0.8]),
+          ),
+        ],
+      );
+      final buffer = GeneratorBuffer();
+
+      // Act
+      generator.generate(command, buffer);
+
+      // Assert
+      final output = buffer.toString();
+      expect(
+        output,
+        contains(
+          'const ColorFilter.matrix(<double>[0.0, 0.0, 0.0, 0.0, 102.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 153.0, 0.0, 0.0, 0.0, 0.6000000000000001, 51.0])',
+        ),
+      );
+    });
   });
 }

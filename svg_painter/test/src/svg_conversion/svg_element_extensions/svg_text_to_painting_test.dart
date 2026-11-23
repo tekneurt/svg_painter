@@ -171,5 +171,130 @@ void main() {
       expect(drawText.chunks![2].text, 'C');
       expect(drawText.chunks![2].x, 36.0);
     });
+
+    test('should support SvgTextPath with direct pathData and report errors for invalid pathData or targets', () {
+      // Arrange
+      const validDirect = SvgText(
+        x: SvgLength(0.0),
+        y: SvgLength(0.0),
+        children: <SvgTextContent>[
+          SvgTextPath(
+            href: '',
+            pathData: 'M 10 20 L 30 40',
+            children: <SvgTextContent>[SvgCharacterData('Direct')],
+          ),
+        ],
+      );
+      const invalidDirect = SvgText(
+        x: SvgLength(0.0),
+        y: SvgLength(0.0),
+        children: <SvgTextContent>[
+          SvgTextPath(
+            href: '',
+            pathData: 'Z INVALID',
+            children: <SvgTextContent>[SvgCharacterData('Bad')],
+          ),
+        ],
+      );
+      const missingTarget = SvgText(
+        x: SvgLength(0.0),
+        y: SvgLength(0.0),
+        children: <SvgTextContent>[
+          SvgTextPath(
+            href: '#missing',
+            children: <SvgTextContent>[SvgCharacterData('Missing')],
+          ),
+        ],
+      );
+      const nonPathTarget = SvgText(
+        x: SvgLength(0.0),
+        y: SvgLength(0.0),
+        children: <SvgTextContent>[
+          SvgTextPath(
+            href: '#rectTarget',
+            children: <SvgTextContent>[SvgCharacterData('NotPath')],
+          ),
+        ],
+      );
+      const contextWithRect = SvgPaintingContext(
+        viewBoxWidth: 100.0,
+        viewBoxHeight: 200.0,
+        definitions: <String, SvgElement>{
+          'rectTarget': SvgRect(
+            x: SvgLength(0.0),
+            y: SvgLength(0.0),
+            width: SvgLength(10.0),
+            height: SvgLength(10.0),
+            rx: SvgLength(0.0),
+            ry: SvgLength(0.0),
+          ),
+        },
+      );
+
+      // Act
+      final Result<List<PaintCommand>> resValid = validDirect.toPaintCommands(context);
+      final Result<List<PaintCommand>> resInvalid = invalidDirect.toPaintCommands(context);
+      final Result<List<PaintCommand>> resMissing = missingTarget.toPaintCommands(context);
+      final Result<List<PaintCommand>> resNonPath = nonPathTarget.toPaintCommands(contextWithRect);
+
+      // Assert
+      expect(resValid, isA<Success<List<PaintCommand>>>());
+      expect((resValid as Success<List<PaintCommand>>).value.single, isA<DrawTextPath>());
+      expect(resInvalid, isA<Failure<List<PaintCommand>>>());
+      expect(resMissing, isA<Failure<List<PaintCommand>>>());
+      expect(resNonPath, isA<Failure<List<PaintCommand>>>());
+    });
+
+    test('should emit separate DrawText commands for positioned tspans and skip hidden ones', () {
+      // Arrange
+      const text = SvgText(
+        x: SvgLength(10.0),
+        y: SvgLength(20.0),
+        children: <SvgTextContent>[
+          SvgCharacterData('Lead'),
+          SvgCharacterData('   '),
+          SvgTspan(
+            x: SvgLength(50.0),
+            y: SvgLength(60.0),
+            presentationAttributes: SvgPresentationAttributes(display: .none),
+            children: <SvgTextContent>[SvgCharacterData('Hidden')],
+          ),
+          SvgTspan(
+            x: SvgLength(30.0),
+            y: SvgLength(40.0),
+            dx: SvgLength(5.0),
+            dy: SvgLength(6.0),
+            children: <SvgTextContent>[SvgCharacterData('Single')],
+          ),
+          SvgTspan(
+            x: SvgLengthPercentageList(<SvgLengthPercentage>[SvgLength(70.0), SvgLength(80.0)]),
+            y: SvgLength(90.0),
+            dx: SvgLengthPercentageList(<SvgLengthPercentage>[SvgLength(1.0), SvgLength(2.0)]),
+            dy: SvgLengthPercentageList(<SvgLengthPercentage>[SvgLength(3.0), SvgLength(4.0)]),
+            children: <SvgTextContent>[SvgCharacterData('AB')],
+          ),
+        ],
+      );
+
+      // Act
+      final Result<List<PaintCommand>> result = text.toPaintCommands(context);
+
+      // Assert
+      final List<PaintCommand> cmds = (result as Success<List<PaintCommand>>).value;
+      expect(cmds, hasLength(3));
+      expect((cmds[0] as DrawText).x, 10.0);
+      expect((cmds[0] as DrawText).rootSpan.text, 'Lead');
+      expect((cmds[1] as DrawText).x, 35.0);
+      expect((cmds[1] as DrawText).y, 46.0);
+      final multiTspan = cmds[2] as DrawText;
+      expect(multiTspan.chunks, hasLength(2));
+      expect(multiTspan.chunks![0].x, 70.0);
+      expect(multiTspan.chunks![0].y, 90.0);
+      expect(multiTspan.chunks![0].dx, 1.0);
+      expect(multiTspan.chunks![0].dy, 3.0);
+      expect(multiTspan.chunks![1].x, 80.0);
+      expect(multiTspan.chunks![1].dx, 2.0);
+      expect(multiTspan.chunks![1].dy, 4.0);
+    });
   });
 }

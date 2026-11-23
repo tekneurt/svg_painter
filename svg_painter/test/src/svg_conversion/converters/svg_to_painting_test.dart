@@ -1163,5 +1163,174 @@ void main() {
         expect(result, isA<Success<List<PaintCommand>>>());
       });
     });
+
+    group('Masks, Filters, Patterns & Markers', () {
+      test('should convert SvgMask with userSpaceOnUse maskContentUnits', () {
+        // Arrange
+        const mask = SvgMask(
+          coreAttributes: SvgCoreAttributes(id: 'maskUser'),
+          children: <SvgElement>[
+            SvgCircle(cx: SvgLength(15.0), cy: SvgLength(25.0), r: SvgLength(10.0)),
+          ],
+        );
+        const root = SvgRoot(children: <SvgElement>[mask]);
+
+        // Act
+        final Result<List<PaintCommand>> result = root.toPaintCommands();
+
+        // Assert
+        final rootGroup = (result as Success<List<PaintCommand>>).value.single as DrawGroup;
+        final defMask = rootGroup.commands.single as DefineMask;
+        expect(defMask.id, 'maskUser');
+        expect(defMask.maskContentUnits, PaintingGradientUnits.userSpaceOnUse);
+        expect(defMask.commands, hasLength(1));
+      });
+
+      test('should convert SvgFilter into DefineFilter command', () {
+        // Arrange
+        const filter = SvgFilter(
+          coreAttributes: SvgCoreAttributes(id: 'blurFilter'),
+          x: SvgPercentage(-10.0),
+          y: SvgPercentage(-20.0),
+          width: SvgPercentage(120.0),
+          height: SvgPercentage(140.0),
+          children: <SvgElement>[
+            SvgFeGaussianBlur(stdDeviationX: 3.0, stdDeviationY: 4.0),
+          ],
+        );
+        const root = SvgRoot(children: <SvgElement>[filter]);
+
+        // Act
+        final Result<List<PaintCommand>> result = root.toPaintCommands();
+
+        // Assert
+        final rootGroup = (result as Success<List<PaintCommand>>).value.single as DrawGroup;
+        final defFilter = rootGroup.commands.single as DefineFilter;
+        expect(defFilter.id, 'blurFilter');
+        expect(defFilter.primitives, hasLength(1));
+      });
+
+      test('should derive pattern viewBox context when pattern has viewBox and preserveAspectRatio', () {
+        // Arrange
+        const pattern = SvgPattern(
+          coreAttributes: SvgCoreAttributes(id: 'patVb'),
+          viewportAttributes: SvgViewportAttributes(
+            viewBox: SvgViewBox(5.0, 10.0, 20.0, 40.0),
+            preserveAspectRatio: SvgPreserveAspectRatio(alignment: .xMinYMin, scale: .slice),
+          ),
+          children: <SvgElement>[
+            SvgCircle(cx: SvgPercentage(50.0), cy: SvgPercentage(50.0), r: SvgLength(4.0)),
+          ],
+        );
+        const root = SvgRoot(children: <SvgElement>[pattern]);
+
+        // Act
+        final Result<List<PaintCommand>> result = root.toPaintCommands();
+
+        // Assert
+        final rootGroup = (result as Success<List<PaintCommand>>).value.single as DrawGroup;
+        final defPat = rootGroup.commands.single as DefinePattern;
+        expect(defPat.viewBox, isNotNull);
+        expect(defPat.preserveAspectRatio?.scale, SvgPreserveAspectRatioScale.slice);
+        final circle = defPat.commands.single as DrawCircle;
+        expect(circle.cx, 10.0);
+        expect(circle.cy, 20.0);
+      });
+
+      test('should derive marker viewBox context when marker has viewBox', () {
+        // Arrange
+        const marker = SvgMarker(
+          coreAttributes: SvgCoreAttributes(id: 'markVb'),
+          viewportAttributes: SvgViewportAttributes(viewBox: SvgViewBox(2.0, 4.0, 10.0, 20.0)),
+          children: <SvgElement>[
+            SvgCircle(cx: SvgPercentage(50.0), cy: SvgPercentage(50.0), r: SvgLength(2.0)),
+          ],
+        );
+        const root = SvgRoot(children: <SvgElement>[marker]);
+
+        // Act
+        final Result<List<PaintCommand>> result = root.toPaintCommands();
+
+        // Assert
+        final rootGroup = (result as Success<List<PaintCommand>>).value.single as DrawGroup;
+        final defMarker = rootGroup.commands.single as DefineMarker;
+        final circle = defMarker.commands.single as DrawCircle;
+        expect(circle.cx, 5.0);
+        expect(circle.cy, 10.0);
+      });
+    });
+
+    group('Switch', () {
+      test('should filter unsupported extensions/features and emit cases and fallback', () {
+        // Arrange
+        const switchEl = SvgSwitch(
+          coreAttributes: SvgCoreAttributes(id: 'sw1'),
+          children: <SvgElement>[
+            SvgCircle(
+              cx: SvgLength(1.0),
+              cy: SvgLength(2.0),
+              r: SvgLength(3.0),
+              coreAttributes: SvgCoreAttributes(requiredExtensions: <String>['http://example.com']),
+            ),
+            SvgCircle(
+              cx: SvgLength(4.0),
+              cy: SvgLength(5.0),
+              r: SvgLength(6.0),
+              coreAttributes: SvgCoreAttributes(requiredFeatures: <String>[]),
+            ),
+            SvgCircle(
+              cx: SvgLength(10.0),
+              cy: SvgLength(20.0),
+              r: SvgLength(5.0),
+              coreAttributes: SvgCoreAttributes(systemLanguage: <String>['nl']),
+            ),
+            SvgCircle(cx: SvgLength(30.0), cy: SvgLength(40.0), r: SvgLength(8.0)),
+            SvgCircle(cx: SvgLength(50.0), cy: SvgLength(60.0), r: SvgLength(9.0)),
+          ],
+        );
+        const root = SvgRoot(children: <SvgElement>[switchEl]);
+
+        // Act
+        final Result<List<PaintCommand>> result = root.toPaintCommands();
+
+        // Assert
+        final rootGroup = (result as Success<List<PaintCommand>>).value.single as DrawGroup;
+        final drawSwitch = rootGroup.commands.single as DrawSwitch;
+        expect(drawSwitch.id, 'sw1');
+        expect(drawSwitch.cases, hasLength(1));
+        expect(drawSwitch.cases.first.languages, <String>['nl']);
+        expect(drawSwitch.fallback, hasLength(1));
+        expect((drawSwitch.fallback.first as DrawCircle).cx, 30.0);
+      });
+
+      test('should propagate Failure when a switch case or fallback fails conversion', () {
+        // Arrange
+        const failingCase = SvgSwitch(
+          children: <SvgElement>[
+            SvgUse(
+              href: '#missing',
+              x: SvgLength(0.0),
+              y: SvgLength(0.0),
+              coreAttributes: SvgCoreAttributes(systemLanguage: <String>['en']),
+            ),
+          ],
+        );
+        const failingFallback = SvgSwitch(
+          children: <SvgElement>[
+            SvgUse(href: '#missing', x: SvgLength(0.0), y: SvgLength(0.0)),
+          ],
+        );
+
+        // Act
+        final Result<List<PaintCommand>> res1 =
+            const SvgRoot(children: <SvgElement>[failingCase]).toPaintCommands();
+        final Result<List<PaintCommand>> res2 =
+            const SvgRoot(children: <SvgElement>[failingFallback]).toPaintCommands();
+
+        // Assert
+        expect(res1, isA<Failure<List<PaintCommand>>>());
+        expect(res2, isA<Failure<List<PaintCommand>>>());
+      });
+    });
   });
 }

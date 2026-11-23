@@ -846,5 +846,151 @@ void main() {
       expect(style.stroke?.isExplicit, isFalse);
       expect(style.stroke?.colorArgb, 0x00000000);
     });
+
+    test('should swap context-stroke for fill and context-fill for stroke when context is provided', () {
+      // Arrange
+      const context = SvgPaintingContext(
+        viewBoxWidth: 100.0,
+        viewBoxHeight: 200.0,
+        contextFill: SvgFillAttributes(color: SvgNamedColor(.red), opacity: SvgLength(0.5)),
+        contextStroke: SvgStrokeAttributes(color: SvgNamedColor(.blue), opacity: SvgLength(0.75)),
+      );
+      const presentationAttributes = SvgPresentationAttributes(
+        fill: SvgFillAttributes(color: SvgContextStrokeColor()),
+        stroke: SvgStrokeAttributes(color: SvgContextFillColor()),
+      );
+
+      // Act
+      final PaintingStyle style = resolvePaint(
+        context,
+        tagName: 'path',
+        presentationAttributes: presentationAttributes,
+      );
+
+      // Assert
+      expect(style.fill?.colorArgb, 0xFF0000FF);
+      expect(style.fill?.opacity, 0.75);
+      expect(style.stroke?.colorArgb, 0xFFFF0000);
+      expect(style.stroke?.opacity, 0.5);
+    });
+
+    test('should resolve SvgPattern and paint fallbacks including currentColor for fill and stroke', () {
+      // Arrange
+      const pat = SvgPattern(coreAttributes: SvgCoreAttributes(id: 'pat1'), children: <SvgElement>[]);
+      const context = SvgPaintingContext(
+        viewBoxWidth: 100.0,
+        viewBoxHeight: 200.0,
+        definitions: <String, SvgElement>{'pat1': pat},
+      );
+      const attrs = SvgPresentationAttributes(
+        color: SvgNamedColor(.green),
+        fill: SvgFillAttributes(color: SvgPaintReference('pat1', fallback: SvgCurrentColor())),
+        stroke: SvgStrokeAttributes(
+          color: SvgPaintReference('pat1', fallback: SvgNamedColor(.red)),
+        ),
+      );
+      const directCurrentAttrs = SvgPresentationAttributes(
+        color: SvgNamedColor(.blue),
+        fill: SvgFillAttributes(color: SvgCurrentColor()),
+        stroke: SvgStrokeAttributes(color: SvgCurrentColor()),
+      );
+
+      // Act
+      final PaintingStyle patStyle = resolvePaint(context, tagName: 'rect', presentationAttributes: attrs);
+      final PaintingStyle curStyle = resolvePaint(
+        context,
+        tagName: 'rect',
+        presentationAttributes: directCurrentAttrs,
+      );
+
+      // Assert
+      expect(patStyle.fill?.patternId, 'pat1');
+      expect(patStyle.fill?.colorArgb, 0xFF008000);
+      expect(patStyle.stroke?.patternId, 'pat1');
+      expect(patStyle.stroke?.colorArgb, 0xFFFF0000);
+      expect(curStyle.fill?.colorArgb, 0xFF0000FF);
+      expect(curStyle.stroke?.colorArgb, 0xFF0000FF);
+    });
+
+    test('should inherit userSpaceOnUse and stops through gradient href chains and handle cycles', () {
+      // Arrange
+      const baseGrad = SvgLinearGradient(
+        coreAttributes: SvgCoreAttributes(id: 'baseG'),
+        gradientUnits: .userSpaceOnUse,
+        stops: <SvgStop>[SvgStop(offset: SvgLength(0.0), stopColor: SvgNamedColor(.red))],
+      );
+      const childGrad = SvgLinearGradient(
+        coreAttributes: SvgCoreAttributes(id: 'childG'),
+        href: '#baseG',
+        stops: <SvgStop>[],
+      );
+      const cycA = SvgLinearGradient(coreAttributes: SvgCoreAttributes(id: 'cycA'), href: '#cycB', stops: <SvgStop>[]);
+      const cycB = SvgLinearGradient(coreAttributes: SvgCoreAttributes(id: 'cycB'), href: '#cycA', stops: <SvgStop>[]);
+      const context = SvgPaintingContext(
+        viewBoxWidth: 100.0,
+        viewBoxHeight: 200.0,
+        definitions: <String, SvgElement>{
+          'baseG': baseGrad,
+          'childG': childGrad,
+          'cycA': cycA,
+          'cycB': cycB,
+        },
+      );
+
+      // Act
+      final PaintingStyle inherited = resolvePaint(
+        context,
+        tagName: 'rect',
+        presentationAttributes: const SvgPresentationAttributes(
+          fill: SvgFillAttributes(color: SvgPaintReference('childG')),
+          stroke: SvgStrokeAttributes(color: SvgPaintReference('childG')),
+        ),
+      );
+      final PaintingStyle cyclic = resolvePaint(
+        context,
+        tagName: 'rect',
+        presentationAttributes: const SvgPresentationAttributes(
+          fill: SvgFillAttributes(color: SvgPaintReference('cycA')),
+        ),
+      );
+
+      // Assert
+      expect(inherited.fill?.shaderId, 'childG');
+      expect(inherited.fill?.shaderUnits, PaintingGradientUnits.userSpaceOnUse);
+      expect(inherited.stroke?.shaderId, 'childG');
+      expect(inherited.stroke?.shaderUnits, PaintingGradientUnits.userSpaceOnUse);
+      expect(cyclic.fill?.shaderId, isNull);
+    });
+
+    test('should resolve font family fallbacks and extract quoted url IDs for markers, mask, and filter', () {
+      // Arrange
+      const context = SvgPaintingContext(viewBoxWidth: 100.0, viewBoxHeight: 200.0);
+      const attrs = SvgPresentationAttributes(
+        font: SvgFontAttributes(family: SvgFontFamily('"Custom Font", serif, monospace')),
+        graphics: SvgGraphicsAttributes(
+          clipPath: 'not-a-url',
+          mask: "url('#myMask')",
+          filter: 'url(#myFilter)',
+        ),
+        marker: SvgMarkerAttributes(
+          markerStart: 'url("#mStart")',
+          markerMid: 'url(#mMid)',
+          markerEnd: 'url("mEnd")',
+        ),
+      );
+
+      // Act
+      final PaintingStyle style = resolvePaint(context, tagName: 'text', presentationAttributes: attrs);
+
+      // Assert
+      expect(style.text?.fontFamily, 'Custom Font');
+      expect(style.text?.fontFamilyFallback, <String>['Tinos', 'Roboto Mono']);
+      expect(style.clipPathId, isNull);
+      expect(style.maskId, 'myMask');
+      expect(style.filterId, 'myFilter');
+      expect(style.markerStartId, 'mStart');
+      expect(style.markerMidId, 'mMid');
+      expect(style.markerEndId, 'mEnd');
+    });
   });
 }
