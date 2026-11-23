@@ -117,5 +117,67 @@ void main() {
         contains('canvas.drawPath(_dashPath(path, dashArray, dashOffset: 2.5), paint);'),
       );
     });
+
+    test('should emit drawLine for fill when explicit fill is provided on DrawLine', () {
+      // Arrange
+      const generator = LineGenerator();
+      const command = DrawLine(
+        x1: 12.0,
+        y1: 24.0,
+        x2: 48.0,
+        y2: 96.0,
+        style: PaintingStyle(
+          fill: PaintingFillStyle(colorArgb: 0xFF112233),
+        ),
+      );
+      final buffer = GeneratorBuffer();
+
+      // Act
+      generator.generate(command, buffer);
+
+      // Assert
+      final output = buffer.toString();
+      expect(
+        output,
+        contains('canvas.drawLine(const Offset(12.0, 24.0), const Offset(48.0, 96.0), paint);'),
+      );
+    });
+
+    test('should emit start and end marker calls with context paints when markers are set', () {
+      // Arrange
+      const generator = LineGenerator();
+      const command = DrawLine(
+        x1: 10.0,
+        y1: 20.0,
+        x2: 50.0,
+        y2: 20.0,
+        style: PaintingStyle(
+          fill: PaintingFillStyle(colorArgb: 0xFF112233),
+          stroke: PaintingStrokeStyle(colorArgb: 0xFF445566, width: 3.0),
+          strokeWidth: 3.0,
+          markerStartId: 'start-arrow',
+          markerEndId: 'end-arrow',
+        ),
+      );
+      final buffer = GeneratorBuffer();
+
+      // Act
+      generator.generate(command, buffer);
+
+      // Assert
+      final output = buffer.toString();
+      expect(
+        output,
+        contains(
+          '_marker_start_arrow(canvas, const Offset(10.0, 20.0), 0.0, 3.0, isStart: true, contextFill: fillPaint, contextStroke: strokePaint);',
+        ),
+      );
+      expect(
+        output,
+        contains(
+          '_marker_end_arrow(canvas, const Offset(50.0, 20.0), 0.0, 3.0, contextFill: fillPaint, contextStroke: strokePaint);',
+        ),
+      );
+    });
   });
 }

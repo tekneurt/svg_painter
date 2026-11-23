@@ -141,5 +141,63 @@ void main() {
       expect(output, contains('canvas.drawPath(_dashPath(path,'));
       expect(output, contains('pathLength: 100.0'));
     });
+
+    test('should generate dashed path with dashOffset when dashOffset is provided', () {
+      // Arrange
+      const generator = PathGenerator();
+      const command = DrawPath(
+        operations: <PathOperation>[MoveTo(10.0, 11.0), LineTo(20.0, 21.0)],
+        style: PaintingStyle(
+          stroke: PaintingStrokeStyle(
+            colorArgb: 0xFF000000,
+            dashArray: <double>[5.0, 6.0],
+            dashOffset: 2.5,
+          ),
+        ),
+      );
+      final buffer = GeneratorBuffer();
+
+      // Act
+      generator.generate(command, buffer);
+
+      // Assert
+      final output = buffer.toString();
+      expect(output, contains('_dashPath(path, dashArray, dashOffset: 2.5)'));
+    });
+
+    test('should emit start, mid, and end marker calls when markers are configured on DrawPath', () {
+      // Arrange
+      const generator = PathGenerator();
+      const command = DrawPath(
+        operations: <PathOperation>[
+          MoveTo(0.0, 0.0),
+          LineTo(10.0, 0.0),
+          LineTo(20.0, 10.0),
+        ],
+        style: PaintingStyle(
+          fill: PaintingFillStyle(colorArgb: 0xFF112233),
+          stroke: PaintingStrokeStyle(colorArgb: 0xFF445566, width: 2.5),
+          strokeWidth: 2.5,
+          markerStartId: 'p-start',
+          markerMidId: 'p-mid',
+          markerEndId: 'p-end',
+        ),
+      );
+      final buffer = GeneratorBuffer();
+
+      // Act
+      generator.generate(command, buffer);
+
+      // Assert
+      final output = buffer.toString();
+      expect(
+        output,
+        contains(
+          '_marker_p_start(canvas, const Offset(0.0, 0.0), 0.0, 2.5, isStart: true, contextFill: fillPaint, contextStroke: strokePaint);',
+        ),
+      );
+      expect(output, contains('_marker_p_mid(canvas, const Offset(10.0, 0.0),'));
+      expect(output, contains('_marker_p_end(canvas, const Offset(20.0, 10.0),'));
+    });
   });
 }

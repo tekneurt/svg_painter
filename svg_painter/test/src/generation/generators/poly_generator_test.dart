@@ -113,5 +113,63 @@ void main() {
       // Assert
       expect(buffer.toString().isEmpty, isTrue);
     });
+
+    test('should generate dashed path with dashOffset when dashOffset is provided', () {
+      // Arrange
+      const command = DrawPolyline(
+        points: <double>[1.0, 2.0, 10.0, 12.0, 25.0, 30.0],
+        style: PaintingStyle(
+          stroke: PaintingStrokeStyle(
+            colorArgb: 0xFF000000,
+            dashArray: <double>[4.0, 2.0],
+            dashOffset: 3.5,
+          ),
+        ),
+      );
+      final buffer = GeneratorBuffer();
+
+      // Act
+      generator.generate(command, buffer, painterClassName: 'TestPainter');
+
+      // Assert
+      final output = buffer.toString();
+      expect(output, contains('_dashPath(path, dashArray, dashOffset: 3.5)'));
+    });
+
+    test('should emit start, mid, and end marker calls when markers are configured on polyline', () {
+      // Arrange
+      const command = DrawPolyline(
+        points: <double>[0.0, 0.0, 10.0, 0.0, 20.0, 10.0],
+        style: PaintingStyle(
+          fill: PaintingFillStyle(colorArgb: 0xFF112233),
+          stroke: PaintingStrokeStyle(colorArgb: 0xFF445566, width: 2.5),
+          strokeWidth: 2.5,
+          markerStartId: 'm-start',
+          markerMidId: 'm-mid',
+          markerEndId: 'm-end',
+        ),
+      );
+      final buffer = GeneratorBuffer();
+
+      // Act
+      generator.generate(command, buffer, painterClassName: 'TestPainter');
+
+      // Assert
+      final output = buffer.toString();
+      expect(
+        output,
+        contains(
+          '_marker_m_start(canvas, const Offset(0.0, 0.0), 0.0, 2.5, isStart: true, contextFill: fillPaint, contextStroke: strokePaint);',
+        ),
+      );
+      expect(
+        output,
+        contains('_marker_m_mid(canvas, const Offset(10.0, 0.0),'),
+      );
+      expect(
+        output,
+        contains('_marker_m_end(canvas, const Offset(20.0, 10.0),'),
+      );
+    });
   });
 }

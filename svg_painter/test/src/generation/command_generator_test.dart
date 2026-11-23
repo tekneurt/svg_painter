@@ -601,6 +601,61 @@ void main() {
           ),
         );
       });
+
+      test('should wrap with clipPath call when clipPathId is provided', () {
+        // Arrange
+        const style = PaintingStyle(clipPathId: 'clip-1');
+        final buffer = GeneratorBuffer();
+
+        // Act
+        generator.wrapWithStyle(buffer, style, 'targetBounds', () {
+          buffer.writeln('draw();');
+        });
+
+        // Assert
+        final output = buffer.toString();
+        expect(output, contains('canvas.save();'));
+        expect(output, contains('_clipPath_clip_1(canvas, size, targetBounds);'));
+        expect(output, contains('draw();'));
+        expect(output, contains('canvas.restore();'));
+      });
+
+      test('should wrap with luminance mask saveLayer calls when maskId is provided', () {
+        // Arrange
+        const style = PaintingStyle(maskId: 'mask-1');
+        final buffer = GeneratorBuffer();
+
+        // Act
+        generator.wrapWithStyle(buffer, style, 'targetBounds', () {
+          buffer.writeln('draw();');
+        });
+
+        // Assert
+        final output = buffer.toString();
+        expect(output, contains('canvas.saveLayer(null, Paint());'));
+        expect(output, contains('draw();'));
+        expect(output, contains('BlendMode.dstIn'));
+        expect(output, contains('0.2126, 0.7152, 0.0722, 0, 0,'));
+        expect(output, contains('_mask_mask_1(canvas, size, targetBounds);'));
+        expect(output, contains('canvas.restore();'));
+      });
+
+      test('should wrap with filter call when filterId is provided', () {
+        // Arrange
+        const style = PaintingStyle(filterId: 'blur-filter');
+        final buffer = GeneratorBuffer();
+
+        // Act
+        generator.wrapWithStyle(buffer, style, 'targetBounds', () {
+          buffer.writeln('draw();');
+        });
+
+        // Assert
+        final output = buffer.toString();
+        expect(output, contains('_filter_blur_filter(canvas, () {'));
+        expect(output, contains('draw();'));
+        expect(output, contains('});'));
+      });
     });
     group('CommandGenerator (Implicit)', () {
       test('should exist as abstract base', () {
