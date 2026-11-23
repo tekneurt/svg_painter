@@ -103,6 +103,129 @@ void main() {
         expect(vertices[2].isStart, isFalse);
         expect(vertices[2].isEnd, isTrue);
       });
+
+      test('should return empty list when operations list is empty or has fewer than 2 points', () {
+        // Arrange
+        const emptyOps = <PathOperation>[];
+        const singleMove = <PathOperation>[MoveTo(10.0, 20.0)];
+
+        // Act
+        final List<MarkerVertex> emptyVertices = PathMarkerExtractor.extractFromOperations(emptyOps);
+        final List<MarkerVertex> singleVertices = PathMarkerExtractor.extractFromOperations(
+          singleMove,
+        );
+
+        // Assert
+        expect(emptyVertices, isEmpty);
+        expect(singleVertices, isEmpty);
+      });
+
+      test('should extract tangents for CubicTo, QuadraticTo, ArcTo, and ClosePath', () {
+        // Arrange
+        const operations = <PathOperation>[
+          MoveTo(0.0, 0.0),
+          CubicTo(10.0, 0.0, 20.0, 10.0, 30.0, 10.0),
+          QuadraticTo(40.0, 10.0, 50.0, 20.0),
+          ArcTo(10.0, 10.0, 0.0, false, true, 60.0, 30.0),
+          ClosePath(),
+        ];
+
+        // Act
+        final List<MarkerVertex> vertices = PathMarkerExtractor.extractFromOperations(operations);
+
+        // Assert
+        expect(vertices, hasLength(5));
+        expect(vertices.first.isStart, isTrue);
+        expect(vertices.first.angle, 0.0);
+        expect(vertices.last.isEnd, isTrue);
+        expect(vertices.last.x, 0.0);
+        expect(vertices.last.y, 0.0);
+      });
+
+      test('should fall back to secondary control points when CubicTo or QuadraticTo control points coincide', () {
+        // Arrange
+        const operations = <PathOperation>[
+          MoveTo(0.0, 0.0),
+          CubicTo(0.0, 0.0, 10.0, 0.0, 10.0, 0.0),
+          CubicTo(10.0, 0.0, 10.0, 0.0, 20.0, 0.0),
+          QuadraticTo(20.0, 0.0, 30.0, 0.0),
+          QuadraticTo(35.0, 0.0, 35.0, 0.0),
+        ];
+
+        // Act
+        final List<MarkerVertex> vertices = PathMarkerExtractor.extractFromOperations(operations);
+
+        // Assert
+        expect(vertices, hasLength(5));
+        expect(vertices[0].angle, 0.0);
+        expect(vertices[1].angle, 0.0);
+        expect(vertices[4].angle, 0.0);
+      });
+
+      test('should rotate bisector by 90 degrees when incoming and outgoing segments reverse direction', () {
+        // Arrange
+        const operations = <PathOperation>[
+          MoveTo(0.0, 0.0),
+          LineTo(20.0, 0.0),
+          LineTo(0.0, 0.0),
+        ];
+
+        // Act
+        final List<MarkerVertex> vertices = PathMarkerExtractor.extractFromOperations(operations);
+
+        // Assert
+        expect(vertices, hasLength(3));
+        expect(vertices[1].angle, closeTo(math.pi / 2.0, 0.0001));
+      });
+    });
+
+    group('extractFromPoints edge cases', () {
+      test('should return empty list when points length is less than 4', () {
+        // Arrange
+        final points = <double>[10.0, 20.0];
+
+        // Act
+        final List<MarkerVertex> vertices = PathMarkerExtractor.extractFromPoints(points);
+
+        // Assert
+        expect(vertices, isEmpty);
+      });
+
+      test('should compute bisector angles for start and end vertices when polygon is closed', () {
+        // Arrange
+        final points = <double>[0.0, 0.0, 10.0, 0.0, 0.0, 10.0];
+
+        // Act
+        final List<MarkerVertex> vertices = PathMarkerExtractor.extractFromPoints(
+          points,
+          isClosed: true,
+        );
+
+        // Assert
+        expect(vertices, hasLength(3));
+        expect(vertices[0].isStart, isTrue);
+        expect(vertices[2].isEnd, isTrue);
+        expect(vertices[0].angle, closeTo(-math.pi / 4.0, 0.0001));
+      });
+    });
+
+    group('MarkerVertex', () {
+      test('should return formatted string representation when toString is called', () {
+        // Arrange
+        const vertex = MarkerVertex(
+          x: 12.0,
+          y: 34.0,
+          angle: 1.5,
+          isStart: true,
+          isEnd: false,
+        );
+
+        // Act
+        final str = vertex.toString();
+
+        // Assert
+        expect(str, 'MarkerVertex((12.0, 34.0), angle: 1.5, isStart: true, isEnd: false)');
+      });
     });
   });
 }
