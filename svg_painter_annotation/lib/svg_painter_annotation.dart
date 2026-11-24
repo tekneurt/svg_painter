@@ -2,3 +2,4 @@
 library svg_painter_annotation;
 
 export 'src/svg_painter.dart';
+export 'src/svg_theme.dart';

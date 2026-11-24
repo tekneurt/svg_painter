@@ -1,0 +1,12 @@
+/// https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Element/title#example
+const String mdnTitleExample = '''
+<svg viewBox="0 0 20 10" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="5" cy="5" r="4">
+    <title>I'm a circle</title>
+  </circle>
+
+  <rect x="11" y="1" width="8" height="8">
+    <title>I'm a square</title>
+  </rect>
+</svg>
+''';

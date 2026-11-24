@@ -1,6 +1,6 @@
 name: svg_painter
 description: A code generator that compiles SVG files into Flutter CustomPainter code.
-version: 0.4.0
+version: 0.5.0
 resolution: workspace
 repository: https://github.com/tekneurt/svg_painter/tree/master/svg_painter
 homepage: https://github.com/tekneurt/svg_painter
@@ -15,7 +15,7 @@ dependencies:
   build: ^4.0.5
   path: ^1.9.0
   source_gen: ^4.2.2
-  svg_painter_annotation: ^0.4.0
+  svg_painter_annotation: ^0.5.0
   xml: ">=6.6.1 <8.0.0"
 
 dev_dependencies:

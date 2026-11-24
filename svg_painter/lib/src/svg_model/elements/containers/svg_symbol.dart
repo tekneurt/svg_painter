@@ -7,6 +7,8 @@ part of '../../svg_element.dart';
 final class SvgSymbol extends SvgContainerElement with SvgViewportAttributable, SvgBounded {
   const SvgSymbol({
     required super.children,
+    super.title,
+    super.desc,
     this.x,
     this.y,
     this.width,

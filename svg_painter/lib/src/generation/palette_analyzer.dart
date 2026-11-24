@@ -2,16 +2,24 @@ import 'package:meta/meta.dart';
 import 'package:svg_painter_annotation/svg_painter_annotation.dart';
 
 import '../painting_model/_painting_model.dart';
+import 'flutter_color_map.dart';
 
 /// Result of the palette analysis.
 class PaletteResult {
-  const PaletteResult(this.fillAssignments, this.strokeAssignments);
+  const PaletteResult(
+    this.fillAssignments,
+    this.strokeAssignments, {
+    this.colorTokens = const <int, String>{},
+  });
 
   /// Mapping of commands to their assigned fill property name (e.g., 'fill1').
   final Map<PaintCommand, String> fillAssignments;
 
   /// Mapping of commands to their assigned stroke property name (e.g., 'stroke1').
   final Map<PaintCommand, String> strokeAssignments;
+
+  /// Mapping of ARGB integers to their assigned color token name (e.g., 0xFF000000 -> 'black').
+  final Map<int, String> colorTokens;
 }
 
 /// Analyzes a list of paint commands to group and name shared styles.
@@ -22,6 +30,7 @@ class PaletteAnalyzer {
   PaletteResult analyze(
     List<PaintCommand> commands, {
     SvgExposureMode mode = SvgExposureMode.none,
+    bool tokenColors = false,
   }) {
     final fillAssignments = <PaintCommand, String>{};
     final strokeAssignments = <PaintCommand, String>{};
@@ -34,7 +43,65 @@ class PaletteAnalyzer {
     _assignNames(fillGroups, fillAssignments, 'fill');
     _assignNames(strokeGroups, strokeAssignments, 'stroke');
 
-    return PaletteResult(fillAssignments, strokeAssignments);
+    final Map<int, String> colorTokens = tokenColors
+        ? collectColorTokens(commands)
+        : const <int, String>{};
+
+    return PaletteResult(fillAssignments, strokeAssignments, colorTokens: colorTokens);
+  }
+
+  /// Collects all unique ARGB color values across fills, strokes, and gradients,
+  /// assigning each a unique Dart identifier token.
+  Map<int, String> collectColorTokens(List<PaintCommand> commands) {
+    final colors = <int>{};
+    _collectColors(commands, colors);
+
+    final List<int> sortedColors = colors.toList()..sort();
+    final result = <int, String>{};
+    final usedNames = <String>{};
+
+    for (final color in sortedColors) {
+      final String baseName = FlutterColorMap.colorToTokenName(color);
+      var uniqueName = baseName;
+      var counter = 2;
+      while (usedNames.contains(uniqueName)) {
+        uniqueName = '$baseName$counter';
+        counter++;
+      }
+      usedNames.add(uniqueName);
+      result[color] = uniqueName;
+    }
+
+    return result;
+  }
+
+  void _collectColors(List<PaintCommand> commands, Set<int> colors) {
+    for (final command in commands) {
+      if (command is DrawGroup) {
+        _collectColors(command.commands, colors);
+      } else if (command is DrawSwitch) {
+        _collectColors(command.allCommands.toList(), colors);
+      } else if (command is DrawCommand) {
+        final PaintingFillStyle? fill = command.style.fill;
+        if (fill != null && fill.colorArgb != null) {
+          colors.add(fill.colorArgb!);
+        }
+        final PaintingStrokeStyle? stroke = command.style.stroke;
+        if (stroke != null && stroke.colorArgb != null) {
+          colors.add(stroke.colorArgb!);
+        }
+      } else if (command is DefineLinearGradient) {
+        for (final GradientStop stop in command.stops) {
+          colors.add(stop.colorArgb);
+        }
+      } else if (command is DefineRadialGradient) {
+        for (final GradientStop stop in command.stops) {
+          colors.add(stop.colorArgb);
+        }
+      } else if (command is DefinePattern) {
+        _collectColors(command.commands, colors);
+      }
+    }
   }
 
   void _collectGroups(
@@ -45,6 +112,10 @@ class PaletteAnalyzer {
   }) {
     for (final command in commands) {
       if (command is DrawGroup) {
+        _collectGroups(command.commands, fillGroups, strokeGroups, mode: mode);
+      } else if (command is DrawSwitch) {
+        _collectGroups(command.allCommands.toList(), fillGroups, strokeGroups, mode: mode);
+      } else if (command is DefinePattern) {
         _collectGroups(command.commands, fillGroups, strokeGroups, mode: mode);
       }
 
@@ -150,16 +221,17 @@ class PaletteAnalyzer {
 
 @immutable
 class _StyleKey implements Comparable<_StyleKey> {
-  const _StyleKey(this.colorArgb, this.shaderId, this.dashArray, this.pathLength, this.dashOffset);
+  const _StyleKey(this.colorArgb, this.shaderId, this.patternId, this.dashArray, this.pathLength, this.dashOffset);
 
   factory _StyleKey.fromFill(PaintingFillStyle fill) {
-    return _StyleKey(fill.colorArgb, fill.shaderId, null, null, null);
+    return _StyleKey(fill.colorArgb, fill.shaderId, fill.patternId, null, null, null);
   }
 
   factory _StyleKey.fromStroke(PaintingStrokeStyle stroke) {
     return _StyleKey(
       stroke.colorArgb,
       stroke.shaderId,
+      stroke.patternId,
       stroke.dashArray,
       stroke.pathLength,
       stroke.dashOffset,
@@ -168,6 +240,7 @@ class _StyleKey implements Comparable<_StyleKey> {
 
   final int? colorArgb;
   final String? shaderId;
+  final String? patternId;
   final List<double>? dashArray;
   final double? pathLength;
   final double? dashOffset;
@@ -185,6 +258,9 @@ class _StyleKey implements Comparable<_StyleKey> {
       return false;
     }
     if (shaderId != other.shaderId) {
+      return false;
+    }
+    if (patternId != other.patternId) {
       return false;
     }
     if (pathLength != other.pathLength) {
@@ -217,6 +293,7 @@ class _StyleKey implements Comparable<_StyleKey> {
   int get hashCode =>
       colorArgb.hashCode ^
       shaderId.hashCode ^
+      patternId.hashCode ^
       (dashArray?.length ?? 0).hashCode ^
       pathLength.hashCode ^
       dashOffset.hashCode;
@@ -228,6 +305,9 @@ class _StyleKey implements Comparable<_StyleKey> {
     }
     if (shaderId != other.shaderId) {
       return (shaderId ?? '').compareTo(other.shaderId ?? '');
+    }
+    if (patternId != other.patternId) {
+      return (patternId ?? '').compareTo(other.patternId ?? '');
     }
     if (pathLength != other.pathLength) {
       return (pathLength ?? 0).compareTo(other.pathLength ?? 0);

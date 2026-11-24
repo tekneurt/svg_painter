@@ -8,7 +8,7 @@ part of 'alpha_transparency_dice_painter.dart';
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
+// ignore_for_file: unused_element, unused_field, unused_element_parameter, unused_local_variable, deprecated_member_use_from_same_package
 
 class AlphaTransparencyDicePainterWidget extends StatefulWidget {
   const AlphaTransparencyDicePainterWidget({
@@ -221094,7 +221094,7 @@ class _$AlphaTransparencyDicePainter extends CustomPainter {
       (canvas as dynamic).drawImageRect(
         img,
         Rect.fromLTWH(0, 0, srcW, srcH),
-        Rect.fromLTWH(0.0, 0.0, 200.0, 200.0),
+        Rect.fromLTWH(0.0, 25.0, 200.0, 150.0),
         paint,
       );
     }
@@ -221127,7 +221127,7 @@ class _$AlphaTransparencyDicePainter extends CustomPainter {
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
+// ignore_for_file: unused_element, unused_field, unused_element_parameter, unused_local_variable, deprecated_member_use_from_same_package
 
 class AlphaTransparencyDiceTransformedPainterWidget extends StatefulWidget {
   const AlphaTransparencyDiceTransformedPainterWidget({
@@ -442229,7 +442229,7 @@ class _$AlphaTransparencyDiceTransformedPainter extends CustomPainter {
       (canvas as dynamic).drawImageRect(
         img,
         Rect.fromLTWH(0, 0, srcW, srcH),
-        Rect.fromLTWH(0.0, 0.0, 100.0, 100.0),
+        Rect.fromLTWH(0.0, 12.5, 100.0, 75.0),
         paint,
       );
     }
@@ -442265,7 +442265,7 @@ class _$AlphaTransparencyDiceTransformedPainter extends CustomPainter {
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
+// ignore_for_file: unused_element, unused_field, unused_element_parameter, unused_local_variable, deprecated_member_use_from_same_package
 
 class AlphaTransparencyDiceDataUriPainterWidget extends StatefulWidget {
   const AlphaTransparencyDiceDataUriPainterWidget({
@@ -663346,6 +663346,8 @@ class _$AlphaTransparencyDiceDataUriPainter extends CustomPainter {
       destRect.height / sourceSize.height,
     );
 
+    canvas.save();
+    canvas.translate(25.0, 25.0);
     if (image0 != null) {
       final dynamic img = image0;
       final double srcW = (img.width as int).toDouble();
@@ -663354,10 +663356,11 @@ class _$AlphaTransparencyDiceDataUriPainter extends CustomPainter {
       (canvas as dynamic).drawImageRect(
         img,
         Rect.fromLTWH(0, 0, srcW, srcH),
-        Rect.fromLTWH(25.0, 25.0, 50.0, 50.0),
+        Rect.fromLTWH(0.0, 6.25, 50.0, 37.5),
         paint,
       );
     }
+    canvas.restore();
     canvas.restore();
   }
 

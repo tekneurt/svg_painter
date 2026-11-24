@@ -1,3 +1,8 @@
+import 'package:svg_painter_annotation/svg_painter_annotation.dart';
+
+import '../svg_conversion/converters/svg_color_name_map.dart';
+import '../svg_model/svg_value.dart';
+
 /// Utility mapping Flutter color values to their `Colors` constant names.
 class FlutterColorMap {
   /// Maps ARGB color values to their Flutter `Colors` representation string.
@@ -238,8 +243,17 @@ class FlutterColorMap {
 
   /// Returns the Flutter code representation for a given [colorArgb].
   ///
-  /// Falls back to `const Color(0x...)` if no named match is found.
-  static String getColorCode(int colorArgb) {
+  /// Falls back to `const Color(0x...)` if [colorMapping] is [SvgColorMapping.hex]
+  /// or if no named match is found.
+  static String getColorCode(
+    int colorArgb, {
+    SvgColorMapping colorMapping = SvgColorMapping.material,
+  }) {
+    if (colorMapping == SvgColorMapping.hex) {
+      final String hex = colorArgb.toRadixString(16).toUpperCase().padLeft(8, '0');
+      return 'const Color(0x$hex)';
+    }
+
     final String? name = _valueToName[colorArgb];
     if (name == null) {
       // Standard hex representation
@@ -248,5 +262,35 @@ class FlutterColorMap {
     } else {
       return name;
     }
+  }
+
+  /// Converts an ARGB integer to a clean Dart identifier for a color token.
+  ///
+  /// For example, `0xFF000000` becomes `'black'`, `0xFFF44336` becomes `'red'`,
+  /// `Colors.red.shade200` becomes `'redShade200'`, and unmapped colors become
+  /// `'cFF123456'`.
+  static String colorToTokenName(int colorArgb) {
+    // 1. Check known Flutter Colors
+    final String? flutterName = _valueToName[colorArgb];
+    if (flutterName != null) {
+      // e.g. 'Colors.red' -> 'red', 'Colors.red.shade200' -> 'redShade200'
+      final String stripped = flutterName.replaceFirst('Colors.', '');
+      if (stripped.contains('.shade')) {
+        final List<String> parts = stripped.split('.shade');
+        return '${parts[0]}Shade${parts[1]}';
+      }
+      return stripped;
+    }
+
+    // 2. Check known SVG Color Names (for exact SVG keywords like #FF0000 -> red)
+    for (final MapEntry<SvgColorName, int> entry in svgColorNameMap.entries) {
+      if (entry.value == colorArgb) {
+        return entry.key.name;
+      }
+    }
+
+    // 3. Fallback to clean hex token: cAARRGGBB
+    final String hex = colorArgb.toRadixString(16).toUpperCase().padLeft(8, '0');
+    return 'c$hex';
   }
 }

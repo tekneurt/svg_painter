@@ -20,7 +20,8 @@ extension ToSvgClipPath on XmlElement {
       }
     }
 
-    final SvgClipPathUnits clipPathUnits = SvgClipPathUnits.from(
+    final SvgClipPathUnits clipPathUnits =
+        SvgClipPathUnits.from(
           getAttribute(XmlAttributeName.clipPathUnits.name),
         ) ??
         SvgClipPathUnits.userSpaceOnUse;
@@ -31,6 +32,8 @@ extension ToSvgClipPath on XmlElement {
       SvgClipPath(
         children: svgChildren,
         clipPathUnits: clipPathUnits,
+        title: common.title,
+        desc: common.desc,
         presentationAttributes: common.presentation,
         coreAttributes: common.core,
       ),

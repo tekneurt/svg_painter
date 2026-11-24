@@ -12,6 +12,8 @@ final class SvgTspan extends SvgGraphicsElement with SvgFontAttributable, SvgTex
     this.dx,
     this.dy,
     this.rotate,
+    super.title,
+    super.desc,
     super.presentationAttributes,
     super.coreAttributes,
   });
@@ -20,16 +22,28 @@ final class SvgTspan extends SvgGraphicsElement with SvgFontAttributable, SvgTex
   final List<SvgTextContent> children;
 
   /// The absolute x-axis coordinates for the characters in the tspan.
-  final SvgLengthPercentage? x;
+  final SvgLengthPercentageOrList? x;
 
   /// The absolute y-axis coordinates for the characters in the tspan.
-  final SvgLengthPercentage? y;
+  final SvgLengthPercentageOrList? y;
+
+  /// The primary x coordinate (first value in [x], or null if omitted/empty).
+  SvgLengthPercentage? get primaryX => x?.primary;
+
+  /// The primary y coordinate (first value in [y], or null if omitted/empty).
+  SvgLengthPercentage? get primaryY => y?.primary;
 
   /// The relative x-axis shifts for the characters in the tspan.
-  final SvgLengthPercentage? dx;
+  final SvgLengthPercentageOrList? dx;
 
   /// The relative y-axis shifts for the characters in the tspan.
-  final SvgLengthPercentage? dy;
+  final SvgLengthPercentageOrList? dy;
+
+  /// The primary dx shift.
+  SvgLengthPercentage? get primaryDx => dx?.primary;
+
+  /// The primary dy shift.
+  SvgLengthPercentage? get primaryDy => dy?.primary;
 
   /// The supplemental rotation applied to the characters in the tspan.
   final SvgNumber? rotate;

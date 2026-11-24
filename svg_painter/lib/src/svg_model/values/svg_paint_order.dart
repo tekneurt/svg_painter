@@ -9,7 +9,8 @@ enum SvgPaintOrderComponent {
   stroke('stroke'),
 
   /// The markers of the shape.
-  markers('markers');
+  markers('markers')
+  ;
 
   const SvgPaintOrderComponent(this.value);
 

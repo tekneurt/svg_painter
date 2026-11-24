@@ -1,0 +1,18 @@
+/// https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Element/switch#example
+const String mdnSwitchExample = '''
+<svg viewBox="0 -20 100 50">
+  <switch>
+    <text systemLanguage="ar">مرحبا</text>
+    <text systemLanguage="de,nl">Hallo!</text>
+    <text systemLanguage="en-us">Howdy!</text>
+    <text systemLanguage="en-gb">Wotcha!</text>
+    <text systemLanguage="en-au">G'day!</text>
+    <text systemLanguage="en">Hello!</text>
+    <text systemLanguage="es">Hola!</text>
+    <text systemLanguage="fr">Bonjour!</text>
+    <text systemLanguage="ja">こんにちは</text>
+    <text systemLanguage="ru">Привет!</text>
+    <text requiredExtensions="http://example.org/lang/ext/emoji">☺</text>
+  </switch>
+</svg>
+''';

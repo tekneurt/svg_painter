@@ -8,7 +8,7 @@ part of 'stroke_painter.dart';
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
+// ignore_for_file: unused_element, unused_field, unused_element_parameter, unused_local_variable, deprecated_member_use_from_same_package
 
 class StrokePainterWidget extends StatelessWidget {
   const StrokePainterWidget({
@@ -60,13 +60,6 @@ class _$StrokePainter extends CustomPainter {
       destRect.height / sourceSize.height,
     );
 
-    {
-      final Paint paint = Paint();
-      paint.color = const Color(0xFF008000);
-      paint.style = PaintingStyle.stroke;
-      paint.strokeWidth = 1.0;
-      canvas.drawCircle(const Offset(5.0, 5.0), 4.0, paint);
-    }
     final Gradient _grad_myGradient = LinearGradient(
       begin: Alignment(-1.0, -1.0),
       end: Alignment(1.0, -1.0),
@@ -74,6 +67,13 @@ class _$StrokePainter extends CustomPainter {
       stops: <double>[0.0, 1.0],
       tileMode: TileMode.clamp,
     );
+    {
+      final Paint paint = Paint();
+      paint.color = const Color(0xFF008000);
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 1.0;
+      canvas.drawCircle(const Offset(5.0, 5.0), 4.0, paint);
+    }
     {
       final Paint paint = Paint();
       paint.shader = _grad_myGradient.createShader(

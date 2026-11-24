@@ -174,6 +174,90 @@ void main() {
         // Act & Assert
         expect(analyzer.needsGradientTransform(commands, <String>{}), isTrue);
       });
+
+      test('should return true when linear gradient is in gradientsNeedingStretch and is diagonal', () {
+        // Arrange
+        final commands = <PaintCommand>[
+          const DefineLinearGradient(
+            id: 'diagGrad',
+            x1: 0.1,
+            y1: 0.2,
+            x2: 0.8,
+            y2: 0.9,
+            stops: <GradientStop>[],
+          ),
+        ];
+
+        // Act & Assert
+        expect(analyzer.needsGradientTransform(commands, <String>{'diagGrad'}), isTrue);
+      });
+
+      test('should return false when linear gradient is in gradientsNeedingStretch but is horizontal', () {
+        // Arrange
+        final commands = <PaintCommand>[
+          const DefineLinearGradient(
+            id: 'horizGrad',
+            x1: 0.1,
+            y1: 0.5,
+            x2: 0.9,
+            y2: 0.5,
+            stops: <GradientStop>[],
+          ),
+        ];
+
+        // Act & Assert
+        expect(analyzer.needsGradientTransform(commands, <String>{'horizGrad'}), isFalse);
+      });
+    });
+
+    group('findGradientAspectRatios', () {
+      test('should find aspect ratios when commands include non-square DrawRect and DrawOval', () {
+        // Arrange
+        const commands = <PaintCommand>[
+          DrawRect(
+            x: 10,
+            y: 20,
+            width: 120,
+            height: 90,
+            rx: 0,
+            ry: 0,
+            style: PaintingStyle(
+              fill: PaintingFillStyle(shaderId: 'rectGrad'),
+            ),
+          ),
+          DrawOval(
+            cx: 50,
+            cy: 60,
+            rx: 40,
+            ry: 80,
+            style: PaintingStyle(
+              stroke: PaintingStrokeStyle(shaderId: 'ovalGrad'),
+            ),
+          ),
+          DrawCircle(
+            cx: 15,
+            cy: 25,
+            radius: 30,
+            style: PaintingStyle(
+              fill: PaintingFillStyle(shaderId: 'circleGrad'),
+            ),
+          ),
+        ];
+
+        // Act
+        final Map<String, ({double sx, double sy})> result = analyzer.findGradientAspectRatios(commands);
+
+        // Assert
+        expect(result.containsKey('rectGrad'), isTrue);
+        expect(result['rectGrad']!.sx, closeTo(120 / 90, 0.001));
+        expect(result['rectGrad']!.sy, closeTo(1.0, 0.001));
+
+        expect(result.containsKey('ovalGrad'), isTrue);
+        expect(result['ovalGrad']!.sx, closeTo(1.0, 0.001));
+        expect(result['ovalGrad']!.sy, closeTo(80 / 40, 0.001));
+
+        expect(result.containsKey('circleGrad'), isFalse);
+      });
     });
   });
 }

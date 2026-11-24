@@ -13,6 +13,8 @@ final class SvgImage extends SvgGraphicsElement with SvgBounded, SvgViewportAttr
     this.height,
     this.viewportAttributes,
     this.decoding = SvgImageDecoding.auto,
+    super.title,
+    super.desc,
     super.presentationAttributes,
     super.coreAttributes,
   });

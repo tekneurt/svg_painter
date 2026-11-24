@@ -35,5 +35,16 @@ void main() {
       // Assert
       expect(result, '2.5cm');
     });
+
+    test('should return correct string representation for unit em when formatted', () {
+      // Arrange
+      const length = SvgLength(3.5, SvgLengthUnit.em);
+
+      // Act
+      final result = length.toString();
+
+      // Assert
+      expect(result, '3.5em');
+    });
   });
 }

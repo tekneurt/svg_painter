@@ -1,9 +1,12 @@
+import 'package:svg_painter_annotation/svg_painter_annotation.dart';
+
 import '../../painting_model/_painting_model.dart';
 import '../../svg_model/_svg_model.dart';
 import '../command_generator.dart';
 import '../generator_buffer.dart';
 import '../models.dart';
 import '../palette_analyzer.dart';
+import '../path_marker_extractor.dart';
 import '../shape_generator.dart';
 
 class PolyGenerator<T extends DrawCommand> extends ShapeGenerator<T> {
@@ -21,6 +24,8 @@ class PolyGenerator<T extends DrawCommand> extends ShapeGenerator<T> {
     List<InheritedProperty>? inheritedStrokes,
     String? painterClassName,
     Set<String>? gradientsNeedingStretch,
+    SvgColorMapping colorMapping = SvgColorMapping.material,
+    bool isInsideMarker = false,
   }) {
     final List<double> points;
     var isClosed = false;
@@ -60,6 +65,13 @@ class PolyGenerator<T extends DrawCommand> extends ShapeGenerator<T> {
           command,
           command.style,
           bounds,
+          colorMapping: colorMapping,
+          palette: palette,
+          activeFillProperties: activeFillProperties,
+          activeStrokeProperties: activeStrokeProperties,
+          inheritedFills: inheritedFills,
+          inheritedStrokes: inheritedStrokes,
+          isInsideMarker: isInsideMarker,
           (String p, {String? dashArray, String? pathLength, String? dashOffset}) {
             buffer.writeln('canvas.drawPath(path, $p);');
           },
@@ -74,11 +86,17 @@ class PolyGenerator<T extends DrawCommand> extends ShapeGenerator<T> {
             }
             emitDrawStrokePath(buffer, pathExpr, p, style: command.style);
           },
-          palette: palette,
-          activeFillProperties: activeFillProperties,
-          activeStrokeProperties: activeStrokeProperties,
-          inheritedFills: inheritedFills,
-          inheritedStrokes: inheritedStrokes,
+          drawMarkersCall: command.style.hasMarkers
+              ? (String? fillPaintVar, String? strokePaintVar) {
+                  emitMarkerCalls(
+                    buffer,
+                    command.style,
+                    PathMarkerExtractor.extractFromPoints(points, isClosed: isClosed),
+                    fillPaintVar: fillPaintVar,
+                    strokePaintVar: strokePaintVar,
+                  );
+                }
+              : null,
         );
       });
     });

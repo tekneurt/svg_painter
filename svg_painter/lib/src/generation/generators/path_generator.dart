@@ -1,9 +1,12 @@
+import 'package:svg_painter_annotation/svg_painter_annotation.dart';
+
 import '../../painting_model/_painting_model.dart';
 import '../../svg_model/_svg_model.dart';
 import '../command_generator.dart';
 import '../generator_buffer.dart';
 import '../models.dart';
 import '../palette_analyzer.dart';
+import '../path_marker_extractor.dart';
 import '../shape_generator.dart';
 
 class PathGenerator extends ShapeGenerator<DrawPath> {
@@ -21,49 +24,14 @@ class PathGenerator extends ShapeGenerator<DrawPath> {
     List<InheritedProperty>? inheritedStrokes,
     String? painterClassName,
     Set<String>? gradientsNeedingStretch,
+    SvgColorMapping colorMapping = SvgColorMapping.material,
+    bool isInsideMarker = false,
   }) {
     wrapWithStyle(buffer, command.style, 'Offset.zero & viewBox', () {
       buffer.writeBlock('{', () {
         buffer.writeln('final Path path = Path()');
         buffer.indent();
-        for (final PathOperation op in command.operations) {
-          switch (op) {
-            case MoveTo(:final double x, :final double y):
-              buffer.writeln('..moveTo($x, $y)');
-            case LineTo(:final double x, :final double y):
-              buffer.writeln('..lineTo($x, $y)');
-            case CubicTo(
-              :final double x1,
-              :final double y1,
-              :final double x2,
-              :final double y2,
-              :final double x3,
-              :final double y3,
-            ):
-              buffer.writeln('..cubicTo($x1, $y1, $x2, $y2, $x3, $y3)');
-            case QuadraticTo(
-              :final double x1,
-              :final double y1,
-              :final double x2,
-              :final double y2,
-            ):
-              buffer.writeln('..quadraticBezierTo($x1, $y1, $x2, $y2)');
-            case ArcTo(
-              :final double rx,
-              :final double ry,
-              :final double xAxisRotation,
-              :final bool largeArcFlag,
-              :final bool sweepFlag,
-              :final double x,
-              :final double y,
-            ):
-              buffer.writeln(
-                '..arcToPoint(const Offset($x, $y), radius: const Radius.elliptical($rx, $ry), rotation: $xAxisRotation, largeArc: $largeArcFlag, clockwise: $sweepFlag)',
-              );
-            case ClosePath():
-              buffer.writeln('..close()');
-          }
-        }
+        emitPathOperations(buffer, command.operations);
         buffer.outdent();
         buffer.writeln(';');
         if (command.style.fill?.fillRule == SvgFillRule.evenodd) {
@@ -76,6 +44,13 @@ class PathGenerator extends ShapeGenerator<DrawPath> {
           command,
           command.style,
           bounds,
+          colorMapping: colorMapping,
+          palette: palette,
+          activeFillProperties: activeFillProperties,
+          activeStrokeProperties: activeStrokeProperties,
+          inheritedFills: inheritedFills,
+          inheritedStrokes: inheritedStrokes,
+          isInsideMarker: isInsideMarker,
           (String p, {String? dashArray, String? pathLength, String? dashOffset}) {
             buffer.writeln('canvas.drawPath(path, $p);');
           },
@@ -90,11 +65,17 @@ class PathGenerator extends ShapeGenerator<DrawPath> {
             }
             emitDrawStrokePath(buffer, pathExpr, p, style: command.style);
           },
-          palette: palette,
-          activeFillProperties: activeFillProperties,
-          activeStrokeProperties: activeStrokeProperties,
-          inheritedFills: inheritedFills,
-          inheritedStrokes: inheritedStrokes,
+          drawMarkersCall: command.style.hasMarkers
+              ? (String? fillPaintVar, String? strokePaintVar) {
+                  emitMarkerCalls(
+                    buffer,
+                    command.style,
+                    PathMarkerExtractor.extractFromOperations(command.operations),
+                    fillPaintVar: fillPaintVar,
+                    strokePaintVar: strokePaintVar,
+                  );
+                }
+              : null,
         );
       });
     });

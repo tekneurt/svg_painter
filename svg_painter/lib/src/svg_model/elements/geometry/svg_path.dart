@@ -6,6 +6,8 @@ final class SvgPath extends SvgGraphicsElement with SvgGeometryAttributable {
   const SvgPath({
     required this.d,
     this.geometryAttributes,
+    super.title,
+    super.desc,
     super.presentationAttributes,
     super.coreAttributes,
   });

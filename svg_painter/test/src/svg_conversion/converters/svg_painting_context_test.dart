@@ -22,10 +22,10 @@ void main() {
       expect(context.inheritedFill, isA<SvgNamedColor>());
       expect(context.inheritedStroke, isA<SvgNoneColor>());
       expect(context.inheritedStrokeWidth, const SvgLength(1.0));
-      expect(context.inheritedFontSize, const SvgLength(12.0));
+      expect(context.inheritedFontSize, const SvgLength(16.0));
       expect(context.inheritedFontWeight, isA<SvgFontWeightNormal>());
       expect(context.inheritedFontStyle, SvgFontStyle.normal);
-      expect(context.inheritedFontFamily, const SvgFontFamily('sans-serif'));
+      expect(context.inheritedFontFamily, const SvgFontFamily('serif'));
 
       expect(context.inheritedFillOpacity, const SvgLength(1.0));
       expect(context.inheritedStrokeOpacity, const SvgLength(1.0));
@@ -58,10 +58,39 @@ void main() {
       expect(derived, same(context));
     });
 
+    test('should preserve and override xHeight when derive is called', () {
+      // Arrange
+      const ctx = SvgPaintingContext(
+        viewBoxWidth: 100,
+        viewBoxHeight: 100,
+        xHeight: 60.0,
+      );
+
+      // Act
+      final SvgPaintingContext derivedSame = ctx.derive(viewBoxWidth: 300);
+      final SvgPaintingContext derivedNew = ctx.derive(xHeight: 80.0);
+
+      // Assert
+      expect(derivedSame.xHeight, 60.0);
+      expect(derivedNew.xHeight, 80.0);
+    });
+
     test('deriveWith should return same context if element is not presentable', () {
       const element = SvgIgnoredElement();
       final SvgPaintingContext derived = context.deriveWith(element);
       expect(derived, same(context));
+    });
+
+    test('should override isDefinition when derive is called with isDefinition', () {
+      // Arrange
+      const ctx = SvgPaintingContext(viewBoxWidth: 120, viewBoxHeight: 240);
+      expect(ctx.isDefinition, isFalse);
+
+      // Act
+      final SvgPaintingContext derived = ctx.derive(isDefinition: true);
+
+      // Assert
+      expect(derived.isDefinition, isTrue);
     });
   });
 }

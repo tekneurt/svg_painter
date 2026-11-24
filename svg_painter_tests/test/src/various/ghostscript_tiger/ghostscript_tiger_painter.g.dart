@@ -8,7 +8,7 @@ part of 'ghostscript_tiger_painter.dart';
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
+// ignore_for_file: unused_element, unused_field, unused_element_parameter, unused_local_variable, deprecated_member_use_from_same_package
 
 class GhostscriptTigerPainterWidget extends StatelessWidget {
   const GhostscriptTigerPainterWidget({
@@ -6353,7 +6353,7 @@ class _$GhostscriptTigerPainter extends CustomPainter {
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
+// ignore_for_file: unused_element, unused_field, unused_element_parameter, unused_local_variable, deprecated_member_use_from_same_package
 
 class GhostscriptTigerTransformedPainterWidget extends StatelessWidget {
   const GhostscriptTigerTransformedPainterWidget({
@@ -12717,7 +12717,7 @@ class _$GhostscriptTigerTransformedPainter extends CustomPainter {
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
+// ignore_for_file: unused_element, unused_field, unused_element_parameter, unused_local_variable, deprecated_member_use_from_same_package
 
 class GhostscriptTigerDataUriPainterWidget extends StatelessWidget {
   const GhostscriptTigerDataUriPainterWidget({

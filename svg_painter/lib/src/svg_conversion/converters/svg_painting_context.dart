@@ -18,16 +18,21 @@ final class SvgPaintingContext {
         width: SvgLength(1.0),
       ),
       font: SvgFontAttributes(
-        size: SvgLength(12.0),
+        size: SvgLength(16.0),
         weight: SvgFontWeightNormal(),
         style: SvgFontStyle.normal,
-        family: SvgFontFamily('sans-serif'),
+        family: SvgFontFamily('serif'),
       ),
+      visibility: SvgVisibility.visible,
     ),
     this.styleSheet = const SvgStyleSheet(<String, Map<String, String>>{}),
     this.definitions = const <String, SvgElement>{},
     this.imageCache = const <String, List<int>>{},
     this.svgCache = const <String, SvgSvg>{},
+    this.isDefinition = false,
+    this.contextFill,
+    this.contextStroke,
+    this.xHeight,
   });
 
   /// The width of the viewport/viewBox.
@@ -81,6 +86,9 @@ final class SvgPaintingContext {
   /// Inherited font family.
   SvgFontFamily? get inheritedFontFamily => inheritedAttributes.font?.family;
 
+  /// Inherited visibility.
+  SvgVisibility? get inheritedVisibility => inheritedAttributes.visibility;
+
   /// The CSS rules defined for the document.
   final SvgStyleSheet styleSheet;
 
@@ -92,6 +100,18 @@ final class SvgPaintingContext {
 
   /// Map of hrefs to pre-parsed SvgSvg objects.
   final Map<String, SvgSvg> svgCache;
+
+  /// Whether this context is within a definition container (<defs>).
+  final bool isDefinition;
+
+  /// The fill attributes of the referencing context element (e.g. for <use>).
+  final SvgFillAttributes? contextFill;
+
+  /// The stroke attributes of the referencing context element (e.g. for <use>).
+  final SvgStrokeAttributes? contextStroke;
+
+  /// The default x-height in logical pixels used to resolve `ex` units.
+  final double? xHeight;
 
   /// Returns the normalized diagonal length of the viewBox for resolving radii.
   /// Formula: sqrt(w*w + h*h) / sqrt(2)
@@ -106,7 +126,13 @@ final class SvgPaintingContext {
     double? viewBoxMinX,
     double? viewBoxMinY,
     SvgPresentationAttributes? inheritedAttributes,
+    SvgStyleSheet? styleSheet,
     Map<String, SvgSvg>? svgCache,
+    bool? isDefinition,
+    SvgFillAttributes? contextFill,
+    SvgStrokeAttributes? contextStroke,
+    bool resetContextPaint = false,
+    double? xHeight,
   }) {
     return SvgPaintingContext(
       viewBoxWidth: viewBoxWidth ?? this.viewBoxWidth,
@@ -114,10 +140,14 @@ final class SvgPaintingContext {
       viewBoxMinX: viewBoxMinX ?? this.viewBoxMinX,
       viewBoxMinY: viewBoxMinY ?? this.viewBoxMinY,
       inheritedAttributes: inheritedAttributes ?? this.inheritedAttributes,
-      styleSheet: styleSheet,
+      styleSheet: styleSheet ?? this.styleSheet,
       definitions: definitions,
       imageCache: imageCache,
       svgCache: svgCache ?? this.svgCache,
+      isDefinition: isDefinition ?? this.isDefinition,
+      contextFill: resetContextPaint ? null : (contextFill ?? this.contextFill),
+      contextStroke: resetContextPaint ? null : (contextStroke ?? this.contextStroke),
+      xHeight: xHeight ?? this.xHeight,
     );
   }
 

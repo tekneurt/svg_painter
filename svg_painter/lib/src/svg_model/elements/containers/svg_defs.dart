@@ -10,15 +10,24 @@ final class SvgDefs extends SvgDefinitionElement
         SvgPresentable,
         SvgFontAttributable,
         SvgFillAttributable,
-        SvgStrokeAttributable {
+        SvgStrokeAttributable,
+        SvgDescriptive {
   const SvgDefs({
     required this.children,
+    this.title,
+    this.desc,
     this.presentationAttributes,
     super.coreAttributes,
   });
 
   @override
   final List<SvgElement> children;
+
+  @override
+  final SvgTitle? title;
+
+  @override
+  final SvgDesc? desc;
 
   @override
   final SvgPresentationAttributes? presentationAttributes;

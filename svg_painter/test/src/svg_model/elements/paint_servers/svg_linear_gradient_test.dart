@@ -1,4 +1,7 @@
-import 'package:svg_painter/src/svg_model/_svg_model.dart';
+import 'package:svg_painter/src/svg_model/attribute_groups/svg_core_attributes.dart';
+import 'package:svg_painter/src/svg_model/attribute_groups/svg_transform_attributes.dart';
+import 'package:svg_painter/src/svg_model/svg_element.dart';
+import 'package:svg_painter/src/svg_model/svg_value.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -12,6 +15,9 @@ void main() {
         x2: SvgLength(33.0),
         y2: SvgLength(44.0),
         stops: <SvgStop>[],
+        gradientUnits: SvgGradientUnits.userSpaceOnUse,
+        spreadMethod: SvgSpreadMethod.repeat,
+        href: '#base',
         gradientTransformAttributes: SvgTransformAttributes(<SvgTransformOperation>[
           SvgMatrix(1, 0, 0, 1, 0, 0),
         ]),
@@ -23,7 +29,7 @@ void main() {
       // Assert
       expect(
         result,
-        'SvgLinearGradient(x1: 11.0, y1: 22.0, x2: 33.0, y2: 44.0, stops: 0, transform: SvgTransformAttributes(matrix(1.0, 0.0, 0.0, 1.0, 0.0, 0.0)), units: SvgGradientUnits.objectBoundingBox, spread: SvgSpreadMethod.pad, id: g1)',
+        'SvgLinearGradient(x1: 11.0, y1: 22.0, x2: 33.0, y2: 44.0, stops: 0, transform: SvgTransformAttributes(matrix(1.0, 0.0, 0.0, 1.0, 0.0, 0.0)), units: SvgGradientUnits.userSpaceOnUse, spread: SvgSpreadMethod.repeat, href: #base, id: g1)',
       );
     });
 
@@ -43,7 +49,7 @@ void main() {
       // Assert
       expect(
         result,
-        'SvgLinearGradient(x1: 1.1, y1: 2.2, x2: 33.3, y2: 44.4, stops: 0, units: SvgGradientUnits.objectBoundingBox, spread: SvgSpreadMethod.pad)',
+        'SvgLinearGradient(x1: 1.1, y1: 2.2, x2: 33.3, y2: 44.4, stops: 0)',
       );
     });
   });

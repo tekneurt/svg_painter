@@ -6,7 +6,8 @@ enum SvgClipPathUnits {
   userSpaceOnUse('userSpaceOnUse'),
 
   /// The coordinate system is relative to the element the clip path is applied to.
-  objectBoundingBox('objectBoundingBox');
+  objectBoundingBox('objectBoundingBox')
+  ;
 
   const SvgClipPathUnits(this.value);
 

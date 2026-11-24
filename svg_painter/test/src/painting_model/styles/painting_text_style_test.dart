@@ -67,5 +67,22 @@ void main() {
       expect(str, isNot(contains('anchor')));
       expect(str, isNot(contains('package')));
     });
+
+    test('should include fallback when fontFamilyFallback is not empty', () {
+      // Arrange
+      const style = PaintingTextStyle(
+        fontSize: 16.0,
+        fontWeight: PaintingFontWeight.normal,
+        fontStyle: PaintingFontStyle.normal,
+        fontFamily: 'CustomFont',
+        fontFamilyFallback: <String>['Fallback1', 'Fallback2'],
+      );
+
+      // Act
+      final str = style.toString();
+
+      // Assert
+      expect(str, contains('fallback: [Fallback1, Fallback2]'));
+    });
   });
 }

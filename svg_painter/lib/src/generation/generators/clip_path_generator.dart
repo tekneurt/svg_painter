@@ -1,8 +1,12 @@
+import 'package:svg_painter_annotation/svg_painter_annotation.dart';
+
 import '../../painting_model/_painting_model.dart';
+import '../../svg_model/_svg_model.dart';
 import '../command_generator.dart';
 import '../generator_buffer.dart';
 import '../models.dart';
 import '../palette_analyzer.dart';
+import '../svg_id_formatter.dart';
 
 /// Generator for [DefineClipPath] commands.
 class ClipPathGenerator extends CommandGenerator<DefineClipPath> {
@@ -20,12 +24,14 @@ class ClipPathGenerator extends CommandGenerator<DefineClipPath> {
     List<InheritedProperty>? inheritedStrokes,
     String? painterClassName,
     Set<String>? gradientsNeedingStretch,
+    SvgColorMapping colorMapping = SvgColorMapping.material,
+    bool isInsideMarker = false,
   }) {
+    final String clipId = SvgIdFormatter.sanitizeId(command.id);
     buffer.writeBlock(
-      'void _clipPath_${command.id}(Canvas canvas, Size size, Rect targetBounds) {',
+      'void _clipPath_$clipId(Canvas canvas, Size size, Rect targetBounds) {',
       () {
-        final isOBox =
-            command.clipPathUnits == PaintingGradientUnits.objectBoundingBox;
+        final isOBox = command.clipPathUnits == PaintingGradientUnits.objectBoundingBox;
         buffer.writeln('final Path path = Path();');
 
         for (final PaintCommand child in command.commands) {
@@ -76,7 +82,7 @@ class ClipPathGenerator extends CommandGenerator<DefineClipPath> {
       case DrawLine(:final double x1, :final double y1, :final double x2, :final double y2):
         buffer.writeln('path.moveTo($x1, $y1);');
         buffer.writeln('path.lineTo($x2, $y2);');
-      case DrawPolygon(:final List<double> points):
+      case DrawPolygon(:final List<double> points, :final PaintingStyle style):
         if (points.isNotEmpty) {
           buffer.writeBlock('{', () {
             buffer.writeln('final Path polyPath = Path()');
@@ -87,6 +93,11 @@ class ClipPathGenerator extends CommandGenerator<DefineClipPath> {
             }
             buffer.writeln('..close();');
             buffer.outdent();
+            if (style.clipRule == SvgClipRule.evenodd ||
+                style.fill?.fillRule == SvgFillRule.evenodd) {
+              buffer.writeln('polyPath.fillType = PathFillType.evenOdd;');
+              buffer.writeln('path.fillType = PathFillType.evenOdd;');
+            }
             buffer.writeln('path.addPath(polyPath, Offset.zero);');
           });
         }
@@ -104,50 +115,18 @@ class ClipPathGenerator extends CommandGenerator<DefineClipPath> {
             buffer.writeln('path.addPath(polyPath, Offset.zero);');
           });
         }
-      case DrawPath(:final List<PathOperation> operations):
+      case DrawPath(:final List<PathOperation> operations, :final PaintingStyle style):
         buffer.writeBlock('{', () {
           buffer.writeln('final Path subPath = Path()');
           buffer.indent();
-          for (final op in operations) {
-            switch (op) {
-              case MoveTo(:final double x, :final double y):
-                buffer.writeln('..moveTo($x, $y)');
-              case LineTo(:final double x, :final double y):
-                buffer.writeln('..lineTo($x, $y)');
-              case CubicTo(
-                :final double x1,
-                :final double y1,
-                :final double x2,
-                :final double y2,
-                :final double x3,
-                :final double y3,
-              ):
-                buffer.writeln('..cubicTo($x1, $y1, $x2, $y2, $x3, $y3)');
-              case QuadraticTo(
-                :final double x1,
-                :final double y1,
-                :final double x2,
-                :final double y2,
-              ):
-                buffer.writeln('..quadraticBezierTo($x1, $y1, $x2, $y2)');
-              case ArcTo(
-                :final double rx,
-                :final double ry,
-                :final double xAxisRotation,
-                :final bool largeArcFlag,
-                :final bool sweepFlag,
-                :final double x,
-                :final double y,
-              ):
-                buffer.writeln(
-                  '..arcToPoint(const Offset($x, $y), radius: const Radius.elliptical($rx, $ry), rotation: $xAxisRotation, largeArc: $largeArcFlag, clockwise: $sweepFlag)',
-                );
-              case ClosePath():
-                buffer.writeln('..close()');
-            }
-          }
+          emitPathOperations(buffer, operations);
           buffer.outdent();
           buffer.writeln(';');
+          if (style.clipRule == SvgClipRule.evenodd ||
+              style.fill?.fillRule == SvgFillRule.evenodd) {
+            buffer.writeln('subPath.fillType = PathFillType.evenOdd;');
+            buffer.writeln('path.fillType = PathFillType.evenOdd;');
+          }
           buffer.writeln('path.addPath(subPath, Offset.zero);');
         });
       case DrawGroup(:final List<PaintCommand> commands):

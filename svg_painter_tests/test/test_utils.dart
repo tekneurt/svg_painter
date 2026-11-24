@@ -1,4 +1,6 @@
 import 'dart:io';
+import 'dart:ui' as ui;
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -57,6 +59,28 @@ const Map<GoldenTestType, Set<TargetPlatform>?> defaultGoldenTests =
       GoldenTestType.viewBox: null,
     };
 
+/// Convenient preset for tests where both fixed and viewBox rendering differs on macOS
+/// (e.g., text rasterization, sub-pixel antialiasing, or raster filtering).
+const Map<GoldenTestType, Set<TargetPlatform>?> macOsOverrideGoldenTests =
+    <GoldenTestType, Set<TargetPlatform>?>{
+      GoldenTestType.fixed: <TargetPlatform>{TargetPlatform.macOS},
+      GoldenTestType.viewBox: <TargetPlatform>{TargetPlatform.macOS},
+    };
+
+/// Convenient preset for tests where only the viewBox rendering differs on macOS.
+const Map<GoldenTestType, Set<TargetPlatform>?> macOsViewBoxOverrideGoldenTests =
+    <GoldenTestType, Set<TargetPlatform>?>{
+      GoldenTestType.fixed: null,
+      GoldenTestType.viewBox: <TargetPlatform>{TargetPlatform.macOS},
+    };
+
+/// Convenient preset for tests where only the fixed-size rendering differs on macOS.
+const Map<GoldenTestType, Set<TargetPlatform>?> macOsFixedOverrideGoldenTests =
+    <GoldenTestType, Set<TargetPlatform>?>{
+      GoldenTestType.fixed: <TargetPlatform>{TargetPlatform.macOS},
+      GoldenTestType.viewBox: null,
+    };
+
 /// Returns the current host platform as a [TargetPlatform].
 TargetPlatform get currentPlatform => switch (Platform.operatingSystem) {
   'macos' => TargetPlatform.macOS,
@@ -98,18 +122,25 @@ String goldenFileName(String name, Set<TargetPlatform>? platforms) {
 Future<void> loadTestFonts() async {
   final families = <String, String>{
     'Roboto': '../svg_painter/assets/fonts/roboto',
+    'Tinos': '../svg_painter/assets/fonts/tinos',
     'Noto Serif': '../svg_painter/assets/fonts/noto_serif',
     'Roboto Mono': '../svg_painter/assets/fonts/roboto_mono',
     'Verdana': '../svg_painter/assets/fonts/roboto',
     'Arial': '../svg_painter/assets/fonts/roboto',
     'Helvetica': '../svg_painter/assets/fonts/roboto',
     'sans-serif': '../svg_painter/assets/fonts/roboto',
-    'Times New Roman': '../svg_painter/assets/fonts/noto_serif',
-    'Georgia': '../svg_painter/assets/fonts/noto_serif',
-    'serif': '../svg_painter/assets/fonts/noto_serif',
+    'Times': '../svg_painter/assets/fonts/tinos',
+    'Times New Roman': '../svg_painter/assets/fonts/tinos',
+    'Georgia': '../svg_painter/assets/fonts/tinos',
+    'serif': '../svg_painter/assets/fonts/tinos',
     'Courier': '../svg_painter/assets/fonts/roboto_mono',
     'Courier New': '../svg_painter/assets/fonts/roboto_mono',
     'monospace': '../svg_painter/assets/fonts/roboto_mono',
+    'SVGFreeSansASCII': '../svg_painter/assets/fonts/free_sans',
+    'SVGFreeSansASCII,sans-serif': '../svg_painter/assets/fonts/free_sans',
+    'Blocky': '../svg_painter/assets/fonts/blocky',
+    's-larabie-anglepoise': '../svg_painter/assets/fonts/anglepoise',
+    'anglepoise': '../svg_painter/assets/fonts/anglepoise',
   };
 
   for (final MapEntry<String, String> entry in families.entries) {
@@ -125,7 +156,7 @@ Future<void> loadTestFonts() async {
     final List<FileSystemEntity> files = dir.listSync();
 
     for (final file in files) {
-      if (file is File && file.path.endsWith('.ttf')) {
+      if (file is File && (file.path.endsWith('.ttf') || file.path.endsWith('.otf'))) {
         final Uint8List bytes = await file.readAsBytes();
         loader.addFont(Future<ByteData>.value(ByteData.view(bytes.buffer)));
         packageLoader.addFont(Future<ByteData>.value(ByteData.view(bytes.buffer)));
@@ -279,6 +310,160 @@ Future<void> testSvgPainterNative({
 
   tester.view.resetDevicePixelRatio();
   tester.view.resetPhysicalSize();
+}
+
+/// Tests an SVG painter against its Flutter golden file, and compares
+/// it against an official reference image (e.g., W3C, flutter_svg) to isolate
+/// and verify any visual differences.
+Future<void> testSvgPainterWithReferenceDiff({
+  required WidgetTester tester,
+  required CustomPainter painter,
+  Widget? widget,
+  required String testName,
+  required String relativeGoldenPath,
+  required String diskBasePath,
+  String referenceDirName = 'reference',
+  Size? canvasSize,
+  double maxDiffPercent = 0.06,
+  Set<TargetPlatform>? platformOverrides = const <TargetPlatform>{TargetPlatform.macOS},
+  String testSuiteName = 'Reference',
+}) async {
+  tester.view.devicePixelRatio = 1.0;
+
+  final Size size = canvasSize ?? (painter as dynamic).viewBox as Size;
+  tester.view.physicalSize = size;
+
+  final GlobalKey repaintBoundaryKey = GlobalKey();
+
+  await tester.pumpWidget(
+    MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Center(
+        child: RepaintBoundary(
+          key: repaintBoundaryKey,
+          child: SizedBox(
+            width: size.width,
+            height: size.height,
+            child: widget ?? CustomPaint(painter: painter),
+          ),
+        ),
+      ),
+    ),
+  );
+
+  if (widget != null) {
+    await tester.runAsync(() async {
+      await Future<void>.delayed(const Duration(milliseconds: 500));
+    });
+    await tester.pumpAndSettle();
+  }
+
+  final String goldenName = goldenFileName(testName, platformOverrides);
+
+  // 1. Primary Regression Test: Test against Flutter golden (0.00% diff).
+  await expectLater(
+    find.byKey(repaintBoundaryKey),
+    matchesGoldenFile('$relativeGoldenPath/$goldenName'),
+  );
+
+  // 2. Reference Comparison & Diff Isolation:
+  await tester.runAsync(() async {
+    final goldenFile = File(
+      '$diskBasePath/goldens/$goldenName',
+    );
+    final referenceFile = File(
+      '$diskBasePath/$referenceDirName/$testName.png',
+    );
+
+    if (goldenFile.existsSync() && referenceFile.existsSync()) {
+      final Uint8List renderedBytes = await goldenFile.readAsBytes();
+      final Uint8List referenceBytes = await referenceFile.readAsBytes();
+
+      final ComparisonResult comparison = await GoldenFileComparator.compareLists(
+        renderedBytes,
+        referenceBytes,
+      );
+
+      final ui.Image? isolatedDiff = comparison.diffs?['isolatedDiff'];
+      if (isolatedDiff != null) {
+        final ByteData? diffByteData = await isolatedDiff.toByteData(
+          format: ui.ImageByteFormat.png,
+        );
+        if (diffByteData != null) {
+          final diffFile = File(
+            '$diskBasePath/$referenceDirName/${testName}_diff.png',
+          );
+          await diffFile.parent.create(recursive: true);
+          await diffFile.writeAsBytes(diffByteData.buffer.asUint8List());
+        }
+      }
+
+      expect(
+        comparison.diffPercent,
+        lessThanOrEqualTo(maxDiffPercent),
+        reason:
+            '$testSuiteName pixel diff of ${(comparison.diffPercent * 100).toStringAsFixed(2)}% '
+            'exceeded expected maximum AA tolerance of ${(maxDiffPercent * 100).toStringAsFixed(2)}%',
+      );
+
+      comparison.dispose();
+    }
+  });
+
+  tester.view.resetDevicePixelRatio();
+  tester.view.resetPhysicalSize();
+}
+
+/// Tests a W3C SVG painter against its Flutter golden file, and compares
+/// it against the official W3C reference image to isolate and verify the stroke
+/// antialiasing difference.
+Future<void> testSvgPainterWithW3cDiff({
+  required WidgetTester tester,
+  required CustomPainter painter,
+  Widget? widget,
+  required String testName,
+  String folder = 'shapes',
+  double maxDiffPercent = 0.06,
+  Set<TargetPlatform>? platformOverrides = const <TargetPlatform>{TargetPlatform.macOS},
+}) async {
+  await testSvgPainterWithReferenceDiff(
+    tester: tester,
+    painter: painter,
+    widget: widget,
+    testName: testName,
+    relativeGoldenPath: '$folder/goldens',
+    diskBasePath: 'test/src/w3c/svg11/test_suite/$folder',
+    referenceDirName: 'w3c_reference',
+    maxDiffPercent: maxDiffPercent,
+    platformOverrides: platformOverrides,
+    testSuiteName: 'W3C',
+  );
+}
+
+/// Tests a flutter_svg painter against its Flutter golden file, and compares
+/// it against the official flutter_svg reference image.
+Future<void> testSvgPainterWithFlutterSvgDiff({
+  required WidgetTester tester,
+  required CustomPainter painter,
+  Widget? widget,
+  required String testName,
+  Size? canvasSize,
+  double maxDiffPercent = 0.05,
+  Set<TargetPlatform>? platformOverrides,
+}) async {
+  await testSvgPainterWithReferenceDiff(
+    tester: tester,
+    painter: painter,
+    widget: widget,
+    testName: testName,
+    relativeGoldenPath: 'goldens',
+    diskBasePath: 'test/src/flutter_svg',
+    referenceDirName: 'flutter_svg_reference',
+    canvasSize: canvasSize,
+    maxDiffPercent: maxDiffPercent,
+    platformOverrides: platformOverrides,
+    testSuiteName: 'flutter_svg',
+  );
 }
 
 /// Runs golden tests for a painter based on the [tests] configuration.

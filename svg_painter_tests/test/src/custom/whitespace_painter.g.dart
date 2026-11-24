@@ -8,7 +8,7 @@ part of 'whitespace_painter.dart';
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
+// ignore_for_file: unused_element, unused_field, unused_element_parameter, unused_local_variable, deprecated_member_use_from_same_package
 
 class WhitespacePainterWidget extends StatelessWidget {
   const WhitespacePainterWidget({
@@ -69,7 +69,7 @@ class _$WhitespacePainter extends CustomPainter {
           text: TextSpan(
             style: TextStyle(
               color: Colors.black,
-              fontSize: 12.0,
+              fontSize: 16.0,
               fontWeight: FontWeight.normal,
               fontStyle: FontStyle.normal,
               fontFamily: 'Roboto Mono',
@@ -99,10 +99,10 @@ class _$WhitespacePainter extends CustomPainter {
           text: TextSpan(
             style: TextStyle(
               color: Colors.black,
-              fontSize: 12.0,
+              fontSize: 16.0,
               fontWeight: FontWeight.normal,
               fontStyle: FontStyle.normal,
-              fontFamily: 'Roboto',
+              fontFamily: 'Tinos',
               package: 'svg_painter',
             ),
             children: <InlineSpan>[

@@ -24,6 +24,8 @@ extension ToSvgPolygon on XmlElement {
         geometryAttributes: pathLength != null
             ? SvgGeometryAttributes(pathLength: pathLength)
             : null,
+        title: common.title,
+        desc: common.desc,
         coreAttributes: common.core,
         presentationAttributes: common.presentation,
       ),

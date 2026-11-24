@@ -8,7 +8,7 @@ part of 'fy_painter.dart';
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
+// ignore_for_file: unused_element, unused_field, unused_element_parameter, unused_local_variable, deprecated_member_use_from_same_package
 
 class Fy1PainterWidget extends StatelessWidget {
   const Fy1PainterWidget({
@@ -123,7 +123,7 @@ class _$Fy1Painter extends CustomPainter {
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
+// ignore_for_file: unused_element, unused_field, unused_element_parameter, unused_local_variable, deprecated_member_use_from_same_package
 
 class Fy2PainterWidget extends StatelessWidget {
   const Fy2PainterWidget({
@@ -175,8 +175,6 @@ class _$Fy2Painter extends CustomPainter {
       destRect.height / sourceSize.height,
     );
 
-    canvas.save();
-    canvas.scale(1.6666666666666667, 1.6666666666666667);
     final Gradient _grad_Gradient = RadialGradient(
       center: Alignment(0.0, 0.0),
       radius: 0.5,
@@ -186,6 +184,8 @@ class _$Fy2Painter extends CustomPainter {
       stops: <double>[0.0, 1.0],
       tileMode: TileMode.clamp,
     );
+    canvas.save();
+    canvas.scale(1.6666666666666667, 1.6666666666666667);
     {
       final Paint paint = Paint();
       paint.shader = _grad_Gradient.createShader(

@@ -10,7 +10,7 @@ Add `svg_painter_annotation` to your `dependencies`:
 
 ```yaml
 dependencies:
-  svg_painter_annotation: ^0.4.0
+  svg_painter_annotation: ^0.5.0
 ```
 
 Add `svg_painter` and `build_runner` to your `dev_dependencies`:
@@ -18,7 +18,7 @@ Add `svg_painter` and `build_runner` to your `dev_dependencies`:
 ```yaml
 dev_dependencies:
   build_runner: ^2.4.0
-  svg_painter: ^0.4.0
+  svg_painter: ^0.5.0
 ```
 
 ---
@@ -112,8 +112,52 @@ Maps auto-generated parameter names to semantic names:
     'stroke1': 'borderColor',
   },
 )
-class ButtonPainter extends _$ButtonPainter {
-  const ButtonPainter({super.fit, super.buttonColor, super.borderColor});
+```
+
+### `colorMapping`
+
+Controls whether generated colors use Flutter Material constants or pure hexadecimal literals:
+
+* `SvgColorMapping.material` (Default): Maps known colors to Flutter constants (`Colors.black`, `Colors.red`, `Colors.amber.shade200`, etc.).
+* `SvgColorMapping.hex`: Generates pure hexadecimal `const Color(0xAARRGGBB)` expressions without referencing the Material palette.
+
+```dart
+@SvgPainter.file(
+  'assets/icon.svg',
+  colorMapping: SvgColorMapping.hex,
+)
+class IconPainter extends _$IconPainter {
+  const IconPainter({super.fit});
+}
+```
+
+### `tokenColors`
+
+When set to `true`, the generator automatically discovers all unique colors in the SVG (across solid fills, strokes, and gradient stops) and exposes them as named constructor properties (e.g. `black`, `red`, `cFF123456`):
+
+```dart
+@SvgPainter.file(
+  'assets/flag.svg',
+  tokenColors: true,
+)
+class FlagPainter extends _$FlagPainter {
+  const FlagPainter({super.fit, super.black, super.red, super.gold});
+}
+```
+
+Passing an override to a color token globally updates every occurrence of that color throughout the entire SVG.
+
+### `theme`
+
+Configures ambient `SvgTheme` defaults (`fontSize` and `xHeight`) used to resolve relative font units (`em`, `ex`) when no explicit `font-size` is inherited in the SVG tree:
+
+```dart
+@SvgPainter.file(
+  'assets/diagram.svg',
+  theme: SvgTheme(fontSize: 14.0, xHeight: 7.0),
+)
+class DiagramPainter extends _$DiagramPainter {
+  const DiagramPainter({super.fit});
 }
 ```
 

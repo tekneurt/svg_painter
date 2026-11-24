@@ -12,13 +12,19 @@ extension ToSvgText on XmlElement {
   Result<SvgText> toSvgText() {
     const XmlElementName elementName = XmlElementName.text;
 
-    final SvgLengthPercentage x = toSvgValue<SvgLengthPercentage>(elementName, XmlAttributeName.x);
-    final SvgLengthPercentage y = toSvgValue<SvgLengthPercentage>(elementName, XmlAttributeName.y);
-    final SvgLengthPercentage? dx = toSvgValueOrNull<SvgLengthPercentage>(
+    final SvgLengthPercentageOrList x = toSvgValue<SvgLengthPercentageOrList>(
+      elementName,
+      XmlAttributeName.x,
+    );
+    final SvgLengthPercentageOrList y = toSvgValue<SvgLengthPercentageOrList>(
+      elementName,
+      XmlAttributeName.y,
+    );
+    final SvgLengthPercentageOrList? dx = toSvgValueOrNull<SvgLengthPercentageOrList>(
       elementName,
       XmlAttributeName.dx,
     );
-    final SvgLengthPercentage? dy = toSvgValueOrNull<SvgLengthPercentage>(
+    final SvgLengthPercentageOrList? dy = toSvgValueOrNull<SvgLengthPercentageOrList>(
       elementName,
       XmlAttributeName.dy,
     );
@@ -78,6 +84,8 @@ extension ToSvgText on XmlElement {
         dx: dx,
         dy: dy,
         children: textChildren,
+        title: common.title,
+        desc: common.desc,
         coreAttributes: common.core,
         presentationAttributes: common.presentation,
       ),

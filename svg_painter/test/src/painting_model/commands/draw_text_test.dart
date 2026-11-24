@@ -22,5 +22,25 @@ void main() {
         'DrawText(x: 10.0, y: 20.0, span: PaintingTextSpan(text: Hello, children: 0, style: null), style: PaintingStyle())',
       );
     });
+
+    test('should include chunks count in toString when chunks are provided', () {
+      // Arrange
+      const command = DrawText(
+        x: 15.0,
+        y: 25.0,
+        rootSpan: PaintingTextSpan(text: 'AB'),
+        style: PaintingStyle(),
+        chunks: <PaintingTextChunk>[
+          PaintingTextChunk(text: 'A', x: 15.0, y: 25.0),
+          PaintingTextChunk(text: 'B', x: 30.0, y: 25.0),
+        ],
+      );
+
+      // Act
+      final result = command.toString();
+
+      // Assert
+      expect(result, contains('chunks: 2'));
+    });
   });
 }

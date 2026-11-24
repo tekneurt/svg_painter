@@ -8,7 +8,7 @@ part of 'image_painter.dart';
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
+// ignore_for_file: unused_element, unused_field, unused_element_parameter, unused_local_variable, deprecated_member_use_from_same_package
 
 class MdnImagePainterWidget extends StatefulWidget {
   const MdnImagePainterWidget({
@@ -9654,7 +9654,7 @@ class _$MdnImagePainter extends CustomPainter {
       (canvas as dynamic).drawImageRect(
         img,
         Rect.fromLTWH(0, 0, srcW, srcH),
-        Rect.fromLTWH(0.0, 0.0, 200.0, 200.0),
+        Rect.fromLTWH(0.0, 11.833333333333343, 200.0, 176.33333333333331),
         paint,
       );
     }

@@ -49,4 +49,16 @@ enum SvgLengthUnit {
 
   /// 1% of the larger dimension of the viewport.
   vmax,
+
+  /// Relative to the font-size of the element.
+  em,
+
+  /// Relative to the font-size of the root element.
+  rem,
+
+  /// Relative to the x-height of the element's font.
+  ex,
+
+  /// Relative to the width of the '0' (zero) character.
+  ch,
 }

@@ -25,7 +25,7 @@ void main() {
           widget: widget,
           name: 'text_font_mdn_text_example',
           type: SvgTestType.various,
-          tests: defaultGoldenTests,
+          tests: macOsOverrideGoldenTests,
           nativeSize: const Size(240, 80),
         );
       },
@@ -43,7 +43,7 @@ void main() {
           widget: widget,
           name: 'text_font_tspan',
           type: SvgTestType.various,
-          tests: defaultGoldenTests,
+          tests: macOsOverrideGoldenTests,
           nativeSize: const Size(240, 40),
         );
       },
@@ -61,7 +61,7 @@ void main() {
         widget: widget,
         name: 'text_font_dx',
         type: SvgTestType.various,
-        tests: defaultGoldenTests,
+        tests: macOsOverrideGoldenTests,
         nativeSize: const Size(100, 100),
       );
     });
@@ -78,7 +78,7 @@ void main() {
           widget: widget,
           name: 'text_font_text_anchor',
           type: SvgTestType.various,
-          tests: defaultGoldenTests,
+          tests: macOsOverrideGoldenTests,
           nativeSize: const Size(120, 120),
         );
       },

@@ -7,6 +7,8 @@ part of '../../svg_element.dart';
 final class SvgClipPath extends SvgContainerElement {
   const SvgClipPath({
     required super.children,
+    super.title,
+    super.desc,
     this.clipPathUnits = SvgClipPathUnits.userSpaceOnUse,
     super.presentationAttributes,
     super.coreAttributes,

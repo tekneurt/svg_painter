@@ -9,7 +9,8 @@ enum SvgTextAnchor with SvgBaseValue {
   middle('middle'),
 
   /// The end of the text is aligned to the anchor point.
-  end('end');
+  end('end')
+  ;
 
   const SvgTextAnchor(this.value);
 

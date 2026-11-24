@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import '../painting_model/_painting_model.dart';
 
 /// Helper class to analyze the paint command tree for code generation decisions.
@@ -23,6 +25,8 @@ class GenerationAnalyzer {
       }
       if (command is DrawGroup) {
         collectIds(command.commands, fillIds, strokeIds);
+      } else if (command is DrawSwitch) {
+        collectIds(command.allCommands.toList(), fillIds, strokeIds);
       }
     }
   }
@@ -41,6 +45,10 @@ class GenerationAnalyzer {
 
       if (command is DrawGroup) {
         if (hasDashes(command.commands)) {
+          return true;
+        }
+      } else if (command is DrawSwitch) {
+        if (hasDashes(command.allCommands.toList())) {
           return true;
         }
       }
@@ -62,6 +70,10 @@ class GenerationAnalyzer {
         if (hasCurrentColor(command.commands)) {
           return true;
         }
+      } else if (command is DrawSwitch) {
+        if (hasCurrentColor(command.allCommands.toList())) {
+          return true;
+        }
       }
     }
     return false;
@@ -75,6 +87,8 @@ class GenerationAnalyzer {
       }
       if (command is DrawGroup && needsViewBoxRect(command.commands)) {
         return true;
+      } else if (command is DrawSwitch && needsViewBoxRect(command.allCommands.toList())) {
+        return true;
       }
     }
     return false;
@@ -86,6 +100,8 @@ class GenerationAnalyzer {
     for (final command in commands) {
       if (command is DrawGroup) {
         ids.addAll(findGradientsNeedingStretch(command.commands));
+      } else if (command is DrawSwitch) {
+        ids.addAll(findGradientsNeedingStretch(command.allCommands.toList()));
       } else if (command is DrawCommand) {
         final String? shaderId = command.style.fill?.shaderId ?? command.style.stroke?.shaderId;
         if (shaderId != null && isNonSquare(command)) {
@@ -112,6 +128,46 @@ class GenerationAnalyzer {
     };
   }
 
+  /// Finds aspect ratios (sx, sy) for gradients used on non-square elements.
+  Map<String, ({double sx, double sy})> findGradientAspectRatios(List<PaintCommand> commands) {
+    final ratios = <String, ({double sx, double sy})>{};
+    for (final command in commands) {
+      if (command is DrawGroup) {
+        ratios.addAll(findGradientAspectRatios(command.commands));
+      } else if (command is DrawSwitch) {
+        ratios.addAll(findGradientAspectRatios(command.allCommands.toList()));
+      } else if (command is DrawCommand) {
+        final String? shaderId = command.style.fill?.shaderId ?? command.style.stroke?.shaderId;
+        if (shaderId != null) {
+          final ({double sx, double sy})? ratio = getAspectRatio(command);
+          if (ratio != null) {
+            ratios[shaderId] = ratio;
+          }
+        }
+      }
+    }
+    return ratios;
+  }
+
+  /// Computes the horizontal and vertical scale factor for non-square shapes.
+  ({double sx, double sy})? getAspectRatio(DrawCommand command) {
+    return switch (command) {
+      DrawRect(:final double width, :final double height)
+          when width != height && width > 0 && height > 0 =>
+        () {
+          final double shortest = math.min(width, height);
+          return (sx: width / shortest, sy: height / shortest);
+        }(),
+      DrawOval(:final double rx, :final double ry)
+          when rx != ry && rx > 0 && ry > 0 =>
+        () {
+          final double shortest = math.min(rx, ry);
+          return (sx: rx / shortest, sy: ry / shortest);
+        }(),
+      _ => null,
+    };
+  }
+
   /// Checks if any gradient in the tree needs a transformation.
   bool needsGradientTransform(
     List<PaintCommand> commands,
@@ -127,9 +183,19 @@ class GenerationAnalyzer {
             gradientsNeedingStretch.contains(command.id)) {
           return true;
         }
+        if (command is DefineLinearGradient &&
+            command.units == PaintingGradientUnits.objectBoundingBox &&
+            gradientsNeedingStretch.contains(command.id) &&
+            command.x1 != command.x2 &&
+            command.y1 != command.y2) {
+          return true;
+        }
       }
       if (command is DrawGroup &&
           needsGradientTransform(command.commands, gradientsNeedingStretch)) {
+        return true;
+      } else if (command is DrawSwitch &&
+          needsGradientTransform(command.allCommands.toList(), gradientsNeedingStretch)) {
         return true;
       }
     }

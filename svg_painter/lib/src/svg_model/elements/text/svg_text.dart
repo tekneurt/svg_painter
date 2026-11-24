@@ -11,21 +11,35 @@ final class SvgText extends SvgGraphicsElement with SvgFontAttributable, SvgText
     required this.children,
     this.dx,
     this.dy,
+    super.title,
+    super.desc,
     super.presentationAttributes,
     super.coreAttributes,
   });
 
-  /// The x-axis coordinate of the starting point of the text.
-  final SvgLengthPercentage x;
+  /// The x-axis coordinate(s) of the text.
+  final SvgLengthPercentageOrList x;
 
-  /// The y-axis coordinate of the starting point of the text.
-  final SvgLengthPercentage y;
+  /// The y-axis coordinate(s) of the text.
+  final SvgLengthPercentageOrList y;
+
+  /// The primary x coordinate.
+  SvgLengthPercentage get primaryX => x.primary;
+
+  /// The primary y coordinate.
+  SvgLengthPercentage get primaryY => y.primary;
 
   /// The relative x-axis shift for the text.
-  final SvgLengthPercentage? dx;
+  final SvgLengthPercentageOrList? dx;
 
   /// The relative y-axis shift for the text.
-  final SvgLengthPercentage? dy;
+  final SvgLengthPercentageOrList? dy;
+
+  /// The primary dx shift.
+  SvgLengthPercentage? get primaryDx => dx?.primary;
+
+  /// The primary dy shift.
+  SvgLengthPercentage? get primaryDy => dy?.primary;
 
   /// The child elements or character data contained within this text element.
   final List<SvgTextContent> children;
@@ -34,5 +48,6 @@ final class SvgText extends SvgGraphicsElement with SvgFontAttributable, SvgText
   SvgFontAttributes? get fontAttributes => presentationAttributes?.font;
 
   @override
-  String toString() => 'SvgText(x: $x, y: $y, dx: $dx, dy: $dy, children: ${children.length}, id: $id)';
+  String toString() =>
+      'SvgText(x: $x, y: $y, dx: $dx, dy: $dy, children: ${children.length}, id: $id)';
 }

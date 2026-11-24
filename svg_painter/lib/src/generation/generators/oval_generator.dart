@@ -1,3 +1,5 @@
+import 'package:svg_painter_annotation/svg_painter_annotation.dart';
+
 import '../../painting_model/_painting_model.dart';
 import '../command_generator.dart';
 import '../generator_buffer.dart';
@@ -20,6 +22,8 @@ class OvalGenerator extends ShapeGenerator<DrawOval> {
     List<InheritedProperty>? inheritedStrokes,
     String? painterClassName,
     Set<String>? gradientsNeedingStretch,
+    SvgColorMapping colorMapping = SvgColorMapping.material,
+    bool isInsideMarker = false,
   }) {
     final bounds =
         'Rect.fromLTWH(${command.cx - command.rx}, ${command.cy - command.ry}, ${command.rx * 2}, ${command.ry * 2})';
@@ -29,6 +33,13 @@ class OvalGenerator extends ShapeGenerator<DrawOval> {
         command,
         command.style,
         bounds,
+        colorMapping: colorMapping,
+        palette: palette,
+        activeFillProperties: activeFillProperties,
+        activeStrokeProperties: activeStrokeProperties,
+        inheritedFills: inheritedFills,
+        inheritedStrokes: inheritedStrokes,
+        isInsideMarker: isInsideMarker,
         (String p, {String? dashArray, String? pathLength, String? dashOffset}) {
           buffer.writeln('canvas.drawOval($bounds, $p);');
         },
@@ -40,16 +51,13 @@ class OvalGenerator extends ShapeGenerator<DrawOval> {
             final doArg = (dashOffset?.isEmpty ?? true) ? '' : ', dashOffset: $dashOffset';
             buffer.writeBlock('{', () {
               buffer.writeln('final Path path = Path()..addOval($bounds);');
-              final pathExpr = dashArray == null ? 'path' : '_dashPath(path, $dashArray$plArg$doArg)';
+              final pathExpr = dashArray == null
+                  ? 'path'
+                  : '_dashPath(path, $dashArray$plArg$doArg)';
               emitDrawStrokePath(buffer, pathExpr, p, style: command.style);
             });
           }
         },
-        palette: palette,
-        activeFillProperties: activeFillProperties,
-        activeStrokeProperties: activeStrokeProperties,
-        inheritedFills: inheritedFills,
-        inheritedStrokes: inheritedStrokes,
       );
     });
   }

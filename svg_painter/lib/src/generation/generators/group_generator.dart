@@ -1,3 +1,5 @@
+import 'package:svg_painter_annotation/svg_painter_annotation.dart';
+
 import '../../painting_model/_painting_model.dart';
 import '../command_generator.dart';
 import '../generator_buffer.dart';
@@ -21,6 +23,8 @@ class GroupGenerator extends ShapeGenerator<DrawGroup> {
     List<InheritedProperty>? inheritedStrokes,
     String? painterClassName,
     Set<String>? gradientsNeedingStretch,
+    SvgColorMapping colorMapping = SvgColorMapping.material,
+    bool isInsideMarker = false,
   }) {
     if (generators == null) {
       return;
@@ -68,13 +72,19 @@ class GroupGenerator extends ShapeGenerator<DrawGroup> {
 
         if (activeProp != null) {
           nextInheritedFills.add(
-            InheritedProperty(activeProp, colorArgb: fill.colorArgb, shaderId: fill.shaderId),
+            InheritedProperty(
+              activeProp,
+              colorArgb: fill.colorArgb,
+              shaderId: fill.shaderId,
+              patternId: fill.patternId,
+            ),
           );
         } else if (inheritedFills != null) {
           // Check for existing inheritance.
           var foundMatch = false;
           for (final InheritedProperty prop in inheritedFills.reversed) {
             final bool match =
+                (fill.patternId != null && prop.patternId == fill.patternId) ||
                 (fill.shaderId != null && prop.shaderId == fill.shaderId) ||
                 (fill.colorArgb != null && prop.colorArgb == fill.colorArgb);
             if (match) {
@@ -99,12 +109,18 @@ class GroupGenerator extends ShapeGenerator<DrawGroup> {
 
         if (activeProp != null) {
           nextInheritedStrokes.add(
-            InheritedProperty(activeProp, colorArgb: stroke.colorArgb, shaderId: stroke.shaderId),
+            InheritedProperty(
+              activeProp,
+              colorArgb: stroke.colorArgb,
+              shaderId: stroke.shaderId,
+              patternId: stroke.patternId,
+            ),
           );
         } else if (inheritedStrokes != null) {
           var foundMatch = false;
           for (final InheritedProperty prop in inheritedStrokes.reversed) {
             final bool match =
+                (stroke.patternId != null && prop.patternId == stroke.patternId) ||
                 (stroke.shaderId != null && prop.shaderId == stroke.shaderId) ||
                 (stroke.colorArgb != null && prop.colorArgb == stroke.colorArgb);
             if (match) {
@@ -130,6 +146,8 @@ class GroupGenerator extends ShapeGenerator<DrawGroup> {
           inheritedStrokes: nextInheritedStrokes,
           painterClassName: painterClassName,
           gradientsNeedingStretch: gradientsNeedingStretch,
+          colorMapping: colorMapping,
+          isInsideMarker: isInsideMarker,
         );
       }
 

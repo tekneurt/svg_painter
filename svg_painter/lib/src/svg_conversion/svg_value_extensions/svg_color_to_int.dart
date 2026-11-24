@@ -1,5 +1,6 @@
 import '../../svg_model/_svg_model.dart';
 import '../converters/svg_color_name_map.dart';
+import '../converters/svg_system_color_map.dart';
 
 extension SvgColorToArgb on SvgColor? {
   /// Returns the ARGB integer value of this color.
@@ -16,10 +17,13 @@ extension SvgColorToArgb on SvgColor? {
 
     return switch (self) {
       final SvgNamedColor named => svgColorNameMap[named.name] ?? 0xFF000000,
+      final SvgSystemColor system => svgSystemColorMap[system.name] ?? 0xFF000000,
       final SvgRgbColor rgb => (rgb.alpha << 24) | (rgb.red << 16) | (rgb.green << 8) | rgb.blue,
       final SvgHslColor hsl => _hslToArgb(hsl),
       final SvgNoneColor _ => 0x00000000,
       final SvgCurrentColor _ => 0xFF000000, // TODO(Gemini): Support currentColor context
+      final SvgContextFillColor _ => 0x00000000,
+      final SvgContextStrokeColor _ => 0x00000000,
       final SvgPaintReference ref => ref.fallback.toArgb(fallback: fallback),
     };
   }

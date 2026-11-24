@@ -6,6 +6,8 @@ part of '../../svg_element.dart';
 base class SvgSvg extends SvgContainerElement with SvgViewportAttributable, SvgPresentable {
   const SvgSvg({
     required super.children,
+    super.title,
+    super.desc,
     this.x,
     this.y,
     this.width,

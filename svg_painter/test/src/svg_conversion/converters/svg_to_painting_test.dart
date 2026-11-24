@@ -616,6 +616,40 @@ void main() {
       });
     });
 
+    group('SvgA', () {
+      test('should wrap children in DrawGroup with opacity and styling when converted', () {
+        // Arrange
+        const rect = SvgRect(
+          x: SvgLength(10),
+          y: SvgLength(20),
+          width: SvgLength(30),
+          height: SvgLength(40),
+          rx: SvgLength(0),
+          ry: SvgLength(0),
+        );
+        const a = SvgA(
+          children: <SvgElement>[rect],
+          href: 'https://developer.mozilla.org',
+          presentationAttributes: SvgPresentationAttributes(
+            graphics: SvgGraphicsAttributes(opacity: SvgPercentage(75)),
+          ),
+        );
+        const root = SvgRoot(children: <SvgElement>[a]);
+
+        // Act
+        final Result<List<PaintCommand>> result = root.toPaintCommands();
+
+        // Assert
+        final List<PaintCommand> commands = (result as Success<List<PaintCommand>>).value;
+        final rootGroup = commands.single as DrawGroup;
+        expect(rootGroup.commands.single, isA<DrawGroup>());
+        final drawGroup = rootGroup.commands.single as DrawGroup;
+        expect(drawGroup.opacity, 0.75);
+        expect(drawGroup.commands.length, 1);
+        expect(drawGroup.commands.single, isA<DrawRect>());
+      });
+    });
+
     group('Delegation', () {
       test('should delegate to all element types', () {
         final elements = <SvgElement>[
@@ -641,7 +675,7 @@ void main() {
           const SvgPolygon(points: SvgPointList(<double>[0, 0, 10, 10, 0, 10])),
           const SvgText(
             x: SvgLength(10),
-            y: SvgLength(10),
+            y: SvgLength(20),
             children: <SvgTextContent>[SvgCharacterData('test')],
           ),
         ];
@@ -748,6 +782,554 @@ void main() {
         expect(defineMask.maskContentUnits, PaintingGradientUnits.objectBoundingBox);
         expect(defineMask.commands, hasLength(1));
         expect(defineMask.commands.single, isA<DrawRect>());
+      });
+    });
+
+    group('display', () {
+      test('should suppress paint commands when element has display none', () {
+        // Arrange
+        const rect = SvgRect(
+          x: SvgLength(10),
+          y: SvgLength(20),
+          width: SvgLength(100),
+          height: SvgLength(50),
+          rx: SvgLength(2),
+          ry: SvgLength(3),
+          presentationAttributes: SvgPresentationAttributes(
+            display: SvgDisplay.none,
+          ),
+        );
+        const root = SvgRoot(children: <SvgElement>[rect]);
+
+        // Act
+        final Result<List<PaintCommand>> result = root.toPaintCommands();
+
+        // Assert
+        expect(result, isA<Success<List<PaintCommand>>>());
+        final List<PaintCommand> commands = (result as Success<List<PaintCommand>>).value;
+        final rootGroup = commands.single as DrawGroup;
+        expect(rootGroup.commands, isEmpty);
+      });
+
+      test('should suppress entire group when group has display none', () {
+        // Arrange
+        const group = SvgGroup(
+          children: <SvgElement>[
+            SvgRect(
+              x: SvgLength(15),
+              y: SvgLength(25),
+              width: SvgLength(80),
+              height: SvgLength(40),
+              rx: SvgLength(1),
+              ry: SvgLength(1),
+            ),
+          ],
+          presentationAttributes: SvgPresentationAttributes(
+            display: SvgDisplay.none,
+          ),
+        );
+        const root = SvgRoot(children: <SvgElement>[group]);
+
+        // Act
+        final Result<List<PaintCommand>> result = root.toPaintCommands();
+
+        // Assert
+        expect(result, isA<Success<List<PaintCommand>>>());
+        final List<PaintCommand> commands = (result as Success<List<PaintCommand>>).value;
+        final rootGroup = commands.single as DrawGroup;
+        expect(rootGroup.commands, isEmpty);
+      });
+    });
+
+    group('visibility', () {
+      test('should suppress paint commands when element has visibility hidden', () {
+        // Arrange
+        const rect = SvgRect(
+          x: SvgLength(12),
+          y: SvgLength(34),
+          width: SvgLength(78),
+          height: SvgLength(56),
+          rx: SvgLength(4),
+          ry: SvgLength(5),
+          presentationAttributes: SvgPresentationAttributes(
+            visibility: SvgVisibility.hidden,
+          ),
+        );
+        const root = SvgRoot(children: <SvgElement>[rect]);
+
+        // Act
+        final Result<List<PaintCommand>> result = root.toPaintCommands();
+
+        // Assert
+        expect(result, isA<Success<List<PaintCommand>>>());
+        final List<PaintCommand> commands = (result as Success<List<PaintCommand>>).value;
+        final rootGroup = commands.single as DrawGroup;
+        expect(rootGroup.commands, isEmpty);
+      });
+
+      test(
+        'should suppress child paint commands when group has visibility hidden and child does not override',
+        () {
+          // Arrange
+          const group = SvgGroup(
+            children: <SvgElement>[
+              SvgRect(
+                x: SvgLength(16),
+                y: SvgLength(28),
+                width: SvgLength(84),
+                height: SvgLength(42),
+                rx: SvgLength(2),
+                ry: SvgLength(3),
+              ),
+            ],
+            presentationAttributes: SvgPresentationAttributes(
+              visibility: SvgVisibility.hidden,
+            ),
+          );
+          const root = SvgRoot(children: <SvgElement>[group]);
+
+          // Act
+          final Result<List<PaintCommand>> result = root.toPaintCommands();
+
+          // Assert
+          expect(result, isA<Success<List<PaintCommand>>>());
+          final List<PaintCommand> commands = (result as Success<List<PaintCommand>>).value;
+          final rootGroup = commands.single as DrawGroup;
+          final childGroup = rootGroup.commands.single as DrawGroup;
+          expect(childGroup.commands, isEmpty);
+        },
+      );
+
+      test(
+        'should allow child to render when group has visibility hidden and child overrides with visibility visible',
+        () {
+          // Arrange
+          const group = SvgGroup(
+            children: <SvgElement>[
+              SvgRect(
+                x: SvgLength(22),
+                y: SvgLength(33),
+                width: SvgLength(66),
+                height: SvgLength(77),
+                rx: SvgLength(6),
+                ry: SvgLength(7),
+                presentationAttributes: SvgPresentationAttributes(
+                  visibility: SvgVisibility.visible,
+                ),
+              ),
+            ],
+            presentationAttributes: SvgPresentationAttributes(
+              visibility: SvgVisibility.hidden,
+            ),
+          );
+          const root = SvgRoot(children: <SvgElement>[group]);
+
+          // Act
+          final Result<List<PaintCommand>> result = root.toPaintCommands();
+
+          // Assert
+          expect(result, isA<Success<List<PaintCommand>>>());
+          final List<PaintCommand> commands = (result as Success<List<PaintCommand>>).value;
+          final rootGroup = commands.single as DrawGroup;
+          final childGroup = rootGroup.commands.single as DrawGroup;
+          expect(childGroup.commands, hasLength(1));
+          expect(childGroup.commands.single, isA<DrawRect>());
+        },
+      );
+
+      test('should suppress text when text element has visibility hidden', () {
+        // Arrange
+        const text = SvgText(
+          x: SvgLength(15),
+          y: SvgLength(25),
+          children: <SvgTextContent>[
+            SvgCharacterData('Hidden Text'),
+          ],
+          presentationAttributes: SvgPresentationAttributes(
+            visibility: SvgVisibility.hidden,
+          ),
+        );
+        const root = SvgRoot(children: <SvgElement>[text]);
+
+        // Act
+        final Result<List<PaintCommand>> result = root.toPaintCommands();
+
+        // Assert
+        expect(result, isA<Success<List<PaintCommand>>>());
+        final List<PaintCommand> commands = (result as Success<List<PaintCommand>>).value;
+        final rootGroup = commands.single as DrawGroup;
+        expect(rootGroup.commands, isEmpty);
+      });
+
+      test(
+        'should allow child tspan to render when text has visibility hidden and tspan has visibility visible',
+        () {
+          // Arrange
+          const text = SvgText(
+            x: SvgLength(18),
+            y: SvgLength(32),
+            children: <SvgTextContent>[
+              SvgTspan(
+                children: <SvgTextContent>[
+                  SvgCharacterData('Visible Tspan'),
+                ],
+                presentationAttributes: SvgPresentationAttributes(
+                  visibility: SvgVisibility.visible,
+                ),
+              ),
+            ],
+            presentationAttributes: SvgPresentationAttributes(
+              visibility: SvgVisibility.hidden,
+            ),
+          );
+          const root = SvgRoot(children: <SvgElement>[text]);
+
+          // Act
+          final Result<List<PaintCommand>> result = root.toPaintCommands();
+
+          // Assert
+          expect(result, isA<Success<List<PaintCommand>>>());
+          final List<PaintCommand> commands = (result as Success<List<PaintCommand>>).value;
+          final rootGroup = commands.single as DrawGroup;
+          expect(rootGroup.commands, hasLength(1));
+          expect(rootGroup.commands.single, isA<DrawText>());
+        },
+      );
+    });
+
+    group('SvgPattern', () {
+      test('should convert pattern with direct attributes to DefinePattern command', () {
+        // Arrange
+        const pattern = SvgPattern(
+          coreAttributes: SvgCoreAttributes(id: 'pat1'),
+          x: SvgLength(10),
+          y: SvgLength(20),
+          width: SvgLength(30),
+          height: SvgLength(40),
+          patternUnits: SvgPatternUnits.userSpaceOnUse,
+          patternContentUnits: SvgPatternUnits.objectBoundingBox,
+          children: <SvgElement>[
+            SvgRect(
+              x: SvgLength(2),
+              y: SvgLength(4),
+              width: SvgLength(6),
+              height: SvgLength(8),
+              rx: SvgLength(1),
+              ry: SvgLength(2),
+            ),
+          ],
+        );
+        const root = SvgRoot(
+          children: <SvgElement>[pattern],
+        );
+
+        // Act
+        final Result<List<PaintCommand>> result = root.toPaintCommands();
+
+        // Assert
+        expect(result, isA<Success<List<PaintCommand>>>());
+        final List<PaintCommand> commands = (result as Success<List<PaintCommand>>).value;
+        final rootGroup = commands.single as DrawGroup;
+        expect(rootGroup.commands, hasLength(1));
+        final definePattern = rootGroup.commands.single as DefinePattern;
+        expect(definePattern.id, 'pat1');
+        expect(definePattern.x, const SvgLength(10));
+        expect(definePattern.y, const SvgLength(20));
+        expect(definePattern.width, const SvgLength(30));
+        expect(definePattern.height, const SvgLength(40));
+        expect(definePattern.patternUnits, SvgPatternUnits.userSpaceOnUse);
+        expect(definePattern.patternContentUnits, SvgPatternUnits.objectBoundingBox);
+        expect(definePattern.commands, hasLength(1));
+      });
+
+      test('should inherit attributes and children when pattern references another pattern via href', () {
+        // Arrange
+        const parentPattern = SvgPattern(
+          coreAttributes: SvgCoreAttributes(id: 'parentPat'),
+          x: SvgLength(12),
+          y: SvgLength(24),
+          width: SvgLength(36),
+          height: SvgLength(48),
+          patternUnits: SvgPatternUnits.userSpaceOnUse,
+          patternContentUnits: SvgPatternUnits.userSpaceOnUse,
+          children: <SvgElement>[
+            SvgRect(
+              x: SvgLength(3),
+              y: SvgLength(5),
+              width: SvgLength(7),
+              height: SvgLength(9),
+              rx: SvgLength(1.5),
+              ry: SvgLength(2.5),
+            ),
+          ],
+        );
+        const childPattern = SvgPattern(
+          coreAttributes: SvgCoreAttributes(id: 'childPat'),
+          href: '#parentPat',
+          children: <SvgElement>[],
+        );
+        const root = SvgRoot(
+          children: <SvgElement>[parentPattern, childPattern],
+        );
+
+        // Act
+        final Result<List<PaintCommand>> result = root.toPaintCommands();
+
+        // Assert
+        expect(result, isA<Success<List<PaintCommand>>>());
+        final List<PaintCommand> commands = (result as Success<List<PaintCommand>>).value;
+        final rootGroup = commands.single as DrawGroup;
+        expect(rootGroup.commands, hasLength(2));
+        final childDef = rootGroup.commands[1] as DefinePattern;
+        expect(childDef.id, 'childPat');
+        expect(childDef.x, const SvgLength(12));
+        expect(childDef.y, const SvgLength(24));
+        expect(childDef.width, const SvgLength(36));
+        expect(childDef.height, const SvgLength(48));
+        expect(childDef.patternUnits, SvgPatternUnits.userSpaceOnUse);
+        expect(childDef.patternContentUnits, SvgPatternUnits.userSpaceOnUse);
+        expect(childDef.commands, hasLength(1));
+      });
+
+      test('should preserve own attributes when pattern overrides inherited attributes', () {
+        // Arrange
+        const parentPattern = SvgPattern(
+          coreAttributes: SvgCoreAttributes(id: 'basePat'),
+          x: SvgLength(14),
+          y: SvgLength(28),
+          width: SvgLength(42),
+          height: SvgLength(56),
+          patternUnits: SvgPatternUnits.userSpaceOnUse,
+          children: <SvgElement>[
+            SvgRect(
+              x: SvgLength(1),
+              y: SvgLength(2),
+              width: SvgLength(3),
+              height: SvgLength(4),
+              rx: SvgLength(0.5),
+              ry: SvgLength(0.75),
+            ),
+          ],
+        );
+        const derivedPattern = SvgPattern(
+          coreAttributes: SvgCoreAttributes(id: 'derivedPat'),
+          href: '#basePat',
+          width: SvgLength(70),
+          height: SvgLength(80),
+          patternUnits: SvgPatternUnits.objectBoundingBox,
+          children: <SvgElement>[],
+        );
+        const root = SvgRoot(
+          children: <SvgElement>[parentPattern, derivedPattern],
+        );
+
+        // Act
+        final Result<List<PaintCommand>> result = root.toPaintCommands();
+
+        // Assert
+        expect(result, isA<Success<List<PaintCommand>>>());
+        final List<PaintCommand> commands = (result as Success<List<PaintCommand>>).value;
+        final rootGroup = commands.single as DrawGroup;
+        final derivedDef = rootGroup.commands[1] as DefinePattern;
+        expect(derivedDef.id, 'derivedPat');
+        expect(derivedDef.x, const SvgLength(14));
+        expect(derivedDef.y, const SvgLength(28));
+        expect(derivedDef.width, const SvgLength(70));
+        expect(derivedDef.height, const SvgLength(80));
+        expect(derivedDef.patternUnits, SvgPatternUnits.objectBoundingBox);
+        expect(derivedDef.commands, hasLength(1));
+      });
+
+      test('should avoid infinite loop when patterns have circular href reference', () {
+        // Arrange
+        const patA = SvgPattern(
+          coreAttributes: SvgCoreAttributes(id: 'patA'),
+          href: '#patB',
+          children: <SvgElement>[],
+        );
+        const patB = SvgPattern(
+          coreAttributes: SvgCoreAttributes(id: 'patB'),
+          href: '#patA',
+          children: <SvgElement>[],
+        );
+        const root = SvgRoot(
+          children: <SvgElement>[patA, patB],
+        );
+
+        // Act
+        final Result<List<PaintCommand>> result = root.toPaintCommands();
+
+        // Assert
+        expect(result, isA<Success<List<PaintCommand>>>());
+      });
+    });
+
+    group('Masks, Filters, Patterns & Markers', () {
+      test('should convert SvgMask with userSpaceOnUse maskContentUnits', () {
+        // Arrange
+        const mask = SvgMask(
+          coreAttributes: SvgCoreAttributes(id: 'maskUser'),
+          children: <SvgElement>[
+            SvgCircle(cx: SvgLength(15.0), cy: SvgLength(25.0), r: SvgLength(10.0)),
+          ],
+        );
+        const root = SvgRoot(children: <SvgElement>[mask]);
+
+        // Act
+        final Result<List<PaintCommand>> result = root.toPaintCommands();
+
+        // Assert
+        final rootGroup = (result as Success<List<PaintCommand>>).value.single as DrawGroup;
+        final defMask = rootGroup.commands.single as DefineMask;
+        expect(defMask.id, 'maskUser');
+        expect(defMask.maskContentUnits, PaintingGradientUnits.userSpaceOnUse);
+        expect(defMask.commands, hasLength(1));
+      });
+
+      test('should convert SvgFilter into DefineFilter command', () {
+        // Arrange
+        const filter = SvgFilter(
+          coreAttributes: SvgCoreAttributes(id: 'blurFilter'),
+          x: SvgPercentage(-10.0),
+          y: SvgPercentage(-20.0),
+          width: SvgPercentage(120.0),
+          height: SvgPercentage(140.0),
+          children: <SvgElement>[
+            SvgFeGaussianBlur(stdDeviationX: 3.0, stdDeviationY: 4.0),
+          ],
+        );
+        const root = SvgRoot(children: <SvgElement>[filter]);
+
+        // Act
+        final Result<List<PaintCommand>> result = root.toPaintCommands();
+
+        // Assert
+        final rootGroup = (result as Success<List<PaintCommand>>).value.single as DrawGroup;
+        final defFilter = rootGroup.commands.single as DefineFilter;
+        expect(defFilter.id, 'blurFilter');
+        expect(defFilter.primitives, hasLength(1));
+      });
+
+      test('should derive pattern viewBox context when pattern has viewBox and preserveAspectRatio', () {
+        // Arrange
+        const pattern = SvgPattern(
+          coreAttributes: SvgCoreAttributes(id: 'patVb'),
+          viewportAttributes: SvgViewportAttributes(
+            viewBox: SvgViewBox(5.0, 10.0, 20.0, 40.0),
+            preserveAspectRatio: SvgPreserveAspectRatio(alignment: .xMinYMin, scale: .slice),
+          ),
+          children: <SvgElement>[
+            SvgCircle(cx: SvgPercentage(50.0), cy: SvgPercentage(50.0), r: SvgLength(4.0)),
+          ],
+        );
+        const root = SvgRoot(children: <SvgElement>[pattern]);
+
+        // Act
+        final Result<List<PaintCommand>> result = root.toPaintCommands();
+
+        // Assert
+        final rootGroup = (result as Success<List<PaintCommand>>).value.single as DrawGroup;
+        final defPat = rootGroup.commands.single as DefinePattern;
+        expect(defPat.viewBox, isNotNull);
+        expect(defPat.preserveAspectRatio?.scale, SvgPreserveAspectRatioScale.slice);
+        final circle = defPat.commands.single as DrawCircle;
+        expect(circle.cx, 10.0);
+        expect(circle.cy, 20.0);
+      });
+
+      test('should derive marker viewBox context when marker has viewBox', () {
+        // Arrange
+        const marker = SvgMarker(
+          coreAttributes: SvgCoreAttributes(id: 'markVb'),
+          viewportAttributes: SvgViewportAttributes(viewBox: SvgViewBox(2.0, 4.0, 10.0, 20.0)),
+          children: <SvgElement>[
+            SvgCircle(cx: SvgPercentage(50.0), cy: SvgPercentage(50.0), r: SvgLength(2.0)),
+          ],
+        );
+        const root = SvgRoot(children: <SvgElement>[marker]);
+
+        // Act
+        final Result<List<PaintCommand>> result = root.toPaintCommands();
+
+        // Assert
+        final rootGroup = (result as Success<List<PaintCommand>>).value.single as DrawGroup;
+        final defMarker = rootGroup.commands.single as DefineMarker;
+        final circle = defMarker.commands.single as DrawCircle;
+        expect(circle.cx, 5.0);
+        expect(circle.cy, 10.0);
+      });
+    });
+
+    group('Switch', () {
+      test('should filter unsupported extensions/features and emit cases and fallback', () {
+        // Arrange
+        const switchEl = SvgSwitch(
+          coreAttributes: SvgCoreAttributes(id: 'sw1'),
+          children: <SvgElement>[
+            SvgCircle(
+              cx: SvgLength(1.0),
+              cy: SvgLength(2.0),
+              r: SvgLength(3.0),
+              coreAttributes: SvgCoreAttributes(requiredExtensions: <String>['http://example.com']),
+            ),
+            SvgCircle(
+              cx: SvgLength(4.0),
+              cy: SvgLength(5.0),
+              r: SvgLength(6.0),
+              coreAttributes: SvgCoreAttributes(requiredFeatures: <String>[]),
+            ),
+            SvgCircle(
+              cx: SvgLength(10.0),
+              cy: SvgLength(20.0),
+              r: SvgLength(5.0),
+              coreAttributes: SvgCoreAttributes(systemLanguage: <String>['nl']),
+            ),
+            SvgCircle(cx: SvgLength(30.0), cy: SvgLength(40.0), r: SvgLength(8.0)),
+            SvgCircle(cx: SvgLength(50.0), cy: SvgLength(60.0), r: SvgLength(9.0)),
+          ],
+        );
+        const root = SvgRoot(children: <SvgElement>[switchEl]);
+
+        // Act
+        final Result<List<PaintCommand>> result = root.toPaintCommands();
+
+        // Assert
+        final rootGroup = (result as Success<List<PaintCommand>>).value.single as DrawGroup;
+        final drawSwitch = rootGroup.commands.single as DrawSwitch;
+        expect(drawSwitch.id, 'sw1');
+        expect(drawSwitch.cases, hasLength(1));
+        expect(drawSwitch.cases.first.languages, <String>['nl']);
+        expect(drawSwitch.fallback, hasLength(1));
+        expect((drawSwitch.fallback.first as DrawCircle).cx, 30.0);
+      });
+
+      test('should propagate Failure when a switch case or fallback fails conversion', () {
+        // Arrange
+        const failingCase = SvgSwitch(
+          children: <SvgElement>[
+            SvgUse(
+              href: '#missing',
+              x: SvgLength(0.0),
+              y: SvgLength(0.0),
+              coreAttributes: SvgCoreAttributes(systemLanguage: <String>['en']),
+            ),
+          ],
+        );
+        const failingFallback = SvgSwitch(
+          children: <SvgElement>[
+            SvgUse(href: '#missing', x: SvgLength(0.0), y: SvgLength(0.0)),
+          ],
+        );
+
+        // Act
+        final Result<List<PaintCommand>> res1 =
+            const SvgRoot(children: <SvgElement>[failingCase]).toPaintCommands();
+        final Result<List<PaintCommand>> res2 =
+            const SvgRoot(children: <SvgElement>[failingFallback]).toPaintCommands();
+
+        // Assert
+        expect(res1, isA<Failure<List<PaintCommand>>>());
+        expect(res2, isA<Failure<List<PaintCommand>>>());
       });
     });
   });

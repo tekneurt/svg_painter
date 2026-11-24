@@ -48,5 +48,28 @@ void main() {
       expect(defs.strokeAttributes?.width, isNotNull);
       expect(defs.fontAttributes?.size, isNotNull);
     });
+
+    test('should extract title and desc when child elements are present', () {
+      // Arrange
+      final document = XmlDocument.parse('''
+        <defs id="defs1">
+          <title id="defs-title-id">Defs Title</title>
+          <desc id="defs-desc-id">Defs Desc</desc>
+          <circle id="c1" />
+        </defs>
+      ''');
+      final XmlElement element = document.rootElement;
+
+      // Act
+      final Result<SvgDefs> result = element.toSvgDefs();
+
+      // Assert
+      expect(result, isA<Success<SvgDefs>>());
+      final SvgDefs defs = (result as Success<SvgDefs>).value;
+      expect(defs.title?.content, 'Defs Title');
+      expect(defs.title?.id, 'defs-title-id');
+      expect(defs.desc?.content, 'Defs Desc');
+      expect(defs.desc?.id, 'defs-desc-id');
+    });
   });
 }

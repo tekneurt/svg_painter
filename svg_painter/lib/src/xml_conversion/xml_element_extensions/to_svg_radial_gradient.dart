@@ -11,28 +11,25 @@ extension ToSvgRadialGradient on XmlElement {
   Result<SvgRadialGradient> toSvgRadialGradient() {
     const XmlElementName elementName = XmlElementName.radialGradient;
 
-    final SvgLengthPercentage cx = toSvgValue<SvgLengthPercentage>(
+    final SvgLengthPercentage? cx = toSvgValueOrNull<SvgLengthPercentage>(
       elementName,
       XmlAttributeName.cx,
     );
-    final SvgLengthPercentage cy = toSvgValue<SvgLengthPercentage>(
+    final SvgLengthPercentage? cy = toSvgValueOrNull<SvgLengthPercentage>(
       elementName,
       XmlAttributeName.cy,
     );
-    final SvgLengthPercentage r = toSvgValue<SvgLengthPercentage>(elementName, XmlAttributeName.r);
+    final SvgLengthPercentage? r =
+        toSvgValueOrNull<SvgLengthPercentage>(elementName, XmlAttributeName.r);
 
-    final SvgLengthPercentage fr = toSvgValue<SvgLengthPercentage>(
+    final SvgLengthPercentage? fr = toSvgValueOrNull<SvgLengthPercentage>(
       elementName,
       XmlAttributeName.fr,
     );
-
-    // fx defaults to cx if not specified.
-    final SvgLengthPercentage fx =
-        toSvgValueOrNull<SvgLengthPercentage>(elementName, XmlAttributeName.fx) ?? cx;
-
-    // fy defaults to cy if not specified.
-    final SvgLengthPercentage fy =
-        toSvgValueOrNull<SvgLengthPercentage>(elementName, XmlAttributeName.fy) ?? cy;
+    final SvgLengthPercentage? fx =
+        toSvgValueOrNull<SvgLengthPercentage>(elementName, XmlAttributeName.fx);
+    final SvgLengthPercentage? fy =
+        toSvgValueOrNull<SvgLengthPercentage>(elementName, XmlAttributeName.fy);
 
     final Result<List<SvgStop>> stopsResult = children
         .whereType<XmlElement>()
@@ -41,14 +38,19 @@ extension ToSvgRadialGradient on XmlElement {
         .combine();
 
     final String? gradientTransform = toXmlAttributeValue(XmlAttributeName.gradientTransform);
-    final SvgGradientUnits gradientUnits =
-        toXmlAttributeValue(XmlAttributeName.gradientUnits)?.toSvgGradientUnits() ??
-        XmlAttributeName.gradientUnits.toDefaultValue(elementName) as SvgGradientUnits;
-    final SvgSpreadMethod spreadMethod =
-        toXmlAttributeValue(XmlAttributeName.spreadMethod)?.toSvgSpreadMethod() ??
-        XmlAttributeName.spreadMethod.toDefaultValue(elementName) as SvgSpreadMethod;
+    final SvgGradientUnits? gradientUnits =
+        toXmlAttributeValue(XmlAttributeName.gradientUnits)?.toSvgGradientUnits();
+    final SvgSpreadMethod? spreadMethod =
+        toXmlAttributeValue(XmlAttributeName.spreadMethod)?.toSvgSpreadMethod();
+    final String? href = toXmlAttributeValue(XmlAttributeName.href);
 
     final CommonAttributes common = toCommonAttributes(elementName);
+    final SvgColor? color =
+        common.presentation.color ??
+        toSvgValueOrNull<SvgColor>(elementName, XmlAttributeName.color);
+    final SvgColorInterpolation? colorInterpolation =
+        common.presentation.colorInterpolation ??
+        toSvgValueOrNull<SvgColorInterpolation>(elementName, XmlAttributeName.colorInterpolation);
 
     return stopsResult.map(
       (List<SvgStop> stops) => SvgRadialGradient(
@@ -62,6 +64,9 @@ extension ToSvgRadialGradient on XmlElement {
         gradientTransformAttributes: SvgTransformParser.parse(gradientTransform),
         gradientUnits: gradientUnits,
         spreadMethod: spreadMethod,
+        href: href,
+        color: color,
+        colorInterpolation: colorInterpolation,
         coreAttributes: common.core,
       ),
     );

@@ -8,7 +8,7 @@ part of 'stroke_linejoin_painter.dart';
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
+// ignore_for_file: unused_element, unused_field, unused_element_parameter, unused_local_variable, deprecated_member_use_from_same_package
 
 class StrokeLinejoinPainterWidget extends StatelessWidget {
   const StrokeLinejoinPainterWidget({
@@ -443,7 +443,7 @@ class _$StrokeLinejoinPainter extends CustomPainter {
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
+// ignore_for_file: unused_element, unused_field, unused_element_parameter, unused_local_variable, deprecated_member_use_from_same_package
 
 class StrokeLinejoinArcsPainterWidget extends StatelessWidget {
   const StrokeLinejoinArcsPainterWidget({
@@ -592,7 +592,7 @@ class _$StrokeLinejoinArcsPainter extends CustomPainter {
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
+// ignore_for_file: unused_element, unused_field, unused_element_parameter, unused_local_variable, deprecated_member_use_from_same_package
 
 class StrokeLinejoinBevelPainterWidget extends StatelessWidget {
   const StrokeLinejoinBevelPainterWidget({
@@ -718,7 +718,7 @@ class _$StrokeLinejoinBevelPainter extends CustomPainter {
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
+// ignore_for_file: unused_element, unused_field, unused_element_parameter, unused_local_variable, deprecated_member_use_from_same_package
 
 class StrokeLinejoinMiterPainterWidget extends StatelessWidget {
   const StrokeLinejoinMiterPainterWidget({
@@ -917,7 +917,7 @@ class _$StrokeLinejoinMiterPainter extends CustomPainter {
       }
       final double totalLength = dashArray.fold(
         0.0,
-        (final sum, final d) => sum + d * scale,
+        (sum, d) => sum + d * scale,
       );
       if (totalLength <= 0) return source;
       double offset = (dashOffset ?? 0.0) * scale;
@@ -966,7 +966,7 @@ class _$StrokeLinejoinMiterPainter extends CustomPainter {
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
+// ignore_for_file: unused_element, unused_field, unused_element_parameter, unused_local_variable, deprecated_member_use_from_same_package
 
 class StrokeLinejoinMiterClipPainterWidget extends StatelessWidget {
   const StrokeLinejoinMiterClipPainterWidget({
@@ -1165,7 +1165,7 @@ class _$StrokeLinejoinMiterClipPainter extends CustomPainter {
       }
       final double totalLength = dashArray.fold(
         0.0,
-        (final sum, final d) => sum + d * scale,
+        (sum, d) => sum + d * scale,
       );
       if (totalLength <= 0) return source;
       double offset = (dashOffset ?? 0.0) * scale;
@@ -1214,7 +1214,7 @@ class _$StrokeLinejoinMiterClipPainter extends CustomPainter {
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
+// ignore_for_file: unused_element, unused_field, unused_element_parameter, unused_local_variable, deprecated_member_use_from_same_package
 
 class StrokeLinejoinRoundPainterWidget extends StatelessWidget {
   const StrokeLinejoinRoundPainterWidget({

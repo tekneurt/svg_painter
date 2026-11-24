@@ -36,6 +36,52 @@ void main() {
         expect(input2.extractUrlId(), isNull);
         expect(input3.extractUrlId(), isNull);
       });
+
+      test('should return id when url has fallback color', () {
+        // Arrange
+        const input = 'url(#my-gradient) #00ff00';
+
+        // Act
+        final String? result = input.extractUrlId();
+
+        // Assert
+        expect(result, 'my-gradient');
+      });
+    });
+
+    group('extractUrlReference', () {
+      test('should return id and null fallback when url has no fallback', () {
+        // Arrange
+        const input = 'url(#my-pattern)';
+
+        // Act
+        final (String, String?)? result = input.extractUrlReference();
+
+        // Assert
+        expect(result, ('my-pattern', null));
+      });
+
+      test('should return id and fallback string when url has fallback', () {
+        // Arrange
+        const input = 'url(#my-pattern) #ff0055';
+
+        // Act
+        final (String, String?)? result = input.extractUrlReference();
+
+        // Assert
+        expect(result, ('my-pattern', '#ff0055'));
+      });
+
+      test('should return null when input format is not a url', () {
+        // Arrange
+        const input = '#ff0055';
+
+        // Act
+        final (String, String?)? result = input.extractUrlReference();
+
+        // Assert
+        expect(result, isNull);
+      });
     });
   });
 }

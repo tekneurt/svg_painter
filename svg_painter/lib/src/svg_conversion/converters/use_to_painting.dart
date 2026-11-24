@@ -12,7 +12,52 @@ import 'symbol_to_painting.dart';
 extension SvgUseToPaintCommands on SvgUse {
   /// Converts this [SvgUse] to a list of [PaintCommand]s.
   Result<List<PaintCommand>> toPaintCommandsUse(SvgPaintingContext context) {
-    final String targetId = href.startsWith('#') ? href.substring(1) : href;
+    final String? hrefVal = href;
+    if (hrefVal == null || hrefVal.isEmpty) {
+      final PaintingStyle style = resolvePaint(
+        context,
+        tagName: 'use',
+        coreAttributes: coreAttributes,
+        presentationAttributes: presentationAttributes,
+      );
+      if (style.filterId case final String fId) {
+        double dx = x.resolve(context, .horizontal);
+        double dy = y.resolve(context, .vertical);
+        double? w = width?.resolveOrNull(context, .horizontal);
+        double? h = height?.resolveOrNull(context, .vertical);
+
+        if (w == null || h == null) {
+          final SvgElement? filterElem = context.definitions[fId];
+          if (filterElem is SvgFilter) {
+            for (final SvgFilterPrimitive prim in filterElem.primitives) {
+              if (prim is SvgFeFlood) {
+                dx = prim.x?.resolveOrNull(context, .horizontal) ?? dx;
+                dy = prim.y?.resolveOrNull(context, .vertical) ?? dy;
+                w = prim.width?.resolveOrNull(context, .horizontal) ?? w;
+                h = prim.height?.resolveOrNull(context, .vertical) ?? h;
+                break;
+              }
+            }
+          }
+        }
+
+        return Success<List<PaintCommand>>([
+          DrawRect(
+            x: dx,
+            y: dy,
+            width: w ?? 0.0,
+            height: h ?? 0.0,
+            rx: 0.0,
+            ry: 0.0,
+            style: style,
+          ),
+        ]);
+      } else {
+        return const Success<List<PaintCommand>>([]);
+      }
+    }
+
+    final String targetId = hrefVal.startsWith('#') ? hrefVal.substring(1) : hrefVal;
     final SvgElement? target = context.definitions[targetId];
 
     if (target == null) {
@@ -56,55 +101,70 @@ extension SvgUseToPaintCommands on SvgUse {
       targetBounds = PaintingRect(tx, ty, tw, th);
     }
 
+    final SvgPresentationAttributes resolvedUseAttrs = resolvePresentation(
+      context,
+      tagName: 'use',
+      coreAttributes: coreAttributes,
+      presentationAttributes: presentationAttributes,
+    );
+
+    // Context for children inherits styles, but coordinates are now in the <use> local space.
+    // Elements referenced by <use> inherit context-fill and context-stroke from the <use> element.
+    final SvgPaintingContext childContext = context.deriveWith(this).derive(
+      contextFill: resolvedUseAttrs.fill,
+      contextStroke: resolvedUseAttrs.stroke,
+    );
+
     if (target is SvgSymbol) {
       // For symbols, we establish a NEW viewport.
       return target
           .toPaintCommandsSymbol(
-            context,
+            childContext,
             x: const SvgLength(0.0),
             y: const SvgLength(0.0),
             width: width,
             height: height,
           )
           .map((List<PaintCommand> childCommands) {
-        return <PaintCommand>[
-          DrawGroup(
-            commands: childCommands,
-            style: style,
-            id: id,
-            opacity: style.groupOpacity,
-            bounds: targetBounds,
-          )
-        ];
-      });
+            return <PaintCommand>[
+              DrawGroup(
+                commands: childCommands,
+                style: style,
+                id: id,
+                opacity: style.groupOpacity,
+                bounds: targetBounds,
+              ),
+            ];
+          });
     }
 
     if (target is SvgSvg) {
       // For nested <svg>, width and height from <use> override those on <svg>.
       return target
           .toPaintCommandsSvg(
-            context,
+            childContext,
             x: const SvgLength(0.0),
             y: const SvgLength(0.0),
             width: width,
             height: height,
           )
           .map((List<PaintCommand> childCommands) {
-        return <PaintCommand>[
-          DrawGroup(
-            commands: childCommands,
-            style: style,
-            id: id,
-            opacity: style.groupOpacity,
-            bounds: targetBounds,
-          )
-        ];
-      });
+            return <PaintCommand>[
+              DrawGroup(
+                commands: childCommands,
+                style: style,
+                id: id,
+                opacity: style.groupOpacity,
+                bounds: targetBounds,
+              ),
+            ];
+          });
     }
 
-    // Context for children inherits styles, but coordinates are now in the <use> local space.
-    final SvgPaintingContext childContext = context.deriveWith(this);
     return target.toPaintCommands(childContext).map((List<PaintCommand> childCommands) {
+      if (childCommands.isEmpty) {
+        return const <PaintCommand>[];
+      }
       return <PaintCommand>[
         DrawGroup(
           commands: childCommands,
@@ -112,9 +172,8 @@ extension SvgUseToPaintCommands on SvgUse {
           id: id,
           opacity: style.groupOpacity,
           bounds: targetBounds,
-        )
+        ),
       ];
     });
-
   }
 }

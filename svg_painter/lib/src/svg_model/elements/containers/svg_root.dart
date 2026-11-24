@@ -7,6 +7,8 @@ part of '../../svg_element.dart';
 final class SvgRoot extends SvgSvg {
   const SvgRoot({
     required super.children,
+    super.title,
+    super.desc,
     super.x,
     super.y,
     super.width,

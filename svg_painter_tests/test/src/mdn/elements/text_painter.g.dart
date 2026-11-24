@@ -8,7 +8,7 @@ part of 'text_painter.dart';
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
+// ignore_for_file: unused_element, unused_field, unused_element_parameter, unused_local_variable, deprecated_member_use_from_same_package
 
 class MdnTextExamplePainterWidget extends StatelessWidget {
   const MdnTextExamplePainterWidget({
@@ -156,7 +156,7 @@ class _$MdnTextExamplePainter extends CustomPainter {
               fontSize: 40.0,
               fontWeight: FontWeight.normal,
               fontStyle: FontStyle.italic,
-              fontFamily: 'Noto Serif',
+              fontFamily: 'Tinos',
               package: 'svg_painter',
             ),
             children: <InlineSpan>[TextSpan(text: 'Grumpy!')],

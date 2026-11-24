@@ -37,7 +37,7 @@ _fixtures =
         widget: const AlphaTransparencyDiceTransformedPainterWidget(),
         nativeSize: const Size(200, 200),
         name: 'alpha_transparency_dice_transformed',
-        tests: defaultGoldenTests,
+        tests: macOsOverrideGoldenTests,
       ),
       (
         painter: null,
@@ -58,14 +58,14 @@ _fixtures =
         widget: const LennaTransformedPainterWidget(),
         nativeSize: const Size(200, 200),
         name: 'lenna_transformed',
-        tests: defaultGoldenTests,
+        tests: macOsOverrideGoldenTests,
       ),
       (
         painter: null,
         widget: const LennaDataUriPainterWidget(),
         nativeSize: const Size(100, 100),
         name: 'lenna_data_uri',
-        tests: defaultGoldenTests,
+        tests: macOsFixedOverrideGoldenTests,
       ),
       (
         painter: null,

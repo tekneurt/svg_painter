@@ -3,6 +3,7 @@ export 'svg_fill_attributes.dart';
 export 'svg_font_attributes.dart';
 export 'svg_geometry_attributes.dart';
 export 'svg_graphics_attributes.dart';
+export 'svg_marker_attributes.dart';
 export 'svg_presentation_attributes.dart';
 export 'svg_stroke_attributes.dart';
 export 'svg_transform_attributes.dart';

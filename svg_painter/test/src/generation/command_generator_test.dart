@@ -4,6 +4,7 @@ import 'package:svg_painter/src/generation/_generation.dart';
 import 'package:svg_painter/src/painting_model/paint_command.dart';
 import 'package:svg_painter/src/painting_model/styles/painting_style.dart';
 import 'package:svg_painter/src/svg_model/_svg_model.dart';
+import 'package:svg_painter_annotation/svg_painter_annotation.dart';
 import 'package:test/test.dart';
 
 // Concrete implementation for testing abstract ShapeGenerator
@@ -22,8 +23,11 @@ class TestShapeGenerator extends ShapeGenerator<DrawCircle> {
     List<InheritedProperty>? inheritedStrokes,
     String? painterClassName,
     Set<String>? gradientsNeedingStretch,
+    SvgColorMapping colorMapping = SvgColorMapping.material,
+    bool isInsideMarker = false,
   }) {
-    final bounds = 'Rect.fromLTWH(${command.cx - command.radius}, ${command.cy - command.radius}, ${command.radius * 2}, ${command.radius * 2})';
+    final bounds =
+        'Rect.fromLTWH(${command.cx - command.radius}, ${command.cy - command.radius}, ${command.radius * 2}, ${command.radius * 2})';
     wrapWithStyle(buffer, command.style, bounds, () {
       generatePaintingCode(
         buffer,
@@ -596,6 +600,61 @@ void main() {
             'canvas.transform(Matrix4.fromList(<double>[1.0, 2.0, 0, 0, 3.0, 4.0, 0, 0, 0, 0, 1, 0, 5.0, 6.0, 0, 1]).storage);',
           ),
         );
+      });
+
+      test('should wrap with clipPath call when clipPathId is provided', () {
+        // Arrange
+        const style = PaintingStyle(clipPathId: 'clip-1');
+        final buffer = GeneratorBuffer();
+
+        // Act
+        generator.wrapWithStyle(buffer, style, 'targetBounds', () {
+          buffer.writeln('draw();');
+        });
+
+        // Assert
+        final output = buffer.toString();
+        expect(output, contains('canvas.save();'));
+        expect(output, contains('_clipPath_clip_1(canvas, size, targetBounds);'));
+        expect(output, contains('draw();'));
+        expect(output, contains('canvas.restore();'));
+      });
+
+      test('should wrap with luminance mask saveLayer calls when maskId is provided', () {
+        // Arrange
+        const style = PaintingStyle(maskId: 'mask-1');
+        final buffer = GeneratorBuffer();
+
+        // Act
+        generator.wrapWithStyle(buffer, style, 'targetBounds', () {
+          buffer.writeln('draw();');
+        });
+
+        // Assert
+        final output = buffer.toString();
+        expect(output, contains('canvas.saveLayer(null, Paint());'));
+        expect(output, contains('draw();'));
+        expect(output, contains('BlendMode.dstIn'));
+        expect(output, contains('0.2126, 0.7152, 0.0722, 0, 0,'));
+        expect(output, contains('_mask_mask_1(canvas, size, targetBounds);'));
+        expect(output, contains('canvas.restore();'));
+      });
+
+      test('should wrap with filter call when filterId is provided', () {
+        // Arrange
+        const style = PaintingStyle(filterId: 'blur-filter');
+        final buffer = GeneratorBuffer();
+
+        // Act
+        generator.wrapWithStyle(buffer, style, 'targetBounds', () {
+          buffer.writeln('draw();');
+        });
+
+        // Assert
+        final output = buffer.toString();
+        expect(output, contains('_filter_blur_filter(canvas, () {'));
+        expect(output, contains('draw();'));
+        expect(output, contains('});'));
       });
     });
     group('CommandGenerator (Implicit)', () {

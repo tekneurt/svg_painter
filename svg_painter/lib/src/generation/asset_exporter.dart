@@ -28,6 +28,7 @@ class AssetExporter {
   /// Bundled font families supported by `svg_painter`.
   static const Set<String> bundledFamilies = <String>{
     'Roboto',
+    'Tinos',
     'Noto Serif',
     'Roboto Mono',
   };
@@ -36,6 +37,7 @@ class AssetExporter {
   static String familyToDirectoryName(String family) {
     return switch (family) {
       'Roboto' => 'roboto',
+      'Tinos' => 'tinos',
       'Noto Serif' => 'noto_serif',
       'Roboto Mono' => 'roboto_mono',
       _ => family.toLowerCase().replaceAll(' ', '_'),
@@ -116,12 +118,13 @@ class AssetExporter {
       buffer.writeln('      fonts:');
 
       if (sourceDir.existsSync()) {
-        final List<File> fontFiles = sourceDir
-            .listSync()
-            .whereType<File>()
-            .where((File f) => f.path.endsWith('.ttf'))
-            .toList()
-          ..sort((File a, File b) => a.path.compareTo(b.path));
+        final List<File> fontFiles =
+            sourceDir
+                .listSync()
+                .whereType<File>()
+                .where((File f) => f.path.endsWith('.ttf'))
+                .toList()
+              ..sort((File a, File b) => a.path.compareTo(b.path));
 
         for (final file in fontFiles) {
           final String fileName = p.basename(file.path);

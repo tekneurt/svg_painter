@@ -22,14 +22,22 @@ void main() {
       final SvgStop stop = (result as Success<SvgStop>).value;
       expect(stop.offset, isA<SvgPercentage>());
       expect((stop.offset as SvgPercentage).value, 50.0);
-      expect(stop.stopColor, isA<SvgNamedColor>());
-      expect((stop.stopColor as SvgNamedColor).name, SvgColorName.red);
-      expect(stop.stopOpacity, isA<SvgLength>());
-      expect((stop.stopOpacity as SvgLength).value, 0.5);
+      switch (stop.stopColor) {
+        case final SvgNamedColor c:
+          expect(c.name, SvgColorName.red);
+        default:
+          fail('Expected SvgNamedColor');
+      }
+      switch (stop.stopOpacity) {
+        case final SvgLength l:
+          expect(l.value, 0.5);
+        default:
+          fail('Expected SvgLength');
+      }
       expect(stop.id, 'stop1');
     });
 
-    test('should return Success with default values when minimal stop is provided', () {
+    test('should return Success with null stopColor and stopOpacity when minimal stop is provided', () {
       // Arrange
       final document = XmlDocument.parse('<stop />');
       final XmlElement element = document.rootElement;
@@ -41,8 +49,108 @@ void main() {
       expect(result, isA<Success<SvgStop>>());
       final SvgStop stop = (result as Success<SvgStop>).value;
       expect((stop.offset as SvgLength).value, 0.0);
-      expect((stop.stopColor as SvgNamedColor).name, SvgColorName.black);
-      expect((stop.stopOpacity as SvgLength).value, 1.0);
+      expect(stop.stopColor, isNull);
+      expect(stop.stopOpacity, isNull);
+    });
+
+    test('should preserve class and inline style in coreAttributes', () {
+      // Arrange
+      final document = XmlDocument.parse(
+        '<stop offset="25%" class="stop1" style="stop-color: blue;" />',
+      );
+      final XmlElement element = document.rootElement;
+
+      // Act
+      final Result<SvgStop> result = element.toSvgStop();
+
+      // Assert
+      expect(result, isA<Success<SvgStop>>());
+      final SvgStop stop = (result as Success<SvgStop>).value;
+      expect(stop.coreAttributes?.cssClass, 'stop1');
+      expect(stop.coreAttributes?.inlineStyle, 'stop-color: blue;');
+    });
+
+    test('should parse color attribute when color is provided', () {
+      // Arrange
+      final document = XmlDocument.parse(
+        '<stop offset="50%" stop-color="currentColor" color="green" />',
+      );
+      final XmlElement element = document.rootElement;
+
+      // Act
+      final Result<SvgStop> result = element.toSvgStop();
+
+      // Assert
+      expect(result, isA<Success<SvgStop>>());
+      final SvgStop stop = (result as Success<SvgStop>).value;
+      expect(
+        stop.color,
+        isA<SvgNamedColor>().having(
+          (SvgNamedColor c) => c.name,
+          'name',
+          SvgColorName.green,
+        ),
+      );
+    });
+
+    test('should inherit stopColor from ancestor when stopColor is inherit', () {
+      // Arrange
+      final document = XmlDocument.parse(
+        '<g stop-color="#ff4488"><linearGradient stop-color="inherit"><stop offset="1" stop-color="inherit" /></linearGradient></g>',
+      );
+      final XmlElement stopElement = document.findAllElements('stop').first;
+
+      // Act
+      final Result<SvgStop> result = stopElement.toSvgStop();
+
+      // Assert
+      expect(result, isA<Success<SvgStop>>());
+      final SvgStop stop = (result as Success<SvgStop>).value;
+      expect(
+        stop.stopColor,
+        isA<SvgRgbColor>()
+            .having((SvgRgbColor c) => c.red, 'red', 255)
+            .having((SvgRgbColor c) => c.green, 'green', 68)
+            .having((SvgRgbColor c) => c.blue, 'blue', 136),
+      );
+    });
+
+    test('should inherit stopOpacity from ancestor when stopOpacity is inherit', () {
+      // Arrange
+      final document = XmlDocument.parse(
+        '<g stop-opacity="0.75"><linearGradient stop-opacity="inherit"><stop offset="1" stop-opacity="inherit" /></linearGradient></g>',
+      );
+      final XmlElement stopElement = document.findAllElements('stop').first;
+
+      // Act
+      final Result<SvgStop> result = stopElement.toSvgStop();
+
+      // Assert
+      expect(result, isA<Success<SvgStop>>());
+      final SvgStop stop = (result as Success<SvgStop>).value;
+      expect(
+        stop.stopOpacity,
+        isA<SvgLength>().having((SvgLength l) => l.value, 'value', 0.75),
+      );
+    });
+
+    test('should inherit color from ancestor when color is not specified on stop', () {
+      // Arrange
+      final document = XmlDocument.parse(
+        '<g color="yellow"><linearGradient><stop offset="1" stop-color="currentColor" /></linearGradient></g>',
+      );
+      final XmlElement stopElement = document.findAllElements('stop').first;
+
+      // Act
+      final Result<SvgStop> result = stopElement.toSvgStop();
+
+      // Assert
+      expect(result, isA<Success<SvgStop>>());
+      final SvgStop stop = (result as Success<SvgStop>).value;
+      expect(
+        stop.color,
+        isA<SvgNamedColor>().having((SvgNamedColor c) => c.name, 'name', SvgColorName.yellow),
+      );
     });
   });
 }

@@ -8,7 +8,7 @@ part of 'use_element_painter.dart';
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, unused_field, unused_element_parameter, deprecated_member_use_from_same_package
+// ignore_for_file: unused_element, unused_field, unused_element_parameter, unused_local_variable, deprecated_member_use_from_same_package
 
 class UseElementPainterWidget extends StatelessWidget {
   const UseElementPainterWidget({
@@ -66,26 +66,12 @@ class _$UseElementPainter extends CustomPainter {
       paint.style = PaintingStyle.fill;
       canvas.drawCircle(const Offset(5.0, 5.0), 4.0, paint);
     }
-    {
-      final Paint paint = Paint();
-      paint.color = const Color(0xFF0000FF);
-      paint.style = PaintingStyle.stroke;
-      paint.strokeWidth = 1.0;
-      canvas.drawCircle(const Offset(5.0, 5.0), 4.0, paint);
-    }
     canvas.save();
     canvas.translate(10.0, 0.0);
     {
       final Paint paint = Paint();
       paint.color = const Color(0xFF0000FF);
       paint.style = PaintingStyle.fill;
-      canvas.drawCircle(const Offset(5.0, 5.0), 4.0, paint);
-    }
-    {
-      final Paint paint = Paint();
-      paint.color = const Color(0xFF0000FF);
-      paint.style = PaintingStyle.stroke;
-      paint.strokeWidth = 1.0;
       canvas.drawCircle(const Offset(5.0, 5.0), 4.0, paint);
     }
     canvas.restore();
@@ -99,7 +85,7 @@ class _$UseElementPainter extends CustomPainter {
     }
     {
       final Paint paint = Paint();
-      paint.color = const Color(0xFF0000FF);
+      paint.color = const Color(0xFFFF0000);
       paint.style = PaintingStyle.stroke;
       paint.strokeWidth = 1.0;
       canvas.drawCircle(const Offset(5.0, 5.0), 4.0, paint);

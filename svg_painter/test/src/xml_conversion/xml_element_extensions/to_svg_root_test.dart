@@ -129,5 +129,34 @@ void main() {
         expect(root.styleSheet.rules, contains('span-style'));
       },
     );
+
+    test('should extract title and desc when child elements are present', () {
+      // Arrange
+      final document = XmlDocument.parse('''
+        <svg width="222" height="111">
+          <title id="root-title-id">Root Title</title>
+          <desc id="root-desc-id">Root Desc</desc>
+          <circle />
+        </svg>
+      ''');
+      final XmlElement element = document.rootElement;
+
+      // Act
+      final Result<SvgRoot> result = element.toSvgRoot();
+
+      // Assert
+      expect(
+        result,
+        isA<Success<SvgRoot>>().having(
+          (Success<SvgRoot> s) => s.value,
+          'value',
+          isA<SvgRoot>()
+              .having((SvgRoot r) => r.title?.content, 'title content', 'Root Title')
+              .having((SvgRoot r) => r.title?.id, 'title id', 'root-title-id')
+              .having((SvgRoot r) => r.desc?.content, 'desc content', 'Root Desc')
+              .having((SvgRoot r) => r.desc?.id, 'desc id', 'root-desc-id'),
+        ),
+      );
+    });
   });
 }
