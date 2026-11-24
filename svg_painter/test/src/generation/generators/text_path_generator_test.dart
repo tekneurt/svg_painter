@@ -1,5 +1,6 @@
 import 'package:svg_painter/src/generation/generator_buffer.dart';
 import 'package:svg_painter/src/generation/generators/text_path_generator.dart';
+import 'package:svg_painter/src/generation/palette_analyzer.dart';
 import 'package:svg_painter/src/painting_model/paint_command.dart';
 import 'package:svg_painter/src/painting_model/styles/painting_style.dart';
 import 'package:test/test.dart';
@@ -75,6 +76,54 @@ void main() {
       final output = buffer.toString();
       expect(output, contains('canvas.saveLayer(null, Paint()..color = const Color(0x80FFFFFF));'));
       expect(output, contains('canvas.restore();'));
+    });
+
+    test('should emit CubicTo, ArcTo, ClosePath, token color, fontFamilyFallback, and fontPackage', () {
+      // Arrange
+      const generator = TextPathGenerator();
+      const command = DrawTextPath(
+        pathOperations: <PathOperation>[
+          MoveTo(0.0, 0.0),
+          CubicTo(10.0, 20.0, 30.0, 40.0, 50.0, 0.0),
+          ArcTo(15.0, 25.0, 30.0, true, false, 80.0, 0.0),
+          ClosePath(),
+        ],
+        text: 'Curve',
+        style: PaintingStyle(
+          fill: PaintingFillStyle(colorArgb: 0xFF112233),
+          text: PaintingTextStyle(
+            fontSize: 16.0,
+            fontWeight: PaintingFontWeight.normal,
+            fontStyle: PaintingFontStyle.italic,
+            fontFamily: 'Custom',
+            fontFamilyFallback: <String>['Roboto', 'Tinos'],
+            fontPackage: 'svg_painter',
+          ),
+        ),
+      );
+      const palette = PaletteResult(
+        <PaintCommand, String>{},
+        <PaintCommand, String>{},
+        colorTokens: <int, String>{0xFF112233: 'brandColor'},
+      );
+      final buffer = GeneratorBuffer();
+
+      // Act
+      generator.generate(command, buffer, palette: palette);
+
+      // Assert
+      final output = buffer.toString();
+      expect(output, contains('..cubicTo(10.0, 20.0, 30.0, 40.0, 50.0, 0.0)'));
+      expect(
+        output,
+        contains(
+          '..arcToPoint(const Offset(80.0, 0.0), radius: const Radius.elliptical(15.0, 25.0), rotation: 30.0, largeArc: true, clockwise: false)',
+        ),
+      );
+      expect(output, contains('..close()'));
+      expect(output, contains('color: brandColor ?? const Color(0xFF112233),'));
+      expect(output, contains("fontFamilyFallback: <String>['Roboto', 'Tinos'],"));
+      expect(output, contains("package: 'svg_painter',"));
     });
   });
 }

@@ -1,5 +1,6 @@
 import 'package:svg_painter/src/generation/generator_buffer.dart';
 import 'package:svg_painter/src/generation/generators/text_generator.dart';
+import 'package:svg_painter/src/generation/palette_analyzer.dart';
 import 'package:svg_painter/src/painting_model/paint_command.dart';
 import 'package:svg_painter/src/painting_model/styles/painting_style.dart';
 import 'package:svg_painter/src/svg_model/svg_value.dart';
@@ -312,6 +313,69 @@ void main() {
       final output = buffer.toString();
       expect(output, contains('paint.shader = _grad_my_grad.createShader(viewBoxRect);'));
       expect(output, contains('foreground: paint,'));
+    });
+
+    test('should emit token colors, fontFamilyFallback, and per-span shader overrides', () {
+      // Arrange
+      const generator = TextGenerator();
+      const command = DrawText(
+        x: 20.0,
+        y: 30.0,
+        rootSpan: PaintingTextSpan(
+          children: <PaintingTextSpan>[
+            PaintingTextSpan(
+              text: 'Child',
+              style: PaintingStyle(
+                fill: PaintingFillStyle(shaderId: 'childGrad'),
+                text: PaintingTextStyle(
+                  fontSize: 12.0,
+                  fontWeight: PaintingFontWeight.normal,
+                  fontStyle: PaintingFontStyle.italic,
+                  fontFamily: 'Custom',
+                  fontFamilyFallback: <String>['Roboto', 'Tinos'],
+                ),
+              ),
+            ),
+            PaintingTextSpan(
+              text: 'Tok',
+              style: PaintingStyle(
+                fill: PaintingFillStyle(colorArgb: 0xFF112233),
+                text: PaintingTextStyle(
+                  fontSize: 12.0,
+                  fontWeight: PaintingFontWeight.normal,
+                  fontStyle: PaintingFontStyle.normal,
+                  fontFamily: 'Roboto',
+                ),
+              ),
+            ),
+          ],
+        ),
+        style: PaintingStyle(
+          fill: PaintingFillStyle(colorArgb: 0xFF445566),
+          text: PaintingTextStyle(
+            fontSize: 14.0,
+            fontWeight: PaintingFontWeight.normal,
+            fontStyle: PaintingFontStyle.normal,
+            fontFamily: 'Roboto',
+          ),
+        ),
+      );
+      const palette = PaletteResult(
+        <PaintCommand, String>{},
+        <PaintCommand, String>{},
+        colorTokens: <int, String>{0xFF112233: 'tokColor', 0xFF445566: 'rootColor'},
+      );
+      final buffer = GeneratorBuffer();
+
+      // Act
+      generator.generate(command, buffer, palette: palette);
+
+      // Assert
+      final output = buffer.toString();
+      expect(output, contains('color: rootColor ?? const Color(0xFF445566),'));
+      expect(output, contains('color: tokColor ?? const Color(0xFF112233),'));
+      expect(output, contains("fontFamilyFallback: <String>['Roboto', 'Tinos'],"));
+      expect(output, contains('foreground: (Paint()..shader = _grad_childGrad.createShader(viewBoxRect)),'));
     });
   });
 

@@ -111,5 +111,39 @@ void main() {
       // Assert
       expect(result, isNull);
     });
+
+    test('should support equality, hashCode, and toString for SvgMediaAll and SvgMediaDimensionComparison', () {
+      // Arrange
+      const allA = SvgMediaAll();
+      const allB = SvgMediaAll();
+      const compEq = SvgMediaDimensionComparison(
+        dimension: .width,
+        operator: '==',
+        value: 500.0,
+      );
+      const compEqSame = SvgMediaDimensionComparison(
+        dimension: .width,
+        operator: '==',
+        value: 500.0,
+      );
+      const compOther = SvgMediaDimensionComparison(
+        dimension: .height,
+        operator: '!=',
+        value: 400.0,
+      );
+
+      // Act & Assert
+      expect(allA == allB, isTrue);
+      expect(allA.hashCode, allB.hashCode);
+      expect(allA.toString(), 'SvgMediaAll()');
+      expect(compEq.matches(width: 500.0, height: 100.0), isTrue);
+      expect(compEq.matches(width: 501.0, height: 100.0), isFalse);
+      expect(compOther.matches(width: 100.0, height: 400.0), isFalse);
+      expect(compEq == compEqSame, isTrue);
+      expect(compEq == compOther, isFalse);
+      expect(compEq.hashCode, compEqSame.hashCode);
+      expect(compEq.toDartCondition('viewBox'), 'viewBox.width == 500.0');
+      expect(compEq.toString(), 'SvgMediaDimensionComparison(width == 500.0)');
+    });
   });
 }

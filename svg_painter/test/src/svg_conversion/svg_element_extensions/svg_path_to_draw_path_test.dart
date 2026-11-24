@@ -106,5 +106,29 @@ void main() {
         expect(commands, isEmpty);
       },
     );
+
+    test('should detect zero-height bounding box across CubicTo, QuadraticTo, degenerate ArcTo, and ClosePath', () {
+      // Arrange
+      const flatCurves = SvgPath(
+        d: 'M 0 50 C 10 50 20 50 30 50 Q 40 50 50 50 A 0 0 0 0 1 60 50 Z',
+        presentationAttributes: SvgPresentationAttributes(
+          stroke: SvgStrokeAttributes(color: SvgPaintReference('path-grad')),
+        ),
+      );
+      const nonZeroArc = SvgPath(
+        d: 'M 0 50 A 10 10 0 0 1 20 50',
+        presentationAttributes: SvgPresentationAttributes(
+          stroke: SvgStrokeAttributes(color: SvgPaintReference('path-grad')),
+        ),
+      );
+
+      // Act
+      final Result<List<PaintCommand>> resFlat = flatCurves.toPaintCommands(context);
+      final Result<List<PaintCommand>> resArc = nonZeroArc.toPaintCommands(context);
+
+      // Assert
+      expect((resFlat as Success<List<PaintCommand>>).value, isEmpty);
+      expect((resArc as Success<List<PaintCommand>>).value, hasLength(1));
+    });
   });
 }
