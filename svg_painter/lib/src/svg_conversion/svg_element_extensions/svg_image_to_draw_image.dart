@@ -13,152 +13,110 @@ extension SvgImageToDrawImage on SvgImage {
   Result<List<PaintCommand>> toPaintCommands(SvgPaintingContext context) {
     final double xVal = (x ?? const SvgLength(0.0)).resolve(
       context,
-      SvgOrientation.horizontal,
+      .horizontal,
       defaultValue: 0.0,
     );
     final double yVal = (y ?? const SvgLength(0.0)).resolve(
       context,
-      SvgOrientation.vertical,
+      .vertical,
       defaultValue: 0.0,
     );
-
     final double widthVal = (width ?? const SvgAuto()).resolve(
       context,
-      SvgOrientation.horizontal,
+      .horizontal,
       defaultValue: 0.0,
     );
     final double heightVal = (height ?? const SvgAuto()).resolve(
       context,
-      SvgOrientation.vertical,
+      .vertical,
       defaultValue: 0.0,
     );
 
-    // Support recursive SVG sources here.
     final SvgSvg? nestedSvg = context.svgCache[href];
     if (nestedSvg != null) {
-      final SvgPaintingContext nestedContext = context.derive(
-        viewBoxWidth: widthVal,
-        viewBoxHeight: heightVal,
-        viewBoxMinX: 0.0,
-        viewBoxMinY: 0.0,
-      );
-
-      final Result<List<PaintCommand>> nestedCommandsResult = nestedSvg.toPaintCommands(
-        nestedContext,
-      );
-
-      return nestedCommandsResult.map((List<PaintCommand> nestedCommands) {
-        // The nested SVG draws itself assuming its own width/height or viewBox.
-        // We need to fit whatever it draws into our image's widthVal/heightVal
-        // using the image's preserveAspectRatio.
-
-        // Find what the nested SVG resolved its own size to.
-        double nestedW = nestedContext.viewBoxWidth;
-        double nestedH = nestedContext.viewBoxHeight;
-
-        final double resolvedW =
-            nestedSvg.width?.resolveOrNull(nestedContext, SvgOrientation.horizontal) ?? 0.0;
-        final double resolvedH =
-            nestedSvg.height?.resolveOrNull(nestedContext, SvgOrientation.vertical) ?? 0.0;
-        if (resolvedW > 0 && resolvedH > 0) {
-          nestedW = resolvedW;
-          nestedH = resolvedH;
-        } else if (nestedSvg.viewportAttributes?.viewBox != null) {
-          nestedW = nestedSvg.viewportAttributes!.viewBox!.width;
-          nestedH = nestedSvg.viewportAttributes!.viewBox!.height;
-        }
-
-        final SvgPreserveAspectRatio par = preserveAspectRatio ?? SvgPreserveAspectRatio.defaults;
-
-        double sx = nestedW > 0 ? widthVal / nestedW : 1.0;
-        double sy = nestedH > 0 ? heightVal / nestedH : 1.0;
-        var alignX = 0.0;
-        var alignY = 0.0;
-
-        if (par.alignment != SvgPreserveAspectRatioAlignment.none) {
-          if (par.scale == SvgPreserveAspectRatioScale.slice) {
-            sx = math.max(sx, sy);
-            sy = sx;
-          } else {
-            sx = math.min(sx, sy);
-            sy = sx;
-          }
-
-          final double scaledWidth = nestedW * sx;
-          final double scaledHeight = nestedH * sy;
-
-          switch (par.alignment) {
-            case SvgPreserveAspectRatioAlignment.xMinYMin:
-            case SvgPreserveAspectRatioAlignment.xMinYMid:
-            case SvgPreserveAspectRatioAlignment.xMinYMax:
-              alignX = 0.0;
-            case SvgPreserveAspectRatioAlignment.xMidYMin:
-            case SvgPreserveAspectRatioAlignment.xMidYMid:
-            case SvgPreserveAspectRatioAlignment.xMidYMax:
-              alignX = (widthVal - scaledWidth) / 2.0;
-            case SvgPreserveAspectRatioAlignment.xMaxYMin:
-            case SvgPreserveAspectRatioAlignment.xMaxYMid:
-            case SvgPreserveAspectRatioAlignment.xMaxYMax:
-              alignX = widthVal - scaledWidth;
-            case SvgPreserveAspectRatioAlignment.none:
-              break;
-          }
-
-          switch (par.alignment) {
-            case SvgPreserveAspectRatioAlignment.xMinYMin:
-            case SvgPreserveAspectRatioAlignment.xMidYMin:
-            case SvgPreserveAspectRatioAlignment.xMaxYMin:
-              alignY = 0.0;
-            case SvgPreserveAspectRatioAlignment.xMinYMid:
-            case SvgPreserveAspectRatioAlignment.xMidYMid:
-            case SvgPreserveAspectRatioAlignment.xMaxYMid:
-              alignY = (heightVal - scaledHeight) / 2.0;
-            case SvgPreserveAspectRatioAlignment.xMinYMax:
-            case SvgPreserveAspectRatioAlignment.xMidYMax:
-            case SvgPreserveAspectRatioAlignment.xMaxYMax:
-              alignY = heightVal - scaledHeight;
-            case SvgPreserveAspectRatioAlignment.none:
-              break;
-          }
-        }
-
-        final imageOps = <SvgTransformOperation>[];
-        if (xVal != 0 || yVal != 0) {
-          imageOps.add(SvgTranslate(xVal, yVal));
-        }
-        if (alignX != 0 || alignY != 0) {
-          imageOps.add(SvgTranslate(alignX, alignY));
-        }
-        if (sx != 1.0 || sy != 1.0) {
-          imageOps.add(SvgScale(sx, sy));
-        }
-
-        return <PaintCommand>[
-          DrawGroup(
-            id: id,
-            opacity: (presentationAttributes?.graphics?.opacity).resolveOpacity(context),
-            commands: nestedCommands,
-            style: PaintingStyle(
-              transformAttributes: SvgTransformAttributes(imageOps),
-            ),
-          ),
-        ];
-      });
+      return _convertNestedSvgImage(nestedSvg, context, xVal, yVal, widthVal, heightVal);
     }
 
-    // For now, assume raster if bytes are present in cache.
     final List<int>? bytes = context.imageCache[href];
-
     if (bytes == null) {
-      // If no bytes in cache, we can't draw anything for now.
       return const Success<List<PaintCommand>>(<PaintCommand>[]);
     }
 
-    final PaintingImageDecoding resolvedDecoding = switch (decoding) {
-      SvgImageDecoding.sync => PaintingImageDecoding.sync,
-      SvgImageDecoding.async || SvgImageDecoding.auto => PaintingImageDecoding.async,
-    };
+    return _convertRasterImage(bytes, context, xVal, yVal, widthVal, heightVal);
+  }
 
+  Result<List<PaintCommand>> _convertNestedSvgImage(
+    SvgSvg nestedSvg,
+    SvgPaintingContext context,
+    double xVal,
+    double yVal,
+    double widthVal,
+    double heightVal,
+  ) {
+    final SvgPaintingContext nestedContext = context.derive(
+      viewBoxWidth: widthVal,
+      viewBoxHeight: heightVal,
+      viewBoxMinX: 0.0,
+      viewBoxMinY: 0.0,
+    );
+
+    return nestedSvg.toPaintCommands(nestedContext).map((List<PaintCommand> nestedCommands) {
+      double nestedW = nestedContext.viewBoxWidth;
+      double nestedH = nestedContext.viewBoxHeight;
+
+      final double resolvedW = nestedSvg.width?.resolveOrNull(nestedContext, .horizontal) ?? 0.0;
+      final double resolvedH = nestedSvg.height?.resolveOrNull(nestedContext, .vertical) ?? 0.0;
+      if (resolvedW > 0 && resolvedH > 0) {
+        nestedW = resolvedW;
+        nestedH = resolvedH;
+      } else if (nestedSvg.viewportAttributes?.viewBox != null) {
+        nestedW = nestedSvg.viewportAttributes!.viewBox!.width;
+        nestedH = nestedSvg.viewportAttributes!.viewBox!.height;
+      }
+
+      final SvgPreserveAspectRatio par = preserveAspectRatio ?? SvgPreserveAspectRatio.defaults;
+      final (:double sx, :double sy, :double alignX, :double alignY) = _computeAspectRatioFit(
+        nestedW,
+        nestedH,
+        widthVal,
+        heightVal,
+        par,
+      );
+
+      final imageOps = <SvgTransformOperation>[
+        if (xVal != 0 || yVal != 0) SvgTranslate(xVal, yVal),
+        if (alignX != 0 || alignY != 0) SvgTranslate(alignX, alignY),
+        if (sx != 1.0 || sy != 1.0) SvgScale(sx, sy),
+      ];
+
+      return <PaintCommand>[
+        DrawGroup(
+          id: id,
+          opacity: (presentationAttributes?.graphics?.opacity).resolveOpacity(context),
+          commands: nestedCommands,
+          style: PaintingStyle(
+            transformAttributes: SvgTransformAttributes(imageOps),
+          ),
+        ),
+      ];
+    });
+  }
+
+  Result<List<PaintCommand>> _convertRasterImage(
+    List<int> bytes,
+    SvgPaintingContext context,
+    double xVal,
+    double yVal,
+    double widthVal,
+    double heightVal,
+  ) {
+    final PaintingImageDecoding resolvedDecoding = switch (decoding) {
+      .sync => PaintingImageDecoding.sync,
+      .async || .auto => PaintingImageDecoding.async,
+    };
+    final double resolvedOpacity = (presentationAttributes?.graphics?.opacity).resolveOpacity(
+      context,
+    );
     final ({double width, double height})? dimensions = parseImageDimensions(bytes);
 
     if (dimensions == null) {
@@ -166,7 +124,7 @@ extension SvgImageToDrawImage on SvgImage {
         DrawImage(
           id: id,
           href: href,
-          imageIndex: 0, // Placeholder, populated by generator
+          imageIndex: 0,
           x: xVal,
           y: yVal,
           width: widthVal,
@@ -174,102 +132,33 @@ extension SvgImageToDrawImage on SvgImage {
           bytes: bytes,
           decoding: resolvedDecoding,
           style: PaintingStyle(
-            groupOpacity: (presentationAttributes?.graphics?.opacity).resolveOpacity(context),
+            groupOpacity: resolvedOpacity,
             transformAttributes: presentationAttributes?.graphics?.transformAttributes,
           ),
         ),
       ]);
     }
 
-    final double imgW = dimensions.width;
-    final double imgH = dimensions.height;
-
     final SvgPreserveAspectRatio par = preserveAspectRatio ?? SvgPreserveAspectRatio.defaults;
+    final (:double sx, :double sy, :double alignX, :double alignY) = _computeAspectRatioFit(
+      dimensions.width,
+      dimensions.height,
+      widthVal,
+      heightVal,
+      par,
+    );
+    final double scaledW = dimensions.width * sx;
+    final double scaledH = dimensions.height * sy;
 
-    double sx = imgW > 0 ? widthVal / imgW : 1.0;
-    double sy = imgH > 0 ? heightVal / imgH : 1.0;
-    var alignX = 0.0;
-    var alignY = 0.0;
-
-    if (par.alignment != SvgPreserveAspectRatioAlignment.none) {
-      if (par.scale == SvgPreserveAspectRatioScale.slice) {
-        sx = math.max(sx, sy);
-        sy = sx;
-      } else {
-        sx = math.min(sx, sy);
-        sy = sx;
-      }
-
-      final double scaledWidth = imgW * sx;
-      final double scaledHeight = imgH * sy;
-
-      switch (par.alignment) {
-        case SvgPreserveAspectRatioAlignment.xMinYMin:
-        case SvgPreserveAspectRatioAlignment.xMinYMid:
-        case SvgPreserveAspectRatioAlignment.xMinYMax:
-          alignX = 0.0;
-        case SvgPreserveAspectRatioAlignment.xMidYMin:
-        case SvgPreserveAspectRatioAlignment.xMidYMid:
-        case SvgPreserveAspectRatioAlignment.xMidYMax:
-          alignX = (widthVal - scaledWidth) / 2.0;
-        case SvgPreserveAspectRatioAlignment.xMaxYMin:
-        case SvgPreserveAspectRatioAlignment.xMaxYMid:
-        case SvgPreserveAspectRatioAlignment.xMaxYMax:
-          alignX = widthVal - scaledWidth;
-        case SvgPreserveAspectRatioAlignment.none:
-          break;
-      }
-
-      switch (par.alignment) {
-        case SvgPreserveAspectRatioAlignment.xMinYMin:
-        case SvgPreserveAspectRatioAlignment.xMidYMin:
-        case SvgPreserveAspectRatioAlignment.xMaxYMin:
-          alignY = 0.0;
-        case SvgPreserveAspectRatioAlignment.xMinYMid:
-        case SvgPreserveAspectRatioAlignment.xMidYMid:
-        case SvgPreserveAspectRatioAlignment.xMaxYMid:
-          alignY = (heightVal - scaledHeight) / 2.0;
-        case SvgPreserveAspectRatioAlignment.xMinYMax:
-        case SvgPreserveAspectRatioAlignment.xMidYMax:
-        case SvgPreserveAspectRatioAlignment.xMaxYMax:
-          alignY = heightVal - scaledHeight;
-        case SvgPreserveAspectRatioAlignment.none:
-          break;
-      }
-    }
-
-    final double scaledW = imgW * sx;
-    final double scaledH = imgH * sy;
-
-    final outerOps = <SvgTransformOperation>[];
-    if (presentationAttributes?.graphics?.transformAttributes case final ta?) {
-      outerOps.addAll(ta.operations);
-    }
-    if (xVal != 0 || yVal != 0) {
-      outerOps.add(SvgTranslate(xVal, yVal));
-    }
+    final outerOps = <SvgTransformOperation>[
+      if (presentationAttributes?.graphics?.transformAttributes case final ta?) ...ta.operations,
+      if (xVal != 0 || yVal != 0) SvgTranslate(xVal, yVal),
+    ];
 
     final isOverflowVisible = presentationAttributes?.overflow == SvgOverflow.visible;
-    final bool shouldClip = !isOverflowVisible &&
-        (par.scale == SvgPreserveAspectRatioScale.slice ||
-            par.alignment == SvgPreserveAspectRatioAlignment.none);
-
+    final bool shouldClip =
+        !isOverflowVisible && (par.scale == .slice || par.alignment == .none);
     final PaintingRect? clipRect = shouldClip ? PaintingRect(0, 0, widthVal, heightVal) : null;
-
-    final drawImage = DrawImage(
-      id: id,
-      href: href,
-      imageIndex: 0,
-      x: alignX,
-      y: alignY,
-      width: scaledW,
-      height: scaledH,
-      bytes: bytes,
-      decoding: resolvedDecoding,
-      style: PaintingStyle(
-        groupOpacity: (presentationAttributes?.graphics?.opacity).resolveOpacity(context),
-      ),
-    );
 
     if (outerOps.isEmpty && clipRect == null) {
       return Success<List<PaintCommand>>(<PaintCommand>[
@@ -284,7 +173,7 @@ extension SvgImageToDrawImage on SvgImage {
           bytes: bytes,
           decoding: resolvedDecoding,
           style: PaintingStyle(
-            groupOpacity: (presentationAttributes?.graphics?.opacity).resolveOpacity(context),
+            groupOpacity: resolvedOpacity,
             transformAttributes: presentationAttributes?.graphics?.transformAttributes,
           ),
         ),
@@ -293,7 +182,20 @@ extension SvgImageToDrawImage on SvgImage {
 
     return Success<List<PaintCommand>>(<PaintCommand>[
       DrawGroup(
-        commands: <PaintCommand>[drawImage],
+        commands: <PaintCommand>[
+          DrawImage(
+            id: id,
+            href: href,
+            imageIndex: 0,
+            x: alignX,
+            y: alignY,
+            width: scaledW,
+            height: scaledH,
+            bytes: bytes,
+            decoding: resolvedDecoding,
+            style: PaintingStyle(groupOpacity: resolvedOpacity),
+          ),
+        ],
         style: PaintingStyle(
           transformAttributes: outerOps.isEmpty ? null : SvgTransformAttributes(outerOps),
           clipRect: clipRect,
@@ -301,4 +203,41 @@ extension SvgImageToDrawImage on SvgImage {
       ),
     ]);
   }
+}
+
+/// Computes uniform or non-uniform scale factors and alignment offsets for [par].
+({double sx, double sy, double alignX, double alignY}) _computeAspectRatioFit(
+  double contentW,
+  double contentH,
+  double boxW,
+  double boxH,
+  SvgPreserveAspectRatio par,
+) {
+  double sx = contentW > 0 ? boxW / contentW : 1.0;
+  double sy = contentH > 0 ? boxH / contentH : 1.0;
+  var alignX = 0.0;
+  var alignY = 0.0;
+
+  if (par.alignment != .none) {
+    final double uniformScale = par.scale == .slice ? math.max(sx, sy) : math.min(sx, sy);
+    sx = uniformScale;
+    sy = uniformScale;
+
+    final double scaledWidth = contentW * sx;
+    final double scaledHeight = contentH * sy;
+
+    alignX = switch (par.alignment) {
+      .xMinYMin || .xMinYMid || .xMinYMax || .none => 0.0,
+      .xMidYMin || .xMidYMid || .xMidYMax => (boxW - scaledWidth) / 2.0,
+      .xMaxYMin || .xMaxYMid || .xMaxYMax => boxW - scaledWidth,
+    };
+
+    alignY = switch (par.alignment) {
+      .xMinYMin || .xMidYMin || .xMaxYMin || .none => 0.0,
+      .xMinYMid || .xMidYMid || .xMaxYMid => (boxH - scaledHeight) / 2.0,
+      .xMinYMax || .xMidYMax || .xMaxYMax => boxH - scaledHeight,
+    };
+  }
+
+  return (sx: sx, sy: sy, alignX: alignX, alignY: alignY);
 }

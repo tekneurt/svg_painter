@@ -741,69 +741,55 @@ extension on SvgStrokeLinejoin {
   }
 }
 
-SvgGradientUnits _resolveGradientUnits(SvgGradient gradient, SvgPaintingContext context) {
-  final SvgGradientUnits? directUnits = gradient.gradientUnits;
-  if (directUnits != null) {
-    return directUnits;
-  }
-
+/// Walks [gradient] and its `href` inheritance chain (cycle-safe) until [selector] returns non-null.
+T? _findInGradientChain<T extends Object>(
+  SvgGradient gradient,
+  SvgPaintingContext context,
+  T? Function(SvgGradient) selector,
+) {
   final visited = <String>{};
-  final String? gradId = gradient.id;
-  if (gradId != null) {
-    visited.add(gradId);
-  }
+  SvgGradient? current = gradient;
 
-  String? currentHref = gradient.href;
-  while (currentHref != null && currentHref.isNotEmpty) {
-    final String targetId = currentHref.startsWith('#')
-        ? currentHref.substring(1)
-        : currentHref;
+  while (current != null) {
+    final T? match = selector(current);
+    if (match != null) {
+      return match;
+    }
+
+    final String? currentId = current.id;
+    if (currentId != null) {
+      visited.add(currentId);
+    }
+
+    final String? href = current.href;
+    if (href == null || href.isEmpty) {
+      break;
+    }
+    final String targetId = href.startsWith('#') ? href.substring(1) : href;
     if (visited.contains(targetId)) {
       break;
     }
-    visited.add(targetId);
     final SvgElement? target = context.definitions[targetId];
-    if (target is SvgGradient) {
-      final SvgGradientUnits? targetUnits = target.gradientUnits;
-      if (targetUnits != null) {
-        return targetUnits;
-      }
-      currentHref = target.href;
-    } else {
-      break;
-    }
+    current = target is SvgGradient ? target : null;
   }
 
-  return SvgGradientUnits.objectBoundingBox;
+  return null;
+}
+
+SvgGradientUnits _resolveGradientUnits(SvgGradient gradient, SvgPaintingContext context) {
+  return _findInGradientChain<SvgGradientUnits>(
+        gradient,
+        context,
+        (SvgGradient g) => g.gradientUnits,
+      ) ??
+      SvgGradientUnits.objectBoundingBox;
 }
 
 bool _hasGradientStops(SvgGradient gradient, SvgPaintingContext context) {
-  if (gradient.stops.isNotEmpty) {
-    return true;
-  }
-  final visited = <String>{};
-  final String? gradId = gradient.id;
-  if (gradId != null) {
-    visited.add(gradId);
-  }
-  String? currentHref = gradient.href;
-  while (currentHref != null && currentHref.isNotEmpty) {
-    final String targetId = currentHref.startsWith('#')
-        ? currentHref.substring(1)
-        : currentHref;
-    if (visited.contains(targetId)) {
-      break;
-    }
-    visited.add(targetId);
-    final SvgElement? target = context.definitions[targetId];
-    if (target is SvgGradient) {
-      if (target.stops.isNotEmpty) {
-        return true;
-      }
-      currentHref = target.href;
-    } else {
-      break;
-    }
-  }
-  return false;
+  return _findInGradientChain<bool>(
+        gradient,
+        context,
+        (SvgGradient g) => g.stops.isNotEmpty ? true : null,
+      ) ??
+      false;
 }
