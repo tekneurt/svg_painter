@@ -7,7 +7,6 @@ import '../generator_buffer.dart';
 import '../models.dart';
 import '../palette_analyzer.dart';
 import '../shape_generator.dart';
-import 'text_generator.dart';
 
 /// Generator for [DrawTextPath] commands that render text along a path contour.
 class TextPathGenerator extends ShapeGenerator<DrawTextPath> {
@@ -46,44 +45,7 @@ class TextPathGenerator extends ShapeGenerator<DrawTextPath> {
       buffer.writeBlock('{', () {
         buffer.writeln('final Path path = Path()');
         buffer.indent();
-        for (final PathOperation op in command.pathOperations) {
-          switch (op) {
-            case MoveTo(:final double x, :final double y):
-              buffer.writeln('..moveTo($x, $y)');
-            case LineTo(:final double x, :final double y):
-              buffer.writeln('..lineTo($x, $y)');
-            case CubicTo(
-              :final double x1,
-              :final double y1,
-              :final double x2,
-              :final double y2,
-              :final double x3,
-              :final double y3,
-            ):
-              buffer.writeln('..cubicTo($x1, $y1, $x2, $y2, $x3, $y3)');
-            case QuadraticTo(
-              :final double x1,
-              :final double y1,
-              :final double x2,
-              :final double y2,
-            ):
-              buffer.writeln('..quadraticBezierTo($x1, $y1, $x2, $y2)');
-            case ArcTo(
-              :final double rx,
-              :final double ry,
-              :final double xAxisRotation,
-              :final bool largeArcFlag,
-              :final bool sweepFlag,
-              :final double x,
-              :final double y,
-            ):
-              buffer.writeln(
-                '..arcToPoint(const Offset($x, $y), radius: const Radius.elliptical($rx, $ry), rotation: $xAxisRotation, largeArc: $largeArcFlag, clockwise: $sweepFlag)',
-              );
-            case ClosePath():
-              buffer.writeln('..close()');
-          }
-        }
+        emitPathOperations(buffer, command.pathOperations);
         buffer.outdent();
         buffer.writeln(';');
 
@@ -113,21 +75,7 @@ class TextPathGenerator extends ShapeGenerator<DrawTextPath> {
                 }
                 final PaintingTextStyle? textStyle = command.style.text;
                 if (textStyle != null) {
-                  buffer.writeln('fontSize: ${textStyle.fontSize},');
-                  buffer.writeln('fontWeight: ${textStyle.fontWeight.toFlutterString()},');
-                  buffer.writeln('fontStyle: ${textStyle.fontStyle.toFlutterString()},');
-                  if (textStyle.fontFamily case final String family) {
-                    buffer.writeln("fontFamily: '${escapeDartStringLiteral(family)}',");
-                  }
-                  if (textStyle.fontFamilyFallback.isNotEmpty) {
-                    final String fallbacks = textStyle.fontFamilyFallback
-                        .map((String f) => "'${escapeDartStringLiteral(f)}'")
-                        .join(', ');
-                    buffer.writeln('fontFamilyFallback: <String>[$fallbacks],');
-                  }
-                  if (textStyle.fontPackage != null) {
-                    buffer.writeln("package: '${textStyle.fontPackage}',");
-                  }
+                  emitTextStyleProperties(buffer, textStyle);
                 }
               }, footer: '),');
             }, footer: '),');

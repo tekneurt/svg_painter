@@ -264,17 +264,7 @@ class FilterGenerator extends CommandGenerator<DefineFilter> {
         return (func.slope, func.intercept * 255.0);
       case .gamma:
         return (func.amplitude, func.offset * 255.0);
-      case .table:
-        if (func.tableValues.isEmpty) {
-          return (1.0, 0.0);
-        } else if (func.tableValues.length == 1) {
-          return (0.0, func.tableValues.first * 255.0);
-        } else {
-          final double slope = func.tableValues.last - func.tableValues.first;
-          final double intercept = func.tableValues.first * 255.0;
-          return (slope, intercept);
-        }
-      case .discrete:
+      case .table || .discrete:
         if (func.tableValues.isEmpty) {
           return (1.0, 0.0);
         } else if (func.tableValues.length == 1) {

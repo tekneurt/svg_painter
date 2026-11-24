@@ -119,44 +119,7 @@ class ClipPathGenerator extends CommandGenerator<DefineClipPath> {
         buffer.writeBlock('{', () {
           buffer.writeln('final Path subPath = Path()');
           buffer.indent();
-          for (final op in operations) {
-            switch (op) {
-              case MoveTo(:final double x, :final double y):
-                buffer.writeln('..moveTo($x, $y)');
-              case LineTo(:final double x, :final double y):
-                buffer.writeln('..lineTo($x, $y)');
-              case CubicTo(
-                :final double x1,
-                :final double y1,
-                :final double x2,
-                :final double y2,
-                :final double x3,
-                :final double y3,
-              ):
-                buffer.writeln('..cubicTo($x1, $y1, $x2, $y2, $x3, $y3)');
-              case QuadraticTo(
-                :final double x1,
-                :final double y1,
-                :final double x2,
-                :final double y2,
-              ):
-                buffer.writeln('..quadraticBezierTo($x1, $y1, $x2, $y2)');
-              case ArcTo(
-                :final double rx,
-                :final double ry,
-                :final double xAxisRotation,
-                :final bool largeArcFlag,
-                :final bool sweepFlag,
-                :final double x,
-                :final double y,
-              ):
-                buffer.writeln(
-                  '..arcToPoint(const Offset($x, $y), radius: const Radius.elliptical($rx, $ry), rotation: $xAxisRotation, largeArc: $largeArcFlag, clockwise: $sweepFlag)',
-                );
-              case ClosePath():
-                buffer.writeln('..close()');
-            }
-          }
+          emitPathOperations(buffer, operations);
           buffer.outdent();
           buffer.writeln(';');
           if (style.clipRule == SvgClipRule.evenodd ||

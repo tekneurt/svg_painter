@@ -8,6 +8,7 @@ import 'generation_extensions.dart';
 import 'generator_buffer.dart';
 import 'models.dart';
 import 'palette_analyzer.dart';
+import 'path_marker_extractor.dart';
 import 'svg_id_formatter.dart';
 
 /// Base class for generators that produce drawing commands (shapes).
@@ -503,6 +504,87 @@ abstract class ShapeGenerator<T extends PaintCommand> extends CommandGenerator<T
       buffer.writeln('canvas.drawPath($pathVar, $paintVar);');
     }
   }
+
+  /// Emits `_marker_<id>(...)` invocation calls for each [MarkerVertex] in [vertices].
+  void emitMarkerCalls(
+    GeneratorBuffer buffer,
+    PaintingStyle style,
+    List<MarkerVertex> vertices, {
+    String? fillPaintVar,
+    String? strokePaintVar,
+  }) {
+    final String? markerStart = style.markerStartId;
+    final String? markerMid = style.markerMidId;
+    final String? markerEnd = style.markerEndId;
+    final double strokeWidth = style.strokeWidth;
+    final fillArg = fillPaintVar != null ? ', contextFill: $fillPaintVar' : '';
+    final strokeArg = strokePaintVar != null ? ', contextStroke: $strokePaintVar' : '';
+
+    for (final v in vertices) {
+      if (v.isStart) {
+        if (markerStart != null) {
+          final String cleanStart = SvgIdFormatter.sanitizeId(markerStart);
+          buffer.writeln(
+            '_marker_$cleanStart(canvas, const Offset(${v.x}, ${v.y}), ${v.angle}, $strokeWidth, isStart: true$fillArg$strokeArg);',
+          );
+        }
+      } else if (v.isEnd) {
+        if (markerEnd != null) {
+          final String cleanEnd = SvgIdFormatter.sanitizeId(markerEnd);
+          buffer.writeln(
+            '_marker_$cleanEnd(canvas, const Offset(${v.x}, ${v.y}), ${v.angle}, $strokeWidth$fillArg$strokeArg);',
+          );
+        }
+      } else if (markerMid != null) {
+        final String cleanMid = SvgIdFormatter.sanitizeId(markerMid);
+        buffer.writeln(
+          '_marker_$cleanMid(canvas, const Offset(${v.x}, ${v.y}), ${v.angle}, $strokeWidth$fillArg$strokeArg);',
+        );
+      }
+    }
+  }
+
+  /// Emits standard Flutter `TextStyle` properties for [textStyle].
+  void emitTextStyleProperties(GeneratorBuffer buffer, PaintingTextStyle textStyle) {
+    buffer.writeln('fontSize: ${textStyle.fontSize},');
+    buffer.writeln('fontWeight: ${textStyle.fontWeight.toFlutterString()},');
+    buffer.writeln('fontStyle: ${textStyle.fontStyle.toFlutterString()},');
+    if (textStyle.fontFamily case final String family) {
+      buffer.writeln("fontFamily: '${escapeDartStringLiteral(family)}',");
+    }
+    if (textStyle.fontFamilyFallback.isNotEmpty) {
+      final String fallbacks = textStyle.fontFamilyFallback
+          .map((String f) => "'${escapeDartStringLiteral(f)}'")
+          .join(', ');
+      buffer.writeln('fontFamilyFallback: <String>[$fallbacks],');
+    }
+    if (textStyle.fontPackage != null) {
+      buffer.writeln("package: '${textStyle.fontPackage}',");
+    }
+  }
+}
+
+/// Escapes raw text so it can be safely emitted inside a single-quoted Dart string literal.
+String escapeDartStringLiteral(String text) {
+  final buffer = StringBuffer();
+  for (var i = 0; i < text.length; i++) {
+    final String char = text[i];
+    switch (char) {
+      case r'\':
+        buffer.write(r'\\');
+      case "'":
+        buffer.write(r"\'");
+      case r'$':
+        buffer.write(r'\$');
+      case '\n':
+        buffer.write(r'\n');
+      case '\r':
+        buffer.write(r'\r');
+      default:
+        buffer.write(char);
+    }
+  }
+  return buffer.toString();
 }
 
 class StyleResolution {

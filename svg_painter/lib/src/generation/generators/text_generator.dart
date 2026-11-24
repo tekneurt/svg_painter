@@ -9,6 +9,8 @@ import '../palette_analyzer.dart';
 import '../shape_generator.dart';
 import '../svg_id_formatter.dart';
 
+export '../shape_generator.dart' show escapeDartStringLiteral;
+
 class TextGenerator extends ShapeGenerator<DrawText> {
   const TextGenerator();
 
@@ -233,19 +235,7 @@ class TextGenerator extends ShapeGenerator<DrawText> {
 
           final PaintingTextStyle? textStyle = style.text;
           if (textStyle != null) {
-            buffer.writeln('fontSize: ${textStyle.fontSize},');
-            buffer.writeln('fontWeight: ${textStyle.fontWeight.toFlutterString()},');
-            buffer.writeln('fontStyle: ${textStyle.fontStyle.toFlutterString()},');
-            buffer.writeln("fontFamily: '${textStyle.fontFamily}',");
-            if (textStyle.fontFamilyFallback.isNotEmpty) {
-              final String fallbacks = textStyle.fontFamilyFallback
-                  .map((String f) => "'$f'")
-                  .join(', ');
-              buffer.writeln('fontFamilyFallback: <String>[$fallbacks],');
-            }
-            if (textStyle.fontPackage != null) {
-              buffer.writeln("package: '${textStyle.fontPackage}',");
-            }
+            emitTextStyleProperties(buffer, textStyle);
           }
         }, footer: '),');
       }
@@ -271,27 +261,4 @@ class TextGenerator extends ShapeGenerator<DrawText> {
       }
     }, footer: ')');
   }
-}
-
-/// Escapes raw text so it can be safely emitted inside a single-quoted Dart string literal.
-String escapeDartStringLiteral(String text) {
-  final buffer = StringBuffer();
-  for (var i = 0; i < text.length; i++) {
-    final String char = text[i];
-    switch (char) {
-      case r'\':
-        buffer.write(r'\\');
-      case "'":
-        buffer.write(r"\'");
-      case r'$':
-        buffer.write(r'\$');
-      case '\n':
-        buffer.write(r'\n');
-      case '\r':
-        buffer.write(r'\r');
-      default:
-        buffer.write(char);
-    }
-  }
-  return buffer.toString();
 }

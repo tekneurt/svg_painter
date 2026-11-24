@@ -41,19 +41,19 @@ class MaskGenerator extends CommandGenerator<DefineMask> {
       final String mx, my, mw, mh;
 
       String resolveVal(SvgLengthPercentage val, bool isOBox, SvgOrientation orientation) {
-        if (val is SvgPercentage) {
-          final double fraction = val.value / 100.0;
-          if (isOBox) {
-            return '$fraction';
-          }
-          final total = orientation == SvgOrientation.horizontal
-              ? 'viewBox.width'
-              : 'viewBox.height';
-          return '($fraction * $total)';
-        } else if (val is SvgLength) {
-          return '${val.value}';
+        switch (val) {
+          case SvgPercentage(:final double value):
+            final double fraction = value / 100.0;
+            if (isOBox) {
+              return '$fraction';
+            }
+            final total = orientation == SvgOrientation.horizontal
+                ? 'viewBox.width'
+                : 'viewBox.height';
+            return '($fraction * $total)';
+          case SvgLength(:final double value):
+            return '$value';
         }
-        return '0.0';
       }
 
       if (isMaskOBox) {

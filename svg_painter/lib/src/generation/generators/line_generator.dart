@@ -7,7 +7,6 @@ import '../models.dart';
 import '../palette_analyzer.dart';
 import '../path_marker_extractor.dart';
 import '../shape_generator.dart';
-import '../svg_id_formatter.dart';
 
 class LineGenerator extends ShapeGenerator<DrawLine> {
   const LineGenerator();
@@ -68,30 +67,18 @@ class LineGenerator extends ShapeGenerator<DrawLine> {
         },
         drawMarkersCall: command.style.hasMarkers
             ? (String? fillPaintVar, String? strokePaintVar) {
-                final String? markerStart = command.style.markerStartId;
-                final String? markerEnd = command.style.markerEndId;
-                final double strokeWidth = command.style.strokeWidth;
-                final List<MarkerVertex> vertices = PathMarkerExtractor.extractFromLine(
-                  command.x1,
-                  command.y1,
-                  command.x2,
-                  command.y2,
+                emitMarkerCalls(
+                  buffer,
+                  command.style,
+                  PathMarkerExtractor.extractFromLine(
+                    command.x1,
+                    command.y1,
+                    command.x2,
+                    command.y2,
+                  ),
+                  fillPaintVar: fillPaintVar,
+                  strokePaintVar: strokePaintVar,
                 );
-                final fillArg = fillPaintVar != null ? ', contextFill: $fillPaintVar' : '';
-                final strokeArg = strokePaintVar != null ? ', contextStroke: $strokePaintVar' : '';
-                for (final v in vertices) {
-                  if (v.isStart && markerStart != null) {
-                    final String cleanStart = SvgIdFormatter.sanitizeId(markerStart);
-                    buffer.writeln(
-                      '_marker_$cleanStart(canvas, const Offset(${v.x}, ${v.y}), ${v.angle}, $strokeWidth, isStart: true$fillArg$strokeArg);',
-                    );
-                  } else if (v.isEnd && markerEnd != null) {
-                    final String cleanEnd = SvgIdFormatter.sanitizeId(markerEnd);
-                    buffer.writeln(
-                      '_marker_$cleanEnd(canvas, const Offset(${v.x}, ${v.y}), ${v.angle}, $strokeWidth$fillArg$strokeArg);',
-                    );
-                  }
-                }
               }
             : null,
       );

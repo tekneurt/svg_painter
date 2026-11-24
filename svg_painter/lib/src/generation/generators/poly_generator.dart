@@ -8,7 +8,6 @@ import '../models.dart';
 import '../palette_analyzer.dart';
 import '../path_marker_extractor.dart';
 import '../shape_generator.dart';
-import '../svg_id_formatter.dart';
 
 class PolyGenerator<T extends DrawCommand> extends ShapeGenerator<T> {
   const PolyGenerator();
@@ -89,42 +88,13 @@ class PolyGenerator<T extends DrawCommand> extends ShapeGenerator<T> {
           },
           drawMarkersCall: command.style.hasMarkers
               ? (String? fillPaintVar, String? strokePaintVar) {
-                  final String? markerStart = command.style.markerStartId;
-                  final String? markerMid = command.style.markerMidId;
-                  final String? markerEnd = command.style.markerEndId;
-                  final double strokeWidth = command.style.strokeWidth;
-                  final List<MarkerVertex> vertices = PathMarkerExtractor.extractFromPoints(
-                    points,
-                    isClosed: isClosed,
+                  emitMarkerCalls(
+                    buffer,
+                    command.style,
+                    PathMarkerExtractor.extractFromPoints(points, isClosed: isClosed),
+                    fillPaintVar: fillPaintVar,
+                    strokePaintVar: strokePaintVar,
                   );
-                  final fillArg = fillPaintVar != null ? ', contextFill: $fillPaintVar' : '';
-                  final strokeArg = strokePaintVar != null
-                      ? ', contextStroke: $strokePaintVar'
-                      : '';
-                  for (final v in vertices) {
-                    if (v.isStart) {
-                      if (markerStart != null) {
-                        final String cleanStart = SvgIdFormatter.sanitizeId(markerStart);
-                        buffer.writeln(
-                          '_marker_$cleanStart(canvas, const Offset(${v.x}, ${v.y}), ${v.angle}, $strokeWidth, isStart: true$fillArg$strokeArg);',
-                        );
-                      }
-                    } else if (v.isEnd) {
-                      if (markerEnd != null) {
-                        final String cleanEnd = SvgIdFormatter.sanitizeId(markerEnd);
-                        buffer.writeln(
-                          '_marker_$cleanEnd(canvas, const Offset(${v.x}, ${v.y}), ${v.angle}, $strokeWidth$fillArg$strokeArg);',
-                        );
-                      }
-                    } else {
-                      if (markerMid != null) {
-                        final String cleanMid = SvgIdFormatter.sanitizeId(markerMid);
-                        buffer.writeln(
-                          '_marker_$cleanMid(canvas, const Offset(${v.x}, ${v.y}), ${v.angle}, $strokeWidth$fillArg$strokeArg);',
-                        );
-                      }
-                    }
-                  }
                 }
               : null,
         );
