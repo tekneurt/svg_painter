@@ -10,7 +10,7 @@ Add `svg_painter_annotation` to your `dependencies`:
 
 ```yaml
 dependencies:
-  svg_painter_annotation: ^0.4.0
+  svg_painter_annotation: ^0.5.0
 ```
 
 Add `svg_painter` and `build_runner` to your `dev_dependencies`:
@@ -18,7 +18,7 @@ Add `svg_painter` and `build_runner` to your `dev_dependencies`:
 ```yaml
 dev_dependencies:
   build_runner: ^2.4.0
-  svg_painter: ^0.4.0
+  svg_painter: ^0.5.0
 ```
 
 ---
@@ -146,6 +146,20 @@ class FlagPainter extends _$FlagPainter {
 ```
 
 Passing an override to a color token globally updates every occurrence of that color throughout the entire SVG.
+
+### `theme`
+
+Configures ambient `SvgTheme` defaults (`fontSize` and `xHeight`) used to resolve relative font units (`em`, `ex`) when no explicit `font-size` is inherited in the SVG tree:
+
+```dart
+@SvgPainter.file(
+  'assets/diagram.svg',
+  theme: SvgTheme(fontSize: 14.0, xHeight: 7.0),
+)
+class DiagramPainter extends _$DiagramPainter {
+  const DiagramPainter({super.fit});
+}
+```
 
 ---
 

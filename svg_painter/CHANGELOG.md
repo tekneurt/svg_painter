@@ -5,6 +5,30 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.5.0] - 2026-11-24
+
+### Added
+
+#### Spec Compliance
+- **Markers**: Added `<marker>` element and `marker`, `marker-start`, `marker-mid`, `marker-end`, `refX`, `refY`, `markerWidth`, `markerHeight`, `markerUnits`, `orient`, `overflow`, and `context-fill`/`context-stroke` support.
+- **Filters**: Added `<filter>`, `<feGaussianBlur>`, `<feOffset>`, `<feDropShadow>`, `<feMerge>`, `<feMergeNode>`, `<feFlood>`, and `<feComponentTransfer>` elements with `filter`, `stdDeviation`, `flood-color`, `flood-opacity`, and `offset` attributes.
+- **Patterns**: Added `<pattern>` element support with `patternTransform` and `href`/`xlink:href` inheritance.
+- **Containers & Links**: Added `<switch>` conditional rendering and `<a>` anchor container support.
+- **Text & Typography**: Added `<textPath>` (with `startOffset`), multi-coordinate `x`/`y` lists on `<text>` and `<tspan>`, fallback `font-family` lists, CSS/SVG `font-size` keywords and relative units (`em`, `rem`, `ex`, `ch`, `%`), and `xml:space` normalization.
+- **Gradients**: Added `objectBoundingBox` `gradientTransform` support (including non-uniform skewing), `href`/`xlink:href` inheritance, CSS styling on `<stop>`, `currentColor` resolution in gradients, text gradient fill shaders, and radial gradient focal point clamping.
+- **Colors & Presentation**: Added `color` attribute with `currentColor` inheritance, `inherit` keyword resolution, CSS 2 / SVG 1.1 system color keywords, `display`, `visibility`, `overflow` clipping, `clip-rule`, raster `<image>` `preserveAspectRatio`, and internal DTD entity expansion.
+
+#### Code Generation & Configuration
+- **Token-Based Recoloring (`tokenColors`)**: Automatically discovers unique colors across fills, strokes, and gradient stops and exposes them as named constructor parameters.
+- **Color Mapping (`colorMapping`)**: Added `SvgColorMapping.material` and `SvgColorMapping.hex` options.
+- **Ambient Theme (`SvgTheme`)**: Added `theme` parameter on `@SvgPainter` for configuring default `fontSize` and `xHeight`.
+
+### Changed
+
+- **Architecture & Simplification**: Unified text/tspan coordinate and shift distribution, refactored image conversion and gradient chain resolution, and simplified generator code.
+- **Dependencies**: Updated `svg_painter_annotation` dependency constraint to `^0.5.0`.
+- **Testing & Quality**: Expanded W3C SVG 1.1 conformance tests, MDN examples, and `flutter_svg` compatibility tests; hardened dual-platform (macOS/Linux) golden tests and increased unit test coverage.
+
 ## [0.4.0] - 2026-09-13
 
 ### Added

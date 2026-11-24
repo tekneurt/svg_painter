@@ -14,7 +14,7 @@ A high-performance SVG-to-Flutter code generator. Compiles SVG assets into optim
 * **Automatic Widget Generation**: Generates ready-to-use `StatelessWidget` wrappers with full `BoxFit` and `AlignmentGeometry` support.
 * **Built-in Accessibility**: Automatically maps SVG `<title>` and `<desc>` elements into Flutter's `Semantics` widget for screen readers.
 * **Dynamic Recoloring & Styling**: Expose fills, strokes, and `currentColor` as type-safe constructor parameters for runtime theming.
-* **Rich SVG Spec Compliance**: Full support for `<clipPath>`, `<mask>`, `<image>` (base64 and asset URIs), `<use>`, `<symbol>`, gradients, dashed strokes, `vector-effect="non-scaling-stroke"`, and `<text>` / `<tspan>`.
+* **Rich SVG Spec Compliance**: Full support for `<clipPath>`, `<mask>`, `<pattern>`, `<marker>`, `<filter>` (`<feGaussianBlur>`, `<feOffset>`, `<feDropShadow>`, `<feMerge>`, `<feFlood>`), `<image>` (base64 and asset URIs), `<use>`, `<symbol>`, `<switch>`, gradients, dashed strokes, `vector-effect="non-scaling-stroke"`, `<text>`, `<tspan>`, and `<textPath>`.
 * **Font Management**: Bundled standard font resolution (`Roboto`, `Noto Serif`, `Roboto Mono`) with an automatic `AssetExporter` CLI.
 
 ---
@@ -27,11 +27,11 @@ Add `svg_painter_annotation` to your `dependencies`, and `svg_painter` and `buil
 dependencies:
   flutter:
     sdk: flutter
-  svg_painter_annotation: ^0.4.0
+  svg_painter_annotation: ^0.5.0
 
 dev_dependencies:
   build_runner: ^2.4.0
-  svg_painter: ^0.4.0
+  svg_painter: ^0.5.0
 ```
 
 ---
@@ -308,11 +308,12 @@ void exportFonts() {
 | Category | Elements |
 | :--- | :--- |
 | **Shapes** | `<rect>`, `<circle>`, `<ellipse>`, `<line>`, `<polyline>`, `<polygon>`, `<path>` |
-| **Structure & Containers** | `<svg>`, `<g>`, `<defs>`, `<symbol>`, `<use>` (with `x`, `y`, `width`, `height`) |
+| **Structure & Containers** | `<svg>`, `<g>`, `<defs>`, `<symbol>`, `<use>` (with `x`, `y`, `width`, `height`), `<switch>`, `<a>` |
 | **Media & Images** | `<image>` (data URIs like `data:image/png;base64,...` and asset hrefs) |
-| **Clipping & Masking** | `<clipPath>`, `clip-path`, `<mask>`, `mask` (`userSpaceOnUse` and `objectBoundingBox`) |
-| **Gradients** | `<linearGradient>`, `<radialGradient>`, `<stop>` (`gradientTransform`, `spreadMethod`, and elliptical bounds) |
-| **Text & Typography** | `<text>`, `<tspan>` (`dx`, `dy`, `text-anchor`, `font-family`, `font-size`, `font-weight`, `font-style`) |
+| **Clipping & Masking** | `<clipPath>`, `clip-path`, `clip-rule`, `<mask>`, `mask` (`userSpaceOnUse` and `objectBoundingBox`) |
+| **Gradients & Patterns** | `<linearGradient>`, `<radialGradient>`, `<stop>`, `<pattern>` (`gradientTransform`, `patternTransform`, `spreadMethod`, `href`) |
+| **Markers & Filters** | `<marker>`, `<filter>`, `<feGaussianBlur>`, `<feOffset>`, `<feDropShadow>`, `<feMerge>`, `<feMergeNode>`, `<feFlood>`, `<feComponentTransfer>` |
+| **Text & Typography** | `<text>`, `<tspan>`, `<textPath>` (`dx`, `dy`, `text-anchor`, `startOffset`, `font-family`, `font-size`, `font-weight`, `font-style`) |
 | **Styling** | `<style>` (CSS class and tag selectors), inline `style="..."` attributes |
 
 ### Supported Attributes
