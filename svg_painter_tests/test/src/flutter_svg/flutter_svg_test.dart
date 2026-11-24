@@ -24,6 +24,7 @@ class _FlutterSvgFixture {
     this.widget,
     this.canvasSize,
     required this.maxDiffPercent,
+    this.platformOverrides,
   });
 
   final CustomPainter painter;
@@ -31,6 +32,7 @@ class _FlutterSvgFixture {
   final Widget? widget;
   final Size? canvasSize;
   final double maxDiffPercent;
+  final Set<TargetPlatform>? platformOverrides;
 }
 
 final List<_FlutterSvgFixture> _fixtures = <_FlutterSvgFixture>[
@@ -174,6 +176,7 @@ final List<_FlutterSvgFixture> _fixtures = <_FlutterSvgFixture>[
     ),
     canvasSize: Size(800.0, 600.0),
     maxDiffPercent: 0.05,
+    platformOverrides: <TargetPlatform>{TargetPlatform.macOS},
   ),
   const _FlutterSvgFixture(
     painter: SimplePainter(),
@@ -283,6 +286,7 @@ void main() {
           testName: fixture.name,
           canvasSize: fixture.canvasSize,
           maxDiffPercent: fixture.maxDiffPercent,
+          platformOverrides: fixture.platformOverrides,
         );
       });
     }

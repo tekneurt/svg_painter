@@ -127,10 +127,7 @@ _fixtures =
       (
         painter: const CyPainter(),
         name: 'cy_painter',
-        tests: <GoldenTestType, Set<TargetPlatform>?>{
-          GoldenTestType.fixed: null,
-          GoldenTestType.viewBox: <TargetPlatform>{TargetPlatform.macOS},
-        },
+        tests: defaultGoldenTests,
       ),
       (painter: const DClosePathPainter(), name: 'd_close_path_painter', tests: defaultGoldenTests),
       (
@@ -178,7 +175,7 @@ _fixtures =
         name: 'fill_rule_evenodd_painter',
         tests: defaultGoldenTests,
       ),
-      (painter: const FilterPainter(), name: 'filter_painter', tests: macOsFixedOverrideGoldenTests),
+      (painter: const FilterPainter(), name: 'filter_painter', tests: defaultGoldenTests),
       (
         painter: const FloodColorAttributePainter(),
         name: 'flood_color_attribute_painter',
@@ -223,7 +220,7 @@ _fixtures =
       (
         painter: const Fy1Painter(),
         name: 'fy_1_painter',
-        tests: macOsViewBoxOverrideGoldenTests,
+        tests: defaultGoldenTests,
       ),
       (
         painter: const Fy2Painter(),
@@ -248,7 +245,7 @@ _fixtures =
       (
         painter: const MaskAttributePainter(),
         name: 'mask_attribute_painter',
-        tests: macOsOverrideGoldenTests,
+        tests: defaultGoldenTests,
       ),
       (
         painter: const MaskContentUnitsPainter(),
@@ -323,10 +320,7 @@ _fixtures =
       (
         painter: const RPainter(),
         name: 'r_painter',
-        tests: <GoldenTestType, Set<TargetPlatform>?>{
-          GoldenTestType.fixed: <TargetPlatform>{TargetPlatform.macOS},
-          GoldenTestType.viewBox: null,
-        },
+        tests: defaultGoldenTests,
       ),
       (painter: const RyPainter(), name: 'ry_painter', tests: defaultGoldenTests),
       (
@@ -337,10 +331,7 @@ _fixtures =
       (
         painter: const SpreadMethod2Painter(),
         name: 'spread_method_2_painter',
-        tests: <GoldenTestType, Set<TargetPlatform>?>{
-          GoldenTestType.fixed: <TargetPlatform>{TargetPlatform.macOS},
-          GoldenTestType.viewBox: <TargetPlatform>{TargetPlatform.macOS},
-        },
+        tests: defaultGoldenTests,
       ),
       (
         painter: const StartOffsetPainter(),
@@ -350,7 +341,7 @@ _fixtures =
       (
         painter: const StdDeviationPainter(),
         name: 'std_deviation_painter',
-        tests: macOsFixedOverrideGoldenTests,
+        tests: defaultGoldenTests,
       ),
       (
         painter: const StrokeDasharrayPainter(),
@@ -439,7 +430,7 @@ _fixtures =
       (
         painter: const GradientTransformPainter(),
         name: 'gradient_transform_painter',
-        tests: macOsOverrideGoldenTests,
+        tests: defaultGoldenTests,
       ),
       (painter: const WidthPainter(), name: 'width_painter', tests: defaultGoldenTests),
       (painter: const X1ExamplesPainter(), name: 'x1_examples_painter', tests: defaultGoldenTests),

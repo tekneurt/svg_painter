@@ -449,7 +449,7 @@ Future<void> testSvgPainterWithFlutterSvgDiff({
   required String testName,
   Size? canvasSize,
   double maxDiffPercent = 0.05,
-  Set<TargetPlatform>? platformOverrides = const <TargetPlatform>{TargetPlatform.macOS},
+  Set<TargetPlatform>? platformOverrides,
 }) async {
   await testSvgPainterWithReferenceDiff(
     tester: tester,
