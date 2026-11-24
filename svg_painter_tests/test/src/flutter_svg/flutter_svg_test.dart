@@ -207,6 +207,7 @@ final List<_FlutterSvgFixture> _fixtures = <_FlutterSvgFixture>[
     ),
     canvasSize: Size(2400.0, 1800.0),
     maxDiffPercent: 0.05,
+    platformOverrides: <TargetPlatform>{TargetPlatform.macOS},
   ),
   _FlutterSvgFixture(
     painter: const FlutterLogoPainter(),

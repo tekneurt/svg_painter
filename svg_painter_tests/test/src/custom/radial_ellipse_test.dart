@@ -13,7 +13,7 @@ void main() {
       painter: const RadialEllipsePainter(),
       name: 'radial_ellipse_painter',
       type: SvgTestType.custom,
-      tests: defaultGoldenTests,
+      tests: macOsViewBoxOverrideGoldenTests,
     );
   });
 }
